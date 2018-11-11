@@ -1,5 +1,6 @@
 import SwiftSyntax
 import Darwin
+import Foundation
 
 func printUsageStatement() {
     print("""
@@ -9,12 +10,41 @@ func printUsageStatement() {
         \tmuter [file]
         """)
 }
+let testCommand = """
+xcodebuild \
+-project ./MuterExampleTestSuite.xcodeproj \
+-scheme MuterExampleTestSuite \
+-sdk iphonesimulator \
+-destination 'platform=iOS Simulator,name=iPhone 6' \
+test
+"""
+
+
 
 switch CommandLine.argc {
 case 2:
     let path = CommandLine.arguments[1]
-    print("Mutated file at \(path)")
-    
+
+    if #available(OSX 10.13, *) {
+        let url = URL(fileURLWithPath: "/usr/bin/xcodebuild")
+        try Process.run(url, arguments: [
+            "-verbose",
+            "-project",
+            "/Users/seandorian/Code/Swift/muter/Tests/muterTests/fixtures/MuterExampleTestSuite/MuterExampleTestSuite.xcodeproj",
+            "-scheme",
+            "MuterExampleTestSuite",
+            "-sdk",
+            "iphonesimulator",
+            "-destination",
+            "platform=iOS Simulator,name=iPhone 6",
+            "test",
+        ]) { (process) in
+            print("process finished running: \(process.isRunning)")
+        }.waitUntilExit()
+        
+    } else {
+        // Fallback on earlier versions
+    }
     
     exit(0)
 default:
