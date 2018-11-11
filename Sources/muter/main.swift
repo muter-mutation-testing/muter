@@ -55,7 +55,7 @@ func copyOriginalSourceCode(fromFileAt path: String) {
 func mutateSourceCode(inFileAt path: String) {
     let sourceCode = try! FileParser().load(path: path)
     
-    let mutatedSourceCode = ConditionalBoundaryMutation().mutate(source: sourceCode)
+    let mutatedSourceCode = NegateConditionalsMutation().mutate(source: sourceCode)
     
     try! mutatedSourceCode.description.write(toFile: path, atomically: true, encoding: .utf8)
 }

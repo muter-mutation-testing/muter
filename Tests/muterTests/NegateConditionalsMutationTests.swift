@@ -1,17 +1,17 @@
 import XCTest
 import class Foundation.Bundle
 
-final class ConditionalBoundaryMutationTests: XCTestCase {
-    func test_conditionalBoundaryMutation() {
+final class NegateConditionalsMutationTests: XCTestCase {
+    func test_negateConditionalsMutation() {
         let source = try! FileParser().load(path: "/Users/seandorian/Code/Swift/muter/Tests/muterTests/fixtures/sample.swift")
         let expectedSource = try! FileParser().load(path: "/Users/seandorian/Code/Swift/muter/Tests/muterTests/fixtures/conditionalBoundary_mutation.swift")
         
-        let mutatedSource = ConditionalBoundaryMutation().mutate(source: source)
+        let mutatedSource = NegateConditionalsMutation().mutate(source: source)
         XCTAssertEqual(mutatedSource.description, expectedSource.description)
         
     }
     
     static var allTests = [
-        ("\(test_conditionalBoundaryMutation)", test_conditionalBoundaryMutation)
+        ("\(test_negateConditionalsMutation)", test_negateConditionalsMutation)
     ]
 }

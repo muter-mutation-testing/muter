@@ -21,9 +21,9 @@
 /* End PBXAggregateTarget section */
 
 /* Begin PBXBuildFile section */
-		9D13CAB7218FC08600DB1FDA /* ConditionalBoundaryMutationTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9D13CAB6218FC08600DB1FDA /* ConditionalBoundaryMutationTests.swift */; };
-		9D13CAB9218FC82800DB1FDA /* ConditionalBoundaryMutation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9D13CAB8218FC82800DB1FDA /* ConditionalBoundaryMutation.swift */; };
-		9D13CABA218FC82800DB1FDA /* ConditionalBoundaryMutation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9D13CAB8218FC82800DB1FDA /* ConditionalBoundaryMutation.swift */; };
+		9D13CAB7218FC08600DB1FDA /* NegateConditionalsMutationTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9D13CAB6218FC08600DB1FDA /* NegateConditionalsMutationTests.swift */; };
+		9D13CAB9218FC82800DB1FDA /* NegateConditionalsMutation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9D13CAB8218FC82800DB1FDA /* NegateConditionalsMutation.swift */; };
+		9D13CABA218FC82800DB1FDA /* NegateConditionalsMutation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9D13CAB8218FC82800DB1FDA /* NegateConditionalsMutation.swift */; };
 		9DDD62D5217419C700E0B43B /* FileParser.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9DDD62D4217419C700E0B43B /* FileParser.swift */; };
 		9DDD62D621741A6C00E0B43B /* FileParser.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9DDD62D4217419C700E0B43B /* FileParser.swift */; };
 		9DDD62D821741F2100E0B43B /* CLITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9DDD62D721741F2100E0B43B /* CLITests.swift */; };
@@ -95,8 +95,8 @@
 /* Begin PBXFileReference section */
 		9D0FF6E721447D0500949DEE /* sample.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = sample.swift; sourceTree = "<group>"; };
 		9D13CAB4218FB4C400DB1FDA /* conditionalBoundary_mutation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = conditionalBoundary_mutation.swift; sourceTree = "<group>"; };
-		9D13CAB6218FC08600DB1FDA /* ConditionalBoundaryMutationTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConditionalBoundaryMutationTests.swift; sourceTree = "<group>"; };
-		9D13CAB8218FC82800DB1FDA /* ConditionalBoundaryMutation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConditionalBoundaryMutation.swift; sourceTree = "<group>"; };
+		9D13CAB6218FC08600DB1FDA /* NegateConditionalsMutationTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NegateConditionalsMutationTests.swift; sourceTree = "<group>"; };
+		9D13CAB8218FC82800DB1FDA /* NegateConditionalsMutation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NegateConditionalsMutation.swift; sourceTree = "<group>"; };
 		9DC4EFA521911508002530C8 /* .gitignore */ = {isa = PBXFileReference; lastKnownFileType = text; path = .gitignore; sourceTree = "<group>"; };
 		9DC4EFA621911779002530C8 /* MuterExampleTestSuite */ = {isa = PBXFileReference; lastKnownFileType = folder; path = MuterExampleTestSuite; sourceTree = "<group>"; };
 		9DDD62D4217419C700E0B43B /* FileParser.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FileParser.swift; sourceTree = "<group>"; };
@@ -185,7 +185,7 @@
 		OBJ_11 /* muterTests */ = {
 			isa = PBXGroup;
 			children = (
-				9D13CAB6218FC08600DB1FDA /* ConditionalBoundaryMutationTests.swift */,
+				9D13CAB6218FC08600DB1FDA /* NegateConditionalsMutationTests.swift */,
 				9D13CAB5218FBF6500DB1FDA /* fixtures */,
 				OBJ_12 /* XCTestManifests.swift */,
 				OBJ_13 /* FileParserTests.swift */,
@@ -298,7 +298,7 @@
 			children = (
 				9DDD62D4217419C700E0B43B /* FileParser.swift */,
 				OBJ_9 /* main.swift */,
-				9D13CAB8218FC82800DB1FDA /* ConditionalBoundaryMutation.swift */,
+				9D13CAB8218FC82800DB1FDA /* NegateConditionalsMutation.swift */,
 			);
 			name = muter;
 			path = Sources/muter;
@@ -432,9 +432,9 @@
 				9DDD62D821741F2100E0B43B /* CLITests.swift in Sources */,
 				9DDD62D621741A6C00E0B43B /* FileParser.swift in Sources */,
 				OBJ_112 /* XCTestManifests.swift in Sources */,
-				9D13CAB7218FC08600DB1FDA /* ConditionalBoundaryMutationTests.swift in Sources */,
+				9D13CAB7218FC08600DB1FDA /* NegateConditionalsMutationTests.swift in Sources */,
 				OBJ_113 /* FileParserTests.swift in Sources */,
-				9D13CABA218FC82800DB1FDA /* ConditionalBoundaryMutation.swift in Sources */,
+				9D13CABA218FC82800DB1FDA /* NegateConditionalsMutation.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -484,7 +484,7 @@
 			files = (
 				OBJ_92 /* main.swift in Sources */,
 				9DDD62D5217419C700E0B43B /* FileParser.swift in Sources */,
-				9D13CAB9218FC82800DB1FDA /* ConditionalBoundaryMutation.swift in Sources */,
+				9D13CAB9218FC82800DB1FDA /* NegateConditionalsMutation.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

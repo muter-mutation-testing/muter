@@ -1,6 +1,6 @@
 import SwiftSyntax
 
-class ConditionalBoundaryMutation {
+class NegateConditionalsMutation {
     
     private class Rewriter: SyntaxRewriter {
         override func visit(_ token: TokenSyntax) -> Syntax {
