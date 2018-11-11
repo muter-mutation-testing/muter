@@ -1,7 +1,0 @@
-version: "Apple Swift version 4.2.1-dev (LLVM 76c1d562d5, Clang 78aa734eee, Swift 7d204ce1c9)"
-options: "4f7f08d33725b4ee7bb03e1caddc14e4"
-build_time: [1541379392, 370713000]
-inputs:
-  "/Users/seandorian/Code/Swift/muter/Tests/muterTests/MuterExampleTestSuite/MuterExampleTestSuite/ViewController.swift": [1541378803, 0]
-  "/Users/seandorian/Code/Swift/muter/Tests/muterTests/MuterExampleTestSuite/MuterExampleTestSuite/AppDelegate.swift": [1541378795, 0]
-  "/Users/seandorian/Code/Swift/muter/Tests/muterTests/MuterExampleTestSuite/MuterExampleTestSuite/Module.swift": [1541379389, 0]

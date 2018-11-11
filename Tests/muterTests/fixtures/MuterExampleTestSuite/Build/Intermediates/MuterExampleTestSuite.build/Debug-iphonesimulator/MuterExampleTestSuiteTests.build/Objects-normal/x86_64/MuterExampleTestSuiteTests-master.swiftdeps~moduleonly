@@ -1,5 +1,0 @@
-version: "Apple Swift version 4.2.1-dev (LLVM 76c1d562d5, Clang 78aa734eee, Swift 7d204ce1c9)"
-options: "c3165b5d308d3af2e514c5234f7bd98d"
-build_time: [1541379396, 894233000]
-inputs:
-  "/Users/seandorian/Code/Swift/muter/Tests/muterTests/MuterExampleTestSuite/MuterExampleTestSuiteTests/ModuleTests.swift": [1541379316, 0]
