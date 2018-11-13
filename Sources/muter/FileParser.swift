@@ -1,7 +1,7 @@
 import SwiftSyntax
 import Foundation
 
-class FileParser {
+struct FileParser {
     static func load(path: String) -> SourceFileSyntax {
         let url = URL(fileURLWithPath: path)
         return try! SyntaxTreeParser.parse(url)

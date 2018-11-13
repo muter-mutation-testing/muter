@@ -18,7 +18,8 @@ class CLITests: XCTestCase {
         let (output, terminationStatus) = try runMuter(with: arguments)
 
         XCTAssertEqual(terminationStatus, 0)
-        XCTAssertEqual(numberOfMutatedPathsIn(output), 1)
+//        XCTAssertEqual(numberOfMutatedPathsIn(output), 1)
+        XCTAssert(output.contains("** TEST FAILED **"))
     }
 }
 
@@ -44,7 +45,7 @@ private extension CLITests {
         process.executableURL = muter
         process.arguments = arguments
         process.standardOutput = pipe
-        
+
         try process.run()
         process.waitUntilExit()
         
