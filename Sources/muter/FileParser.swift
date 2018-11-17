@@ -22,7 +22,7 @@ struct FileParser {
     }
     
     static func copySourceCode(fromFileAt sourcePath: String, to destinationPath: String) {
-        let sourceCode = FileParser.load(path: sourcePath)!
-        try! sourceCode.description.write(toFile: destinationPath, atomically: true, encoding: .utf8)
+        let sourceCode = FileParser.load(path: sourcePath)
+        try? sourceCode?.description.write(toFile: destinationPath, atomically: true, encoding: .utf8)
     }
 }

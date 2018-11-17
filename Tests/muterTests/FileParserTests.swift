@@ -3,6 +3,8 @@ import class Foundation.Bundle
 
 final class FileParserTests: XCTestCase {
     
+    let testDirectory = URL(string: #file)!.deletingLastPathComponent().absoluteString
+    
     func test_loadingANonexistentFileReturnsNil() {
         XCTAssertNil(FileParser.load(path: "I do not exist"))
     }
@@ -19,13 +21,20 @@ final class FileParserTests: XCTestCase {
     }
     
     func test_stuff() {
-        let originalSourceCode = FileParser.load(path: "/Users/seandorian/Code/Swift/muter/Tests/muterTests/fixtures/sample.swift")
-        let workingDirectory = FileParser.createWorkingDirectory(in: "/Users/seandorian/Code/Swift/muter/Tests/muterTests")
+        let workingDirectory = FileParser.createWorkingDirectory(in: testDirectory)
         
-        let newPath = "\(workingDirectory)/sample.swift"
-        FileParser.copySourceCode(fromFileAt: "/Users/seandorian/Code/Swift/muter/Tests/muterTests/fixtures/sample.swift", to: newPath)
-        let copiedSourceCode = FileParser.load(path: newPath)
+        let originalSourceCodePath = "\(testDirectory)/fixtures/sample.swift"
+        let originalSourceCode = FileParser.load(path: originalSourceCodePath)
         
+        let copiedSourceCodePath = "\(workingDirectory)/sample.swift"
+        FileParser.copySourceCode(fromFileAt: originalSourceCodePath,
+                                  to: copiedSourceCodePath)
+        
+        
+        let copiedSourceCode = FileParser.load(path: copiedSourceCodePath)
+        
+        XCTAssertNotNil(originalSourceCode)
+        XCTAssertNotNil(copiedSourceCode)
         XCTAssertEqual(originalSourceCode?.description, copiedSourceCode?.description)
         
         removeItems(at: [workingDirectory])
