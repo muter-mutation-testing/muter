@@ -9,11 +9,11 @@
 /* Begin PBXAggregateTarget section */
 		"muter::muterPackageTests::ProductTarget" /* muterPackageTests */ = {
 			isa = PBXAggregateTarget;
-			buildConfigurationList = OBJ_103 /* Build configuration list for PBXAggregateTarget "muterPackageTests" */;
+			buildConfigurationList = OBJ_123 /* Build configuration list for PBXAggregateTarget "muterPackageTests" */;
 			buildPhases = (
 			);
 			dependencies = (
-				OBJ_106 /* PBXTargetDependency */,
+				OBJ_126 /* PBXTargetDependency */,
 			);
 			name = muterPackageTests;
 			productName = muterPackageTests;
@@ -21,69 +21,70 @@
 /* End PBXAggregateTarget section */
 
 /* Begin PBXBuildFile section */
-		9D13CAB7218FC08600DB1FDA /* NegateConditionalsMutationTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9D13CAB6218FC08600DB1FDA /* NegateConditionalsMutationTests.swift */; };
-		9D13CAB9218FC82800DB1FDA /* NegateConditionalsMutation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9D13CAB8218FC82800DB1FDA /* NegateConditionalsMutation.swift */; };
-		9D13CABA218FC82800DB1FDA /* NegateConditionalsMutation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9D13CAB8218FC82800DB1FDA /* NegateConditionalsMutation.swift */; };
-		9DDD62D5217419C700E0B43B /* FileParser.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9DDD62D4217419C700E0B43B /* FileParser.swift */; };
-		9DDD62D621741A6C00E0B43B /* FileParser.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9DDD62D4217419C700E0B43B /* FileParser.swift */; };
-		9DDD62D821741F2100E0B43B /* CLITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9DDD62D721741F2100E0B43B /* CLITests.swift */; };
-		OBJ_101 /* Package.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_6 /* Package.swift */; };
-		OBJ_112 /* XCTestManifests.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_12 /* XCTestManifests.swift */; };
-		OBJ_113 /* FileParserTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_13 /* FileParserTests.swift */; };
-		OBJ_115 /* SwiftSyntax.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = "SwiftSyntax::SwiftSyntax::Product" /* SwiftSyntax.framework */; };
-		OBJ_55 /* AbsolutePosition.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_19 /* AbsolutePosition.swift */; };
-		OBJ_56 /* AtomicCache.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_20 /* AtomicCache.swift */; };
-		OBJ_57 /* ByteTreeDeserialization.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_21 /* ByteTreeDeserialization.swift */; };
-		OBJ_58 /* Diagnostic.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_22 /* Diagnostic.swift */; };
-		OBJ_59 /* DiagnosticConsumer.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_23 /* DiagnosticConsumer.swift */; };
-		OBJ_60 /* DiagnosticEngine.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_24 /* DiagnosticEngine.swift */; };
-		OBJ_61 /* JSONDiagnosticConsumer.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_25 /* JSONDiagnosticConsumer.swift */; };
-		OBJ_62 /* PrintingDiagnosticConsumer.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_26 /* PrintingDiagnosticConsumer.swift */; };
-		OBJ_63 /* RawSyntax.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_27 /* RawSyntax.swift */; };
-		OBJ_64 /* SourceLength.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_28 /* SourceLength.swift */; };
-		OBJ_65 /* SourcePresence.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_29 /* SourcePresence.swift */; };
-		OBJ_66 /* SwiftSyntax.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_30 /* SwiftSyntax.swift */; };
-		OBJ_67 /* SwiftcInvocation.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_31 /* SwiftcInvocation.swift */; };
-		OBJ_68 /* Syntax.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_32 /* Syntax.swift */; };
-		OBJ_69 /* SyntaxChildren.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_33 /* SyntaxChildren.swift */; };
-		OBJ_70 /* SyntaxData.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_34 /* SyntaxData.swift */; };
-		OBJ_71 /* SyntaxBuilders.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_36 /* SyntaxBuilders.swift */; };
-		OBJ_72 /* SyntaxClassifier.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_37 /* SyntaxClassifier.swift */; };
-		OBJ_73 /* SyntaxCollections.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_38 /* SyntaxCollections.swift */; };
-		OBJ_74 /* SyntaxFactory.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_39 /* SyntaxFactory.swift */; };
-		OBJ_75 /* SyntaxKind.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_40 /* SyntaxKind.swift */; };
-		OBJ_76 /* SyntaxNodes.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_41 /* SyntaxNodes.swift */; };
-		OBJ_77 /* SyntaxRewriter.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_42 /* SyntaxRewriter.swift */; };
-		OBJ_78 /* TokenKind.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_43 /* TokenKind.swift */; };
-		OBJ_79 /* Trivia.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_44 /* Trivia.swift */; };
-		OBJ_86 /* Package.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_45 /* Package.swift */; };
-		OBJ_92 /* main.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_9 /* main.swift */; };
-		OBJ_94 /* SwiftSyntax.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = "SwiftSyntax::SwiftSyntax::Product" /* SwiftSyntax.framework */; };
+		9DBDA10F21A09891000082AA /* FileParser.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_9 /* FileParser.swift */; };
+		9DBDA11021A09894000082AA /* NegateConditionalsMutation.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_10 /* NegateConditionalsMutation.swift */; };
+		9DBDA11321A09D17000082AA /* FileManagerSpy.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9DBDA11221A09D17000082AA /* FileManagerSpy.swift */; };
+		OBJ_104 /* Package.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_63 /* Package.swift */; };
+		OBJ_110 /* FileParser.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_9 /* FileParser.swift */; };
+		OBJ_111 /* NegateConditionalsMutation.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_10 /* NegateConditionalsMutation.swift */; };
+		OBJ_112 /* main.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_11 /* main.swift */; };
+		OBJ_114 /* SwiftSyntax.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = "SwiftSyntax::SwiftSyntax::Product" /* SwiftSyntax.framework */; };
+		OBJ_121 /* Package.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_6 /* Package.swift */; };
+		OBJ_132 /* CLITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_14 /* CLITests.swift */; };
+		OBJ_133 /* FileParserTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_15 /* FileParserTests.swift */; };
+		OBJ_134 /* NegateConditionalsMutationTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_16 /* NegateConditionalsMutationTests.swift */; };
+		OBJ_135 /* XCTestManifests.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_17 /* XCTestManifests.swift */; };
+		OBJ_145 /* SwiftSyntax.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = "SwiftSyntax::SwiftSyntax::Product" /* SwiftSyntax.framework */; };
+		OBJ_73 /* AbsolutePosition.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_37 /* AbsolutePosition.swift */; };
+		OBJ_74 /* AtomicCache.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_38 /* AtomicCache.swift */; };
+		OBJ_75 /* ByteTreeDeserialization.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_39 /* ByteTreeDeserialization.swift */; };
+		OBJ_76 /* Diagnostic.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_40 /* Diagnostic.swift */; };
+		OBJ_77 /* DiagnosticConsumer.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_41 /* DiagnosticConsumer.swift */; };
+		OBJ_78 /* DiagnosticEngine.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_42 /* DiagnosticEngine.swift */; };
+		OBJ_79 /* JSONDiagnosticConsumer.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_43 /* JSONDiagnosticConsumer.swift */; };
+		OBJ_80 /* PrintingDiagnosticConsumer.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_44 /* PrintingDiagnosticConsumer.swift */; };
+		OBJ_81 /* RawSyntax.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_45 /* RawSyntax.swift */; };
+		OBJ_82 /* SourceLength.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_46 /* SourceLength.swift */; };
+		OBJ_83 /* SourcePresence.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_47 /* SourcePresence.swift */; };
+		OBJ_84 /* SwiftSyntax.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_48 /* SwiftSyntax.swift */; };
+		OBJ_85 /* SwiftcInvocation.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_49 /* SwiftcInvocation.swift */; };
+		OBJ_86 /* Syntax.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_50 /* Syntax.swift */; };
+		OBJ_87 /* SyntaxChildren.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_51 /* SyntaxChildren.swift */; };
+		OBJ_88 /* SyntaxData.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_52 /* SyntaxData.swift */; };
+		OBJ_89 /* SyntaxBuilders.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_54 /* SyntaxBuilders.swift */; };
+		OBJ_90 /* SyntaxClassifier.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_55 /* SyntaxClassifier.swift */; };
+		OBJ_91 /* SyntaxCollections.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_56 /* SyntaxCollections.swift */; };
+		OBJ_92 /* SyntaxFactory.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_57 /* SyntaxFactory.swift */; };
+		OBJ_93 /* SyntaxKind.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_58 /* SyntaxKind.swift */; };
+		OBJ_94 /* SyntaxNodes.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_59 /* SyntaxNodes.swift */; };
+		OBJ_95 /* SyntaxRewriter.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_60 /* SyntaxRewriter.swift */; };
+		OBJ_96 /* TokenKind.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_61 /* TokenKind.swift */; };
+		OBJ_97 /* Trivia.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_62 /* Trivia.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
-		9D0FF6E0214475AB00949DEE /* PBXContainerItemProxy */ = {
+		9DBDA10B21A09839000082AA /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = OBJ_1 /* Project object */;
 			proxyType = 1;
 			remoteGlobalIDString = "SwiftSyntax::SwiftSyntax";
 			remoteInfo = SwiftSyntax;
 		};
-		9D0FF6E1214475AB00949DEE /* PBXContainerItemProxy */ = {
+		9DBDA10C21A0983A000082AA /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = OBJ_1 /* Project object */;
 			proxyType = 1;
 			remoteGlobalIDString = "muter::muter";
 			remoteInfo = muter;
 		};
-		9D0FF6E2214475AB00949DEE /* PBXContainerItemProxy */ = {
+		9DBDA10D21A0983A000082AA /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = OBJ_1 /* Project object */;
 			proxyType = 1;
 			remoteGlobalIDString = "SwiftSyntax::SwiftSyntax";
 			remoteInfo = SwiftSyntax;
 		};
-		9D0FF6E3214475AC00949DEE /* PBXContainerItemProxy */ = {
+		9DBDA10E21A0983C000082AA /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = OBJ_1 /* Project object */;
 			proxyType = 1;
@@ -93,197 +94,256 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
-		9D0FF6E721447D0500949DEE /* sample.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = sample.swift; sourceTree = "<group>"; };
-		9D13CAB4218FB4C400DB1FDA /* conditionalBoundary_mutation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = conditionalBoundary_mutation.swift; sourceTree = "<group>"; };
-		9D13CAB6218FC08600DB1FDA /* NegateConditionalsMutationTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NegateConditionalsMutationTests.swift; sourceTree = "<group>"; };
-		9D13CAB8218FC82800DB1FDA /* NegateConditionalsMutation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NegateConditionalsMutation.swift; sourceTree = "<group>"; };
-		9DC4EFA521911508002530C8 /* .gitignore */ = {isa = PBXFileReference; lastKnownFileType = text; path = .gitignore; sourceTree = "<group>"; };
-		9DC4EFA621911779002530C8 /* MuterExampleTestSuite */ = {isa = PBXFileReference; lastKnownFileType = folder; path = MuterExampleTestSuite; sourceTree = "<group>"; };
-		9DDD62D4217419C700E0B43B /* FileParser.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FileParser.swift; sourceTree = "<group>"; };
-		9DDD62D721741F2100E0B43B /* CLITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CLITests.swift; sourceTree = "<group>"; };
-		OBJ_12 /* XCTestManifests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = XCTestManifests.swift; sourceTree = "<group>"; };
-		OBJ_13 /* FileParserTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FileParserTests.swift; sourceTree = "<group>"; };
-		OBJ_14 /* Build */ = {isa = PBXFileReference; lastKnownFileType = folder; path = Build; sourceTree = SOURCE_ROOT; };
-		OBJ_19 /* AbsolutePosition.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AbsolutePosition.swift; sourceTree = "<group>"; };
-		OBJ_20 /* AtomicCache.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AtomicCache.swift; sourceTree = "<group>"; };
-		OBJ_21 /* ByteTreeDeserialization.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ByteTreeDeserialization.swift; sourceTree = "<group>"; };
-		OBJ_22 /* Diagnostic.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Diagnostic.swift; sourceTree = "<group>"; };
-		OBJ_23 /* DiagnosticConsumer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DiagnosticConsumer.swift; sourceTree = "<group>"; };
-		OBJ_24 /* DiagnosticEngine.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DiagnosticEngine.swift; sourceTree = "<group>"; };
-		OBJ_25 /* JSONDiagnosticConsumer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JSONDiagnosticConsumer.swift; sourceTree = "<group>"; };
-		OBJ_26 /* PrintingDiagnosticConsumer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PrintingDiagnosticConsumer.swift; sourceTree = "<group>"; };
-		OBJ_27 /* RawSyntax.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RawSyntax.swift; sourceTree = "<group>"; };
-		OBJ_28 /* SourceLength.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SourceLength.swift; sourceTree = "<group>"; };
-		OBJ_29 /* SourcePresence.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SourcePresence.swift; sourceTree = "<group>"; };
-		OBJ_30 /* SwiftSyntax.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SwiftSyntax.swift; sourceTree = "<group>"; };
-		OBJ_31 /* SwiftcInvocation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SwiftcInvocation.swift; sourceTree = "<group>"; };
-		OBJ_32 /* Syntax.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Syntax.swift; sourceTree = "<group>"; };
-		OBJ_33 /* SyntaxChildren.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SyntaxChildren.swift; sourceTree = "<group>"; };
-		OBJ_34 /* SyntaxData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SyntaxData.swift; sourceTree = "<group>"; };
-		OBJ_36 /* SyntaxBuilders.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SyntaxBuilders.swift; sourceTree = "<group>"; };
-		OBJ_37 /* SyntaxClassifier.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SyntaxClassifier.swift; sourceTree = "<group>"; };
-		OBJ_38 /* SyntaxCollections.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SyntaxCollections.swift; sourceTree = "<group>"; };
-		OBJ_39 /* SyntaxFactory.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SyntaxFactory.swift; sourceTree = "<group>"; };
-		OBJ_40 /* SyntaxKind.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SyntaxKind.swift; sourceTree = "<group>"; };
-		OBJ_41 /* SyntaxNodes.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SyntaxNodes.swift; sourceTree = "<group>"; };
-		OBJ_42 /* SyntaxRewriter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SyntaxRewriter.swift; sourceTree = "<group>"; };
-		OBJ_43 /* TokenKind.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TokenKind.swift; sourceTree = "<group>"; };
-		OBJ_44 /* Trivia.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Trivia.swift; sourceTree = "<group>"; };
-		OBJ_45 /* Package.swift */ = {isa = PBXFileReference; explicitFileType = sourcecode.swift; name = Package.swift; path = "/Users/seandorian/Code/Swift/muter/.build/checkouts/swift-syntax.git-1730887758121732043/Package.swift"; sourceTree = "<group>"; };
+		9DBDA11221A09D17000082AA /* FileManagerSpy.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FileManagerSpy.swift; sourceTree = "<group>"; };
+		OBJ_10 /* NegateConditionalsMutation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NegateConditionalsMutation.swift; sourceTree = "<group>"; };
+		OBJ_11 /* main.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = main.swift; sourceTree = "<group>"; };
+		OBJ_14 /* CLITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CLITests.swift; sourceTree = "<group>"; };
+		OBJ_15 /* FileParserTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FileParserTests.swift; sourceTree = "<group>"; };
+		OBJ_16 /* NegateConditionalsMutationTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NegateConditionalsMutationTests.swift; sourceTree = "<group>"; };
+		OBJ_17 /* XCTestManifests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = XCTestManifests.swift; sourceTree = "<group>"; };
+		OBJ_21 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
+		OBJ_22 /* Module.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Module.swift; sourceTree = "<group>"; };
+		OBJ_23 /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
+		OBJ_25 /* ModuleTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ModuleTests.swift; sourceTree = "<group>"; };
+		OBJ_27 /* MuterExampleTestSuiteUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MuterExampleTestSuiteUITests.swift; sourceTree = "<group>"; };
+		OBJ_28 /* conditionalBoundary_mutation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = conditionalBoundary_mutation.swift; sourceTree = "<group>"; };
+		OBJ_30 /* Module.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Module.swift; sourceTree = "<group>"; };
+		OBJ_31 /* sample.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = sample.swift; sourceTree = "<group>"; };
+		OBJ_32 /* Build */ = {isa = PBXFileReference; lastKnownFileType = folder; path = Build; sourceTree = SOURCE_ROOT; };
+		OBJ_37 /* AbsolutePosition.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AbsolutePosition.swift; sourceTree = "<group>"; };
+		OBJ_38 /* AtomicCache.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AtomicCache.swift; sourceTree = "<group>"; };
+		OBJ_39 /* ByteTreeDeserialization.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ByteTreeDeserialization.swift; sourceTree = "<group>"; };
+		OBJ_40 /* Diagnostic.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Diagnostic.swift; sourceTree = "<group>"; };
+		OBJ_41 /* DiagnosticConsumer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DiagnosticConsumer.swift; sourceTree = "<group>"; };
+		OBJ_42 /* DiagnosticEngine.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DiagnosticEngine.swift; sourceTree = "<group>"; };
+		OBJ_43 /* JSONDiagnosticConsumer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JSONDiagnosticConsumer.swift; sourceTree = "<group>"; };
+		OBJ_44 /* PrintingDiagnosticConsumer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PrintingDiagnosticConsumer.swift; sourceTree = "<group>"; };
+		OBJ_45 /* RawSyntax.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RawSyntax.swift; sourceTree = "<group>"; };
+		OBJ_46 /* SourceLength.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SourceLength.swift; sourceTree = "<group>"; };
+		OBJ_47 /* SourcePresence.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SourcePresence.swift; sourceTree = "<group>"; };
+		OBJ_48 /* SwiftSyntax.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SwiftSyntax.swift; sourceTree = "<group>"; };
+		OBJ_49 /* SwiftcInvocation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SwiftcInvocation.swift; sourceTree = "<group>"; };
+		OBJ_50 /* Syntax.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Syntax.swift; sourceTree = "<group>"; };
+		OBJ_51 /* SyntaxChildren.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SyntaxChildren.swift; sourceTree = "<group>"; };
+		OBJ_52 /* SyntaxData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SyntaxData.swift; sourceTree = "<group>"; };
+		OBJ_54 /* SyntaxBuilders.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SyntaxBuilders.swift; sourceTree = "<group>"; };
+		OBJ_55 /* SyntaxClassifier.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SyntaxClassifier.swift; sourceTree = "<group>"; };
+		OBJ_56 /* SyntaxCollections.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SyntaxCollections.swift; sourceTree = "<group>"; };
+		OBJ_57 /* SyntaxFactory.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SyntaxFactory.swift; sourceTree = "<group>"; };
+		OBJ_58 /* SyntaxKind.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SyntaxKind.swift; sourceTree = "<group>"; };
+		OBJ_59 /* SyntaxNodes.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SyntaxNodes.swift; sourceTree = "<group>"; };
 		OBJ_6 /* Package.swift */ = {isa = PBXFileReference; explicitFileType = sourcecode.swift; path = Package.swift; sourceTree = "<group>"; };
-		OBJ_9 /* main.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = main.swift; sourceTree = "<group>"; };
-		"SwiftSyntax::SwiftSyntax::Product" /* SwiftSyntax.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = SwiftSyntax.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		OBJ_60 /* SyntaxRewriter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SyntaxRewriter.swift; sourceTree = "<group>"; };
+		OBJ_61 /* TokenKind.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TokenKind.swift; sourceTree = "<group>"; };
+		OBJ_62 /* Trivia.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Trivia.swift; sourceTree = "<group>"; };
+		OBJ_63 /* Package.swift */ = {isa = PBXFileReference; explicitFileType = sourcecode.swift; name = Package.swift; path = "/Users/seandorian/Code/Swift/muter/.build/checkouts/swift-syntax.git--4121576444501305272/Package.swift"; sourceTree = "<group>"; };
+		OBJ_9 /* FileParser.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FileParser.swift; sourceTree = "<group>"; };
+		"SwiftSyntax::SwiftSyntax::Product" /* SwiftSyntax.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = SwiftSyntax.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		"muter::muter::Product" /* muter */ = {isa = PBXFileReference; lastKnownFileType = text; path = muter; sourceTree = BUILT_PRODUCTS_DIR; };
 		"muter::muterTests::Product" /* muterTests.xctest */ = {isa = PBXFileReference; lastKnownFileType = file; path = muterTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
-		OBJ_114 /* Frameworks */ = {
+		OBJ_113 /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 0;
 			files = (
-				OBJ_115 /* SwiftSyntax.framework in Frameworks */,
+				OBJ_114 /* SwiftSyntax.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
-		OBJ_80 /* Frameworks */ = {
+		OBJ_144 /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 0;
 			files = (
+				OBJ_145 /* SwiftSyntax.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
-		OBJ_93 /* Frameworks */ = {
+		OBJ_98 /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 0;
 			files = (
-				OBJ_94 /* SwiftSyntax.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
-		9D13CAB5218FBF6500DB1FDA /* fixtures */ = {
+		9DBDA11121A09D01000082AA /* Test Doubles */ = {
 			isa = PBXGroup;
 			children = (
-				9DC4EFA621911779002530C8 /* MuterExampleTestSuite */,
-				9D0FF6E721447D0500949DEE /* sample.swift */,
-				9D13CAB4218FB4C400DB1FDA /* conditionalBoundary_mutation.swift */,
+				9DBDA11221A09D17000082AA /* FileManagerSpy.swift */,
 			);
-			path = fixtures;
+			path = "Test Doubles";
 			sourceTree = "<group>";
 		};
-		OBJ_10 /* Tests */ = {
+		OBJ_12 /* Tests */ = {
 			isa = PBXGroup;
 			children = (
-				OBJ_11 /* muterTests */,
+				OBJ_13 /* muterTests */,
 			);
 			name = Tests;
 			sourceTree = SOURCE_ROOT;
 		};
-		OBJ_11 /* muterTests */ = {
+		OBJ_13 /* muterTests */ = {
 			isa = PBXGroup;
 			children = (
-				9D13CAB6218FC08600DB1FDA /* NegateConditionalsMutationTests.swift */,
-				9D13CAB5218FBF6500DB1FDA /* fixtures */,
-				OBJ_12 /* XCTestManifests.swift */,
-				OBJ_13 /* FileParserTests.swift */,
-				9DDD62D721741F2100E0B43B /* CLITests.swift */,
+				9DBDA11121A09D01000082AA /* Test Doubles */,
+				OBJ_14 /* CLITests.swift */,
+				OBJ_15 /* FileParserTests.swift */,
+				OBJ_16 /* NegateConditionalsMutationTests.swift */,
+				OBJ_17 /* XCTestManifests.swift */,
+				OBJ_18 /* fixtures */,
 			);
 			name = muterTests;
 			path = Tests/muterTests;
 			sourceTree = SOURCE_ROOT;
 		};
-		OBJ_15 /* Dependencies */ = {
+		OBJ_18 /* fixtures */ = {
 			isa = PBXGroup;
 			children = (
-				OBJ_16 /* SwiftSyntax */,
+				OBJ_19 /* MuterExampleTestSuite */,
+				OBJ_28 /* conditionalBoundary_mutation.swift */,
+				OBJ_29 /* muter_tmp */,
+				OBJ_31 /* sample.swift */,
+			);
+			path = fixtures;
+			sourceTree = "<group>";
+		};
+		OBJ_19 /* MuterExampleTestSuite */ = {
+			isa = PBXGroup;
+			children = (
+				OBJ_20 /* MuterExampleTestSuite */,
+				OBJ_24 /* MuterExampleTestSuiteTests */,
+				OBJ_26 /* MuterExampleTestSuiteUITests */,
+			);
+			path = MuterExampleTestSuite;
+			sourceTree = "<group>";
+		};
+		OBJ_20 /* MuterExampleTestSuite */ = {
+			isa = PBXGroup;
+			children = (
+				OBJ_21 /* AppDelegate.swift */,
+				OBJ_22 /* Module.swift */,
+				OBJ_23 /* ViewController.swift */,
+			);
+			path = MuterExampleTestSuite;
+			sourceTree = "<group>";
+		};
+		OBJ_24 /* MuterExampleTestSuiteTests */ = {
+			isa = PBXGroup;
+			children = (
+				OBJ_25 /* ModuleTests.swift */,
+			);
+			path = MuterExampleTestSuiteTests;
+			sourceTree = "<group>";
+		};
+		OBJ_26 /* MuterExampleTestSuiteUITests */ = {
+			isa = PBXGroup;
+			children = (
+				OBJ_27 /* MuterExampleTestSuiteUITests.swift */,
+			);
+			path = MuterExampleTestSuiteUITests;
+			sourceTree = "<group>";
+		};
+		OBJ_29 /* muter_tmp */ = {
+			isa = PBXGroup;
+			children = (
+				OBJ_30 /* Module.swift */,
+			);
+			path = muter_tmp;
+			sourceTree = "<group>";
+		};
+		OBJ_33 /* Dependencies */ = {
+			isa = PBXGroup;
+			children = (
+				OBJ_34 /* SwiftSyntax */,
 			);
 			name = Dependencies;
 			sourceTree = "<group>";
 		};
-		OBJ_16 /* SwiftSyntax */ = {
+		OBJ_34 /* SwiftSyntax */ = {
 			isa = PBXGroup;
 			children = (
-				OBJ_17 /* lit-test-helper */,
-				OBJ_18 /* SwiftSyntax */,
-				OBJ_45 /* Package.swift */,
+				OBJ_35 /* lit-test-helper */,
+				OBJ_36 /* SwiftSyntax */,
+				OBJ_63 /* Package.swift */,
 			);
 			name = SwiftSyntax;
 			sourceTree = SOURCE_ROOT;
 		};
-		OBJ_17 /* lit-test-helper */ = {
+		OBJ_35 /* lit-test-helper */ = {
 			isa = PBXGroup;
 			children = (
 			);
 			name = "lit-test-helper";
-			path = ".build/checkouts/swift-syntax.git-1730887758121732043/Sources/lit-test-helper";
+			path = ".build/checkouts/swift-syntax.git--4121576444501305272/Sources/lit-test-helper";
 			sourceTree = SOURCE_ROOT;
 		};
-		OBJ_18 /* SwiftSyntax */ = {
+		OBJ_36 /* SwiftSyntax */ = {
 			isa = PBXGroup;
 			children = (
-				OBJ_19 /* AbsolutePosition.swift */,
-				OBJ_20 /* AtomicCache.swift */,
-				OBJ_21 /* ByteTreeDeserialization.swift */,
-				OBJ_22 /* Diagnostic.swift */,
-				OBJ_23 /* DiagnosticConsumer.swift */,
-				OBJ_24 /* DiagnosticEngine.swift */,
-				OBJ_25 /* JSONDiagnosticConsumer.swift */,
-				OBJ_26 /* PrintingDiagnosticConsumer.swift */,
-				OBJ_27 /* RawSyntax.swift */,
-				OBJ_28 /* SourceLength.swift */,
-				OBJ_29 /* SourcePresence.swift */,
-				OBJ_30 /* SwiftSyntax.swift */,
-				OBJ_31 /* SwiftcInvocation.swift */,
-				OBJ_32 /* Syntax.swift */,
-				OBJ_33 /* SyntaxChildren.swift */,
-				OBJ_34 /* SyntaxData.swift */,
-				OBJ_35 /* gyb_generated */,
+				OBJ_37 /* AbsolutePosition.swift */,
+				OBJ_38 /* AtomicCache.swift */,
+				OBJ_39 /* ByteTreeDeserialization.swift */,
+				OBJ_40 /* Diagnostic.swift */,
+				OBJ_41 /* DiagnosticConsumer.swift */,
+				OBJ_42 /* DiagnosticEngine.swift */,
+				OBJ_43 /* JSONDiagnosticConsumer.swift */,
+				OBJ_44 /* PrintingDiagnosticConsumer.swift */,
+				OBJ_45 /* RawSyntax.swift */,
+				OBJ_46 /* SourceLength.swift */,
+				OBJ_47 /* SourcePresence.swift */,
+				OBJ_48 /* SwiftSyntax.swift */,
+				OBJ_49 /* SwiftcInvocation.swift */,
+				OBJ_50 /* Syntax.swift */,
+				OBJ_51 /* SyntaxChildren.swift */,
+				OBJ_52 /* SyntaxData.swift */,
+				OBJ_53 /* gyb_generated */,
 			);
 			name = SwiftSyntax;
-			path = ".build/checkouts/swift-syntax.git-1730887758121732043/Sources/SwiftSyntax";
+			path = ".build/checkouts/swift-syntax.git--4121576444501305272/Sources/SwiftSyntax";
 			sourceTree = SOURCE_ROOT;
 		};
-		OBJ_35 /* gyb_generated */ = {
+		OBJ_5 /*  */ = {
 			isa = PBXGroup;
 			children = (
-				OBJ_36 /* SyntaxBuilders.swift */,
-				OBJ_37 /* SyntaxClassifier.swift */,
-				OBJ_38 /* SyntaxCollections.swift */,
-				OBJ_39 /* SyntaxFactory.swift */,
-				OBJ_40 /* SyntaxKind.swift */,
-				OBJ_41 /* SyntaxNodes.swift */,
-				OBJ_42 /* SyntaxRewriter.swift */,
-				OBJ_43 /* TokenKind.swift */,
-				OBJ_44 /* Trivia.swift */,
+				OBJ_6 /* Package.swift */,
+				OBJ_7 /* Sources */,
+				OBJ_12 /* Tests */,
+				OBJ_32 /* Build */,
+				OBJ_33 /* Dependencies */,
+				OBJ_64 /* Products */,
+			);
+			name = "";
+			sourceTree = "<group>";
+		};
+		OBJ_53 /* gyb_generated */ = {
+			isa = PBXGroup;
+			children = (
+				OBJ_54 /* SyntaxBuilders.swift */,
+				OBJ_55 /* SyntaxClassifier.swift */,
+				OBJ_56 /* SyntaxCollections.swift */,
+				OBJ_57 /* SyntaxFactory.swift */,
+				OBJ_58 /* SyntaxKind.swift */,
+				OBJ_59 /* SyntaxNodes.swift */,
+				OBJ_60 /* SyntaxRewriter.swift */,
+				OBJ_61 /* TokenKind.swift */,
+				OBJ_62 /* Trivia.swift */,
 			);
 			path = gyb_generated;
 			sourceTree = "<group>";
 		};
-		OBJ_46 /* Products */ = {
+		OBJ_64 /* Products */ = {
 			isa = PBXGroup;
 			children = (
 				"muter::muterTests::Product" /* muterTests.xctest */,
-				"muter::muter::Product" /* muter */,
 				"SwiftSyntax::SwiftSyntax::Product" /* SwiftSyntax.framework */,
+				"muter::muter::Product" /* muter */,
 			);
 			name = Products;
 			sourceTree = BUILT_PRODUCTS_DIR;
-		};
-		OBJ_5 = {
-			isa = PBXGroup;
-			children = (
-				9DC4EFA521911508002530C8 /* .gitignore */,
-				OBJ_6 /* Package.swift */,
-				OBJ_7 /* Sources */,
-				OBJ_10 /* Tests */,
-				OBJ_14 /* Build */,
-				OBJ_15 /* Dependencies */,
-				OBJ_46 /* Products */,
-			);
-			sourceTree = "<group>";
 		};
 		OBJ_7 /* Sources */ = {
 			isa = PBXGroup;
@@ -296,9 +356,9 @@
 		OBJ_8 /* muter */ = {
 			isa = PBXGroup;
 			children = (
-				9DDD62D4217419C700E0B43B /* FileParser.swift */,
-				OBJ_9 /* main.swift */,
-				9D13CAB8218FC82800DB1FDA /* NegateConditionalsMutation.swift */,
+				OBJ_9 /* FileParser.swift */,
+				OBJ_10 /* NegateConditionalsMutation.swift */,
+				OBJ_11 /* main.swift */,
 			);
 			name = muter;
 			path = Sources/muter;
@@ -309,9 +369,9 @@
 /* Begin PBXNativeTarget section */
 		"SwiftSyntax::SwiftPMPackageDescription" /* SwiftSyntaxPackageDescription */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = OBJ_82 /* Build configuration list for PBXNativeTarget "SwiftSyntaxPackageDescription" */;
+			buildConfigurationList = OBJ_100 /* Build configuration list for PBXNativeTarget "SwiftSyntaxPackageDescription" */;
 			buildPhases = (
-				OBJ_85 /* Sources */,
+				OBJ_103 /* Sources */,
 			);
 			buildRules = (
 			);
@@ -323,10 +383,10 @@
 		};
 		"SwiftSyntax::SwiftSyntax" /* SwiftSyntax */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = OBJ_51 /* Build configuration list for PBXNativeTarget "SwiftSyntax" */;
+			buildConfigurationList = OBJ_69 /* Build configuration list for PBXNativeTarget "SwiftSyntax" */;
 			buildPhases = (
-				OBJ_54 /* Sources */,
-				OBJ_80 /* Frameworks */,
+				OBJ_72 /* Sources */,
+				OBJ_98 /* Frameworks */,
 			);
 			buildRules = (
 			);
@@ -339,9 +399,9 @@
 		};
 		"muter::SwiftPMPackageDescription" /* muterPackageDescription */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = OBJ_97 /* Build configuration list for PBXNativeTarget "muterPackageDescription" */;
+			buildConfigurationList = OBJ_117 /* Build configuration list for PBXNativeTarget "muterPackageDescription" */;
 			buildPhases = (
-				OBJ_100 /* Sources */,
+				OBJ_120 /* Sources */,
 			);
 			buildRules = (
 			);
@@ -353,15 +413,15 @@
 		};
 		"muter::muter" /* muter */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = OBJ_88 /* Build configuration list for PBXNativeTarget "muter" */;
+			buildConfigurationList = OBJ_106 /* Build configuration list for PBXNativeTarget "muter" */;
 			buildPhases = (
-				OBJ_91 /* Sources */,
-				OBJ_93 /* Frameworks */,
+				OBJ_109 /* Sources */,
+				OBJ_113 /* Frameworks */,
 			);
 			buildRules = (
 			);
 			dependencies = (
-				OBJ_95 /* PBXTargetDependency */,
+				OBJ_115 /* PBXTargetDependency */,
 			);
 			name = muter;
 			productName = muter;
@@ -370,16 +430,16 @@
 		};
 		"muter::muterTests" /* muterTests */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = OBJ_108 /* Build configuration list for PBXNativeTarget "muterTests" */;
+			buildConfigurationList = OBJ_128 /* Build configuration list for PBXNativeTarget "muterTests" */;
 			buildPhases = (
-				OBJ_111 /* Sources */,
-				OBJ_114 /* Frameworks */,
+				OBJ_131 /* Sources */,
+				OBJ_144 /* Frameworks */,
 			);
 			buildRules = (
 			);
 			dependencies = (
-				OBJ_116 /* PBXTargetDependency */,
-				OBJ_117 /* PBXTargetDependency */,
+				OBJ_146 /* PBXTargetDependency */,
+				OBJ_147 /* PBXTargetDependency */,
 			);
 			name = muterTests;
 			productName = muterTests;
@@ -401,8 +461,8 @@
 			knownRegions = (
 				en,
 			);
-			mainGroup = OBJ_5;
-			productRefGroup = OBJ_46 /* Products */;
+			mainGroup = OBJ_5 /*  */;
+			productRefGroup = OBJ_64 /* Products */;
 			projectDirPath = "";
 			projectRoot = "";
 			targets = (
@@ -417,116 +477,195 @@
 /* End PBXProject section */
 
 /* Begin PBXSourcesBuildPhase section */
-		OBJ_100 /* Sources */ = {
+		OBJ_103 /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 0;
 			files = (
-				OBJ_101 /* Package.swift in Sources */,
+				OBJ_104 /* Package.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
-		OBJ_111 /* Sources */ = {
+		OBJ_109 /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 0;
 			files = (
-				9DDD62D821741F2100E0B43B /* CLITests.swift in Sources */,
-				9DDD62D621741A6C00E0B43B /* FileParser.swift in Sources */,
-				OBJ_112 /* XCTestManifests.swift in Sources */,
-				9D13CAB7218FC08600DB1FDA /* NegateConditionalsMutationTests.swift in Sources */,
-				OBJ_113 /* FileParserTests.swift in Sources */,
-				9D13CABA218FC82800DB1FDA /* NegateConditionalsMutation.swift in Sources */,
+				OBJ_110 /* FileParser.swift in Sources */,
+				OBJ_111 /* NegateConditionalsMutation.swift in Sources */,
+				OBJ_112 /* main.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
-		OBJ_54 /* Sources */ = {
+		OBJ_120 /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 0;
 			files = (
-				OBJ_55 /* AbsolutePosition.swift in Sources */,
-				OBJ_56 /* AtomicCache.swift in Sources */,
-				OBJ_57 /* ByteTreeDeserialization.swift in Sources */,
-				OBJ_58 /* Diagnostic.swift in Sources */,
-				OBJ_59 /* DiagnosticConsumer.swift in Sources */,
-				OBJ_60 /* DiagnosticEngine.swift in Sources */,
-				OBJ_61 /* JSONDiagnosticConsumer.swift in Sources */,
-				OBJ_62 /* PrintingDiagnosticConsumer.swift in Sources */,
-				OBJ_63 /* RawSyntax.swift in Sources */,
-				OBJ_64 /* SourceLength.swift in Sources */,
-				OBJ_65 /* SourcePresence.swift in Sources */,
-				OBJ_66 /* SwiftSyntax.swift in Sources */,
-				OBJ_67 /* SwiftcInvocation.swift in Sources */,
-				OBJ_68 /* Syntax.swift in Sources */,
-				OBJ_69 /* SyntaxChildren.swift in Sources */,
-				OBJ_70 /* SyntaxData.swift in Sources */,
-				OBJ_71 /* SyntaxBuilders.swift in Sources */,
-				OBJ_72 /* SyntaxClassifier.swift in Sources */,
-				OBJ_73 /* SyntaxCollections.swift in Sources */,
-				OBJ_74 /* SyntaxFactory.swift in Sources */,
-				OBJ_75 /* SyntaxKind.swift in Sources */,
-				OBJ_76 /* SyntaxNodes.swift in Sources */,
-				OBJ_77 /* SyntaxRewriter.swift in Sources */,
-				OBJ_78 /* TokenKind.swift in Sources */,
-				OBJ_79 /* Trivia.swift in Sources */,
+				OBJ_121 /* Package.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
-		OBJ_85 /* Sources */ = {
+		OBJ_131 /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 0;
 			files = (
-				OBJ_86 /* Package.swift in Sources */,
+				9DBDA11021A09894000082AA /* NegateConditionalsMutation.swift in Sources */,
+				9DBDA10F21A09891000082AA /* FileParser.swift in Sources */,
+				OBJ_132 /* CLITests.swift in Sources */,
+				OBJ_133 /* FileParserTests.swift in Sources */,
+				OBJ_134 /* NegateConditionalsMutationTests.swift in Sources */,
+				OBJ_135 /* XCTestManifests.swift in Sources */,
+				9DBDA11321A09D17000082AA /* FileManagerSpy.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
-		OBJ_91 /* Sources */ = {
+		OBJ_72 /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 0;
 			files = (
-				OBJ_92 /* main.swift in Sources */,
-				9DDD62D5217419C700E0B43B /* FileParser.swift in Sources */,
-				9D13CAB9218FC82800DB1FDA /* NegateConditionalsMutation.swift in Sources */,
+				OBJ_73 /* AbsolutePosition.swift in Sources */,
+				OBJ_74 /* AtomicCache.swift in Sources */,
+				OBJ_75 /* ByteTreeDeserialization.swift in Sources */,
+				OBJ_76 /* Diagnostic.swift in Sources */,
+				OBJ_77 /* DiagnosticConsumer.swift in Sources */,
+				OBJ_78 /* DiagnosticEngine.swift in Sources */,
+				OBJ_79 /* JSONDiagnosticConsumer.swift in Sources */,
+				OBJ_80 /* PrintingDiagnosticConsumer.swift in Sources */,
+				OBJ_81 /* RawSyntax.swift in Sources */,
+				OBJ_82 /* SourceLength.swift in Sources */,
+				OBJ_83 /* SourcePresence.swift in Sources */,
+				OBJ_84 /* SwiftSyntax.swift in Sources */,
+				OBJ_85 /* SwiftcInvocation.swift in Sources */,
+				OBJ_86 /* Syntax.swift in Sources */,
+				OBJ_87 /* SyntaxChildren.swift in Sources */,
+				OBJ_88 /* SyntaxData.swift in Sources */,
+				OBJ_89 /* SyntaxBuilders.swift in Sources */,
+				OBJ_90 /* SyntaxClassifier.swift in Sources */,
+				OBJ_91 /* SyntaxCollections.swift in Sources */,
+				OBJ_92 /* SyntaxFactory.swift in Sources */,
+				OBJ_93 /* SyntaxKind.swift in Sources */,
+				OBJ_94 /* SyntaxNodes.swift in Sources */,
+				OBJ_95 /* SyntaxRewriter.swift in Sources */,
+				OBJ_96 /* TokenKind.swift in Sources */,
+				OBJ_97 /* Trivia.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXTargetDependency section */
-		OBJ_106 /* PBXTargetDependency */ = {
+		OBJ_115 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = "SwiftSyntax::SwiftSyntax" /* SwiftSyntax */;
+			targetProxy = 9DBDA10B21A09839000082AA /* PBXContainerItemProxy */;
+		};
+		OBJ_126 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
 			target = "muter::muterTests" /* muterTests */;
-			targetProxy = 9D0FF6E3214475AC00949DEE /* PBXContainerItemProxy */;
+			targetProxy = 9DBDA10E21A0983C000082AA /* PBXContainerItemProxy */;
 		};
-		OBJ_116 /* PBXTargetDependency */ = {
+		OBJ_146 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
 			target = "muter::muter" /* muter */;
-			targetProxy = 9D0FF6E1214475AB00949DEE /* PBXContainerItemProxy */;
+			targetProxy = 9DBDA10C21A0983A000082AA /* PBXContainerItemProxy */;
 		};
-		OBJ_117 /* PBXTargetDependency */ = {
+		OBJ_147 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
 			target = "SwiftSyntax::SwiftSyntax" /* SwiftSyntax */;
-			targetProxy = 9D0FF6E2214475AB00949DEE /* PBXContainerItemProxy */;
-		};
-		OBJ_95 /* PBXTargetDependency */ = {
-			isa = PBXTargetDependency;
-			target = "SwiftSyntax::SwiftSyntax" /* SwiftSyntax */;
-			targetProxy = 9D0FF6E0214475AB00949DEE /* PBXContainerItemProxy */;
+			targetProxy = 9DBDA10D21A0983A000082AA /* PBXContainerItemProxy */;
 		};
 /* End PBXTargetDependency section */
 
 /* Begin XCBuildConfiguration section */
-		OBJ_104 /* Debug */ = {
+		OBJ_101 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				LD = /usr/bin/true;
+				OTHER_SWIFT_FLAGS = "-swift-version 4.2 -I $(TOOLCHAIN_DIR)/usr/lib/swift/pm/4_2 -target x86_64-apple-macosx10.10 -sdk /Applications/Xcode-beta.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.14.sdk";
+				SWIFT_VERSION = 4.2;
+			};
+			name = Debug;
+		};
+		OBJ_102 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				LD = /usr/bin/true;
+				OTHER_SWIFT_FLAGS = "-swift-version 4.2 -I $(TOOLCHAIN_DIR)/usr/lib/swift/pm/4_2 -target x86_64-apple-macosx10.10 -sdk /Applications/Xcode-beta.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.14.sdk";
+				SWIFT_VERSION = 4.2;
+			};
+			name = Release;
+		};
+		OBJ_107 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PLATFORM_DIR)/Developer/Library/Frameworks",
+				);
+				HEADER_SEARCH_PATHS = "$(inherited)";
+				INFOPLIST_FILE = muter.xcodeproj/muter_Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) $(TOOLCHAIN_DIR)/usr/lib/swift/macosx @executable_path";
+				OTHER_CFLAGS = "$(inherited)";
+				OTHER_LDFLAGS = "$(inherited)";
+				OTHER_SWIFT_FLAGS = "$(inherited)";
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "$(inherited)";
+				SWIFT_FORCE_DYNAMIC_LINK_STDLIB = YES;
+				SWIFT_FORCE_STATIC_LINK_STDLIB = NO;
+				SWIFT_VERSION = 4.2;
+				TARGET_NAME = muter;
+			};
+			name = Debug;
+		};
+		OBJ_108 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PLATFORM_DIR)/Developer/Library/Frameworks",
+				);
+				HEADER_SEARCH_PATHS = "$(inherited)";
+				INFOPLIST_FILE = muter.xcodeproj/muter_Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) $(TOOLCHAIN_DIR)/usr/lib/swift/macosx @executable_path";
+				OTHER_CFLAGS = "$(inherited)";
+				OTHER_LDFLAGS = "$(inherited)";
+				OTHER_SWIFT_FLAGS = "$(inherited)";
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "$(inherited)";
+				SWIFT_FORCE_DYNAMIC_LINK_STDLIB = YES;
+				SWIFT_FORCE_STATIC_LINK_STDLIB = NO;
+				SWIFT_VERSION = 4.2;
+				TARGET_NAME = muter;
+			};
+			name = Release;
+		};
+		OBJ_118 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				LD = /usr/bin/true;
+				OTHER_SWIFT_FLAGS = "-swift-version 4.2 -I $(TOOLCHAIN_DIR)/usr/lib/swift/pm/4_2 -target x86_64-apple-macosx10.10 -sdk /Applications/Xcode-beta.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.14.sdk";
+				SWIFT_VERSION = 4.2;
+			};
+			name = Debug;
+		};
+		OBJ_119 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				LD = /usr/bin/true;
+				OTHER_SWIFT_FLAGS = "-swift-version 4.2 -I $(TOOLCHAIN_DIR)/usr/lib/swift/pm/4_2 -target x86_64-apple-macosx10.10 -sdk /Applications/Xcode-beta.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.14.sdk";
+				SWIFT_VERSION = 4.2;
+			};
+			name = Release;
+		};
+		OBJ_124 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
 			};
 			name = Debug;
 		};
-		OBJ_105 /* Release */ = {
+		OBJ_125 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
 			};
 			name = Release;
 		};
-		OBJ_109 /* Debug */ = {
+		OBJ_129 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				CLANG_ENABLE_MODULES = YES;
@@ -547,7 +686,7 @@
 			};
 			name = Debug;
 		};
-		OBJ_110 /* Release */ = {
+		OBJ_130 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				CLANG_ENABLE_MODULES = YES;
@@ -587,7 +726,7 @@
 				OTHER_SWIFT_FLAGS = "-DXcode";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SDKROOT = macosx;
-				SUPPORTED_PLATFORMS = macosx;
+				SUPPORTED_PLATFORMS = "macosx iphoneos iphonesimulator appletvos appletvsimulator watchos watchsimulator";
 				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "SWIFT_PACKAGE DEBUG";
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				USE_HEADERMAP = NO;
@@ -607,14 +746,14 @@
 				OTHER_SWIFT_FLAGS = "-DXcode";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SDKROOT = macosx;
-				SUPPORTED_PLATFORMS = macosx;
+				SUPPORTED_PLATFORMS = "macosx iphoneos iphonesimulator appletvos appletvsimulator watchos watchsimulator";
 				SWIFT_ACTIVE_COMPILATION_CONDITIONS = SWIFT_PACKAGE;
 				SWIFT_OPTIMIZATION_LEVEL = "-Owholemodule";
 				USE_HEADERMAP = NO;
 			};
 			name = Release;
 		};
-		OBJ_52 /* Debug */ = {
+		OBJ_70 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ENABLE_TESTABILITY = YES;
@@ -638,7 +777,7 @@
 			};
 			name = Debug;
 		};
-		OBJ_53 /* Release */ = {
+		OBJ_71 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ENABLE_TESTABILITY = YES;
@@ -659,104 +798,53 @@
 				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "$(inherited)";
 				SWIFT_VERSION = 4.2;
 				TARGET_NAME = SwiftSyntax;
-			};
-			name = Release;
-		};
-		OBJ_83 /* Debug */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				LD = /usr/bin/true;
-				OTHER_SWIFT_FLAGS = "-swift-version 4.2 -I $(TOOLCHAIN_DIR)/usr/lib/swift/pm/4_2 -target x86_64-apple-macosx10.10 -sdk /Applications/Xcode-beta.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.14.sdk";
-				SWIFT_VERSION = 4.2;
-			};
-			name = Debug;
-		};
-		OBJ_84 /* Release */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				LD = /usr/bin/true;
-				OTHER_SWIFT_FLAGS = "-swift-version 4.2 -I $(TOOLCHAIN_DIR)/usr/lib/swift/pm/4_2 -target x86_64-apple-macosx10.10 -sdk /Applications/Xcode-beta.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.14.sdk";
-				SWIFT_VERSION = 4.2;
-			};
-			name = Release;
-		};
-		OBJ_89 /* Debug */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				FRAMEWORK_SEARCH_PATHS = (
-					"$(inherited)",
-					"$(PLATFORM_DIR)/Developer/Library/Frameworks",
-				);
-				HEADER_SEARCH_PATHS = "$(inherited)";
-				INFOPLIST_FILE = muter.xcodeproj/muter_Info.plist;
-				LD_RUNPATH_SEARCH_PATHS = "$(inherited) $(TOOLCHAIN_DIR)/usr/lib/swift/macosx @executable_path";
-				OTHER_CFLAGS = "$(inherited)";
-				OTHER_LDFLAGS = "$(inherited)";
-				OTHER_SWIFT_FLAGS = "$(inherited)";
-				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "$(inherited)";
-				SWIFT_FORCE_DYNAMIC_LINK_STDLIB = YES;
-				SWIFT_FORCE_STATIC_LINK_STDLIB = NO;
-				SWIFT_VERSION = 4.2;
-				TARGET_NAME = muter;
-			};
-			name = Debug;
-		};
-		OBJ_90 /* Release */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				FRAMEWORK_SEARCH_PATHS = (
-					"$(inherited)",
-					"$(PLATFORM_DIR)/Developer/Library/Frameworks",
-				);
-				HEADER_SEARCH_PATHS = "$(inherited)";
-				INFOPLIST_FILE = muter.xcodeproj/muter_Info.plist;
-				LD_RUNPATH_SEARCH_PATHS = "$(inherited) $(TOOLCHAIN_DIR)/usr/lib/swift/macosx @executable_path";
-				OTHER_CFLAGS = "$(inherited)";
-				OTHER_LDFLAGS = "$(inherited)";
-				OTHER_SWIFT_FLAGS = "$(inherited)";
-				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "$(inherited)";
-				SWIFT_FORCE_DYNAMIC_LINK_STDLIB = YES;
-				SWIFT_FORCE_STATIC_LINK_STDLIB = NO;
-				SWIFT_VERSION = 4.2;
-				TARGET_NAME = muter;
-			};
-			name = Release;
-		};
-		OBJ_98 /* Debug */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				LD = /usr/bin/true;
-				OTHER_SWIFT_FLAGS = "-swift-version 4.2 -I $(TOOLCHAIN_DIR)/usr/lib/swift/pm/4_2 -target x86_64-apple-macosx10.10 -sdk /Applications/Xcode-beta.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.14.sdk";
-				SWIFT_VERSION = 4.2;
-			};
-			name = Debug;
-		};
-		OBJ_99 /* Release */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				LD = /usr/bin/true;
-				OTHER_SWIFT_FLAGS = "-swift-version 4.2 -I $(TOOLCHAIN_DIR)/usr/lib/swift/pm/4_2 -target x86_64-apple-macosx10.10 -sdk /Applications/Xcode-beta.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.14.sdk";
-				SWIFT_VERSION = 4.2;
 			};
 			name = Release;
 		};
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
-		OBJ_103 /* Build configuration list for PBXAggregateTarget "muterPackageTests" */ = {
+		OBJ_100 /* Build configuration list for PBXNativeTarget "SwiftSyntaxPackageDescription" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
-				OBJ_104 /* Debug */,
-				OBJ_105 /* Release */,
+				OBJ_101 /* Debug */,
+				OBJ_102 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		OBJ_108 /* Build configuration list for PBXNativeTarget "muterTests" */ = {
+		OBJ_106 /* Build configuration list for PBXNativeTarget "muter" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
-				OBJ_109 /* Debug */,
-				OBJ_110 /* Release */,
+				OBJ_107 /* Debug */,
+				OBJ_108 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		OBJ_117 /* Build configuration list for PBXNativeTarget "muterPackageDescription" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				OBJ_118 /* Debug */,
+				OBJ_119 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		OBJ_123 /* Build configuration list for PBXAggregateTarget "muterPackageTests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				OBJ_124 /* Debug */,
+				OBJ_125 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		OBJ_128 /* Build configuration list for PBXNativeTarget "muterTests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				OBJ_129 /* Debug */,
+				OBJ_130 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
@@ -770,38 +858,11 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		OBJ_51 /* Build configuration list for PBXNativeTarget "SwiftSyntax" */ = {
+		OBJ_69 /* Build configuration list for PBXNativeTarget "SwiftSyntax" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
-				OBJ_52 /* Debug */,
-				OBJ_53 /* Release */,
-			);
-			defaultConfigurationIsVisible = 0;
-			defaultConfigurationName = Release;
-		};
-		OBJ_82 /* Build configuration list for PBXNativeTarget "SwiftSyntaxPackageDescription" */ = {
-			isa = XCConfigurationList;
-			buildConfigurations = (
-				OBJ_83 /* Debug */,
-				OBJ_84 /* Release */,
-			);
-			defaultConfigurationIsVisible = 0;
-			defaultConfigurationName = Release;
-		};
-		OBJ_88 /* Build configuration list for PBXNativeTarget "muter" */ = {
-			isa = XCConfigurationList;
-			buildConfigurations = (
-				OBJ_89 /* Debug */,
-				OBJ_90 /* Release */,
-			);
-			defaultConfigurationIsVisible = 0;
-			defaultConfigurationName = Release;
-		};
-		OBJ_97 /* Build configuration list for PBXNativeTarget "muterPackageDescription" */ = {
-			isa = XCConfigurationList;
-			buildConfigurations = (
-				OBJ_98 /* Debug */,
-				OBJ_99 /* Release */,
+				OBJ_70 /* Debug */,
+				OBJ_71 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
