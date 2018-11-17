@@ -20,7 +20,7 @@ final class FileParserTests: XCTestCase {
         
     }
     
-    func test_stuff() {
+    func test_copyingSourceCodeIntoAWorkingDirectory() {
         let workingDirectory = FileParser.createWorkingDirectory(in: testDirectory)
         
         let originalSourceCodePath = "\(testDirectory)/fixtures/sample.swift"
@@ -42,7 +42,7 @@ final class FileParserTests: XCTestCase {
     
     static var allTests = [
         ("\(test_createsAWorkingDirectoryForMutationTesting)", test_createsAWorkingDirectoryForMutationTesting),
-        ("\(test_stuff)", test_stuff)
+        ("\(test_copyingSourceCodeIntoAWorkingDirectory)", test_copyingSourceCodeIntoAWorkingDirectory)
     ]
 }
 
