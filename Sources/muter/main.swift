@@ -45,7 +45,7 @@ func runTestSuite() {
 }
 
 func copyOriginalSourceCode(fromFileAt path: String, into workingDirectory: String) {
-    let swapFilePath = "\(workingDirectory)Module.swift"
+    let swapFilePath = "\(workingDirectory)/Module.swift"
     FileParser.copySourceCode(fromFileAt: path, to: swapFilePath)
 }
 
@@ -64,7 +64,7 @@ switch CommandLine.argc {
 case 2:
 //    let path = CommandLine.arguments[1]
     let path = "/Users/seandorian/Code/Swift/muter/Tests/muterTests/fixtures/MuterExampleTestSuite/MuterExampleTestSuite/Module.swift"
-    let workingDirectory = FileParser.createWorkingDirectory(in: "/Users/seandorian/Code/Swift/muter/Tests/muterTests/fixtures/")
+    let workingDirectory = FileParser.createWorkingDirectory(in: "/Users/seandorian/Code/Swift/muter/Build/Products/Debug")
 
     copyOriginalSourceCode(fromFileAt: path, into: workingDirectory)
     mutateSourceCode(inFileAt: path)
