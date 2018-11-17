@@ -3,8 +3,6 @@ import class Foundation.Bundle
 
 final class FileParserTests: XCTestCase {
     
-    let testDirectory = URL(string: #file)!.deletingLastPathComponent().absoluteString
-    
     func test_loadingANonexistentFileReturnsNil() {
         XCTAssertNil(FileParser.load(path: "I do not exist"))
     }

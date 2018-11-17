@@ -13,29 +13,18 @@ class CLITests: XCTestCase {
     
     func test_runningItWithOneArgumentCausesItToMutateThatFile() throws {
       
-        let arguments = ["/Users/seandorian/Code/Swift/muter/Tests/muterTests/fixtures/sample.swift"]
+        let arguments = ["\(testDirectory)/fixtures/sample.swift"]
         
         let (output, terminationStatus) = try runMuter(with: arguments)
 
         XCTAssertEqual(terminationStatus, 0)
 //        XCTAssertEqual(numberOfMutatedPathsIn(output), 1)
-        XCTAssert(output.contains("** TEST FAILED **"))
+        XCTAssert(output.contains("XCTAssertTrue failed"))
     }
 }
 
 @available(OSX 10.13, *)
 private extension CLITests {
-    
-    var productsDirectory: URL {
-        #if os(macOS)
-        for bundle in Bundle.allBundles where bundle.bundlePath.hasSuffix(".xctest") {
-            return bundle.bundleURL.deletingLastPathComponent()
-        }
-        fatalError("couldn't find the products directory")
-        #else
-        return Bundle.main.bundleURL
-        #endif
-    }
     
     func runMuter(with arguments: [String]) throws -> (output: String, terminationStatus: Int32) {
         let muter = productsDirectory.appendingPathComponent("muter")

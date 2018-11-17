@@ -24,6 +24,7 @@
 		9DBDA10F21A09891000082AA /* FileParser.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_9 /* FileParser.swift */; };
 		9DBDA11021A09894000082AA /* NegateConditionalsMutation.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_10 /* NegateConditionalsMutation.swift */; };
 		9DBDA11321A09D17000082AA /* FileManagerSpy.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9DBDA11221A09D17000082AA /* FileManagerSpy.swift */; };
+		9DBDA11521A0B1F8000082AA /* XCTestExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9DBDA11421A0B1F8000082AA /* XCTestExtensions.swift */; };
 		OBJ_104 /* Package.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_63 /* Package.swift */; };
 		OBJ_110 /* FileParser.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_9 /* FileParser.swift */; };
 		OBJ_111 /* NegateConditionalsMutation.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_10 /* NegateConditionalsMutation.swift */; };
@@ -95,6 +96,7 @@
 
 /* Begin PBXFileReference section */
 		9DBDA11221A09D17000082AA /* FileManagerSpy.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FileManagerSpy.swift; sourceTree = "<group>"; };
+		9DBDA11421A0B1F8000082AA /* XCTestExtensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = XCTestExtensions.swift; sourceTree = "<group>"; };
 		OBJ_10 /* NegateConditionalsMutation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NegateConditionalsMutation.swift; sourceTree = "<group>"; };
 		OBJ_11 /* main.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = main.swift; sourceTree = "<group>"; };
 		OBJ_14 /* CLITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CLITests.swift; sourceTree = "<group>"; };
@@ -195,6 +197,7 @@
 				OBJ_16 /* NegateConditionalsMutationTests.swift */,
 				OBJ_17 /* XCTestManifests.swift */,
 				OBJ_18 /* fixtures */,
+				9DBDA11421A0B1F8000082AA /* XCTestExtensions.swift */,
 			);
 			name = muterTests;
 			path = Tests/muterTests;
@@ -511,6 +514,7 @@
 				9DBDA10F21A09891000082AA /* FileParser.swift in Sources */,
 				OBJ_132 /* CLITests.swift in Sources */,
 				OBJ_133 /* FileParserTests.swift in Sources */,
+				9DBDA11521A0B1F8000082AA /* XCTestExtensions.swift in Sources */,
 				OBJ_134 /* NegateConditionalsMutationTests.swift in Sources */,
 				OBJ_135 /* XCTestManifests.swift in Sources */,
 				9DBDA11321A09D17000082AA /* FileManagerSpy.swift in Sources */,
