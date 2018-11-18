@@ -104,8 +104,7 @@
 		9DB5572321A0F0A700B4430F /* file4 */ = {isa = PBXFileReference; lastKnownFileType = text; path = file4; sourceTree = "<group>"; };
 		9DB5572421A0F0C500B4430F /* file5 */ = {isa = PBXFileReference; lastKnownFileType = text; path = file5; sourceTree = "<group>"; };
 		9DB5572621A0F3FB00B4430F /* file6.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = file6.swift; sourceTree = "<group>"; };
-		9DB5572821A0F45700B4430F /* something.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = something.h; sourceTree = "<group>"; };
-		9DB5572921A0F45700B4430F /* something.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; path = something.c; sourceTree = "<group>"; };
+		9DB5572A21A115F600B4430F /* something.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = something.json; sourceTree = "<group>"; };
 		OBJ_10 /* NegateConditionalsMutation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NegateConditionalsMutation.swift; sourceTree = "<group>"; };
 		OBJ_11 /* main.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = main.swift; sourceTree = "<group>"; };
 		OBJ_14 /* CLITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CLITests.swift; sourceTree = "<group>"; };
@@ -222,8 +221,7 @@
 		9DB5572721A0F43C00B4430F /* Directory4 */ = {
 			isa = PBXGroup;
 			children = (
-				9DB5572821A0F45700B4430F /* something.h */,
-				9DB5572921A0F45700B4430F /* something.c */,
+				9DB5572A21A115F600B4430F /* something.json */,
 			);
 			path = Directory4;
 			sourceTree = "<group>";
