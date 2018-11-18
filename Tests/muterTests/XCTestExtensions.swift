@@ -2,7 +2,12 @@ import XCTest
 
 extension XCTestCase {
     var testDirectory: String {
-        return URL(string: #file)!.deletingLastPathComponent().absoluteString
+        return String(
+            URL(string: #file)!
+                .deletingLastPathComponent()
+                .absoluteString
+                .dropLast()
+        )
     }
     
     var productsDirectory: URL {
