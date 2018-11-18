@@ -11,15 +11,6 @@ func printUsageStatement() {
     """)
 }
 
-let testCommand = """
-xcodebuild \
--project ./muter.xcodeproj \
--scheme MuterTestSuite \
--sdk macosx \
--destination 'platform=macosx' \
-test
-"""
-
 func runTestSuite(using executablePath: String, and arguments: [String]) {
     guard #available(OSX 10.13, *) else {
         print("muter is only supported on macOS 10.13 and higher")

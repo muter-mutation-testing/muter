@@ -24,6 +24,8 @@
 		9D1CFAA221A0D87B005D27DD /* FileParser.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_9 /* FileParser.swift */; };
 		9D1CFAA321A0D87B005D27DD /* NegateConditionalsMutation.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_10 /* NegateConditionalsMutation.swift */; };
 		9DAFB67B21A21FB300E4D0BE /* ConfigurationParsingTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9DAFB67A21A21FB300E4D0BE /* ConfigurationParsingTests.swift */; };
+		9DAFB67E21A230EA00E4D0BE /* MuterConfiguration.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9DAFB67D21A230EA00E4D0BE /* MuterConfiguration.swift */; };
+		9DAFB67F21A230EA00E4D0BE /* MuterConfiguration.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9DAFB67D21A230EA00E4D0BE /* MuterConfiguration.swift */; };
 		OBJ_105 /* Package.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_64 /* Package.swift */; };
 		OBJ_111 /* FileParser.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_9 /* FileParser.swift */; };
 		OBJ_112 /* NegateConditionalsMutation.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_10 /* NegateConditionalsMutation.swift */; };
@@ -98,6 +100,7 @@
 /* Begin PBXFileReference section */
 		9DAFB67A21A21FB300E4D0BE /* ConfigurationParsingTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = ConfigurationParsingTests.swift; path = Tests/muterTests/ConfigurationParsingTests.swift; sourceTree = SOURCE_ROOT; };
 		9DAFB67C21A2298000E4D0BE /* muter.conf.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = muter.conf.json; sourceTree = "<group>"; };
+		9DAFB67D21A230EA00E4D0BE /* MuterConfiguration.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MuterConfiguration.swift; sourceTree = "<group>"; };
 		9DB5571E21A0F04300B4430F /* file1.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = file1.swift; sourceTree = "<group>"; };
 		9DB5571F21A0F05200B4430F /* file2.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = file2.swift; sourceTree = "<group>"; };
 		9DB5572221A0F08B00B4430F /* file3.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = file3.swift; sourceTree = "<group>"; };
@@ -398,6 +401,7 @@
 			isa = PBXGroup;
 			children = (
 				OBJ_9 /* FileParser.swift */,
+				9DAFB67D21A230EA00E4D0BE /* MuterConfiguration.swift */,
 				OBJ_10 /* NegateConditionalsMutation.swift */,
 				OBJ_11 /* main.swift */,
 			);
@@ -530,6 +534,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 0;
 			files = (
+				9DAFB67E21A230EA00E4D0BE /* MuterConfiguration.swift in Sources */,
 				OBJ_111 /* FileParser.swift in Sources */,
 				OBJ_112 /* NegateConditionalsMutation.swift in Sources */,
 				OBJ_113 /* main.swift in Sources */,
@@ -556,6 +561,7 @@
 				OBJ_135 /* NegateConditionalsMutationTests.swift in Sources */,
 				OBJ_136 /* FileManagerSpy.swift in Sources */,
 				OBJ_137 /* XCTestExtensions.swift in Sources */,
+				9DAFB67F21A230EA00E4D0BE /* MuterConfiguration.swift in Sources */,
 				OBJ_138 /* XCTestManifests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

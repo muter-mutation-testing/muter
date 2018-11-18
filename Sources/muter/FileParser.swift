@@ -1,18 +1,6 @@
 import SwiftSyntax
 import Foundation
 
-struct MuterConfiguration: Codable {
-    let projectDirectory: String
-    let testCommandArguments: [String]
-    let testCommandExecutable: String
-    
-    enum CodingKeys: String, CodingKey {
-        case projectDirectory = "projectDirectory"
-        case testCommandArguments = "arguments"
-        case testCommandExecutable = "executable"
-    }
-}
-
 protocol FileSystemManager {
     func createDirectory(atPath path: String,
                          withIntermediateDirectories createIntermediates: Bool,
