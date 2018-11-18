@@ -33,6 +33,13 @@ struct FileParser {
             .map { "\(path)/\($0)"}
             .sorted()
     }
+    
+    static func swapFilePath(forFileAt path: String, using workingDirectory: String) -> String {
+        guard let url = URL(string: path) else {
+            return ""
+        }
+        return "\(workingDirectory)/\(url.lastPathComponent)"
+    }
 }
 
 

@@ -12,14 +12,13 @@ class CLITests: XCTestCase {
     }
     
     func test_runningItWithOneArgumentCausesItToMutateThatFile() throws {
-      
-        let arguments = ["\(testDirectory)/fixtures/sample.swift"]
-        
+        let projectPath = "\(testDirectory)/fixtures/MuterExampleTestSuite"
+        let arguments = [projectPath]
         let (output, terminationStatus) = try runMuter(with: arguments)
 
-        XCTAssertEqual(terminationStatus, 0)
+        XCTAssertEqual(terminationStatus, 0, "Muter returns 0 when it successfully mutates code and causes that code's test suite to fail")
 //        XCTAssertEqual(numberOfMutatedPathsIn(output), 1)
-        XCTAssert(output.contains("XCTAssertTrue failed"))
+        XCTAssert(output.contains("XCTAssertTrue failed"), "Muter is supposed to cause a test suite to fail")
     }
 }
 

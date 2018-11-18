@@ -64,7 +64,7 @@
       </BuildableProductRunnable>
       <CommandLineArguments>
          <CommandLineArgument
-            argument = "lol"
+            argument = "/Users/seandorian/Code/Swift/muter/Tests/muterTests/fixtures/MuterExampleTestSuite"
             isEnabled = "YES">
          </CommandLineArgument>
       </CommandLineArguments>

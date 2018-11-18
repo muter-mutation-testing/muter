@@ -13,19 +13,11 @@
 		9D13CACF218FC9FA00DB1FDA /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 9D13CACE218FC9FA00DB1FDA /* Assets.xcassets */; };
 		9D13CAD2218FC9FA00DB1FDA /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 9D13CAD0218FC9FA00DB1FDA /* LaunchScreen.storyboard */; };
 		9D13CADD218FC9FA00DB1FDA /* ModuleTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9D13CADC218FC9FA00DB1FDA /* ModuleTests.swift */; };
-		9D13CAE8218FC9FA00DB1FDA /* MuterExampleTestSuiteUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9D13CAE7218FC9FA00DB1FDA /* MuterExampleTestSuiteUITests.swift */; };
 		9D13CAF6218FCB1C00DB1FDA /* Module.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9D13CAF5218FCB1C00DB1FDA /* Module.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
 		9D13CAD9218FC9FA00DB1FDA /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = 9D13CABC218FC9F800DB1FDA /* Project object */;
-			proxyType = 1;
-			remoteGlobalIDString = 9D13CAC3218FC9F800DB1FDA;
-			remoteInfo = MuterExampleTestSuite;
-		};
-		9D13CAE4218FC9FA00DB1FDA /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = 9D13CABC218FC9F800DB1FDA /* Project object */;
 			proxyType = 1;
@@ -45,9 +37,6 @@
 		9D13CAD8218FC9FA00DB1FDA /* MuterExampleTestSuiteTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = MuterExampleTestSuiteTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		9D13CADC218FC9FA00DB1FDA /* ModuleTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ModuleTests.swift; sourceTree = "<group>"; };
 		9D13CADE218FC9FA00DB1FDA /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		9D13CAE3218FC9FA00DB1FDA /* MuterExampleTestSuiteUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = MuterExampleTestSuiteUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
-		9D13CAE7218FC9FA00DB1FDA /* MuterExampleTestSuiteUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MuterExampleTestSuiteUITests.swift; sourceTree = "<group>"; };
-		9D13CAE9218FC9FA00DB1FDA /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		9D13CAF5218FCB1C00DB1FDA /* Module.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Module.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -66,13 +55,6 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
-		9D13CAE0218FC9FA00DB1FDA /* Frameworks */ = {
-			isa = PBXFrameworksBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
@@ -81,7 +63,6 @@
 			children = (
 				9D13CAC6218FC9F800DB1FDA /* MuterExampleTestSuite */,
 				9D13CADB218FC9FA00DB1FDA /* MuterExampleTestSuiteTests */,
-				9D13CAE6218FC9FA00DB1FDA /* MuterExampleTestSuiteUITests */,
 				9D13CAC5218FC9F800DB1FDA /* Products */,
 			);
 			sourceTree = "<group>";
@@ -91,7 +72,6 @@
 			children = (
 				9D13CAC4218FC9F800DB1FDA /* MuterExampleTestSuite.app */,
 				9D13CAD8218FC9FA00DB1FDA /* MuterExampleTestSuiteTests.xctest */,
-				9D13CAE3218FC9FA00DB1FDA /* MuterExampleTestSuiteUITests.xctest */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -117,15 +97,6 @@
 				9D13CADE218FC9FA00DB1FDA /* Info.plist */,
 			);
 			path = MuterExampleTestSuiteTests;
-			sourceTree = "<group>";
-		};
-		9D13CAE6218FC9FA00DB1FDA /* MuterExampleTestSuiteUITests */ = {
-			isa = PBXGroup;
-			children = (
-				9D13CAE7218FC9FA00DB1FDA /* MuterExampleTestSuiteUITests.swift */,
-				9D13CAE9218FC9FA00DB1FDA /* Info.plist */,
-			);
-			path = MuterExampleTestSuiteUITests;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -166,24 +137,6 @@
 			productReference = 9D13CAD8218FC9FA00DB1FDA /* MuterExampleTestSuiteTests.xctest */;
 			productType = "com.apple.product-type.bundle.unit-test";
 		};
-		9D13CAE2218FC9FA00DB1FDA /* MuterExampleTestSuiteUITests */ = {
-			isa = PBXNativeTarget;
-			buildConfigurationList = 9D13CAF2218FC9FA00DB1FDA /* Build configuration list for PBXNativeTarget "MuterExampleTestSuiteUITests" */;
-			buildPhases = (
-				9D13CADF218FC9FA00DB1FDA /* Sources */,
-				9D13CAE0218FC9FA00DB1FDA /* Frameworks */,
-				9D13CAE1218FC9FA00DB1FDA /* Resources */,
-			);
-			buildRules = (
-			);
-			dependencies = (
-				9D13CAE5218FC9FA00DB1FDA /* PBXTargetDependency */,
-			);
-			name = MuterExampleTestSuiteUITests;
-			productName = MuterExampleTestSuiteUITests;
-			productReference = 9D13CAE3218FC9FA00DB1FDA /* MuterExampleTestSuiteUITests.xctest */;
-			productType = "com.apple.product-type.bundle.ui-testing";
-		};
 /* End PBXNativeTarget section */
 
 /* Begin PBXProject section */
@@ -198,10 +151,6 @@
 						CreatedOnToolsVersion = 10.0;
 					};
 					9D13CAD7218FC9FA00DB1FDA = {
-						CreatedOnToolsVersion = 10.0;
-						TestTargetID = 9D13CAC3218FC9F800DB1FDA;
-					};
-					9D13CAE2218FC9FA00DB1FDA = {
 						CreatedOnToolsVersion = 10.0;
 						TestTargetID = 9D13CAC3218FC9F800DB1FDA;
 					};
@@ -222,7 +171,6 @@
 			targets = (
 				9D13CAC3218FC9F800DB1FDA /* MuterExampleTestSuite */,
 				9D13CAD7218FC9FA00DB1FDA /* MuterExampleTestSuiteTests */,
-				9D13CAE2218FC9FA00DB1FDA /* MuterExampleTestSuiteUITests */,
 			);
 		};
 /* End PBXProject section */
@@ -239,13 +187,6 @@
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 		9D13CAD6218FC9FA00DB1FDA /* Resources */ = {
-			isa = PBXResourcesBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
-		9D13CAE1218FC9FA00DB1FDA /* Resources */ = {
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -273,14 +214,6 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
-		9D13CADF218FC9FA00DB1FDA /* Sources */ = {
-			isa = PBXSourcesBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-				9D13CAE8218FC9FA00DB1FDA /* MuterExampleTestSuiteUITests.swift in Sources */,
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXTargetDependency section */
@@ -288,11 +221,6 @@
 			isa = PBXTargetDependency;
 			target = 9D13CAC3218FC9F800DB1FDA /* MuterExampleTestSuite */;
 			targetProxy = 9D13CAD9218FC9FA00DB1FDA /* PBXContainerItemProxy */;
-		};
-		9D13CAE5218FC9FA00DB1FDA /* PBXTargetDependency */ = {
-			isa = PBXTargetDependency;
-			target = 9D13CAC3218FC9F800DB1FDA /* MuterExampleTestSuite */;
-			targetProxy = 9D13CAE4218FC9FA00DB1FDA /* PBXContainerItemProxy */;
 		};
 /* End PBXTargetDependency section */
 
@@ -437,6 +365,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = H2983HKDVJ;
 				INFOPLIST_FILE = MuterExampleTestSuite/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
@@ -454,6 +383,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = H2983HKDVJ;
 				INFOPLIST_FILE = MuterExampleTestSuite/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
@@ -506,44 +436,6 @@
 			};
 			name = Release;
 		};
-		9D13CAF3218FC9FA00DB1FDA /* Debug */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
-				CODE_SIGN_STYLE = Automatic;
-				INFOPLIST_FILE = MuterExampleTestSuiteUITests/Info.plist;
-				LD_RUNPATH_SEARCH_PATHS = (
-					"$(inherited)",
-					"@executable_path/Frameworks",
-					"@loader_path/Frameworks",
-				);
-				PRODUCT_BUNDLE_IDENTIFIER = chefski.MuterExampleTestSuiteUITests;
-				PRODUCT_NAME = "$(TARGET_NAME)";
-				SWIFT_VERSION = 4.2;
-				TARGETED_DEVICE_FAMILY = "1,2";
-				TEST_TARGET_NAME = MuterExampleTestSuite;
-			};
-			name = Debug;
-		};
-		9D13CAF4218FC9FA00DB1FDA /* Release */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
-				CODE_SIGN_STYLE = Automatic;
-				INFOPLIST_FILE = MuterExampleTestSuiteUITests/Info.plist;
-				LD_RUNPATH_SEARCH_PATHS = (
-					"$(inherited)",
-					"@executable_path/Frameworks",
-					"@loader_path/Frameworks",
-				);
-				PRODUCT_BUNDLE_IDENTIFIER = chefski.MuterExampleTestSuiteUITests;
-				PRODUCT_NAME = "$(TARGET_NAME)";
-				SWIFT_VERSION = 4.2;
-				TARGETED_DEVICE_FAMILY = "1,2";
-				TEST_TARGET_NAME = MuterExampleTestSuite;
-			};
-			name = Release;
-		};
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
@@ -570,15 +462,6 @@
 			buildConfigurations = (
 				9D13CAF0218FC9FA00DB1FDA /* Debug */,
 				9D13CAF1218FC9FA00DB1FDA /* Release */,
-			);
-			defaultConfigurationIsVisible = 0;
-			defaultConfigurationName = Release;
-		};
-		9D13CAF2218FC9FA00DB1FDA /* Build configuration list for PBXNativeTarget "MuterExampleTestSuiteUITests" */ = {
-			isa = XCConfigurationList;
-			buildConfigurations = (
-				9D13CAF3218FC9FA00DB1FDA /* Debug */,
-				9D13CAF4218FC9FA00DB1FDA /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;

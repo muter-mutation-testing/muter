@@ -59,6 +59,20 @@ final class FileParserTests: XCTestCase {
     func test_ignoresSourceFilesThatArentSwift() {
         XCTAssertEqual(FileParser.sourceFilesContained(in: "\(testDirectory)/fixtures/FilesToDiscover/Directory4"), [])
     }
+    
+    func test_createsSwapFilePaths() {
+        let workingDirectory = "/some/path/working_directory"
+        
+        let firstSwapFilePath = FileParser.swapFilePath(forFileAt: "/some/path/file.swift", using: workingDirectory)
+        XCTAssertEqual(firstSwapFilePath, "/some/path/working_directory/file.swift")
+        
+        let secondSwapFilePath = FileParser.swapFilePath(forFileAt: "/some/path/deeper/file.swift", using: workingDirectory)
+        XCTAssertEqual(secondSwapFilePath, "/some/path/working_directory/file.swift")
+        
+        let emptySwapFilePath = FileParser.swapFilePath(forFileAt: "malformed path that doesn't exist", using: workingDirectory)
+        XCTAssertEqual(emptySwapFilePath, "")
+    }
+    
 }
 
 private extension FileParserTests {

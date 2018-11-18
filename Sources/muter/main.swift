@@ -44,33 +44,24 @@ func runTestSuite() {
     }
 }
 
-func copyOriginalSourceCode(fromFileAt path: String, into workingDirectory: String) {
-    let swapFilePath = "\(workingDirectory)/Module.swift"
-    FileParser.copySourceCode(fromFileAt: path, to: swapFilePath)
-}
-
 func mutateSourceCode(inFileAt path: String) {
-    let sourceCode = FileParser.load(path: path)
-    let mutatedSourceCode = NegateConditionalsMutation().mutate(source: sourceCode!)
+    let sourceCode = FileParser.load(path: path)!
+    let mutatedSourceCode = NegateConditionalsMutation().mutate(source: sourceCode)
     try! mutatedSourceCode.description.write(toFile: path, atomically: true, encoding: .utf8)
-}
-
-func restoreSourceCode(forFileAt path: String, from workingDirectory: String) {
-    let swapFilePath = "\(workingDirectory)/Module.swift"
-    FileParser.copySourceCode(fromFileAt: swapFilePath, to: path)
 }
 
 switch CommandLine.argc {
 case 2:
-//    let path = CommandLine.arguments[1]
-    let path = "/Users/seandorian/Code/Swift/muter/Tests/muterTests/fixtures/MuterExampleTestSuite/MuterExampleTestSuite/Module.swift"
-    let workingDirectory = FileParser.createWorkingDirectory(in: "/Users/seandorian/Code/Swift/muter/Build/Products/Debug")
+    let path = CommandLine.arguments[1]
+    let workingDirectory = FileParser.createWorkingDirectory(in: path)
+    let sourceFile = FileParser.sourceFilesContained(in: path).filter { $0.contains("Module")  && !$0.contains("Build")}[0]
+    let swapFilePath = FileParser.swapFilePath(forFileAt: sourceFile, using: workingDirectory)
 
-    copyOriginalSourceCode(fromFileAt: path, into: workingDirectory)
-    mutateSourceCode(inFileAt: path)
+    FileParser.copySourceCode(fromFileAt: sourceFile, to: swapFilePath)
+    mutateSourceCode(inFileAt: sourceFile)
     runTestSuite()
-    restoreSourceCode(forFileAt: path, from: workingDirectory)
-
+    FileParser.copySourceCode(fromFileAt: swapFilePath, to: sourceFile)
+    
     exit(0)
 default:
     printUsageStatement()
