@@ -18,7 +18,7 @@ final class FileParserTests: XCTestCase {
         
     }
     
-    func test_copyingSourceCodeIntoAWorkingDirectory() {
+    func test_copiesSourceCodeIntoAWorkingDirectory() {
         let workingDirectory = FileParser.createWorkingDirectory(in: testDirectory)
         
         let originalSourceCodePath = "\(testDirectory)/fixtures/sample.swift"
@@ -38,10 +38,27 @@ final class FileParserTests: XCTestCase {
         removeItems(at: [workingDirectory])
     }
     
-    static var allTests = [
-        ("\(test_createsAWorkingDirectoryForMutationTesting)", test_createsAWorkingDirectoryForMutationTesting),
-        ("\(test_copyingSourceCodeIntoAWorkingDirectory)", test_copyingSourceCodeIntoAWorkingDirectory)
-    ]
+    func test_discoversSwiftFilesRecursivelyandReturnsTheResultsAlphabetically() {
+        let path = "\(testDirectory)/fixtures/FilesToDiscover"
+        let discoveredPaths = FileParser.sourceFilesContained(in:
+            path)
+        XCTAssertEqual(discoveredPaths, [
+            "\(path)/Directory1/file3.swift",
+            "\(path)/Directory2/Directory3/file6.swift",
+            "\(path)/file1.swift",
+            "\(path)/file2.swift",
+            ]
+        )
+    }
+    
+    
+    func test_discoversNoSourceFilesWithAnInvalidPath() {
+        XCTAssertEqual(FileParser.sourceFilesContained(in: "I don't exist"), [])
+    }
+    
+    func test_ignoresSourceFilesThatArentSwift() {
+        XCTAssertEqual(FileParser.sourceFilesContained(in: "\(testDirectory)/fixtures/FilesToDiscover/Directory4"), [])
+    }
 }
 
 private extension FileParserTests {

@@ -25,4 +25,14 @@ struct FileParser {
         let sourceCode = FileParser.load(path: sourcePath)
         try? sourceCode?.description.write(toFile: destinationPath, atomically: true, encoding: .utf8)
     }
+    
+    static func sourceFilesContained(in path: String) -> [String] {
+        let subpaths = FileManager.default.subpaths(atPath: path) ?? []
+        return subpaths
+            .filter { $0.contains(".swift") }
+            .map { "\(path)/\($0)"}
+            .sorted()
+    }
 }
+
+

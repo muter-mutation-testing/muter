@@ -95,6 +95,14 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		9DB5571E21A0F04300B4430F /* file1.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = file1.swift; sourceTree = "<group>"; };
+		9DB5571F21A0F05200B4430F /* file2.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = file2.swift; sourceTree = "<group>"; };
+		9DB5572221A0F08B00B4430F /* file3.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = file3.swift; sourceTree = "<group>"; };
+		9DB5572321A0F0A700B4430F /* file4 */ = {isa = PBXFileReference; lastKnownFileType = text; path = file4; sourceTree = "<group>"; };
+		9DB5572421A0F0C500B4430F /* file5 */ = {isa = PBXFileReference; lastKnownFileType = text; path = file5; sourceTree = "<group>"; };
+		9DB5572621A0F3FB00B4430F /* file6.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = file6.swift; sourceTree = "<group>"; };
+		9DB5572821A0F45700B4430F /* something.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = something.h; sourceTree = "<group>"; };
+		9DB5572921A0F45700B4430F /* something.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; path = something.c; sourceTree = "<group>"; };
 		OBJ_10 /* NegateConditionalsMutation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NegateConditionalsMutation.swift; sourceTree = "<group>"; };
 		OBJ_11 /* main.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = main.swift; sourceTree = "<group>"; };
 		OBJ_14 /* CLITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CLITests.swift; sourceTree = "<group>"; };
@@ -171,6 +179,53 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		9DB5571D21A0EFEF00B4430F /* FilesToDiscover */ = {
+			isa = PBXGroup;
+			children = (
+				9DB5572721A0F43C00B4430F /* Directory4 */,
+				9DB5572121A0F07000B4430F /* Directory2 */,
+				9DB5572021A0F06100B4430F /* Directory1 */,
+				9DB5571E21A0F04300B4430F /* file1.swift */,
+				9DB5571F21A0F05200B4430F /* file2.swift */,
+				9DB5572421A0F0C500B4430F /* file5 */,
+			);
+			path = FilesToDiscover;
+			sourceTree = "<group>";
+		};
+		9DB5572021A0F06100B4430F /* Directory1 */ = {
+			isa = PBXGroup;
+			children = (
+				9DB5572221A0F08B00B4430F /* file3.swift */,
+			);
+			path = Directory1;
+			sourceTree = "<group>";
+		};
+		9DB5572121A0F07000B4430F /* Directory2 */ = {
+			isa = PBXGroup;
+			children = (
+				9DB5572521A0F3E000B4430F /* Directory3 */,
+				9DB5572321A0F0A700B4430F /* file4 */,
+			);
+			path = Directory2;
+			sourceTree = "<group>";
+		};
+		9DB5572521A0F3E000B4430F /* Directory3 */ = {
+			isa = PBXGroup;
+			children = (
+				9DB5572621A0F3FB00B4430F /* file6.swift */,
+			);
+			path = Directory3;
+			sourceTree = "<group>";
+		};
+		9DB5572721A0F43C00B4430F /* Directory4 */ = {
+			isa = PBXGroup;
+			children = (
+				9DB5572821A0F45700B4430F /* something.h */,
+				9DB5572921A0F45700B4430F /* something.c */,
+			);
+			path = Directory4;
+			sourceTree = "<group>";
+		};
 		OBJ_12 /* Tests */ = {
 			isa = PBXGroup;
 			children = (
@@ -205,6 +260,7 @@
 		OBJ_21 /* fixtures */ = {
 			isa = PBXGroup;
 			children = (
+				9DB5571D21A0EFEF00B4430F /* FilesToDiscover */,
 				OBJ_22 /* MuterExampleTestSuite */,
 				OBJ_31 /* conditionalBoundary_mutation.swift */,
 				OBJ_32 /* sample.swift */,
