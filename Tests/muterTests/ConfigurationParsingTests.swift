@@ -5,7 +5,7 @@ final class ConfigurationParsingTests: XCTestCase {
 
     func test_parsesAMuterConfigurationFromAJSONFile() {
         
-        let muterConfig = FileManager.default.contents(atPath: "\(testDirectory)/fixtures/muter.conf.json")!
+        let muterConfig = FileManager.default.contents(atPath: configurationPath)!
         let configuration = try? JSONDecoder().decode(MuterConfiguration.self, from: muterConfig)
         
         XCTAssertEqual(configuration?.projectDirectory, "/Users/seandorian/Code/Swift/muter/Tests/muterTests/fixtures/MuterExampleTestSuite")

@@ -10,6 +10,8 @@ extension XCTestCase {
         )
     }
     
+    var configurationPath: String { return "\(testDirectory)/fixtures/muter.conf.json" }
+    
     var productsDirectory: URL {
         #if os(macOS)
         for bundle in Bundle.allBundles where bundle.bundlePath.hasSuffix(".xctest") {

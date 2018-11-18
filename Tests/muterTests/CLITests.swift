@@ -12,7 +12,6 @@ class CLITests: XCTestCase {
     }
     
     func test_runningItOneArgumentCausesItToMutateTheTestSuiteSpecifiedInTheConfiguration() throws {
-        let configurationPath =  "\(testDirectory)/fixtures/muter.conf.json"
         let arguments = [configurationPath]
         let (output, terminationStatus) = try runMuter(with: arguments)
 
