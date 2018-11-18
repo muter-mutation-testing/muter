@@ -10,8 +10,4 @@ final class NegateConditionalsMutationTests: XCTestCase {
         XCTAssertEqual(mutatedSource.description, expectedSource.description)
         
     }
-    
-    static var allTests = [
-        ("\(test_negateConditionalsMutation)", test_negateConditionalsMutation)
-    ]
 }
