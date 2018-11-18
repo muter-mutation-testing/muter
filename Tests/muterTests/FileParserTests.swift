@@ -51,7 +51,6 @@ final class FileParserTests: XCTestCase {
         )
     }
     
-    
     func test_discoversNoSourceFilesWithAnInvalidPath() {
         XCTAssertEqual(FileParser.sourceFilesContained(in: "I don't exist"), [])
     }
