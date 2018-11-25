@@ -98,6 +98,9 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		9D6B3B8621AB608500936456 /* something.swiftdep */ = {isa = PBXFileReference; lastKnownFileType = text; path = something.swiftdep; sourceTree = "<group>"; };
+		9D6B3B8721AB60AD00936456 /* ExampleTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExampleTests.swift; sourceTree = "<group>"; };
+		9D6B3B8921AB61B900936456 /* ignoremeplz.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ignoremeplz.swift; sourceTree = "<group>"; };
 		9DAFB67A21A21FB300E4D0BE /* ConfigurationParsingTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = ConfigurationParsingTests.swift; path = Tests/muterTests/ConfigurationParsingTests.swift; sourceTree = SOURCE_ROOT; };
 		9DAFB67C21A2298000E4D0BE /* muter.conf.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = muter.conf.json; sourceTree = "<group>"; };
 		9DAFB67D21A230EA00E4D0BE /* MuterConfiguration.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MuterConfiguration.swift; sourceTree = "<group>"; };
@@ -183,15 +186,34 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		9D6B3B8521AB605800936456 /* Build */ = {
+			isa = PBXGroup;
+			children = (
+				9D6B3B8621AB608500936456 /* something.swiftdep */,
+			);
+			path = Build;
+			sourceTree = "<group>";
+		};
+		9D6B3B8821AB60D100936456 /* muter_tmp */ = {
+			isa = PBXGroup;
+			children = (
+				9D6B3B8921AB61B900936456 /* ignoremeplz.swift */,
+			);
+			path = muter_tmp;
+			sourceTree = "<group>";
+		};
 		9DB5571D21A0EFEF00B4430F /* FilesToDiscover */ = {
 			isa = PBXGroup;
 			children = (
+				9D6B3B8821AB60D100936456 /* muter_tmp */,
+				9D6B3B8521AB605800936456 /* Build */,
 				9DB5572721A0F43C00B4430F /* Directory4 */,
 				9DB5572121A0F07000B4430F /* Directory2 */,
 				9DB5572021A0F06100B4430F /* Directory1 */,
 				9DB5571E21A0F04300B4430F /* file1.swift */,
 				9DB5571F21A0F05200B4430F /* file2.swift */,
 				9DB5572421A0F0C500B4430F /* file5 */,
+				9D6B3B8721AB60AD00936456 /* ExampleTests.swift */,
 			);
 			path = FilesToDiscover;
 			sourceTree = "<group>";
@@ -479,6 +501,7 @@
 			buildPhases = (
 				OBJ_132 /* Sources */,
 				OBJ_146 /* Frameworks */,
+				9D6B3B8A21AB69DB00936456 /* ShellScript */,
 			);
 			buildRules = (
 			);
@@ -520,6 +543,26 @@
 			);
 		};
 /* End PBXProject section */
+
+/* Begin PBXShellScriptBuildPhase section */
+		9D6B3B8A21AB69DB00936456 /* ShellScript */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+			);
+			outputFileListPaths = (
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "git checkout -- Tests/muterTests/fixtures/MuterExampleTestSuite/MuterExampleTestSuite/Module.swift\n";
+		};
+/* End PBXShellScriptBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
 		OBJ_104 /* Sources */ = {

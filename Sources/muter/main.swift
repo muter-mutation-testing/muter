@@ -33,14 +33,11 @@ func mutateSourceCode(inFileAt path: String) {
     let mutatedSourceCode = NegateConditionalsMutation().mutate(source: sourceCode)
     try! mutatedSourceCode.description.write(toFile: path, atomically: true, encoding: .utf8)
 }
+
 func discoverSourceCode(inDirectoryAt path: String) -> [String] {
     let discoveredFiles = FileParser
         .sourceFilesContained(in: path)
-        .filter {
-            !$0.contains("Build") &&
-            !$0.contains("muter_tmp") &&
-            !$0.contains("Tests.swift")
-    }
+        
     
     print("*******************************")
     print("Discovered \(discoveredFiles.count) Swift files:")
