@@ -16,7 +16,8 @@ class CLITests: XCTestCase {
         let (output, terminationStatus) = try runMuter(with: arguments)
 
         XCTAssertEqual(terminationStatus, 0, "Muter returns 0 when it successfully mutates code and causes that code's test suite to fail")
-//        XCTAssertEqual(numberOfMutatedPathsIn(output), 1)
+         XCTAssert(output.contains("Discovered 3 Swift files"), "Muter reports the number of Swift files it discovers")
+        XCTAssertEqual(numberOfPathsIn(output), 1, "Muter lists the paths of Swift files it discovers")
         XCTAssert(output.contains("XCTAssertTrue failed"), "Muter is supposed to cause a test suite to fail")
     }
 }
@@ -43,8 +44,9 @@ private extension CLITests {
         )
     }
     
-    func numberOfMutatedPathsIn(_ output: String) -> Int {
-        let filePathRegex = try! NSRegularExpression(pattern: "(/[^/ ]*)+/?", options: .anchorsMatchLines)
+    func numberOfPathsIn(_ output: String) -> Int {
+        
+        let filePathRegex = try! NSRegularExpression(pattern: "Discovered \\d* Swift files:\n(/[^/ ]*)+/?", options: .anchorsMatchLines)
         let entireString = NSRange(location: 0, length: output.count)
         return filePathRegex.numberOfMatches(in: output,
                                              options: .withoutAnchoringBounds,

@@ -33,16 +33,33 @@ func mutateSourceCode(inFileAt path: String) {
     let mutatedSourceCode = NegateConditionalsMutation().mutate(source: sourceCode)
     try! mutatedSourceCode.description.write(toFile: path, atomically: true, encoding: .utf8)
 }
+func discoverSourceCode(inDirectoryAt path: String) -> [String] {
+    let discoveredFiles = FileParser
+        .sourceFilesContained(in: path)
+        .filter {
+            !$0.contains("Build") &&
+            !$0.contains("muter_tmp") &&
+            !$0.contains("Tests.swift")
+    }
+    
+    print("*******************************")
+    print("Discovered \(discoveredFiles.count) Swift files:")
+    print(discoveredFiles.joined(separator: "\n"))
+    print("*******************************")
+    
+    return discoveredFiles
+}
 
 switch CommandLine.argc {
 case 2:
 
     let configurationPath = CommandLine.arguments[1]
-    
     let configuration = try! JSONDecoder().decode(MuterConfiguration.self, from: FileManager.default.contents(atPath: configurationPath)!)
 
     let workingDirectory = FileParser.createWorkingDirectory(in: configuration.projectDirectory)
-    let sourceFile = FileParser.sourceFilesContained(in: configuration.projectDirectory).filter { $0.contains("Module")  && !$0.contains("Build")}[0]
+    let discoveredFiles = discoverSourceCode(inDirectoryAt: configuration.projectDirectory)
+
+    let sourceFile = discoveredFiles.filter { $0.contains("Module")}[0]
     let swapFilePath = FileParser.swapFilePath(forFileAt: sourceFile, using: workingDirectory)
 
     FileParser.copySourceCode(fromFileAt: sourceFile, to: swapFilePath)
