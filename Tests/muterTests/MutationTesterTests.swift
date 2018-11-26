@@ -2,7 +2,11 @@ import XCTest
 
 class MutationTesterTests: XCTestCase {
     
-    private class MutationTesterInternalsSpy: Spy {
+    private class MutationTesterDelegateSpy: Spy, MutationTesterDelegate {
+        func restoreFile(at path: String) {
+            
+        }
+        
         private(set) var methodCalls: [String] = []
         
         private(set) var filePathsUpdated: [String] = []
@@ -22,51 +26,47 @@ class MutationTesterTests: XCTestCase {
     }
 
     func test_performsAMutationTestForEverySourceFile() {
-        let spy = MutationTesterInternalsSpy()
+        let delegateSpy = MutationTesterDelegateSpy()
         let filePaths = ["\(fixturesDirectory)/sample.swift", "\(fixturesDirectory)/sample2.swift"]
         let mutationSpy = SourceCodeMutationSpy()
         mutationSpy.canMutate = [true, true]
         
         let mutationTester = MutationTester(filePaths: filePaths,
                                             mutation: mutationSpy,
-                                            runTestSuite: spy.runTestSuite,
-                                            writeFile: spy.writeFile)
+                                            delegate: delegateSpy)
         
         mutationTester.perform()
         
         let expectedSourceOne = FileParser.load(path: "\(fixturesDirectory)/sample.swift")!
         let expectedSourceTwo = FileParser.load(path: "\(fixturesDirectory)/sample2.swift")!
-        XCTAssertEqual(spy.numberOfTestSuiteRuns, 2)
-        XCTAssertEqual(mutationSpy.mutatedSources.description, [expectedSourceOne, expectedSourceTwo].description)
-        XCTAssertEqual(spy.filePathsUpdated, ["\(fixturesDirectory)/sample.swift",
-                                              "\(fixturesDirectory)/sample2.swift"])
-        XCTAssertEqual(spy.fileContents, [expectedSourceOne.description,
-                                          expectedSourceTwo.description])
-        XCTAssertEqual(spy.methodCalls, ["writeFile(filePath:contents:)",
-                                         "runTestSuite()",
-                                         "writeFile(filePath:contents:)",
-                                         "runTestSuite()"])
+        XCTAssertEqual(mutationSpy.mutatedSources.description, [expectedSourceOne,
+                                                                expectedSourceTwo].description)
+        XCTAssertEqual(delegateSpy.filePathsUpdated, ["\(fixturesDirectory)/sample.swift",
+                                                      "\(fixturesDirectory)/sample2.swift"])
+        XCTAssertEqual(delegateSpy.fileContents, [expectedSourceOne.description,
+                                                  expectedSourceTwo.description])
+        XCTAssertEqual(delegateSpy.methodCalls, ["writeFile(filePath:contents:)",
+                                                 "runTestSuite()",
+                                                 "writeFile(filePath:contents:)",
+                                                 "runTestSuite()"])
     }
     
     func test_doesntRunTestSuiteWhenItEncountersFilesItCantMutate() {
-        let spy = MutationTesterInternalsSpy()
+        let delegateSpy = MutationTesterDelegateSpy()
         let filePaths = ["\(fixturesDirectory)/sample.swift", "\(fixturesDirectory)/sourceWithoutConditionalLogic.swift"]
         let mutationSpy = SourceCodeMutationSpy()
         mutationSpy.canMutate = [true, false]
         
         let mutationTester = MutationTester(filePaths: filePaths,
                                             mutation: mutationSpy,
-                                            runTestSuite: spy.runTestSuite,
-                                            writeFile: spy.writeFile)
+                                            delegate: delegateSpy)
         
         mutationTester.perform()
         
         let expectedSourceOne = FileParser.load(path: "\(fixturesDirectory)/sample.swift")!
-        XCTAssertEqual(spy.numberOfTestSuiteRuns, 1)
-        XCTAssertEqual(mutationSpy.mutatedSources.description , [expectedSourceOne].description)
-        XCTAssertEqual(spy.filePathsUpdated, ["\(fixturesDirectory)/sample.swift"])
-        XCTAssertEqual(spy.fileContents, [expectedSourceOne.description])
-        XCTAssertEqual(spy.methodCalls, ["writeFile(filePath:contents:)",
-                                         "runTestSuite()"])
+        XCTAssertEqual(delegateSpy.filePathsUpdated, ["\(fixturesDirectory)/sample.swift"])
+        XCTAssertEqual(delegateSpy.fileContents, [expectedSourceOne.description])
+        XCTAssertEqual(delegateSpy.methodCalls, ["writeFile(filePath:contents:)",
+                                                 "runTestSuite()"])
     }
 }
