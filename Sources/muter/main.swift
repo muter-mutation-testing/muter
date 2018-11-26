@@ -84,6 +84,7 @@ func runTestSuite(using executablePath: String, and arguments: [String]) {
             
             printMessage("Test Suite finished running\n\(testStatus)")
         }
+        
         process.waitUntilExit()
         
     } catch {
