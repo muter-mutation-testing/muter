@@ -6,23 +6,15 @@ func run(with configuration: MuterConfiguration) {
 
     let workingDirectoryPath = FileParser.createWorkingDirectory(in: configuration.projectDirectory)
     let discoveredFiles = discoverSourceCode(inDirectoryAt: configuration.projectDirectory)
-    let discoveredFilesAndSwapFiles = discoveredFiles.map {
-        ($0, FileParser.swapFilePath(forFileAt: $0, using: workingDirectoryPath))
-    }
     
-    for (filePath, swapFilePath) in discoveredFilesAndSwapFiles {
-        FileParser.copySourceCode(fromFileAt: filePath, to: swapFilePath)
-    }
+    let delegate = MutationTester.Delegate(configuration: configuration,
+                                           swapFilePathsByOriginalPath: swapFilePaths(for: discoveredFiles, using: workingDirectoryPath))
     
-    let delegate = MutationTester.Delegate(configuration: configuration)
     let tester = MutationTester(filePaths: discoveredFiles,
                                 mutation: NegateConditionalsMutation(),
                                 delegate: delegate)
     tester.perform()
-    
-    for (filePath, swapFilePath) in discoveredFilesAndSwapFiles {
-        FileParser.copySourceCode(fromFileAt: swapFilePath, to: filePath)
-    }
+
 
     removeWorkingDirectory(at: workingDirectoryPath)
 }
@@ -43,9 +35,6 @@ func discoverSourceCode(inDirectoryAt path: String) -> [String] {
     
     return discoveredFiles
 }
-
-
-
 
 switch CommandLine.argc {
 case 2:

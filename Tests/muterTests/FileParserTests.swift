@@ -2,11 +2,6 @@ import XCTest
 import class Foundation.Bundle
 
 final class FileParserTests: XCTestCase {
-    
-    func test_loadingANonexistentFileReturnsNil() {
-        XCTAssertNil(FileParser.load(path: "I do not exist"))
-    }
-    
     func test_createsAWorkingDirectoryForMutationTesting() {
         let fileManagerSpy = FileManagerSpy()
         let workingDirectory = FileParser.createWorkingDirectory(in: "~/some/path", fileManager: fileManagerSpy)
@@ -16,26 +11,6 @@ final class FileParserTests: XCTestCase {
         XCTAssertEqual(fileManagerSpy.createsIntermediates, [true])
         XCTAssertEqual(fileManagerSpy.paths, ["~/some/path/muter_tmp"])
         
-    }
-    
-    func test_copiesSourceCodeIntoAWorkingDirectory() {
-        let workingDirectory = FileParser.createWorkingDirectory(in: testDirectory)
-        
-        let originalSourceCodePath = "\(fixturesDirectory)/sample.swift"
-        let originalSourceCode = FileParser.load(path: originalSourceCodePath)
-        
-        let copiedSourceCodePath = "\(workingDirectory)/sample.swift"
-        FileParser.copySourceCode(fromFileAt: originalSourceCodePath,
-                                  to: copiedSourceCodePath)
-        
-        
-        let copiedSourceCode = FileParser.load(path: copiedSourceCodePath)
-        
-        XCTAssertNotNil(originalSourceCode)
-        XCTAssertNotNil(copiedSourceCode)
-        XCTAssertEqual(originalSourceCode?.description, copiedSourceCode?.description)
-        
-        removeItems(at: [workingDirectory])
     }
     
     func test_discoversSwiftFilesRecursivelyandReturnsTheResultsAlphabetically() {
@@ -74,18 +49,5 @@ final class FileParserTests: XCTestCase {
         
         let emptySwapFilePath = FileParser.swapFilePath(forFileAt: "malformed path that doesn't exist", using: workingDirectory)
         XCTAssertEqual(emptySwapFilePath, "")
-    }
-}
-
-private extension FileParserTests {
-    func removeItems(at paths: [String]) {
-        do {
-            for path in paths {
-                try FileManager.default.removeItem(atPath: path)
-            }
-        } catch {
-            print("❗❗❗ Received error cleaning up after file i/o tests ❗❗❗")
-            print(error)
-        }
     }
 }

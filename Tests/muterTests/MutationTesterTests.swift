@@ -1,72 +1,65 @@
 import XCTest
+import SwiftSyntax
+
+class SwapFilePathsTest: XCTestCase {
+    func test_generatesAMappingBetweenSwapFilesAndTheirOriginalFilePaths() {
+        let filePaths = ["some/path/to/aFile", "some/path/to/anotherFile"]
+        let workingDirectory = "~"
+        let result = swapFilePaths(for: filePaths, using: workingDirectory)
+        XCTAssertEqual(result, ["some/path/to/aFile": "~/aFile",
+                                "some/path/to/anotherFile": "~/anotherFile"])
+    }
+}
 
 class MutationTesterTests: XCTestCase {
-    
-    private class MutationTesterDelegateSpy: Spy, MutationTesterDelegate {
-        func restoreFile(at path: String) {
-            
-        }
-        
-        private(set) var methodCalls: [String] = []
-        
-        private(set) var filePathsUpdated: [String] = []
-        private(set) var fileContents: [String] = []
-        private(set) var numberOfTestSuiteRuns = 0
-
-        func writeFile(filePath: String, contents: String) {
-            methodCalls.append(#function)
-            filePathsUpdated.append(filePath)
-            fileContents.append(contents)
-        }
-        
-        func runTestSuite() {
-            methodCalls.append(#function)
-            numberOfTestSuiteRuns += 1
-        }
-    }
+    let expectedSource = SyntaxFactory.makeBlankSourceFile()
 
     func test_performsAMutationTestForEverySourceFile() {
         let delegateSpy = MutationTesterDelegateSpy()
-        let filePaths = ["\(fixturesDirectory)/sample.swift", "\(fixturesDirectory)/sample2.swift"]
+        delegateSpy.sourceFileSyntax = expectedSource
+        
         let mutationSpy = SourceCodeMutationSpy()
         mutationSpy.canMutate = [true, true]
+        
+        let filePaths = ["some/path/to/aFile.swift", "some/path/to/anotherFile.swift"]
         
         let mutationTester = MutationTester(filePaths: filePaths,
                                             mutation: mutationSpy,
                                             delegate: delegateSpy)
         
         mutationTester.perform()
-        
-        let expectedSourceOne = FileParser.load(path: "\(fixturesDirectory)/sample.swift")!
-        let expectedSourceTwo = FileParser.load(path: "\(fixturesDirectory)/sample2.swift")!
-        XCTAssertEqual(mutationSpy.mutatedSources.description, [expectedSourceOne,
-                                                                expectedSourceTwo].description)
-        XCTAssertEqual(delegateSpy.filePathsUpdated, ["\(fixturesDirectory)/sample.swift",
-                                                      "\(fixturesDirectory)/sample2.swift"])
-        XCTAssertEqual(delegateSpy.fileContents, [expectedSourceOne.description,
-                                                  expectedSourceTwo.description])
-        XCTAssertEqual(delegateSpy.methodCalls, ["writeFile(filePath:contents:)",
-                                                 "runTestSuite()",
+
+        XCTAssertEqual(mutationSpy.mutatedSources.description, [expectedSource, expectedSource].description)
+        XCTAssertEqual(delegateSpy.updatedFilePaths, filePaths)
+        XCTAssertEqual(delegateSpy.methodCalls, ["sourceFromFile(at:)",
+                                                 "backupFile(at:)",
                                                  "writeFile(filePath:contents:)",
-                                                 "runTestSuite()"])
+                                                 "runTestSuite()",
+                                                 "restoreFile(at:)",
+                                                 // Second file
+                                                 "sourceFromFile(at:)",
+                                                 "backupFile(at:)",
+                                                 "writeFile(filePath:contents:)",
+                                                 "runTestSuite()",
+                                                 "restoreFile(at:)"])
     }
     
     func test_doesntRunTestSuiteWhenItEncountersFilesItCantMutate() {
         let delegateSpy = MutationTesterDelegateSpy()
-        let filePaths = ["\(fixturesDirectory)/sample.swift", "\(fixturesDirectory)/sourceWithoutConditionalLogic.swift"]
+        delegateSpy.sourceFileSyntax = SyntaxFactory.makeBlankSourceFile()
+        
         let mutationSpy = SourceCodeMutationSpy()
         mutationSpy.canMutate = [true, false]
         
-        let mutationTester = MutationTester(filePaths: filePaths,
+        let mutationTester = MutationTester(filePaths: ["some/path/to/aFile.swift",
+                                                        "some/path/to/aFileThatCantBeMutated.swift"],
                                             mutation: mutationSpy,
                                             delegate: delegateSpy)
         
         mutationTester.perform()
         
-        let expectedSourceOne = FileParser.load(path: "\(fixturesDirectory)/sample.swift")!
-        XCTAssertEqual(delegateSpy.filePathsUpdated, ["\(fixturesDirectory)/sample.swift"])
-        XCTAssertEqual(delegateSpy.fileContents, [expectedSourceOne.description])
-        XCTAssertEqual(delegateSpy.methodCalls, ["writeFile(filePath:contents:)",
-                                                 "runTestSuite()"])
+        let numberOfTestSuiteRuns = delegateSpy.methodCalls.filter{ $0 == "runTestSuite()" }.count
+        XCTAssertEqual(numberOfTestSuiteRuns, 1)
+        XCTAssertEqual(mutationSpy.mutatedSources.description, [expectedSource].description)
     }
 }
