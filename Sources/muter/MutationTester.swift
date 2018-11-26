@@ -7,7 +7,6 @@ func swapFilePaths(for discoveredFiles: [String], using workingDirectoryPath: St
         let swapFilePath = FileParser.swapFilePath(forFileAt: filePath, using: workingDirectoryPath)
         swapFilePathsByOriginalPath[filePath] = swapFilePath
     }
-    
     return swapFilePathsByOriginalPath
 }
 

@@ -38,7 +38,7 @@ struct FileParser {
                 
                 return $0.contains(".swift")
             }
-            .map { "\(path)/\($0)"}
+            .map { path + "/" + $0 }
             .sorted()
     }
     
