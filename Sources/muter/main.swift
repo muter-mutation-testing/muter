@@ -11,6 +11,62 @@ func printUsageStatement() {
     """)
 }
 
+func printMessage(_ message: String) {
+    print("*******************************")
+    print(message)
+    print("*******************************")
+}
+
+func performMutationTesting() {
+    let configurationPath = CommandLine.arguments[1]
+    let configuration = try! JSONDecoder().decode(MuterConfiguration.self, from: FileManager.default.contents(atPath: configurationPath)!)
+    
+    let workingDirectoryPath = FileParser.createWorkingDirectory(in: configuration.projectDirectory)
+    let discoveredFiles = discoverSourceCode(inDirectoryAt: configuration.projectDirectory)
+    
+    for filePath in discoveredFiles {
+        let swapFilePath = FileParser.swapFilePath(forFileAt: filePath, using: workingDirectoryPath)
+        FileParser.copySourceCode(fromFileAt: filePath, to: swapFilePath)
+        mutateSourceCode(inFileAt: filePath)
+    }
+    
+    runTestSuite(using: configuration.testCommandExecutable, and: configuration.testCommandArguments)
+    
+    for filePath in discoveredFiles {
+        let swapFilePath = FileParser.swapFilePath(forFileAt: filePath, using: workingDirectoryPath)
+        FileParser.copySourceCode(fromFileAt: swapFilePath, to: filePath)
+    }
+    
+    removeWorkingDirectory(at: workingDirectoryPath)
+}
+
+func removeWorkingDirectory(at path: String) {
+    do {
+        try FileManager.default.removeItem(atPath: path)
+    } catch {
+        print("Encountered error removing Muter's working directory")
+        print("\(error)")
+    }
+}
+
+func discoverSourceCode(inDirectoryAt path: String) -> [String] {
+    let discoveredFiles = FileParser.sourceFilesContained(in: path)
+    let filePaths = discoveredFiles.joined(separator: "\n")
+    printMessage("Discovered \(discoveredFiles.count) Swift files:\n\(filePaths)")
+    
+    return discoveredFiles
+}
+
+func mutateSourceCode(inFileAt path: String) {
+    guard let sourceCode = FileParser.load(path: path) else {
+        printMessage("Muter was unable to load the source file at path: \(path)")
+        return
+    }
+    
+    let mutatedSourceCode = NegateConditionalsMutation().mutate(source: sourceCode)
+    try! mutatedSourceCode.description.write(toFile: path, atomically: true, encoding: .utf8)
+}
+
 func runTestSuite(using executablePath: String, and arguments: [String]) {
     guard #available(OSX 10.13, *) else {
         print("muter is only supported on macOS 10.13 and higher")
@@ -18,66 +74,28 @@ func runTestSuite(using executablePath: String, and arguments: [String]) {
     }
     
     do {
+        
         let url = URL(fileURLWithPath: executablePath)
         let process = try Process.run(url, arguments: arguments) {
-            print("*******************************")
-            print("Test Suite finished running\n")
-            print($0.terminationStatus > 0 ?
+            
+            let testStatus = $0.terminationStatus > 0 ?
                 "\t✅ Mutation Test Passed " :
-                "\t❌ Mutation Test Failed")
-            print("*******************************")
+                "\t❌ Mutation Test Failed"
+            
+            printMessage("Test Suite finished running\n\(testStatus)")
         }
         process.waitUntilExit()
-    } catch  {
+        
+    } catch {
         print("muter encountered an error running your test suite and can't continue")
         print(error)
         exit(1)
     }
 }
 
-func mutateSourceCode(inFileAt path: String) {
-    let sourceCode = FileParser.load(path: path)!
-    let mutatedSourceCode = NegateConditionalsMutation().mutate(source: sourceCode)
-    try! mutatedSourceCode.description.write(toFile: path, atomically: true, encoding: .utf8)
-}
-
-func discoverSourceCode(inDirectoryAt path: String) -> [String] {
-    let discoveredFiles = FileParser
-        .sourceFilesContained(in: path)
-    
-    
-    print("*******************************")
-    print("Discovered \(discoveredFiles.count) Swift files:")
-    print(discoveredFiles.joined(separator: "\n"))
-    print("*******************************")
-    
-    return discoveredFiles
-}
-
 switch CommandLine.argc {
 case 2:
-    
-    let configurationPath = CommandLine.arguments[1]
-    let configuration = try! JSONDecoder().decode(MuterConfiguration.self, from: FileManager.default.contents(atPath: configurationPath)!)
-    
-    let workingDirectory = FileParser.createWorkingDirectory(in: configuration.projectDirectory)
-    let discoveredFiles = discoverSourceCode(inDirectoryAt: configuration.projectDirectory)
-    
-    let sourceFile = discoveredFiles.filter { $0.contains("Module")}[0]
-    let swapFilePath = FileParser.swapFilePath(forFileAt: sourceFile, using: workingDirectory)
-    
-    FileParser.copySourceCode(fromFileAt: sourceFile, to: swapFilePath)
-    mutateSourceCode(inFileAt: sourceFile)
-    runTestSuite(using: configuration.testCommandExecutable, and: configuration.testCommandArguments)
-    FileParser.copySourceCode(fromFileAt: swapFilePath, to: sourceFile)
-    
-    do {
-        try FileManager.default.removeItem(atPath: workingDirectory)
-    } catch {
-        print("Encountered error removing Muter's working directory")
-        print("\(error)")
-    }
-    
+    performMutationTesting()
     exit(0)
 default:
     printUsageStatement()
