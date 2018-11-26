@@ -14,6 +14,7 @@
 		9D13CAD2218FC9FA00DB1FDA /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 9D13CAD0218FC9FA00DB1FDA /* LaunchScreen.storyboard */; };
 		9D13CADD218FC9FA00DB1FDA /* ModuleTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9D13CADC218FC9FA00DB1FDA /* ModuleTests.swift */; };
 		9D13CAF6218FCB1C00DB1FDA /* Module.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9D13CAF5218FCB1C00DB1FDA /* Module.swift */; };
+		9DA60E9521ACA53E00B02CB4 /* Module2.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9DA60E9421ACA53E00B02CB4 /* Module2.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -38,6 +39,7 @@
 		9D13CADC218FC9FA00DB1FDA /* ModuleTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ModuleTests.swift; sourceTree = "<group>"; };
 		9D13CADE218FC9FA00DB1FDA /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		9D13CAF5218FCB1C00DB1FDA /* Module.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Module.swift; sourceTree = "<group>"; };
+		9DA60E9421ACA53E00B02CB4 /* Module2.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Module2.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -79,6 +81,7 @@
 		9D13CAC6218FC9F800DB1FDA /* MuterExampleTestSuite */ = {
 			isa = PBXGroup;
 			children = (
+				9DA60E9421ACA53E00B02CB4 /* Module2.swift */,
 				9D13CAC7218FC9F800DB1FDA /* AppDelegate.swift */,
 				9D13CAC9218FC9F800DB1FDA /* ViewController.swift */,
 				9D13CACB218FC9F800DB1FDA /* Main.storyboard */,
@@ -200,6 +203,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				9DA60E9521ACA53E00B02CB4 /* Module2.swift in Sources */,
 				9D13CACA218FC9F800DB1FDA /* ViewController.swift in Sources */,
 				9D13CAC8218FC9F800DB1FDA /* AppDelegate.swift in Sources */,
 				9D13CAF6218FCB1C00DB1FDA /* Module.swift in Sources */,

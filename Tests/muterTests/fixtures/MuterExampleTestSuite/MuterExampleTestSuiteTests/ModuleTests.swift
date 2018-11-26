@@ -7,3 +7,9 @@ class ModuleTests: XCTestCase {
         XCTAssertFalse(areEqual(5, and: 6))
     }
 }
+
+class Module2Tests: XCTestCase {
+    func test() {
+        XCTAssertFalse(alwaysReturnsFalse())
+    }
+}
