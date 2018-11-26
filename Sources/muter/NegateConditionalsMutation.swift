@@ -1,6 +1,10 @@
 import SwiftSyntax
 
-class NegateConditionalsMutation {
+protocol SourceCodeMutation {
+    func mutate(source: SourceFileSyntax) -> Syntax
+}
+
+class NegateConditionalsMutation: SourceCodeMutation {
     
     private class Rewriter: SyntaxRewriter {
         override func visit(_ token: TokenSyntax) -> Syntax {

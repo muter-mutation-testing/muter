@@ -17,20 +17,22 @@ func printMessage(_ message: String) {
     print("*******************************")
 }
 
-func performMutationTesting() {
-    let configurationPath = CommandLine.arguments[1]
-    let configuration = try! JSONDecoder().decode(MuterConfiguration.self, from: FileManager.default.contents(atPath: configurationPath)!)
-    
+func performMutationTesting(with configuration: MuterConfiguration) {
+
     let workingDirectoryPath = FileParser.createWorkingDirectory(in: configuration.projectDirectory)
     let discoveredFiles = discoverSourceCode(inDirectoryAt: configuration.projectDirectory)
     
     for filePath in discoveredFiles {
         let swapFilePath = FileParser.swapFilePath(forFileAt: filePath, using: workingDirectoryPath)
         FileParser.copySourceCode(fromFileAt: filePath, to: swapFilePath)
-        mutateSourceCode(inFileAt: filePath)
     }
     
-    runTestSuite(using: configuration.testCommandExecutable, and: configuration.testCommandArguments)
+    let tester = MutationTester(configuration: configuration,
+                                filePaths: discoveredFiles,
+                                mutation: NegateConditionalsMutation(),
+                                runTestSuite: runTestSuite,
+                                writeFile: { path, contents in try contents.write(toFile: path, atomically: true, encoding: .utf8) })
+    tester.perform()
     
     for filePath in discoveredFiles {
         let swapFilePath = FileParser.swapFilePath(forFileAt: filePath, using: workingDirectoryPath)
@@ -96,7 +98,11 @@ func runTestSuite(using executablePath: String, and arguments: [String]) {
 
 switch CommandLine.argc {
 case 2:
-    performMutationTesting()
+    let configurationPath = CommandLine.arguments[1]
+    let configuration = try! JSONDecoder().decode(MuterConfiguration.self, from: FileManager.default.contents(atPath: configurationPath)!)
+    
+    performMutationTesting(with: configuration)
+    
     exit(0)
 default:
     printUsageStatement()

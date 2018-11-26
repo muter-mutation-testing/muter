@@ -1,9 +1,5 @@
 import Foundation
 
-protocol Spy {
-    var methodCalls: [String] { get }
-}
-
 class FileManagerSpy: Spy, FileSystemManager {
     private(set) var methodCalls: [String] = []
     private(set) var paths: [String] = []

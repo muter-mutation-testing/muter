@@ -4,9 +4,7 @@ import class Foundation.Bundle
 final class ConfigurationParsingTests: XCTestCase {
 
     func test_parsesAMuterConfigurationFromAJSONFile() {
-        
-        let muterConfig = FileManager.default.contents(atPath: configurationPath)!
-        let configuration = try? JSONDecoder().decode(MuterConfiguration.self, from: muterConfig)
+        let configuration = MuterConfiguration.fromFixture(at: configurationPath)
         
         XCTAssertEqual(configuration?.projectDirectory, "/Users/seandorian/Code/Swift/muter/Tests/muterTests/fixtures/MuterExampleTestSuite")
         
@@ -24,5 +22,12 @@ final class ConfigurationParsingTests: XCTestCase {
             "test",
             ]
         )
+    }
+}
+
+extension MuterConfiguration {
+    static func fromFixture(at path: String) -> MuterConfiguration? {
+        let muterConfig = FileManager.default.contents(atPath: path)!
+        return try? JSONDecoder().decode(MuterConfiguration.self, from: muterConfig)
     }
 }
