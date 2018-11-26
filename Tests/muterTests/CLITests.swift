@@ -17,14 +17,16 @@ class CLITests: XCTestCase {
 
         let (output, terminationStatus) = try runMuter(with: [configurationPath])
         let afterSourceCode = FileParser.load(path: sourceCodePath)
+        let workingDirectoryExists = FileManager.default.fileExists(atPath: "\(testDirectory)/fixtures/MuterExampleTestSuite/muter_tmp", isDirectory: nil)
 
         XCTAssertEqual(terminationStatus, 0, "Muter returns 0 when it successfully mutates code and causes that code's test suite to fail")
         
         XCTAssert(output.contains("Discovered 3 Swift files"), "Muter reports the number of Swift files it discovers")
         XCTAssertEqual(numberOfPathsIn(output), 1, "Muter lists the paths of Swift files it discovers")
-        XCTAssert(output.contains("XCTAssertTrue failed"), "Muter is supposed to cause a test suite to fail")
+        XCTAssert(output.contains("Mutation Test Passed"), "Muter is supposed to cause a test suite to fail, which causes the mutation test to pass")
         
-        XCTAssertEqual(originalSourceCode!.description, afterSourceCode!.description)
+        XCTAssertEqual(originalSourceCode!.description, afterSourceCode!.description, "Muter is supposed to clean up after itself by restoring the source code it mutates once it's done")
+        XCTAssertFalse(workingDirectoryExists, "Muter is supposed to clean up after itself by deleting the working directory it creates")
     }
 }
 
