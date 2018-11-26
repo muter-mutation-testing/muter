@@ -90,7 +90,7 @@ func testSuiteCommand(using executablePath: String, and arguments: [String]) -> 
             process.waitUntilExit()
             
         } catch {
-            printMessage("muter encountered an error running your test suite and can't continue", error)
+            printMessage("muter encountered an error running your test suite and can't continue\n\(error)")
             exit(1)
         }
     }

@@ -11,13 +11,13 @@ class CLITests: XCTestCase {
         XCTAssertTrue(output.contains("usage"), "expected a usage statement to be printed")
     }
     
-    func test_runningItOneArgumentCausesItToMutateTheTestSuiteSpecifiedInTheConfiguration() throws {
-        let sourceCodePath = "\(testDirectory)/fixtures/MuterExampleTestSuite/MuterExampleTestSuite/Module.swift"
+    func runningItOneArgumentCausesItToMutateTheTestSuiteSpecifiedInTheConfiguration() throws {
+        let sourceCodePath = "\(fixturesDirectory)//MuterExampleTestSuite/MuterExampleTestSuite/Module.swift"
         let originalSourceCode = FileParser.load(path: sourceCodePath)
 
         let (output, terminationStatus) = try runMuter(with: [configurationPath])
         let afterSourceCode = FileParser.load(path: sourceCodePath)
-        let workingDirectoryExists = FileManager.default.fileExists(atPath: "\(testDirectory)/fixtures/MuterExampleTestSuite/muter_tmp", isDirectory: nil)
+        let workingDirectoryExists = FileManager.default.fileExists(atPath: "\(fixturesDirectory)//MuterExampleTestSuite/muter_tmp", isDirectory: nil)
 
         XCTAssertEqual(terminationStatus, 0, "Muter returns 0 when it successfully mutates code and causes that code's test suite to fail")
         
