@@ -21,7 +21,7 @@ final class FileParserTests: XCTestCase {
     func test_copiesSourceCodeIntoAWorkingDirectory() {
         let workingDirectory = FileParser.createWorkingDirectory(in: testDirectory)
         
-        let originalSourceCodePath = "\(testDirectory)/fixtures/sample.swift"
+        let originalSourceCodePath = "\(fixturesDirectory)//sample.swift"
         let originalSourceCode = FileParser.load(path: originalSourceCodePath)
         
         let copiedSourceCodePath = "\(workingDirectory)/sample.swift"
@@ -39,7 +39,7 @@ final class FileParserTests: XCTestCase {
     }
     
     func test_discoversSwiftFilesRecursivelyandReturnsTheResultsAlphabetically() {
-        let path = "\(testDirectory)/fixtures/FilesToDiscover"
+        let path = "\(fixturesDirectory)//FilesToDiscover"
         let discoveredPaths = FileParser.sourceFilesContained(in:
             path)
         XCTAssertEqual(discoveredPaths, [
@@ -56,7 +56,7 @@ final class FileParserTests: XCTestCase {
     }
     
     func test_ignoresFilesThatArentSwiftFiles() {
-        let path = "\(testDirectory)/fixtures/FilesToDiscover"
+        let path = "\(fixturesDirectory)//FilesToDiscover"
         XCTAssertEqual(FileParser.sourceFilesContained(in: "\(path)/Directory4"), [])
         XCTAssertEqual(FileParser.sourceFilesContained(in: "\(path)/Directory2"), [
             "\(path)/Directory2/Directory3/file6.swift"

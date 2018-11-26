@@ -2,7 +2,7 @@ import XCTest
 
 class MutationTesterTests: XCTestCase {
 
-    func testExample() {
+    func test_performsAMutationTestForEverySourceFile() {
         
         var filePathsUpdated: [String] = []
         var fileContents: [String] = []

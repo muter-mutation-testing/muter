@@ -1,17 +1,6 @@
 import XCTest
 
 extension XCTestCase {
-    var testDirectory: String {
-        return String(
-            URL(string: #file)!
-                .deletingLastPathComponent()
-                .absoluteString
-                .dropLast()
-        )
-    }
-    
-    var configurationPath: String { return "\(testDirectory)/fixtures/muter.conf.json" }
-    
     var productsDirectory: URL {
         #if os(macOS)
         for bundle in Bundle.allBundles where bundle.bundlePath.hasSuffix(".xctest") {
@@ -22,4 +11,16 @@ extension XCTestCase {
         return Bundle.main.bundleURL
         #endif
     }
+    
+    var testDirectory: String {
+        return String(
+            URL(string: #file)!
+                .deletingLastPathComponent()
+                .absoluteString
+                .dropLast()
+        )
+    }
+    
+    var fixturesDirectory: String { return "\(testDirectory)/fixtures" }
+    var configurationPath: String { return "\(fixturesDirectory)/muter.conf.json" }
 }

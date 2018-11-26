@@ -27,10 +27,9 @@ func performMutationTesting(with configuration: MuterConfiguration) {
         FileParser.copySourceCode(fromFileAt: filePath, to: swapFilePath)
     }
     
-    let tester = MutationTester(configuration: configuration,
-                                filePaths: discoveredFiles,
+    let tester = MutationTester(filePaths: discoveredFiles,
                                 mutation: NegateConditionalsMutation(),
-                                runTestSuite: runTestSuite,
+                                runTestSuite: testSuiteCommand(using: configuration.testCommandExecutable, and: configuration.testCommandArguments),
                                 writeFile: { path, contents in try contents.write(toFile: path, atomically: true, encoding: .utf8) })
     tester.perform()
     
@@ -69,30 +68,31 @@ func mutateSourceCode(inFileAt path: String) {
     try! mutatedSourceCode.description.write(toFile: path, atomically: true, encoding: .utf8)
 }
 
-func runTestSuite(using executablePath: String, and arguments: [String]) {
-    guard #available(OSX 10.13, *) else {
-        print("muter is only supported on macOS 10.13 and higher")
-        exit(1)
-    }
-    
-    do {
-        
-        let url = URL(fileURLWithPath: executablePath)
-        let process = try Process.run(url, arguments: arguments) {
-            
-            let testStatus = $0.terminationStatus > 0 ?
-                "\t✅ Mutation Test Passed " :
-                "\t❌ Mutation Test Failed"
-            
-            printMessage("Test Suite finished running\n\(testStatus)")
+func testSuiteCommand(using executablePath: String, and arguments: [String]) -> () -> Void {
+    return {
+        guard #available(OSX 10.13, *) else {
+            print("muter is only supported on macOS 10.13 and higher")
+            exit(1)
         }
-        
-        process.waitUntilExit()
-        
-    } catch {
-        print("muter encountered an error running your test suite and can't continue")
-        print(error)
-        exit(1)
+    
+        do {
+            
+            let url = URL(fileURLWithPath: executablePath)
+            let process = try Process.run(url, arguments: arguments) {
+                
+                let testStatus = $0.terminationStatus > 0 ?
+                    "\t✅ Mutation Test Passed " :
+                    "\t❌ Mutation Test Failed"
+                
+                printMessage("Test Suite finished running\n\(testStatus)")
+            }
+            
+            process.waitUntilExit()
+            
+        } catch {
+            printMessage("muter encountered an error running your test suite and can't continue", error)
+            exit(1)
+        }
     }
 }
 
