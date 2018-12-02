@@ -6,6 +6,7 @@ class MutationTesterDelegateSpy: Spy, MutationTesterDelegate {
     
     private(set) var updatedFilePaths: [String] = []
     var sourceFileSyntax: SourceFileSyntax!
+    var testSuiteResult: MutationTester.TestSuiteResult!
     
     func sourceFromFile(at path: String) -> SourceFileSyntax? {
         methodCalls.append(#function)
@@ -21,8 +22,9 @@ class MutationTesterDelegateSpy: Spy, MutationTesterDelegate {
         updatedFilePaths.append(filePath)
     }
     
-    func runTestSuite() {
+    func runTestSuite() -> MutationTester.TestSuiteResult {
         methodCalls.append(#function)
+        return testSuiteResult
     }
     
     func restoreFile(at path: String) {

@@ -3,17 +3,19 @@ import SwiftSyntax
 protocol SourceCodeMutation {
     func canMutate(source: SourceFileSyntax) -> Bool
     func mutate(source: SourceFileSyntax) -> Syntax
+    var numberOfMutations: Int { get }
 }
 
 class NegateConditionalsMutation: SourceCodeMutation {
     
     private class Rewriter: SyntaxRewriter {
+        private(set) var numberOfMutations: Int = 0
         override func visit(_ token: TokenSyntax) -> Syntax {
             
             guard case .spacedBinaryOperator("==") = token.tokenKind else {
                 return token
             }
-            
+            numberOfMutations += 1
             return SyntaxFactory.makeToken(.spacedBinaryOperator("!="),
                                            presence: .present,
                                            leadingTrivia: token.leadingTrivia,
@@ -35,6 +37,8 @@ class NegateConditionalsMutation: SourceCodeMutation {
         }
     }
     
+    private(set) var numberOfMutations: Int = 0
+    
     func canMutate(source: SourceFileSyntax) -> Bool {
         let visitor = Visitor()
         visitor.visit(source)
@@ -42,6 +46,9 @@ class NegateConditionalsMutation: SourceCodeMutation {
     }
     
     func mutate(source: SourceFileSyntax) -> Syntax {
-        return Rewriter().visit(source)
+        let rewriter = Rewriter()
+        let mutatedSource = rewriter.visit(source)
+        numberOfMutations = rewriter.numberOfMutations
+        return mutatedSource
     }
 }

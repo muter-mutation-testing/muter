@@ -2,6 +2,8 @@ import SwiftSyntax
 
 class SourceCodeMutationSpy: Spy, SourceCodeMutation {
     
+    private(set) var numberOfMutations: Int = 0
+    
     private(set) var methodCalls: [String] = []
     private(set) var mutatedSources: [SourceFileSyntax] = []
     

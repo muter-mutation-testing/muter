@@ -24,7 +24,8 @@ class CLITests: XCTestCase {
         
         XCTAssert(output.contains("Discovered 3 Swift files"), "Muter reports the number of Swift files it discovers")
         XCTAssertEqual(numberOfDiscoveredFileLists(in: output), 1, "Muter lists the paths of Swift files it discovers")
-        XCTAssert(output.contains("Mutation Test Passed"), "Muter is supposed to cause a test suite to fail, which causes the mutation test to pass")
+        XCTAssert(output.contains("Mutation Test Passed"), "Muter causes a test suite to fail, which causes the mutation test to pass")
+        XCTAssert(output.contains("Mutation Score of Test Suite: 100%"), "Muter reports a mutation score so an engineer can determine how effective their test suite is at identifying defects or changes to a code base")
         
         XCTAssertEqual(originalSourceCode!.description, afterSourceCode!.description, "Muter is supposed to clean up after itself by restoring the source code it mutates once it's done")
         XCTAssertFalse(workingDirectoryExists, "Muter is supposed to clean up after itself by deleting the working directory it creates")

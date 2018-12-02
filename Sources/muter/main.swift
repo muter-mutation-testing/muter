@@ -15,7 +15,8 @@ func run(with configuration: MuterConfiguration) {
                                 delegate: delegate)
     tester.perform()
 
-
+    printMessage("Mutation Score of Test Suite: \(tester.mutationScore)%")
+    
     removeWorkingDirectory(at: workingDirectoryPath)
 }
 

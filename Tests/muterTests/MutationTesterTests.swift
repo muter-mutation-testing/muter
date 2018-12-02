@@ -17,6 +17,7 @@ class MutationTesterTests: XCTestCase {
     func test_performsAMutationTestForEverySourceFile() {
         let delegateSpy = MutationTesterDelegateSpy()
         delegateSpy.sourceFileSyntax = expectedSource
+        delegateSpy.testSuiteResult = .failed
         
         let mutationSpy = SourceCodeMutationSpy()
         mutationSpy.canMutate = [true, true]
@@ -47,10 +48,11 @@ class MutationTesterTests: XCTestCase {
     func test_doesntRunTestSuiteWhenItEncountersFilesItCantMutate() {
         let delegateSpy = MutationTesterDelegateSpy()
         delegateSpy.sourceFileSyntax = SyntaxFactory.makeBlankSourceFile()
-        
+        delegateSpy.testSuiteResult = .failed
+
         let mutationSpy = SourceCodeMutationSpy()
         mutationSpy.canMutate = [true, false]
-        
+
         let mutationTester = MutationTester(filePaths: ["some/path/to/aFile.swift",
                                                         "some/path/to/aFileThatCantBeMutated.swift"],
                                             mutation: mutationSpy,
@@ -61,5 +63,26 @@ class MutationTesterTests: XCTestCase {
         let numberOfTestSuiteRuns = delegateSpy.methodCalls.filter{ $0 == "runTestSuite()" }.count
         XCTAssertEqual(numberOfTestSuiteRuns, 1)
         XCTAssertEqual(mutationSpy.mutatedSources.description, [expectedSource].description)
+    }
+    
+    func test_reportsAMutationScoreForAMutationTestRun() {
+        let delegateSpy = MutationTesterDelegateSpy()
+        delegateSpy.sourceFileSyntax = expectedSource
+        delegateSpy.testSuiteResult = .failed
+        
+        let mutationSpy = SourceCodeMutationSpy()
+        mutationSpy.canMutate = [true, true]
+        
+        let filePaths = ["some/path/to/aFile.swift", "some/path/to/anotherFile.swift"]
+        
+        let mutationTester = MutationTester(filePaths: filePaths,
+                                            mutation: mutationSpy,
+                                            delegate: delegateSpy)
+        
+        XCTAssertEqual(mutationTester.mutationScore, -1)
+        
+        mutationTester.perform()
+        
+        XCTAssertEqual(mutationTester.mutationScore, 100)
     }
 }
