@@ -29,14 +29,14 @@ struct FileParser {
     static func sourceFilesContained(in path: String) -> [String] {
         let subpaths = FileManager.default.subpaths(atPath: path) ?? []
         return subpaths
-            .filter {
+            .filter { path in
                 let blackList = ["Build", "muter_tmp", "Tests.swift"]
                 
-                for item in blackList where $0.contains(item) {
+                for item in blackList where path.contains(item) {
                     return false
                 }
                 
-                return $0.contains(".swift")
+                return path.contains(".swift")
             }
             .map { path + "/" + $0 }
             .sorted()
