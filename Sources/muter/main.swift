@@ -10,12 +10,12 @@ func run(with configuration: MuterConfiguration) {
     let delegate = MutationTester.Delegate(configuration: configuration,
                                            swapFilePathsByOriginalPath: swapFilePaths(for: discoveredFiles, using: workingDirectoryPath))
     
-    let tester = MutationTester(filePaths: discoveredFiles,
-                                mutation: NegateConditionalsMutation(),
-                                delegate: delegate)
-    tester.perform()
+//    let tester = MutationTester(filePaths: discoveredFiles,
+//                                mutation: NegateConditionalsMutation(),
+//                                delegate: delegate)
+//    tester.perform()
 
-    printMessage("Mutation Score of Test Suite: \(tester.mutationScore)%")
+//    printMessage("Mutation Score of Test Suite: \(tester.mutationScore)%")
     
     removeWorkingDirectory(at: workingDirectoryPath)
 }

@@ -20,27 +20,24 @@ class MutationTesterTests: XCTestCase {
         delegateSpy.testSuiteResult = .failed
         
         let mutationSpy = SourceCodeMutationSpy()
-        mutationSpy.canMutate = [true, true]
+//        mutationSpy.canMutate = [true, true]
         
         let filePaths = ["some/path/to/aFile.swift", "some/path/to/anotherFile.swift"]
         
-        let mutationTester = MutationTester(filePaths: filePaths,
-                                            mutation: mutationSpy,
+        let mutationTester = MutationTester(mutations: [mutationSpy],
                                             delegate: delegateSpy)
         
         mutationTester.perform()
 
-        XCTAssertEqual(mutationSpy.mutatedSources.description, [expectedSource, expectedSource].description)
-        XCTAssertEqual(delegateSpy.updatedFilePaths, filePaths)
-        XCTAssertEqual(delegateSpy.methodCalls, ["sourceFromFile(at:)",
+//        XCTAssertEqual(mutationSpy.mutatedSources.description, [expectedSource, expectedSource].description
+        XCTAssertEqual(delegateSpy.methodCalls, [
                                                  "backupFile(at:)",
-                                                 "writeFile(filePath:contents:)",
+                                                 
                                                  "runTestSuite()",
                                                  "restoreFile(at:)",
                                                  // Second file
-                                                 "sourceFromFile(at:)",
                                                  "backupFile(at:)",
-                                                 "writeFile(filePath:contents:)",
+                                                 
                                                  "runTestSuite()",
                                                  "restoreFile(at:)"])
     }
@@ -51,18 +48,14 @@ class MutationTesterTests: XCTestCase {
         delegateSpy.testSuiteResult = .failed
 
         let mutationSpy = SourceCodeMutationSpy()
-        mutationSpy.canMutate = [true, false]
 
-        let mutationTester = MutationTester(filePaths: ["some/path/to/aFile.swift",
-                                                        "some/path/to/aFileThatCantBeMutated.swift"],
-                                            mutation: mutationSpy,
+        let mutationTester = MutationTester(mutations: [mutationSpy],
                                             delegate: delegateSpy)
         
         mutationTester.perform()
         
         let numberOfTestSuiteRuns = delegateSpy.methodCalls.filter{ $0 == "runTestSuite()" }.count
         XCTAssertEqual(numberOfTestSuiteRuns, 1)
-        XCTAssertEqual(mutationSpy.mutatedSources.description, [expectedSource].description)
     }
     
     func test_reportsAMutationScoreForAMutationTestRun() {
@@ -71,12 +64,8 @@ class MutationTesterTests: XCTestCase {
         delegateSpy.testSuiteResult = .failed
         
         let mutationSpy = SourceCodeMutationSpy()
-        mutationSpy.canMutate = [true, true]
         
-        let filePaths = ["some/path/to/aFile.swift", "some/path/to/anotherFile.swift"]
-        
-        let mutationTester = MutationTester(filePaths: filePaths,
-                                            mutation: mutationSpy,
+        let mutationTester = MutationTester(mutations: [mutationSpy],
                                             delegate: delegateSpy)
         
         XCTAssertEqual(mutationTester.mutationScore, -1)

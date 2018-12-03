@@ -8,6 +8,7 @@ class MutationTesterDelegateTests: XCTestCase {
     }
     
     func test_loadingANonexistentFileReturnsNil() {
-        XCTAssertNil(delegate.sourceFromFile(at: "path/that/does/not/exist"))
+//        XCTAssertNil(delegate.sourceFromFile(at: "path/that/does/not/exist"))
+        XCTFail()
     }
 }
