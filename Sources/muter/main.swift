@@ -4,18 +4,21 @@ import SwiftSyntax
 
 func run(with configuration: MuterConfiguration) {
 
-    let workingDirectoryPath = FileParser.createWorkingDirectory(in: configuration.projectDirectory)
-    let discoveredFiles = discoverSourceCode(inDirectoryAt: configuration.projectDirectory)
+    let workingDirectoryPath = FileUtilities.createWorkingDirectory(in: configuration.projectDirectory)
+    let discoveredFilesPaths = discoverSourceCode(inDirectoryAt: configuration.projectDirectory)
+    let mutations = discoverMutations(inFilesAt: discoveredFilesPaths)
+    
+    let mutatedFilePaths = mutations.map { $0.filePath }.deduplicated.sorted().joined(separator: "\n")
+    printMessage("Discovered \(mutations.count) mutations to introduce in the following files: \n\(mutatedFilePaths)")
     
     let delegate = MutationTester.Delegate(configuration: configuration,
-                                           swapFilePathsByOriginalPath: swapFilePaths(for: discoveredFiles, using: workingDirectoryPath))
+                                           swapFilePathsByOriginalPath: swapFilePaths(for: discoveredFilesPaths, using: workingDirectoryPath))
     
-//    let tester = MutationTester(filePaths: discoveredFiles,
-//                                mutation: NegateConditionalsMutation(),
-//                                delegate: delegate)
-//    tester.perform()
+    let tester = MutationTester(mutations: mutations,
+                                delegate: delegate)
+    tester.perform()
 
-//    printMessage("Mutation Score of Test Suite: \(tester.mutationScore)%")
+    printMessage("Mutation Score of Test Suite: \(tester.overallMutationScore)%")
     
     removeWorkingDirectory(at: workingDirectoryPath)
 }
@@ -30,7 +33,7 @@ func removeWorkingDirectory(at path: String) {
 }
 
 func discoverSourceCode(inDirectoryAt path: String) -> [String] {
-    let discoveredFiles = FileParser.sourceFilesContained(in: path)
+    let discoveredFiles = FileUtilities.sourceFilesContained(in: path)
     let filePaths = discoveredFiles.joined(separator: "\n")
     printMessage("Discovered \(discoveredFiles.count) Swift files:\n\(filePaths)")
     

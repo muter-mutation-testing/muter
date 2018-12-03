@@ -11,10 +11,6 @@ protocol PositionSpecificRewriter {
     func visit(_ token: Syntax) -> Syntax
 }
 
-//func generateNegateConditionalsMutations(forFileAt path: String, withMutationsAt positions: [AbsolutePosition] ) -> [NegateConditionalsMutation] {
-//    return []
-//}
-
 protocol SourceCodeMutation {
     var filePath: String { get }
     var sourceCode: SourceFileSyntax { get }
@@ -26,9 +22,6 @@ protocol SourceCodeMutationDelegate {
     func writeFile(filePath: String, contents: String) throws
 }
 
-protocol dogfood {
-    func sourceFromFile(at path: String) -> SourceFileSyntax?
-}
 struct NegateConditionalsMutation: SourceCodeMutation {
 
     let filePath: String
@@ -39,6 +32,12 @@ struct NegateConditionalsMutation: SourceCodeMutation {
     func mutate() {
         let mutatedSourceCode = rewriter.visit(sourceCode)
         try! delegate.writeFile(filePath: filePath, contents: mutatedSourceCode.description)
+    }
+    
+    class Delegate: SourceCodeMutationDelegate {
+        func writeFile(filePath: String, contents: String) throws {
+            try contents.write(toFile: filePath, atomically: true, encoding: .utf8)
+        }  
     }
     
     class Rewriter: SyntaxRewriter, PositionSpecificRewriter {

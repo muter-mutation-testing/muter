@@ -11,67 +11,43 @@ class SwapFilePathsTest: XCTestCase {
     }
 }
 
+
+
 class MutationTesterTests: XCTestCase {
     let expectedSource = SyntaxFactory.makeBlankSourceFile()
-
-    func test_performsAMutationTestForEverySourceFile() {
-        let delegateSpy = MutationTesterDelegateSpy()
-        delegateSpy.sourceFileSyntax = expectedSource
+    var delegateSpy: MutationTesterDelegateSpy!
+    var mutationSpy: SourceCodeMutationSpy!
+    var mutationTester: MutationTester!
+    
+    override func setUp() {
+        delegateSpy = MutationTesterDelegateSpy()
         delegateSpy.testSuiteResult = .failed
-        
-        let mutationSpy = SourceCodeMutationSpy()
-//        mutationSpy.canMutate = [true, true]
-        
-        let filePaths = ["some/path/to/aFile.swift", "some/path/to/anotherFile.swift"]
-        
-        let mutationTester = MutationTester(mutations: [mutationSpy],
-                                            delegate: delegateSpy)
-        
+        mutationSpy = SourceCodeMutationSpy()
+        mutationSpy.filePath = "a/path"
+        mutationTester = MutationTester(mutations: [mutationSpy, mutationSpy],
+                                        delegate: delegateSpy)
+    }
+    
+    func test_performsAMutationTestForEveryMutation() {
         mutationTester.perform()
-
-//        XCTAssertEqual(mutationSpy.mutatedSources.description, [expectedSource, expectedSource].description
-        XCTAssertEqual(delegateSpy.methodCalls, [
-                                                 "backupFile(at:)",
-                                                 
+        XCTAssertEqual(delegateSpy.methodCalls, ["backupFile(at:)",
                                                  "runTestSuite()",
                                                  "restoreFile(at:)",
                                                  // Second file
                                                  "backupFile(at:)",
-                                                 
                                                  "runTestSuite()",
                                                  "restoreFile(at:)"])
-    }
-    
-    func test_doesntRunTestSuiteWhenItEncountersFilesItCantMutate() {
-        let delegateSpy = MutationTesterDelegateSpy()
-        delegateSpy.sourceFileSyntax = SyntaxFactory.makeBlankSourceFile()
-        delegateSpy.testSuiteResult = .failed
-
-        let mutationSpy = SourceCodeMutationSpy()
-
-        let mutationTester = MutationTester(mutations: [mutationSpy],
-                                            delegate: delegateSpy)
-        
-        mutationTester.perform()
-        
-        let numberOfTestSuiteRuns = delegateSpy.methodCalls.filter{ $0 == "runTestSuite()" }.count
-        XCTAssertEqual(numberOfTestSuiteRuns, 1)
+        XCTAssertEqual(delegateSpy.backedUpFilePaths.count, 2)
+        XCTAssertEqual(delegateSpy.restoredFilePaths.count, 2)
+        XCTAssertEqual(delegateSpy.backedUpFilePaths, delegateSpy.restoredFilePaths)
     }
     
     func test_reportsAMutationScoreForAMutationTestRun() {
-        let delegateSpy = MutationTesterDelegateSpy()
-        delegateSpy.sourceFileSyntax = expectedSource
-        delegateSpy.testSuiteResult = .failed
+        XCTAssertEqual(mutationScore(from: []), -1)
         
-        let mutationSpy = SourceCodeMutationSpy()
-        
-        let mutationTester = MutationTester(mutations: [mutationSpy],
-                                            delegate: delegateSpy)
-        
-        XCTAssertEqual(mutationTester.mutationScore, -1)
-        
-        mutationTester.perform()
-        
-        XCTAssertEqual(mutationTester.mutationScore, 100)
+        XCTAssertEqual(mutationScore(from: [.passed]), 0)
+        XCTAssertEqual(mutationScore(from: [.failed]), 100)
+        XCTAssertEqual(mutationScore(from: [.passed, .failed]), 50)
+        XCTAssertEqual(mutationScore(from: [.passed, .failed, .failed]), 66)
     }
 }

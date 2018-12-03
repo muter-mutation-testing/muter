@@ -13,11 +13,11 @@ class CLITests: XCTestCase {
     
     func runningItWithOneArgumentCausesItToMutateTheTestSuiteSpecifiedInTheConfiguration() throws {
         let sourceCodePath = "\(fixturesDirectory)/MuterExampleTestSuite/MuterExampleTestSuite/Module.swift"
-        let originalSourceCode = FileParser.load(path: sourceCodePath)
+        let originalSourceCode = FileUtilities.load(path: sourceCodePath)
 
         let (output, terminationStatus) = try runMuter(with: [configurationPath])
         
-        let afterSourceCode = FileParser.load(path: sourceCodePath)
+        let afterSourceCode = FileUtilities.load(path: sourceCodePath)
         let workingDirectoryExists = FileManager.default.fileExists(atPath: "\(fixturesDirectory)/MuterExampleTestSuite/muter_tmp", isDirectory: nil)
 
         XCTAssertEqual(terminationStatus, 0, "Muter returns 0 when it successfully mutates code and causes that code's test suite to fail")
@@ -26,7 +26,7 @@ class CLITests: XCTestCase {
         XCTAssertEqual(numberOfDiscoveredFileLists(in: output), 1, "Muter lists the paths of Swift files it discovers")
         XCTAssert(output.contains("Mutation Test Passed"), "Muter causes a test suite to fail, which causes the mutation test to pass")
         XCTAssert(output.contains("Mutation Score of Test Suite: 100%"), "Muter reports a mutation score so an engineer can determine how effective their test suite is at identifying defects or changes to a code base")
-        
+        XCTAssert(output.contains("Discovered 3 mutations to introduce in the following files"), "Muter reports how many mutations is able to perform")
         XCTAssertEqual(originalSourceCode!.description, afterSourceCode!.description, "Muter is supposed to clean up after itself by restoring the source code it mutates once it's done")
         XCTAssertFalse(workingDirectoryExists, "Muter is supposed to clean up after itself by deleting the working directory it creates")
     }

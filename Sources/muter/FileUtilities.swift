@@ -9,7 +9,7 @@ protocol FileSystemManager {
 
 extension FileManager: FileSystemManager {}
 
-struct FileParser {
+struct FileUtilities {
     static func load(path: String) -> SourceFileSyntax? {
         let url = URL(fileURLWithPath: path)
         return try? SyntaxTreeParser.parse(url)
@@ -22,7 +22,7 @@ struct FileParser {
     }
     
     static func copySourceCode(fromFileAt sourcePath: String, to destinationPath: String) {
-        let sourceCode = FileParser.load(path: sourcePath)
+        let sourceCode = FileUtilities.load(path: sourcePath)
         try? sourceCode?.description.write(toFile: destinationPath, atomically: true, encoding: .utf8)
     }
     

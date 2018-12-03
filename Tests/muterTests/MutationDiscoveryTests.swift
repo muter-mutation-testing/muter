@@ -1,0 +1,19 @@
+import SwiftSyntax
+import XCTest
+
+class MutationDiscoveryTests: XCTestCase {
+
+    func test_discoversMutationsThatCanBePerformedOnAFile() {
+        let expectedSource = FileUtilities.load(path: "\(fixturesDirectory)/sample.swift")!
+        let mutations = discoverMutations(inFilesAt: ["\(fixturesDirectory)/sample.swift"])
+        
+        XCTAssertEqual(mutations.count, 3)
+        XCTAssertEqual(mutations.first?.filePath, "\(fixturesDirectory)/sample.swift")
+        XCTAssertEqual(mutations.first?.sourceCode.description, expectedSource.description)
+    }
+    
+    func test_reportsNoMutationsWhenAFileDoesntHaveAnySourceCodeThatsCompatible() {
+        let mutations = discoverMutations(inFilesAt: ["\(fixturesDirectory)/sourceWithoutConditionalLogic.swift"])
+        XCTAssertEqual(mutations.count, 0)
+    }
+}

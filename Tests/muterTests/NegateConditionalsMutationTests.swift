@@ -19,12 +19,12 @@ final class NegateConditionalsMutationTests: XCTestCase {
     var sourceWithoutConditionalLogic: SourceFileSyntax!
     
     override func setUp() {
-        sourceWithConditionalLogic = FileParser.load(path: "\(fixturesDirectory)/sample.swift")!
-        sourceWithoutConditionalLogic = FileParser.load(path: "\(fixturesDirectory)/sourceWithoutConditionalLogic.swift")!
+        sourceWithConditionalLogic = FileUtilities.load(path: "\(fixturesDirectory)/sample.swift")!
+        sourceWithoutConditionalLogic = FileUtilities.load(path: "\(fixturesDirectory)/sourceWithoutConditionalLogic.swift")!
     }
     
     func test_negateConditionalsMutation() {
-        let expectedSource = FileParser.load(path: "\(fixturesDirectory)/conditionalBoundary_mutation.swift")!
+        let expectedSource = FileUtilities.load(path: "\(fixturesDirectory)/conditionalBoundary_mutation.swift")!
 
         let delegateSpy = SourceCodeMutationDelegateSpy()
         let positionToMutate = AbsolutePosition(line: 3, column: 19, utf8Offset: 76)
@@ -61,7 +61,7 @@ final class NegateConditionalsMutationTests: XCTestCase {
         let positionToMutate = AbsolutePosition(line: 3, column: 19, utf8Offset: 76)
         let rewriter = NegateConditionalsMutation.Rewriter(positionToMutate: positionToMutate)
         let mutatedSource = rewriter.visit(sourceWithConditionalLogic)
-                let expectedSource = FileParser.load(path: "\(fixturesDirectory)/conditionalBoundary_mutation.swift")!
+                let expectedSource = FileUtilities.load(path: "\(fixturesDirectory)/conditionalBoundary_mutation.swift")!
         XCTAssertEqual(mutatedSource.description, expectedSource.description)
     }
     

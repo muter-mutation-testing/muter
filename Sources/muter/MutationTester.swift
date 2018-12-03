@@ -4,10 +4,19 @@ import SwiftSyntax
 func swapFilePaths(for discoveredFiles: [String], using workingDirectoryPath: String) ->  [String: String] {
     var swapFilePathsByOriginalPath: [String: String] = [:]
     for filePath in discoveredFiles {
-        let swapFilePath = FileParser.swapFilePath(forFileAt: filePath, using: workingDirectoryPath)
+        let swapFilePath = FileUtilities.swapFilePath(forFileAt: filePath, using: workingDirectoryPath)
         swapFilePathsByOriginalPath[filePath] = swapFilePath
     }
     return swapFilePathsByOriginalPath
+}
+
+func mutationScore(from testResults: [MutationTester.TestSuiteResult]) -> Int {
+    guard testResults.count >= 1 else {
+        return -1
+    }
+    
+    let numberOfFailures = Double(testResults.filter { $0 == .failed }.count)
+    return Int((numberOfFailures / Double(testResults.count)) * 100.0)
 }
 
 protocol MutationTesterDelegate {
@@ -20,15 +29,10 @@ class MutationTester {
     
     let mutations: [SourceCodeMutation]
     let delegate: MutationTesterDelegate
-    private var testSuiteResults: [TestSuiteResult]
+    var testSuiteResults: [TestSuiteResult]
 
-    var mutationScore: Int {
-        guard testSuiteResults.count >= 1 else {
-            return -1
-        }
-        
-        let numberOfFailures = testSuiteResults.filter { $0 == .failed }.count
-        return (numberOfFailures / testSuiteResults.count) * 100
+    var overallMutationScore: Int {
+        return mutationScore(from: testSuiteResults)
     }
 
     init(mutations: [SourceCodeMutation], delegate: MutationTesterDelegate) {
@@ -38,15 +42,16 @@ class MutationTester {
     }
     
     func perform() {
-      //iterate through mutations
-//        delegate.backupFile(at: path)
-        
-        //mutate
-        let result = delegate.runTestSuite()
-        testSuiteResults.append(result)
-        
-//        delegate.restoreFile(at: path)
-        
+        for mutation in mutations {
+            delegate.backupFile(at: mutation.filePath)
+            
+            mutation.mutate()
+            
+            let result = delegate.runTestSuite()
+            testSuiteResults.append(result)
+            
+            delegate.restoreFile(at: mutation.filePath)
+        }
     }
 }
 
@@ -59,15 +64,7 @@ extension MutationTester {
     struct Delegate: MutationTesterDelegate {
         let configuration: MuterConfiguration
         let swapFilePathsByOriginalPath: [String: String]
-        
-//        func sourceFromFile(at path: String) -> SourceFileSyntax? {
-//            return FileParser.load(path: path)
-//        }
-//        
-//        func writeFile(filePath: String, contents: String) throws {
-//            try contents.write(toFile: filePath, atomically: true, encoding: .utf8)
-//        }
-//        
+  
         func runTestSuite() -> MutationTester.TestSuiteResult {
             guard #available(OSX 10.13, *) else {
                 print("muter is only supported on macOS 10.13 and higher")
@@ -101,12 +98,12 @@ extension MutationTester {
         
         func backupFile(at path: String) {
             let swapFilePath = swapFilePathsByOriginalPath[path]!
-            FileParser.copySourceCode(fromFileAt: path, to: swapFilePath)
+            FileUtilities.copySourceCode(fromFileAt: path, to: swapFilePath)
         }
         
         func restoreFile(at path: String) {
             let swapFilePath = swapFilePathsByOriginalPath[path]!
-            FileParser.copySourceCode(fromFileAt: swapFilePath, to: path)
+            FileUtilities.copySourceCode(fromFileAt: swapFilePath, to: path)
         }
     }
 }
