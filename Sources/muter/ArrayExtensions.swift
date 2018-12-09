@@ -1,5 +1,5 @@
 extension Array where Element: Hashable  {
-    var deduplicated: Array {
-        return Set<Element>(self).map{ $0 }
+    func deduplicated() -> Array {
+        return Set(self).map{ $0 }
     }
 }

@@ -1,9 +1,7 @@
 {
-    "projectDirectory": "/Users/seandorian/Code/Swift/muter/Tests/muterTests/fixtures/MuterExampleTestSuite",
     "arguments": [
-        "-verbose",
         "-project",
-        "/Users/seandorian/Code/Swift/muter/Tests/muterTests/fixtures/MuterExampleTestSuite/MuterExampleTestSuite.xcodeproj",
+        "MuterExampleTestSuite.xcodeproj",
         "-scheme",
         "MuterExampleTestSuite",
         "-sdk",

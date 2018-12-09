@@ -30,7 +30,7 @@ struct FileUtilities {
         let subpaths = FileManager.default.subpaths(atPath: path) ?? []
         return subpaths
             .filter { path in
-                let blackList = ["Build", "muter_tmp", "Tests.swift"]
+                let blackList = ["Build", "muter_tmp", "Tests.swift", ".swiftmodule", ".framework"]
                 
                 for item in blackList where path.contains(item) {
                     return false

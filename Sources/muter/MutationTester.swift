@@ -42,6 +42,7 @@ class MutationTester {
     }
     
     func perform() {
+        
         for mutation in mutations {
             delegate.backupFile(at: mutation.filePath)
             
@@ -75,6 +76,7 @@ extension MutationTester {
 
             do {
                 let url = URL(fileURLWithPath: configuration.testCommandExecutable)
+                
                 let process = try Process.run(url, arguments: configuration.testCommandArguments) {
                     
                     testResult = $0.terminationStatus > 0 ? .failed : .passed
@@ -97,11 +99,13 @@ extension MutationTester {
         }
         
         func backupFile(at path: String) {
+            printMessage("Backing up file at \(path)")
             let swapFilePath = swapFilePathsByOriginalPath[path]!
             FileUtilities.copySourceCode(fromFileAt: path, to: swapFilePath)
         }
         
         func restoreFile(at path: String) {
+            printMessage("Restoring file at \(path)")
             let swapFilePath = swapFilePathsByOriginalPath[path]!
             FileUtilities.copySourceCode(fromFileAt: swapFilePath, to: path)
         }

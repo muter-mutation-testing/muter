@@ -6,13 +6,10 @@ final class ConfigurationParsingTests: XCTestCase {
     func test_parsesAMuterConfigurationFromAJSONFile() {
         let configuration = MuterConfiguration.fromFixture(at: configurationPath)
         
-        XCTAssertEqual(configuration?.projectDirectory, "/Users/seandorian/Code/Swift/muter/Tests/muterTests/fixtures/MuterExampleTestSuite")
-        
         XCTAssertEqual(configuration?.testCommandExecutable, "/usr/bin/xcodebuild")
         XCTAssertEqual(configuration?.testCommandArguments, [
-            "-verbose",
             "-project",
-            "/Users/seandorian/Code/Swift/muter/Tests/muterTests/fixtures/MuterExampleTestSuite/MuterExampleTestSuite.xcodeproj",
+            "MuterExampleTestSuite.xcodeproj",
             "-scheme",
             "MuterExampleTestSuite",
             "-sdk",
