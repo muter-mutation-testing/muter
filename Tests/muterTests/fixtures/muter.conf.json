@@ -1,14 +1,14 @@
 {
+    "executable": "/usr/bin/xcodebuild",
     "arguments": [
         "-project",
-        "MuterExampleTestSuite.xcodeproj",
+        "ExampleApp.xcodeproj",
         "-scheme",
-        "MuterExampleTestSuite",
+        "ExampleApp",
         "-sdk",
         "iphonesimulator",
         "-destination",
         "platform=iOS Simulator,name=iPhone 8",
         "test"
-    ],
-    "executable": "/usr/bin/xcodebuild"
+    ]
 }

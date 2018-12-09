@@ -11,8 +11,6 @@ class SwapFilePathsTest: XCTestCase {
     }
 }
 
-
-
 class MutationTesterTests: XCTestCase {
     let expectedSource = SyntaxFactory.makeBlankSourceFile()
     var delegateSpy: MutationTesterDelegateSpy!

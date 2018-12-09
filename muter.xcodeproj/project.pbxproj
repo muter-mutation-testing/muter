@@ -27,6 +27,7 @@
 		9D7B4E9621BC8AF100C38089 /* SwiftSyntax.framework in CopyFiles */ = {isa = PBXBuildFile; fileRef = "SwiftSyntax::SwiftSyntax::Product" /* SwiftSyntax.framework */; };
 		9D7B4E9821BCA0DA00C38089 /* muter in CopyFiles */ = {isa = PBXBuildFile; fileRef = "muter::muter::Product" /* muter */; };
 		9D7B4E9921BCA20800C38089 /* SwiftSyntax.framework in CopyFiles */ = {isa = PBXBuildFile; fileRef = "SwiftSyntax::SwiftSyntax::Product" /* SwiftSyntax.framework */; };
+		9D7B4E9B21BCAF2700C38089 /* muter.conf.json in CopyFiles */ = {isa = PBXBuildFile; fileRef = 9DAFB67C21A2298000E4D0BE /* muter.conf.json */; };
 		9DA60E8621AC3DC900B02CB4 /* MutationTesterTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9DA60E8521AC3DC900B02CB4 /* MutationTesterTests.swift */; };
 		9DA60E8921AC4CE700B02CB4 /* MutationTester.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9DA60E8821AC4CE700B02CB4 /* MutationTester.swift */; };
 		9DA60E8A21AC4CE700B02CB4 /* MutationTester.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9DA60E8821AC4CE700B02CB4 /* MutationTester.swift */; };
@@ -130,9 +131,10 @@
 		9D7B4E9721BCA05B00C38089 /* CopyFiles */ = {
 			isa = PBXCopyFilesBuildPhase;
 			buildActionMask = 12;
-			dstPath = "$(PROJECT_DIR)/Tests/muterTests/fixtures/MuterExampleTestSuite";
+			dstPath = "$(PROJECT_DIR)/ExampleApp";
 			dstSubfolderSpec = 0;
 			files = (
+				9D7B4E9B21BCAF2700C38089 /* muter.conf.json in CopyFiles */,
 				9D7B4E9921BCA20800C38089 /* SwiftSyntax.framework in CopyFiles */,
 				9D7B4E9821BCA0DA00C38089 /* muter in CopyFiles */,
 			);
@@ -145,6 +147,8 @@
 		9D6B3B8721AB60AD00936456 /* ExampleTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExampleTests.swift; sourceTree = "<group>"; };
 		9D6B3B8921AB61B900936456 /* ignoremeplz.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ignoremeplz.swift; sourceTree = "<group>"; };
 		9D7B4E9A21BCADA900C38089 /* ExampleApp */ = {isa = PBXFileReference; lastKnownFileType = folder; path = ExampleApp; sourceTree = "<group>"; };
+		9D7B4E9C21BCB0FB00C38089 /* .gitignore */ = {isa = PBXFileReference; lastKnownFileType = text; path = .gitignore; sourceTree = "<group>"; };
+		9D7B4E9D21BCB10300C38089 /* .swift-version */ = {isa = PBXFileReference; lastKnownFileType = text; path = ".swift-version"; sourceTree = "<group>"; };
 		9DA60E8521AC3DC900B02CB4 /* MutationTesterTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = MutationTesterTests.swift; path = Tests/muterTests/MutationTesterTests.swift; sourceTree = SOURCE_ROOT; };
 		9DA60E8721AC44C500B02CB4 /* sample2.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = sample2.swift; sourceTree = "<group>"; };
 		9DA60E8821AC4CE700B02CB4 /* MutationTester.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MutationTester.swift; sourceTree = "<group>"; };
@@ -406,10 +410,12 @@
 		OBJ_5 = {
 			isa = PBXGroup;
 			children = (
-				9D7B4E9A21BCADA900C38089 /* ExampleApp */,
+				9D7B4E9C21BCB0FB00C38089 /* .gitignore */,
+				9D7B4E9D21BCB10300C38089 /* .swift-version */,
 				OBJ_6 /* Package.swift */,
 				OBJ_7 /* Sources */,
 				OBJ_12 /* Tests */,
+				9D7B4E9A21BCADA900C38089 /* ExampleApp */,
 				OBJ_33 /* Build */,
 				OBJ_34 /* Dependencies */,
 				OBJ_65 /* Products */,

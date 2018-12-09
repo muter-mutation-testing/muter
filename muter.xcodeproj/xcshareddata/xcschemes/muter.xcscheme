@@ -55,7 +55,7 @@
       allowLocationSimulation = "YES">
       <PathRunnable
          runnableDebuggingMode = "0"
-         FilePath = "/Users/seandorian/Code/Swift/muter/Tests/muterTests/fixtures/MuterExampleTestSuite/muter">
+         FilePath = "/Users/seandorian/Code/Swift/muter/ExampleApp/muter">
       </PathRunnable>
       <MacroExpansion>
          <BuildableReference
@@ -66,12 +66,6 @@
             ReferencedContainer = "container:muter.xcodeproj">
          </BuildableReference>
       </MacroExpansion>
-      <CommandLineArguments>
-         <CommandLineArgument
-            argument = "/Users/seandorian/Code/Swift/muter/Tests/muterTests/fixtures/muter.conf.json"
-            isEnabled = "YES">
-         </CommandLineArgument>
-      </CommandLineArguments>
       <AdditionalOptions>
       </AdditionalOptions>
    </LaunchAction>

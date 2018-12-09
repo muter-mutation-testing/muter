@@ -45,21 +45,15 @@ func discoverSourceCode(inDirectoryAt path: String) -> [String] {
     return discoveredFiles
 }
 
-switch CommandLine.argc {
-case 2:
-    
-    guard #available(OSX 10.13, *) else {
-        print("Muter requires macOS 10.13 or higher")
-        exit(1)
-    }
-    
-    let configurationPath = CommandLine.arguments[1]
+
+if #available(OSX 10.13, *) {
+    let configurationPath = FileManager.default.currentDirectoryPath + "/muter.conf.json"
     let configuration = try! JSONDecoder().decode(MuterConfiguration.self, from: FileManager.default.contents(atPath: configurationPath)!)
     
     run(with: configuration)
-
+    
     exit(0)
-default:
-    printUsageStatement()
+} else {
+    print("Muter requires macOS 10.13 or higher")
     exit(1)
 }
