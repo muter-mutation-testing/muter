@@ -9,9 +9,9 @@ final class ConfigurationParsingTests: XCTestCase {
         XCTAssertEqual(configuration?.testCommandExecutable, "/usr/bin/xcodebuild")
         XCTAssertEqual(configuration?.testCommandArguments, [
             "-project",
-            "MuterExampleTestSuite.xcodeproj",
+            "ExampleApp.xcodeproj",
             "-scheme",
-            "MuterExampleTestSuite",
+            "ExampleApp",
             "-sdk",
             "iphonesimulator",
             "-destination",

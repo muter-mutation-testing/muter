@@ -149,6 +149,12 @@
 		9D7B4E9A21BCADA900C38089 /* ExampleApp */ = {isa = PBXFileReference; lastKnownFileType = folder; path = ExampleApp; sourceTree = "<group>"; };
 		9D7B4E9C21BCB0FB00C38089 /* .gitignore */ = {isa = PBXFileReference; lastKnownFileType = text; path = .gitignore; sourceTree = "<group>"; };
 		9D7B4E9D21BCB10300C38089 /* .swift-version */ = {isa = PBXFileReference; lastKnownFileType = text; path = ".swift-version"; sourceTree = "<group>"; };
+		9D7B4E9F21BCB2D600C38089 /* ignore me please.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ignore me please.swift"; sourceTree = "<group>"; };
+		9D7B4EA121BCB3C900C38089 /* ignore me please.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ignore me please.swift"; sourceTree = "<group>"; };
+		9D7B4EA321BCB49C00C38089 /* something.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = something.swift; sourceTree = "<group>"; };
+		9D7B4EA421BCB4CC00C38089 /* something.swiftmodule */ = {isa = PBXFileReference; lastKnownFileType = text; path = something.swiftmodule; sourceTree = "<group>"; };
+		9D7B4EA521BCB4FD00C38089 /* something.framework */ = {isa = PBXFileReference; lastKnownFileType = text; path = something.framework; sourceTree = "<group>"; };
+		9D7B4EA621BCB54400C38089 /* ExampleSpec.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExampleSpec.swift; sourceTree = "<group>"; };
 		9DA60E8521AC3DC900B02CB4 /* MutationTesterTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = MutationTesterTests.swift; path = Tests/muterTests/MutationTesterTests.swift; sourceTree = SOURCE_ROOT; };
 		9DA60E8721AC44C500B02CB4 /* sample2.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = sample2.swift; sourceTree = "<group>"; };
 		9DA60E8821AC4CE700B02CB4 /* MutationTester.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MutationTester.swift; sourceTree = "<group>"; };
@@ -258,9 +264,36 @@
 			path = muter_tmp;
 			sourceTree = "<group>";
 		};
+		9D7B4E9E21BCB29C00C38089 /* Pods */ = {
+			isa = PBXGroup;
+			children = (
+				9D7B4E9F21BCB2D600C38089 /* ignore me please.swift */,
+			);
+			path = Pods;
+			sourceTree = "<group>";
+		};
+		9D7B4EA021BCB3B000C38089 /* Tests */ = {
+			isa = PBXGroup;
+			children = (
+				9D7B4EA121BCB3C900C38089 /* ignore me please.swift */,
+			);
+			path = Tests;
+			sourceTree = "<group>";
+		};
+		9D7B4EA221BCB46100C38089 /* Carthage */ = {
+			isa = PBXGroup;
+			children = (
+				9D7B4EA321BCB49C00C38089 /* something.swift */,
+			);
+			path = Carthage;
+			sourceTree = "<group>";
+		};
 		9DB5571D21A0EFEF00B4430F /* FilesToDiscover */ = {
 			isa = PBXGroup;
 			children = (
+				9D7B4EA221BCB46100C38089 /* Carthage */,
+				9D7B4EA021BCB3B000C38089 /* Tests */,
+				9D7B4E9E21BCB29C00C38089 /* Pods */,
 				9D6B3B8821AB60D100936456 /* muter_tmp */,
 				9D6B3B8521AB605800936456 /* Build */,
 				9DB5572721A0F43C00B4430F /* Directory4 */,
@@ -270,6 +303,9 @@
 				9DB5571F21A0F05200B4430F /* file2.swift */,
 				9DB5572421A0F0C500B4430F /* file5 */,
 				9D6B3B8721AB60AD00936456 /* ExampleTests.swift */,
+				9D7B4EA421BCB4CC00C38089 /* something.swiftmodule */,
+				9D7B4EA521BCB4FD00C38089 /* something.framework */,
+				9D7B4EA621BCB54400C38089 /* ExampleSpec.swift */,
 			);
 			path = FilesToDiscover;
 			sourceTree = "<group>";

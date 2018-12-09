@@ -1,6 +1,7 @@
 import SwiftSyntax
 import Foundation
 
+
 protocol FileSystemManager {
     func createDirectory(atPath path: String,
                          withIntermediateDirectories createIntermediates: Bool,
@@ -10,6 +11,8 @@ protocol FileSystemManager {
 extension FileManager: FileSystemManager {}
 
 struct FileUtilities {
+    private static let defaultBlacklist = ["Build", "muter_tmp", "Tests", "Pods", "Carthage", ".swiftmodule", ".framework", "Spec"]
+
     static func load(path: String) -> SourceFileSyntax? {
         let url = URL(fileURLWithPath: path)
         return try? SyntaxTreeParser.parse(url)
@@ -26,13 +29,12 @@ struct FileUtilities {
         try? sourceCode?.description.write(toFile: destinationPath, atomically: true, encoding: .utf8)
     }
     
-    static func sourceFilesContained(in path: String) -> [String] {
+    static func sourceFilesContained(in path: String, excludingPathsIn blacklist: [String] = defaultBlacklist) -> [String] {
         let subpaths = FileManager.default.subpaths(atPath: path) ?? []
         return subpaths
             .filter { path in
-                let blackList = ["Build", "muter_tmp", "Tests.swift", ".swiftmodule", ".framework"]
                 
-                for item in blackList where path.contains(item) {
+                for item in blacklist where path.contains(item) {
                     return false
                 }
                 

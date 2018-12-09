@@ -3,7 +3,7 @@ import XCTest
 @available(OSX 10.13, *)
 class CLITests: XCTestCase {
     
-    func test_runningItWithNoArgumentsPrintsAUsageStatement() throws {
+    func runningItWithNoArgumentsPrintsAUsageStatement() throws {
 
         let (output, terminationStatus) = try runMuter(with: [])
         
