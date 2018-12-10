@@ -23,6 +23,8 @@
 /* Begin PBXBuildFile section */
 		9D1CFAA221A0D87B005D27DD /* FileUtilities.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_9 /* FileUtilities.swift */; };
 		9D1CFAA321A0D87B005D27DD /* NegateConditionalsMutation.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_10 /* NegateConditionalsMutation.swift */; };
+		9D27937C21BE0A2600BC139C /* URLExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9D27937B21BE0A2600BC139C /* URLExtensions.swift */; };
+		9D27937D21BE0A2600BC139C /* URLExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9D27937B21BE0A2600BC139C /* URLExtensions.swift */; };
 		9D7B4E9521BC8AB000C38089 /* muter in CopyFiles */ = {isa = PBXBuildFile; fileRef = "muter::muter::Product" /* muter */; };
 		9D7B4E9621BC8AF100C38089 /* SwiftSyntax.framework in CopyFiles */ = {isa = PBXBuildFile; fileRef = "SwiftSyntax::SwiftSyntax::Product" /* SwiftSyntax.framework */; };
 		9D7B4E9821BCA0DA00C38089 /* muter in CopyFiles */ = {isa = PBXBuildFile; fileRef = "muter::muter::Product" /* muter */; };
@@ -143,6 +145,8 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		9D27937A21BDF55700BC139C /* muters_output.txt */ = {isa = PBXFileReference; lastKnownFileType = text; path = muters_output.txt; sourceTree = "<group>"; };
+		9D27937B21BE0A2600BC139C /* URLExtensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = URLExtensions.swift; path = Sources/muter/URLExtensions.swift; sourceTree = SOURCE_ROOT; };
 		9D6B3B8621AB608500936456 /* something.swiftdep */ = {isa = PBXFileReference; lastKnownFileType = text; path = something.swiftdep; sourceTree = "<group>"; };
 		9D6B3B8721AB60AD00936456 /* ExampleTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExampleTests.swift; sourceTree = "<group>"; };
 		9D6B3B8921AB61B900936456 /* ignoremeplz.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ignoremeplz.swift; sourceTree = "<group>"; };
@@ -354,6 +358,7 @@
 		OBJ_13 /* muterTests */ = {
 			isa = PBXGroup;
 			children = (
+				9D27937A21BDF55700BC139C /* muters_output.txt */,
 				9DA60E8521AC3DC900B02CB4 /* MutationTesterTests.swift */,
 				9DAFB67A21A21FB300E4D0BE /* ConfigurationParsingTests.swift */,
 				OBJ_14 /* CLITests.swift */,
@@ -498,6 +503,7 @@
 				9DA60E8821AC4CE700B02CB4 /* MutationTester.swift */,
 				OBJ_9 /* FileUtilities.swift */,
 				9DAFB67D21A230EA00E4D0BE /* MuterConfiguration.swift */,
+				9D27937B21BE0A2600BC139C /* URLExtensions.swift */,
 				OBJ_10 /* NegateConditionalsMutation.swift */,
 				9DB190F621B4C241006EB8D3 /* AbsolutePositionExtensions.swift */,
 				OBJ_11 /* main.swift */,
@@ -665,6 +671,7 @@
 				9DA60E8921AC4CE700B02CB4 /* MutationTester.swift in Sources */,
 				9DB190F721B4C242006EB8D3 /* AbsolutePositionExtensions.swift in Sources */,
 				OBJ_112 /* NegateConditionalsMutation.swift in Sources */,
+				9D27937C21BE0A2600BC139C /* URLExtensions.swift in Sources */,
 				9DB190FF21B4D8E3006EB8D3 /* ArrayExtensions.swift in Sources */,
 				OBJ_113 /* main.swift in Sources */,
 			);
@@ -699,6 +706,7 @@
 				9DA60E8C21AC4FBA00B02CB4 /* SourceCodeMutationSpy.swift in Sources */,
 				9DAFB67F21A230EA00E4D0BE /* MuterConfiguration.swift in Sources */,
 				9DA60E8621AC3DC900B02CB4 /* MutationTesterTests.swift in Sources */,
+				9D27937D21BE0A2600BC139C /* URLExtensions.swift in Sources */,
 				OBJ_138 /* XCTestManifests.swift in Sources */,
 				9DB190FD21B4D16E006EB8D3 /* mutationDiscovery.swift in Sources */,
 			);

@@ -22,7 +22,7 @@ func run(with configuration: MuterConfiguration) {
                                 delegate: delegate)
     tester.perform()
 
-    printMessage("Mutation Score of Test Suite: \(tester.overallMutationScore)%")
+    printMessage("Mutation Score of Test Suite: \(tester.overallMutationScore)/100")
     
     removeWorkingDirectory(at: FileManager.default.currentDirectoryPath +
         "/muter_tmp")
@@ -32,14 +32,15 @@ func removeWorkingDirectory(at path: String) {
     do {
         try FileManager.default.removeItem(atPath: path)
     } catch {
-        print("Encountered error removing Muter's working directory")
-        print("\(error)")
+        printMessage("Encountered error removing Muter's working directory")
+        printMessage("\(error)")
     }
 }
 
 func discoverSourceCode(inDirectoryAt path: String) -> [String] {
     let discoveredFiles = FileUtilities.sourceFilesContained(in: path)
     let filePaths = discoveredFiles.joined(separator: "\n")
+    
     printMessage("Discovered \(discoveredFiles.count) Swift files:\n\(filePaths)")
     
     return discoveredFiles

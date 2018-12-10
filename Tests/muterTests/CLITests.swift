@@ -1,53 +1,88 @@
 import XCTest
+import SwiftSyntax
 
 @available(OSX 10.13, *)
 class CLITests: XCTestCase {
     
-    func runningItWithNoArgumentsPrintsAUsageStatement() throws {
-
-        let (output, terminationStatus) = try runMuter(with: [])
+    static var originalSourceCode: SourceFileSyntax!
+    static var sourceCodePath: String!
+    static var output: String!
+    
+    override static func setUp() {
+        clearMuterOutputFromLastTestRun()
         
-        XCTAssertEqual(terminationStatus, 1)
-        XCTAssertTrue(output.contains("usage"), "expected a usage statement to be printed")
+        guard FileManager.default.contents(atPath: muterOutputPath)!.count == 0 else {
+            fatalError("The test suite didn't clear out Muter's output from the last test run")
+        }
+        
+        sourceCodePath = "\(exampleAppDirectory)/ExampleApp/Module.swift"
+        originalSourceCode = FileUtilities.load(path: sourceCodePath)!
+
+        let (standardOut, _) = try! runMuter(with: [])
+        output = standardOut
     }
     
-    func runningItWithOneArgumentCausesItToMutateTheTestSuiteSpecifiedInTheConfiguration() throws {
-        let sourceCodePath = "\(fixturesDirectory)/MuterExampleTestSuite/MuterExampleTestSuite/Module.swift"
-        let originalSourceCode = FileUtilities.load(path: sourceCodePath)
-
-        let (output, terminationStatus) = try runMuter(with: [configurationPath])
+    func test_muterReportsTheFilesItDiscovers() {
+        XCTAssert(CLITests.output.contains("Discovered 4 Swift files"), "Muter reports the number of Swift files it discovers")
+        XCTAssertEqual(numberOfDiscoveredFileLists(in: CLITests.output), 1, "Muter lists the paths of Swift files it discovers")
+    }
+    
+    func test_muterReportsTheMutationsItCanApply() {
+        XCTAssert(CLITests.output.contains("Discovered 3 mutations to introduce in the following files"), "Muter reports how many mutations it's able to perform")
+    }
+    
+    func test_muterPerformsAMutationTest() throws {
+        XCTAssert(CLITests.output.contains("Mutation Test Passed"), "Muter causes a test suite to fail, which causes the mutation test to pass")
+        XCTAssert(CLITests.output.contains("Mutation Test Failed"), "Not every mutation test will pass - it depends on the rigor of the test suite under test.")
+    }
+    
+    func test_muterReportsAMutationScore() {
+        XCTAssert(CLITests.output.contains("Mutation Score of Test Suite: 66/100"), "Muter reports a mutation score so an engineer can determine how effective their test suite is at identifying defects or changes to a code base")
+    }
+    
+    func test_muterCleansUpAfterItself()  {
+        let afterSourceCode = FileUtilities.load(path: CLITests.sourceCodePath)
+        let workingDirectoryExists = FileManager.default.fileExists(atPath: "\(CLITests.exampleAppDirectory)/muter_tmp", isDirectory: nil)
         
-        let afterSourceCode = FileUtilities.load(path: sourceCodePath)
-        let workingDirectoryExists = FileManager.default.fileExists(atPath: "\(fixturesDirectory)/MuterExampleTestSuite/muter_tmp", isDirectory: nil)
-
-        XCTAssertEqual(terminationStatus, 0, "Muter returns 0 when it successfully mutates code and causes that code's test suite to fail")
-        
-        XCTAssert(output.contains("Discovered 3 Swift files"), "Muter reports the number of Swift files it discovers")
-        XCTAssertEqual(numberOfDiscoveredFileLists(in: output), 1, "Muter lists the paths of Swift files it discovers")
-        XCTAssert(output.contains("Mutation Test Passed"), "Muter causes a test suite to fail, which causes the mutation test to pass")
-        XCTAssert(output.contains("Mutation Score of Test Suite: 100%"), "Muter reports a mutation score so an engineer can determine how effective their test suite is at identifying defects or changes to a code base")
-        XCTAssert(output.contains("Discovered 3 mutations to introduce in the following files"), "Muter reports how many mutations is able to perform")
-        XCTAssertEqual(originalSourceCode!.description, afterSourceCode!.description, "Muter is supposed to clean up after itself by restoring the source code it mutates once it's done")
+        XCTAssertNotNil(afterSourceCode, "This file should be available - Muter may have accidentally moved or deleted it")
+        XCTAssertEqual(CLITests.originalSourceCode!.description, afterSourceCode!.description, "Muter is supposed to clean up after itself by restoring the source code it mutates once it's done")
         XCTAssertFalse(workingDirectoryExists, "Muter is supposed to clean up after itself by deleting the working directory it creates")
     }
 }
 
 @available(OSX 10.13, *)
 private extension CLITests {
+
+    static var exampleAppDirectory: String {
+        return CLITests().productsDirectory
+            .deletingLastPathComponent()
+            .deletingLastPathComponent()
+            .deletingLastPathComponent() // Go up 3 directories
+            .appendingPathComponent("ExampleApp") // Go down 1 directory
+            .withoutScheme() // Remove the file reference scheme
+            .absoluteString
+    }
     
-    func runMuter(with arguments: [String]) throws -> (output: String, terminationStatus: Int32) {
-        let muter = productsDirectory.appendingPathComponent("muter")
+    static var muterOutputPath: String { return "\(CLITests().testDirectory)/muters_output.txt" }
+
+    static func clearMuterOutputFromLastTestRun() {
+        try! "".write(toFile: muterOutputPath, atomically: true, encoding: .utf8)
+    }
+    
+    static func runMuter(with arguments: [String]) throws -> (output: String, terminationStatus: Int32) {
+        let muter = CLITests().productsDirectory.appendingPathComponent("muter")
         let process = Process()
-        let pipe = Pipe()
+        let fileHandle = FileHandle(forWritingAtPath: muterOutputPath)!
         
         process.executableURL = muter
         process.arguments = arguments
-        process.standardOutput = pipe
-
+        process.standardOutput = fileHandle
+        
         try process.run()
         process.waitUntilExit()
+        fileHandle.closeFile()
         
-        let data = pipe.fileHandleForReading.readDataToEndOfFile()
+        let data = FileManager.default.contents(atPath: muterOutputPath)!
         return (
             output: String(data: data, encoding: .utf8) ?? "",
             terminationStatus: process.terminationStatus
