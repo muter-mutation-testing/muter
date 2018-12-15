@@ -4,9 +4,9 @@ import class Foundation.Bundle
 final class FileOperationsTests: XCTestCase {
     
     func test_generatesAMappingBetweenSwapFilesAndTheirOriginalFilePaths() {
-        let filePaths = ["some/path/to/aFile", "some/path/to/anotherFile"]
+        let paths = ["some/path/to/aFile", "some/path/to/anotherFile"]
         let workingDirectory = "~"
-        let result = swapFilePaths(for: filePaths, using: workingDirectory)
+        let result = swapFilePaths(forFilesAt: paths, using: workingDirectory)
         XCTAssertEqual(result, ["some/path/to/aFile": "~/aFile",
                                 "some/path/to/anotherFile": "~/anotherFile"])
     }

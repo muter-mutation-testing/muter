@@ -1,23 +1,18 @@
 import SwiftSyntax
 import Foundation
 
-private let defaultBlacklist = ["Build", "muter_tmp", "Tests", "Pods", "Carthage", ".swiftmodule", ".framework", "Spec"]
-
+// MARK - Source Code
 func sourceCode(fromFileAt path: String) -> SourceFileSyntax? {
     let url = URL(fileURLWithPath: path)
     return try? SyntaxTreeParser.parse(url)
-}
-
-func createWorkingDirectory(in directory: String, fileManager: FileSystemManager = FileManager.default) -> String {
-    let workingDirectory = "\(directory)/muter_tmp"
-    try! fileManager.createDirectory(atPath: workingDirectory, withIntermediateDirectories: true, attributes: nil)
-    return workingDirectory
 }
 
 func copySourceCode(fromFileAt sourcePath: String, to destinationPath: String) {
     let source = sourceCode(fromFileAt: sourcePath)
     try? source?.description.write(toFile: destinationPath, atomically: true, encoding: .utf8)
 }
+
+private let defaultBlacklist = ["Build", "muter_tmp", "Test", "Pods", "Carthage", ".swiftmodule", ".framework", "Spec"]
 
 func discoverSourceFiles(inDirectoryAt path: String, excludingPathsIn blacklist: [String] = defaultBlacklist) -> [String] {
     let subpaths = FileManager.default.subpaths(atPath: path) ?? []
@@ -34,11 +29,28 @@ func discoverSourceFiles(inDirectoryAt path: String, excludingPathsIn blacklist:
         .sorted()
 }
 
-func swapFilePaths(for discoveredFiles: [String], using workingDirectoryPath: String) ->  [String: String] {
+// MARK - Working Directory
+func createWorkingDirectory(in directory: String, fileManager: FileSystemManager = FileManager.default) -> String {
+    let workingDirectory = "\(directory)/muter_tmp"
+    try! fileManager.createDirectory(atPath: workingDirectory, withIntermediateDirectories: true, attributes: nil)
+    return workingDirectory
+}
+
+func removeWorkingDirectory(at path: String) {
+    do {
+        try FileManager.default.removeItem(atPath: path)
+    } catch {
+        printMessage("Encountered error removing Muter's working directory")
+        printMessage("\(error)")
+    }
+}
+
+// MARK - Swap File Path
+func swapFilePaths(forFilesAt paths: [String], using workingDirectoryPath: String) ->  [String: String] {
     var swapFilePathsByOriginalPath: [String: String] = [:]
     
-    for filePath in discoveredFiles {
-        swapFilePathsByOriginalPath[filePath] = swapFilePath(forFileAt: filePath, using: workingDirectoryPath)
+    for path in paths {
+        swapFilePathsByOriginalPath[path] = swapFilePath(forFileAt: path, using: workingDirectoryPath)
     }
     
     return swapFilePathsByOriginalPath
@@ -50,6 +62,3 @@ func swapFilePath(forFileAt path: String, using workingDirectory: String) -> Str
     }
     return "\(workingDirectory)/\(url.lastPathComponent)"
 }
-
-
-
