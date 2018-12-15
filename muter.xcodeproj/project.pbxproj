@@ -192,7 +192,7 @@
 		OBJ_18 /* FileManagerSpy.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FileManagerSpy.swift; sourceTree = "<group>"; };
 		OBJ_19 /* XCTestExtensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = XCTestExtensions.swift; sourceTree = "<group>"; };
 		OBJ_20 /* XCTestManifests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = XCTestManifests.swift; sourceTree = "<group>"; };
-		OBJ_31 /* conditionalBoundary_mutation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = conditionalBoundary_mutation.swift; sourceTree = "<group>"; };
+		OBJ_31 /* negateConditionalsMutation.example.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = negateConditionalsMutation.example.swift; sourceTree = "<group>"; };
 		OBJ_32 /* sample.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = sample.swift; sourceTree = "<group>"; };
 		OBJ_33 /* Build */ = {isa = PBXFileReference; lastKnownFileType = folder; path = Build; sourceTree = SOURCE_ROOT; };
 		OBJ_38 /* AbsolutePosition.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AbsolutePosition.swift; sourceTree = "<group>"; };
@@ -392,7 +392,7 @@
 			isa = PBXGroup;
 			children = (
 				9DB5571D21A0EFEF00B4430F /* FilesToDiscover */,
-				OBJ_31 /* conditionalBoundary_mutation.swift */,
+				OBJ_31 /* negateConditionalsMutation.example.swift */,
 				OBJ_32 /* sample.swift */,
 				9DA60E8721AC44C500B02CB4 /* sample2.swift */,
 				9DAFB67C21A2298000E4D0BE /* muter.conf.json */,

@@ -24,7 +24,7 @@ final class NegateConditionalsMutationTests: XCTestCase {
     }
     
     func test_negateConditionalsMutation() {
-        let expectedSource = sourceCode(fromFileAt: "\(fixturesDirectory)/conditionalBoundary_mutation.swift")!
+        let expectedSource = sourceCode(fromFileAt: "\(fixturesDirectory)/negateConditionalsMutation.example.swift")!
 
         let delegateSpy = SourceCodeMutationDelegateSpy()
         let positionToMutate = AbsolutePosition(line: 3, column: 19, utf8Offset: 76)
@@ -61,7 +61,7 @@ final class NegateConditionalsMutationTests: XCTestCase {
         let positionToMutate = AbsolutePosition(line: 3, column: 19, utf8Offset: 76)
         let rewriter = NegateConditionalsMutation.Rewriter(positionToMutate: positionToMutate)
         let mutatedSource = rewriter.visit(sourceWithConditionalLogic)
-                let expectedSource = sourceCode(fromFileAt: "\(fixturesDirectory)/conditionalBoundary_mutation.swift")!
+                let expectedSource = sourceCode(fromFileAt: "\(fixturesDirectory)/negateConditionalsMutation.example.swift")!
         XCTAssertEqual(mutatedSource.description, expectedSource.description)
     }
     
