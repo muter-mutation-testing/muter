@@ -9,17 +9,19 @@ class CLITests: XCTestCase {
     static var output: String!
     
     override static func setUp() {
-        clearMuterOutputFromLastTestRun()
-        
-        guard FileManager.default.contents(atPath: muterOutputPath)!.count == 0 else {
-            fatalError("The test suite didn't clear out Muter's output from the last test run")
-        }
-        
         sourceCodePath = "\(exampleAppDirectory)/ExampleApp/Module.swift"
         originalSourceCode = sourceCode(fromFileAt: sourceCodePath)!
 
         let (standardOut, _) = try! runMuter(with: [])
         output = standardOut
+    }
+    
+    override static func tearDown() {
+        clearMuterOutputFromLastTestRun()
+        
+        guard FileManager.default.contents(atPath: muterOutputPath)!.count == 0 else {
+            fatalError("The test suite didn't clear out Muter's output from the last test run")
+        }
     }
     
     func test_muterReportsTheFilesItDiscovers() {
