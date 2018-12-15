@@ -4,7 +4,7 @@ import XCTest
 class MutationDiscoveryTests: XCTestCase {
 
     func test_discoversMutationsThatCanBePerformedOnAFile() {
-        let expectedSource = FileUtilities.load(path: "\(fixturesDirectory)/sample.swift")!
+        let expectedSource = sourceCode(fromFileAt: "\(fixturesDirectory)/sample.swift")!
         let mutations = discoverMutations(inFilesAt: ["\(fixturesDirectory)/sample.swift"])
         
         XCTAssertEqual(mutations.count, 3)

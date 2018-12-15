@@ -1,33 +1,21 @@
 import XCTest
 import SwiftSyntax
 
-class SwapFilePathsTest: XCTestCase {
-    func test_generatesAMappingBetweenSwapFilesAndTheirOriginalFilePaths() {
-        let filePaths = ["some/path/to/aFile", "some/path/to/anotherFile"]
-        let workingDirectory = "~"
-        let result = swapFilePaths(for: filePaths, using: workingDirectory)
-        XCTAssertEqual(result, ["some/path/to/aFile": "~/aFile",
-                                "some/path/to/anotherFile": "~/anotherFile"])
-    }
-}
-
-class MutationTesterTests: XCTestCase {
+class MutationTestingTests: XCTestCase {
     let expectedSource = SyntaxFactory.makeBlankSourceFile()
-    var delegateSpy: MutationTesterDelegateSpy!
+    var delegateSpy: MutationTestingDelegateSpy!
     var mutationSpy: SourceCodeMutationSpy!
-    var mutationTester: MutationTester!
     
     override func setUp() {
-        delegateSpy = MutationTesterDelegateSpy()
+        delegateSpy = MutationTestingDelegateSpy()
         delegateSpy.testSuiteResult = .failed
         mutationSpy = SourceCodeMutationSpy()
         mutationSpy.filePath = "a/path"
-        mutationTester = MutationTester(mutations: [mutationSpy, mutationSpy],
-                                        delegate: delegateSpy)
     }
     
     func test_performsAMutationTestForEveryMutation() {
-        mutationTester.perform()
+        let mutationScore = performMutationTesting(using: [mutationSpy, mutationSpy], delegate: delegateSpy)
+
         XCTAssertEqual(delegateSpy.methodCalls, ["backupFile(at:)",
                                                  "runTestSuite()",
                                                  "restoreFile(at:)",
@@ -38,6 +26,7 @@ class MutationTesterTests: XCTestCase {
         XCTAssertEqual(delegateSpy.backedUpFilePaths.count, 2)
         XCTAssertEqual(delegateSpy.restoredFilePaths.count, 2)
         XCTAssertEqual(delegateSpy.backedUpFilePaths, delegateSpy.restoredFilePaths)
+        XCTAssertEqual(mutationScore, 100)
     }
     
     func test_reportsAMutationScoreForAMutationTestRun() {

@@ -16,7 +16,7 @@ class CLITests: XCTestCase {
         }
         
         sourceCodePath = "\(exampleAppDirectory)/ExampleApp/Module.swift"
-        originalSourceCode = FileUtilities.load(path: sourceCodePath)!
+        originalSourceCode = sourceCode(fromFileAt: sourceCodePath)!
 
         let (standardOut, _) = try! runMuter(with: [])
         output = standardOut
@@ -41,7 +41,7 @@ class CLITests: XCTestCase {
     }
     
     func test_muterCleansUpAfterItself()  {
-        let afterSourceCode = FileUtilities.load(path: CLITests.sourceCodePath)
+        let afterSourceCode = sourceCode(fromFileAt: CLITests.sourceCodePath)
         let workingDirectoryExists = FileManager.default.fileExists(atPath: "\(CLITests.exampleAppDirectory)/muter_tmp", isDirectory: nil)
         
         XCTAssertNotNil(afterSourceCode, "This file should be available - Muter may have accidentally moved or deleted it")

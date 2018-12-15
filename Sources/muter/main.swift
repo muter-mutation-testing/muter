@@ -5,7 +5,7 @@ import SwiftSyntax
 @available(OSX 10.12, *)
 func run(with configuration: MuterConfiguration) {
 
-    let workingDirectoryPath = FileUtilities.createWorkingDirectory(in: FileManager.default.currentDirectoryPath)
+    let workingDirectoryPath = createWorkingDirectory(in: FileManager.default.currentDirectoryPath)
     let discoveredFilesPaths = discoverSourceCode(inDirectoryAt: FileManager.default.currentDirectoryPath)
 
     let mutations = discoverMutations(inFilesAt: discoveredFilesPaths)
@@ -13,16 +13,14 @@ func run(with configuration: MuterConfiguration) {
     let mutatedFilePaths = mutations.map{ $0.filePath }.deduplicated().sorted().joined(separator: "\n")
     printMessage("Discovered \(mutations.count) mutations to introduce in the following files: \n\(mutatedFilePaths)")
     
-    let delegate = MutationTester.Delegate(configuration: configuration,
+    let delegate = MutationTestingDelegate(configuration: configuration,
                                            swapFilePathsByOriginalPath: swapFilePaths(for: discoveredFilesPaths, using: workingDirectoryPath))
     
     FileManager.default.changeCurrentDirectoryPath(FileManager.default.currentDirectoryPath)
     
-    let tester = MutationTester(mutations: mutations,
-                                delegate: delegate)
-    tester.perform()
-
-    printMessage("Mutation Score of Test Suite: \(tester.overallMutationScore)/100")
+    let mutationScore = performMutationTesting(using: mutations, delegate: delegate)
+    
+    printMessage("Mutation Score of Test Suite: \(mutationScore)/100")
     
     removeWorkingDirectory(at: FileManager.default.currentDirectoryPath +
         "/muter_tmp")
@@ -38,7 +36,7 @@ func removeWorkingDirectory(at path: String) {
 }
 
 func discoverSourceCode(inDirectoryAt path: String) -> [String] {
-    let discoveredFiles = FileUtilities.sourceFilesContained(in: path)
+    let discoveredFiles = sourceFilesContained(in: path)
     let filePaths = discoveredFiles.joined(separator: "\n")
     
     printMessage("Discovered \(discoveredFiles.count) Swift files:\n\(filePaths)")

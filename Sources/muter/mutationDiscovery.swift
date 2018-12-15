@@ -1,7 +1,7 @@
 import SwiftSyntax
 
 func filePathsToIntermediateValues(filePath: String) -> ([AbsolutePosition], SourceFileSyntax, String) {
-    let source = FileUtilities.load(path: filePath)!
+    let source = sourceCode(fromFileAt: filePath)!
     
     let visitor = NegateConditionalsMutation.Visitor()
     visitor.visit(source)
