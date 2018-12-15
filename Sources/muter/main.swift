@@ -6,20 +6,15 @@ import SwiftSyntax
 func run(with configuration: MuterConfiguration) {
 
     let workingDirectoryPath = createWorkingDirectory(in: FileManager.default.currentDirectoryPath)
-    let discoveredFilesPaths = discoverSourceCode(inDirectoryAt: FileManager.default.currentDirectoryPath)
-
-    let mutations = discoverMutations(inFilesAt: discoveredFilesPaths)
-    
-    let mutatedFilePaths = mutations.map{ $0.filePath }.deduplicated().sorted().joined(separator: "\n")
-    printMessage("Discovered \(mutations.count) mutations to introduce in the following files: \n\(mutatedFilePaths)")
-    
-    let delegate = MutationTestingDelegate(configuration: configuration,
-                                           swapFilePathsByOriginalPath: swapFilePaths(for: discoveredFilesPaths, using: workingDirectoryPath))
+    let filePaths = discoverSourceFiles(inDirectoryAt: FileManager.default.currentDirectoryPath)
+    let mutations = discoverMutations(inFilesAt: filePaths)
+    let testingDelegate = MutationTestingDelegate(configuration: configuration,
+                                           swapFilePathsByOriginalPath: swapFilePaths(for: filePaths, using: workingDirectoryPath))
     
     FileManager.default.changeCurrentDirectoryPath(FileManager.default.currentDirectoryPath)
     
-    let mutationScore = performMutationTesting(using: mutations, delegate: delegate)
-    
+    printDiscoveryMessage(for: filePaths, and: mutations)
+    let mutationScore = performMutationTesting(using: mutations, delegate: testingDelegate)
     printMessage("Mutation Score of Test Suite: \(mutationScore)/100")
     
     removeWorkingDirectory(at: FileManager.default.currentDirectoryPath +
@@ -34,16 +29,6 @@ func removeWorkingDirectory(at path: String) {
         printMessage("\(error)")
     }
 }
-
-func discoverSourceCode(inDirectoryAt path: String) -> [String] {
-    let discoveredFiles = sourceFilesContained(in: path)
-    let filePaths = discoveredFiles.joined(separator: "\n")
-    
-    printMessage("Discovered \(discoveredFiles.count) Swift files:\n\(filePaths)")
-    
-    return discoveredFiles
-}
-
 
 if #available(OSX 10.13, *) {
     let configurationPath = FileManager.default.currentDirectoryPath + "/muter.conf.json"

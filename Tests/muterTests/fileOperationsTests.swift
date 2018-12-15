@@ -24,7 +24,7 @@ final class FileOperationsTests: XCTestCase {
     
     func test_discoversSwiftFilesRecursivelyandReturnsTheResultsAlphabetically() {
         let path = "\(fixturesDirectory)/FilesToDiscover"
-        let discoveredPaths = sourceFilesContained(in:
+        let discoveredPaths = discoverSourceFiles(inDirectoryAt:
             path)
         XCTAssertEqual(discoveredPaths, [
             "\(path)/Directory1/file3.swift",
@@ -36,13 +36,13 @@ final class FileOperationsTests: XCTestCase {
     }
     
     func test_discoversNoSourceFilesWithAnInvalidPath() {
-        XCTAssertEqual(sourceFilesContained(in: "I don't exist"), [])
+        XCTAssertEqual(discoverSourceFiles(inDirectoryAt: "I don't exist"), [])
     }
     
     func test_ignoresFilesThatArentSwiftFiles() {
         let path = "\(fixturesDirectory)/FilesToDiscover"
-        XCTAssertEqual(sourceFilesContained(in: "\(path)/Directory4"), [])
-        XCTAssertEqual(sourceFilesContained(in: "\(path)/Directory2"), [
+        XCTAssertEqual(discoverSourceFiles(inDirectoryAt: "\(path)/Directory4"), [])
+        XCTAssertEqual(discoverSourceFiles(inDirectoryAt: "\(path)/Directory2"), [
             "\(path)/Directory2/Directory3/file6.swift"
         ])
     }
