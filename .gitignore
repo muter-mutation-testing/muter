@@ -6,7 +6,7 @@ muter_tmp/
 xcuserdata/
 ExampleApp/muter
 ExampleApp/muter.conf.json
-ExampleLab/SwiftSyntax.framework/
+ExampleApp/SwiftSyntax.framework/
 
 # Created by https://www.gitignore.io/api/swift,xcode,macos
 # Edit at https://www.gitignore.io/?templates=swift,xcode,macos
