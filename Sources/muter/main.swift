@@ -4,10 +4,15 @@ import SwiftSyntax
 
 @available(OSX 10.12, *)
 func run(with configuration: MuterConfiguration, fileManager: FileManager = .default, in currentDirectoryPath: String) {
-    
     let workingDirectoryPath = createWorkingDirectory(in: currentDirectoryPath)
+    printMessage("Created working directory")
+
+    printMessage("Discovering source code in:\n\(currentDirectoryPath)")
     let sourceFilePaths = discoverSourceFiles(inDirectoryAt: currentDirectoryPath)
+    printMessage(sourceFilePaths.joined(separator: "\n"))
     let swapFilePathsByOriginalPath = swapFilePaths(forFilesAt: sourceFilePaths, using: workingDirectoryPath)
+    
+    printMessage("Discovering applicable source code mutations in:\n\(currentDirectoryPath)")
     let mutations = discoverMutations(inFilesAt: sourceFilePaths)
     printDiscoveryMessage(for: sourceFilePaths, and: mutations)
     
