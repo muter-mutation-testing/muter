@@ -150,7 +150,9 @@
 /* Begin PBXFileReference section */
 		9D27937A21BDF55700BC139C /* muters_output.txt */ = {isa = PBXFileReference; lastKnownFileType = text; path = muters_output.txt; sourceTree = "<group>"; };
 		9D27937B21BE0A2600BC139C /* URLExtensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = URLExtensions.swift; path = Sources/muter/URLExtensions.swift; sourceTree = SOURCE_ROOT; };
-		9D6B3B8621AB608500936456 /* something.swiftdep */ = {isa = PBXFileReference; lastKnownFileType = text; path = something.swiftdep; sourceTree = "<group>"; };
+		9D28927D21C6F3A6002BC869 /* .build */ = {isa = PBXFileReference; lastKnownFileType = folder; path = .build; sourceTree = "<group>"; };
+		9D28927E21C6F4F0002BC869 /* something.swiftdep */ = {isa = PBXFileReference; lastKnownFileType = text; path = something.swiftdep; sourceTree = "<group>"; };
+		9D6B3B8621AB608500936456 /* something1.swiftdep */ = {isa = PBXFileReference; lastKnownFileType = text; path = something1.swiftdep; sourceTree = "<group>"; };
 		9D6B3B8721AB60AD00936456 /* ExampleTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExampleTests.swift; sourceTree = "<group>"; };
 		9D6B3B8921AB61B900936456 /* ignoremeplz.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ignoremeplz.swift; sourceTree = "<group>"; };
 		9D7B4E9A21BCADA900C38089 /* ExampleApp */ = {isa = PBXFileReference; lastKnownFileType = folder; path = ExampleApp; sourceTree = "<group>"; };
@@ -184,6 +186,7 @@
 		9DB5572421A0F0C500B4430F /* file5 */ = {isa = PBXFileReference; lastKnownFileType = text; path = file5; sourceTree = "<group>"; };
 		9DB5572621A0F3FB00B4430F /* file6.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = file6.swift; sourceTree = "<group>"; };
 		9DB5572A21A115F600B4430F /* something.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = something.json; sourceTree = "<group>"; };
+		9DB7FE6B21C6F76300F6FC84 /* muter.conf.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = muter.conf.json; sourceTree = "<group>"; };
 		9DD0416821C55949002DBE4E /* FileManagerExtensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FileManagerExtensions.swift; sourceTree = "<group>"; };
 		OBJ_10 /* NegateConditionalsMutation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NegateConditionalsMutation.swift; sourceTree = "<group>"; };
 		OBJ_11 /* main.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = main.swift; sourceTree = "<group>"; };
@@ -259,7 +262,7 @@
 		9D6B3B8521AB605800936456 /* Build */ = {
 			isa = PBXGroup;
 			children = (
-				9D6B3B8621AB608500936456 /* something.swiftdep */,
+				9D6B3B8621AB608500936456 /* something1.swiftdep */,
 			);
 			path = Build;
 			sourceTree = "<group>";
@@ -299,6 +302,7 @@
 		9DB5571D21A0EFEF00B4430F /* FilesToDiscover */ = {
 			isa = PBXGroup;
 			children = (
+				9D28927D21C6F3A6002BC869 /* .build */,
 				9D7B4EA221BCB46100C38089 /* Carthage */,
 				9D7B4EA021BCB3B000C38089 /* Tests */,
 				9D7B4E9E21BCB29C00C38089 /* Pods */,
@@ -314,6 +318,7 @@
 				9D7B4EA421BCB4CC00C38089 /* something.swiftmodule */,
 				9D7B4EA521BCB4FD00C38089 /* something.framework */,
 				9D7B4EA621BCB54400C38089 /* ExampleSpec.swift */,
+				9D28927E21C6F4F0002BC869 /* something.swiftdep */,
 			);
 			path = FilesToDiscover;
 			sourceTree = "<group>";
@@ -456,6 +461,7 @@
 		OBJ_5 = {
 			isa = PBXGroup;
 			children = (
+				9DB7FE6B21C6F76300F6FC84 /* muter.conf.json */,
 				9D7B4E9C21BCB0FB00C38089 /* .gitignore */,
 				9D7B4E9D21BCB10300C38089 /* .swift-version */,
 				OBJ_6 /* Package.swift */,

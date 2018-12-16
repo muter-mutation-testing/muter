@@ -1,7 +1,9 @@
 import SwiftSyntax
 
-func filePathsToIntermediateValues(filePath: String) -> ([AbsolutePosition], SourceFileSyntax, String) {
-    let source = sourceCode(fromFileAt: filePath)!
+func filePathsToIntermediateValues(filePath: String) -> ([AbsolutePosition], SourceFileSyntax, String)? {
+    guard let source = sourceCode(fromFileAt: filePath) else {
+        return nil
+    }
     
     let visitor = NegateConditionalsMutation.Visitor()
     visitor.visit(source)
@@ -21,6 +23,6 @@ func intermediateValuesToMutations(values: (positions: [AbsolutePosition], sourc
 
 func discoverMutations(inFilesAt filePaths: [String]) -> [NegateConditionalsMutation] {
     return filePaths
-        .map(filePathsToIntermediateValues)
+        .compactMap(filePathsToIntermediateValues)
         .flatMap(intermediateValuesToMutations)
 }

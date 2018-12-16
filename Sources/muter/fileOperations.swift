@@ -12,7 +12,7 @@ func copySourceCode(fromFileAt sourcePath: String, to destinationPath: String) {
     try? source?.description.write(toFile: destinationPath, atomically: true, encoding: .utf8)
 }
 
-private let defaultBlacklist = ["Build", "muter_tmp", "Test", "Pods", "Carthage", ".swiftmodule", ".framework", "Spec"]
+private let defaultBlacklist = ["Build", "muter_tmp", "Test", "Pods", "Carthage", ".swiftmodule", ".framework", "Spec", ".build", ".swiftdep"]
 
 func discoverSourceFiles(inDirectoryAt path: String, excludingPathsIn blacklist: [String] = defaultBlacklist) -> [String] {
     let subpaths = FileManager.default.subpaths(atPath: path) ?? []

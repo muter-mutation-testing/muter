@@ -1,0 +1,14 @@
+{
+    "executable": "/usr/bin/xcodebuild",
+    "arguments": [
+        "-project",
+        "muter.xcodeproj",
+        "-scheme",
+        "muter",
+        "-sdk",
+        "macosx",
+        "-destination",
+        "platform=macOS",
+        "test"
+    ]
+}
