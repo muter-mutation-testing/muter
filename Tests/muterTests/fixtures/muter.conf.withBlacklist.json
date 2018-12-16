@@ -2,13 +2,13 @@
     "executable": "/usr/bin/xcodebuild",
     "arguments": [
         "-project",
-        "muter.xcodeproj",
+        "ExampleApp.xcodeproj",
         "-scheme",
-        "muter",
+        "ExampleApp",
         "-sdk",
-        "macosx",
+        "iphonesimulator",
         "-destination",
-        "platform=macOS",
+        "platform=iOS Simulator,name=iPhone 8",
         "test"
     ],
     "blacklist": ["ExampleApp"]

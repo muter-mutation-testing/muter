@@ -56,12 +56,12 @@ final class NegateConditionalsMutationTests: XCTestCase {
         XCTAssertEqual(visitor.positionsOfToken.count, 0)
     }
     
-    func test_rewriterI() {
-        
+    func test_rewriterInsertsTheOppositeConditionalOperatorAtTheProvidedPosition() {
         let positionToMutate = AbsolutePosition(line: 3, column: 19, utf8Offset: 76)
         let rewriter = NegateConditionalsMutation.Rewriter(positionToMutate: positionToMutate)
-        let mutatedSource = rewriter.visit(sourceWithConditionalLogic)
-                let expectedSource = sourceCode(fromFileAt: "\(fixturesDirectory)/negateConditionalsMutation.example.swift")!
+        let expectedSource = sourceCode(fromFileAt: "\(fixturesDirectory)/negateConditionalsMutation.example.swift")!
+
+        let mutatedSource = rewriter.visit(sourceWithConditionalLogic)        
         XCTAssertEqual(mutatedSource.description, expectedSource.description)
     }
     

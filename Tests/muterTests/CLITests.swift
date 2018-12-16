@@ -25,7 +25,7 @@ class CLITests: XCTestCase {
     }
     
     func test_muterReportsTheFilesItDiscovers() {
-        XCTAssert(CLITests.output.contains("Discovered 4 Swift files"), "Muter reports the number of Swift files it discovers")
+        XCTAssert(CLITests.output.contains("Discovered 3 Swift files"), "Muter reports the number of Swift files it discovers, taking into account a blacklist which causes it to ignore certain files or directories")
         XCTAssertEqual(numberOfDiscoveredFileLists(in: CLITests.output), 1, "Muter lists the paths of Swift files it discovers")
     }
     

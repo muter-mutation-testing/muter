@@ -6,9 +6,11 @@ final class FileOperationsTests: XCTestCase {
     func test_generatesAMappingBetweenSwapFilesAndTheirOriginalFilePaths() {
         let paths = ["some/path/to/aFile", "some/path/to/anotherFile"]
         let workingDirectory = "~"
-        let result = swapFilePaths(forFilesAt: paths, using: workingDirectory)
-        XCTAssertEqual(result, ["some/path/to/aFile": "~/aFile",
-                                "some/path/to/anotherFile": "~/anotherFile"])
+        let expectedMapping = ["some/path/to/aFile": "~/aFile",
+                              "some/path/to/anotherFile": "~/anotherFile"]
+        
+        XCTAssertEqual(swapFilePaths(forFilesAt: paths, using: workingDirectory),
+                       expectedMapping)
     }
     
     func test_createsAWorkingDirectoryForMutationTesting() {
@@ -24,15 +26,27 @@ final class FileOperationsTests: XCTestCase {
     
     func test_discoversSwiftFilesRecursivelyandReturnsTheResultsAlphabetically() {
         let path = "\(fixturesDirectory)/FilesToDiscover"
-        let discoveredPaths = discoverSourceFiles(inDirectoryAt:
-            path)
+        let discoveredPaths = discoverSourceFiles(inDirectoryAt: path)
+        
+        XCTAssertEqual(discoveredPaths, [
+            "\(path)/Directory1/file3.swift",
+            "\(path)/Directory2/Directory3/file6.swift",
+            "\(path)/ExampleApp/ExampleAppCode.swift",
+            "\(path)/file1.swift",
+            "\(path)/file2.swift",
+        ])
+    }
+    
+    func test_discoversSwiftFilesUsingACustomBlacklist() {
+        let path = "\(fixturesDirectory)/FilesToDiscover"
+        let discoveredPaths = discoverSourceFiles(inDirectoryAt: path,
+                                                  excludingPathsIn: ["ExampleApp"])
         XCTAssertEqual(discoveredPaths, [
             "\(path)/Directory1/file3.swift",
             "\(path)/Directory2/Directory3/file6.swift",
             "\(path)/file1.swift",
             "\(path)/file2.swift",
-            ]
-        )
+        ])
     }
     
     func test_discoversNoSourceFilesWithAnInvalidPath() {

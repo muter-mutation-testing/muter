@@ -4,8 +4,9 @@ import class Foundation.Bundle
 final class ConfigurationParsingTests: XCTestCase {
 
     func test_parsesAMuterConfigurationFromAJSONFile() {
-        let configuration = MuterConfiguration.fromFixture(at: configurationPath)
+        let configuration = MuterConfiguration.fromFixture(at: "\(fixturesDirectory)/muter.conf.withoutBlacklist.json")
         
+        XCTAssertEqual(configuration?.blacklist, [])
         XCTAssertEqual(configuration?.testCommandExecutable, "/usr/bin/xcodebuild")
         XCTAssertEqual(configuration?.testCommandArguments, [
             "-project",
@@ -17,8 +18,13 @@ final class ConfigurationParsingTests: XCTestCase {
             "-destination",
             "platform=iOS Simulator,name=iPhone 8",
             "test",
-            ]
-        )
+        ])
+    }
+    
+    func test_parsesAMuterConfigurationWithABlacklist() {
+        let configuration = MuterConfiguration.fromFixture(at: "\(fixturesDirectory)/muter.conf.withBlacklist.json")
+        
+        XCTAssertEqual(configuration?.blacklist, ["ExampleApp"])
     }
 }
 

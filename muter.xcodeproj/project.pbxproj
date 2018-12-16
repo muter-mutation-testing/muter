@@ -187,6 +187,9 @@
 		9DB5572621A0F3FB00B4430F /* file6.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = file6.swift; sourceTree = "<group>"; };
 		9DB5572A21A115F600B4430F /* something.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = something.json; sourceTree = "<group>"; };
 		9DB7FE6B21C6F76300F6FC84 /* muter.conf.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = muter.conf.json; sourceTree = "<group>"; };
+		9DB7FE6D21C6F83200F6FC84 /* ExampleAppCode.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExampleAppCode.swift; sourceTree = "<group>"; };
+		9DB7FE6E21C6FEB200F6FC84 /* muter.conf.withBlacklist.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = muter.conf.withBlacklist.json; sourceTree = "<group>"; };
+		9DB7FE6F21C7047A00F6FC84 /* muter.conf.withoutBlacklist.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = muter.conf.withoutBlacklist.json; sourceTree = "<group>"; };
 		9DD0416821C55949002DBE4E /* FileManagerExtensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FileManagerExtensions.swift; sourceTree = "<group>"; };
 		OBJ_10 /* NegateConditionalsMutation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NegateConditionalsMutation.swift; sourceTree = "<group>"; };
 		OBJ_11 /* main.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = main.swift; sourceTree = "<group>"; };
@@ -302,6 +305,7 @@
 		9DB5571D21A0EFEF00B4430F /* FilesToDiscover */ = {
 			isa = PBXGroup;
 			children = (
+				9DB7FE6C21C6F82000F6FC84 /* ExampleApp */,
 				9D28927D21C6F3A6002BC869 /* .build */,
 				9D7B4EA221BCB46100C38089 /* Carthage */,
 				9D7B4EA021BCB3B000C38089 /* Tests */,
@@ -356,6 +360,14 @@
 			path = Directory4;
 			sourceTree = "<group>";
 		};
+		9DB7FE6C21C6F82000F6FC84 /* ExampleApp */ = {
+			isa = PBXGroup;
+			children = (
+				9DB7FE6D21C6F83200F6FC84 /* ExampleAppCode.swift */,
+			);
+			path = ExampleApp;
+			sourceTree = "<group>";
+		};
 		OBJ_12 /* Tests */ = {
 			isa = PBXGroup;
 			children = (
@@ -397,6 +409,8 @@
 		OBJ_21 /* fixtures */ = {
 			isa = PBXGroup;
 			children = (
+				9DB7FE6E21C6FEB200F6FC84 /* muter.conf.withBlacklist.json */,
+				9DB7FE6F21C7047A00F6FC84 /* muter.conf.withoutBlacklist.json */,
 				9DB5571D21A0EFEF00B4430F /* FilesToDiscover */,
 				OBJ_31 /* negateConditionalsMutation.example.swift */,
 				OBJ_32 /* sample.swift */,

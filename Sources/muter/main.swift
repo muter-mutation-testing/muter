@@ -8,8 +8,7 @@ func run(with configuration: MuterConfiguration, fileManager: FileManager = .def
     printMessage("Created working directory")
 
     printMessage("Discovering source code in:\n\(currentDirectoryPath)")
-    let sourceFilePaths = discoverSourceFiles(inDirectoryAt: currentDirectoryPath)
-    printMessage(sourceFilePaths.joined(separator: "\n"))
+    let sourceFilePaths = discoverSourceFiles(inDirectoryAt: currentDirectoryPath, excludingPathsIn: configuration.blacklist)
     let swapFilePathsByOriginalPath = swapFilePaths(forFilesAt: sourceFilePaths, using: workingDirectoryPath)
     
     printMessage("Discovering applicable source code mutations in:\n\(currentDirectoryPath)")
