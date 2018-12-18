@@ -61,8 +61,7 @@ final class NegateConditionalsMutationTests: XCTestCase {
         let rewriter = NegateConditionalsMutation.Rewriter(positionToMutate: positionToMutate)
         let expectedSource = sourceCode(fromFileAt: "\(fixturesDirectory)/negateConditionalsMutation.example.swift")!
 
-        let mutatedSource = rewriter.visit(sourceWithConditionalLogic)        
+        let mutatedSource = rewriter.visit(sourceWithConditionalLogic)
         XCTAssertEqual(mutatedSource.description, expectedSource.description)
     }
-    
 }

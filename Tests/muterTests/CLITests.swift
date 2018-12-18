@@ -30,7 +30,7 @@ class CLITests: XCTestCase {
     }
     
     func test_muterReportsTheMutationsItCanApply() {
-        XCTAssert(CLITests.output.contains("Discovered 3 mutations to introduce in the following files"), "Muter reports how many mutations it's able to perform")
+        XCTAssert(CLITests.output.contains("Discovered 3 mutations to introduce"), "Muter reports how many mutations it's able to perform")
     }
     
     func test_muterPerformsAMutationTest() throws {
@@ -93,7 +93,7 @@ private extension CLITests {
     
     func numberOfDiscoveredFileLists(in output: String) -> Int {
         
-        let filePathRegex = try! NSRegularExpression(pattern: "Discovered \\d* Swift files:\n(/[^/ ]*)+/?", options: .anchorsMatchLines)
+        let filePathRegex = try! NSRegularExpression(pattern: "Discovered \\d* Swift files:\n\n(/[^/ ]*)+/?", options: .anchorsMatchLines)
         let entireString = NSRange(location: 0, length: output.count)
         return filePathRegex.numberOfMatches(in: output,
                                              options: .withoutAnchoringBounds,

@@ -191,6 +191,7 @@
 		9DB7FE6E21C6FEB200F6FC84 /* muter.conf.withBlacklist.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = muter.conf.withBlacklist.json; sourceTree = "<group>"; };
 		9DB7FE6F21C7047A00F6FC84 /* muter.conf.withoutBlacklist.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = muter.conf.withoutBlacklist.json; sourceTree = "<group>"; };
 		9DD0416821C55949002DBE4E /* FileManagerExtensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FileManagerExtensions.swift; sourceTree = "<group>"; };
+		9DF3431721C9C3C500FD5A43 /* Makefile */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.make; path = Makefile; sourceTree = "<group>"; };
 		OBJ_10 /* NegateConditionalsMutation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NegateConditionalsMutation.swift; sourceTree = "<group>"; };
 		OBJ_11 /* main.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = main.swift; sourceTree = "<group>"; };
 		OBJ_14 /* CLITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CLITests.swift; sourceTree = "<group>"; };
@@ -475,6 +476,7 @@
 		OBJ_5 = {
 			isa = PBXGroup;
 			children = (
+				9DF3431721C9C3C500FD5A43 /* Makefile */,
 				9DB7FE6B21C6F76300F6FC84 /* muter.conf.json */,
 				9D7B4E9C21BCB0FB00C38089 /* .gitignore */,
 				9D7B4E9D21BCB10300C38089 /* .swift-version */,
