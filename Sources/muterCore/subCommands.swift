@@ -1,5 +1,7 @@
 import Foundation
 
+public typealias ThrowingVoidClosure = () throws -> Void
+
 @available(OSX 10.12, *)
 public func run(with configuration: MuterConfiguration, fileManager: FileManager = .default, in currentDirectoryPath: String) {
     let workingDirectoryPath = createWorkingDirectory(in: currentDirectoryPath)
@@ -40,4 +42,27 @@ public func setupMuter(using manager: FileManager, and directory: String) throws
     manager.createFile(atPath: "\(directory)/muter.conf.json", 
                        contents: data, 
                        attributes: nil)
+}
+
+public func handle(commandlineArguments: [String], setup: ThrowingVoidClosure, run running: ThrowingVoidClosure) -> (Int32, String?) {
+    switch commandlineArguments.count {
+        case 2:
+            guard commandlineArguments[1] == "init" else {
+                return (1, "Unrecognized subcommand given to Muter\nAvailable subcommands:\n\n\tinit")
+            }
+
+            do {
+                try setup()
+                return (0, "Created muter config file at: \(FileManager.default.currentDirectoryPath)/muter.config.json")
+            } catch {
+                return (1, "Error creating muter config file\n\n\(error)")
+            }
+        default: 
+            do {
+                try running()
+                return (0, nil)
+            } catch {
+                return (1, "Error running Muter - make sure your config file exists and is filled out correctly\n\n\(error)")
+            }
+    }
 }
