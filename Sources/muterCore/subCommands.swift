@@ -27,3 +27,17 @@ public func run(with configuration: MuterConfiguration, fileManager: FileManager
     printDiscoveryMessage(for: mutations)
     printMessage("Mutation Score of Test Suite (higher is better): \(mutationScore)/100")
 }
+
+@available(OSX 10.13, *)
+public func setupMuter(using manager: FileManager, and directory: String) throws {
+    let configuration = MuterConfiguration(executable: "absolute path to the executable that runs your tests", 
+                                           arguments: ["an argument the test runner needs", "another argument the test runner needs"], 
+                                           blacklist: [])
+    let encoder = JSONEncoder()
+    encoder.outputFormatting = [.prettyPrinted, .sortedKeys]
+    let data = try! encoder.encode(configuration)
+
+    manager.createFile(atPath: "\(directory)/muter.conf.json", 
+                       contents: data, 
+                       attributes: nil)
+}

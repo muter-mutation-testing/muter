@@ -9,6 +9,12 @@ public struct MuterConfiguration: Codable {
         case blacklist
     }
 
+    public init(executable: String, arguments: [String], blacklist: [String]) {
+        self.testCommandExecutable = executable
+        self.testCommandArguments = arguments
+        self.blacklist = blacklist 
+    }
+
     public init(from decoder: Decoder) throws {
         let container = try decoder.container(keyedBy: CodingKeys.self)
 
