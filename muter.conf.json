@@ -3,5 +3,5 @@
     "arguments": [
         "test"
     ],
-    "blacklist": ["ExampleApp"]
+    "blacklist": ["ExampleApp", "main.swift"]
 }
