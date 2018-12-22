@@ -5,14 +5,22 @@ import PackageDescription
 let package = Package(
     name: "muter",
     dependencies: [
-        .package(url: "https://github.com/apple/swift-syntax.git", .branch("swift-DEVELOPMENT-SNAPSHOT-2018-08-25-a")),
+        .package(url: "https://github.com/apple/swift-syntax.git", .branch("0.40200.0")),
     ],
     targets: [
         .target(
             name: "muter",
-            dependencies: ["SwiftSyntax"]),
+            dependencies: ["muterCore"]
+        ),
+        .target(
+            name: "muterCore",
+            dependencies: ["SwiftSyntax"],
+            path: "Sources/muterCore"
+        ),
         .testTarget(
             name: "muterTests",
-            dependencies: ["muter"]),
+            dependencies: ["muterCore"],
+            exclude: ["fixtures"]
+        ),
     ]
 )

@@ -1,14 +1,13 @@
 import Foundation
 
-extension URL {
+public extension URL {
     func withoutScheme() -> URL {
-        
         let urlWithoutScheme = String(
-            self.pathComponents
+            pathComponents
                 .joined(separator: "/")
                 .dropFirst()
         )
-        
+
         return URL(string: urlWithoutScheme)!
     }
 }

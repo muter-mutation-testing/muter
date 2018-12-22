@@ -1,4 +1,5 @@
 import Foundation
+@testable import muterCore
 
 class FileManagerSpy: Spy, FileSystemManager {
     private(set) var methodCalls: [String] = []

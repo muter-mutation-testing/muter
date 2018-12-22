@@ -1,4 +1,5 @@
 import SwiftSyntax
+@testable import muterCore
 
 class MutationTestingDelegateSpy: Spy, MutationTestingIODelegate {
 

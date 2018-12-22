@@ -1,7 +1,7 @@
 import SwiftSyntax
+@testable import muterCore
 
 class SourceCodeMutationSpy: Spy, SourceCodeMutation {
-    
     
     private(set) var methodCalls: [String] = []
     

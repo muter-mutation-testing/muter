@@ -49,7 +49,7 @@ struct NegateConditionalsMutation: SourceCodeMutation {
         
         override func visit(_ token: TokenSyntax) -> Syntax {
             guard case .spacedBinaryOperator("==") = token.tokenKind,
-                token.position == positionToMutate else {
+                token.position != positionToMutate else {
                 return token
             }
             
