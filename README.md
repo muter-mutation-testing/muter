@@ -71,6 +71,8 @@ The configuration looks something like this:
     * `Pods`
     * `Spec`
     * `Test`
+    
+    The `blacklist` option is optional.
 
 **NOTE**: Muter uses a substring match to determine if something should be excluded.
 
