@@ -84,6 +84,7 @@ Running Muter is easy! Once you've created your configuration, simply run `muter
 - Running Muter can be a lengthy process, so be sure to allocate enough time for the test to finish.
 
 ## Best Practices
+- Commit your `muter.conf.json`
 - Ensure you run Muter with no uncommitted changes. If Muter fails to finish, there’s a potential for the bugs it introduced to your code to be left behind.
 - Because Muter can take a while to run, it is recommend to exclude UI or journey tests from your test suite. We recommend creating a separate schemes or targets for mutation testing. However, you should feel free to run these kinds of tests if you're okay with the longer feedback cycle.
 - Don’t be dogmatic about your mutation score - in practice, 100/100 is often times not possible.
