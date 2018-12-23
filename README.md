@@ -10,9 +10,9 @@ From [Wikipedia](https://en.wikipedia.org/wiki/Mutation_testing):
 ## What Is Muter?
 Muter is a [mutation testing](https://en.wikipedia.org/wiki/Mutation_testing) utility that is used to help you determine the quality of your test suite.
 Specifically, it can help you:
-- find gaps in fault/defect coverage from your test suite
-- determine if you are writing meaningful and effective assertions/expectations
-- identify missing groups of tests, assertions/expectations, or test cases from your test suite
+- find gaps in fault/defect coverage from your test suite by identifying missing groups of tests, assertions/expectations, or test cases from your test suite
+- determine if you are writing meaningful and effective assertions/expectations that withstand different code than what the test was originally written against
+- assess how many tests fail as a result of one code change
 
 With Muter, you can make sure your test suite is meeting all your requirements, fails meaningfully and clearly, and remains stable in the face of unexpected or accidental code changes. 
 
