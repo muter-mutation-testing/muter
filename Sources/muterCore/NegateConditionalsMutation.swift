@@ -42,31 +42,59 @@ struct NegateConditionalsMutation: SourceCodeMutation {
     
     class Rewriter: SyntaxRewriter, PositionSpecificRewriter {
         let positionToMutate: AbsolutePosition
-        
+        private let oppositeOperatorMapping: [String: String] = [
+            "==": "!=",
+            "!=": "==",
+            ">=": "<=",
+            "<=": ">=",
+            ">": "<",
+            "<": ">"
+        ]
+
         required init(positionToMutate: AbsolutePosition) {
             self.positionToMutate = positionToMutate
         }
         
         override func visit(_ token: TokenSyntax) -> Syntax {
-            guard case .spacedBinaryOperator("==") = token.tokenKind,
-                token.position != positionToMutate else {
-                return token
+            guard token.position == positionToMutate, 
+                let `oppositeOperator` = oppositeOperator(for: token.tokenKind) else {
+                    return token
+            }
+            return mutated(token, using: `oppositeOperator`)
+        }
+
+        private func oppositeOperator(for tokenKind: TokenKind) -> String? {
+            guard case .spacedBinaryOperator(let `operator`) = tokenKind else {
+                return nil
             }
             
-            return SyntaxFactory
-                .makeToken(.spacedBinaryOperator("!="),
-                           presence: .present,
-                           leadingTrivia: token.leadingTrivia,
-                           trailingTrivia: token.trailingTrivia)
+            return oppositeOperatorMapping[`operator`]
+        }
+
+        private func mutated(_ token: TokenSyntax, using `operator`: String) -> Syntax {
+            return SyntaxFactory.makeToken(
+                .spacedBinaryOperator(`operator`),
+                presence: .present,
+                leadingTrivia: token.leadingTrivia,
+                trailingTrivia: token.trailingTrivia
+            )
         }
     }
     
     class Visitor: SyntaxVisitor, PositionDiscoveringVisitor {
+        private let tokens: [TokenKind] = [
+            .spacedBinaryOperator("=="),
+            .spacedBinaryOperator("!="),
+            .spacedBinaryOperator(">="),
+            .spacedBinaryOperator("<="),
+            .spacedBinaryOperator("<"),
+            .spacedBinaryOperator(">"),
+        ]
         
         private(set) var positionsOfToken = [AbsolutePosition]()
         
         override func visit(_ token: TokenSyntax) {
-            guard case .spacedBinaryOperator("==") = token.tokenKind else {
+            guard tokens.contains(token.tokenKind) else {
                 return
             }
             

@@ -5,9 +5,10 @@ class SourceCodeMutationSpy: Spy, SourceCodeMutation {
     
     private(set) var methodCalls: [String] = []
     
-    var filePath: String = ""
-    var sourceCode: SourceFileSyntax = SyntaxFactory.makeBlankSourceFile()
-    var rewriter: PositionSpecificRewriter = NegateConditionalsMutation.Rewriter(positionToMutate: .firstPosition)
+    let filePath: String = ""
+    let sourceCode: SourceFileSyntax = SyntaxFactory.makeBlankSourceFile()
+    let rewriter: PositionSpecificRewriter = NegateConditionalsMutation.Rewriter(positionToMutate: .firstPosition)
+
     func mutate() {
         methodCalls.append(#function)
     }

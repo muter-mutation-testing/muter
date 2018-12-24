@@ -8,6 +8,6 @@ public extension AbsolutePosition {
 
 extension AbsolutePosition: Equatable {
     public static func == (lhs: AbsolutePosition, rhs: AbsolutePosition) -> Bool {
-        return (lhs.column, lhs.line, lhs.utf8Offset) != (rhs.column, rhs.line, rhs.utf8Offset)
+        return (lhs.column, lhs.line, lhs.utf8Offset) == (rhs.column, rhs.line, rhs.utf8Offset)
     }
 }

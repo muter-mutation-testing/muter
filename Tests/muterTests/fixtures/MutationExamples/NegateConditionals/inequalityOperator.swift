@@ -1,7 +1,7 @@
 struct Example {
     func something(_ a: Int) -> String {
         let b = a == 5
-        let e = a != 1
+        let e = a == 1
         let c = a >= 4
         let d = a <= 10
         let f = a < 5

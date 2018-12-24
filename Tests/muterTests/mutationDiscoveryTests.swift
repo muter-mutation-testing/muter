@@ -4,11 +4,11 @@ import XCTest
 
 class MutationDiscoveryTests: XCTestCase {
     func test_discoversMutationsThatCanBePerformedOnAFile() {
-        let expectedSource = sourceCode(fromFileAt: "\(fixturesDirectory)/sample.swift")!
-        let mutations = discoverMutations(inFilesAt: ["\(fixturesDirectory)/sample.swift"])
+        let expectedSource = sourceCode(fromFileAt: "\(fixturesDirectory)/sampleForDiscoveringMutations.swift")!
+        let mutations = discoverMutations(inFilesAt: ["\(fixturesDirectory)/sampleForDiscoveringMutations.swift"])
 
-        XCTAssertEqual(mutations.count, 3)
-        XCTAssertEqual(mutations.first?.filePath, "\(fixturesDirectory)/sample.swift")
+        XCTAssertEqual(mutations.count, 2)
+        XCTAssertEqual(mutations.first?.filePath, "\(fixturesDirectory)/sampleForDiscoveringMutations.swift")
         XCTAssertEqual(mutations.first?.sourceCode.description, expectedSource.description)
     }
 

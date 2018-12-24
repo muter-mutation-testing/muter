@@ -11,7 +11,6 @@ class MutationTestingTests: XCTestCase {
         delegateSpy = MutationTestingDelegateSpy()
         delegateSpy.testSuiteResult = .failed
         mutationSpy = SourceCodeMutationSpy()
-        mutationSpy.filePath = "a/path"
     }
 
     func test_performsAMutationTestForEveryMutation() {
@@ -35,6 +34,7 @@ class MutationTestingTests: XCTestCase {
 
         XCTAssertEqual(mutationScore(from: [.passed]), 0)
         XCTAssertEqual(mutationScore(from: [.failed]), 100)
+        
         XCTAssertEqual(mutationScore(from: [.passed, .failed]), 50)
         XCTAssertEqual(mutationScore(from: [.passed, .failed, .failed]), 66)
     }

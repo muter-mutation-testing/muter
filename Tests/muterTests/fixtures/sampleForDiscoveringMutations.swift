@@ -1,5 +1,6 @@
 struct Example2 {
     func areEqualAsString(_ a: Int) -> String {
-        return a == a ? "equal" : "not equal"
+        let b = a != a 
+        return b == a ? "equal" : "not equal"
     }
 }
