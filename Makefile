@@ -5,10 +5,16 @@ libdir = $(prefix)/lib
 REPODIR = $(shell pwd)
 BUILDDIR = $(REPODIR)/.build
 
-build:
+build: 
+	swift build
+
+build-release:
 	swift build -c release --disable-sandbox
 
-install: build
+build-tests: 
+	swift build --target muterTests 
+
+install: build-release
 	install -d "$(bindir)" "$(libdir)"
 	install "$(BUILDDIR)/release/muter" "$(bindir)"
 	install "$(BUILDDIR)/release/libSwiftSyntax.dylib" "$(libdir)"
@@ -24,4 +30,10 @@ uninstall:
 clean:
 	rm -rf .build
 
-.PHONY: build install uninstall clean
+test: 
+	@swift test # Also builds app and test code
+	
+acceptance-test: build
+	./Scripts/runAcceptanceTests.sh
+
+.PHONY: build install uninstall clean test build-tests
