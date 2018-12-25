@@ -1,0 +1,3 @@
+[submodule "homebrew-formulae"]
+	path = homebrew-formulae
+	url = ./homebrew-formulae/
