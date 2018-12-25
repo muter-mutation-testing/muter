@@ -79,10 +79,52 @@ The configuration looks something like this:
 For examples of configuration files, check out the `muter.conf.json` in the root directory of this repository, as well as the `muter.conf.json` inside the `ExampleApp` directory.
 
 ## Running Muter
-Running Muter is easy! Once you've created your configuration file simply run `muter`, in a terminal, from either the root directory, or a subdirectory, of the project you're mutation testing. Muter will take it from there. :)
+Running Muter is easy! Once you've created your configuration file simply run `muter` in your terminal from any directory of the project you're mutation testing. Muter will take it from there. 
+
+## Mutation Operators
+Muter uses **mutation operators** to generate mutants in your source code. This is the list of currently available mutation operators.
+
+### Negate Conditionals
+The negate conditionals operator will invert conditional operators in your code based on this table:
+
+Original Operator | Negated Operator
+------------------|-----------------
+`==`|`!=`
+`!=`|`==`
+`>=`|`<=`
+`<=`|`>=`
+`>`|`<`
+`<`|`>`
+
+The purpose of this operator is to highlight how your tests respond to changes in branching logic. A well-engineered test suite will be able to fail clearly in response to code taking a different branch than it expected.
+
+#### Example
+A negate conditionals operator will transform code like this:
+
+```
+if myValue >= 50 {
+    // something happens here
+}
+```
+
+to this:
+
+```
+if myValue <= 50 {
+    // something happens here
+}
+```
 
 ## Limitations
-- Currently, Muter is in open beta. It only changes `==` operators into `!=` operators. Further mutations will be released at a later date.
+- Muter currently only implements one mutation operator (called a Negate Conditionals mutation). More are slated to be released in future versions.
+- Muter assumes you always put spaces around your operators. For example, it expects an equality check to look like
+
+    `a == b (Muter will mutate this)`
+
+    not like:
+
+    `a==b (Muter won't mutate this)`
+- Muter assumes you aren't putting multiple expressions on one line (and I have the opinion you shouldn't be doing this anyway). Basically, if you aren't using semicolons in your code then Muter shouldn't have an issue mutating it.
 - Running Muter can be a lengthy process, so be sure to allocate enough time for the test to finish.
 
 ## Best Practices
