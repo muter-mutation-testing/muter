@@ -18,14 +18,14 @@ class MutationDiscoveryTests: XCTestCase {
     }
 
     func test_ignoresFilesThatArentSwiftCode() {
-        let configurationFilePath = "\(fixturesDirectory)/muter.conf.swift"
+        let configurationFilePath = "\(fixturesDirectory)/muter.conf.json"
         let mutations = discoverMutations(inFilesAt: [
             "\(fixturesDirectory)/sample.swift",
             configurationFilePath,
         ])
 
         let mutationsForNonSwiftCode = mutations.filter {
-            $0.filePath == configurationFilePath
+            !$0.filePath.contains(".swift")
         }
 
         XCTAssertEqual(mutationsForNonSwiftCode.count, 0)
