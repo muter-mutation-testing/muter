@@ -71,7 +71,7 @@ The configuration looks something like this:
 }
 ```
 ### Configuration Options
-- `executable` - the fully qualified path to the program which can run your test suite
+- `executable` - the absolute path to the program which can run your test suite (like `xcodebuild` or `swift`)
 - `arguments` - any command line arguments the executable needs to run your test suite
 - `blacklist` - a list of paths, file extensions, or names you want Muter to ignore. By default, Muter ignores files or paths containing the following phrases:
     * `.build`
