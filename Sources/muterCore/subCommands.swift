@@ -19,18 +19,16 @@ public func run(with configuration: MuterConfiguration, fileManager: FileManager
     fileManager.changeCurrentDirectoryPath(currentDirectoryPath)
 
     let testingDelegate = MutationTestingDelegate(configuration: configuration, swapFilePathsByOriginalPath: swapFilePathsByOriginalPath)
-    let mutationScore = performMutationTesting(using: mutations, delegate: testingDelegate)
-
+    let mutationTestingResults = performMutationTesting(using: mutations, delegate: testingDelegate)
+	let testReport = generateTestReport(from: mutationTestingResults)
+	
     removeWorkingDirectory(at: currentDirectoryPath + "/muter_tmp")
     printMessage("Removed working directory (muter_tmp) in:\n\n\(currentDirectoryPath)")
-
-    printMessage("Muter finished running")
-    printDiscoveryMessage(for: sourceFilePaths)
-    printDiscoveryMessage(for: mutations)
-    printMessage("Mutation Score of Test Suite (higher is better): \(mutationScore)/100")
+	printMessage(testReport)
 }
 
 @available(OSX 10.13, *)
+
 public func setupMuter(using manager: FileManager, and directory: String) throws {
     let configuration = MuterConfiguration(executable: "absolute path to the executable that runs your tests", 
                                            arguments: ["an argument the test runner needs", "another argument the test runner needs"], 

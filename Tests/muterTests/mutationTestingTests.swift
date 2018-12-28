@@ -14,7 +14,16 @@ class MutationTestingTests: XCTestCase {
     }
 
     func test_performsAMutationTestForEveryMutation() {
-        let mutationScore = performMutationTesting(using: [mutationSpy, mutationSpy], delegate: delegateSpy)
+		let expectedResults = [
+			MutationTestOutcome(testSuiteResult: .failed,
+								  appliedMutation: "SourceCodeMutationSpy",
+								  filePath: "a file path"),
+			MutationTestOutcome(testSuiteResult: .failed,
+								  appliedMutation: "SourceCodeMutationSpy",
+								  filePath: "a file path")
+		]
+		
+        let actualResults = performMutationTesting(using: [mutationSpy, mutationSpy], delegate: delegateSpy)
 
         XCTAssertEqual(delegateSpy.methodCalls, ["backupFile(at:)",
                                                  "runTestSuite()",
@@ -26,7 +35,7 @@ class MutationTestingTests: XCTestCase {
         XCTAssertEqual(delegateSpy.backedUpFilePaths.count, 2)
         XCTAssertEqual(delegateSpy.restoredFilePaths.count, 2)
         XCTAssertEqual(delegateSpy.backedUpFilePaths, delegateSpy.restoredFilePaths)
-        XCTAssertEqual(mutationScore, 100)
+        XCTAssertEqual(actualResults, expectedResults)
     }
 
     func test_reportsAMutationScoreForAMutationTestRun() {
@@ -38,4 +47,16 @@ class MutationTestingTests: XCTestCase {
         XCTAssertEqual(mutationScore(from: [.passed, .failed]), 50)
         XCTAssertEqual(mutationScore(from: [.passed, .failed, .failed]), 66)
     }
+	
+	func test_reportsAMutationScoreForEachFileMutatedFromAMutationTestRun() {
+		let expectedMutationScores = [
+			"file1.swift": 66,
+			"file2.swift": 100,
+			"file3.swift": 33,
+			"file4.swift": 0
+		]
+
+		XCTAssertEqual(mutationScoreOfFiles(from: self.exampleMutationTestResults), expectedMutationScores)
+		
+	}
 }

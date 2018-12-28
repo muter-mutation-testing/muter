@@ -31,8 +31,27 @@ class AcceptanceTests: XCTestCase {
     }
 
     func test_muterReportsAMutationScore() {
+		
+		let mutationScoresHeader = """
+		--------------------
+		Mutation Test Scores
+		--------------------
+		"""
+		
+		XCTAssert(AcceptanceTests.output.contains(mutationScoresHeader))
         XCTAssert(AcceptanceTests.output.contains("Mutation Score of Test Suite (higher is better): 25/100"), "Muter reports a mutation score so an engineer can determine how effective their test suite is at identifying defects or changes to a code base")
     }
+	
+	func test_muterReportstheMutationsItApplied() {
+		
+		let appliedMutationOperatorsHeader = """
+		--------------------------
+		Applied Mutation Operators
+		--------------------------
+		"""
+		
+		XCTAssert(AcceptanceTests.output.contains(appliedMutationOperatorsHeader))
+	}
 
     func test_muterCleansUpAfterItself() {
         let afterSourceCode = sourceCode(fromFileAt: AcceptanceTests.sourceCodePath)

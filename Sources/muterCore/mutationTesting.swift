@@ -7,14 +7,29 @@ protocol MutationTestingIODelegate {
     func restoreFile(at path: String) 
 }
 
-enum TestSuiteResult {
-    case passed
-    case failed
+struct MutationTestOutcome: Equatable {
+    let testSuiteResult: TestSuiteResult
+    let appliedMutation: String
+    let filePath: String
 }
 
-func performMutationTesting(using mutations: [SourceCodeMutation], delegate: MutationTestingIODelegate) -> Int {
+enum TestSuiteResult: String {
+    case passed
+    case failed
+	
+	var asMutationTestingResult: String {
+		switch self {
+		case .passed:
+			return "failed"
+		default:
+			return "passed"
+		}
+	}
+}
+
+func performMutationTesting(using mutations: [SourceCodeMutation], delegate: MutationTestingIODelegate) -> [MutationTestOutcome] {
     
-    let testSuiteResults: [TestSuiteResult] = mutations.map { mutation in
+    return mutations.map { mutation in
         delegate.backupFile(at: mutation.filePath)
         
         mutation.mutate()
@@ -22,11 +37,13 @@ func performMutationTesting(using mutations: [SourceCodeMutation], delegate: Mut
         let result = delegate.runTestSuite()
         delegate.restoreFile(at: mutation.filePath)
         
-        return result
+        return MutationTestOutcome(testSuiteResult: result,
+								   appliedMutation: "\(type(of: mutation))",
+								   filePath: mutation.filePath)
     }
-    
-    return mutationScore(from: testSuiteResults)
 }
+
+// MARK - Mutation Score Calculation
 
 func mutationScore(from testResults: [TestSuiteResult]) -> Int {
     guard testResults.count >= 1 else {
@@ -36,6 +53,21 @@ func mutationScore(from testResults: [TestSuiteResult]) -> Int {
     let numberOfFailures = Double(testResults.filter { $0 == .failed }.count)
     return Int((numberOfFailures / Double(testResults.count)) * 100.0)
 }
+
+func mutationScoreOfFiles(from outcomes: [MutationTestOutcome]) -> [String: Int] {
+	var mutationScores: [String: Int] = [:]
+	
+	let filePaths = outcomes.map { $0.filePath }.deduplicated()
+	for filePath in filePaths {
+		let relevantTestResults = outcomes.filter { $0.filePath == filePath }
+		let testSuiteResults = relevantTestResults.map { $0.testSuiteResult }
+		mutationScores[filePath] = mutationScore(from: testSuiteResults)
+	}
+	
+	return mutationScores
+}
+
+// MARK - Mutation Testing I/O Delegate
 
 struct MutationTestingDelegate: MutationTestingIODelegate {
     let configuration: MuterConfiguration
