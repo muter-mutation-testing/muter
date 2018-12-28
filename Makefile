@@ -30,6 +30,9 @@ uninstall:
 clean:
 	rm -rf .build
 
+make run: build
+	$(BUILDDIR)/debug/muter
+
 test: 
 	@swift test # Also builds app and test code
 	
