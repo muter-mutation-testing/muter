@@ -2,7 +2,7 @@
 echo "📴📴📴📴📴📴📴 Acceptance Testing has started 📴📴📴📴📴📴📴"
 
 echo "Setting up environment for testing..."
-echo "" > ./Tests/muterTests/muters_output.txt # Clear out the results of the last run of Muter
+touch ./Tests/muterTests/muters_output.txt 
 git checkout -- ExampleApp/ExampleApp/* # Ensures there are no leftover or accidental changes from a prior run of Muter
 cd ./ExampleApp
 rm -rf muter_tmp # Remove Muter's working directory
@@ -13,4 +13,6 @@ echo "Running Muter..."
 echo "Running tests..."
 swift test
 
+echo "Cleaning up..."
+rm ../Tests/muterTests/muters_output.txt # Clear out the results of the last run of Muter
 echo "📳📳📳📳📳📳📳 Acceptance Testing has finished 📳📳📳📳📳📳📳"
