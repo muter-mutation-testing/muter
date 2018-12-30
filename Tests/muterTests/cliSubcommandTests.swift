@@ -8,12 +8,12 @@ final class cliSubcommandTests: XCTestCase {
     }
 
     override func tearDown() {
-        let workingDirectory = self.testDirectory
+        let workingDirectory = self.rootTestDirectory
         try? FileManager.default.removeItem(atPath: "\(workingDirectory)/muter.conf.json")
     }
 
     func test_initSubcommandCreatesConfigurationFile() {
-        let workingDirectory = self.testDirectory
+        let workingDirectory = self.rootTestDirectory
 
         try! setupMuter(using: FileManager.default, and: workingDirectory)
         

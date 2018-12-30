@@ -34,7 +34,7 @@ make run: build
 	$(BUILDDIR)/debug/muter
 
 test: 
-	@swift test # Also builds app and test code
+	@swift test --filter muterTests.* # Also builds app and test code
 	
 acceptance-test: build
 	./Scripts/runAcceptanceTests.sh

@@ -1,7 +1,7 @@
 import XCTest
 @testable import muterCore
 
-extension XCTestCase {
+public extension XCTestCase {
     var productsDirectory: URL {
         #if os(macOS)
         for bundle in Bundle.allBundles where bundle.bundlePath.hasSuffix(".xctest") {
@@ -13,16 +13,17 @@ extension XCTestCase {
         #endif
     }
     
-    var testDirectory: String {
+    var rootTestDirectory: String {
         return String(
             URL(string: #file)!
+                .deletingLastPathComponent()
                 .deletingLastPathComponent()
                 .absoluteString
                 .dropLast()
         )
     }
     
-    var fixturesDirectory: String { return "\(testDirectory)/fixtures" }
+    var fixturesDirectory: String { return "\(rootTestDirectory)/muterTests/fixtures" }
     var configurationPath: String { return "\(fixturesDirectory)/muter.conf.json" }
 	
 	var exampleMutationTestResults: [MutationTestOutcome] {

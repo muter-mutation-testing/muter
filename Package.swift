@@ -18,9 +18,16 @@ let package = Package(
             path: "Sources/muterCore"
         ),
         .testTarget(
-            name: "muterTests",
-            dependencies: ["muterCore"],
-            exclude: ["fixtures"]
+            name: "testingCore"
         ),
+        .testTarget(
+            name: "muterTests",
+            dependencies: ["muterCore", "testingCore"],
+            exclude: ["fixtures", "acceptanceTests"]
+        ),
+        .testTarget(
+            name: "acceptanceTests",
+            dependencies: ["muterCore", "testingCore"]
+        )
     ]
 )

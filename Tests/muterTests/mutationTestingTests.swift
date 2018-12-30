@@ -1,4 +1,6 @@
 @testable import muterCore
+import testingCore
+
 import SwiftSyntax
 import XCTest
 

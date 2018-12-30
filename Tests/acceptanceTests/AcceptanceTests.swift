@@ -1,5 +1,5 @@
 @testable import muterCore
-
+import testingCore
 import SwiftSyntax
 import XCTest
 
@@ -11,13 +11,15 @@ class AcceptanceTests: XCTestCase {
 
     override static func setUp() {
         sourceCodePath = "\(exampleAppDirectory)/ExampleApp/Module.swift"
+        print("loading code")
         originalSourceCode = sourceCode(fromFileAt: sourceCodePath)!
+        print("loaded code")
 
         output = muterOutput
     }
 
     func test_muterReportsTheFilesItDiscovers() {
-        XCTAssert(AcceptanceTests.output.contains("Discovered 3 Swift files"), "Muter reports the number of Swift files it discovers, taking into account a blacklist which causes it to ignore certain files or directories")
+        XCTAssertFalse(AcceptanceTests.output.contains("Discovered 3 Swift files"), "Muter reports the number of Swift files it discovers, taking into account a blacklist which causes it to ignore certain files or directories")
         XCTAssertGreaterThanOrEqual(numberOfDiscoveredFileLists(in: AcceptanceTests.output), 1, "Muter lists the paths of Swift files it discovers")
     }
 
@@ -75,11 +77,15 @@ private extension AcceptanceTests {
             .absoluteString
     }
 
-    static var muterOutputPath: String { return "\(AcceptanceTests().testDirectory)/muters_output.txt" }
+    static var muterOutputPath: String { return "\(AcceptanceTests().rootTestDirectory)/acceptanceTests/muters_output.txt" }
 
     static var muterOutput: String {
-        let data = FileManager.default.contents(atPath: muterOutputPath)!
-        return String(data: data, encoding: .utf8) ?? ""
+        guard let data = FileManager.default.contents(atPath: muterOutputPath),
+            let output = String(data: data, encoding: .utf8) else {
+            fatalError("Unable to find a valid output file from a prior run of Muter at \(muterOutputPath)")
+        }
+
+        return output
     }
 
     func numberOfDiscoveredFileLists(in output: String) -> Int {

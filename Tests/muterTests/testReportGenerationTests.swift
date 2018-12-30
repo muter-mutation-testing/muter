@@ -1,5 +1,7 @@
-import class Foundation.Bundle
 @testable import muterCore
+import testingCore
+
+import class Foundation.Bundle
 import XCTest
 
 final class TestReportGenerationTests: XCTestCase {
