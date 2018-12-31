@@ -36,7 +36,7 @@ make run: build
 test: 
 	@swift test --filter muterTests.* # Also builds app and test code
 	
-acceptance-test: build
+acceptance-test: clean build
 	./Scripts/runAcceptanceTests.sh
 
 .PHONY: build install uninstall clean test build-tests

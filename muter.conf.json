@@ -3,5 +3,5 @@
     "arguments": [
         "test"
     ],
-    "blacklist": ["ExampleApp", "main.swift"]
+    "blacklist": ["ExampleApp", "main.swift", "sourcekite"]
 }

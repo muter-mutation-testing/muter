@@ -11,20 +11,18 @@ class AcceptanceTests: XCTestCase {
 
     override static func setUp() {
         sourceCodePath = "\(exampleAppDirectory)/ExampleApp/Module.swift"
-        print("loading code")
         originalSourceCode = sourceCode(fromFileAt: sourceCodePath)!
-        print("loaded code")
 
         output = muterOutput
     }
 
     func test_muterReportsTheFilesItDiscovers() {
-        XCTAssertFalse(AcceptanceTests.output.contains("Discovered 3 Swift files"), "Muter reports the number of Swift files it discovers, taking into account a blacklist which causes it to ignore certain files or directories")
+        XCTAssertTrue(AcceptanceTests.output.contains("Discovered 3 Swift files"), "Muter reports the number of Swift files it discovers, taking into account a blacklist which causes it to ignore certain files or directories")
         XCTAssertGreaterThanOrEqual(numberOfDiscoveredFileLists(in: AcceptanceTests.output), 1, "Muter lists the paths of Swift files it discovers")
     }
 
     func test_muterReportsTheMutationsItCanApply() {
-        XCTAssert(AcceptanceTests.output.contains("Discovered 8 mutations to introduce"), "Muter reports how many mutations it's able to perform")
+        XCTAssert(AcceptanceTests.output.contains("Discovered 9 mutations to introduce"), "Muter reports how many mutations it's able to perform")
     }
 
     func test_muterPerformsAMutationTest() throws {
@@ -39,9 +37,9 @@ class AcceptanceTests: XCTestCase {
 		Mutation Test Scores
 		--------------------
 		"""
-		
+
 		XCTAssert(AcceptanceTests.output.contains(mutationScoresHeader))
-        XCTAssert(AcceptanceTests.output.contains("Mutation Score of Test Suite (higher is better): 25/100"), "Muter reports a mutation score so an engineer can determine how effective their test suite is at identifying defects or changes to a code base")
+        XCTAssert(AcceptanceTests.output.contains("Mutation Score of Test Suite (higher is better): 22/100"), "Muter reports a mutation score so an engineer can determine how effective their test suite is at identifying defects or changes to a code base")
     }
 	
 	func test_muterReportstheMutationsItApplied() {

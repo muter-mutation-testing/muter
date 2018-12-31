@@ -1,28 +1,47 @@
 import SwiftSyntax
+import Foundation
 
-func filePathsToIntermediateValues(filePath: String) -> ([AbsolutePosition], SourceFileSyntax, String)? {
-    guard let source = sourceCode(fromFileAt: filePath) else {
-        return nil
-    }
-    
-    let visitor = NegateConditionalsMutation.Visitor()
-    visitor.visit(source)
-    
-    return (visitor.positionsOfToken, source, filePath)
+func discoverMutationOperators(inFilesAt filePaths: [String]) -> [MutationOperator] {
+	return filePaths.accumulate(into: []) { alreadyDiscoveredOperators, path in
+		
+		guard pathContainsDotSwift(path),
+			let source = sourceCode(fromFileAt: path) else {
+			return alreadyDiscoveredOperators
+		}
+
+		return alreadyDiscoveredOperators + newlyDiscoveredOperators(inFileAt: path, containing: source).sorted(by: filePositionOrder)
+	}
 }
 
-func intermediateValuesToMutations(values: (positions: [AbsolutePosition], sourceCode: SourceFileSyntax, filePath: String)) -> [NegateConditionalsMutation] {
-    return values.positions.map { position in
-        return NegateConditionalsMutation(filePath: values.filePath,
-                                          sourceCode: values.sourceCode,
-                                          rewriter: NegateConditionalsMutation.Rewriter(positionToMutate: position),
-                                          delegate: NegateConditionalsMutation.Delegate())
-        
-    }
+private let idVisitorPairs: [MutationIdVisitorPair] = [
+	(id: .sideEffects, visitor: SideEffectsMutation.Visitor.init),
+	(id: .negateConditionals, visitor: NegateConditionalsMutation.Visitor.init)
+]
+
+private func newlyDiscoveredOperators(inFileAt path: String, containing source: SourceFileSyntax) -> [MutationOperator] {
+	return idVisitorPairs.accumulate(into: []) { newOperators, values in
+		
+		let id = values.id
+		let visitor = values.visitor()
+		visitor.visit(source)
+		
+		return newOperators + visitor.positionsOfToken.map { position in
+			
+			return MutationOperator(id: id,
+									filePath: path,
+									position: position,
+									source: source,
+									transformation: id.transformation(for: position))
+			
+		}
+	}
 }
 
-func discoverMutations(inFilesAt filePaths: [String]) -> [NegateConditionalsMutation] {
-    return filePaths
-        .compactMap(filePathsToIntermediateValues)
-        .flatMap(intermediateValuesToMutations)
+private func filePositionOrder(lhs: MutationOperator, rhs: MutationOperator) -> Bool {
+	return lhs.position.line < rhs.position.line && lhs.position.column < rhs.position.column
+}
+
+private func pathContainsDotSwift(_ filePath: String) -> Bool {
+	guard let url = URL(string: filePath) else { return false }
+	return url.lastPathComponent.contains(".swift")
 }

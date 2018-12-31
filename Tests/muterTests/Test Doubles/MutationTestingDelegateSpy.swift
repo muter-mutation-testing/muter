@@ -5,6 +5,8 @@ class MutationTestingDelegateSpy: Spy, MutationTestingIODelegate {
 
     private(set) var methodCalls: [String] = []
     private(set) var backedUpFilePaths: [String] = []
+	private(set) var mutatedFileContents: [String] = []
+	private(set) var mutatedFilePaths: [String] = []
     private(set) var restoredFilePaths: [String] = []
     
     var testSuiteResult: TestSuiteResult!
@@ -13,6 +15,12 @@ class MutationTestingDelegateSpy: Spy, MutationTestingIODelegate {
         methodCalls.append(#function)
         backedUpFilePaths.append(path)
     }
+	
+	func writeFile(filePath: String, contents: String) throws {
+		methodCalls.append(#function)
+		mutatedFilePaths.append(filePath)
+		mutatedFileContents.append(contents)
+	}
 
     func runTestSuite() -> TestSuiteResult {
         methodCalls.append(#function)

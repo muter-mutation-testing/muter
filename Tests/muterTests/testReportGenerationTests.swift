@@ -8,17 +8,6 @@ final class TestReportGenerationTests: XCTestCase {
 	func test_generatingAppliedMutationsTable() {
 		
 		let expectedTable = Table(padding: 3, columns: [
-			Table.Column(title: "Applied Mutation Operator", rows: [
-				Table.Row(value: "SomeMutation"),
-				Table.Row(value: "SomeMutation"),
-				Table.Row(value: "SomeMutation"),
-				Table.Row(value: "SomeOtherMutation"),
-				Table.Row(value: "SomeOtherMutation"),
-				Table.Row(value: "SomeMutation"),
-				Table.Row(value: "SomeMutation"),
-				Table.Row(value: "SomeMutation"),
-				Table.Row(value: "SomeMutation"),
-			]),
 			Table.Column(title: "File", rows: [
 				Table.Row(value: "file1.swift"),
 				Table.Row(value: "file1.swift"),
@@ -30,6 +19,28 @@ final class TestReportGenerationTests: XCTestCase {
 				Table.Row(value: "file3.swift"),
 				Table.Row(value: "file4.swift"),
 			]),
+			Table.Column(title: "Position", rows: [
+				Table.Row(value: "Line: 0, Column: 0"),
+				Table.Row(value: "Line: 0, Column: 0"),
+				Table.Row(value: "Line: 0, Column: 0"),
+				Table.Row(value: "Line: 0, Column: 0"),
+				Table.Row(value: "Line: 0, Column: 0"),
+				Table.Row(value: "Line: 0, Column: 0"),
+				Table.Row(value: "Line: 0, Column: 0"),
+				Table.Row(value: "Line: 0, Column: 0"),
+				Table.Row(value: "Line: 0, Column: 0"),
+			]),
+			Table.Column(title: "Applied Mutation Operator", rows: [
+				Table.Row(value: "SomeMutation"),
+				Table.Row(value: "SomeMutation"),
+				Table.Row(value: "SomeMutation"),
+				Table.Row(value: "SomeOtherMutation"),
+				Table.Row(value: "SomeOtherMutation"),
+				Table.Row(value: "SomeMutation"),
+				Table.Row(value: "SomeMutation"),
+				Table.Row(value: "SomeMutation"),
+				Table.Row(value: "SomeMutation"),
+				]),
 			Table.Column(title: "Mutation Test Result", rows: [
 				Table.Row(value: "passed"),
 				Table.Row(value: "passed"),

@@ -2,7 +2,7 @@ import Foundation
 
 public typealias ThrowingVoidClosure = () throws -> Void
 
-@available(OSX 10.12, *)
+@available(OSX 10.13, *)
 public func run(with configuration: MuterConfiguration, fileManager: FileManager = .default, in currentDirectoryPath: String) {
     let workingDirectoryPath = createWorkingDirectory(in: currentDirectoryPath)
     printMessage("Created working directory (muter_tmp) in:\n\n\(currentDirectoryPath)")
@@ -13,11 +13,12 @@ public func run(with configuration: MuterConfiguration, fileManager: FileManager
     printDiscoveryMessage(for: sourceFilePaths)
 
     printMessage("Discovering applicable source code mutations in:\n\n\(currentDirectoryPath)")
-    let mutations = discoverMutations(inFilesAt: sourceFilePaths)
+    let mutations = discoverMutationOperators(inFilesAt: sourceFilePaths)
     printDiscoveryMessage(for: mutations)
 
     fileManager.changeCurrentDirectoryPath(currentDirectoryPath)
 
+	printMessage("Beginning mutation testing")
     let testingDelegate = MutationTestingDelegate(configuration: configuration, swapFilePathsByOriginalPath: swapFilePathsByOriginalPath)
     let mutationTestingResults = performMutationTesting(using: mutations, delegate: testingDelegate)
 	let testReport = generateTestReport(from: mutationTestingResults)
@@ -28,7 +29,6 @@ public func run(with configuration: MuterConfiguration, fileManager: FileManager
 }
 
 @available(OSX 10.13, *)
-
 public func setupMuter(using manager: FileManager, and directory: String) throws {
     let configuration = MuterConfiguration(executable: "absolute path to the executable that runs your tests", 
                                            arguments: ["an argument the test runner needs", "another argument the test runner needs"], 

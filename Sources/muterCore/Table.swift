@@ -5,7 +5,7 @@ struct Table: CustomStringConvertible, Equatable {
 	let columns: [Column]
 	
 	var description: String {
-		return columns.enumerated().reduce("") { 
+		return columns.enumerated().accumulate(into: "") {
 			let columnIndex = $1.offset
 			let column = $1.element
 			let previousColumn = columns[max(0, columnIndex - 1)]
@@ -15,7 +15,7 @@ struct Table: CustomStringConvertible, Equatable {
 			let previousColumnRows = previousColumn.description.split(separator: "\n")
 			let columnRows = column.description.split(separator: "\n")
 			
-			return zip(previousColumnRows, columnRows).reduce("") { workingValue, currentRows in
+			return zip(previousColumnRows, columnRows).accumulate(into: "") { workingValue, currentRows in
 				let previousRowWidth = currentRows.0.count
 				let newRow = currentRows.1
 				
@@ -53,7 +53,7 @@ extension Table {
 				return ""
 			}
 			
-			let content = rows.reduce("") { $0 + "\($1.value)\n" }
+			let content = rows.accumulate(into: "") { $0 + "\($1.value)\n" }
 			
 			let numberOfDashes = title.count
 			let dashes = "-".repeated(numberOfDashes)

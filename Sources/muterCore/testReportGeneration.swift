@@ -36,25 +36,30 @@ func generateTestReport(from outcomes: [MutationTestOutcome] ) -> String {
 func generateAppliedMutationsTable(from outcomes: [MutationTestOutcome]) -> Table {
 	var appliedMutations = [Table.Row]()
 	var fileNames = [Table.Row]()
+	var positions = [Table.Row]()
 	var mutationTestResults = [Table.Row]()
-	for (appliedMutation, fileName, testResult) in outcomes.map(testOutcomesToIndividualValues) {
+	
+	for (fileName, position, appliedMutation, testResult) in outcomes.map(testOutcomesToIndividualValues) {
 		appliedMutations.append(appliedMutation)
 		fileNames.append(fileName)
+		positions.append(position)
 		mutationTestResults.append(testResult)
 	}
 	
 	return Table(padding: 3, columns: [
-		Table.Column(title: "Applied Mutation Operator", rows: appliedMutations),
 		Table.Column(title: "File", rows: fileNames),
+		Table.Column(title: "Position", rows: positions),
+		Table.Column(title: "Applied Mutation Operator", rows: appliedMutations),
 		Table.Column(title: "Mutation Test Result", rows: mutationTestResults),
 	])
 }
 
-func testOutcomesToIndividualValues(outcome: MutationTestOutcome) -> (Table.Row, Table.Row, Table.Row) {
+func testOutcomesToIndividualValues(outcome: MutationTestOutcome) -> (Table.Row, Table.Row, Table.Row, Table.Row) {
 	let fileName = URL(string: outcome.filePath)!.lastPathComponent
-	return (Table.Row(value: outcome.appliedMutation),
-			Table.Row(value: fileName),
-			Table.Row(value: outcome.testSuiteResult.asMutationTestingResult))
+	return (Table.Row(value: fileName),
+			Table.Row(value: "Line: \(outcome.position.line), Column: \(outcome.position.column)"),
+			Table.Row(value: outcome.appliedMutation),
+			Table.Row(value: outcome.testSuiteResult.asMutationTestOutcome))
 }
 
 func generateMutationScoresTable(from outcomes: [MutationTestOutcome]) -> Table {
