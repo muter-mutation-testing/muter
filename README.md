@@ -185,8 +185,53 @@ if myValue <= 50 {
 }
 ```
 
+### Remove Side Effects 
+The remove side effects operator will remove code it determines is causing a side effect. It determines code is causing a side effect based on a few rules:
+
+* A line contains a function call which is explicitly discarding a return result
+* A line contains a function call and doesn't save the result of the function call into a named variable or constant (i.e. a line implicitly discards a return result or doesn't produce one)
+* A line does not contain a call to `print`, `exit`, `fatalError`, or `abort`
+
+The purpose of this operator is to highlight how your tests respond to the absence of expected side effects. 
+
+#### Example
+A remove side effects operator will transform code like this:
+
+```
+func update(email: String, for userId: String) {
+    var userRecord = record(for: userId)
+    userRecord.email = email
+    database.persist(userRecord)
+}
+```
+
+to this:
+
+```
+func update(email: String, for userId: String) {
+    var userRecord = record(for: userId)
+    userRecord.email = email
+}
+```
+
+It will also transform code like this:
+
+```
+func initialize() {
+    _ = self.view
+    view.results = self.results
+}
+```
+
+to this:
+
+```
+func initialize() {
+    view.results = self.results
+}
+```
+
 ## Limitations
-- Muter currently only implements one mutation operator (called a Negate Conditionals mutation). More are slated to be released in future versions.
 - Muter assumes you always put spaces around your operators. For example, it expects an equality check to look like
 
     `a == b (Muter will mutate this)`
@@ -195,11 +240,11 @@ if myValue <= 50 {
 
     `a==b (Muter won't mutate this)`
 - Muter assumes you aren't putting multiple expressions on one line (and I have the opinion you shouldn't be doing this anyway). Basically, if you aren't using semicolons in your code then Muter shouldn't have an issue mutating it.
-- Running Muter can be a lengthy process, so be sure to allocate enough time for the test to finish.
 
 ## Best Practices
 - Commit your `muter.conf.json`
 - Ensure you run Muter with no uncommitted changes. If Muter fails to finish, there’s a potential for the bugs it introduced to your code to be left behind.
+- Running Muter can be a lengthy process, so be sure to allocate enough time for the test to finish.
 - Because Muter can take a while to run, it is recommend to exclude UI or journey tests from your test suite. We recommend creating a separate schemes or targets for mutation testing. However, you should feel free to run these kinds of tests if you're okay with the longer feedback cycle.
 - Don’t be dogmatic about your mutation score - in practice, 100/100 is often times not possible.
 
