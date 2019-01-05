@@ -6,6 +6,7 @@ let package = Package(
     name: "muter",
     dependencies: [
         .package(url: "https://github.com/apple/swift-syntax.git", .branch("0.40200.0")),
+		.package(url: "https://github.com/onevcat/Rainbow", from: "3.0.0")
     ],
     targets: [
         .target(
@@ -14,7 +15,7 @@ let package = Package(
         ),
         .target(
             name: "muterCore",
-            dependencies: ["SwiftSyntax"],
+            dependencies: ["SwiftSyntax", "Rainbow"],
             path: "Sources/muterCore"
         ),
         .testTarget(

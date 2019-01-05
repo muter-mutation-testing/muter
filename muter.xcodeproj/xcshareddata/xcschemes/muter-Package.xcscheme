@@ -14,9 +14,9 @@
             buildForAnalyzing = "YES">
             <BuildableReference
                BuildableIdentifier = "primary"
-               BlueprintIdentifier = "muter::muter"
-               BuildableName = "muter"
-               BlueprintName = "muter"
+               BlueprintIdentifier = "muter::muterCore"
+               BuildableName = "muterCore.framework"
+               BlueprintName = "muterCore"
                ReferencedContainer = "container:muter.xcodeproj">
             </BuildableReference>
          </BuildActionEntry>
@@ -28,9 +28,9 @@
             buildForAnalyzing = "YES">
             <BuildableReference
                BuildableIdentifier = "primary"
-               BlueprintIdentifier = "muter::muterCore"
-               BuildableName = "muterCore.framework"
-               BlueprintName = "muterCore"
+               BlueprintIdentifier = "muter::muter"
+               BuildableName = "muter"
+               BlueprintName = "muter"
                ReferencedContainer = "container:muter.xcodeproj">
             </BuildableReference>
          </BuildActionEntry>
@@ -46,9 +46,9 @@
             skipped = "NO">
             <BuildableReference
                BuildableIdentifier = "primary"
-               BlueprintIdentifier = "muter::muterTests"
-               BuildableName = "muterTests.xctest"
-               BlueprintName = "muterTests"
+               BlueprintIdentifier = "muter::acceptanceTests"
+               BuildableName = "acceptanceTests.xctest"
+               BlueprintName = "acceptanceTests"
                ReferencedContainer = "container:muter.xcodeproj">
             </BuildableReference>
          </TestableReference>
@@ -66,9 +66,9 @@
             skipped = "NO">
             <BuildableReference
                BuildableIdentifier = "primary"
-               BlueprintIdentifier = "muter::acceptanceTests"
-               BuildableName = "acceptanceTests.xctest"
-               BlueprintName = "acceptanceTests"
+               BlueprintIdentifier = "muter::muterTests"
+               BuildableName = "muterTests.xctest"
+               BlueprintName = "muterTests"
                ReferencedContainer = "container:muter.xcodeproj">
             </BuildableReference>
          </TestableReference>
@@ -89,9 +89,9 @@
       <MacroExpansion>
          <BuildableReference
             BuildableIdentifier = "primary"
-            BlueprintIdentifier = "muter::muter"
-            BuildableName = "muter"
-            BlueprintName = "muter"
+            BlueprintIdentifier = "muter::muterCore"
+            BuildableName = "muterCore.framework"
+            BlueprintName = "muterCore"
             ReferencedContainer = "container:muter.xcodeproj">
          </BuildableReference>
       </MacroExpansion>

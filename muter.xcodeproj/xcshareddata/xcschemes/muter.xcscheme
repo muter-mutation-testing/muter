@@ -32,9 +32,9 @@
             skipped = "NO">
             <BuildableReference
                BuildableIdentifier = "primary"
-               BlueprintIdentifier = "muter::muterTests"
-               BuildableName = "muterTests.xctest"
-               BlueprintName = "muterTests"
+               BlueprintIdentifier = "muter::acceptanceTests"
+               BuildableName = "acceptanceTests.xctest"
+               BlueprintName = "acceptanceTests"
                ReferencedContainer = "container:muter.xcodeproj">
             </BuildableReference>
          </TestableReference>
@@ -42,9 +42,19 @@
             skipped = "NO">
             <BuildableReference
                BuildableIdentifier = "primary"
-               BlueprintIdentifier = "muter::acceptanceTests"
-               BuildableName = "acceptanceTests.xctest"
-               BlueprintName = "acceptanceTests"
+               BlueprintIdentifier = "muter::testingCore"
+               BuildableName = "testingCore.xctest"
+               BlueprintName = "testingCore"
+               ReferencedContainer = "container:muter.xcodeproj">
+            </BuildableReference>
+         </TestableReference>
+         <TestableReference
+            skipped = "NO">
+            <BuildableReference
+               BuildableIdentifier = "primary"
+               BlueprintIdentifier = "muter::muterTests"
+               BuildableName = "muterTests.xctest"
+               BlueprintName = "muterTests"
                ReferencedContainer = "container:muter.xcodeproj">
             </BuildableReference>
          </TestableReference>

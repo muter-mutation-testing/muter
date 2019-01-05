@@ -1,4 +1,5 @@
 import Foundation
+import Rainbow
 
 func generateTestReport(from outcomes: [MutationTestOutcome] ) -> String {
 	let finishedRunningMessage = "Muter finished running!\n\n"
@@ -12,6 +13,8 @@ func generateTestReport(from outcomes: [MutationTestOutcome] ) -> String {
 	
 	These are all of the ways that Muter introduced changes into your code.
 	
+	In total, Muter applied \(outcomes.count) mutation operators.
+	
 	\(appliedMutationsTable)
 	
 	
@@ -19,7 +22,8 @@ func generateTestReport(from outcomes: [MutationTestOutcome] ) -> String {
 	"""
 	
 	let globalScore = mutationScore(from: outcomes.map { $0.testSuiteResult })
-	let mutationScoreMessage = "Mutation Score of Test Suite (higher is better): \(globalScore)/100"
+	let coloredGlobalScore = coloredMutationScore(for: globalScore, appliedTo: "\(globalScore)/100")
+	let mutationScoreMessage = "Mutation Score of Test Suite (higher is better): \(coloredGlobalScore)"
 	let mutationScoresMessage = """
 	--------------------
 	Mutation Test Scores
@@ -33,7 +37,7 @@ func generateTestReport(from outcomes: [MutationTestOutcome] ) -> String {
 	return finishedRunningMessage + appliedMutationsMessage + mutationScoresMessage
 }
 
-func generateAppliedMutationsTable(from outcomes: [MutationTestOutcome]) -> Table {
+func generateAppliedMutationsTable(from outcomes: [MutationTestOutcome], coloringFunction: ([Table.Row]) -> [Table.Row] = applyMutationTestResultsColor) -> Table {
 	var appliedMutations = [Table.Row]()
 	var fileNames = [Table.Row]()
 	var positions = [Table.Row]()
@@ -45,6 +49,8 @@ func generateAppliedMutationsTable(from outcomes: [MutationTestOutcome]) -> Tabl
 		positions.append(position)
 		mutationTestResults.append(testResult)
 	}
+	
+	mutationTestResults = coloringFunction(mutationTestResults)
 	
 	return Table(padding: 3, columns: [
 		Table.Column(title: "File", rows: fileNames),
@@ -62,7 +68,7 @@ func testOutcomesToIndividualValues(outcome: MutationTestOutcome) -> (Table.Row,
 			Table.Row(value: outcome.testSuiteResult.asMutationTestOutcome))
 }
 
-func generateMutationScoresTable(from outcomes: [MutationTestOutcome]) -> Table {
+func generateMutationScoresTable(from outcomes: [MutationTestOutcome], coloringFunction: ([Table.Row]) -> [Table.Row] = applyMutationScoreColor) -> Table {
 	var fileNames = [Table.Row]()
 	var numberOfAppliedMutations = [Table.Row]()
 	var mutationScores = [Table.Row]()
@@ -76,6 +82,8 @@ func generateMutationScoresTable(from outcomes: [MutationTestOutcome]) -> Table 
 		mutationScores.append(Table.Row(value: "\(mutationScore)"))
 	}
 	
+	mutationScores = coloringFunction(mutationScores)
+	
 	return Table(padding: 3, columns: [
 		Table.Column(title: "File", rows: fileNames),
 		Table.Column(title: "# of Applied Mutation Operators", rows: numberOfAppliedMutations),
@@ -85,4 +93,35 @@ func generateMutationScoresTable(from outcomes: [MutationTestOutcome]) -> Table 
 
 func ascendingFilenameOrder(lhs: (String, Int), rhs: (String, Int)) -> Bool {
 	return lhs.0 < rhs.0
+}
+
+// MARK - Coloring Functions
+func applyMutationTestResultsColor(to rows: [Table.Row]) -> [Table.Row] {
+	return rows.map {
+		let coloredValue = $0.value == TestSuiteResult.failed.asMutationTestOutcome ?
+							$0.value.green :
+							$0.value.red
+		let coloredRow = Table.Row(value: coloredValue)
+		return coloredRow
+	}
+}
+
+func applyMutationScoreColor(to rows: [Table.Row]) -> [Table.Row] {
+	return rows.map {
+		let coloredValue = coloredMutationScore(for: Int($0.value)!, appliedTo: $0.value)
+		return Table.Row(value: coloredValue)
+	}
+}
+
+private func coloredMutationScore(for score: Int, appliedTo text: String) -> String {
+	switch score {
+	case 0...25:
+		return text.red
+	case 26...50:
+		return text.yellow
+	case 51...75:
+		return text.lightGreen
+	default:
+		return text.green
+	}
 }

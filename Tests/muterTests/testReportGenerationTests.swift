@@ -55,12 +55,12 @@ final class TestReportGenerationTests: XCTestCase {
 		])
 		
 		let generatedTable = generateAppliedMutationsTable(from:
-			self.exampleMutationTestResults)
+			self.exampleMutationTestResults) { $0 }
 		
 		XCTAssertEqual(generatedTable, expectedTable)
 	}
 	
-	func test_generatingTheMediationScoresTable() {
+	func test_generatingTheMutationScoresTable() {
 		let expectedTable = Table(padding: 3, columns: [
 			Table.Column(title: "File", rows: [
 				Table.Row(value: "file1.swift"),
@@ -82,7 +82,50 @@ final class TestReportGenerationTests: XCTestCase {
 			])
 		])
 		
-		let generatedTable = generateMutationScoresTable(from: self.exampleMutationTestResults)
+		let generatedTable = generateMutationScoresTable(from: self.exampleMutationTestResults) { $0 }
 		XCTAssertEqual(generatedTable, expectedTable)
+	}
+	
+	func test_applyingColorToMutationTestResults() {
+		let rows = [
+			Table.Row(value: "passed"),
+			Table.Row(value: "failed"),
+		]
+		
+		let coloredRows = applyMutationTestResultsColor(to: rows)
+		
+		XCTAssertNotEqual(rows, coloredRows)
+		XCTAssertEqual(rows.count, coloredRows.count)
+		XCTAssert(coloredRows.first?.value.contains(rows.first?.value ?? ""))
+		XCTAssert(coloredRows.last?.value.contains(rows.last?.value ?? ""))
+	}
+	
+	func test_applyingColorToMutationScores() {
+		let rows = [
+			Table.Row(value: "0"),
+			Table.Row(value: "26"),
+			Table.Row(value: "51"),
+			Table.Row(value: "76"),
+		]
+		
+		
+		let coloredRows = applyMutationScoreColor(to: rows)
+		
+		XCTAssertNotEqual(rows, coloredRows)
+		XCTAssertEqual(rows.count, coloredRows.count)
+		XCTAssert(coloredRows.first?.value.contains(rows.first?.value ?? ""))
+		XCTAssert(coloredRows.last?.value.contains(rows.last?.value ?? ""))
+	}
+}
+
+enum CustomTestFailure: Error {
+	case failure
+}
+
+func XCTAssert(_ value: Bool?) {
+	guard let unwrappedValue = value,
+		unwrappedValue == true else {
+			XCTFail()
+			return
 	}
 }

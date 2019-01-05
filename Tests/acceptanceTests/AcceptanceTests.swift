@@ -22,7 +22,7 @@ class AcceptanceTests: XCTestCase {
     }
 
     func test_muterReportsTheMutationsItCanApply() {
-        XCTAssert(AcceptanceTests.output.contains("Discovered 9 mutations to introduce"), "Muter reports how many mutations it's able to perform")
+        XCTAssert(AcceptanceTests.output.contains("In total, Muter applied 9 mutation operators."), "Muter reports how many mutations it's able to perform")
     }
 
     func test_muterPerformsAMutationTest() throws {
