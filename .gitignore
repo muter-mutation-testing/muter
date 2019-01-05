@@ -9,6 +9,7 @@ ExampleApp/muter.conf.json
 ExampleApp/SwiftSyntax.framework/
 .vscode
 sourcekite
+*.xcodeproj
 
 ### macOS ###
 # General
