@@ -1,6 +1,6 @@
 import SwiftSyntax
 
-enum NegateConditionalsMutation {
+enum NegateConditionalsOperator {
 	class Visitor: SyntaxVisitor, PositionDiscoveringVisitor {
 		private let tokens: [TokenKind] = [
 			.spacedBinaryOperator("=="),
@@ -23,7 +23,7 @@ enum NegateConditionalsMutation {
 	}
 }
 
-extension NegateConditionalsMutation {
+extension NegateConditionalsOperator {
 	class Rewriter: SyntaxRewriter, PositionSpecificRewriter {
 		let positionToMutate: AbsolutePosition
 		private let oppositeOperatorMapping: [String: String] = [

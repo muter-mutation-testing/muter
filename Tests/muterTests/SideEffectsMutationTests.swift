@@ -3,11 +3,11 @@ import SwiftSyntax
 @testable import muterCore
 import XCTest
 
-final class SideEffectsMutationVisitorTests: XCTestCase {
+final class RemoveSideEffectsOperatorVisitorTests: XCTestCase {
 	func test_visitorRecordsThePositionsWhereItDiscoversSideEffectsBeingCaused() {
 		let sourceWithSideEffects = sourceCode(fromFileAt: "\(fixturesDirectory)/MutationExamples/SideEffect/unusedReturnResult.swift")!
 		
-		let visitor = SideEffectsMutation.Visitor()
+		let visitor = RemoveSideEffectsOperator.Visitor()
 		visitor.visit(sourceWithSideEffects)
 		
 		guard visitor.positionsOfToken.count == 3 else {
@@ -23,14 +23,14 @@ final class SideEffectsMutationVisitorTests: XCTestCase {
 	func test_visitorRecordsNoPositionsInFilesThatDontContainSideEffectCausingCode() {
 		let sourceWithoutSideEffects = sourceCode(fromFileAt: "\(fixturesDirectory)/sample.swift")!
 		
-		let visitor = SideEffectsMutation.Visitor()
+		let visitor = RemoveSideEffectsOperator.Visitor()
 		visitor.visit(sourceWithoutSideEffects)
 		
 		XCTAssertEqual(visitor.positionsOfToken.count, 0)
 	}
 }
 
-class SideEffectsMutationRewriterTests: XCTestCase {
+class RemoveSideEffectsOperatorRewriterTests: XCTestCase {
 	func test_rewriterDeletesAStatementWithAnIgnoredDiscardableResult() {
 		
 		let path = "\(fixturesDirectory)/MutationExamples/SideEffect/unusedReturnResult.swift"
@@ -74,7 +74,7 @@ class SideEffectsMutationRewriterTests: XCTestCase {
 	
 	private func applyMutation(toFileAt path: String, atPosition positionToMutate: AbsolutePosition, expectedOutcome: String) -> (mutatedSource: Syntax, expectedSource: Syntax) {
 		
-		let rewriter = SideEffectsMutation.Rewriter(positionToMutate: positionToMutate)
+		let rewriter = RemoveSideEffectsOperator.Rewriter(positionToMutate: positionToMutate)
 		
 		return (
 			mutatedSource: rewriter.visit(sourceCode(fromFileAt: path)!),

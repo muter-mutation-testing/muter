@@ -1,7 +1,7 @@
 import SwiftSyntax
 import Foundation
 
-enum SideEffectsMutation {
+enum RemoveSideEffectsOperator {
 	class Visitor: SyntaxVisitor, PositionDiscoveringVisitor {
 		private(set) var positionsOfToken = [AbsolutePosition]()
 		
@@ -44,7 +44,7 @@ enum SideEffectsMutation {
 	}
 }
 
-extension SideEffectsMutation {
+extension RemoveSideEffectsOperator {
 	class Rewriter: SyntaxRewriter, PositionSpecificRewriter {
 		let positionToMutate: AbsolutePosition
 		

@@ -3,7 +3,7 @@ import Foundation
 import SwiftSyntax
 import XCTest
 
-class BaseNegateConditionalsMutationTests: XCTestCase {
+class BaseNegateConditionalsOperatorTests: XCTestCase {
 	var sourceWithConditionalLogic: SourceFileSyntax!
 	var sourceWithoutMuteableCode: SourceFileSyntax!
 	
@@ -13,9 +13,9 @@ class BaseNegateConditionalsMutationTests: XCTestCase {
 	}
 }
 
-final class NegateConditionalsMutationVisitorTests: BaseNegateConditionalsMutationTests {
+final class NegateConditionalsOperatorVisitorTests: BaseNegateConditionalsOperatorTests {
 	func test_visitorRecordsThePositionsWhereItDiscoversConditionalOperators() {
-		let visitor = NegateConditionalsMutation.Visitor()
+		let visitor = NegateConditionalsOperator.Visitor()
 		
 		visitor.visit(sourceWithConditionalLogic)
 		
@@ -35,16 +35,16 @@ final class NegateConditionalsMutationVisitorTests: BaseNegateConditionalsMutati
 	}
 	
 	func test_visitorRecordsNoPositionsInFilesThatDontContainConditionalOperators() {
-		let visitor = NegateConditionalsMutation.Visitor()
+		let visitor = NegateConditionalsOperator.Visitor()
 		visitor.visit(sourceWithoutMuteableCode)
 		XCTAssertEqual(visitor.positionsOfToken.count, 0)
 	}
 }
 
-final class NegateConditionalsMutationRewriterTests: BaseNegateConditionalsMutationTests {
+final class NegateConditionalsOperatorRewriterTests: BaseNegateConditionalsOperatorTests {
 	func test_rewriterReplacesAnEqualityOperatorWithAnInequalityOperator() {
 		let positionToMutate = AbsolutePosition(line: 3, column: 19, utf8Offset: 76)
-		let rewriter = NegateConditionalsMutation.Rewriter(positionToMutate: positionToMutate)
+		let rewriter = NegateConditionalsOperator.Rewriter(positionToMutate: positionToMutate)
 		let expectedSource = sourceCode(fromFileAt: "\(mutationExamplesDirectory)/NegateConditionals/equalityOperator.swift")!
 		
 		let mutatedSource = rewriter.visit(sourceWithConditionalLogic)
@@ -53,7 +53,7 @@ final class NegateConditionalsMutationRewriterTests: BaseNegateConditionalsMutat
 	
 	func test_rewriterReplacesAnInequalityOperatorWithAnEqualityOperator() {
 		let line4Column19 = AbsolutePosition(line: 4, column: 19, utf8Offset: 99)
-		let rewriter = NegateConditionalsMutation.Rewriter(positionToMutate: line4Column19)
+		let rewriter = NegateConditionalsOperator.Rewriter(positionToMutate: line4Column19)
 		let expectedSource = sourceCode(fromFileAt: "\(mutationExamplesDirectory)/NegateConditionals/inequalityOperator.swift")!
 		
 		let mutatedSource = rewriter.visit(sourceWithConditionalLogic)
@@ -62,7 +62,7 @@ final class NegateConditionalsMutationRewriterTests: BaseNegateConditionalsMutat
 	
 	func test_rewriterReplacesAGreaterThanOrEqualToOperatorWithALessThanOrEqualToOperator() {
 		let line5Column19 = AbsolutePosition(line: 5, column: 19, utf8Offset: 122)
-		let rewriter = NegateConditionalsMutation.Rewriter(positionToMutate: line5Column19)
+		let rewriter = NegateConditionalsOperator.Rewriter(positionToMutate: line5Column19)
 		let expectedSource = sourceCode(fromFileAt: "\(mutationExamplesDirectory)/NegateConditionals/greaterThanOrEqualOperator.swift")!
 		
 		let mutatedSource = rewriter.visit(sourceWithConditionalLogic)
@@ -71,7 +71,7 @@ final class NegateConditionalsMutationRewriterTests: BaseNegateConditionalsMutat
 	
 	func test_rewriterReplacesALessThanOrEqualToOperatorWithAGreaterThanOrEqualToOperator() {
 		let line6Column19 = AbsolutePosition(line: 6, column: 19, utf8Offset: 145)
-		let rewriter = NegateConditionalsMutation.Rewriter(positionToMutate: line6Column19)
+		let rewriter = NegateConditionalsOperator.Rewriter(positionToMutate: line6Column19)
 		let expectedSource = sourceCode(fromFileAt: "\(mutationExamplesDirectory)/NegateConditionals/lessThanOrEqualOperator.swift")!
 		
 		let mutatedSource = rewriter.visit(sourceWithConditionalLogic)
@@ -80,7 +80,7 @@ final class NegateConditionalsMutationRewriterTests: BaseNegateConditionalsMutat
 	
 	func test_rewriterReplacesALessThanOperatorWithAGreaterThanToOperator() {
 		let line7Column19 = AbsolutePosition(line: 7, column: 19, utf8Offset: 169)
-		let rewriter = NegateConditionalsMutation.Rewriter(positionToMutate: line7Column19)
+		let rewriter = NegateConditionalsOperator.Rewriter(positionToMutate: line7Column19)
 		let expectedSource = sourceCode(fromFileAt: "\(mutationExamplesDirectory)/NegateConditionals/lessThanOperator.swift")!
 		
 		let mutatedSource = rewriter.visit(sourceWithConditionalLogic)
@@ -89,7 +89,7 @@ final class NegateConditionalsMutationRewriterTests: BaseNegateConditionalsMutat
 	
 	func test_rewriterReplacesAGreaterThanOperatorWithALessThanOperator() {
 		let line8Column19 = AbsolutePosition(line: 8, column: 19, utf8Offset: 191)
-		let rewriter = NegateConditionalsMutation.Rewriter(positionToMutate: line8Column19)
+		let rewriter = NegateConditionalsOperator.Rewriter(positionToMutate: line8Column19)
 		let expectedSource = sourceCode(fromFileAt: "\(mutationExamplesDirectory)/NegateConditionals/greaterThanOperator.swift")!
 		
 		let mutatedSource = rewriter.visit(sourceWithConditionalLogic)

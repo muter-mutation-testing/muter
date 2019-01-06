@@ -12,8 +12,8 @@ struct MutationOperator {
 		case sideEffects = "Side Effects"
 
 		static let rewriterPairs: [Id: RewriterInitializer] = [
-			.sideEffects: SideEffectsMutation.Rewriter.init,
-			.negateConditionals: NegateConditionalsMutation.Rewriter.init
+			.sideEffects: RemoveSideEffectsOperator.Rewriter.init,
+			.negateConditionals: NegateConditionalsOperator.Rewriter.init
 		]
 
 		func transformation(for position: AbsolutePosition) -> SourceCodeTransformation {
