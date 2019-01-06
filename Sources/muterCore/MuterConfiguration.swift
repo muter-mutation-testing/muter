@@ -12,7 +12,7 @@ public struct MuterConfiguration: Codable {
     public init(executable: String, arguments: [String], blacklist: [String]) {
         self.testCommandExecutable = executable
         self.testCommandArguments = arguments
-        self.blacklist = blacklist 
+        self.blacklist = blacklist
     }
 
     public init(from decoder: Decoder) throws {

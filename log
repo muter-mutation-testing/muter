@@ -44,16 +44,16 @@ Negate Conditionals         MuterConfiguration.swift           failed
 Negate Conditionals         MuterConfiguration.swift           failed
 Negate Conditionals         MuterConfiguration.swift           failed
 Negate Conditionals         MuterConfiguration.swift           failed
-Side Effects                Table.swift                        failed
-Side Effects                Table.swift                        failed
-Negate Conditionals         Table.swift                        failed
-Negate Conditionals         Table.swift                        failed
-Negate Conditionals         Table.swift                        failed
-Negate Conditionals         Table.swift                        failed
-Negate Conditionals         Table.swift                        failed
-Negate Conditionals         Table.swift                        failed
-Negate Conditionals         Table.swift                        passed
-Negate Conditionals         Table.swift                        passed
+Side Effects                CLITable.swift                        failed
+Side Effects                CLITable.swift                        failed
+Negate Conditionals         CLITable.swift                        failed
+Negate Conditionals         CLITable.swift                        failed
+Negate Conditionals         CLITable.swift                        failed
+Negate Conditionals         CLITable.swift                        failed
+Negate Conditionals         CLITable.swift                        failed
+Negate Conditionals         CLITable.swift                        failed
+Negate Conditionals         CLITable.swift                        passed
+Negate Conditionals         CLITable.swift                        passed
 Side Effects                fileOperations.swift               failed
 Side Effects                fileOperations.swift               failed
 Negate Conditionals         fileOperations.swift               failed
@@ -167,7 +167,7 @@ MutationOperator.swift             2                                 0
 NegateConditionalsMutation.swift   4                                 25
 SideEffectsMutation.swift          8                                 25
 MuterConfiguration.swift           8                                 0
-Table.swift                        10                                20
+CLITable.swift                        10                                20
 fileOperations.swift               10                                0
 logging.swift                      10                                0
 mutationDiscovery.swift            10                                0

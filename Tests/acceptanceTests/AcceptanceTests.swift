@@ -1,71 +1,75 @@
 @testable import muterCore
 import testingCore
 import SwiftSyntax
-import XCTest
+import Foundation
+import Quick
+import Nimble
 
 @available(OSX 10.13, *)
-class AcceptanceTests: XCTestCase {
-    static var originalSourceCode: SourceFileSyntax!
-    static var sourceCodePath: String!
-    static var output: String!
+class AcceptanceTests: QuickSpec {
+    override func spec() {
+        var originalSourceCode: SourceFileSyntax!
+        var sourceCodePath: String!
+        var output: String!
 
-    override static func setUp() {
-        sourceCodePath = "\(exampleAppDirectory)/ExampleApp/Module.swift"
-        originalSourceCode = sourceCode(fromFileAt: sourceCodePath)!
+        beforeSuite {
+            sourceCodePath = "\(self.exampleAppDirectory)/ExampleApp/Module.swift"
+            originalSourceCode = sourceCode(fromFileAt: sourceCodePath)!
 
-        output = muterOutput
-    }
+            output = self.muterOutput
+        }
 
-    func test_muterReportsTheFilesItDiscovers() {
-        XCTAssertTrue(AcceptanceTests.output.contains("Discovered 3 Swift files"), "Muter reports the number of Swift files it discovers, taking into account a blacklist which causes it to ignore certain files or directories")
-        XCTAssertGreaterThanOrEqual(numberOfDiscoveredFileLists(in: AcceptanceTests.output), 1, "Muter lists the paths of Swift files it discovers")
-    }
+        describe("someone using Muter") {
+            they("see the list of files that Muter discovered") {
+                expect(output).to(contain("Discovered 3 Swift files"))
+                expect(self.numberOfDiscoveredFileLists(in: output)).to(equal(1))
+            }
 
-    func test_muterReportsTheMutationsItCanApply() {
-        XCTAssert(AcceptanceTests.output.contains("In total, Muter applied 9 mutation operators."), "Muter reports how many mutations it's able to perform")
-    }
+            they("see how many mutations it's able to perform") {
+                expect(output).to(contain("In total, Muter applied 9 mutation operators."))
+            }
 
-    func test_muterPerformsAMutationTest() throws {
-        XCTAssert(AcceptanceTests.output.contains("Mutation Test Passed"), "Muter causes a test suite to fail, which causes the mutation test to pass")
-        XCTAssert(AcceptanceTests.output.contains("Mutation Test Failed"), "Not every mutation test will pass - it depends on the rigor of the test suite under test.")
-    }
+            they("see which runs of a mutation test passed and failed") {
+                expect(output).to(contain("Mutation Test Passed"))
+                expect(output).to(contain("Mutation Test Failed"))
+            }
 
-    func test_muterReportsAMutationScore() {
-		
-		let mutationScoresHeader = """
-		--------------------
-		Mutation Test Scores
-		--------------------
-		"""
+            they("see the mutation scores for their test suite") {
+                let mutationScoresHeader = """
+                --------------------
+                Mutation Test Scores
+                --------------------
+                """
 
-		XCTAssert(AcceptanceTests.output.contains(mutationScoresHeader))
-        XCTAssert(AcceptanceTests.output.contains("Mutation Score of Test Suite (higher is better): 22/100"), "Muter reports a mutation score so an engineer can determine how effective their test suite is at identifying defects or changes to a code base")
-    }
-	
-	func test_muterReportstheMutationsItApplied() {
-		
-		let appliedMutationOperatorsHeader = """
-		--------------------------
-		Applied Mutation Operators
-		--------------------------
-		"""
-		
-		XCTAssert(AcceptanceTests.output.contains(appliedMutationOperatorsHeader))
-	}
+                expect(output).to(contain(mutationScoresHeader))
+                expect(output).to(contain("Mutation Score of Test Suite (higher is better): 22/100"))
+            }
 
-    func test_muterCleansUpAfterItself() {
-        let afterSourceCode = sourceCode(fromFileAt: AcceptanceTests.sourceCodePath)
-        let workingDirectoryExists = FileManager.default.fileExists(atPath: "\(AcceptanceTests.exampleAppDirectory)/muter_tmp", isDirectory: nil)
+            they("see which mutation operators were applied") {
+                let appliedMutationOperatorsHeader = """
+                --------------------------
+                Applied Mutation Operators
+                --------------------------
+                """
 
-        XCTAssertNotNil(afterSourceCode, "This file should be available - Muter may have accidentally moved or deleted it")
-        XCTAssertEqual(AcceptanceTests.originalSourceCode!.description, afterSourceCode!.description, "Muter is supposed to clean up after itself by restoring the source code it mutates once it's done")
-        XCTAssertFalse(workingDirectoryExists, "Muter is supposed to clean up after itself by deleting the working directory it creates")
+                expect(output).to(contain(appliedMutationOperatorsHeader))
+            }
+
+            they("know that Muter cleans up after itself") {
+                let afterSourceCode = sourceCode(fromFileAt: sourceCodePath)
+                let workingDirectoryExists = FileManager.default.fileExists(atPath: "\(self.exampleAppDirectory)/muter_tmp", isDirectory: nil)
+
+                expect(afterSourceCode).toNot(beNil())
+                expect(originalSourceCode!.description).to(equal(afterSourceCode!.description))
+                expect(workingDirectoryExists).to(beFalse())
+            }
+        }
     }
 }
 
 @available(OSX 10.13, *)
 private extension AcceptanceTests {
-    static var exampleAppDirectory: String {
+    var exampleAppDirectory: String {
         return AcceptanceTests().productsDirectory
             .deletingLastPathComponent()
             .deletingLastPathComponent()
@@ -75,12 +79,12 @@ private extension AcceptanceTests {
             .absoluteString
     }
 
-    static var muterOutputPath: String { return "\(AcceptanceTests().rootTestDirectory)/acceptanceTests/muters_output.txt" }
+    var muterOutputPath: String { return "\(AcceptanceTests().rootTestDirectory)/acceptanceTests/muters_output.txt" }
 
-    static var muterOutput: String {
+    var muterOutput: String {
         guard let data = FileManager.default.contents(atPath: muterOutputPath),
             let output = String(data: data, encoding: .utf8) else {
-            fatalError("Unable to find a valid output file from a prior run of Muter at \(muterOutputPath)")
+                fatalError("Unable to find a valid output file from a prior run of Muter at \(muterOutputPath)")
         }
 
         return output

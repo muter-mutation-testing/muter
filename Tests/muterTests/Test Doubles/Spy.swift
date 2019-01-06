@@ -5,5 +5,5 @@ protocol Spy {
 protocol Dummy {}
 
 enum TestingError: Error {
-	case dummyMethodInvoked
+    case dummyMethodInvoked
 }

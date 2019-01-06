@@ -30,11 +30,11 @@ func discoverSourceFiles(inDirectoryAt path: String, excludingPathsIn providedBl
     let subpaths = FileManager.default.subpaths(atPath: path) ?? []
     return subpaths
         .filter { path in
-            
+
             for item in blacklist where path.contains(item) {
                 return false
             }
-            
+
             return path.contains(".swift")
         }
         .map { path + "/" + $0 }
@@ -60,11 +60,11 @@ func removeWorkingDirectory(at path: String) {
 // MARK - Swap File Path
 func swapFilePaths(forFilesAt paths: [String], using workingDirectoryPath: String) ->  [String: String] {
     var swapFilePathsByOriginalPath: [String: String] = [:]
-    
+
     for path in paths {
         swapFilePathsByOriginalPath[path] = swapFilePath(forFileAt: path, using: workingDirectoryPath)
     }
-    
+
     return swapFilePathsByOriginalPath
 }
 
