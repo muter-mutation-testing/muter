@@ -30,7 +30,7 @@ Muter provides mutation score for your entire test suite and every file that it'
 
 If you're curious about how a mutation score is different than test code coverage, then check out [this document](https://github.com/SeanROlszewski/muter/blob/master/Docs/mutation_score_vs_test_code_coverage.md).
 
-##### Example Test Report
+### Example Test Report
 There's an example of [the test report that Muter generates](https://github.com/SeanROlszewski/muter/blob/master/Docs/test_report_example.md) hosted in this repository.
 
 ## Installation
