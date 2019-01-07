@@ -1,23 +1,28 @@
 # Muter
-## Automated [mutation testing](https://en.wikipedia.org/wiki/Mutation_testing) for Swift
+### Automated [mutation testing](https://en.wikipedia.org/wiki/Mutation_testing) for Swift inspired by [Stryker](https://github.com/stryker-mutator/stryker), [PITest](https://github.com/hcoles/pitest), and [Mull](https://github.com/mull-project/mull).
 
 ## What Is Muter?
 Muter is a mutation testing utility that is used to help you determine the quality of your test suite.
-Specifically, it can help you:
-- find gaps in fault/defect coverage from your test suite by identifying missing groups of tests, assertions/expectations, or test cases from your test suite
-- determine if you are writing meaningful and effective assertions/expectations that withstand different code than what the test was originally written against
-- assess how many tests fail as a result of one code change
 
 With Muter, you can make sure your test suite is meeting all your requirements, fails meaningfully and clearly, and remains stable in the face of unexpected or accidental code changes.
 
-## How Does It Work?
-Instead of leveraging the bugs already present in the code, Muter will add new ones. The bugs introduced by Muter are called **mutants**.
+If you're interested in checking out more about mutation testing, you can check out [this link](https://en.wikipedia.org/wiki/Mutation_testing).
 
-By introducing mutants randomly, it can strengthen your code and shine a light on potential weakness that you were unaware existed.
+## Why Should I Use This?
+
+Muter can strengthen your code and shine a light on potential weakness that you were unaware existed. It does this by generating a mutation score (which is expanded on below). This will show both the areas you may want to improve in your test suite, as well as the areas that are performing well. 
+
+Specifically, it can help you:
+- Find gaps in fault/defect coverage from your test suite by identifying missing groups of tests, assertions/expectations, or test cases from your test suite
+- Determine if you are writing meaningful and effective assertions/expectations that withstand different code than what the test was originally written against
+- Assess how many tests fail as a result of one code change
+
+## How Does It Work?
+Instead of leveraging the bugs already present in the code, Muter will add new ones. The bugs introduced by Muter are called **mutants**. Muter uses **mutation operators** to generate these and introduce them into your code. 
+
+You can view the list of available mutation operators [here]((https://github.com/SeanROlszewski/muter/blob/master/Docs/mutation_operators.md)). 
 
 **NOTE**: Muter will always clean up after itself, so there's no need worry about leftover bugs. Muter always backs code up prior to making modifications to it.
-
-If you're interested in checking out more about mutation testing, you can check out [this link](https://en.wikipedia.org/wiki/Mutation_testing).
 
 ### Mutation Score
 A **mutation score** is provided at the end of every run of Muter. The score is the ratio of the number of mutants your test suite caught versus the total number of mutants introduced.
@@ -26,12 +31,14 @@ A **mutation score** is provided at the end of every run of Muter. The score is 
 
 For example, if your test suite caught 50 mutants of the 75 introduced by Muter, your score would be 66. A well-engineered test suite should strive to be as close to 100 as possible.
 
-Muter provides mutation score for your entire test suite and every file that it's able to apply a mutation operator to.
+Muter not only provides a mutation score for your entire test suite, but it also generates individual scores for the files it has mutated.
 
 If you're curious about how a mutation score is different than test code coverage, then check out [this document](https://github.com/SeanROlszewski/muter/blob/master/Docs/mutation_score_vs_test_code_coverage.md).
 
 ## Example Test Report
 There's an example of [the test report that Muter generates](https://github.com/SeanROlszewski/muter/blob/master/Docs/test_report_example.md) hosted in this repository.
+
+Check out this example if you are unfamiliar with the report.
 
 ## Installation
 Muter is available through [Homebrew](https://brew.sh/). Run the following command to install Muter:
@@ -40,26 +47,8 @@ Muter is available through [Homebrew](https://brew.sh/). Run the following comma
 
 ## Setup
 ### Muter's Configuration
-You will need to create a configuration file named `muter.conf.json` in the root directory of the project you're mutation testing. To make this easy, you can run `muter init` in the root directory of your project. After running the `init` command, fill in the configuration with the settings that will run your test suite from the commandline.
+You will need to create a configuration file named `muter.conf.json` in the root directory of the project you're mutation testing. To make this easy, you can run `muter init` in the root directory of your project. After running the `init` command, fill in the configuration with the options listed below.
 
-The configuration will end up looking something like this:
-```
-{
-    "executable": "/usr/bin/xcodebuild",
-    "arguments": [
-        "-project",
-        "ExampleApp.xcodeproj",
-        "-scheme",
-        "ExampleApp",
-        "-sdk",
-        "iphonesimulator",
-        "-destination",
-        "platform=iOS Simulator,name=iPhone 8",
-        "test"
-    ],
-    "blacklist": ["AppDelegate.swift"]
-}
-```
 ### Configuration Options
 - `executable` - the absolute path to the program which can run your test suite (like `xcodebuild` or `swift`)
 - `arguments` - any command line arguments the executable needs to run your test suite
@@ -79,88 +68,31 @@ The configuration will end up looking something like this:
 
 **NOTE**: Muter uses a substring match to determine if something should be excluded.
 
-For examples of configuration files, check out the `muter.conf.json` in the root directory of this repository, as well as the `muter.conf.json` inside the `ExampleApp` directory.
+Below is an example pulled directly from the `ExampleApp` directory.
+The configuration file will end up looking something like this:
+```
+{
+    "executable": "/usr/bin/xcodebuild",
+    "arguments": [
+        "-project",
+        "ExampleApp.xcodeproj",
+        "-scheme",
+        "ExampleApp",
+        "-sdk",
+        "iphonesimulator",
+        "-destination",
+        "platform=iOS Simulator,name=iPhone 8",
+        "test"
+    ],
+    "blacklist": ["AppDelegate.swift"]
+}
+```
+
+Check out the `muter.conf.json` in the root directory of this repository for another example.
+
 
 ## Running Muter
-Running Muter is easy! Once you've created your configuration file simply run `muter` in your terminal from any directory of the project you're mutation testing. Muter will take it from there. 
-
-## Mutation Operators
-Muter uses **mutation operators** to generate mutants in your source code. This is the list of currently available mutation operators.
-
-### Negate Conditionals
-The negate conditionals operator will invert conditional operators in your code based on this table:
-
-Original Operator | Negated Operator
-------------------|-----------------
-`==`|`!=`
-`!=`|`==`
-`>=`|`<=`
-`<=`|`>=`
-`>`|`<`
-`<`|`>`
-
-The purpose of this operator is to highlight how your tests respond to changes in branching logic. A well-engineered test suite will be able to fail clearly in response to code taking a different branch than it expected.
-
-#### Mutating an equality check
-```
-if myValue == 50 {
-    // something happens here
-}
-```
-
-becomes
-
-```
-if myValue != 50 {
-    // something happens here
-}
-```
-
-### Remove Side Effects 
-The Remove Side Effects operator will remove code it determines is causing a side effect. It will determine your code is causing a side effect based on a few rules:
-
-* A line contains a function call which is explicitly discarding a return result
-* A line contains a function call and doesn't save the result of the function call into a named variable or constant (i.e. a line implicitly discards a return result or doesn't produce one)
-* A line does not contain a call to `print`, `exit`, `fatalError`, or `abort`
-
-The purpose of this operator is to highlight how your tests respond to the absence of expected side effects. 
-
-#### Mutating an explicitly discarded return result
-
-```
-func initialize() {
-    _ = self.view
-    view.results = self.results
-}
-```
-
-becomes
-
-```
-func initialize() {
-    view.results = self.results
-}
-```
-
-
-#### Mutating a void function call
-
-```
-func update(email: String, for userId: String) {
-    var userRecord = record(for: userId)
-    userRecord.email = email
-    database.persist(userRecord)
-}
-```
-
-becomes
-
-```
-func update(email: String, for userId: String) {
-    var userRecord = record(for: userId)
-    userRecord.email = email
-}
-```
+Running Muter is easy. Once you've created your configuration file simply run `muter` in your terminal from any directory of the project you're mutation testing. Muter will take it from there. 
 
 ## Limitations
 - Muter assumes you always put spaces around your operators. For example, it expects an equality check to look like
@@ -182,7 +114,9 @@ func update(email: String, for userId: String) {
 ## FAQ
 **What platforms does Muter support?**
 
-Muter supports any platform that compiles and tests using `xcodebuild`, which includes iOS, macOS, tvOS, and watchOS. Prior to its first release, Muter was tested on multiple iOS and macOS codebases.
+Muter supports any platform that compiles and tests using `xcodebuild`, which includes iOS, macOS, tvOS, and watchOS. 
+
+Muter can only run on macOS 10.13 or higher.
 
 **Does Muter support UI test suites?**
 
