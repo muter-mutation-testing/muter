@@ -22,8 +22,8 @@ SideEffectsMutation.swift          Line: 20, Column: 97    Negate Conditionals  
 SideEffectsMutation.swift          Line: 25, Column: 12    Negate Conditionals         passed
 SideEffectsMutation.swift          Line: 62, Column: 72    Negate Conditionals         passed
 SideEffectsMutation.swift          Line: 71, Column: 45    Negate Conditionals         passed
-CLITable.swift                        Line: 36, Column: 16    Negate Conditionals         passed
-CLITable.swift                        Line: 52, Column: 21    Negate Conditionals         passed
+CLITable.swift                     Line: 36, Column: 16    Negate Conditionals         passed
+CLITable.swift                     Line: 52, Column: 21    Negate Conditionals         passed
 mutationDiscovery.swift            Line: 41, Column: 27    Negate Conditionals         passed
 mutationDiscovery.swift            Line: 41, Column: 70    Negate Conditionals         passed
 subCommands.swift                  Line: 19, Column: 65    Side Effects                failed
@@ -47,7 +47,7 @@ File                               # of Applied Mutation Operators   Mutation Sc
 AbsolutePositionExtensions.swift   2                                 100
 NegateConditionalsMutation.swift   2                                 100
 SideEffectsMutation.swift          4                                 100
-CLITable.swift                        2                                 100
+CLITable.swift                     2                                 100
 mutationDiscovery.swift            2                                 100
 subCommands.swift                  4                                 50
 testReportGeneration.swift         3                                 66
