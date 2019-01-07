@@ -20,7 +20,7 @@ Specifically, it can help you:
 ## How Does It Work?
 Instead of leveraging the bugs already present in the code, Muter will add new ones. The bugs introduced by Muter are called **mutants**. Muter uses **mutation operators** to generate these and introduce them into your code. 
 
-You can view the list of available mutation operators [here]((https://github.com/SeanROlszewski/muter/blob/master/Docs/mutation_operators.md)). 
+You can view the list of available mutation operators [here](https://github.com/SeanROlszewski/muter/blob/master/Docs/mutation_operators.md). 
 
 **NOTE**: Muter will always clean up after itself, so there's no need worry about leftover bugs. Muter always backs code up prior to making modifications to it.
 
