@@ -14,18 +14,12 @@
 		9D13CAD2218FC9FA00DB1FDA /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 9D13CAD0218FC9FA00DB1FDA /* LaunchScreen.storyboard */; };
 		9D13CADD218FC9FA00DB1FDA /* ModuleTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9D13CADC218FC9FA00DB1FDA /* ModuleTests.swift */; };
 		9D13CAF6218FCB1C00DB1FDA /* Module.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9D13CAF5218FCB1C00DB1FDA /* Module.swift */; };
+		9D3C426E21EAB2A100A3474C /* Module2.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9DA60E9421ACA53E00B02CB4 /* Module2.swift */; };
+		9D3C426F21EAB2A100A3474C /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9D13CAC7218FC9F800DB1FDA /* AppDelegate.swift */; };
+		9D3C427021EAB2A100A3474C /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9D13CAC9218FC9F800DB1FDA /* ViewController.swift */; };
+		9D3C427121EAB2A600A3474C /* Module.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9D13CAF5218FCB1C00DB1FDA /* Module.swift */; };
 		9DA60E9521ACA53E00B02CB4 /* Module2.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9DA60E9421ACA53E00B02CB4 /* Module2.swift */; };
 /* End PBXBuildFile section */
-
-/* Begin PBXContainerItemProxy section */
-		9D13CAD9218FC9FA00DB1FDA /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = 9D13CABC218FC9F800DB1FDA /* Project object */;
-			proxyType = 1;
-			remoteGlobalIDString = 9D13CAC3218FC9F800DB1FDA;
-			remoteInfo = MuterExampleTestSuite;
-		};
-/* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
 		9D13CAC4218FC9F800DB1FDA /* ExampleApp.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = ExampleApp.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -133,7 +127,6 @@
 			buildRules = (
 			);
 			dependencies = (
-				9D13CADA218FC9FA00DB1FDA /* PBXTargetDependency */,
 			);
 			name = ExampleAppTests;
 			productName = MuterExampleTestSuiteTests;
@@ -155,7 +148,6 @@
 					};
 					9D13CAD7218FC9FA00DB1FDA = {
 						CreatedOnToolsVersion = 10.0;
-						TestTargetID = 9D13CAC3218FC9F800DB1FDA;
 					};
 				};
 			};
@@ -214,19 +206,15 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				9D3C427121EAB2A600A3474C /* Module.swift in Sources */,
+				9D3C426E21EAB2A100A3474C /* Module2.swift in Sources */,
+				9D3C426F21EAB2A100A3474C /* AppDelegate.swift in Sources */,
+				9D3C427021EAB2A100A3474C /* ViewController.swift in Sources */,
 				9D13CADD218FC9FA00DB1FDA /* ModuleTests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXSourcesBuildPhase section */
-
-/* Begin PBXTargetDependency section */
-		9D13CADA218FC9FA00DB1FDA /* PBXTargetDependency */ = {
-			isa = PBXTargetDependency;
-			target = 9D13CAC3218FC9F800DB1FDA /* ExampleApp */;
-			targetProxy = 9D13CAD9218FC9FA00DB1FDA /* PBXContainerItemProxy */;
-		};
-/* End PBXTargetDependency section */
 
 /* Begin PBXVariantGroup section */
 		9D13CACB218FC9F800DB1FDA /* Main.storyboard */ = {
@@ -404,7 +392,6 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
-				BUNDLE_LOADER = "$(TEST_HOST)";
 				CODE_SIGN_STYLE = Automatic;
 				INFOPLIST_FILE = ExampleApp/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
@@ -416,7 +403,6 @@
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 4.2;
 				TARGETED_DEVICE_FAMILY = "1,2";
-				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/ExampleApp.app/ExampleApp";
 			};
 			name = Debug;
 		};
@@ -424,7 +410,6 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
-				BUNDLE_LOADER = "$(TEST_HOST)";
 				CODE_SIGN_STYLE = Automatic;
 				INFOPLIST_FILE = ExampleApp/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
@@ -436,7 +421,6 @@
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 4.2;
 				TARGETED_DEVICE_FAMILY = "1,2";
-				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/ExampleApp.app/ExampleApp";
 			};
 			name = Release;
 		};

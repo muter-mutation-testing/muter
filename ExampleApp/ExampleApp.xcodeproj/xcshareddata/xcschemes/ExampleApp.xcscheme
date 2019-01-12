@@ -7,7 +7,7 @@
       buildImplicitDependencies = "YES">
       <BuildActionEntries>
          <BuildActionEntry
-            buildForTesting = "YES"
+            buildForTesting = "NO"
             buildForRunning = "YES"
             buildForProfiling = "YES"
             buildForArchiving = "YES"
@@ -17,6 +17,20 @@
                BlueprintIdentifier = "9D13CAC3218FC9F800DB1FDA"
                BuildableName = "ExampleApp.app"
                BlueprintName = "ExampleApp"
+               ReferencedContainer = "container:ExampleApp.xcodeproj">
+            </BuildableReference>
+         </BuildActionEntry>
+         <BuildActionEntry
+            buildForTesting = "YES"
+            buildForRunning = "NO"
+            buildForProfiling = "NO"
+            buildForArchiving = "NO"
+            buildForAnalyzing = "NO">
+            <BuildableReference
+               BuildableIdentifier = "primary"
+               BlueprintIdentifier = "9D13CAD7218FC9FA00DB1FDA"
+               BuildableName = "ExampleAppTests.xctest"
+               BlueprintName = "ExampleAppTests"
                ReferencedContainer = "container:ExampleApp.xcodeproj">
             </BuildableReference>
          </BuildActionEntry>
