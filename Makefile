@@ -39,4 +39,7 @@ test:
 acceptance-test: clean build
 	./Scripts/runAcceptanceTests.sh
 
+mutation-test: clean
+	muter
+
 .PHONY: build install uninstall clean test build-tests
