@@ -5,7 +5,7 @@ Test code coverage is only a metric of how much of your application code is exec
 
 It's not possible to have a mutation score > 0 and to have 0% code coverage. This would mean that you don't execute any of your application code in your test suite but your test suite somehow caught errors.
 
-A **high mutation score**, with a **high amount of code coverage coverage**, indicates a very rigorous test suite; a lot of your application code is executed in your test suite, and the assertions that you're using in your test suite generally catch any mutations introduced.
+A **high mutation score**, with a **high amount of code coverage coverage**, indicates a very rigorous test suite; a lot of your application code is executed in your test suite, and the assertions that you're using in your test suite generally catch any introduced mutants.
 
 A **high mutation score**, with a **low amount of code coverage**, indicates that a lot of your application code is not tested, but that which is tested has robust tests validating the logic.
 

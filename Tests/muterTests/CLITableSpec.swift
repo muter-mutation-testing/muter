@@ -18,7 +18,7 @@ class CLITableSpec: QuickSpec {
             CLITable.Row(value: "55"),
         ])
 
-        let numberOfAppliedMutationsColumn = CLITable.Column(title: "# of Applied Mutations", rows: [
+        let numberOfAppliedMutationsColumn = CLITable.Column(title: "# of Generated Mutants", rows: [
             CLITable.Row(value: "1"),
             CLITable.Row(value: "2"),
             CLITable.Row(value: "3"),
@@ -36,7 +36,7 @@ class CLITableSpec: QuickSpec {
                 describe("with a padding of 3") {
                     it("renders variable-width columns with 3 spaces of padding between the columns") {
                         let expectedCLITable = """
-							File name      # of Applied Mutations   Mutation Score
+							File name      # of Generated Mutants   Mutation Score
 							---------      ----------------------   --------------
 							file 1.swift   1                        60
 							file2.swift    2                        0
@@ -51,7 +51,7 @@ class CLITableSpec: QuickSpec {
                 describe("with a padding of 6") {
                     it("renders variable-width columns with 6 spaces of padding between the columns") {
                         let expectedCLITable = """
-							File name         # of Applied Mutations      Mutation Score
+							File name         # of Generated Mutants      Mutation Score
 							---------         ----------------------      --------------
 							file 1.swift      1                           60
 							file2.swift       2                           0

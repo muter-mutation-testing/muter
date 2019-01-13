@@ -31,10 +31,10 @@ func printDiscoveryMessage(for discoveredFilePaths: [String]) {
     printMessage("Discovered \(discoveredFilePaths.count) Swift files:\n\n\(filePaths)")
 }
 
-func printDiscoveryMessage(for discoveredMutations: [MutationOperator]) {
-    printMessage("Discovered \(discoveredMutations.count) mutations to introduce:\n")
+func printDiscoveryMessage(for discoveredMutationOperators: [MutationOperator]) {
+    printMessage("Discovered \(discoveredMutationOperators.count) mutations to introduce:\n")
 
-    for (index, mutation) in discoveredMutations.enumerated() {
+    for (index, mutation) in discoveredMutationOperators.enumerated() {
         let listPosition = "\(index+1))"
         let fileName = URL(fileURLWithPath: mutation.filePath).lastPathComponent
         print("\(listPosition) \(fileName)")

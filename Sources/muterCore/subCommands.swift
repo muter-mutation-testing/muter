@@ -76,15 +76,15 @@ public func performMutationTesting(in currentDirectoryPath: String, configuratio
     let swapFilePathsByOriginalPath = swapFilePaths(forFilesAt: sourceFilePaths, using: workingDirectoryPath)
     printDiscoveryMessage(for: sourceFilePaths)
 
-    printMessage("Discovering applicable source code mutations in:\n\n\(currentDirectoryPath)")
-    let mutations = discoverMutationOperators(inFilesAt: sourceFilePaths)
-    printDiscoveryMessage(for: mutations)
+    printMessage("Discovering applicable Mutation Operators in:\n\n\(currentDirectoryPath)")
+    let mutationOperators = discoverMutationOperators(inFilesAt: sourceFilePaths)
+    printDiscoveryMessage(for: mutationOperators)
 
     FileManager.default.changeCurrentDirectoryPath(currentDirectoryPath)
 
     printMessage("Beginning mutation testing")
     let testingDelegate = MutationTestingDelegate(configuration: configuration, swapFilePathsByOriginalPath: swapFilePathsByOriginalPath)
-    let mutationTestingResults = performMutationTesting(using: mutations, delegate: testingDelegate)
+    let mutationTestingResults = performMutationTesting(using: mutationOperators, delegate: testingDelegate)
     let testReport = generateTestReport(from: mutationTestingResults)
 
     printMessage(testReport)
