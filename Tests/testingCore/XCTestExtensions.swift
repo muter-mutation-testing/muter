@@ -15,11 +15,13 @@ public extension XCTestCase {
 
     var rootTestDirectory: String {
         return String(
-            URL(string: #file)!
+            URL(fileURLWithPath: #file)
+				.withoutScheme()
                 .deletingLastPathComponent()
                 .deletingLastPathComponent()
                 .absoluteString
                 .dropLast()
+			
         )
     }
 
