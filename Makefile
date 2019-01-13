@@ -8,8 +8,8 @@ BUILDDIR = $(REPODIR)/.build
 build: 
 	swift build -Xswiftc -suppress-warnings
 
-build-release:
-	swift build -c release --disable-sandbox
+build-release: 
+	swift build -c release --product muter --disable-sandbox -Xswiftc -suppress-warnings
 
 build-tests: 
 	swift build --target muterTests -Xswiftc -suppress-warnings
