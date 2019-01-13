@@ -7,6 +7,7 @@ xcuserdata/
 ExampleApp/muter
 ExampleApp/muter.conf.json
 ExampleApp/SwiftSyntax.framework/
+muters_output.txt
 .vscode
 sourcekite
 *.xcodeproj
