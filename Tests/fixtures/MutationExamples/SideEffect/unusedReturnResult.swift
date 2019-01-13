@@ -31,4 +31,10 @@ struct Example {
         let containsIgnoredResult = statement.description.contains("_ = ")
         var anotherIgnoredResult = statement.description.contains("_ = ")
     }
+
+    func containsAVoidFunctionCallThatSpansManyLine() {
+        functionCall("some argument",
+                     anArgumentLabel: "some argument that's different",
+                     anotherArgumentLabel: 5)
+    }
 }

@@ -5,7 +5,10 @@ import SwiftSyntax
 
 class RemoveSideEffectsOperatorSpec: QuickSpec {
     override func spec() {
-        func applyMutation(toFileAt path: String, atPosition positionToMutate: AbsolutePosition, expectedOutcome: String) -> (mutatedSource: Syntax, expectedSource: Syntax) {
+		
+        func applyMutation(toFileAt path: String,
+						   atPosition positionToMutate: AbsolutePosition,
+						   expectedOutcome: String) -> (mutatedSource: Syntax, expectedSource: Syntax) {
 
             let rewriter = RemoveSideEffectsOperator.Rewriter(positionToMutate: positionToMutate)
 
@@ -22,13 +25,15 @@ class RemoveSideEffectsOperatorSpec: QuickSpec {
                 let visitor = RemoveSideEffectsOperator.Visitor()
                 visitor.visit(sourceWithSideEffects)
 
-                guard visitor.positionsOfToken.count == 3 else {
-                    fail("Expected 3 tokens to be discovered, got \(visitor.positionsOfToken.count) instead")
+                guard visitor.positionsOfToken.count == 4 else {
+                    fail("Expected 4 tokens to be discovered, got \(visitor.positionsOfToken.count) instead")
                     return
                 }
+
                 expect(visitor.positionsOfToken[0].line).to(equal(3))
                 expect(visitor.positionsOfToken[1].line).to(equal(10))
                 expect(visitor.positionsOfToken[2].line).to(equal(21))
+                expect(visitor.positionsOfToken[3].line).to(equal(38))
             }
 
             it("records no positions when a file doesn't contain code that causes a side effect") {
@@ -70,6 +75,16 @@ class RemoveSideEffectsOperatorSpec: QuickSpec {
                 let results = applyMutation(toFileAt: path, atPosition: line21, expectedOutcome: expectedSourcePath)
 
                 expect(results.mutatedSource.description).to(equal(results.expectedSource.description))
+            }
+
+            it("deletes a void function call that spans multiple lines") {
+                let path = "\(self.fixturesDirectory)/MutationExamples/SideEffect/unusedReturnResult.swift"
+                let expectedSourcePath = "\(self.fixturesDirectory)/MutationExamples/SideEffect/removedVoidFunctionCall_line36.swift"
+                let line38 = AbsolutePosition(line: 38, column: -1, utf8Offset: -1)
+
+                let results = applyMutation(toFileAt: path, atPosition: line38, expectedOutcome: expectedSourcePath)
+
+                expect(results.mutatedSource.description) == results.expectedSource.description
             }
         }
 

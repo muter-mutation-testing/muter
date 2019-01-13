@@ -33,6 +33,5 @@ struct Example {
     }
 
     func containsAVoidFunctionCallThatSpansManyLine() {
-
     }
 }
