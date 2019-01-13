@@ -6,13 +6,13 @@ REPODIR = $(shell pwd)
 BUILDDIR = $(REPODIR)/.build
 
 build: 
-	swift build
+	swift build -Xswiftc -suppress-warnings
 
 build-release:
 	swift build -c release --disable-sandbox
 
 build-tests: 
-	swift build --target muterTests 
+	swift build --target muterTests -Xswiftc -suppress-warnings
 
 install: build-release
 	install -d "$(bindir)" "$(libdir)"
@@ -34,7 +34,7 @@ make run: build
 	$(BUILDDIR)/debug/muter
 
 test: 
-	@swift test --filter muterTests.* # Also builds app and test code
+	@swift test -Xswiftc -suppress-warnings
 	
 acceptance-test: clean build
 	./Scripts/runAcceptanceTests.sh

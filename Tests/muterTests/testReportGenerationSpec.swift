@@ -20,7 +20,7 @@ class TestReportGenerationSpec: QuickSpec {
                             CLITable.Row(value: "file3.swift"),
                             CLITable.Row(value: "file3.swift"),
                             CLITable.Row(value: "file3.swift"),
-                            CLITable.Row(value: "file4.swift"),
+                            CLITable.Row(value: "file 4.swift"),
                         ]),
                         CLITable.Column(title: "Position", rows: [
                             CLITable.Row(value: "Line: 0, Column: 0"),
@@ -67,22 +67,23 @@ class TestReportGenerationSpec: QuickSpec {
                 it("contains information about the mutation score and number of applied mutation operators for every file") {
                     let expectedCLITable = CLITable(padding: 3, columns: [
                         CLITable.Column(title: "File", rows: [
+                            CLITable.Row(value: "file 4.swift"),
                             CLITable.Row(value: "file1.swift"),
                             CLITable.Row(value: "file2.swift"),
                             CLITable.Row(value: "file3.swift"),
-                            CLITable.Row(value: "file4.swift"),
                         ]),
                         CLITable.Column(title: "# of Applied Mutation Operators", rows: [
+                            CLITable.Row(value: "1"),
                             CLITable.Row(value: "3"),
                             CLITable.Row(value: "2"),
                             CLITable.Row(value: "3"),
-                            CLITable.Row(value: "1"),
                         ]),
                         CLITable.Column(title: "Mutation Score", rows: [
+                            CLITable.Row(value: "0"),
+
                             CLITable.Row(value: "66"),
                             CLITable.Row(value: "100"),
                             CLITable.Row(value: "33"),
-                            CLITable.Row(value: "0"),
                         ])
                     ])
 

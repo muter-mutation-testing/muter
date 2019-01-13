@@ -15,7 +15,7 @@ func printDiscoveryMessage(for discoveredMutations: [MutationOperator]) {
 
     for (index, mutation) in discoveredMutations.enumerated() {
         let listPosition = "\(index+1))"
-        let fileName = URL(string: mutation.filePath)!.lastPathComponent
+        let fileName = URL(fileURLWithPath: mutation.filePath).lastPathComponent
         print("\(listPosition) \(fileName)")
     }
 }

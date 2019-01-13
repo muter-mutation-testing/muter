@@ -3,5 +3,12 @@
     "arguments": [
         "test"
     ],
-    "blacklist": ["ExampleApp", "main.swift", "sourcekite"]
+    "blacklist": [
+        "ExampleApp",
+        "main.swift",
+        "sourcekite",
+        "Package.swift",
+        ".swift-version",
+        ".swiftlint.yml"
+    ]
 }

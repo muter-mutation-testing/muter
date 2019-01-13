@@ -3,11 +3,4 @@ struct Example2 {
         let b = a != a
         return b == a ? "equal" : "not equal"
     }
-
-    func containSideEffects(_ a: Int) -> String {
-        let b = something()
-        _ = returnsSomethingThatGetsIgnored()
-        voidFunctionCall()
-        return ""
-    }
 }

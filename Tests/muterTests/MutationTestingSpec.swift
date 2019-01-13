@@ -74,7 +74,7 @@ class MutationTestingSpec: QuickSpec {
                     "file1.swift": 66,
                     "file2.swift": 100,
                     "file3.swift": 33,
-                    "file4.swift": 0
+                    "file 4.swift": 0
                 ]
 
                 expect(mutationScoreOfFiles(from: self.exampleMutationTestResults)).to(equal(expectedMutationScores))

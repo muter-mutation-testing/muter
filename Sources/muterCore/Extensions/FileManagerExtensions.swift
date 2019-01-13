@@ -4,6 +4,14 @@ public protocol FileSystemManager {
     func createDirectory(atPath path: String,
                          withIntermediateDirectories createIntermediates: Bool,
                          attributes: [FileAttributeKey : Any]?) throws
+
+    func url(for directory: FileManager.SearchPathDirectory,
+             in domain: FileManager.SearchPathDomainMask,
+             appropriateFor url: URL?,
+             create shouldCreate: Bool) throws -> URL
+
+    func copyItem(atPath srcPath: String,
+                  toPath dstPath: String) throws
 }
 
 extension FileManager: FileSystemManager {}

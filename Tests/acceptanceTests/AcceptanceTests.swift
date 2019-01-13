@@ -8,30 +8,35 @@ import Nimble
 @available(OSX 10.13, *)
 class AcceptanceTests: QuickSpec {
     override func spec() {
-        var originalSourceCode: SourceFileSyntax!
-        var sourceCodePath: String!
+
         var output: String!
 
-        beforeSuite {
-            sourceCodePath = "\(self.exampleAppDirectory)/ExampleApp/Module.swift"
-            originalSourceCode = sourceCode(fromFileAt: sourceCodePath)!
-
-            output = self.muterOutput
-        }
-
-        describe("someone using Muter") {
-            they("see the list of files that Muter discovered") {
-                expect(output).to(contain("Discovered 3 Swift files"))
-                expect(self.numberOfDiscoveredFileLists(in: output)).to(equal(1))
+        describe("someone using Muter", flags: [:]) {
+            beforeEach {
+                output = self.muterOutput
             }
 
-            they("see how many mutations it's able to perform") {
-                expect(output).to(contain("In total, Muter applied 9 mutation operators."))
+            they("see that their files are copied to a temp folder") {
+                expect(output.contains("Copying your project for mutation testing")).to(beTrue())
+            }
+
+            they("see the list of files that Muter discovered") {
+                expect(output.contains("Discovered 3 Swift files")).to(beTrue())
+                expect(self.numberOfDiscoveredFileLists(in: output)).to(beGreaterThanOrEqualTo(1))
+            }
+
+            they("see that Muter is working in a temporary directory") {
+                expect(output.contains("/var/folders")).to(beTrue())
+                expect(output.contains("/T/TemporaryItems/")).to(beTrue())
+            }
+
+            they("see how many mutation operators it's able to perform") {
+                expect(output.contains("In total, Muter applied 9 mutation operators.")).to(beTrue())
             }
 
             they("see which runs of a mutation test passed and failed") {
-                expect(output).to(contain("Mutation Test Passed"))
-                expect(output).to(contain("Mutation Test Failed"))
+                expect(output.contains("Mutation Test Passed")).to(beTrue())
+                expect(output.contains("Mutation Test Failed")).to(beTrue())
             }
 
             they("see the mutation scores for their test suite") {
@@ -41,8 +46,8 @@ class AcceptanceTests: QuickSpec {
                 --------------------
                 """
 
-                expect(output).to(contain(mutationScoresHeader))
-                expect(output).to(contain("Mutation Score of Test Suite (higher is better): 22/100"))
+                expect(output.contains(mutationScoresHeader)).to(beTrue())
+                expect(output.contains("Mutation Score of Test Suite (higher is better): 33/100")).to(beTrue())
             }
 
             they("see which mutation operators were applied") {
@@ -52,16 +57,7 @@ class AcceptanceTests: QuickSpec {
                 --------------------------
                 """
 
-                expect(output).to(contain(appliedMutationOperatorsHeader))
-            }
-
-            they("know that Muter cleans up after itself") {
-                let afterSourceCode = sourceCode(fromFileAt: sourceCodePath)
-                let workingDirectoryExists = FileManager.default.fileExists(atPath: "\(self.exampleAppDirectory)/muter_tmp", isDirectory: nil)
-
-                expect(afterSourceCode).toNot(beNil())
-                expect(originalSourceCode!.description).to(equal(afterSourceCode!.description))
-                expect(workingDirectoryExists).to(beFalse())
+                expect(output.contains(appliedMutationOperatorsHeader)).to(beTrue())
             }
         }
     }

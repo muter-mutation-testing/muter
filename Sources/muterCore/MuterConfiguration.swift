@@ -1,4 +1,4 @@
-public struct MuterConfiguration: Codable {
+public struct MuterConfiguration: Equatable, Codable {
     let testCommandArguments: [String]
     let testCommandExecutable: String
     let blacklist: [String]

@@ -42,6 +42,6 @@ private func filePositionOrder(lhs: MutationOperator, rhs: MutationOperator) -> 
 }
 
 private func pathContainsDotSwift(_ filePath: String) -> Bool {
-    guard let url = URL(string: filePath) else { return false }
+    let url = URL(fileURLWithPath: filePath)
     return url.lastPathComponent.contains(".swift")
 }

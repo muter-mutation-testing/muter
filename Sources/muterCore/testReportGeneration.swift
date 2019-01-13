@@ -61,7 +61,7 @@ func generateAppliedMutationsCLITable(from outcomes: [MutationTestOutcome], colo
 }
 
 func testOutcomesToIndividualValues(outcome: MutationTestOutcome) -> (CLITable.Row, CLITable.Row, CLITable.Row, CLITable.Row) {
-    let fileName = URL(string: outcome.filePath)!.lastPathComponent
+    let fileName = URL(fileURLWithPath: outcome.filePath).lastPathComponent
     return (CLITable.Row(value: fileName),
             CLITable.Row(value: "Line: \(outcome.position.line), Column: \(outcome.position.column)"),
             CLITable.Row(value: outcome.appliedMutation),
@@ -74,7 +74,7 @@ func generateMutationScoresCLITable(from outcomes: [MutationTestOutcome], colori
     var mutationScores = [CLITable.Row]()
 
     for (filePath, mutationScore) in mutationScoreOfFiles(from: outcomes).sorted(by: ascendingFilenameOrder)  {
-        let fileName = URL(string: filePath)!.lastPathComponent
+        let fileName = URL(fileURLWithPath: filePath).lastPathComponent
         let appliedMutationsCount = outcomes.filter { $0.filePath == filePath }.count
 
         fileNames.append(CLITable.Row(value: fileName))
