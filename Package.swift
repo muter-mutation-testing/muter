@@ -21,17 +21,10 @@ let package = Package(
             path: "Sources/muterCore"
         ),
         .testTarget(
-            name: "testingCore",
-			dependencies: ["muterCore"]
-        ),
-        .testTarget(
             name: "muterTests",
-            dependencies: ["muterCore", "testingCore", "Quick", "Nimble"],
-            exclude: ["fixtures", "acceptanceTests"]
-        ),
-        .testTarget(
-            name: "acceptanceTests",
-            dependencies: ["muterCore", "testingCore"]
+            dependencies: ["muterCore", "Quick", "Nimble"],
+            path: "Tests",
+            exclude: ["fixtures"]
         )
     ]
 )

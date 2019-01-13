@@ -1,5 +1,4 @@
 @testable import muterCore
-import testingCore
 
 import Quick
 import Nimble

@@ -16,16 +16,14 @@ public extension XCTestCase {
     var rootTestDirectory: String {
         return String(
             URL(fileURLWithPath: #file)
+                .deletingLastPathComponent()
+                .deletingLastPathComponent()
 				.withoutScheme()
-                .deletingLastPathComponent()
-                .deletingLastPathComponent()
-                .absoluteString
-                .dropLast()
-			
+
         )
     }
 
-    var fixturesDirectory: String { return "\(rootTestDirectory)/muterTests/fixtures" }
+    var fixturesDirectory: String { return "\(rootTestDirectory)/fixtures" }
     var configurationPath: String { return "\(fixturesDirectory)/muter.conf.json" }
     var mutationExamplesDirectory: String { return "\(fixturesDirectory)/MutationExamples" }
 

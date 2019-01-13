@@ -1,5 +1,4 @@
 @testable import muterCore
-import testingCore
 import SwiftSyntax
 import Quick
 import Nimble
@@ -7,7 +6,6 @@ import Nimble
 class MutationTestingSpec: QuickSpec {
     override func spec() {
 
-        let expectedSource = SyntaxFactory.makeReturnKeyword()
         var delegateSpy: MutationTestingDelegateSpy!
         var mutationOperatorStub: MutationOperator!
 

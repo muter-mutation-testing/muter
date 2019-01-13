@@ -34,7 +34,7 @@ public func run(with configuration: MuterConfiguration,
                 fileManager: FileSystemManager = FileManager.default,
                 in currentDirectoryPath: String,
                 performMutationTesting: (_ tempDirectoryPath: String, MuterConfiguration) -> Void = performMutationTesting(in:configuration:)) {
-    do {    
+    do {
         printMessage("Copying your project for mutation testing")
 
         let currentDirectoryUrl = URL(string: currentDirectoryPath)!
@@ -48,14 +48,14 @@ public func run(with configuration: MuterConfiguration,
 
         let destinationPath = destinationDirectoryPath(in: temporaryDirectory, withProjectName: currentDirectoryUrl.lastPathComponent)
         try fileManager.copyItem(atPath: currentDirectoryPath, toPath: destinationPath)
-        
+
         performMutationTesting(destinationPath, configuration)
 
     } catch {
         fatalError("""
             Muter was unable to create a temporary directory,
             or was unable to copy your project, and cannot continue.
-            
+
             If you can reproduce this, please consider filing a bug
             at https://github.com/SeanROlszewski/muter
 

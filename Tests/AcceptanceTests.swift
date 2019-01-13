@@ -1,5 +1,4 @@
 @testable import muterCore
-import testingCore
 import SwiftSyntax
 import Foundation
 import Quick
@@ -11,7 +10,7 @@ class AcceptanceTests: QuickSpec {
 
         var output: String!
 
-        describe("someone using Muter", flags: [:]) {
+        xdescribe("someone using Muter", flags: [:]) {
             beforeEach {
                 output = self.muterOutput
             }
@@ -72,10 +71,10 @@ private extension AcceptanceTests {
             .deletingLastPathComponent() // Go up 3 directories
             .appendingPathComponent("ExampleApp") // Go down 1 directory
             .withoutScheme() // Remove the file reference scheme
-            .absoluteString
+            
     }
 
-    var muterOutputPath: String { return "\(AcceptanceTests().rootTestDirectory)/acceptanceTests/muters_output.txt" }
+    var muterOutputPath: String { return "\(AcceptanceTests().rootTestDirectory)/muters_output.txt" }
 
     var muterOutput: String {
         guard let data = FileManager.default.contents(atPath: muterOutputPath),

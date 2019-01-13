@@ -2,13 +2,13 @@ import Foundation
 
 public func printHeader() {
     print(
-    """
+        """
 
 
-    _____       _             
-    |     | _ _ | |_  ___  ___ 
+    _____       _
+    |     | _ _ | |_  ___  ___
     | | | || | ||  _|| -_||  _|
-    |_|_|_||___||_|  |___||_|  
+    |_|_|_||___||_|  |___||_|
 
 
     Automated mutation testing for Swift
