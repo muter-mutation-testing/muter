@@ -7,6 +7,9 @@ enum MuterError: Error {
 }
 
 if #available(OSX 10.13, *) {
+
+    printHeader()
+
     let fileManager = FileManager.default
     let currentDirectoryPath = fileManager.currentDirectoryPath
 
