@@ -128,7 +128,6 @@ class CLISubcommandSpec: QuickSpec {
                         muterCore.run(with: configuration, fileManager: fileManager, in: "/some/test", performMutationTesting: { (currentDirectoryPath, actualConfiguration) in
                             expect(currentDirectoryPath).to(equal("/this/is/a/fake/temp/test"))
                             expect(actualConfiguration).to(equal(configuration))
-                            //                            expect(fileManager.methodCalls).to(equal(["url(for:in:appropriateFor:create:)"]))
                             expect(fileManager.searchPathDirectories).to(equal([.itemReplacementDirectory]))
                             expect(fileManager.domains).to(equal([.userDomainMask]))
                             expect(fileManager.paths).to(equal(["/some/test"]))
