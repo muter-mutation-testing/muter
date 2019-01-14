@@ -37,7 +37,7 @@ public func run(with configuration: MuterConfiguration,
     do {
         printMessage("Copying your project for mutation testing")
 
-        let currentDirectoryUrl = URL(string: currentDirectoryPath)!
+        let currentDirectoryUrl = URL(fileURLWithPath: currentDirectoryPath)
 
         let temporaryDirectory = try fileManager.url(
             for: .itemReplacementDirectory,
