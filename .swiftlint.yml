@@ -4,3 +4,6 @@ included:
 whitelist_rules:
  - vertical_whitespace
  - literal_expression_end_indentation
+ - trailing_whitespace
+ - vertical_whitespace_closing_braces
+ - operator_usage_whitespace

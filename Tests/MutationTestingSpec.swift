@@ -246,6 +246,8 @@ class MutationTestingSpec: QuickSpec {
                 expect(mutationScore(from: [])).to(equal(-1))
 
                 expect(mutationScore(from: [.passed])).to(equal(0))
+                expect(mutationScore(from: [.buildError])).to(equal(0))
+
                 expect(mutationScore(from: [.failed])).to(equal(100))
 
                 expect(mutationScore(from: [.passed, .failed])).to(equal(50))
@@ -254,6 +256,7 @@ class MutationTestingSpec: QuickSpec {
                 expect(mutationScore(from: [.passed, .runtimeError])).to(equal(50))
 
                 expect(mutationScore(from: [.passed, .failed, .buildError])).to(equal(50))
+
             }
 
             it("calculates a mutation score for each mutated file from a mutation test run") {

@@ -33,7 +33,10 @@ clean:
 run: build
 	$(BUILDDIR)/debug/muter
 
-test: 
+lint:
+	swiftlint autocorrect --format
+
+test: lint
 	@swift test -Xswiftc -suppress-warnings
 	
 acceptance-test: build
@@ -45,4 +48,4 @@ regression-test: build
 mutation-test: clean
 	muter
 
-.PHONY: build build-tests clean test run install uninstall  
+.PHONY: build build-tests clean lint test run install uninstall  

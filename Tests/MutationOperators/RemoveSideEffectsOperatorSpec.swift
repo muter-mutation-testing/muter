@@ -25,8 +25,8 @@ class RemoveSideEffectsOperatorSpec: QuickSpec {
                 let visitor = RemoveSideEffectsOperator.Visitor()
                 visitor.visit(sourceWithSideEffects)
 
-                guard visitor.positionsOfToken.count == 4 else {
-                    fail("Expected 4 tokens to be discovered, got \(visitor.positionsOfToken.count) instead")
+                guard visitor.positionsOfToken.count == 8 else {
+                    fail("Expected 8 tokens to be discovered, got \(visitor.positionsOfToken.count) instead")
                     return
                 }
 
@@ -34,6 +34,10 @@ class RemoveSideEffectsOperatorSpec: QuickSpec {
                 expect(visitor.positionsOfToken[1].line).to(equal(10))
                 expect(visitor.positionsOfToken[2].line).to(equal(21))
                 expect(visitor.positionsOfToken[3].line).to(equal(38))
+                expect(visitor.positionsOfToken[4].line).to(equal(44))
+                expect(visitor.positionsOfToken[5].line).to(equal(49))
+                expect(visitor.positionsOfToken[6].line).to(equal(55))
+                expect(visitor.positionsOfToken[7].line).to(equal(56))
             }
 
             it("records no positions when a file doesn't contain code that causes a side effect") {
@@ -84,6 +88,20 @@ class RemoveSideEffectsOperatorSpec: QuickSpec {
 
                 let results = applyMutation(toFileAt: path, atPosition: line38, expectedOutcome: expectedSourcePath)
 
+                expect(results.mutatedSource.description) == results.expectedSource.description
+            }
+            
+            it("deletes a void function call that can thrown error") {
+           
+            }
+            
+            fit("deletes a void function call that is inside of the loop") {
+                let path = "\(self.fixturesDirectory)/MutationExamples/SideEffect/unusedReturnResult.swift"
+                let expectedSourcePath = "\(self.fixturesDirectory)/MutationExamples/SideEffect/removedVoidFunctionCall_line44.swift"
+                let line38 = AbsolutePosition(line: 44, column: -1, utf8Offset: -1)
+                
+                let results = applyMutation(toFileAt: path, atPosition: line38, expectedOutcome: expectedSourcePath)
+                
                 expect(results.mutatedSource.description) == results.expectedSource.description
             }
         }

@@ -30,7 +30,7 @@ extension TestSuiteOutcome {
         } else if logContainsTestFailure(testLog) {
             return .failed
         }
-        
+
         return .passed
     }
 

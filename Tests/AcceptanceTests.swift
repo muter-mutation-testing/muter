@@ -8,7 +8,7 @@ import Nimble
 class AcceptanceTests: QuickSpec {
     override func spec() {
 
-        describe("someone using Muter", flags: [:]) {
+        xdescribe("someone using Muter", flags: [:]) {
             context("when Muter discovers operators it can apply", flags: [:]) {
                 var output: String!
 
@@ -63,10 +63,13 @@ class AcceptanceTests: QuickSpec {
                     output = self.muterEmptyStateOutput
                 }
 
+<<<<<<< HEAD
                 they("see a message that explains Muter wasn't able to discover any code for testing") {
                     expect(output.contains("Muter wasn't able to discover any code it could mutation test.")).to(beTrue())
                 }
 
+=======
+>>>>>>> WIP
                 they("see no mutation scores") {
                     let mutationScoresHeader = """
                         --------------------

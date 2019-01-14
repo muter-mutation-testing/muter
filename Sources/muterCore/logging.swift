@@ -15,7 +15,7 @@ func printDiscoveryMessage(for discoveredMutationOperators: [MutationOperator]) 
     printMessage("Discovered \(discoveredMutationOperators.count) mutants to introduce:\n")
 
     for (index, `operator`) in discoveredMutationOperators.enumerated() {
-        let listPosition = "\(index+1))"
+        let listPosition = "\(index + 1))"
         let fileName = URL(fileURLWithPath: `operator`.filePath).lastPathComponent
         print("\(listPosition) \(fileName)")
     }
