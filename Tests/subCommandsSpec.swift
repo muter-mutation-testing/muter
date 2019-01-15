@@ -101,64 +101,75 @@ class CLISubcommandSpec: QuickSpec {
 
         describe("Setup handling") {
             afterEach {
-                 let workingDirectory = self.rootTestDirectory
-                 try? FileManager.default.removeItem(atPath: "\(workingDirectory)/muter.conf.json")
+                let workingDirectory = self.rootTestDirectory
+                try? FileManager.default.removeItem(atPath: "\(workingDirectory)/muter.conf.json")
             }
 
             it("creates a configuration file named muter.conf.json with placeholder values in a specified directory") {
-                 let workingDirectory = self.rootTestDirectory
+                let workingDirectory = self.rootTestDirectory
 
-                 guard let _ = try? setupMuter(using: FileManager.default, and: workingDirectory),
-                     let contents = FileManager.default.contents(atPath: "\(workingDirectory)/muter.conf.json"),
-                     let _ = try? JSONDecoder().decode(MuterConfiguration.self, from: contents) else {
+                guard let _ = try? setupMuter(using: FileManager.default, and: workingDirectory),
+                    let contents = FileManager.default.contents(atPath: "\(workingDirectory)/muter.conf.json"),
+                    let _ = try? JSONDecoder().decode(MuterConfiguration.self, from: contents) else {
 
-                         fail("Expected a valid configuration file to be written")
-                         return
-                 }
+                        fail("Expected a valid configuration file to be written")
+                        return
+                }
             }
         }
 
         describe("run()") {
-			
-			let configuration = MuterConfiguration.fromFixture(at: "\(self.fixturesDirectory)/muter.conf.withoutBlacklist.json")!
-			var fileManager: FileManagerSpy!
-			
-			beforeEach {
-				fileManager = FileManagerSpy()
-				fileManager.tempDirectory = URL(fileURLWithPath: "/this/is/a/fake/temp")
-			}
-			
+
+            let configuration = MuterConfiguration.fromFixture(at: "\(self.fixturesDirectory)/muter.conf.withoutBlacklist.json")!
+            var fileManager: FileManagerSpy!
+
+            beforeEach {
+                fileManager = FileManagerSpy()
+                fileManager.tempDirectory = URL(fileURLWithPath: "/this/is/a/fake/temp")
+            }
+
             it("creates a temp directory to store a copy of the code under test") {
                 waitUntil { done in
-					
+
                     muterCore.run(with: configuration, fileManager: fileManager, in: "/some/test", performMutationTesting: { (currentDirectoryPath, actualConfiguration) in
                         expect(currentDirectoryPath).to(equal("/this/is/a/fake/temp/test"))
                         expect(actualConfiguration).to(equal(configuration))
-                        //                            expect(fileManager.methodCalls).to(equal(["url(for:in:appropriateFor:create:)"]))
                         expect(fileManager.searchPathDirectories).to(equal([.itemReplacementDirectory]))
                         expect(fileManager.domains).to(equal([.userDomainMask]))
                         expect(fileManager.paths).to(equal(["/some/test"]))
                         done()
                     })
-					
+
                 }
             }
 
             it("copies the project to the temp directory") {
-				waitUntil { done in
-					
+                waitUntil { done in
+
                     muterCore.run(with: configuration, fileManager: fileManager, in: "/some/test", performMutationTesting: { (_, _) in
                         expect(fileManager.copyPaths.first?.source).to(equal("/some/test"))
                         expect(fileManager.copyPaths.first?.dest).to(equal("/this/is/a/fake/temp/test"))
                         expect(fileManager.copyPaths).to(haveCount(1))
                         done()
                     })
-					
+
+                }
+            }
+
+            it("copies the project after creating the temp directory") {
+                waitUntil { done in
+
+                    muterCore.run(with: configuration, fileManager: fileManager, in: "/some/test", performMutationTesting: { (_, _) in
+                        expect(fileManager.methodCalls).to(equal(["url(for:in:appropriateFor:create:)",
+                                                                  "copyItem(atPath:toPath:)"]))
+                        done()
+                    })
+
                 }
             }
         }
 
-        describe("FileManager behaves as we expect it") {
+        describe("FileManager") {
             it("names temporary files predictably") {
                 let volumeRoot = URL(fileURLWithPath: "/")
                 do {
