@@ -101,10 +101,9 @@ class TestReportGenerationSpec: QuickSpec {
 
                     let coloredRows = applyMutationTestResultsColor(to: rows)
 
-                    expect(rows).toNot(equal(coloredRows))
-                    expect(rows.count).to(equal(coloredRows.count))
-                    expect(coloredRows.first?.value.contains(rows.first?.value ?? "")).to(beTrue())
-                    expect(coloredRows.last?.value.contains(rows.last?.value ?? "")).to(beTrue())
+					expect(coloredRows.count).to(equal(rows.count))
+					expect(coloredRows.first?.value).to(contain(rows.first!.value))
+					expect(coloredRows.last?.value).to(contain(rows.last!.value))
                 }
 
                 it("colors mutation scores based on how close to 100 they are") {
@@ -117,10 +116,9 @@ class TestReportGenerationSpec: QuickSpec {
 
                     let coloredRows = applyMutationScoreColor(to: rows)
 
-                    expect(rows).toNot(equal(coloredRows))
-                    expect(rows.count).to(equal(coloredRows.count))
-                    expect(coloredRows.first?.value.contains(rows.first?.value ?? "")).to(beTrue())
-                    expect(coloredRows.last?.value.contains(rows.last?.value ?? "")).to(beTrue())
+                    expect(coloredRows.count).to(equal(rows.count))
+					expect(coloredRows.first?.value).to(contain(rows.first!.value))
+					expect(coloredRows.last?.value).to(contain(rows.last!.value))
                 }
             }
         }
