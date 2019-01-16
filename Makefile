@@ -30,16 +30,16 @@ uninstall:
 clean:
 	rm -rf .build
 
-make run: build
+run: build
 	$(BUILDDIR)/debug/muter
 
 test: 
 	@swift test -Xswiftc -suppress-warnings
 	
-acceptance-test: clean build
+acceptance-test: build
 	./Scripts/runAcceptanceTests.sh
 
 mutation-test: clean
 	muter
 
-.PHONY: build install uninstall clean test build-tests
+.PHONY: build build-tests clean test run install uninstall  
