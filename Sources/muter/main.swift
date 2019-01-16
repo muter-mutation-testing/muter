@@ -17,7 +17,7 @@ public func printHeader() {
 
          You are running version \(version)
         
-         Need help?
+         Want help?
          https://github.com/SeanROlszewski/muter/issues
         +----------------------------------------------+
         
