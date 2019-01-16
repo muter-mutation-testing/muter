@@ -2,6 +2,28 @@ import Darwin
 import Foundation
 import muterCore
 
+public func printHeader() {
+    print(
+        """
+
+
+          _____       _
+         |     | _ _ | |_  ___  ___
+         | | | || | ||  _|| -_||  _|
+         |_|_|_||___||_|  |___||_|
+
+
+         Automated mutation testing for Swift
+
+         You are running version \(version)
+        
+         Need help?
+         https://github.com/SeanROlszewski/muter/issues
+        +----------------------------------------------+
+        
+        """)
+}
+
 enum MuterError: Error {
     case configurationError
 }

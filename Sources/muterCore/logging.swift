@@ -1,25 +1,5 @@
 import Foundation
 
-public func printHeader() {
-    print(
-        """
-
-
-    _____       _
-    |     | _ _ | |_  ___  ___
-    | | | || | ||  _|| -_||  _|
-    |_|_|_||___||_|  |___||_|
-
-
-    Automated mutation testing for Swift
-
-    Need help?
-    https://github.com/SeanROlszewski/muter/issues
-
-
-    """)
-}
-
 func printMessage(_ message: String) {
     print("*******************************")
     print(message)
