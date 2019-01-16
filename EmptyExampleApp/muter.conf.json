@@ -1,0 +1,10 @@
+{
+  "arguments" : [
+    "an argument the test runner needs",
+    "another argument the test runner needs"
+  ],
+  "blacklist" : [
+
+  ],
+  "executable" : "absolute path to the executable that runs your tests"
+}
