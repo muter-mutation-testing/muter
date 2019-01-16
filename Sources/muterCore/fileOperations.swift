@@ -12,35 +12,6 @@ func copySourceCode(fromFileAt sourcePath: String, to destinationPath: String) {
     try? source?.description.write(toFile: destinationPath, atomically: true, encoding: .utf8)
 }
 
-private let defaultExcludeList = [
-    ".build",
-    ".framework",
-    ".swiftdep",
-    ".swiftmodule",
-    "Build",
-    "Carthage",
-    "muter_tmp",
-    "Pods",
-    "Spec",
-    "Test",
-]
-
-func discoverSourceFiles(inDirectoryAt path: String, excludingPathsIn providedExcludeList: [String] = []) -> [String] {
-    let excludeList = providedExcludeList + defaultExcludeList
-    let subpaths = FileManager.default.subpaths(atPath: path) ?? []
-    return subpaths
-        .filter { path in
-
-            for item in excludeList where path.contains(item) {
-                return false
-            }
-
-            return path.contains(".swift")
-        }
-        .map { path + "/" + $0 }
-        .sorted()
-}
-
 // MARK - Working Directory
 func createWorkingDirectory(in directory: String, fileManager: FileSystemManager = FileManager.default) -> String {
     let workingDirectory = "\(directory)/muter_tmp"
