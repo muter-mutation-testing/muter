@@ -44,7 +44,7 @@ class FileOperationSpec: QuickSpec {
                 ]))
             }
 
-            it("discovers Swift files applying a user-provided blacklist") {
+            it("discovers Swift files applying a user-provided exclude list") {
                 let path = "\(self.fixturesDirectory)/FilesToDiscover"
                 let discoveredPaths = discoverSourceFiles(inDirectoryAt: path,
                                                           excludingPathsIn: ["ExampleApp"])

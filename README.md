@@ -52,7 +52,7 @@ You will need to create a configuration file named `muter.conf.json` in the root
 ### Configuration Options
 - `executable` - the absolute path to the program which can run your test suite (like `xcodebuild` or `swift`)
 - `arguments` - any command line arguments the executable needs to run your test suite
-- `blacklist` - a list of paths, file extensions, or names you want Muter to ignore. By default, Muter ignores files or paths containing the following phrases:
+- `exclude` - a list of paths, file extensions, or names you want Muter to ignore. By default, Muter ignores files or paths containing the following phrases:
     * `.build`
     * `.framework`
     * `.swiftdep`
@@ -64,7 +64,7 @@ You will need to create a configuration file named `muter.conf.json` in the root
     * `Spec`
     * `Test`
 
-    The `blacklist` option is optional.
+    The `exclude` option is optional.
 
 **NOTE**: Muter uses a substring match to determine if something should be excluded.
 
@@ -84,7 +84,7 @@ The configuration file will end up looking something like this:
         "platform=iOS Simulator,name=iPhone 8",
         "test"
     ],
-    "blacklist": ["AppDelegate.swift"]
+    "exclude": ["AppDelegate.swift"]
 }
 ```
 

@@ -11,5 +11,7 @@
         "platform=iOS Simulator,name=iPhone 8",
         "test"
     ],
-    "blacklist": ["AppDelegate.swift"]
+    "exclude": [
+        "AppDelegate.swift"
+    ]
 }

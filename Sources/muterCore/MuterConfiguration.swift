@@ -1,18 +1,18 @@
 public struct MuterConfiguration: Equatable, Codable {
     let testCommandArguments: [String]
     let testCommandExecutable: String
-    let blacklist: [String]
+    let excludeList: [String]
 
     enum CodingKeys: String, CodingKey {
         case testCommandArguments = "arguments"
         case testCommandExecutable = "executable"
-        case blacklist
+        case excludeList = "exclude"
     }
 
-    public init(executable: String, arguments: [String], blacklist: [String]) {
+    public init(executable: String, arguments: [String], excludeList: [String]) {
         self.testCommandExecutable = executable
         self.testCommandArguments = arguments
-        self.blacklist = blacklist
+        self.excludeList = excludeList
     }
 
     public init(from decoder: Decoder) throws {
@@ -21,7 +21,7 @@ public struct MuterConfiguration: Equatable, Codable {
         testCommandExecutable = try container.decode(String.self, forKey: .testCommandExecutable)
         testCommandArguments = try container.decode([String].self, forKey: .testCommandArguments)
 
-        let blacklist = try? container.decode([String].self, forKey: .blacklist)
-        self.blacklist = blacklist ?? []
+        let excludeList = try? container.decode([String].self, forKey: .excludeList)
+        self.excludeList = excludeList ?? []
     }
 }

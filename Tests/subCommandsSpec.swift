@@ -120,7 +120,7 @@ class CLISubcommandSpec: QuickSpec {
 
         describe("run()") {
 
-            let configuration = MuterConfiguration.fromFixture(at: "\(self.fixturesDirectory)/muter.conf.withoutBlacklist.json")!
+            let configuration = MuterConfiguration.fromFixture(at: "\(self.fixturesDirectory)/muter.conf.withoutExcludeList.json")!
             var fileManager: FileManagerSpy!
 
             beforeEach {

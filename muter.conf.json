@@ -3,7 +3,7 @@
     "arguments": [
         "test"
     ],
-    "blacklist": [
+    "exclude": [
         "ExampleApp",
         "main.swift",
         "sourcekite",

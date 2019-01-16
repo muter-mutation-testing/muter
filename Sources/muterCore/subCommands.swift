@@ -72,7 +72,7 @@ public func performMutationTesting(in currentDirectoryPath: String, configuratio
     printMessage("Created working directory (muter_tmp) in:\n\n\(currentDirectoryPath)")
 
     printMessage("Discovering source code in:\n\n\(currentDirectoryPath)")
-    let sourceFilePaths = discoverSourceFiles(inDirectoryAt: currentDirectoryPath, excludingPathsIn: configuration.blacklist)
+    let sourceFilePaths = discoverSourceFiles(inDirectoryAt: currentDirectoryPath, excludingPathsIn: configuration.excludeList)
     let swapFilePathsByOriginalPath = swapFilePaths(forFilesAt: sourceFilePaths, using: workingDirectoryPath)
     printDiscoveryMessage(for: sourceFilePaths)
 
@@ -115,7 +115,7 @@ private func destinationDirectoryPath(in temporaryDirectory: URL, withProjectNam
 public func setupMuter(using manager: FileManager, and directory: String) throws {
     let configuration = MuterConfiguration(executable: "absolute path to the executable that runs your tests",
                                            arguments: ["an argument the test runner needs", "another argument the test runner needs"],
-                                           blacklist: [])
+                                           excludeList: [])
     let encoder = JSONEncoder()
     encoder.outputFormatting = [.prettyPrinted, .sortedKeys]
     let data = try! encoder.encode(configuration)
