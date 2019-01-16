@@ -17,7 +17,7 @@ if #available(OSX 10.13, *) {
         commandlineArguments: CommandLine.arguments,
         setup: {
             try setupMuter(using: fileManager, and: currentDirectoryPath)
-    },
+        },
         run: {
             let configurationPath = currentDirectoryPath + "/muter.conf.json"
 
@@ -27,7 +27,7 @@ if #available(OSX 10.13, *) {
 
             let configuration = try JSONDecoder().decode(MuterConfiguration.self, from: configurationData)
             run(with: configuration, in: currentDirectoryPath)
-    }
+        }
     )
 
     print(message ?? "")

@@ -5,10 +5,10 @@ import SwiftSyntax
 
 class RemoveSideEffectsOperatorSpec: QuickSpec {
     override func spec() {
-		
+
         func applyMutation(toFileAt path: String,
-						   atPosition positionToMutate: AbsolutePosition,
-						   expectedOutcome: String) -> (mutatedSource: Syntax, expectedSource: Syntax) {
+                           atPosition positionToMutate: AbsolutePosition,
+                           expectedOutcome: String) -> (mutatedSource: Syntax, expectedSource: Syntax) {
 
             let rewriter = RemoveSideEffectsOperator.Rewriter(positionToMutate: positionToMutate)
 

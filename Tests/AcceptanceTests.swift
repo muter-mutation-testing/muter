@@ -71,7 +71,7 @@ private extension AcceptanceTests {
             .deletingLastPathComponent() // Go up 3 directories
             .appendingPathComponent("ExampleApp") // Go down 1 directory
             .withoutScheme() // Remove the file reference scheme
-            
+
     }
 
     var muterOutputPath: String { return "\(AcceptanceTests().rootTestDirectory)/muters_output.txt" }

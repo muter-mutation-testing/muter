@@ -107,7 +107,7 @@ func applyMutationTestResultsColor(to rows: [CLITable.Row]) -> [CLITable.Row] {
 }
 
 func applyMutationScoreColor(to rows: [CLITable.Row]) -> [CLITable.Row] {
-    return rows.map { 
+    return rows.map {
         let coloredValue = coloredMutationScore(for: Int($0.value)!, appliedTo: $0.value)
         return CLITable.Row(value: coloredValue)
     }
