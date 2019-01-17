@@ -22,7 +22,7 @@ Instead of leveraging the bugs already present in the code, Muter will add new o
 
 You can view the list of available mutation operators [here](https://github.com/SeanROlszewski/muter/blob/master/Docs/mutation_operators.md). 
 
-**NOTE**: Muter will always clean up after itself, so there's no need worry about leftover bugs. Muter always backs code up prior to making modifications to it.
+**NOTE**: Muter will always clean up after itself, so there's no need worry about it leaving bugs in your code. In fact, it does all of its work on a complete copy of your code base.
 
 ### Mutation Score
 A **mutation score** is provided at the end of every run of Muter. The score is the ratio of the number of mutants your test suite caught versus the total number of mutants introduced.
@@ -106,7 +106,6 @@ Running Muter is easy. Once you've created your configuration file simply run `m
 
 ## Best Practices
 - Commit your `muter.conf.json`
-- Ensure you run Muter with no uncommitted changes. If Muter fails to finish, there’s a potential for the bugs it introduced to your code to be left behind.
 - Running Muter can be a lengthy process, so be sure to allocate enough time for the test to finish.
 - Because Muter can take a while to run, it is recommend to exclude UI or journey tests from your test suite. We recommend creating a separate schemes or targets for mutation testing. However, you should feel free to run these kinds of tests if you're okay with the longer feedback cycle.
 - Don’t be dogmatic about your mutation score - in practice, 100/100 is often times not possible.
