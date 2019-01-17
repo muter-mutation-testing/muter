@@ -70,7 +70,7 @@ You will need to create a configuration file named `muter.conf.json` in the root
 
 Below is an example pulled directly from the `ExampleApp` directory.
 The configuration file will end up looking something like this:
-```
+```json
 {
     "executable": "/usr/bin/xcodebuild",
     "arguments": [
