@@ -106,6 +106,7 @@ Running Muter is easy. Once you've created your configuration file simply run `m
 
 ## Best Practices
 - Commit your `muter.conf.json`
+- Disable or relax linting rules that would cause a build error as a consequence of a code change not matching your project 's style. Muter operates on your source code then rebuilds it, and the change it introduces could trigger your linter if it's part of your build process.
 - Running Muter can be a lengthy process, so be sure to allocate enough time for the test to finish.
 - Because Muter can take a while to run, it is recommend to exclude UI or journey tests from your test suite. We recommend creating a separate schemes or targets for mutation testing. However, you should feel free to run these kinds of tests if you're okay with the longer feedback cycle.
 - Don’t be dogmatic about your mutation score - in practice, 100/100 is often times not possible.
