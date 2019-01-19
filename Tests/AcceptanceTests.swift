@@ -34,11 +34,6 @@ class AcceptanceTests: QuickSpec {
                     expect(output.contains("In total, Muter applied 9 mutation operators.")).to(beTrue())
                 }
                 
-                they("see which runs of a mutation test passed and failed") {
-                    expect(output.contains("Mutation Test Passed")).to(beTrue())
-                    expect(output.contains("Mutation Test Failed")).to(beTrue())
-                }
-                
                 they("see the mutation scores for their test suite") {
                     let mutationScoresHeader = """
                         --------------------

@@ -1,7 +1,7 @@
 import Foundation
 
 func printMessage(_ message: String) {
-    print("*******************************")
+    print("+-------------------+")
     print(message)
     print("")
 }

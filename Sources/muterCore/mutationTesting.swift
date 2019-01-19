@@ -31,8 +31,11 @@ enum TestSuiteResult: String {
 
 func performMutationTesting(using operators: [MutationOperator], delegate: MutationTestingIODelegate) -> [MutationTestOutcome] {
 
-    return operators.map { `operator` in
+    return operators.enumerated().map { index, `operator` in
         let filePath = `operator`.filePath
+        print("Testing mutation operator in \(URL(fileURLWithPath: filePath).lastPathComponent)")
+        print("There are \(operators.count - (index + 1)) left to apply")
+
         delegate.backupFile(at: filePath)
 
         let mutatedSource = `operator`.apply()
@@ -90,21 +93,14 @@ struct MutationTestingDelegate: MutationTestingIODelegate {
 
     func runTestSuite() -> TestSuiteResult {
         do {
-            var testResult: TestSuiteResult!
-            let url = URL(fileURLWithPath: configuration.testCommandExecutable)
-            let process = try Process.run(url, arguments: configuration.testCommandArguments) {
-
-                testResult = $0.terminationStatus > 0 ? .failed : .passed
-
-                let testResultMessage = testResult == .failed ?
-                    "\t✅ Mutation Test Passed " :
-                "\t❌ Mutation Test Failed"
-
-                printMessage("Test Suite finished running\n\(testResultMessage)")
-            }
-
+            let (process, fileHandle, url) = try testProcess(with: configuration)
+            try process.run()
+            
             process.waitUntilExit()
-            return testResult
+            fileHandle.closeFile()
+            
+            let result = try String(contentsOf: url)
+            return result.contains("** TEST FAILED **") ? .failed : .passed
 
         } catch {
             printMessage("Muter encountered an error running your test suite and can't continue\n\(error)")
@@ -115,5 +111,23 @@ struct MutationTestingDelegate: MutationTestingIODelegate {
     func restoreFile(at path: String) {
         let swapFilePath = swapFilePathsByOriginalPath[path]!
         copySourceCode(fromFileAt: swapFilePath, to: path)
+    }
+}
+
+@available(OSX 10.13, *)
+private extension MutationTestingDelegate {
+    func testProcess(with configuration: MuterConfiguration) throws -> (Process, FileHandle, URL) {
+        let testLogFileName = UUID().description + ".log"
+        let testLogUrl = URL(fileURLWithPath: FileManager.default.currentDirectoryPath + "/" + testLogFileName)
+        try Data().write(to: testLogUrl)
+        
+        let fileHandle = try FileHandle(forWritingTo: testLogUrl)
+
+        let process = Process()
+        process.arguments = configuration.testCommandArguments
+        process.executableURL = URL(fileURLWithPath: configuration.testCommandExecutable)
+        process.standardOutput = fileHandle
+        process.standardError = fileHandle
+        return (process, fileHandle, testLogUrl)
     }
 }
