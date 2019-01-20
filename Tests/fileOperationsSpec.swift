@@ -25,8 +25,8 @@ class FileOperationSpec: QuickSpec {
                 let secondSwapFilePath = swapFilePath(forFileAt: "/some/path/deeper/file.swift", using: workingDirectory)
                 expect(secondSwapFilePath).to(equal("/some/path/working_directory/file.swift"))
 
-                let emptySwapFilePath = swapFilePath(forFileAt: "malformed path that doesn't exist", using: workingDirectory)
-                expect(emptySwapFilePath).to(equal(""))
+                let swapFilePathWithSpaces = swapFilePath(forFileAt: "a path with spaces in its name", using: workingDirectory)
+                expect(swapFilePathWithSpaces).to(equal("/some/path/working_directory/a path with spaces in its name"))
             }
         }
 

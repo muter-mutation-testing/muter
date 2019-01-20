@@ -3,8 +3,8 @@ import SwiftSyntax
 
 protocol MutationTestingIODelegate {
     func backupFile(at path: String)
-    func writeFile(filePath: String, contents: String) throws
-    func runTestSuite() -> TestSuiteResult
+    func writeFile(to path: String, contents: String) throws
+    func runTestSuite(savingResultsIntoFileNamed: String) -> TestSuiteResult
     func restoreFile(at path: String)
 }
 
@@ -33,15 +33,16 @@ func performMutationTesting(using operators: [MutationOperator], delegate: Mutat
 
     return operators.enumerated().map { index, `operator` in
         let filePath = `operator`.filePath
-        print("Testing mutation operator in \(URL(fileURLWithPath: filePath).lastPathComponent)")
+        let fileName = URL(fileURLWithPath: filePath).lastPathComponent
+        print("Testing mutation operator in \(fileName)")
         print("There are \(operators.count - (index + 1)) left to apply")
 
         delegate.backupFile(at: filePath)
 
         let mutatedSource = `operator`.apply()
-        try! delegate.writeFile(filePath: filePath, contents: mutatedSource.description)
+        try! delegate.writeFile(to: filePath, contents: mutatedSource.description)
 
-        let result = delegate.runTestSuite()
+        let result = delegate.runTestSuite(savingResultsIntoFileNamed: "\(fileName) \(`operator`.id.rawValue) \(`operator`.position)")
         delegate.restoreFile(at: filePath)
 
         return MutationTestOutcome(testSuiteResult: result,
@@ -87,19 +88,21 @@ struct MutationTestingDelegate: MutationTestingIODelegate {
         copySourceCode(fromFileAt: path, to: swapFilePath)
     }
 
-    func writeFile(filePath: String, contents: String) throws {
-        try contents.write(toFile: filePath, atomically: true, encoding: .utf8)
+    func writeFile(to path: String, contents: String) throws {
+        try contents.write(toFile: path, atomically: true, encoding: .utf8)
     }
 
-    func runTestSuite() -> TestSuiteResult {
+    func runTestSuite(savingResultsIntoFileNamed: String) -> TestSuiteResult {
         do {
-            let (process, fileHandle, url) = try testProcess(with: configuration)
+            
+            let (testProcessFileHandle, testLogUrl) = try fileHandle(for: savingResultsIntoFileNamed)
+            
+            let process = try testProcess(with: configuration, and: testProcessFileHandle)
             try process.run()
-            
             process.waitUntilExit()
-            fileHandle.closeFile()
+            testProcessFileHandle.closeFile()
             
-            let result = try String(contentsOf: url)
+            let result = try String(contentsOf: testLogUrl)
             return result.contains("** TEST FAILED **") ? .failed : .passed
 
         } catch {
@@ -116,18 +119,26 @@ struct MutationTestingDelegate: MutationTestingIODelegate {
 
 @available(OSX 10.13, *)
 private extension MutationTestingDelegate {
-    func testProcess(with configuration: MuterConfiguration) throws -> (Process, FileHandle, URL) {
-        let testLogFileName = UUID().description + ".log"
+
+    func fileHandle(for logFileName: String) throws -> (handle: FileHandle, logFileUrl: URL) {
+        let testLogFileName = logFileName + ".log"
         let testLogUrl = URL(fileURLWithPath: FileManager.default.currentDirectoryPath + "/" + testLogFileName)
         try Data().write(to: testLogUrl)
         
-        let fileHandle = try FileHandle(forWritingTo: testLogUrl)
-
+        return (
+            handle: try FileHandle(forWritingTo: testLogUrl),
+            logFileUrl: testLogUrl
+        )
+    }
+    
+    func testProcess(with configuration: MuterConfiguration, and fileHandle: FileHandle) throws -> Process {
+        
         let process = Process()
         process.arguments = configuration.testCommandArguments
         process.executableURL = URL(fileURLWithPath: configuration.testCommandExecutable)
         process.standardOutput = fileHandle
         process.standardError = fileHandle
-        return (process, fileHandle, testLogUrl)
+        
+        return process
     }
 }

@@ -35,13 +35,13 @@ class MutationTestingSpec: QuickSpec {
 
                 expect(delegateSpy.methodCalls).to(equal([
                     "backupFile(at:)",
-                    "writeFile(filePath:contents:)",
-                    "runTestSuite()",
+                    "writeFile(to:contents:)",
+                    "runTestSuite(savingResultsIntoFileNamed:)",
                     "restoreFile(at:)",
                     // Second operator
                     "backupFile(at:)",
-                    "writeFile(filePath:contents:)",
-                    "runTestSuite()",
+                    "writeFile(to:contents:)",
+                    "runTestSuite(savingResultsIntoFileNamed:)",
                     "restoreFile(at:)"
                 ]))
 

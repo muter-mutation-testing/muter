@@ -16,13 +16,13 @@ class MutationTestingDelegateSpy: Spy, MutationTestingIODelegate {
         backedUpFilePaths.append(path)
     }
 
-    func writeFile(filePath: String, contents: String) throws {
+    func writeFile(to path: String, contents: String) throws {
         methodCalls.append(#function)
-        mutatedFilePaths.append(filePath)
+        mutatedFilePaths.append(path)
         mutatedFileContents.append(contents)
     }
 
-    func runTestSuite() -> TestSuiteResult {
+    func runTestSuite(savingResultsIntoFileNamed: String) -> TestSuiteResult {
         methodCalls.append(#function)
         return testSuiteResult
     }
