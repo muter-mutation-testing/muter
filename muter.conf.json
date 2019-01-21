@@ -1,6 +1,14 @@
 {
-    "executable": "/usr/bin/make",
+    "executable": "/usr/bin/xcodebuild",
     "arguments": [
+        "-project",
+        "muter.xcodeproj",
+        "-scheme",
+        "muter",
+        "-sdk",
+        "macosx",
+        "-destination",
+        "platform=macOS",
         "test"
     ],
     "exclude": [
@@ -8,7 +16,6 @@
         "main.swift",
         "sourcekite",
         "Package.swift",
-        ".swift-version",
-        ".swiftlint.yml"
+        "Repositories"
     ]
 }
