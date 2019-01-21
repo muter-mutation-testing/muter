@@ -4,11 +4,11 @@ if [ "$1" == "" ]; then
     echo "Provide a version string in order to release a new build"
     exit
 else 
-
     echo "Bumping version number inside of version.swift..."
     echo "let version = \"$1\"" > ./Sources/muter/version.swift
 
     echo "Committing new version..."
+    git checkout -b $1
     git add ./Sources/muter/version.swift
     git commit -m "Bump version to $1"
     git tag "$1"
@@ -31,10 +31,6 @@ else
 
     echo "Testing new Homebrew formula..."
     brew install --build-from-source ./muter.rb
-
-    # git add ./muter.rb
-    # git commit -m "Update Muter's formula for its $1 release"
-
-
     
+    echo "Homebrew formula is ready for pushing! Merge the new version branch in the Muter repository back into master, and make a new commit inside the Homebrew formula repository"
 fi
