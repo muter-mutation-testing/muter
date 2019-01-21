@@ -12,11 +12,11 @@ func printDiscoveryMessage(for discoveredFilePaths: [String]) {
 }
 
 func printDiscoveryMessage(for discoveredMutationOperators: [MutationOperator]) {
-    printMessage("Discovered \(discoveredMutationOperators.count) mutations to introduce:\n")
+    printMessage("Discovered \(discoveredMutationOperators.count) mutants to introduce:\n")
 
-    for (index, mutation) in discoveredMutationOperators.enumerated() {
+    for (index, `operator`) in discoveredMutationOperators.enumerated() {
         let listPosition = "\(index+1))"
-        let fileName = URL(fileURLWithPath: mutation.filePath).lastPathComponent
+        let fileName = URL(fileURLWithPath: `operator`.filePath).lastPathComponent
         print("\(listPosition) \(fileName)")
     }
 }
