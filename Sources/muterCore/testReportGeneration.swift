@@ -23,11 +23,15 @@ func generateTestReport(from outcomes: [MutationTestOutcome] ) -> String {
 
     let globalScore = mutationScore(from: outcomes.map { $0.testSuiteResult })
     let coloredGlobalScore = coloredMutationScore(for: globalScore, appliedTo: "\(globalScore)/100")
-    let mutationScoreMessage = "Mutation Score of Test Suite (higher is better): \(coloredGlobalScore)"
+    let mutationScoreMessage = "Mutation Score of Test Suite (higher is better)".bold + ": \(coloredGlobalScore)"
     let mutationScoresMessage = """
     --------------------
     Mutation Test Scores
     --------------------
+    
+    These are the mutation scores for your test suite, as well as the files that had mutants introduced into them.
+    
+    Mutation scores ignore build & runtime errors.
 
     \(mutationScoreMessage)
 
