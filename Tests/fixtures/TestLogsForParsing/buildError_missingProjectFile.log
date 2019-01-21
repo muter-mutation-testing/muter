@@ -1,0 +1,4 @@
+Build settings from command line:
+    SDKROOT = macosx10.14
+
+xcodebuild: error: 'BonMot.xcodeproj' does not exist.

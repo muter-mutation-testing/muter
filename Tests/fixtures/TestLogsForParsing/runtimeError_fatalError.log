@@ -1,0 +1,12 @@
+Compile Swift Module 'muterCore' (17 sources)
+Compile Swift Module 'muter' (2 sources)
+Compile Swift Module 'muterTests' (17 sources)
+Linking ./.build/x86_64-apple-macosx10.10/debug/muter
+Linking ./.build/x86_64-apple-macosx10.10/debug/muterPackageTests.xctest/Contents/MacOS/muterPackageTests
+Test Suite 'All tests' started at 2019-01-20 19:16:08.999
+Test Suite 'muterPackageTests.xctest' started at 2019-01-20 19:16:09.000
+Test Suite 'AcceptanceTests' started at 2019-01-20 19:16:09.000
+Test Case '-[muterTests.AcceptanceTests someone using Muter, when Muter discovers operators it can apply, see that their files are copied to a temp folder]' started.
+Fatal error: Unable to find a valid output file from a prior run of Muter at /private/var/folders/rt/t6928ff97nl1d2w84k3zqs9m0000gn/T/TemporaryItems/(A Document Being Saved By muter 3)/muter/Tests/muters_output.txt: file /private/var/folders/rt/t6928ff97nl1d2w84k3zqs9m0000gn/T/TemporaryItems/(A Document Being Saved By muter 3)/muter/Tests/AcceptanceTests.swift, line 116
+Exited with signal code 4
+make: *** [test] Error 1

@@ -1,0 +1,170 @@
+Compile Swift Module 'muterCore' (17 sources)
+Compile Swift Module 'muter' (2 sources)
+Compile Swift Module 'muterTests' (16 sources)
+Linking ./.build/x86_64-apple-macosx10.10/debug/muter
+Linking ./.build/x86_64-apple-macosx10.10/debug/muterPackageTests.xctest/Contents/MacOS/muterPackageTests
+Test Suite 'All tests' started at 2019-01-20 20:13:06.771
+Test Suite 'muterPackageTests.xctest' started at 2019-01-20 20:13:06.771
+Test Suite 'CLISubcommandSpec' started at 2019-01-20 20:13:06.771
+Test Case '-[muterTests.CLISubcommandSpec CLI Handling, with any unrecognized subcommands, returns a nonzero exit code]' started.
+Test Case '-[muterTests.CLISubcommandSpec CLI Handling, with any unrecognized subcommands, returns a nonzero exit code]' passed (0.070 seconds).
+Test Case '-[muterTests.CLISubcommandSpec CLI Handling, with the init subcommand, runs the setup process]' started.
+Test Case '-[muterTests.CLISubcommandSpec CLI Handling, with the init subcommand, runs the setup process]' passed (0.000 seconds).
+Test Case '-[muterTests.CLISubcommandSpec CLI Handling, with the init subcommand, returns an exit code of 1 when it encounters an error]' started.
+Test Case '-[muterTests.CLISubcommandSpec CLI Handling, with the init subcommand, returns an exit code of 1 when it encounters an error]' passed (0.001 seconds).
+Test Case '-[muterTests.CLISubcommandSpec CLI Handling, with fewer than 2 commandline arguments, runs Muter and returns an exit code of 0 on success]' started.
+Test Case '-[muterTests.CLISubcommandSpec CLI Handling, with fewer than 2 commandline arguments, runs Muter and returns an exit code of 0 on success]' passed (0.000 seconds).
+Test Case '-[muterTests.CLISubcommandSpec CLI Handling, with fewer than 2 commandline arguments, runs Muter and returns a nonzero exit code when there's a failure ]' started.
+Test Case '-[muterTests.CLISubcommandSpec CLI Handling, with fewer than 2 commandline arguments, runs Muter and returns a nonzero exit code when there's a failure ]' passed (0.000 seconds).
+Test Case '-[muterTests.CLISubcommandSpec Setup handling, creates a configuration file named muter.conf.json with placeholder values in a specified directory]' started.
+Test Case '-[muterTests.CLISubcommandSpec Setup handling, creates a configuration file named muter.conf.json with placeholder values in a specified directory]' passed (0.002 seconds).
+Test Case '-[muterTests.CLISubcommandSpec run(), creates a temp directory to store a copy of the code under test]' started.
+Test Case '-[muterTests.CLISubcommandSpec run(), creates a temp directory to store a copy of the code under test]' passed (0.002 seconds).
+Test Case '-[muterTests.CLISubcommandSpec run(), copies the project to the temp directory]' started.
+Test Case '-[muterTests.CLISubcommandSpec run(), copies the project to the temp directory]' passed (0.001 seconds).
+Test Case '-[muterTests.CLISubcommandSpec run(), copies the project after creating the temp directory]' started.
+Test Case '-[muterTests.CLISubcommandSpec run(), copies the project after creating the temp directory]' passed (0.000 seconds).
+Test Case '-[muterTests.CLISubcommandSpec FileManager, names temporary files predictably]' started.
+Test Case '-[muterTests.CLISubcommandSpec FileManager, names temporary files predictably]' passed (0.003 seconds).
+Test Suite 'CLISubcommandSpec' passed at 2019-01-20 20:13:06.850.
+	 Executed 10 tests, with 0 failures (0 unexpected) in 0.078 (0.079) seconds
+Test Suite 'CLITableSpec' started at 2019-01-20 20:13:06.850
+Test Case '-[muterTests.CLITableSpec CLITable, rendering an equally spaced table, with a padding of 3, renders variable-width columns with 3 spaces of padding between the columns]' started.
+Test Case '-[muterTests.CLITableSpec CLITable, rendering an equally spaced table, with a padding of 3, renders variable-width columns with 3 spaces of padding between the columns]' passed (0.001 seconds).
+Test Case '-[muterTests.CLITableSpec CLITable, rendering an equally spaced table, with a padding of 6, renders variable-width columns with 6 spaces of padding between the columns]' started.
+Test Case '-[muterTests.CLITableSpec CLITable, rendering an equally spaced table, with a padding of 6, renders variable-width columns with 6 spaces of padding between the columns]' passed (0.001 seconds).
+Test Case '-[muterTests.CLITableSpec CLITable, comparing rendered tables with different paddings, returns that they're not equal]' started.
+Test Case '-[muterTests.CLITableSpec CLITable, comparing rendered tables with different paddings, returns that they're not equal]' passed (0.001 seconds).
+Test Case '-[muterTests.CLITableSpec CLITable.Column, resizes itself based on the contents of its rows]' started.
+Test Case '-[muterTests.CLITableSpec CLITable.Column, resizes itself based on the contents of its rows]' passed (0.000 seconds).
+Test Case '-[muterTests.CLITableSpec CLITable.Column, has no width if it has no rows]' started.
+Test Case '-[muterTests.CLITableSpec CLITable.Column, has no width if it has no rows]' passed (0.000 seconds).
+Test Case '-[muterTests.CLITableSpec CLITable.Column, renders an empty string if it has no rows]' started.
+Test Case '-[muterTests.CLITableSpec CLITable.Column, renders an empty string if it has no rows]' passed (0.000 seconds).
+Test Suite 'CLITableSpec' passed at 2019-01-20 20:13:06.855.
+	 Executed 6 tests, with 0 failures (0 unexpected) in 0.004 (0.004) seconds
+Test Suite 'ConfigurationParsingSpec' started at 2019-01-20 20:13:06.855
+Test Case '-[muterTests.ConfigurationParsingSpec parsing a configuration file from JSON, parses the minimum necessary configuration]' started.
+Test Case '-[muterTests.ConfigurationParsingSpec parsing a configuration file from JSON, parses the minimum necessary configuration]' passed (0.001 seconds).
+Test Case '-[muterTests.ConfigurationParsingSpec parsing a configuration file from JSON, parses the excludeList when it's present]' started.
+Test Case '-[muterTests.ConfigurationParsingSpec parsing a configuration file from JSON, parses the excludeList when it's present]' passed (0.000 seconds).
+Test Suite 'ConfigurationParsingSpec' passed at 2019-01-20 20:13:06.856.
+	 Executed 2 tests, with 0 failures (0 unexpected) in 0.001 (0.001) seconds
+Test Suite 'FileOperationSpec' started at 2019-01-20 20:13:06.856
+Test Case '-[muterTests.FileOperationSpec Swap File Path Generation, generates a mapping between swap files and their original file paths]' started.
+Test Case '-[muterTests.FileOperationSpec Swap File Path Generation, generates a mapping between swap files and their original file paths]' passed (0.001 seconds).
+Test Case '-[muterTests.FileOperationSpec Swap File Path Generation, generates swap file paths]' started.
+Test Case '-[muterTests.FileOperationSpec Swap File Path Generation, generates swap file paths]' passed (0.000 seconds).
+Test Case '-[muterTests.FileOperationSpec Working Directory Creation, creates a working directory for mutation testing]' started.
+Test Case '-[muterTests.FileOperationSpec Working Directory Creation, creates a working directory for mutation testing]' passed (0.000 seconds).
+Test Suite 'FileOperationSpec' passed at 2019-01-20 20:13:06.858.
+	 Executed 3 tests, with 0 failures (0 unexpected) in 0.001 (0.002) seconds
+Test Suite 'MutationDiscoverySpec' started at 2019-01-20 20:13:06.858
+Test Case '-[muterTests.MutationDiscoverySpec discoverMutationOperators, discovers the mutation operators that can be applied to a Swift file]' started.
+Test Case '-[muterTests.MutationDiscoverySpec discoverMutationOperators, discovers the mutation operators that can be applied to a Swift file]' passed (0.205 seconds).
+Test Case '-[muterTests.MutationDiscoverySpec discoverMutationOperators, doesn't discover any mutation operators when the Swift code isn't mutable by the operators Muter implements]' started.
+Test Case '-[muterTests.MutationDiscoverySpec discoverMutationOperators, doesn't discover any mutation operators when the Swift code isn't mutable by the operators Muter implements]' passed (0.068 seconds).
+Test Case '-[muterTests.MutationDiscoverySpec discoverMutationOperators, doesn't discover any mutation operators in files that don't contain Swift code]' started.
+Test Case '-[muterTests.MutationDiscoverySpec discoverMutationOperators, doesn't discover any mutation operators in files that don't contain Swift code]' passed (0.069 seconds).
+Test Suite 'MutationDiscoverySpec' passed at 2019-01-20 20:13:07.200.
+	 Executed 3 tests, with 0 failures (0 unexpected) in 0.342 (0.342) seconds
+Test Suite 'MutationTestingSpec' started at 2019-01-20 20:13:07.200
+Test Case '-[muterTests.MutationTestingSpec performMutationTesting, performs mutation test for every mutation operator]' started.
+/private/var/folders/rt/t6928ff97nl1d2w84k3zqs9m0000gn/T/TemporaryItems/(A Document Being Saved By muter 5)/muter/Tests/MutationTestingSpec.swift:55: error: -[muterTests.MutationTestingSpec performMutationTesting, performs mutation test for every mutation operator] : failed - expected to equal <[MutationTestOutcome(testSuiteResult: muterCore.TestSuiteResult.failed, appliedMutation: "Negate Conditionals", filePath: "a file path", position: SwiftSyntax.AbsolutePosition(utf8Offset: 0, line: 0, column: 0)), MutationTestOutcome(testSuiteResult: muterCore.TestSuiteResult.failed, appliedMutation: "Negate Conditionals", filePath: "a file path", position: SwiftSyntax.AbsolutePosition(utf8Offset: 0, line: 0, column: 0))]>, got <[MutationTestOutcome(testSuiteResult: muterCore.TestSuiteResult.failed, appliedMutation: "Negate Conditionals", filePath: "a file path", position: SwiftSyntax.AbsolutePosition(utf8Offset: 0, line: 0, column: 0)), MutationTestOutcome(testSuiteResult: muterCore.TestSuiteResult.failed, appliedMutation: "Negate Conditionals", filePath: "a file path", position: SwiftSyntax.AbsolutePosition(utf8Offset: 0, line: 0, column: 0))]>
+
+Test Case '-[muterTests.MutationTestingSpec performMutationTesting, performs mutation test for every mutation operator]' failed (0.002 seconds).
+Test Case '-[muterTests.MutationTestingSpec mutationScore, calculates a mutation score from a set of test suite results]' started.
+Test Case '-[muterTests.MutationTestingSpec mutationScore, calculates a mutation score from a set of test suite results]' passed (0.000 seconds).
+Test Case '-[muterTests.MutationTestingSpec mutationScore, calculates a mutation score for each mutated file from a mutation test run]' started.
+Test Case '-[muterTests.MutationTestingSpec mutationScore, calculates a mutation score for each mutated file from a mutation test run]' passed (0.000 seconds).
+Test Suite 'MutationTestingSpec' failed at 2019-01-20 20:13:07.202.
+	 Executed 3 tests, with 1 failure (0 unexpected) in 0.002 (0.003) seconds
+Test Suite 'NegateConditionalsOperatorSpec' started at 2019-01-20 20:13:07.203
+Test Case '-[muterTests.NegateConditionalsOperatorSpec , NegateConditionalsOperator.Visitor, records the positions of code that contains a conditional operator]' started.
+Test Case '-[muterTests.NegateConditionalsOperatorSpec , NegateConditionalsOperator.Visitor, records the positions of code that contains a conditional operator]' passed (0.137 seconds).
+Test Case '-[muterTests.NegateConditionalsOperatorSpec , NegateConditionalsOperator.Visitor, records no positions when a file doesn't contain a conditional operator]' started.
+Test Case '-[muterTests.NegateConditionalsOperatorSpec , NegateConditionalsOperator.Visitor, records no positions when a file doesn't contain a conditional operator]' passed (0.139 seconds).
+Test Case '-[muterTests.NegateConditionalsOperatorSpec , NegateConditionalsOperator.Rewriter, replaces an equality operator with an inequality operator]' started.
+/private/var/folders/rt/t6928ff97nl1d2w84k3zqs9m0000gn/T/TemporaryItems/(A Document Being Saved By muter 5)/muter/Tests/MutationOperators/NegateConditionalsOperatorSpec.swift:53: error: -[muterTests.NegateConditionalsOperatorSpec , NegateConditionalsOperator.Rewriter, replaces an equality operator with an inequality operator] : failed - expected to equal <struct Example {func something(_ a: Int) -> String {let b = a != 5let e = a != 1let c = a >= 4let d = a <= 10let f = a < 5let g = a > 5if a == 10 {return "hello"}return a == 9 ? "goodbye" : "what"}}>, got <struct Example {func something(_ a: Int) -> String {let b = a == 5let e = a == 1let c = a <= 4let d = a >= 10let f = a > 5let g = a < 5if a != 10 {return "hello"}return a != 9 ? "goodbye" : "what"}}>
+
+Test Case '-[muterTests.NegateConditionalsOperatorSpec , NegateConditionalsOperator.Rewriter, replaces an equality operator with an inequality operator]' failed (0.214 seconds).
+Test Case '-[muterTests.NegateConditionalsOperatorSpec , NegateConditionalsOperator.Rewriter, replaces an inequality operator with an equality operator]' started.
+/private/var/folders/rt/t6928ff97nl1d2w84k3zqs9m0000gn/T/TemporaryItems/(A Document Being Saved By muter 5)/muter/Tests/MutationOperators/NegateConditionalsOperatorSpec.swift:62: error: -[muterTests.NegateConditionalsOperatorSpec , NegateConditionalsOperator.Rewriter, replaces an inequality operator with an equality operator] : failed - expected to equal <struct Example {func something(_ a: Int) -> String {let b = a == 5let e = a == 1let c = a >= 4let d = a <= 10let f = a < 5let g = a > 5if a == 10 {return "hello"}return a == 9 ? "goodbye" : "what"}}>, got <struct Example {func something(_ a: Int) -> String {let b = a != 5let e = a != 1let c = a <= 4let d = a >= 10let f = a > 5let g = a < 5if a != 10 {return "hello"}return a != 9 ? "goodbye" : "what"}}>
+
+Test Case '-[muterTests.NegateConditionalsOperatorSpec , NegateConditionalsOperator.Rewriter, replaces an inequality operator with an equality operator]' failed (0.215 seconds).
+Test Case '-[muterTests.NegateConditionalsOperatorSpec , NegateConditionalsOperator.Rewriter, replaces a greater than or equal to operator with a less than or equal to operator]' started.
+/private/var/folders/rt/t6928ff97nl1d2w84k3zqs9m0000gn/T/TemporaryItems/(A Document Being Saved By muter 5)/muter/Tests/MutationOperators/NegateConditionalsOperatorSpec.swift:71: error: -[muterTests.NegateConditionalsOperatorSpec , NegateConditionalsOperator.Rewriter, replaces a greater than or equal to operator with a less than or equal to operator] : failed - expected to equal <struct Example {func something(_ a: Int) -> String {let b = a == 5let e = a != 1let c = a <= 4let d = a <= 10let f = a < 5let g = a > 5if a == 10 {return "hello"}return a == 9 ? "goodbye" : "what"}}>, got <struct Example {func something(_ a: Int) -> String {let b = a != 5let e = a == 1let c = a >= 4let d = a >= 10let f = a > 5let g = a < 5if a != 10 {return "hello"}return a != 9 ? "goodbye" : "what"}}>
+
+Test Case '-[muterTests.NegateConditionalsOperatorSpec , NegateConditionalsOperator.Rewriter, replaces a greater than or equal to operator with a less than or equal to operator]' failed (0.217 seconds).
+Test Case '-[muterTests.NegateConditionalsOperatorSpec , NegateConditionalsOperator.Rewriter, replaces a less than or equal to operator with a greater than or equal to operator]' started.
+/private/var/folders/rt/t6928ff97nl1d2w84k3zqs9m0000gn/T/TemporaryItems/(A Document Being Saved By muter 5)/muter/Tests/MutationOperators/NegateConditionalsOperatorSpec.swift:80: error: -[muterTests.NegateConditionalsOperatorSpec , NegateConditionalsOperator.Rewriter, replaces a less than or equal to operator with a greater than or equal to operator] : failed - expected to equal <struct Example {func something(_ a: Int) -> String {let b = a == 5let e = a != 1let c = a >= 4let d = a >= 10let f = a < 5let g = a > 5if a == 10 {return "hello"}return a == 9 ? "goodbye" : "what"}}>, got <struct Example {func something(_ a: Int) -> String {let b = a != 5let e = a == 1let c = a <= 4let d = a <= 10let f = a > 5let g = a < 5if a != 10 {return "hello"}return a != 9 ? "goodbye" : "what"}}>
+
+Test Case '-[muterTests.NegateConditionalsOperatorSpec , NegateConditionalsOperator.Rewriter, replaces a less than or equal to operator with a greater than or equal to operator]' failed (0.208 seconds).
+Test Case '-[muterTests.NegateConditionalsOperatorSpec , NegateConditionalsOperator.Rewriter, replaces a less than operator with a greater than operator]' started.
+/private/var/folders/rt/t6928ff97nl1d2w84k3zqs9m0000gn/T/TemporaryItems/(A Document Being Saved By muter 5)/muter/Tests/MutationOperators/NegateConditionalsOperatorSpec.swift:89: error: -[muterTests.NegateConditionalsOperatorSpec , NegateConditionalsOperator.Rewriter, replaces a less than operator with a greater than operator] : failed - expected to equal <struct Example {func something(_ a: Int) -> String {let b = a == 5let e = a != 1let c = a >= 4let d = a <= 10let f = a > 5let g = a > 5if a == 10 {return "hello"}return a == 9 ? "goodbye" : "what"}}>, got <struct Example {func something(_ a: Int) -> String {let b = a != 5let e = a == 1let c = a <= 4let d = a >= 10let f = a < 5let g = a < 5if a != 10 {return "hello"}return a != 9 ? "goodbye" : "what"}}>
+
+Test Case '-[muterTests.NegateConditionalsOperatorSpec , NegateConditionalsOperator.Rewriter, replaces a less than operator with a greater than operator]' failed (0.213 seconds).
+Test Case '-[muterTests.NegateConditionalsOperatorSpec , NegateConditionalsOperator.Rewriter, replaces a greater than operator with a less than operator]' started.
+/private/var/folders/rt/t6928ff97nl1d2w84k3zqs9m0000gn/T/TemporaryItems/(A Document Being Saved By muter 5)/muter/Tests/MutationOperators/NegateConditionalsOperatorSpec.swift:98: error: -[muterTests.NegateConditionalsOperatorSpec , NegateConditionalsOperator.Rewriter, replaces a greater than operator with a less than operator] : failed - expected to equal <struct Example {func something(_ a: Int) -> String {let b = a == 5let e = a != 1let c = a >= 4let d = a <= 10let f = a < 5let g = a < 5if a == 10 {return "hello"}return a == 9 ? "goodbye" : "what"}}>, got <struct Example {func something(_ a: Int) -> String {let b = a != 5let e = a == 1let c = a <= 4let d = a >= 10let f = a > 5let g = a > 5if a != 10 {return "hello"}return a != 9 ? "goodbye" : "what"}}>
+
+Test Case '-[muterTests.NegateConditionalsOperatorSpec , NegateConditionalsOperator.Rewriter, replaces a greater than operator with a less than operator]' failed (0.211 seconds).
+Test Case '-[muterTests.NegateConditionalsOperatorSpec , MutationOperator.Id.negateConditionals.transformation, behaves like a NegateConditionalsOperator.Rewriter]' started.
+/private/var/folders/rt/t6928ff97nl1d2w84k3zqs9m0000gn/T/TemporaryItems/(A Document Being Saved By muter 5)/muter/Tests/MutationOperators/NegateConditionalsOperatorSpec.swift:109: error: -[muterTests.NegateConditionalsOperatorSpec , MutationOperator.Id.negateConditionals.transformation, behaves like a NegateConditionalsOperator.Rewriter] : failed - expected to equal <struct Example {func something(_ a: Int) -> String {let b = a != 5let e = a != 1let c = a >= 4let d = a <= 10let f = a < 5let g = a > 5if a == 10 {return "hello"}return a == 9 ? "goodbye" : "what"}}>, got <struct Example {func something(_ a: Int) -> String {let b = a == 5let e = a == 1let c = a <= 4let d = a >= 10let f = a > 5let g = a < 5if a != 10 {return "hello"}return a != 9 ? "goodbye" : "what"}}>
+
+Test Case '-[muterTests.NegateConditionalsOperatorSpec , MutationOperator.Id.negateConditionals.transformation, behaves like a NegateConditionalsOperator.Rewriter]' failed (0.210 seconds).
+Test Suite 'NegateConditionalsOperatorSpec' failed at 2019-01-20 20:13:08.967.
+	 Executed 9 tests, with 7 failures (0 unexpected) in 1.764 (1.764) seconds
+Test Suite 'RemoveSideEffectsOperatorSpec' started at 2019-01-20 20:13:08.967
+Test Case '-[muterTests.RemoveSideEffectsOperatorSpec RemoveSideEffectsOperator.Visitor, records the positions of code that causes a side effect]' started.
+Test Case '-[muterTests.RemoveSideEffectsOperatorSpec RemoveSideEffectsOperator.Visitor, records the positions of code that causes a side effect]' passed (0.080 seconds).
+Test Case '-[muterTests.RemoveSideEffectsOperatorSpec RemoveSideEffectsOperator.Visitor, records no positions when a file doesn't contain code that causes a side effect]' started.
+Test Case '-[muterTests.RemoveSideEffectsOperatorSpec RemoveSideEffectsOperator.Visitor, records no positions when a file doesn't contain code that causes a side effect]' passed (0.070 seconds).
+Test Case '-[muterTests.RemoveSideEffectsOperatorSpec RemoveSideEffectsOperator.Rewriter, deletes a statement with an explicitly discarded result]' started.
+Test Case '-[muterTests.RemoveSideEffectsOperatorSpec RemoveSideEffectsOperator.Rewriter, deletes a statement with an explicitly discarded result]' passed (0.307 seconds).
+Test Case '-[muterTests.RemoveSideEffectsOperatorSpec RemoveSideEffectsOperator.Rewriter, deletes a void function call that spans 1 line]' started.
+Test Case '-[muterTests.RemoveSideEffectsOperatorSpec RemoveSideEffectsOperator.Rewriter, deletes a void function call that spans 1 line]' passed (0.148 seconds).
+Test Case '-[muterTests.RemoveSideEffectsOperatorSpec RemoveSideEffectsOperator.Rewriter, deletes a void function call that spans multiple lines]' started.
+Test Case '-[muterTests.RemoveSideEffectsOperatorSpec RemoveSideEffectsOperator.Rewriter, deletes a void function call that spans multiple lines]' passed (0.154 seconds).
+Test Case '-[muterTests.RemoveSideEffectsOperatorSpec MutationOperator.Id.sideEffects.transformation, behaves like a SideEffectsOperator.Rewriter]' started.
+Test Case '-[muterTests.RemoveSideEffectsOperatorSpec MutationOperator.Id.sideEffects.transformation, behaves like a SideEffectsOperator.Rewriter]' passed (0.149 seconds).
+Test Suite 'RemoveSideEffectsOperatorSpec' passed at 2019-01-20 20:13:09.874.
+	 Executed 6 tests, with 0 failures (0 unexpected) in 0.907 (0.908) seconds
+Test Suite 'SourceFileDiscoverySpec' started at 2019-01-20 20:13:09.875
+Test Case '-[muterTests.SourceFileDiscoverySpec Swift Source File Discovery, discovers Swift files recursively and returns the results alphabetically]' started.
+Test Case '-[muterTests.SourceFileDiscoverySpec Swift Source File Discovery, discovers Swift files recursively and returns the results alphabetically]' passed (0.002 seconds).
+Test Case '-[muterTests.SourceFileDiscoverySpec Swift Source File Discovery, discovers Swift files applying a user-provided exclude list]' started.
+Test Case '-[muterTests.SourceFileDiscoverySpec Swift Source File Discovery, discovers Swift files applying a user-provided exclude list]' passed (0.001 seconds).
+Test Case '-[muterTests.SourceFileDiscoverySpec Swift Source File Discovery, discovers 0 Swift files in a directory that doesn't exist]' started.
+Test Case '-[muterTests.SourceFileDiscoverySpec Swift Source File Discovery, discovers 0 Swift files in a directory that doesn't exist]' passed (0.000 seconds).
+Test Case '-[muterTests.SourceFileDiscoverySpec Swift Source File Discovery, ignores files that aren't Swift files]' started.
+Test Case '-[muterTests.SourceFileDiscoverySpec Swift Source File Discovery, ignores files that aren't Swift files]' passed (0.001 seconds).
+Test Suite 'SourceFileDiscoverySpec' passed at 2019-01-20 20:13:09.879.
+	 Executed 4 tests, with 0 failures (0 unexpected) in 0.004 (0.004) seconds
+Test Suite 'TestReportGenerationSpec' started at 2019-01-20 20:13:09.879
+Test Case '-[muterTests.TestReportGenerationSpec Test Report Generation, the applied mutation operators table, contains information about which mutation operators were applied, as well as the outcome of applying that operator]' started.
+Test Case '-[muterTests.TestReportGenerationSpec Test Report Generation, the applied mutation operators table, contains information about which mutation operators were applied, as well as the outcome of applying that operator]' passed (0.003 seconds).
+Test Case '-[muterTests.TestReportGenerationSpec Test Report Generation, the mutation scores table, contains information about the mutation score and number of applied mutation operators for every file]' started.
+Test Case '-[muterTests.TestReportGenerationSpec Test Report Generation, the mutation scores table, contains information about the mutation score and number of applied mutation operators for every file]' passed (0.002 seconds).
+Test Case '-[muterTests.TestReportGenerationSpec Test Report Generation, coloring test results, colors whether or not a test has failed]' started.
+Test Case '-[muterTests.TestReportGenerationSpec Test Report Generation, coloring test results, colors whether or not a test has failed]' passed (0.001 seconds).
+Test Case '-[muterTests.TestReportGenerationSpec Test Report Generation, coloring test results, colors mutation scores based on how close to 100 they are]' started.
+Test Case '-[muterTests.TestReportGenerationSpec Test Report Generation, coloring test results, colors mutation scores based on how close to 100 they are]' passed (0.000 seconds).
+Test Suite 'TestReportGenerationSpec' passed at 2019-01-20 20:13:09.886.
+	 Executed 4 tests, with 0 failures (0 unexpected) in 0.007 (0.007) seconds
+Test Suite 'muterPackageTests.xctest' failed at 2019-01-20 20:13:09.886.
+	 Executed 50 tests, with 8 failures (0 unexpected) in 3.111 (3.115) seconds
+Test Suite 'All tests' failed at 2019-01-20 20:13:09.886.
+	 Executed 50 tests, with 8 failures (0 unexpected) in 3.111 (3.115) seconds
++-------------------+
+Copying your project for mutation testing
+
++-------------------+
+Copying your project for mutation testing
+
++-------------------+
+Copying your project for mutation testing
+
+Testing mutation operator in a file path
+There are 1 left to apply
+Testing mutation operator in a file path
+There are 0 left to apply

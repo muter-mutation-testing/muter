@@ -1,0 +1,712 @@
+Compile Swift Module 'muterCore' (17 sources)
+/private/var/folders/rt/t6928ff97nl1d2w84k3zqs9m0000gn/T/TemporaryItems/(A Document Being Saved By muter 5)/muter/Sources/muterCore/Extensions/AbsolutePositionExtensions.swift:9:1: error: type 'AbsolutePosition' does not conform to protocol 'Equatable'
+extension AbsolutePosition: Equatable {
+^
+Swift.==:1:13: note: candidate has non-matching type '(Any.Type?, Any.Type?) -> Bool'
+public func == (t0: Any.Type?, t1: Any.Type?) -> Bool
+            ^
+Swift.==:1:13: note: candidate has non-matching type '<T where T : RawRepresentable, T.RawValue : Equatable> (T, T) -> Bool'
+public func == <T>(lhs: T, rhs: T) -> Bool where T : RawRepresentable, T.RawValue : Equatable
+            ^
+Swift.==:1:13: note: candidate has non-matching type '((), ()) -> Bool'
+public func == (lhs: (), rhs: ()) -> Bool
+            ^
+Swift.==:1:13: note: candidate has non-matching type '<A, B where A : Equatable, B : Equatable> ((A, B), (A, B)) -> Bool'
+public func == <A, B>(lhs: (A, B), rhs: (A, B)) -> Bool where A : Equatable, B : Equatable
+            ^
+Swift.==:1:13: note: candidate has non-matching type '<A, B, C where A : Equatable, B : Equatable, C : Equatable> ((A, B, C), (A, B, C)) -> Bool'
+public func == <A, B, C>(lhs: (A, B, C), rhs: (A, B, C)) -> Bool where A : Equatable, B : Equatable, C : Equatable
+            ^
+Swift.==:1:13: note: candidate has non-matching type '<A, B, C, D where A : Equatable, B : Equatable, C : Equatable, D : Equatable> ((A, B, C, D), (A, B, C, D)) -> Bool'
+public func == <A, B, C, D>(lhs: (A, B, C, D), rhs: (A, B, C, D)) -> Bool where A : Equatable, B : Equatable, C : Equatable, D : Equatable
+            ^
+Swift.==:1:13: note: candidate has non-matching type '<A, B, C, D, E where A : Equatable, B : Equatable, C : Equatable, D : Equatable, E : Equatable> ((A, B, C, D, E), (A, B, C, D, E)) -> Bool'
+public func == <A, B, C, D, E>(lhs: (A, B, C, D, E), rhs: (A, B, C, D, E)) -> Bool where A : Equatable, B : Equatable, C : Equatable, D : Equatable, E : Equatable
+            ^
+Swift.==:1:13: note: candidate has non-matching type '<A, B, C, D, E, F where A : Equatable, B : Equatable, C : Equatable, D : Equatable, E : Equatable, F : Equatable> ((A, B, C, D, E, F), (A, B, C, D, E, F)) -> Bool'
+public func == <A, B, C, D, E, F>(lhs: (A, B, C, D, E, F), rhs: (A, B, C, D, E, F)) -> Bool where A : Equatable, B : Equatable, C : Equatable, D : Equatable, E : Equatable, F : Equatable
+            ^
+Swift.ContiguousArray<Element>:2:24: note: candidate has non-matching type '<Element> (ContiguousArray<ContiguousArray<Element>.Element>, ContiguousArray<ContiguousArray<Element>.Element>) -> Bool' (aka '<τ_0_0> (ContiguousArray<τ_0_0>, ContiguousArray<τ_0_0>) -> Bool')
+    public static func == (lhs: ContiguousArray<ContiguousArray<Element>.Element>, rhs: ContiguousArray<ContiguousArray<Element>.Element>) -> Bool
+                       ^
+Swift.ArraySlice<Element>:2:24: note: candidate has non-matching type '<Element> (ArraySlice<ArraySlice<Element>.Element>, ArraySlice<ArraySlice<Element>.Element>) -> Bool' (aka '<τ_0_0> (ArraySlice<τ_0_0>, ArraySlice<τ_0_0>) -> Bool')
+    public static func == (lhs: ArraySlice<ArraySlice<Element>.Element>, rhs: ArraySlice<ArraySlice<Element>.Element>) -> Bool
+                       ^
+Swift.Array<Element>:2:24: note: candidate has non-matching type '<Element> (Array<Array<Element>.Element>, Array<Array<Element>.Element>) -> Bool' (aka '<τ_0_0> (Array<τ_0_0>, Array<τ_0_0>) -> Bool')
+    public static func == (lhs: [[Element].Element], rhs: [[Element].Element]) -> Bool
+                       ^
+Swift.Bool:3:24: note: candidate has non-matching type '(Bool, Bool) -> Bool'
+    public static func == (lhs: Bool, rhs: Bool) -> Bool
+                       ^
+Swift.AutoreleasingUnsafeMutablePointer<Pointee>:2:24: note: candidate has non-matching type '<Pointee> (AutoreleasingUnsafeMutablePointer<Pointee>, AutoreleasingUnsafeMutablePointer<Pointee>) -> Bool'
+    public static func == (lhs: AutoreleasingUnsafeMutablePointer<Pointee>, rhs: AutoreleasingUnsafeMutablePointer<Pointee>) -> Bool
+                       ^
+Swift.Character:2:24: note: candidate has non-matching type '(Character, Character) -> Bool'
+    public static func == (lhs: Character, rhs: Character) -> Bool
+                       ^
+Swift.Character.UnicodeScalarView.Index:2:24: note: candidate has non-matching type '(Character.UnicodeScalarView.Index, Character.UnicodeScalarView.Index) -> Bool'
+    public static func == (lhs: Character.UnicodeScalarView.Index, rhs: Character.UnicodeScalarView.Index) -> Bool
+                       ^
+Swift.CodingUserInfoKey:5:24: note: candidate has non-matching type '(CodingUserInfoKey, CodingUserInfoKey) -> Bool'
+    public static func == (lhs: CodingUserInfoKey, rhs: CodingUserInfoKey) -> Bool
+                       ^
+Swift.ClosedRange<Bound>.Index:2:24: note: candidate has non-matching type '<Bound> (ClosedRange<Bound>.Index, ClosedRange<Bound>.Index) -> Bool'
+    public static func == (lhs: ClosedRange<Bound>.Index, rhs: ClosedRange<Bound>.Index) -> Bool
+                       ^
+Swift.ClosedRange<Bound>:2:24: note: candidate has non-matching type '<Bound> (ClosedRange<Bound>, ClosedRange<Bound>) -> Bool'
+    public static func == (lhs: ClosedRange<Bound>, rhs: ClosedRange<Bound>) -> Bool
+                       ^
+Swift.OpaquePointer:2:24: note: candidate has non-matching type '(OpaquePointer, OpaquePointer) -> Bool'
+    public static func == (lhs: OpaquePointer, rhs: OpaquePointer) -> Bool
+                       ^
+Swift.Dictionary<Key, Value>:17:28: note: candidate has non-matching type '<Key, Value> (Dictionary<Key, Value>.Keys, Dictionary<Key, Value>.Keys) -> Bool'
+        public static func == (lhs: Dictionary<Key, Value>.Keys, rhs: Dictionary<Key, Value>.Keys) -> Bool
+                           ^
+Swift.Dictionary<Key, Value>:2:24: note: candidate has non-matching type '<Key, Value> ([Key : Value], [Key : Value]) -> Bool'
+    public static func == (lhs: [Key : Value], rhs: [Key : Value]) -> Bool
+                       ^
+Swift.Dictionary<Key, Value>.Index:2:24: note: candidate has non-matching type '<Key, Value> (Dictionary<Key, Value>.Index, Dictionary<Key, Value>.Index) -> Bool'
+    public static func == (lhs: Dictionary<Key, Value>.Index, rhs: Dictionary<Key, Value>.Index) -> Bool
+                       ^
+Swift.LazyDropWhileCollection<Base>.Index:2:24: note: candidate has non-matching type '<Base> (LazyDropWhileCollection<Base>.Index, LazyDropWhileCollection<Base>.Index) -> Bool'
+    public static func == (lhs: LazyDropWhileCollection<Base>.Index, rhs: LazyDropWhileCollection<Base>.Index) -> Bool
+                       ^
+Swift.EmptyCollection<Element>:2:24: note: candidate has non-matching type '<Element> (EmptyCollection<Element>, EmptyCollection<Element>) -> Bool'
+    public static func == (lhs: EmptyCollection<Element>, rhs: EmptyCollection<Element>) -> Bool
+                       ^
+Swift.FlattenCollection<Base>.Index:2:24: note: candidate has non-matching type '<Base> (FlattenCollection<Base>.Index, FlattenCollection<Base>.Index) -> Bool'
+    public static func == (lhs: FlattenCollection<Base>.Index, rhs: FlattenCollection<Base>.Index) -> Bool
+                       ^
+Swift.FloatingPointSign:6:24: note: candidate has non-matching type '(FloatingPointSign, FloatingPointSign) -> Bool'
+    public static func == (a: FloatingPointSign, b: FloatingPointSign) -> Bool
+                       ^
+Swift.FloatingPoint:2:24: note: candidate has non-matching type '<Self> (Self, Self) -> Bool'
+    public static func == (lhs: Self, rhs: Self) -> Bool
+                       ^
+Swift.AnyHashable:2:24: note: candidate has non-matching type '(AnyHashable, AnyHashable) -> Bool'
+    public static func == (lhs: AnyHashable, rhs: AnyHashable) -> Bool
+                       ^
+Swift.BinaryInteger:2:24: note: candidate has non-matching type '<Self, Other> (Self, Other) -> Bool'
+    public static func == <Other>(lhs: Self, rhs: Other) -> Bool where Other : BinaryInteger
+                       ^
+Swift.UInt8:11:24: note: candidate has non-matching type '(UInt8, UInt8) -> Bool'
+    public static func == (lhs: UInt8, rhs: UInt8) -> Bool
+                       ^
+Swift.Int8:11:24: note: candidate has non-matching type '(Int8, Int8) -> Bool'
+    public static func == (lhs: Int8, rhs: Int8) -> Bool
+                       ^
+Swift.UInt16:11:24: note: candidate has non-matching type '(UInt16, UInt16) -> Bool'
+    public static func == (lhs: UInt16, rhs: UInt16) -> Bool
+                       ^
+Swift.Int16:11:24: note: candidate has non-matching type '(Int16, Int16) -> Bool'
+    public static func == (lhs: Int16, rhs: Int16) -> Bool
+                       ^
+Swift.UInt32:11:24: note: candidate has non-matching type '(UInt32, UInt32) -> Bool'
+    public static func == (lhs: UInt32, rhs: UInt32) -> Bool
+                       ^
+Swift.Int32:13:24: note: candidate has non-matching type '(Int32, Int32) -> Bool'
+    public static func == (lhs: Int32, rhs: Int32) -> Bool
+                       ^
+Swift.UInt64:11:24: note: candidate has non-matching type '(UInt64, UInt64) -> Bool'
+    public static func == (lhs: UInt64, rhs: UInt64) -> Bool
+                       ^
+Swift.Int64:13:24: note: candidate has non-matching type '(Int64, Int64) -> Bool'
+    public static func == (lhs: Int64, rhs: Int64) -> Bool
+                       ^
+Swift.UInt:11:24: note: candidate has non-matching type '(UInt, UInt) -> Bool'
+    public static func == (lhs: UInt, rhs: UInt) -> Bool
+                       ^
+Swift.Int:11:24: note: candidate has non-matching type '(Int, Int) -> Bool'
+    public static func == (lhs: Int, rhs: Int) -> Bool
+                       ^
+Swift.AnyKeyPath:6:24: note: candidate has non-matching type '(AnyKeyPath, AnyKeyPath) -> Bool'
+    public static func == (a: AnyKeyPath, b: AnyKeyPath) -> Bool
+                       ^
+Swift.ManagedBufferPointer:12:24: note: candidate has non-matching type '<Header, Element> (ManagedBufferPointer<Header, Element>, ManagedBufferPointer<Header, Element>) -> Bool'
+    public static func == (lhs: ManagedBufferPointer<Header, Element>, rhs: ManagedBufferPointer<Header, Element>) -> Bool
+                       ^
+Swift.Unicode.Scalar:2:24: note: candidate has non-matching type '(Unicode.Scalar, Unicode.Scalar) -> Bool'
+    public static func == (lhs: Unicode.Scalar, rhs: Unicode.Scalar) -> Bool
+                       ^
+Swift.ObjectIdentifier:2:24: note: candidate has non-matching type '(ObjectIdentifier, ObjectIdentifier) -> Bool'
+    public static func == (x: ObjectIdentifier, y: ObjectIdentifier) -> Bool
+                       ^
+Swift.Optional<Wrapped>:2:24: note: candidate has non-matching type '<Wrapped> (Wrapped?, Wrapped?) -> Bool'
+    public static func == (lhs: Wrapped?, rhs: Wrapped?) -> Bool
+                       ^
+Swift.Optional<Wrapped>:3:24: note: candidate has non-matching type '<Wrapped> (Wrapped?, _OptionalNilComparisonType) -> Bool'
+    public static func == (lhs: Wrapped?, rhs: _OptionalNilComparisonType) -> Bool
+                       ^
+Swift.Optional<Wrapped>:5:24: note: candidate has non-matching type '<Wrapped> (_OptionalNilComparisonType, Wrapped?) -> Bool'
+    public static func == (lhs: _OptionalNilComparisonType, rhs: Wrapped?) -> Bool
+                       ^
+Swift.LazyPrefixWhileCollection<Base>.Index:2:24: note: candidate has non-matching type '<Base> (LazyPrefixWhileCollection<Base>.Index, LazyPrefixWhileCollection<Base>.Index) -> Bool'
+    public static func == (lhs: LazyPrefixWhileCollection<Base>.Index, rhs: LazyPrefixWhileCollection<Base>.Index) -> Bool
+                       ^
+Swift.Range<Bound>:2:24: note: candidate has non-matching type '<Bound> (Range<Range<Bound>.Bound>, Range<Range<Bound>.Bound>) -> Bool' (aka '<τ_0_0> (Range<τ_0_0>, Range<τ_0_0>) -> Bool')
+    public static func == (lhs: Range<Range<Bound>.Bound>, rhs: Range<Range<Bound>.Bound>) -> Bool
+                       ^
+Swift.ReversedCollection<Base>.Index:2:24: note: candidate has non-matching type '<Base> (ReversedCollection<Base>.Index, ReversedCollection<Base>.Index) -> Bool'
+    public static func == (lhs: ReversedCollection<Base>.Index, rhs: ReversedCollection<Base>.Index) -> Bool
+                       ^
+Swift.Set<Element>:2:24: note: candidate has non-matching type '<Element> (Set<Element>, Set<Element>) -> Bool'
+    public static func == (lhs: Set<Element>, rhs: Set<Element>) -> Bool
+                       ^
+Swift.Set<Element>.Index:2:24: note: candidate has non-matching type '<Element> (Set<Element>.Index, Set<Element>.Index) -> Bool'
+    public static func == (lhs: Set<Element>.Index, rhs: Set<Element>.Index) -> Bool
+                       ^
+Swift.Strideable:3:24: note: candidate has non-matching type '<Self> (Self, Self) -> Bool'
+    public static func == (x: Self, y: Self) -> Bool
+                       ^
+Swift.StringProtocol:2:24: note: candidate has non-matching type '<Self, S> (Self, S) -> Bool'
+    public static func == <S>(lhs: Self, rhs: S) -> Bool where S : StringProtocol
+                       ^
+Swift.String:2:24: note: candidate has non-matching type '(String, String) -> Bool'
+    public static func == (lhs: String, rhs: String) -> Bool
+                       ^
+Swift.String.Index:2:24: note: candidate has non-matching type '(String.Index, String.Index) -> Bool'
+    public static func == (lhs: String.Index, rhs: String.Index) -> Bool
+                       ^
+Swift._UIntBuffer<Storage, Element>:3:28: note: candidate has non-matching type '<Storage, Element> (_UIntBuffer<Storage, Element>.Index, _UIntBuffer<Storage, Element>.Index) -> Bool'
+        public static func == (lhs: _UIntBuffer<Storage, Element>.Index, rhs: _UIntBuffer<Storage, Element>.Index) -> Bool
+                           ^
+Swift.UnsafeMutablePointer<Pointee>:2:24: note: candidate has non-matching type '<Pointee> (UnsafeMutablePointer<Pointee>, UnsafeMutablePointer<Pointee>) -> Bool'
+    public static func == (lhs: UnsafeMutablePointer<Pointee>, rhs: UnsafeMutablePointer<Pointee>) -> Bool
+                       ^
+Swift.UnsafePointer<Pointee>:2:24: note: candidate has non-matching type '<Pointee> (UnsafePointer<Pointee>, UnsafePointer<Pointee>) -> Bool'
+    public static func == (lhs: UnsafePointer<Pointee>, rhs: UnsafePointer<Pointee>) -> Bool
+                       ^
+Swift.UnsafeMutableRawPointer:2:24: note: candidate has non-matching type '(UnsafeMutableRawPointer, UnsafeMutableRawPointer) -> Bool'
+    public static func == (lhs: UnsafeMutableRawPointer, rhs: UnsafeMutableRawPointer) -> Bool
+                       ^
+Swift.UnsafeRawPointer:2:24: note: candidate has non-matching type '(UnsafeRawPointer, UnsafeRawPointer) -> Bool'
+    public static func == (lhs: UnsafeRawPointer, rhs: UnsafeRawPointer) -> Bool
+                       ^
+Swift.UnicodeDecodingResult:5:24: note: candidate has non-matching type '(UnicodeDecodingResult, UnicodeDecodingResult) -> Bool'
+    public static func == (lhs: UnicodeDecodingResult, rhs: UnicodeDecodingResult) -> Bool
+                       ^
+Swift._ValidUTF8Buffer<Storage>:3:28: note: candidate has non-matching type '<Storage> (_ValidUTF8Buffer<Storage>.Index, _ValidUTF8Buffer<Storage>.Index) -> Bool'
+        public static func == (lhs: _ValidUTF8Buffer<Storage>.Index, rhs: _ValidUTF8Buffer<Storage>.Index) -> Bool
+                           ^
+Swift._SwiftNSOperatingSystemVersion:2:24: note: candidate has non-matching type '(_SwiftNSOperatingSystemVersion, _SwiftNSOperatingSystemVersion) -> Bool'
+    public static func == (lhs: _SwiftNSOperatingSystemVersion, rhs: _SwiftNSOperatingSystemVersion) -> Bool
+                       ^
+Swift.AnyIndex:2:24: note: candidate has non-matching type '(AnyIndex, AnyIndex) -> Bool'
+    public static func == (lhs: AnyIndex, rhs: AnyIndex) -> Bool
+                       ^
+SwiftSyntax.==:1:13: note: candidate has non-matching type '(Syntax, Syntax) -> Bool'
+public func == (lhs: Syntax, rhs: Syntax) -> Bool
+            ^
+SwiftSyntax.TokenSyntax:16:24: note: candidate has non-matching type '(TokenSyntax, TokenSyntax) -> Bool'
+    public static func == (lhs: SwiftSyntax.TokenSyntax, rhs: SwiftSyntax.TokenSyntax) -> Bool
+                       ^
+SwiftSyntax.ClosureExprSyntax:11:24: note: candidate has non-matching type '(ClosureExprSyntax, ClosureExprSyntax) -> Bool'
+    public static func == (lhs: SwiftSyntax.ClosureExprSyntax, rhs: SwiftSyntax.ClosureExprSyntax) -> Bool
+                       ^
+SwiftSyntax.MemberTypeIdentifierSyntax:10:24: note: candidate has non-matching type '(MemberTypeIdentifierSyntax, MemberTypeIdentifierSyntax) -> Bool'
+    public static func == (lhs: SwiftSyntax.MemberTypeIdentifierSyntax, rhs: SwiftSyntax.MemberTypeIdentifierSyntax) -> Bool
+                       ^
+SwiftSyntax.DictionaryElementSyntax:10:24: note: candidate has non-matching type '(DictionaryElementSyntax, DictionaryElementSyntax) -> Bool'
+    public static func == (lhs: SwiftSyntax.DictionaryElementSyntax, rhs: SwiftSyntax.DictionaryElementSyntax) -> Bool
+                       ^
+SwiftSyntax.FunctionCallExprSyntax:13:24: note: candidate has non-matching type '(FunctionCallExprSyntax, FunctionCallExprSyntax) -> Bool'
+    public static func == (lhs: SwiftSyntax.FunctionCallExprSyntax, rhs: SwiftSyntax.FunctionCallExprSyntax) -> Bool
+                       ^
+SwiftSyntax.TernaryExprSyntax:12:24: note: candidate has non-matching type '(TernaryExprSyntax, TernaryExprSyntax) -> Bool'
+    public static func == (lhs: SwiftSyntax.TernaryExprSyntax, rhs: SwiftSyntax.TernaryExprSyntax) -> Bool
+                       ^
+SwiftSyntax.CodeBlockSyntax:9:24: note: candidate has non-matching type '(CodeBlockSyntax, CodeBlockSyntax) -> Bool'
+    public static func == (lhs: SwiftSyntax.CodeBlockSyntax, rhs: SwiftSyntax.CodeBlockSyntax) -> Bool
+                       ^
+SwiftSyntax.DeclModifierSyntax:7:24: note: candidate has non-matching type '(DeclModifierSyntax, DeclModifierSyntax) -> Bool'
+    public static func == (lhs: SwiftSyntax.DeclModifierSyntax, rhs: SwiftSyntax.DeclModifierSyntax) -> Bool
+                       ^
+SwiftSyntax.FunctionParameterSyntax:19:24: note: candidate has non-matching type '(FunctionParameterSyntax, FunctionParameterSyntax) -> Bool'
+    public static func == (lhs: SwiftSyntax.FunctionParameterSyntax, rhs: SwiftSyntax.FunctionParameterSyntax) -> Bool
+                       ^
+SwiftSyntax.FallthroughStmtSyntax:4:24: note: candidate has non-matching type '(FallthroughStmtSyntax, FallthroughStmtSyntax) -> Bool'
+    public static func == (lhs: SwiftSyntax.FallthroughStmtSyntax, rhs: SwiftSyntax.FallthroughStmtSyntax) -> Bool
+                       ^
+SwiftSyntax.AccessorDeclSyntax:13:24: note: candidate has non-matching type '(AccessorDeclSyntax, AccessorDeclSyntax) -> Bool'
+    public static func == (lhs: SwiftSyntax.AccessorDeclSyntax, rhs: SwiftSyntax.AccessorDeclSyntax) -> Bool
+                       ^
+SwiftSyntax.TupleTypeSyntax:9:24: note: candidate has non-matching type '(TupleTypeSyntax, TupleTypeSyntax) -> Bool'
+    public static func == (lhs: SwiftSyntax.TupleTypeSyntax, rhs: SwiftSyntax.TupleTypeSyntax) -> Bool
+                       ^
+SwiftSyntax.DeferStmtSyntax:6:24: note: candidate has non-matching type '(DeferStmtSyntax, DeferStmtSyntax) -> Bool'
+    public static func == (lhs: SwiftSyntax.DeferStmtSyntax, rhs: SwiftSyntax.DeferStmtSyntax) -> Bool
+                       ^
+SwiftSyntax.UnknownPatternSyntax:2:24: note: candidate has non-matching type '(UnknownPatternSyntax, UnknownPatternSyntax) -> Bool'
+    public static func == (lhs: SwiftSyntax.UnknownPatternSyntax, rhs: SwiftSyntax.UnknownPatternSyntax) -> Bool
+                       ^
+SwiftSyntax.DeclNameArgumentsSyntax:9:24: note: candidate has non-matching type '(DeclNameArgumentsSyntax, DeclNameArgumentsSyntax) -> Bool'
+    public static func == (lhs: SwiftSyntax.DeclNameArgumentsSyntax, rhs: SwiftSyntax.DeclNameArgumentsSyntax) -> Bool
+                       ^
+SwiftSyntax.ImplicitMemberExprSyntax:8:24: note: candidate has non-matching type '(ImplicitMemberExprSyntax, ImplicitMemberExprSyntax) -> Bool'
+    public static func == (lhs: SwiftSyntax.ImplicitMemberExprSyntax, rhs: SwiftSyntax.ImplicitMemberExprSyntax) -> Bool
+                       ^
+SwiftSyntax.PoundDsohandleExprSyntax:4:24: note: candidate has non-matching type '(PoundDsohandleExprSyntax, PoundDsohandleExprSyntax) -> Bool'
+    public static func == (lhs: SwiftSyntax.PoundDsohandleExprSyntax, rhs: SwiftSyntax.PoundDsohandleExprSyntax) -> Bool
+                       ^
+SwiftSyntax.AssignmentExprSyntax:4:24: note: candidate has non-matching type '(AssignmentExprSyntax, AssignmentExprSyntax) -> Bool'
+    public static func == (lhs: SwiftSyntax.AssignmentExprSyntax, rhs: SwiftSyntax.AssignmentExprSyntax) -> Bool
+                       ^
+SwiftSyntax.PatternBindingSyntax:12:24: note: candidate has non-matching type '(PatternBindingSyntax, PatternBindingSyntax) -> Bool'
+    public static func == (lhs: SwiftSyntax.PatternBindingSyntax, rhs: SwiftSyntax.PatternBindingSyntax) -> Bool
+                       ^
+SwiftSyntax.GenericParameterClauseSyntax:9:24: note: candidate has non-matching type '(GenericParameterClauseSyntax, GenericParameterClauseSyntax) -> Bool'
+    public static func == (lhs: SwiftSyntax.GenericParameterClauseSyntax, rhs: SwiftSyntax.GenericParameterClauseSyntax) -> Bool
+                       ^
+SwiftSyntax.EnumCaseElementSyntax:10:24: note: candidate has non-matching type '(EnumCaseElementSyntax, EnumCaseElementSyntax) -> Bool'
+    public static func == (lhs: SwiftSyntax.EnumCaseElementSyntax, rhs: SwiftSyntax.EnumCaseElementSyntax) -> Bool
+                       ^
+SwiftSyntax.ThrowStmtSyntax:6:24: note: candidate has non-matching type '(ThrowStmtSyntax, ThrowStmtSyntax) -> Bool'
+    public static func == (lhs: SwiftSyntax.ThrowStmtSyntax, rhs: SwiftSyntax.ThrowStmtSyntax) -> Bool
+                       ^
+SwiftSyntax.InheritedTypeSyntax:6:24: note: candidate has non-matching type '(InheritedTypeSyntax, InheritedTypeSyntax) -> Bool'
+    public static func == (lhs: SwiftSyntax.InheritedTypeSyntax, rhs: SwiftSyntax.InheritedTypeSyntax) -> Bool
+                       ^
+SwiftSyntax.ClosureCaptureItemSyntax:13:24: note: candidate has non-matching type '(ClosureCaptureItemSyntax, ClosureCaptureItemSyntax) -> Bool'
+    public static func == (lhs: SwiftSyntax.ClosureCaptureItemSyntax, rhs: SwiftSyntax.ClosureCaptureItemSyntax) -> Bool
+                       ^
+SwiftSyntax.WhileStmtSyntax:13:24: note: candidate has non-matching type '(WhileStmtSyntax, WhileStmtSyntax) -> Bool'
+    public static func == (lhs: SwiftSyntax.WhileStmtSyntax, rhs: SwiftSyntax.WhileStmtSyntax) -> Bool
+                       ^
+SwiftSyntax.InitializerClauseSyntax:6:24: note: candidate has non-matching type '(InitializerClauseSyntax, InitializerClauseSyntax) -> Bool'
+    public static func == (lhs: SwiftSyntax.InitializerClauseSyntax, rhs: SwiftSyntax.InitializerClauseSyntax) -> Bool
+                       ^
+SwiftSyntax.AvailabilityConditionSyntax:7:24: note: candidate has non-matching type '(AvailabilityConditionSyntax, AvailabilityConditionSyntax) -> Bool'
+    public static func == (lhs: SwiftSyntax.AvailabilityConditionSyntax, rhs: SwiftSyntax.AvailabilityConditionSyntax) -> Bool
+                       ^
+SwiftSyntax.StringLiteralExprSyntax:4:24: note: candidate has non-matching type '(StringLiteralExprSyntax, StringLiteralExprSyntax) -> Bool'
+    public static func == (lhs: SwiftSyntax.StringLiteralExprSyntax, rhs: SwiftSyntax.StringLiteralExprSyntax) -> Bool
+                       ^
+SwiftSyntax.ObjectLiteralExprSyntax:11:24: note: candidate has non-matching type '(ObjectLiteralExprSyntax, ObjectLiteralExprSyntax) -> Bool'
+    public static func == (lhs: SwiftSyntax.ObjectLiteralExprSyntax, rhs: SwiftSyntax.ObjectLiteralExprSyntax) -> Bool
+                       ^
+SwiftSyntax.UnresolvedPatternExprSyntax:4:24: note: candidate has non-matching type '(UnresolvedPatternExprSyntax, UnresolvedPatternExprSyntax) -> Bool'
+    public static func == (lhs: SwiftSyntax.UnresolvedPatternExprSyntax, rhs: SwiftSyntax.UnresolvedPatternExprSyntax) -> Bool
+                       ^
+SwiftSyntax.BooleanLiteralExprSyntax:4:24: note: candidate has non-matching type '(BooleanLiteralExprSyntax, BooleanLiteralExprSyntax) -> Bool'
+    public static func == (lhs: SwiftSyntax.BooleanLiteralExprSyntax, rhs: SwiftSyntax.BooleanLiteralExprSyntax) -> Bool
+                       ^
+SwiftSyntax.PoundLineExprSyntax:4:24: note: candidate has non-matching type '(PoundLineExprSyntax, PoundLineExprSyntax) -> Bool'
+    public static func == (lhs: SwiftSyntax.PoundLineExprSyntax, rhs: SwiftSyntax.PoundLineExprSyntax) -> Bool
+                       ^
+SwiftSyntax.EnumCasePatternSyntax:10:24: note: candidate has non-matching type '(EnumCasePatternSyntax, EnumCasePatternSyntax) -> Bool'
+    public static func == (lhs: SwiftSyntax.EnumCasePatternSyntax, rhs: SwiftSyntax.EnumCasePatternSyntax) -> Bool
+                       ^
+SwiftSyntax.SimpleTypeIdentifierSyntax:6:24: note: candidate has non-matching type '(SimpleTypeIdentifierSyntax, SimpleTypeIdentifierSyntax) -> Bool'
+    public static func == (lhs: SwiftSyntax.SimpleTypeIdentifierSyntax, rhs: SwiftSyntax.SimpleTypeIdentifierSyntax) -> Bool
+                       ^
+SwiftSyntax.DotSelfExprSyntax:8:24: note: candidate has non-matching type '(DotSelfExprSyntax, DotSelfExprSyntax) -> Bool'
+    public static func == (lhs: SwiftSyntax.DotSelfExprSyntax, rhs: SwiftSyntax.DotSelfExprSyntax) -> Bool
+                       ^
+SwiftSyntax.ImportDeclSyntax:15:24: note: candidate has non-matching type '(ImportDeclSyntax, ImportDeclSyntax) -> Bool'
+    public static func == (lhs: SwiftSyntax.ImportDeclSyntax, rhs: SwiftSyntax.ImportDeclSyntax) -> Bool
+                       ^
+SwiftSyntax.AsTypePatternSyntax:8:24: note: candidate has non-matching type '(AsTypePatternSyntax, AsTypePatternSyntax) -> Bool'
+    public static func == (lhs: SwiftSyntax.AsTypePatternSyntax, rhs: SwiftSyntax.AsTypePatternSyntax) -> Bool
+                       ^
+SwiftSyntax.ElseBlockSyntax:6:24: note: candidate has non-matching type '(ElseBlockSyntax, ElseBlockSyntax) -> Bool'
+    public static func == (lhs: SwiftSyntax.ElseBlockSyntax, rhs: SwiftSyntax.ElseBlockSyntax) -> Bool
+                       ^
+SwiftSyntax.ExtensionDeclSyntax:18:24: note: candidate has non-matching type '(ExtensionDeclSyntax, ExtensionDeclSyntax) -> Bool'
+    public static func == (lhs: SwiftSyntax.ExtensionDeclSyntax, rhs: SwiftSyntax.ExtensionDeclSyntax) -> Bool
+                       ^
+SwiftSyntax.IfStmtSyntax:17:24: note: candidate has non-matching type '(IfStmtSyntax, IfStmtSyntax) -> Bool'
+    public static func == (lhs: SwiftSyntax.IfStmtSyntax, rhs: SwiftSyntax.IfStmtSyntax) -> Bool
+                       ^
+SwiftSyntax.FunctionSignatureSyntax:8:24: note: candidate has non-matching type '(FunctionSignatureSyntax, FunctionSignatureSyntax) -> Bool'
+    public static func == (lhs: SwiftSyntax.FunctionSignatureSyntax, rhs: SwiftSyntax.FunctionSignatureSyntax) -> Bool
+                       ^
+SwiftSyntax.PrecedenceGroupRelationSyntax:9:24: note: candidate has non-matching type '(PrecedenceGroupRelationSyntax, PrecedenceGroupRelationSyntax) -> Bool'
+    public static func == (lhs: SwiftSyntax.PrecedenceGroupRelationSyntax, rhs: SwiftSyntax.PrecedenceGroupRelationSyntax) -> Bool
+                       ^
+SwiftSyntax.PrefixOperatorExprSyntax:6:24: note: candidate has non-matching type '(PrefixOperatorExprSyntax, PrefixOperatorExprSyntax) -> Bool'
+    public static func == (lhs: SwiftSyntax.PrefixOperatorExprSyntax, rhs: SwiftSyntax.PrefixOperatorExprSyntax) -> Bool
+                       ^
+SwiftSyntax.AssociatedtypeDeclSyntax:18:24: note: candidate has non-matching type '(AssociatedtypeDeclSyntax, AssociatedtypeDeclSyntax) -> Bool'
+    public static func == (lhs: SwiftSyntax.AssociatedtypeDeclSyntax, rhs: SwiftSyntax.AssociatedtypeDeclSyntax) -> Bool
+                       ^
+SwiftSyntax.GuardStmtSyntax:11:24: note: candidate has non-matching type '(GuardStmtSyntax, GuardStmtSyntax) -> Bool'
+    public static func == (lhs: SwiftSyntax.GuardStmtSyntax, rhs: SwiftSyntax.GuardStmtSyntax) -> Bool
+                       ^
+SwiftSyntax.IsTypePatternSyntax:6:24: note: candidate has non-matching type '(IsTypePatternSyntax, IsTypePatternSyntax) -> Bool'
+    public static func == (lhs: SwiftSyntax.IsTypePatternSyntax, rhs: SwiftSyntax.IsTypePatternSyntax) -> Bool
+                       ^
+SwiftSyntax.TypeAnnotationSyntax:6:24: note: candidate has non-matching type '(TypeAnnotationSyntax, TypeAnnotationSyntax) -> Bool'
+    public static func == (lhs: SwiftSyntax.TypeAnnotationSyntax, rhs: SwiftSyntax.TypeAnnotationSyntax) -> Bool
+                       ^
+SwiftSyntax.GenericArgumentClauseSyntax:9:24: note: candidate has non-matching type '(GenericArgumentClauseSyntax, GenericArgumentClauseSyntax) -> Bool'
+    public static func == (lhs: SwiftSyntax.GenericArgumentClauseSyntax, rhs: SwiftSyntax.GenericArgumentClauseSyntax) -> Bool
+                       ^
+SwiftSyntax.TryExprSyntax:8:24: note: candidate has non-matching type '(TryExprSyntax, TryExprSyntax) -> Bool'
+    public static func == (lhs: SwiftSyntax.TryExprSyntax, rhs: SwiftSyntax.TryExprSyntax) -> Bool
+                       ^
+SwiftSyntax.ObjcSelectorExprSyntax:14:24: note: candidate has non-matching type '(ObjcSelectorExprSyntax, ObjcSelectorExprSyntax) -> Bool'
+    public static func == (lhs: SwiftSyntax.ObjcSelectorExprSyntax, rhs: SwiftSyntax.ObjcSelectorExprSyntax) -> Bool
+                       ^
+SwiftSyntax.GenericArgumentSyntax:6:24: note: candidate has non-matching type '(GenericArgumentSyntax, GenericArgumentSyntax) -> Bool'
+    public static func == (lhs: SwiftSyntax.GenericArgumentSyntax, rhs: SwiftSyntax.GenericArgumentSyntax) -> Bool
+                       ^
+SwiftSyntax.IdentifierPatternSyntax:4:24: note: candidate has non-matching type '(IdentifierPatternSyntax, IdentifierPatternSyntax) -> Bool'
+    public static func == (lhs: SwiftSyntax.IdentifierPatternSyntax, rhs: SwiftSyntax.IdentifierPatternSyntax) -> Bool
+                       ^
+SwiftSyntax.FloatLiteralExprSyntax:4:24: note: candidate has non-matching type '(FloatLiteralExprSyntax, FloatLiteralExprSyntax) -> Bool'
+    public static func == (lhs: SwiftSyntax.FloatLiteralExprSyntax, rhs: SwiftSyntax.FloatLiteralExprSyntax) -> Bool
+                       ^
+SwiftSyntax.ExpressionSegmentSyntax:10:24: note: candidate has non-matching type '(ExpressionSegmentSyntax, ExpressionSegmentSyntax) -> Bool'
+    public static func == (lhs: SwiftSyntax.ExpressionSegmentSyntax, rhs: SwiftSyntax.ExpressionSegmentSyntax) -> Bool
+                       ^
+SwiftSyntax.TypeInitializerClauseSyntax:6:24: note: candidate has non-matching type '(TypeInitializerClauseSyntax, TypeInitializerClauseSyntax) -> Bool'
+    public static func == (lhs: SwiftSyntax.TypeInitializerClauseSyntax, rhs: SwiftSyntax.TypeInitializerClauseSyntax) -> Bool
+                       ^
+SwiftSyntax.ForInStmtSyntax:22:24: note: candidate has non-matching type '(ForInStmtSyntax, ForInStmtSyntax) -> Bool'
+    public static func == (lhs: SwiftSyntax.ForInStmtSyntax, rhs: SwiftSyntax.ForInStmtSyntax) -> Bool
+                       ^
+SwiftSyntax.OptionalTypeSyntax:6:24: note: candidate has non-matching type '(OptionalTypeSyntax, OptionalTypeSyntax) -> Bool'
+    public static func == (lhs: SwiftSyntax.OptionalTypeSyntax, rhs: SwiftSyntax.OptionalTypeSyntax) -> Bool
+                       ^
+SwiftSyntax.CaseItemSyntax:8:24: note: candidate has non-matching type '(CaseItemSyntax, CaseItemSyntax) -> Bool'
+    public static func == (lhs: SwiftSyntax.CaseItemSyntax, rhs: SwiftSyntax.CaseItemSyntax) -> Bool
+                       ^
+SwiftSyntax.ContinueStmtSyntax:6:24: note: candidate has non-matching type '(ContinueStmtSyntax, ContinueStmtSyntax) -> Bool'
+    public static func == (lhs: SwiftSyntax.ContinueStmtSyntax, rhs: SwiftSyntax.ContinueStmtSyntax) -> Bool
+                       ^
+SwiftSyntax.NilLiteralExprSyntax:4:24: note: candidate has non-matching type '(NilLiteralExprSyntax, NilLiteralExprSyntax) -> Bool'
+    public static func == (lhs: SwiftSyntax.NilLiteralExprSyntax, rhs: SwiftSyntax.NilLiteralExprSyntax) -> Bool
+                       ^
+SwiftSyntax.SymbolicReferenceExprSyntax:6:24: note: candidate has non-matching type '(SymbolicReferenceExprSyntax, SymbolicReferenceExprSyntax) -> Bool'
+    public static func == (lhs: SwiftSyntax.SymbolicReferenceExprSyntax, rhs: SwiftSyntax.SymbolicReferenceExprSyntax) -> Bool
+                       ^
+SwiftSyntax.PoundColumnExprSyntax:4:24: note: candidate has non-matching type '(PoundColumnExprSyntax, PoundColumnExprSyntax) -> Bool'
+    public static func == (lhs: SwiftSyntax.PoundColumnExprSyntax, rhs: SwiftSyntax.PoundColumnExprSyntax) -> Bool
+                       ^
+SwiftSyntax.SameTypeRequirementSyntax:10:24: note: candidate has non-matching type '(SameTypeRequirementSyntax, SameTypeRequirementSyntax) -> Bool'
+    public static func == (lhs: SwiftSyntax.SameTypeRequirementSyntax, rhs: SwiftSyntax.SameTypeRequirementSyntax) -> Bool
+                       ^
+SwiftSyntax.AccessLevelModifierSyntax:10:24: note: candidate has non-matching type '(AccessLevelModifierSyntax, AccessLevelModifierSyntax) -> Bool'
+    public static func == (lhs: SwiftSyntax.AccessLevelModifierSyntax, rhs: SwiftSyntax.AccessLevelModifierSyntax) -> Bool
+                       ^
+SwiftSyntax.PostfixUnaryExprSyntax:6:24: note: candidate has non-matching type '(PostfixUnaryExprSyntax, PostfixUnaryExprSyntax) -> Bool'
+    public static func == (lhs: SwiftSyntax.PostfixUnaryExprSyntax, rhs: SwiftSyntax.PostfixUnaryExprSyntax) -> Bool
+                       ^
+SwiftSyntax.ConformanceRequirementSyntax:10:24: note: candidate has non-matching type '(ConformanceRequirementSyntax, ConformanceRequirementSyntax) -> Bool'
+    public static func == (lhs: SwiftSyntax.ConformanceRequirementSyntax, rhs: SwiftSyntax.ConformanceRequirementSyntax) -> Bool
+                       ^
+SwiftSyntax.ParameterClauseSyntax:9:24: note: candidate has non-matching type '(ParameterClauseSyntax, ParameterClauseSyntax) -> Bool'
+    public static func == (lhs: SwiftSyntax.ParameterClauseSyntax, rhs: SwiftSyntax.ParameterClauseSyntax) -> Bool
+                       ^
+SwiftSyntax.IfConfigClauseSyntax:8:24: note: candidate has non-matching type '(IfConfigClauseSyntax, IfConfigClauseSyntax) -> Bool'
+    public static func == (lhs: SwiftSyntax.IfConfigClauseSyntax, rhs: SwiftSyntax.IfConfigClauseSyntax) -> Bool
+                       ^
+SwiftSyntax.SpecializeExprSyntax:6:24: note: candidate has non-matching type '(SpecializeExprSyntax, SpecializeExprSyntax) -> Bool'
+    public static func == (lhs: SwiftSyntax.SpecializeExprSyntax, rhs: SwiftSyntax.SpecializeExprSyntax) -> Bool
+                       ^
+SwiftSyntax.EnumCaseDeclSyntax:13:24: note: candidate has non-matching type '(EnumCaseDeclSyntax, EnumCaseDeclSyntax) -> Bool'
+    public static func == (lhs: SwiftSyntax.EnumCaseDeclSyntax, rhs: SwiftSyntax.EnumCaseDeclSyntax) -> Bool
+                       ^
+SwiftSyntax.ArrayElementSyntax:6:24: note: candidate has non-matching type '(ArrayElementSyntax, ArrayElementSyntax) -> Bool'
+    public static func == (lhs: SwiftSyntax.ArrayElementSyntax, rhs: SwiftSyntax.ArrayElementSyntax) -> Bool
+                       ^
+SwiftSyntax.ArrowExprSyntax:6:24: note: candidate has non-matching type '(ArrowExprSyntax, ArrowExprSyntax) -> Bool'
+    public static func == (lhs: SwiftSyntax.ArrowExprSyntax, rhs: SwiftSyntax.ArrowExprSyntax) -> Bool
+                       ^
+SwiftSyntax.ExpressionPatternSyntax:4:24: note: candidate has non-matching type '(ExpressionPatternSyntax, ExpressionPatternSyntax) -> Bool'
+    public static func == (lhs: SwiftSyntax.ExpressionPatternSyntax, rhs: SwiftSyntax.ExpressionPatternSyntax) -> Bool
+                       ^
+SwiftSyntax.ConditionElementSyntax:6:24: note: candidate has non-matching type '(ConditionElementSyntax, ConditionElementSyntax) -> Bool'
+    public static func == (lhs: SwiftSyntax.ConditionElementSyntax, rhs: SwiftSyntax.ConditionElementSyntax) -> Bool
+                       ^
+SwiftSyntax.AccessPathComponentSyntax:6:24: note: candidate has non-matching type '(AccessPathComponentSyntax, AccessPathComponentSyntax) -> Bool'
+    public static func == (lhs: SwiftSyntax.AccessPathComponentSyntax, rhs: SwiftSyntax.AccessPathComponentSyntax) -> Bool
+                       ^
+SwiftSyntax.PrecedenceGroupDeclSyntax:19:24: note: candidate has non-matching type '(PrecedenceGroupDeclSyntax, PrecedenceGroupDeclSyntax) -> Bool'
+    public static func == (lhs: SwiftSyntax.PrecedenceGroupDeclSyntax, rhs: SwiftSyntax.PrecedenceGroupDeclSyntax) -> Bool
+                       ^
+SwiftSyntax.ObjcKeyPathExprSyntax:11:24: note: candidate has non-matching type '(ObjcKeyPathExprSyntax, ObjcKeyPathExprSyntax) -> Bool'
+    public static func == (lhs: SwiftSyntax.ObjcKeyPathExprSyntax, rhs: SwiftSyntax.ObjcKeyPathExprSyntax) -> Bool
+                       ^
+SwiftSyntax.TupleTypeElementSyntax:18:24: note: candidate has non-matching type '(TupleTypeElementSyntax, TupleTypeElementSyntax) -> Bool'
+    public static func == (lhs: SwiftSyntax.TupleTypeElementSyntax, rhs: SwiftSyntax.TupleTypeElementSyntax) -> Bool
+                       ^
+SwiftSyntax.UnknownStmtSyntax:2:24: note: candidate has non-matching type '(UnknownStmtSyntax, UnknownStmtSyntax) -> Bool'
+    public static func == (lhs: SwiftSyntax.UnknownStmtSyntax, rhs: SwiftSyntax.UnknownStmtSyntax) -> Bool
+                       ^
+SwiftSyntax.AttributedTypeSyntax:9:24: note: candidate has non-matching type '(AttributedTypeSyntax, AttributedTypeSyntax) -> Bool'
+    public static func == (lhs: SwiftSyntax.AttributedTypeSyntax, rhs: SwiftSyntax.AttributedTypeSyntax) -> Bool
+                       ^
+SwiftSyntax.IntegerLiteralExprSyntax:4:24: note: candidate has non-matching type '(IntegerLiteralExprSyntax, IntegerLiteralExprSyntax) -> Bool'
+    public static func == (lhs: SwiftSyntax.IntegerLiteralExprSyntax, rhs: SwiftSyntax.IntegerLiteralExprSyntax) -> Bool
+                       ^
+SwiftSyntax.ReturnClauseSyntax:6:24: note: candidate has non-matching type '(ReturnClauseSyntax, ReturnClauseSyntax) -> Bool'
+    public static func == (lhs: SwiftSyntax.ReturnClauseSyntax, rhs: SwiftSyntax.ReturnClauseSyntax) -> Bool
+                       ^
+SwiftSyntax.FunctionDeclSyntax:20:24: note: candidate has non-matching type '(FunctionDeclSyntax, FunctionDeclSyntax) -> Bool'
+    public static func == (lhs: SwiftSyntax.FunctionDeclSyntax, rhs: SwiftSyntax.FunctionDeclSyntax) -> Bool
+                       ^
+SwiftSyntax.RepeatWhileStmtSyntax:14:24: note: candidate has non-matching type '(RepeatWhileStmtSyntax, RepeatWhileStmtSyntax) -> Bool'
+    public static func == (lhs: SwiftSyntax.RepeatWhileStmtSyntax, rhs: SwiftSyntax.RepeatWhileStmtSyntax) -> Bool
+                       ^
+SwiftSyntax.ClosureCaptureSignatureSyntax:9:24: note: candidate has non-matching type '(ClosureCaptureSignatureSyntax, ClosureCaptureSignatureSyntax) -> Bool'
+    public static func == (lhs: SwiftSyntax.ClosureCaptureSignatureSyntax, rhs: SwiftSyntax.ClosureCaptureSignatureSyntax) -> Bool
+                       ^
+SwiftSyntax.OptionalChainingExprSyntax:6:24: note: candidate has non-matching type '(OptionalChainingExprSyntax, OptionalChainingExprSyntax) -> Bool'
+    public static func == (lhs: SwiftSyntax.OptionalChainingExprSyntax, rhs: SwiftSyntax.OptionalChainingExprSyntax) -> Bool
+                       ^
+SwiftSyntax.PrecedenceGroupAssociativitySyntax:8:24: note: candidate has non-matching type '(PrecedenceGroupAssociativitySyntax, PrecedenceGroupAssociativitySyntax) -> Bool'
+    public static func == (lhs: SwiftSyntax.PrecedenceGroupAssociativitySyntax, rhs: SwiftSyntax.PrecedenceGroupAssociativitySyntax) -> Bool
+                       ^
+SwiftSyntax.OptionalBindingConditionSyntax:10:24: note: candidate has non-matching type '(OptionalBindingConditionSyntax, OptionalBindingConditionSyntax) -> Bool'
+    public static func == (lhs: SwiftSyntax.OptionalBindingConditionSyntax, rhs: SwiftSyntax.OptionalBindingConditionSyntax) -> Bool
+                       ^
+SwiftSyntax.TypeInheritanceClauseSyntax:7:24: note: candidate has non-matching type '(TypeInheritanceClauseSyntax, TypeInheritanceClauseSyntax) -> Bool'
+    public static func == (lhs: SwiftSyntax.TypeInheritanceClauseSyntax, rhs: SwiftSyntax.TypeInheritanceClauseSyntax) -> Bool
+                       ^
+SwiftSyntax.StringSegmentSyntax:4:24: note: candidate has non-matching type '(StringSegmentSyntax, StringSegmentSyntax) -> Bool'
+    public static func == (lhs: SwiftSyntax.StringSegmentSyntax, rhs: SwiftSyntax.StringSegmentSyntax) -> Bool
+                       ^
+SwiftSyntax.MetatypeTypeSyntax:8:24: note: candidate has non-matching type '(MetatypeTypeSyntax, MetatypeTypeSyntax) -> Bool'
+    public static func == (lhs: SwiftSyntax.MetatypeTypeSyntax, rhs: SwiftSyntax.MetatypeTypeSyntax) -> Bool
+                       ^
+SwiftSyntax.SwitchCaseSyntax:9:24: note: candidate has non-matching type '(SwitchCaseSyntax, SwitchCaseSyntax) -> Bool'
+    public static func == (lhs: SwiftSyntax.SwitchCaseSyntax, rhs: SwiftSyntax.SwitchCaseSyntax) -> Bool
+                       ^
+SwiftSyntax.ClosureParamSyntax:6:24: note: candidate has non-matching type '(ClosureParamSyntax, ClosureParamSyntax) -> Bool'
+    public static func == (lhs: SwiftSyntax.ClosureParamSyntax, rhs: SwiftSyntax.ClosureParamSyntax) -> Bool
+                       ^
+SwiftSyntax.ForcedValueExprSyntax:6:24: note: candidate has non-matching type '(ForcedValueExprSyntax, ForcedValueExprSyntax) -> Bool'
+    public static func == (lhs: SwiftSyntax.ForcedValueExprSyntax, rhs: SwiftSyntax.ForcedValueExprSyntax) -> Bool
+                       ^
+SwiftSyntax.SourceFileSyntax:7:24: note: candidate has non-matching type '(SourceFileSyntax, SourceFileSyntax) -> Bool'
+    public static func == (lhs: SwiftSyntax.SourceFileSyntax, rhs: SwiftSyntax.SourceFileSyntax) -> Bool
+                       ^
+SwiftSyntax.DiscardAssignmentExprSyntax:4:24: note: candidate has non-matching type '(DiscardAssignmentExprSyntax, DiscardAssignmentExprSyntax) -> Bool'
+    public static func == (lhs: SwiftSyntax.DiscardAssignmentExprSyntax, rhs: SwiftSyntax.DiscardAssignmentExprSyntax) -> Bool
+                       ^
+SwiftSyntax.ElseIfContinuationSyntax:4:24: note: candidate has non-matching type '(ElseIfContinuationSyntax, ElseIfContinuationSyntax) -> Bool'
+    public static func == (lhs: SwiftSyntax.ElseIfContinuationSyntax, rhs: SwiftSyntax.ElseIfContinuationSyntax) -> Bool
+                       ^
+SwiftSyntax.DictionaryExprSyntax:8:24: note: candidate has non-matching type '(DictionaryExprSyntax, DictionaryExprSyntax) -> Bool'
+    public static func == (lhs: SwiftSyntax.DictionaryExprSyntax, rhs: SwiftSyntax.DictionaryExprSyntax) -> Bool
+                       ^
+SwiftSyntax.CompositionTypeSyntax:5:24: note: candidate has non-matching type '(CompositionTypeSyntax, CompositionTypeSyntax) -> Bool'
+    public static func == (lhs: SwiftSyntax.CompositionTypeSyntax, rhs: SwiftSyntax.CompositionTypeSyntax) -> Bool
+                       ^
+SwiftSyntax.SwitchDefaultLabelSyntax:6:24: note: candidate has non-matching type '(SwitchDefaultLabelSyntax, SwitchDefaultLabelSyntax) -> Bool'
+    public static func == (lhs: SwiftSyntax.SwitchDefaultLabelSyntax, rhs: SwiftSyntax.SwitchDefaultLabelSyntax) -> Bool
+                       ^
+SwiftSyntax.InfixOperatorGroupSyntax:6:24: note: candidate has non-matching type '(InfixOperatorGroupSyntax, InfixOperatorGroupSyntax) -> Bool'
+    public static func == (lhs: SwiftSyntax.InfixOperatorGroupSyntax, rhs: SwiftSyntax.InfixOperatorGroupSyntax) -> Bool
+                       ^
+SwiftSyntax.SubscriptDeclSyntax:20:24: note: candidate has non-matching type '(SubscriptDeclSyntax, SubscriptDeclSyntax) -> Bool'
+    public static func == (lhs: SwiftSyntax.SubscriptDeclSyntax, rhs: SwiftSyntax.SubscriptDeclSyntax) -> Bool
+                       ^
+SwiftSyntax.DoStmtSyntax:13:24: note: candidate has non-matching type '(DoStmtSyntax, DoStmtSyntax) -> Bool'
+    public static func == (lhs: SwiftSyntax.DoStmtSyntax, rhs: SwiftSyntax.DoStmtSyntax) -> Bool
+                       ^
+SwiftSyntax.MemberDeclBlockSyntax:9:24: note: candidate has non-matching type '(MemberDeclBlockSyntax, MemberDeclBlockSyntax) -> Bool'
+    public static func == (lhs: SwiftSyntax.MemberDeclBlockSyntax, rhs: SwiftSyntax.MemberDeclBlockSyntax) -> Bool
+                       ^
+SwiftSyntax.ImplicitlyUnwrappedOptionalTypeSyntax:6:24: note: candidate has non-matching type '(ImplicitlyUnwrappedOptionalTypeSyntax, ImplicitlyUnwrappedOptionalTypeSyntax) -> Bool'
+    public static func == (lhs: SwiftSyntax.ImplicitlyUnwrappedOptionalTypeSyntax, rhs: SwiftSyntax.ImplicitlyUnwrappedOptionalTypeSyntax) -> Bool
+                       ^
+SwiftSyntax.GenericParameterSyntax:13:24: note: candidate has non-matching type '(GenericParameterSyntax, GenericParameterSyntax) -> Bool'
+    public static func == (lhs: SwiftSyntax.GenericParameterSyntax, rhs: SwiftSyntax.GenericParameterSyntax) -> Bool
+                       ^
+SwiftSyntax.VariableDeclSyntax:13:24: note: candidate has non-matching type '(VariableDeclSyntax, VariableDeclSyntax) -> Bool'
+    public static func == (lhs: SwiftSyntax.VariableDeclSyntax, rhs: SwiftSyntax.VariableDeclSyntax) -> Bool
+                       ^
+SwiftSyntax.AccessorBlockSyntax:8:24: note: candidate has non-matching type '(AccessorBlockSyntax, AccessorBlockSyntax) -> Bool'
+    public static func == (lhs: SwiftSyntax.AccessorBlockSyntax, rhs: SwiftSyntax.AccessorBlockSyntax) -> Bool
+                       ^
+SwiftSyntax.ArrayExprSyntax:9:24: note: candidate has non-matching type '(ArrayExprSyntax, ArrayExprSyntax) -> Bool'
+    public static func == (lhs: SwiftSyntax.ArrayExprSyntax, rhs: SwiftSyntax.ArrayExprSyntax) -> Bool
+                       ^
+SwiftSyntax.OptionalPatternSyntax:6:24: note: candidate has non-matching type '(OptionalPatternSyntax, OptionalPatternSyntax) -> Bool'
+    public static func == (lhs: SwiftSyntax.OptionalPatternSyntax, rhs: SwiftSyntax.OptionalPatternSyntax) -> Bool
+                       ^
+SwiftSyntax.OperatorDeclSyntax:14:24: note: candidate has non-matching type '(OperatorDeclSyntax, OperatorDeclSyntax) -> Bool'
+    public static func == (lhs: SwiftSyntax.OperatorDeclSyntax, rhs: SwiftSyntax.OperatorDeclSyntax) -> Bool
+                       ^
+SwiftSyntax.PoundFileExprSyntax:4:24: note: candidate has non-matching type '(PoundFileExprSyntax, PoundFileExprSyntax) -> Bool'
+    public static func == (lhs: SwiftSyntax.PoundFileExprSyntax, rhs: SwiftSyntax.PoundFileExprSyntax) -> Bool
+                       ^
+SwiftSyntax.DeinitializerDeclSyntax:12:24: note: candidate has non-matching type '(DeinitializerDeclSyntax, DeinitializerDeclSyntax) -> Bool'
+    public static func == (lhs: SwiftSyntax.DeinitializerDeclSyntax, rhs: SwiftSyntax.DeinitializerDeclSyntax) -> Bool
+                       ^
+SwiftSyntax.PrecedenceGroupNameElementSyntax:6:24: note: candidate has non-matching type '(PrecedenceGroupNameElementSyntax, PrecedenceGroupNameElementSyntax) -> Bool'
+    public static func == (lhs: SwiftSyntax.PrecedenceGroupNameElementSyntax, rhs: SwiftSyntax.PrecedenceGroupNameElementSyntax) -> Bool
+                       ^
+SwiftSyntax.WildcardPatternSyntax:6:24: note: candidate has non-matching type '(WildcardPatternSyntax, WildcardPatternSyntax) -> Bool'
+    public static func == (lhs: SwiftSyntax.WildcardPatternSyntax, rhs: SwiftSyntax.WildcardPatternSyntax) -> Bool
+                       ^
+SwiftSyntax.UnknownDeclSyntax:2:24: note: candidate has non-matching type '(UnknownDeclSyntax, UnknownDeclSyntax) -> Bool'
+    public static func == (lhs: SwiftSyntax.UnknownDeclSyntax, rhs: SwiftSyntax.UnknownDeclSyntax) -> Bool
+                       ^
+SwiftSyntax.MemberAccessExprSyntax:10:24: note: candidate has non-matching type '(MemberAccessExprSyntax, MemberAccessExprSyntax) -> Bool'
+    public static func == (lhs: SwiftSyntax.MemberAccessExprSyntax, rhs: SwiftSyntax.MemberAccessExprSyntax) -> Bool
+                       ^
+SwiftSyntax.EnumDeclSyntax:20:24: note: candidate has non-matching type '(EnumDeclSyntax, EnumDeclSyntax) -> Bool'
+    public static func == (lhs: SwiftSyntax.EnumDeclSyntax, rhs: SwiftSyntax.EnumDeclSyntax) -> Bool
+                       ^
+SwiftSyntax.SwitchCaseLabelSyntax:9:24: note: candidate has non-matching type '(SwitchCaseLabelSyntax, SwitchCaseLabelSyntax) -> Bool'
+    public static func == (lhs: SwiftSyntax.SwitchCaseLabelSyntax, rhs: SwiftSyntax.SwitchCaseLabelSyntax) -> Bool
+                       ^
+SwiftSyntax.MatchingPatternConditionSyntax:10:24: note: candidate has non-matching type '(MatchingPatternConditionSyntax, MatchingPatternConditionSyntax) -> Bool'
+    public static func == (lhs: SwiftSyntax.MatchingPatternConditionSyntax, rhs: SwiftSyntax.MatchingPatternConditionSyntax) -> Bool
+                       ^
+SwiftSyntax.AttributeSyntax:9:24: note: candidate has non-matching type '(AttributeSyntax, AttributeSyntax) -> Bool'
+    public static func == (lhs: SwiftSyntax.AttributeSyntax, rhs: SwiftSyntax.AttributeSyntax) -> Bool
+                       ^
+SwiftSyntax.PrecedenceGroupAssignmentSyntax:8:24: note: candidate has non-matching type '(PrecedenceGroupAssignmentSyntax, PrecedenceGroupAssignmentSyntax) -> Bool'
+    public static func == (lhs: SwiftSyntax.PrecedenceGroupAssignmentSyntax, rhs: SwiftSyntax.PrecedenceGroupAssignmentSyntax) -> Bool
+                       ^
+SwiftSyntax.AccessorParameterSyntax:8:24: note: candidate has non-matching type '(AccessorParameterSyntax, AccessorParameterSyntax) -> Bool'
+    public static func == (lhs: SwiftSyntax.AccessorParameterSyntax, rhs: SwiftSyntax.AccessorParameterSyntax) -> Bool
+                       ^
+SwiftSyntax.PoundWarningDeclSyntax:10:24: note: candidate has non-matching type '(PoundWarningDeclSyntax, PoundWarningDeclSyntax) -> Bool'
+    public static func == (lhs: SwiftSyntax.PoundWarningDeclSyntax, rhs: SwiftSyntax.PoundWarningDeclSyntax) -> Bool
+                       ^
+SwiftSyntax.DictionaryTypeSyntax:12:24: note: candidate has non-matching type '(DictionaryTypeSyntax, DictionaryTypeSyntax) -> Bool'
+    public static func == (lhs: SwiftSyntax.DictionaryTypeSyntax, rhs: SwiftSyntax.DictionaryTypeSyntax) -> Bool
+                       ^
+SwiftSyntax.WhereClauseSyntax:6:24: note: candidate has non-matching type '(WhereClauseSyntax, WhereClauseSyntax) -> Bool'
+    public static func == (lhs: SwiftSyntax.WhereClauseSyntax, rhs: SwiftSyntax.WhereClauseSyntax) -> Bool
+                       ^
+SwiftSyntax.SequenceExprSyntax:5:24: note: candidate has non-matching type '(SequenceExprSyntax, SequenceExprSyntax) -> Bool'
+    public static func == (lhs: SwiftSyntax.SequenceExprSyntax, rhs: SwiftSyntax.SequenceExprSyntax) -> Bool
+                       ^
+SwiftSyntax.SwitchStmtSyntax:17:24: note: candidate has non-matching type '(SwitchStmtSyntax, SwitchStmtSyntax) -> Bool'
+    public static func == (lhs: SwiftSyntax.SwitchStmtSyntax, rhs: SwiftSyntax.SwitchStmtSyntax) -> Bool
+                       ^
+SwiftSyntax.InitializerDeclSyntax:22:24: note: candidate has non-matching type '(InitializerDeclSyntax, InitializerDeclSyntax) -> Bool'
+    public static func == (lhs: SwiftSyntax.InitializerDeclSyntax, rhs: SwiftSyntax.InitializerDeclSyntax) -> Bool
+                       ^
+SwiftSyntax.IfConfigDeclSyntax:7:24: note: candidate has non-matching type '(IfConfigDeclSyntax, IfConfigDeclSyntax) -> Bool'
+    public static func == (lhs: SwiftSyntax.IfConfigDeclSyntax, rhs: SwiftSyntax.IfConfigDeclSyntax) -> Bool
+                       ^
+SwiftSyntax.SubscriptExprSyntax:13:24: note: candidate has non-matching type '(SubscriptExprSyntax, SubscriptExprSyntax) -> Bool'
+    public static func == (lhs: SwiftSyntax.SubscriptExprSyntax, rhs: SwiftSyntax.SubscriptExprSyntax) -> Bool
+                       ^
+SwiftSyntax.CompositionTypeElementSyntax:6:24: note: candidate has non-matching type '(CompositionTypeElementSyntax, CompositionTypeElementSyntax) -> Bool'
+    public static func == (lhs: SwiftSyntax.CompositionTypeElementSyntax, rhs: SwiftSyntax.CompositionTypeElementSyntax) -> Bool
+                       ^
+SwiftSyntax.ArrayTypeSyntax:8:24: note: candidate has non-matching type '(ArrayTypeSyntax, ArrayTypeSyntax) -> Bool'
+    public static func == (lhs: SwiftSyntax.ArrayTypeSyntax, rhs: SwiftSyntax.ArrayTypeSyntax) -> Bool
+                       ^
+SwiftSyntax.ObjcNamePieceSyntax:6:24: note: candidate has non-matching type '(ObjcNamePieceSyntax, ObjcNamePieceSyntax) -> Bool'
+    public static func == (lhs: SwiftSyntax.ObjcNamePieceSyntax, rhs: SwiftSyntax.ObjcNamePieceSyntax) -> Bool
+                       ^
+SwiftSyntax.FunctionTypeSyntax:15:24: note: candidate has non-matching type '(FunctionTypeSyntax, FunctionTypeSyntax) -> Bool'
+    public static func == (lhs: SwiftSyntax.FunctionTypeSyntax, rhs: SwiftSyntax.FunctionTypeSyntax) -> Bool
+                       ^
+SwiftSyntax.EditorPlaceholderExprSyntax:4:24: note: candidate has non-matching type '(EditorPlaceholderExprSyntax, EditorPlaceholderExprSyntax) -> Bool'
+    public static func == (lhs: SwiftSyntax.EditorPlaceholderExprSyntax, rhs: SwiftSyntax.EditorPlaceholderExprSyntax) -> Bool
+                       ^
+SwiftSyntax.ProtocolDeclSyntax:18:24: note: candidate has non-matching type '(ProtocolDeclSyntax, ProtocolDeclSyntax) -> Bool'
+    public static func == (lhs: SwiftSyntax.ProtocolDeclSyntax, rhs: SwiftSyntax.ProtocolDeclSyntax) -> Bool
+                       ^
+SwiftSyntax.PoundFunctionExprSyntax:4:24: note: candidate has non-matching type '(PoundFunctionExprSyntax, PoundFunctionExprSyntax) -> Bool'
+    public static func == (lhs: SwiftSyntax.PoundFunctionExprSyntax, rhs: SwiftSyntax.PoundFunctionExprSyntax) -> Bool
+                       ^
+SwiftSyntax.DeclarationStmtSyntax:4:24: note: candidate has non-matching type '(DeclarationStmtSyntax, DeclarationStmtSyntax) -> Bool'
+    public static func == (lhs: SwiftSyntax.DeclarationStmtSyntax, rhs: SwiftSyntax.DeclarationStmtSyntax) -> Bool
+                       ^
+SwiftSyntax.InOutExprSyntax:6:24: note: candidate has non-matching type '(InOutExprSyntax, InOutExprSyntax) -> Bool'
+    public static func == (lhs: SwiftSyntax.InOutExprSyntax, rhs: SwiftSyntax.InOutExprSyntax) -> Bool
+                       ^
+SwiftSyntax.UnknownExprSyntax:2:24: note: candidate has non-matching type '(UnknownExprSyntax, UnknownExprSyntax) -> Bool'
+    public static func == (lhs: SwiftSyntax.UnknownExprSyntax, rhs: SwiftSyntax.UnknownExprSyntax) -> Bool
+                       ^
+SwiftSyntax.TuplePatternElementSyntax:10:24: note: candidate has non-matching type '(TuplePatternElementSyntax, TuplePatternElementSyntax) -> Bool'
+    public static func == (lhs: SwiftSyntax.TuplePatternElementSyntax, rhs: SwiftSyntax.TuplePatternElementSyntax) -> Bool
+                       ^
+SwiftSyntax.AsExprSyntax:8:24: note: candidate has non-matching type '(AsExprSyntax, AsExprSyntax) -> Bool'
+    public static func == (lhs: SwiftSyntax.AsExprSyntax, rhs: SwiftSyntax.AsExprSyntax) -> Bool
+                       ^
+SwiftSyntax.TupleElementSyntax:10:24: note: candidate has non-matching type '(TupleElementSyntax, TupleElementSyntax) -> Bool'
+    public static func == (lhs: SwiftSyntax.TupleElementSyntax, rhs: SwiftSyntax.TupleElementSyntax) -> Bool
+                       ^
+SwiftSyntax.CodeBlockItemSyntax:6:24: note: candidate has non-matching type '(CodeBlockItemSyntax, CodeBlockItemSyntax) -> Bool'
+    public static func == (lhs: SwiftSyntax.CodeBlockItemSyntax, rhs: SwiftSyntax.CodeBlockItemSyntax) -> Bool
+                       ^
+SwiftSyntax.KeyPathExprSyntax:6:24: note: candidate has non-matching type '(KeyPathExprSyntax, KeyPathExprSyntax) -> Bool'
+    public static func == (lhs: SwiftSyntax.KeyPathExprSyntax, rhs: SwiftSyntax.KeyPathExprSyntax) -> Bool
+                       ^
+SwiftSyntax.ExpressionStmtSyntax:4:24: note: candidate has non-matching type '(ExpressionStmtSyntax, ExpressionStmtSyntax) -> Bool'
+    public static func == (lhs: SwiftSyntax.ExpressionStmtSyntax, rhs: SwiftSyntax.ExpressionStmtSyntax) -> Bool
+                       ^
+SwiftSyntax.IsExprSyntax:6:24: note: candidate has non-matching type '(IsExprSyntax, IsExprSyntax) -> Bool'
+    public static func == (lhs: SwiftSyntax.IsExprSyntax, rhs: SwiftSyntax.IsExprSyntax) -> Bool
+                       ^
+SwiftSyntax.DeclNameArgumentSyntax:6:24: note: candidate has non-matching type '(DeclNameArgumentSyntax, DeclNameArgumentSyntax) -> Bool'
+    public static func == (lhs: SwiftSyntax.DeclNameArgumentSyntax, rhs: SwiftSyntax.DeclNameArgumentSyntax) -> Bool
+                       ^
+SwiftSyntax.StructDeclSyntax:20:24: note: candidate has non-matching type '(StructDeclSyntax, StructDeclSyntax) -> Bool'
+    public static func == (lhs: SwiftSyntax.StructDeclSyntax, rhs: SwiftSyntax.StructDeclSyntax) -> Bool
+                       ^
+SwiftSyntax.StringInterpolationExprSyntax:9:24: note: candidate has non-matching type '(StringInterpolationExprSyntax, StringInterpolationExprSyntax) -> Bool'
+    public static func == (lhs: SwiftSyntax.StringInterpolationExprSyntax, rhs: SwiftSyntax.StringInterpolationExprSyntax) -> Bool
+                       ^
+SwiftSyntax.CatchClauseSyntax:10:24: note: candidate has non-matching type '(CatchClauseSyntax, CatchClauseSyntax) -> Bool'
+    public static func == (lhs: SwiftSyntax.CatchClauseSyntax, rhs: SwiftSyntax.CatchClauseSyntax) -> Bool
+                       ^
+SwiftSyntax.TypeExprSyntax:4:24: note: candidate has non-matching type '(TypeExprSyntax, TypeExprSyntax) -> Bool'
+    public static func == (lhs: SwiftSyntax.TypeExprSyntax, rhs: SwiftSyntax.TypeExprSyntax) -> Bool
+                       ^
+SwiftSyntax.IdentifierExprSyntax:6:24: note: candidate has non-matching type '(IdentifierExprSyntax, IdentifierExprSyntax) -> Bool'
+    public static func == (lhs: SwiftSyntax.IdentifierExprSyntax, rhs: SwiftSyntax.IdentifierExprSyntax) -> Bool
+                       ^
+SwiftSyntax.TypealiasDeclSyntax:18:24: note: candidate has non-matching type '(TypealiasDeclSyntax, TypealiasDeclSyntax) -> Bool'
+    public static func == (lhs: SwiftSyntax.TypealiasDeclSyntax, rhs: SwiftSyntax.TypealiasDeclSyntax) -> Bool
+                       ^
+SwiftSyntax.FunctionCallArgumentSyntax:10:24: note: candidate has non-matching type '(FunctionCallArgumentSyntax, FunctionCallArgumentSyntax) -> Bool'
+    public static func == (lhs: SwiftSyntax.FunctionCallArgumentSyntax, rhs: SwiftSyntax.FunctionCallArgumentSyntax) -> Bool
+                       ^
+SwiftSyntax.TuplePatternSyntax:9:24: note: candidate has non-matching type '(TuplePatternSyntax, TuplePatternSyntax) -> Bool'
+    public static func == (lhs: SwiftSyntax.TuplePatternSyntax, rhs: SwiftSyntax.TuplePatternSyntax) -> Bool
+                       ^
+SwiftSyntax.ReturnStmtSyntax:6:24: note: candidate has non-matching type '(ReturnStmtSyntax, ReturnStmtSyntax) -> Bool'
+    public static func == (lhs: SwiftSyntax.ReturnStmtSyntax, rhs: SwiftSyntax.ReturnStmtSyntax) -> Bool
+                       ^
+SwiftSyntax.PoundErrorDeclSyntax:10:24: note: candidate has non-matching type '(PoundErrorDeclSyntax, PoundErrorDeclSyntax) -> Bool'
+    public static func == (lhs: SwiftSyntax.PoundErrorDeclSyntax, rhs: SwiftSyntax.PoundErrorDeclSyntax) -> Bool
+                       ^
+SwiftSyntax.TupleExprSyntax:9:24: note: candidate has non-matching type '(TupleExprSyntax, TupleExprSyntax) -> Bool'
+    public static func == (lhs: SwiftSyntax.TupleExprSyntax, rhs: SwiftSyntax.TupleExprSyntax) -> Bool
+                       ^
+SwiftSyntax.SuperRefExprSyntax:4:24: note: candidate has non-matching type '(SuperRefExprSyntax, SuperRefExprSyntax) -> Bool'
+    public static func == (lhs: SwiftSyntax.SuperRefExprSyntax, rhs: SwiftSyntax.SuperRefExprSyntax) -> Bool
+                       ^
+SwiftSyntax.BreakStmtSyntax:6:24: note: candidate has non-matching type '(BreakStmtSyntax, BreakStmtSyntax) -> Bool'
+    public static func == (lhs: SwiftSyntax.BreakStmtSyntax, rhs: SwiftSyntax.BreakStmtSyntax) -> Bool
+                       ^
+SwiftSyntax.ClassDeclSyntax:20:24: note: candidate has non-matching type '(ClassDeclSyntax, ClassDeclSyntax) -> Bool'
+    public static func == (lhs: SwiftSyntax.ClassDeclSyntax, rhs: SwiftSyntax.ClassDeclSyntax) -> Bool
+                       ^
+SwiftSyntax.ClosureSignatureSyntax:12:24: note: candidate has non-matching type '(ClosureSignatureSyntax, ClosureSignatureSyntax) -> Bool'
+    public static func == (lhs: SwiftSyntax.ClosureSignatureSyntax, rhs: SwiftSyntax.ClosureSignatureSyntax) -> Bool
+                       ^
+SwiftSyntax.BinaryOperatorExprSyntax:4:24: note: candidate has non-matching type '(BinaryOperatorExprSyntax, BinaryOperatorExprSyntax) -> Bool'
+    public static func == (lhs: SwiftSyntax.BinaryOperatorExprSyntax, rhs: SwiftSyntax.BinaryOperatorExprSyntax) -> Bool
+                       ^
+SwiftSyntax.UnknownTypeSyntax:2:24: note: candidate has non-matching type '(UnknownTypeSyntax, UnknownTypeSyntax) -> Bool'
+    public static func == (lhs: SwiftSyntax.UnknownTypeSyntax, rhs: SwiftSyntax.UnknownTypeSyntax) -> Bool
+                       ^
+SwiftSyntax.GenericWhereClauseSyntax:7:24: note: candidate has non-matching type '(GenericWhereClauseSyntax, GenericWhereClauseSyntax) -> Bool'
+    public static func == (lhs: SwiftSyntax.GenericWhereClauseSyntax, rhs: SwiftSyntax.GenericWhereClauseSyntax) -> Bool
+                       ^
+SwiftSyntax.ValueBindingPatternSyntax:6:24: note: candidate has non-matching type '(ValueBindingPatternSyntax, ValueBindingPatternSyntax) -> Bool'
+    public static func == (lhs: SwiftSyntax.ValueBindingPatternSyntax, rhs: SwiftSyntax.ValueBindingPatternSyntax) -> Bool
+                       ^
+SwiftSyntax.TokenKind:2:24: note: candidate has non-matching type '(TokenKind, TokenKind) -> Bool'
+    public static func == (lhs: SwiftSyntax.TokenKind, rhs: SwiftSyntax.TokenKind) -> Bool
+                       ^
+Swift.Equatable:2:24: note: protocol requires function '==' with type '(AbsolutePosition, AbsolutePosition) -> Bool'; do you want to add a stub?
+    public static func == (lhs: Self, rhs: Self) -> Bool
+                       ^
+error: terminated(1): /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/swift-build-tool -f '/private/var/folders/rt/t6928ff97nl1d2w84k3zqs9m0000gn/T/TemporaryItems/(A Document Being Saved By muter 5)/muter/.build/debug.yaml' test output:
+    
+

@@ -65,6 +65,10 @@ class MutationTestingSpec: QuickSpec {
 
                 expect(mutationScore(from: [.passed, .failed])).to(equal(50))
                 expect(mutationScore(from: [.passed, .failed, .failed])).to(equal(66))
+                
+                expect(mutationScore(from: [.passed, .runtimeError])).to(equal(50))
+                
+                expect(mutationScore(from: [.passed, .failed, .buildError])).to(equal(50))
             }
 
             it("calculates a mutation score for each mutated file from a mutation test run") {
