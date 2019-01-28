@@ -40,6 +40,6 @@ func swapFilePaths(forFilesAt paths: [String], using workingDirectoryPath: Strin
 }
 
 func swapFilePath(forFileAt path: String, using workingDirectory: String) -> String {
-    let url = URL(fileURLWithPath: path) 
+    let url = URL(fileURLWithPath: path)
     return "\(workingDirectory)/\(url.lastPathComponent)"
 }

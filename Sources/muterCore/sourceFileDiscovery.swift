@@ -22,11 +22,11 @@ func discoverSourceFiles(inDirectoryAt path: String, excludingPathsIn providedEx
 
 private func pathsContainingItems(from excludeList: [String]) -> (String) -> Bool {
     return { (path: String) in
-        
+
         for item in excludeList where path.contains(item) {
             return true
         }
-        
+
         return false
     }
 }

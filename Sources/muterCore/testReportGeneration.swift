@@ -28,9 +28,9 @@ func generateTestReport(from outcomes: [MutationTestOutcome] ) -> String {
     --------------------
     Mutation Test Scores
     --------------------
-    
+
     These are the mutation scores for your test suite, as well as the files that had mutants introduced into them.
-    
+
     Mutation scores ignore build & runtime errors.
 
     \(mutationScoreMessage)

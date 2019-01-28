@@ -7,20 +7,20 @@ public func printHeader() {
         """
 
 
-          _____       _
-         |     | _ _ | |_  ___  ___
-         | | | || | ||  _|| -_||  _|
-         |_|_|_||___||_|  |___||_|
+        _____       _
+        |     | _ _ | |_  ___  ___
+        | | | || | ||  _|| -_||  _|
+        |_|_|_||___||_|  |___||_|
 
 
-         Automated mutation testing for Swift
+        Automated mutation testing for Swift
 
-         You are running version \(version)
-        
-         Want help?
-         https://github.com/SeanROlszewski/muter/issues
+        You are running version \(version)
+
+        Want help?
+        https://github.com/SeanROlszewski/muter/issues
         +----------------------------------------------+
-        
+
         """)
 }
 
@@ -39,7 +39,7 @@ if #available(OSX 10.13, *) {
         commandlineArguments: CommandLine.arguments,
         setup: {
             try setupMuter(using: fileManager, and: currentDirectoryPath)
-        },
+    },
         run: {
             let configurationPath = currentDirectoryPath + "/muter.conf.json"
 
@@ -49,7 +49,7 @@ if #available(OSX 10.13, *) {
 
             let configuration = try JSONDecoder().decode(MuterConfiguration.self, from: configurationData)
             run(with: configuration, in: currentDirectoryPath)
-        }
+    }
     )
 
     print(message ?? "")

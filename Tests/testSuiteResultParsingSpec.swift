@@ -12,7 +12,7 @@ class TestSuiteResultParsingSpec: QuickSpec {
                     expect(TestSuiteResult.from(testLog: contents)).to(equal(.passed))
                 }
             }
-            
+
             context("when a test log contains a failure") {
                 it("returns a failed test result") {
                     var contents = loadLogFile(named: "testRunWithFailures_withoutTestFailedFooter.log")
@@ -25,25 +25,25 @@ class TestSuiteResultParsingSpec: QuickSpec {
                     expect(TestSuiteResult.from(testLog: contents)).to(equal(.failed))
                 }
             }
-            
+
             context("when a test log contains a fatal error") {
                 it("returns a runtime error") {
                     let contents = loadLogFile(named: "runtimeError_fatalError.log")
                     expect(TestSuiteResult.from(testLog: contents)).to(equal(.runtimeError))
                 }
             }
-            
+
             context("when a test log contains a build error") {
                 it("returns a build error") {
                     var contents = loadLogFile(named: "buildError_missingProjectFile.log")
                     expect(TestSuiteResult.from(testLog: contents)).to(equal(.buildError))
-               
+
                     contents = loadLogFile(named: "buildError_runScriptStepFailed.log")
                     expect(TestSuiteResult.from(testLog: contents)).to(equal(.buildError))
-               
+
                     contents = loadLogFile(named: "buildError_invalidSwiftCode.log")
                     expect(TestSuiteResult.from(testLog: contents)).to(equal(.buildError))
-               
+
                     contents = loadLogFile(named: "buildError_withTestFailedFooter.log")
                     expect(TestSuiteResult.from(testLog: contents)).to(equal(.buildError))
                 }
@@ -57,6 +57,6 @@ private func loadLogFile(named name: String) -> String {
         let string = String(data: data, encoding: .utf8) else {
             fatalError("Unable to load a log file named \(name) for testing the XCTest result parser")
     }
-    
+
     return string
 }
