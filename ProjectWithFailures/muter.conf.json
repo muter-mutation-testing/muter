@@ -1,0 +1,14 @@
+{
+    "executable": "/usr/bin/xcodebuild",
+    "arguments": [
+        "-project",
+        "ProjectWithFailingTests.xcodeproj",
+        "-scheme",
+        "ProjectWithFailingTests",
+        "-sdk",
+        "macosx",
+        "-destination",
+        "platform=macOS",
+        "test"
+    ]
+}

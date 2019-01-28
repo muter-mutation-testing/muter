@@ -9,6 +9,12 @@ struct MutationTestOutcome: Equatable {
 }
 
 func performMutationTesting(using operators: [MutationOperator], delegate: MutationTestingIODelegate) -> [MutationTestOutcome] {
+    print("Running your test suite to determine a baseline for mutation testing")
+    let initialResult = delegate.runTestSuite(savingResultsIntoFileNamed: "initial_run")
+    guard initialResult == .passed else {
+        delegate.abortTesting()
+        return []
+    }
 
     return operators.enumerated().map { index, `operator` in
         let filePath = `operator`.filePath

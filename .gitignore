@@ -131,3 +131,4 @@ iOSInjectionProject/
 **/xcshareddata/WorkspaceSettings.xcsettings
 
 # End of https://www.gitignore.io/api/swift,xcode,macos
+Tests/muters_aborted_testing_output.txt
