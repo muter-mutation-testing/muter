@@ -9,9 +9,9 @@ enum TestSuiteResult: String {
     var asMutationTestOutcome: String {
         switch self {
         case .passed:
-            return "failed"
-        case .failed:
             return "passed"
+        case .failed:
+            return "failed"
         case .buildError:
             return "build error"
         case .runtimeError:
