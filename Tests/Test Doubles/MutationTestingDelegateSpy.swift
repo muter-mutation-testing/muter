@@ -35,4 +35,8 @@ class MutationTestingDelegateSpy: Spy, MutationTestingIODelegate {
     func abortTesting() {
         methodCalls.append(#function)
     }
+
+    func tooManyBuildErrors() {
+        methodCalls.append(#function)
+    }
 }
