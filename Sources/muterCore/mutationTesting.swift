@@ -8,7 +8,7 @@ struct MutationTestOutcome: Equatable {
     let position: AbsolutePosition
 }
 
-func performMutationTesting(using operators: [MutationOperator], delegate: MutationTestingIODelegate) -> [MutationTestOutcome] {
+func performMutationTesting(using operators: [MutationOperator], buildErrorsThreshold: Int = 5, delegate: MutationTestingIODelegate) -> [MutationTestOutcome] {
     print("Running your test suite to determine a baseline for mutation testing")
     let initialResult = delegate.runTestSuite(savingResultsIntoFileNamed: "initial_run")
     guard initialResult == .passed else {
@@ -16,7 +16,11 @@ func performMutationTesting(using operators: [MutationOperator], delegate: Mutat
         return []
     }
 
-    return operators.enumerated().map { index, `operator` in
+    var outcomes: [MutationTestOutcome] = []
+    var buildErrors = 0
+    let enumerated = operators.enumerated()
+
+    for (index, `operator`) in enumerated {
         let filePath = `operator`.filePath
         let fileName = URL(fileURLWithPath: filePath).lastPathComponent
         print("Testing mutation operator in \(fileName)")
@@ -30,11 +34,20 @@ func performMutationTesting(using operators: [MutationOperator], delegate: Mutat
         let result = delegate.runTestSuite(savingResultsIntoFileNamed: "\(fileName) \(`operator`.id.rawValue) \(`operator`.position)")
         delegate.restoreFile(at: filePath)
 
-        return MutationTestOutcome(testSuiteResult: result,
-                                   appliedMutation: `operator`.id.rawValue,
-                                   filePath: filePath,
-                                   position: `operator`.position)
+        outcomes.append(MutationTestOutcome(testSuiteResult: result,
+                                            appliedMutation: `operator`.id.rawValue,
+                                            filePath: filePath,
+                                            position: `operator`.position))
+
+        buildErrors = result == .buildError ? (buildErrors + 1) : 0
+
+        if buildErrors >= buildErrorsThreshold {
+            delegate.tooManyBuildErrors()
+            return []
+        }
     }
+
+    return outcomes
 }
 
 // MARK - Mutation Score Calculation
