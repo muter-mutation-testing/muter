@@ -7,7 +7,7 @@ typealias VisitorInitializer = () -> PositionDiscoveringVisitor
 
 struct MutationOperator {
 
-    enum Id: String {
+    enum Id: String, Codable {
         case negateConditionals = "Negate Conditionals"
         case sideEffects = "Side Effects"
 

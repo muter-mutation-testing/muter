@@ -98,10 +98,10 @@ public func performMutationTesting(in currentDirectoryPath: String, configuratio
 
     printMessage("Beginning mutation testing")
     let testingDelegate = MutationTestingDelegate(configuration: configuration, swapFilePathsByOriginalPath: swapFilePathsByOriginalPath)
-    let mutationTestingResults = performMutationTesting(using: mutationOperators, delegate: testingDelegate)
-    let testReport = generateTestReport(from: mutationTestingResults)
+    let testReport = performMutationTesting(using: mutationOperators, delegate: testingDelegate)
+    
 
-    printMessage(testReport)
+    printMessage(testReport?.description ?? "")
 }
 
 private func destinationDirectoryPath(in temporaryDirectory: URL, withProjectName name: String) -> String {

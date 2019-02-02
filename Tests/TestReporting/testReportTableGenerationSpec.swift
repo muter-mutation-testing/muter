@@ -3,12 +3,11 @@
 import Quick
 import Nimble
 
-class TestReportGenerationSpec: QuickSpec {
+class TestReportTableGenerationSpec: QuickSpec {
     override func spec() {
         describe("Test Report Generation") {
             describe("the applied mutation operators table") {
                 it("contains information about which mutation operators were applied, as well as the outcome of applying that operator") {
-
                     let expectedCLITable = CLITable(padding: 3, columns: [
                         CLITable.Column(title: "File", rows: [
                             CLITable.Row(value: "file1.swift"),
@@ -55,8 +54,15 @@ class TestReportGenerationSpec: QuickSpec {
                             CLITable.Row(value: "failed"),
                         ]),
                     ])
-
-                    let generatedCLITable = generateAppliedMutationsCLITable(from: self.exampleMutationTestResults) { $0 }
+                    
+                    let fileReports = [
+                        MuterTestReport.FileReport(fileName: "file1.swift", mutationScore: 66),
+                        MuterTestReport.FileReport(fileName: "file2.swift", mutationScore: 100),
+                        MuterTestReport.FileReport(fileName: "file3.swift", mutationScore: 33),
+                        MuterTestReport.FileReport(fileName: "file 4.swift", mutationScore: 0)
+                    ]
+                    
+                    let generatedCLITable = generateAppliedMutationsCLITable(from: fileReports, coloringFunction: { $0 })
 
                     expect(generatedCLITable).to(equal(expectedCLITable))
                 }
@@ -85,8 +91,14 @@ class TestReportGenerationSpec: QuickSpec {
                             CLITable.Row(value: "33"),
                         ])
                     ])
-
-                    let generatedCLITable = generateMutationScoresCLITable(from: self.exampleMutationTestResults) { $0 }
+                    let fileReports = [
+                        MuterTestReport.FileReport(fileName: "file1.swift", mutationScore: 66),
+                        MuterTestReport.FileReport(fileName: "file2.swift", mutationScore: 100),
+                        MuterTestReport.FileReport(fileName: "file3.swift", mutationScore: 33),
+                        MuterTestReport.FileReport(fileName: "file 4.swift", mutationScore: 0)
+                    ]
+                    
+                    let generatedCLITable = generateAppliedMutationsCLITable(from: fileReports, coloringFunction: { $0 })
 
                     expect(generatedCLITable).to(equal(expectedCLITable))
                 }

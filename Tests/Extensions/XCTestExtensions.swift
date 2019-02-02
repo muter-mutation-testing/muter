@@ -40,7 +40,7 @@ public extension XCTestCase {
             MutationTestOutcome(testSuiteResult: .passed, appliedMutation: "SomeMutation", filePath: "file3.swift", position: .firstPosition),
             MutationTestOutcome(testSuiteResult: .passed, appliedMutation: "SomeMutation", filePath: "file3.swift", position: .firstPosition),
 
-            MutationTestOutcome(testSuiteResult: .passed, appliedMutation: "SomeMutation", filePath: "file 4.swift", position: .firstPosition)
+            MutationTestOutcome(testSuiteResult: .passed, appliedMutation: "SomeMutation", filePath: "file 4.swift", position: .firstPosition) // this file name intentionally has a space in it
         ]
     }
 }

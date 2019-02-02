@@ -25,7 +25,7 @@ class MutationTestingSpec: QuickSpec {
                 }
 
                 it("performs a mutation test for every mutation operator") {
-                    let expectedResults = [
+                    let expectedReport = MuterTestReport(from: [
                         MutationTestOutcome(testSuiteResult: .failed,
                                             appliedMutation: "Negate Conditionals",
                                             filePath: "a file path",
@@ -34,9 +34,9 @@ class MutationTestingSpec: QuickSpec {
                                             appliedMutation: "Negate Conditionals",
                                             filePath: "a file path",
                                             position: .firstPosition),
-                    ]
+                        ])
 
-                    let actualResults = performMutationTesting(using: [mutationOperatorStub, mutationOperatorStub], delegate: delegateSpy)
+                    let actualReport = performMutationTesting(using: [mutationOperatorStub, mutationOperatorStub], delegate: delegateSpy)
 
                     expect(delegateSpy.methodCalls).to(equal([
                         // Base test suite run
@@ -60,7 +60,7 @@ class MutationTestingSpec: QuickSpec {
                     expect(delegateSpy.mutatedFileContents.first).to(equal(SyntaxFactory.makeReturnKeyword().description))
                     expect(delegateSpy.mutatedFilePaths.first).to(equal("a file path"))
 
-                    expect(actualResults).to(equal(expectedResults))
+                    expect(actualReport).to(equal(expectedReport))
                 }
             }
 
@@ -198,13 +198,13 @@ class MutationTestingSpec: QuickSpec {
                     }
 
                     it("doesn't perform any mutation testing") {
-                        let actualResults = performMutationTesting(using: [], delegate: delegateSpy)
+                        let testReport = performMutationTesting(using: [], delegate: delegateSpy)
 
                         expect(delegateSpy.methodCalls).to(equal([
                             "runTestSuite(savingResultsIntoFileNamed:)",
                             "abortTesting()"
                         ]))
-                        expect(actualResults).to(beEmpty())
+                        expect(testReport).to(beNil())
                     }
                 }
 
@@ -214,13 +214,13 @@ class MutationTestingSpec: QuickSpec {
                     }
 
                     it("doesn't perform any mutation testing") {
-                        let actualResults = performMutationTesting(using: [], delegate: delegateSpy)
+                        let testReport = performMutationTesting(using: [], delegate: delegateSpy)
 
                         expect(delegateSpy.methodCalls).to(equal([
                             "runTestSuite(savingResultsIntoFileNamed:)",
                             "abortTesting()"
                         ]))
-                        expect(actualResults).to(beEmpty())
+                        expect(testReport).to(beNil())
                     }
                 }
 
@@ -230,13 +230,13 @@ class MutationTestingSpec: QuickSpec {
                     }
 
                     it("doesn't perform any mutation testing") {
-                        let actualResults = performMutationTesting(using: [], delegate: delegateSpy)
+                        let testReport = performMutationTesting(using: [], delegate: delegateSpy)
 
                         expect(delegateSpy.methodCalls).to(equal([
                             "runTestSuite(savingResultsIntoFileNamed:)",
                             "abortTesting()"
                         ]))
-                        expect(actualResults).to(beEmpty())
+                        expect(testReport).to(beNil())
                     }
                 }
             }

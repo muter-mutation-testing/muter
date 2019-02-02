@@ -1,6 +1,6 @@
 import Foundation
 
-enum TestSuiteResult: String {
+enum TestSuiteResult: String, Codable {
     case passed
     case failed
     case buildError
