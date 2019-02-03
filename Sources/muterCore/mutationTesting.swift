@@ -2,8 +2,8 @@ import Foundation
 import SwiftSyntax
 
 struct MutationTestOutcome: Equatable {
-    let testSuiteResult: TestSuiteResult
     let appliedMutation: String
+    let testSuiteOutcome: TestSuiteOutcome
     let filePath: String
     let position: AbsolutePosition
 }
@@ -52,8 +52,8 @@ private func apply(_ operators: [MutationOperator], delegate: MutationTestingIOD
             return []
         }
         
-        return MutationTestOutcome(testSuiteResult: result,
                                    appliedMutation: `operator`.id.rawValue,
+        return MutationTestOutcome(testSuiteOutcome: result,
                                    filePath: filePath,
                                    position: `operator`.position)
     }

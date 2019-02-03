@@ -35,6 +35,7 @@ struct MuterTestReport: Encodable, Equatable {
     struct AppliedMutationOperator: Encodable {
         let id: MutationOperator.Id
         let position: AbsolutePosition
+        let testSuiteOutcome: TestSuiteOutcome
     }
 }
 
@@ -46,11 +47,11 @@ extension MuterTestReport: CustomStringConvertible {
 
 // MARK - Mutation Score Calculation
 
-func mutationScore(from testResults: [TestSuiteResult]) -> Int {
+func mutationScore(from testResults: [TestSuiteOutcome]) -> Int {
     guard testResults.count > 0 else {
         return -1
     }
-    
+
     let numberOfFailures = Double(testResults.count { $0 == .failed || $0 == .runtimeError })
     let totalResults = Double(testResults.count { $0 != .buildError })
     return Int((numberOfFailures / totalResults) * 100.0)

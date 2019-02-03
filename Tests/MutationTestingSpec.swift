@@ -26,15 +26,15 @@ class MutationTestingSpec: QuickSpec {
 
                 it("performs a mutation test for every mutation operator") {
                     let expectedReport = MuterTestReport(from: [
-                        MutationTestOutcome(testSuiteResult: .failed,
-                                            appliedMutation: "Negate Conditionals",
+                        MutationTestOutcome(testSuiteOutcome: .failed,
+                                            appliedMutation: .negateConditionals,
                                             filePath: "a file path",
                                             position: .firstPosition),
-                        MutationTestOutcome(testSuiteResult: .failed,
-                                            appliedMutation: "Negate Conditionals",
+                        MutationTestOutcome(testSuiteOutcome: .failed,
+                                            appliedMutation: .negateConditionals,
                                             filePath: "a file path",
                                             position: .firstPosition),
-                        ])
+                    ])
 
                     let actualReport = performMutationTesting(using: [mutationOperatorStub, mutationOperatorStub], delegate: delegateSpy)
 

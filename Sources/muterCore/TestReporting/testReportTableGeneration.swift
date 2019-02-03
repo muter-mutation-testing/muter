@@ -103,7 +103,7 @@ func ascendingFilenameOrder(lhs: (String, Int), rhs: (String, Int)) -> Bool {
 // MARK - Coloring Functions
 func applyMutationTestResultsColor(to rows: [CLITable.Row]) -> [CLITable.Row] {
     return rows.map {
-        let coloredValue = $0.value == TestSuiteResult.failed.asMutationTestOutcome ?
+        let coloredValue = $0.value == TestSuiteOutcome.failed.asMutationTestOutcome ?
             $0.value.green :
             $0.value.red
         let coloredRow = CLITable.Row(value: coloredValue)
