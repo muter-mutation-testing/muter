@@ -1,14 +1,24 @@
 import Foundation
 import SwiftSyntax
 
-struct MutationTestOutcome: Equatable {
-    let appliedMutation: String
+public struct MutationTestOutcome: Equatable {
     let testSuiteOutcome: TestSuiteOutcome
+    let appliedMutation: MutationOperator.Id
     let filePath: String
     let position: AbsolutePosition
+
+    public init(testSuiteOutcome: TestSuiteOutcome,
+         appliedMutation: MutationOperator.Id,
+         filePath: String,
+         position: AbsolutePosition) {
+        self.testSuiteOutcome = testSuiteOutcome
+        self.appliedMutation = appliedMutation
+        self.filePath = filePath
+        self.position = position
+    }
 }
 
-func performMutationTesting(using operators: [MutationOperator], buildErrorsThreshold: Int = 5, delegate: MutationTestingIODelegate) -> [MutationTestOutcome] {
+func performMutationTesting(using operators: [MutationOperator], delegate: MutationTestingIODelegate) -> MuterTestReport? {
     print("Running your test suite to determine a baseline for mutation testing")
     
     let initialResult = delegate.runTestSuite(savingResultsIntoFileNamed: "initial_run")
@@ -21,12 +31,11 @@ func performMutationTesting(using operators: [MutationOperator], buildErrorsThre
     return MuterTestReport(from: testOutcomes)
 }
 
-private func apply(_ operators: [MutationOperator], delegate: MutationTestingIODelegate) -> [MutationTestOutcome] {
+private func apply(_ operators: [MutationOperator], buildErrorsThreshold: Int = 5, delegate: MutationTestingIODelegate) -> [MutationTestOutcome] {
     var outcomes: [MutationTestOutcome] = []
     var buildErrors = 0
     
-    return operators.enumerated().map { index, `operator` in
-        
+    for (index, `operator`) in operators.enumerated() {
         let filePath = `operator`.filePath
         let fileName = URL(fileURLWithPath: filePath).lastPathComponent
         print("Testing mutation operator in \(fileName)")
@@ -36,11 +45,13 @@ private func apply(_ operators: [MutationOperator], delegate: MutationTestingIOD
         
         let mutatedSource = `operator`.apply()
         try! delegate.writeFile(to: filePath, contents: mutatedSource.description)
+        
+        let result = delegate.runTestSuite(savingResultsIntoFileNamed: "\(fileName)_\(`operator`.id.rawValue)_\(`operator`.position).log")
         delegate.restoreFile(at: filePath)
 
         outcomes.append(
-            MutationTestOutcome(testSuiteResult: result,
-                                appliedMutation: `operator`.id.rawValue,
+            MutationTestOutcome(testSuiteOutcome: result,
+                                appliedMutation: `operator`.id,
                                 filePath: filePath,
                                 position: `operator`.position)
         )
@@ -51,11 +62,8 @@ private func apply(_ operators: [MutationOperator], delegate: MutationTestingIOD
             delegate.tooManyBuildErrors()
             return []
         }
-        
-                                   appliedMutation: `operator`.id.rawValue,
-        return MutationTestOutcome(testSuiteOutcome: result,
-                                   filePath: filePath,
-                                   position: `operator`.position)
     }
+
+    return outcomes
 }
 

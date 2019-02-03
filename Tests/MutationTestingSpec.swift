@@ -21,7 +21,7 @@ class MutationTestingSpec: QuickSpec {
             context("when the baseline test run passes") {
 
                 beforeEach {
-                    delegateSpy.testSuiteResults = [.passed, .failed, .failed]
+                    delegateSpy.testSuiteOutcomes = [.passed, .failed, .failed]
                 }
 
                 it("performs a mutation test for every mutation operator") {
@@ -67,11 +67,11 @@ class MutationTestingSpec: QuickSpec {
             context("when the baseline test run fails to build 5 times in a row") {
 
                 beforeEach {
-                    delegateSpy.testSuiteResults = [.passed, .buildError, .buildError, .buildError, .buildError, .buildError]
+                    delegateSpy.testSuiteOutcomes = [.passed, .buildError, .buildError, .buildError, .buildError, .buildError]
                 }
 
                 it("bails after max attempts reached") {
-                    let actualResults = performMutationTesting(using: Array(repeating: mutationOperatorStub, count: 5), delegate: delegateSpy)
+                    let actualReport = performMutationTesting(using: Array(repeating: mutationOperatorStub, count: 5), delegate: delegateSpy)
 
                     expect(delegateSpy.methodCalls).to(equal([
                         // Base test suite run
@@ -112,42 +112,41 @@ class MutationTestingSpec: QuickSpec {
                     expect(delegateSpy.mutatedFileContents.first).to(equal(SyntaxFactory.makeReturnKeyword().description))
                     expect(delegateSpy.mutatedFilePaths.first).to(equal("a file path"))
 
-                    expect(actualResults).to(beEmpty())
+                    expect(actualReport).to(equal(MuterTestReport()))
                 }
             }
             
             context("when the baseline test run fails to build less than 5 times in a row") {
                 
                 beforeEach {
-                    delegateSpy.testSuiteResults = [.passed, .buildError, .buildError, .buildError, .buildError, .failed, .passed]
+                    delegateSpy.testSuiteOutcomes = [.passed, .buildError, .buildError, .buildError, .buildError, .failed, .passed]
                 }
                 
                 it("bails after max attempts reached") {
-                    let expectedResults = [
-                        MutationTestOutcome(testSuiteResult: .buildError,
-                                            appliedMutation: "Negate Conditionals",
+                    let expectedReport = MuterTestReport(from: [
+                        MutationTestOutcome(testSuiteOutcome: .buildError,
+appliedMutation: .negateConditionals,
                                             filePath: "a file path",
                                             position: .firstPosition),
-                        MutationTestOutcome(testSuiteResult: .buildError,
-                                            appliedMutation: "Negate Conditionals",
+                        MutationTestOutcome(testSuiteOutcome: .buildError,
+appliedMutation: .negateConditionals,
                                             filePath: "a file path",
                                             position: .firstPosition),
-                        MutationTestOutcome(testSuiteResult: .buildError,
-                                            appliedMutation: "Negate Conditionals",
+                        MutationTestOutcome(testSuiteOutcome: .buildError,
+appliedMutation: .negateConditionals,
                                             filePath: "a file path",
                                             position: .firstPosition),
-                        MutationTestOutcome(testSuiteResult: .buildError,
-                                            appliedMutation: "Negate Conditionals",
+                        MutationTestOutcome(testSuiteOutcome: .buildError,
+appliedMutation: .negateConditionals,
                                             filePath: "a file path",
                                             position: .firstPosition),
-                        MutationTestOutcome(testSuiteResult: .failed,
-                                            appliedMutation: "Negate Conditionals",
+                        MutationTestOutcome(testSuiteOutcome: .failed,
+appliedMutation: .negateConditionals,
                                             filePath: "a file path",
                                             position: .firstPosition),
-                        
-                    ]
+                    ])
                     
-                    let actualResults = performMutationTesting(using: Array(repeating: mutationOperatorStub, count: 5), delegate: delegateSpy)
+                    let actualReport = performMutationTesting(using: Array(repeating: mutationOperatorStub, count: 5), delegate: delegateSpy)
                     
                     expect(delegateSpy.methodCalls).to(equal([
                         // Base test suite run
@@ -186,7 +185,7 @@ class MutationTestingSpec: QuickSpec {
                     expect(delegateSpy.mutatedFileContents.first).to(equal(SyntaxFactory.makeReturnKeyword().description))
                     expect(delegateSpy.mutatedFilePaths.first).to(equal("a file path"))
                     
-                    expect(actualResults).to(equal(expectedResults))
+                    expect(actualReport).to(equal(expectedReport))
                 }
             }
 
@@ -194,7 +193,7 @@ class MutationTestingSpec: QuickSpec {
 
                 context("due to a failing test") {
                     beforeEach {
-                        delegateSpy.testSuiteResults = [.failed]
+                        delegateSpy.testSuiteOutcomes = [.failed]
                     }
 
                     it("doesn't perform any mutation testing") {
@@ -210,7 +209,7 @@ class MutationTestingSpec: QuickSpec {
 
                 context("due to a build error") {
                     beforeEach {
-                        delegateSpy.testSuiteResults = [.buildError]
+                        delegateSpy.testSuiteOutcomes = [.buildError]
                     }
 
                     it("doesn't perform any mutation testing") {
@@ -226,7 +225,7 @@ class MutationTestingSpec: QuickSpec {
 
                 context("due to a runtime error") {
                     beforeEach {
-                        delegateSpy.testSuiteResults = [.runtimeError]
+                        delegateSpy.testSuiteOutcomes = [.runtimeError]
                     }
 
                     it("doesn't perform any mutation testing") {

@@ -3,7 +3,7 @@ import Foundation
 protocol MutationTestingIODelegate {
     func backupFile(at path: String)
     func writeFile(to path: String, contents: String) throws
-    func runTestSuite(savingResultsIntoFileNamed: String) -> TestSuiteResult
+    func runTestSuite(savingResultsIntoFileNamed fileName: String) -> TestSuiteOutcome
     func restoreFile(at path: String)
     func abortTesting()
     func tooManyBuildErrors()
@@ -25,9 +25,9 @@ struct MutationTestingDelegate: MutationTestingIODelegate {
         try contents.write(toFile: path, atomically: true, encoding: .utf8)
     }
 
-    func runTestSuite(savingResultsIntoFileNamed: String) -> TestSuiteResult {
+    func runTestSuite(savingResultsIntoFileNamed fileName: String) -> TestSuiteOutcome {
         do {
-            let (testProcessFileHandle, testLogUrl) = try fileHandle(for: savingResultsIntoFileNamed)
+            let (testProcessFileHandle, testLogUrl) = try fileHandle(for: fileName)
 
             let process = try testProcess(with: configuration, and: testProcessFileHandle)
             try process.run()
@@ -35,7 +35,7 @@ struct MutationTestingDelegate: MutationTestingIODelegate {
             testProcessFileHandle.closeFile()
 
             let contents = try String(contentsOf: testLogUrl)
-            return TestSuiteResult.from(testLog: contents)
+            return TestSuiteOutcome.from(testLog: contents)
 
         } catch {
             printMessage("Muter encountered an error running your test suite and can't continue\n\(error)")
@@ -78,8 +78,7 @@ struct MutationTestingDelegate: MutationTestingIODelegate {
 private extension MutationTestingDelegate {
 
     func fileHandle(for logFileName: String) throws -> (handle: FileHandle, logFileUrl: URL) {
-        let testLogFileName = logFileName + ".log"
-        let testLogUrl = URL(fileURLWithPath: FileManager.default.currentDirectoryPath + "/" + testLogFileName)
+        let testLogUrl = URL(fileURLWithPath: FileManager.default.currentDirectoryPath + "/" + logFileName)
         try Data().write(to: testLogUrl)
 
         return (

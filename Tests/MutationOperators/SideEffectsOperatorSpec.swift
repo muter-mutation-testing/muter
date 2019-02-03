@@ -94,7 +94,7 @@ class RemoveSideEffectsOperatorSpec: QuickSpec {
                 let expectedSource = sourceCode(fromFileAt:  "\(self.fixturesDirectory)/MutationExamples/SideEffect/removedVoidFunctionCall_line21.swift")!
                 let line21 = AbsolutePosition(line: 21, column: -1, utf8Offset: -1)
 
-                let transformation = MutationOperator.Id.sideEffects.transformation(for: line21)
+                let transformation = MutationOperator.Id.removeSideEffects.transformation(for: line21)
 
                 expect(transformation(sourceWithSideEffects).description).to(equal(expectedSource.description))
             }

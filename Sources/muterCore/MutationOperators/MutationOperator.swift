@@ -5,14 +5,14 @@ typealias MutationIdVisitorPair = (id: MutationOperator.Id, visitor: VisitorInit
 typealias RewriterInitializer = (AbsolutePosition) -> PositionSpecificRewriter
 typealias VisitorInitializer = () -> PositionDiscoveringVisitor
 
-struct MutationOperator {
+public struct MutationOperator {
 
-    enum Id: String, Codable {
+    public enum Id: String, Encodable {
         case negateConditionals = "Negate Conditionals"
-        case sideEffects = "Side Effects"
+        case removeSideEffects = "Remove Side Effects"
 
         static let rewriterPairs: [Id: RewriterInitializer] = [
-            .sideEffects: RemoveSideEffectsOperator.Rewriter.init,
+            .removeSideEffects: RemoveSideEffectsOperator.Rewriter.init,
             .negateConditionals: NegateConditionalsOperator.Rewriter.init
         ]
 

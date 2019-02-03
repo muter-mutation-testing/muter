@@ -14,7 +14,7 @@ func discoverMutationOperators(inFilesAt filePaths: [String]) -> [MutationOperat
 }
 
 private let idVisitorPairs: [MutationIdVisitorPair] = [
-    (id: .sideEffects, visitor: RemoveSideEffectsOperator.Visitor.init),
+    (id: .removeSideEffects, visitor: RemoveSideEffectsOperator.Visitor.init),
     (id: .negateConditionals, visitor: NegateConditionalsOperator.Visitor.init)
 ]
 
