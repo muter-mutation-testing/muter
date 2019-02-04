@@ -34,10 +34,12 @@ func performMutationTesting(using operators: [MutationOperator], buildErrorsThre
         let result = delegate.runTestSuite(savingResultsIntoFileNamed: "\(fileName) \(`operator`.id.rawValue) \(`operator`.position)")
         delegate.restoreFile(at: filePath)
 
-        outcomes.append(MutationTestOutcome(testSuiteResult: result,
-                                            appliedMutation: `operator`.id.rawValue,
-                                            filePath: filePath,
-                                            position: `operator`.position))
+        outcomes.append(
+            MutationTestOutcome(testSuiteResult: result,
+                                appliedMutation: `operator`.id.rawValue,
+                                filePath: filePath,
+                                position: `operator`.position)
+        )
 
         buildErrors = result == .buildError ? (buildErrors + 1) : 0
 
