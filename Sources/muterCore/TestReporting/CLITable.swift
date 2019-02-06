@@ -1,4 +1,4 @@
-struct CLITable: CustomStringConvertible, Equatable {
+struct CLITable: Equatable {
     static let empty = CLITable(padding: 0, columns: [])
 
     let padding: Int
@@ -39,7 +39,7 @@ struct CLITable: CustomStringConvertible, Equatable {
 
 extension CLITable {
 
-    struct Column: CustomStringConvertible, Equatable {
+    struct Column: Equatable {
         let title: String
         let rows: [Row]
         var width: Int {

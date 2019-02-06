@@ -1,6 +1,6 @@
 import Foundation
 
-enum TestSuiteResult: String {
+public enum TestSuiteOutcome: String, Codable {
     case passed
     case failed
     case buildError
@@ -20,8 +20,8 @@ enum TestSuiteResult: String {
     }
 }
 
-extension TestSuiteResult {
-    static func from(testLog: String) -> TestSuiteResult {
+extension TestSuiteOutcome {
+    public static func from(testLog: String) -> TestSuiteOutcome {
 
         if logContainsTestFailure(testLog) {
             return .failed

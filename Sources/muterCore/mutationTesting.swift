@@ -1,22 +1,41 @@
 import Foundation
 import SwiftSyntax
 
-struct MutationTestOutcome: Equatable {
-    let testSuiteResult: TestSuiteResult
-    let appliedMutation: String
+public struct MutationTestOutcome: Equatable {
+    let testSuiteOutcome: TestSuiteOutcome
+    let appliedMutation: MutationOperator.Id
     let filePath: String
     let position: AbsolutePosition
+
+    public init(testSuiteOutcome: TestSuiteOutcome,
+                appliedMutation: MutationOperator.Id,
+                filePath: String,
+                position: AbsolutePosition) {
+        self.testSuiteOutcome = testSuiteOutcome
+        self.appliedMutation = appliedMutation
+        self.filePath = filePath
+        self.position = position
+    }
 }
 
-func performMutationTesting(using operators: [MutationOperator], delegate: MutationTestingIODelegate) -> [MutationTestOutcome] {
+func performMutationTesting(using operators: [MutationOperator], delegate: MutationTestingIODelegate) -> MuterTestReport? {
     print("Running your test suite to determine a baseline for mutation testing")
+
     let initialResult = delegate.runTestSuite(savingResultsIntoFileNamed: "initial_run")
     guard initialResult == .passed else {
         delegate.abortTesting()
-        return []
+        return nil
     }
 
-    return operators.enumerated().map { index, `operator` in
+    let testOutcomes = apply(operators, delegate: delegate)
+    return MuterTestReport(from: testOutcomes)
+}
+
+private func apply(_ operators: [MutationOperator], buildErrorsThreshold: Int = 5, delegate: MutationTestingIODelegate) -> [MutationTestOutcome] {
+    var outcomes: [MutationTestOutcome] = []
+    var buildErrors = 0
+
+    for (index, `operator`) in operators.enumerated() {
         let filePath = `operator`.filePath
         let fileName = URL(fileURLWithPath: filePath).lastPathComponent
         print("Testing mutation operator in \(fileName)")
@@ -27,36 +46,24 @@ func performMutationTesting(using operators: [MutationOperator], delegate: Mutat
         let mutatedSource = `operator`.apply()
         try! delegate.writeFile(to: filePath, contents: mutatedSource.description)
 
-        let result = delegate.runTestSuite(savingResultsIntoFileNamed: "\(fileName) \(`operator`.id.rawValue) \(`operator`.position)")
+        let result = delegate.runTestSuite(savingResultsIntoFileNamed: "\(fileName)_\(`operator`.id.rawValue)_\(`operator`.position).log")
         delegate.restoreFile(at: filePath)
 
-        return MutationTestOutcome(testSuiteResult: result,
-                                   appliedMutation: `operator`.id.rawValue,
-                                   filePath: filePath,
-                                   position: `operator`.position)
-    }
-}
+        outcomes.append(
+            MutationTestOutcome(testSuiteOutcome: result,
+                                appliedMutation: `operator`.id,
+                                filePath: filePath,
+                                position: `operator`.position)
+        )
 
-// MARK - Mutation Score Calculation
+        buildErrors = result == .buildError ? (buildErrors + 1) : 0
 
-func mutationScore(from testResults: [TestSuiteResult]) -> Int {
-    guard testResults.count > 0 else {
-        return -1
-    }
-
-    let numberOfFailures = Double(testResults.count { $0 == .failed || $0 == .runtimeError })
-    let totalResults = Double(testResults.count { $0 != .buildError })
-    return Int((numberOfFailures / totalResults) * 100.0)
-}
-
-func mutationScoreOfFiles(from outcomes: [MutationTestOutcome]) -> [String: Int] {
-    var mutationScores: [String: Int] = [:]
-
-    let filePaths = outcomes.map { $0.filePath }.deduplicated()
-    for filePath in filePaths {
-        let testSuiteResults = outcomes.include { $0.filePath == filePath }.map { $0.testSuiteResult }
-        mutationScores[filePath] = mutationScore(from: testSuiteResults)
+        if buildErrors >= buildErrorsThreshold {
+            delegate.tooManyBuildErrors()
+            return []
+        }
     }
 
-    return mutationScores
+    return outcomes
 }
+

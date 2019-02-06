@@ -19,7 +19,6 @@ public extension XCTestCase {
                 .deletingLastPathComponent()
                 .deletingLastPathComponent()
                 .withoutScheme()
-
         )
     }
 
@@ -29,18 +28,18 @@ public extension XCTestCase {
 
     var exampleMutationTestResults: [MutationTestOutcome] {
         return [
-            MutationTestOutcome(testSuiteResult: .failed, appliedMutation: "SomeMutation", filePath: "file1.swift", position: .firstPosition),
-            MutationTestOutcome(testSuiteResult: .failed, appliedMutation: "SomeMutation", filePath: "file1.swift", position: .firstPosition),
-            MutationTestOutcome(testSuiteResult: .passed, appliedMutation: "SomeMutation", filePath: "file1.swift", position: .firstPosition),
+            MutationTestOutcome(testSuiteOutcome: .failed, appliedMutation: .negateConditionals, filePath: "file1.swift", position: .firstPosition),
+            MutationTestOutcome(testSuiteOutcome: .failed, appliedMutation: .negateConditionals, filePath: "file1.swift", position: .firstPosition),
+            MutationTestOutcome(testSuiteOutcome: .passed, appliedMutation: .negateConditionals, filePath: "file1.swift", position: .firstPosition),
 
-            MutationTestOutcome(testSuiteResult: .failed, appliedMutation: "SomeOtherMutation", filePath: "file2.swift", position: .firstPosition),
-            MutationTestOutcome(testSuiteResult: .failed, appliedMutation: "SomeOtherMutation", filePath: "file2.swift", position: .firstPosition),
+            MutationTestOutcome(testSuiteOutcome: .failed, appliedMutation: .removeSideEffects, filePath: "file2.swift", position: .firstPosition),
+            MutationTestOutcome(testSuiteOutcome: .failed, appliedMutation: .removeSideEffects, filePath: "file2.swift", position: .firstPosition),
 
-            MutationTestOutcome(testSuiteResult: .failed, appliedMutation: "SomeMutation", filePath: "file3.swift", position: .firstPosition),
-            MutationTestOutcome(testSuiteResult: .passed, appliedMutation: "SomeMutation", filePath: "file3.swift", position: .firstPosition),
-            MutationTestOutcome(testSuiteResult: .passed, appliedMutation: "SomeMutation", filePath: "file3.swift", position: .firstPosition),
+            MutationTestOutcome(testSuiteOutcome: .failed, appliedMutation: .negateConditionals, filePath: "file3.swift", position: .firstPosition),
+            MutationTestOutcome(testSuiteOutcome: .passed, appliedMutation: .negateConditionals, filePath: "file3.swift", position: .firstPosition),
+            MutationTestOutcome(testSuiteOutcome: .passed, appliedMutation: .negateConditionals, filePath: "file3.swift", position: .firstPosition),
 
-            MutationTestOutcome(testSuiteResult: .passed, appliedMutation: "SomeMutation", filePath: "file 4.swift", position: .firstPosition)
+            MutationTestOutcome(testSuiteOutcome: .passed, appliedMutation: .negateConditionals, filePath: "file 4.swift", position: .firstPosition) // this file name intentionally has a space in it
         ]
     }
 }

@@ -3,9 +3,10 @@ import Foundation
 protocol MutationTestingIODelegate {
     func backupFile(at path: String)
     func writeFile(to path: String, contents: String) throws
-    func runTestSuite(savingResultsIntoFileNamed: String) -> TestSuiteResult
+    func runTestSuite(savingResultsIntoFileNamed fileName: String) -> TestSuiteOutcome
     func restoreFile(at path: String)
     func abortTesting()
+    func tooManyBuildErrors()
 }
 
 // MARK - Mutation Testing I/O Delegate
@@ -24,9 +25,9 @@ struct MutationTestingDelegate: MutationTestingIODelegate {
         try contents.write(toFile: path, atomically: true, encoding: .utf8)
     }
 
-    func runTestSuite(savingResultsIntoFileNamed: String) -> TestSuiteResult {
+    func runTestSuite(savingResultsIntoFileNamed fileName: String) -> TestSuiteOutcome {
         do {
-            let (testProcessFileHandle, testLogUrl) = try fileHandle(for: savingResultsIntoFileNamed)
+            let (testProcessFileHandle, testLogUrl) = try fileHandle(for: fileName)
 
             let process = try testProcess(with: configuration, and: testProcessFileHandle)
             try process.run()
@@ -34,7 +35,7 @@ struct MutationTestingDelegate: MutationTestingIODelegate {
             testProcessFileHandle.closeFile()
 
             let contents = try String(contentsOf: testLogUrl)
-            return TestSuiteResult.from(testLog: contents)
+            return TestSuiteOutcome.from(testLog: contents)
 
         } catch {
             printMessage("Muter encountered an error running your test suite and can't continue\n\(error)")
@@ -62,14 +63,22 @@ struct MutationTestingDelegate: MutationTestingIODelegate {
         """)
         exit(1)
     }
+
+    func tooManyBuildErrors() {
+        printMessage("""
+        Muter noticed the last 5 attempts to apply a mutation operator resulted in a build error within your code base.
+        This is considered unlikely and abnormal. If you can reproduce this, please consider filing an issue at
+        https://github.com/SeanROlszewski/muter/issues/
+        """)
+        exit(1)
+    }
 }
 
 @available(OSX 10.13, *)
 private extension MutationTestingDelegate {
 
     func fileHandle(for logFileName: String) throws -> (handle: FileHandle, logFileUrl: URL) {
-        let testLogFileName = logFileName + ".log"
-        let testLogUrl = URL(fileURLWithPath: FileManager.default.currentDirectoryPath + "/" + testLogFileName)
+        let testLogUrl = URL(fileURLWithPath: FileManager.default.currentDirectoryPath + "/" + logFileName)
         try Data().write(to: testLogUrl)
 
         return (
