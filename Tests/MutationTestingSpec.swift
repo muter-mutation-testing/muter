@@ -64,6 +64,132 @@ class MutationTestingSpec: QuickSpec {
                 }
             }
 
+            context("when the baseline test run fails to build 5 times in a row") {
+
+                beforeEach {
+                    delegateSpy.testSuiteResults = [.passed, .buildError, .buildError, .buildError, .buildError, .buildError]
+                }
+
+                it("bails after max attempts reached") {
+                    let actualResults = performMutationTesting(using: Array(repeating: mutationOperatorStub, count: 5), delegate: delegateSpy)
+
+                    expect(delegateSpy.methodCalls).to(equal([
+                        // Base test suite run
+                        "runTestSuite(savingResultsIntoFileNamed:)",
+                        // First operator
+                        "backupFile(at:)",
+                        "writeFile(to:contents:)",
+                        "runTestSuite(savingResultsIntoFileNamed:)",
+                        "restoreFile(at:)",
+                        // Second operator
+                        "backupFile(at:)",
+                        "writeFile(to:contents:)",
+                        "runTestSuite(savingResultsIntoFileNamed:)",
+                        "restoreFile(at:)",
+                        // Third operator
+                        "backupFile(at:)",
+                        "writeFile(to:contents:)",
+                        "runTestSuite(savingResultsIntoFileNamed:)",
+                        "restoreFile(at:)",
+                        // Fourth operator
+                        "backupFile(at:)",
+                        "writeFile(to:contents:)",
+                        "runTestSuite(savingResultsIntoFileNamed:)",
+                        "restoreFile(at:)",
+                        // Fifth operator
+                        "backupFile(at:)",
+                        "writeFile(to:contents:)",
+                        "runTestSuite(savingResultsIntoFileNamed:)",
+                        "restoreFile(at:)",
+                        // Bail
+                        "tooManyBuildErrors()"
+                    ]))
+
+                    expect(delegateSpy.backedUpFilePaths.count).to(equal(5))
+                    expect(delegateSpy.restoredFilePaths.count).to(equal(5))
+                    expect(delegateSpy.backedUpFilePaths).to(equal(delegateSpy.restoredFilePaths))
+
+                    expect(delegateSpy.mutatedFileContents.first).to(equal(SyntaxFactory.makeReturnKeyword().description))
+                    expect(delegateSpy.mutatedFilePaths.first).to(equal("a file path"))
+
+                    expect(actualResults).to(beEmpty())
+                }
+            }
+            
+            context("when the baseline test run fails to build less than 5 times in a row") {
+                
+                beforeEach {
+                    delegateSpy.testSuiteResults = [.passed, .buildError, .buildError, .buildError, .buildError, .failed, .passed]
+                }
+                
+                it("bails after max attempts reached") {
+                    let expectedResults = [
+                        MutationTestOutcome(testSuiteResult: .buildError,
+                                            appliedMutation: "Negate Conditionals",
+                                            filePath: "a file path",
+                                            position: .firstPosition),
+                        MutationTestOutcome(testSuiteResult: .buildError,
+                                            appliedMutation: "Negate Conditionals",
+                                            filePath: "a file path",
+                                            position: .firstPosition),
+                        MutationTestOutcome(testSuiteResult: .buildError,
+                                            appliedMutation: "Negate Conditionals",
+                                            filePath: "a file path",
+                                            position: .firstPosition),
+                        MutationTestOutcome(testSuiteResult: .buildError,
+                                            appliedMutation: "Negate Conditionals",
+                                            filePath: "a file path",
+                                            position: .firstPosition),
+                        MutationTestOutcome(testSuiteResult: .failed,
+                                            appliedMutation: "Negate Conditionals",
+                                            filePath: "a file path",
+                                            position: .firstPosition),
+                        
+                    ]
+                    
+                    let actualResults = performMutationTesting(using: Array(repeating: mutationOperatorStub, count: 5), delegate: delegateSpy)
+                    
+                    expect(delegateSpy.methodCalls).to(equal([
+                        // Base test suite run
+                        "runTestSuite(savingResultsIntoFileNamed:)",
+                        // First operator
+                        "backupFile(at:)",
+                        "writeFile(to:contents:)",
+                        "runTestSuite(savingResultsIntoFileNamed:)",
+                        "restoreFile(at:)",
+                        // Second operator
+                        "backupFile(at:)",
+                        "writeFile(to:contents:)",
+                        "runTestSuite(savingResultsIntoFileNamed:)",
+                        "restoreFile(at:)",
+                        // Third operator
+                        "backupFile(at:)",
+                        "writeFile(to:contents:)",
+                        "runTestSuite(savingResultsIntoFileNamed:)",
+                        "restoreFile(at:)",
+                        // Fourth operator
+                        "backupFile(at:)",
+                        "writeFile(to:contents:)",
+                        "runTestSuite(savingResultsIntoFileNamed:)",
+                        "restoreFile(at:)",
+                        // Fifth operator
+                        "backupFile(at:)",
+                        "writeFile(to:contents:)",
+                        "runTestSuite(savingResultsIntoFileNamed:)",
+                        "restoreFile(at:)"
+                    ]))
+                    
+                    expect(delegateSpy.backedUpFilePaths.count).to(equal(5))
+                    expect(delegateSpy.restoredFilePaths.count).to(equal(5))
+                    expect(delegateSpy.backedUpFilePaths).to(equal(delegateSpy.restoredFilePaths))
+                    
+                    expect(delegateSpy.mutatedFileContents.first).to(equal(SyntaxFactory.makeReturnKeyword().description))
+                    expect(delegateSpy.mutatedFilePaths.first).to(equal("a file path"))
+                    
+                    expect(actualResults).to(equal(expectedResults))
+                }
+            }
+
             context("when the baseline test run does not pass") {
 
                 context("due to a failing test") {
