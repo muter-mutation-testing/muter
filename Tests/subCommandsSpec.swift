@@ -63,6 +63,23 @@ class CLISubcommandSpec: QuickSpec {
                 }
             }
 
+            describe("with the json flag") {
+                it("runs Muter and returns an exit code of 0 on success") {
+                    var setupClosureWasCalled = false
+                    let setupSpy = { setupClosureWasCalled = true }
+
+                    var runClosureWasCalled = false
+                    let runSpy = { runClosureWasCalled = true }
+
+                    let (exitCode, message) = handle(commandlineArguments: ["--output-json"], setup: setupSpy, run: runSpy)
+
+                    expect(setupClosureWasCalled).to(beFalse())
+                    expect(runClosureWasCalled).to(beTrue())
+                    expect(exitCode).to(equal(0))
+                    expect(message).to(beNil())
+                }
+            }
+
             describe("with fewer than 2 commandline arguments") {
                 it("runs Muter and returns an exit code of 0 on success") {
                     var setupClosureWasCalled = false
