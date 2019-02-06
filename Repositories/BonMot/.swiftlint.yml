@@ -1,0 +1,29 @@
+disabled_rules: # rule identifiers to exclude from running
+  - line_length
+  - nesting
+  - identifier_name
+  - large_tuple
+  - file_length
+
+statement_position:
+  statement_mode: uncuddled_else
+
+function_body_length:
+  - 75 # warning
+
+opt_in_rules:
+  - anyobject_protocol
+  - identical_operands
+  - implicit_return
+  - last_where
+  - legacy_random
+  - operator_usage_whitespace
+  - redundant_objc_attribute
+  - sorted_imports
+  - static_operator
+  - toggle_bool
+  - unused_control_flow_label
+  - vertical_whitespace
+
+trailing_comma:
+  mandatory_comma: true
