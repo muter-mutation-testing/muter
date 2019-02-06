@@ -7,7 +7,7 @@ func generateAppliedMutationsCLITable(from fileReports: [MuterTestReport.FileRep
     var fileNames = [CLITable.Row]()
     var positions = [CLITable.Row]()
     var mutationTestResults = [CLITable.Row]()
-    
+
     for (fileName, position, appliedMutation, testResult) in fileReports.flatMap(operatorsToTableRows) {
         fileNames.append(fileName)
         positions.append(position)

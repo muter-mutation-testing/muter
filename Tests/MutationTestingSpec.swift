@@ -115,39 +115,39 @@ class MutationTestingSpec: QuickSpec {
                     expect(actualReport).to(equal(MuterTestReport()))
                 }
             }
-            
+
             context("when the baseline test run fails to build less than 5 times in a row") {
-                
+
                 beforeEach {
                     delegateSpy.testSuiteOutcomes = [.passed, .buildError, .buildError, .buildError, .buildError, .failed, .passed]
                 }
-                
+
                 it("bails after max attempts reached") {
                     let expectedReport = MuterTestReport(from: [
                         MutationTestOutcome(testSuiteOutcome: .buildError,
-appliedMutation: .negateConditionals,
+                                            appliedMutation: .negateConditionals,
                                             filePath: "a file path",
                                             position: .firstPosition),
                         MutationTestOutcome(testSuiteOutcome: .buildError,
-appliedMutation: .negateConditionals,
+                                            appliedMutation: .negateConditionals,
                                             filePath: "a file path",
                                             position: .firstPosition),
                         MutationTestOutcome(testSuiteOutcome: .buildError,
-appliedMutation: .negateConditionals,
+                                            appliedMutation: .negateConditionals,
                                             filePath: "a file path",
                                             position: .firstPosition),
                         MutationTestOutcome(testSuiteOutcome: .buildError,
-appliedMutation: .negateConditionals,
+                                            appliedMutation: .negateConditionals,
                                             filePath: "a file path",
                                             position: .firstPosition),
                         MutationTestOutcome(testSuiteOutcome: .failed,
-appliedMutation: .negateConditionals,
+                                            appliedMutation: .negateConditionals,
                                             filePath: "a file path",
                                             position: .firstPosition),
                     ])
-                    
+
                     let actualReport = performMutationTesting(using: Array(repeating: mutationOperatorStub, count: 5), delegate: delegateSpy)
-                    
+
                     expect(delegateSpy.methodCalls).to(equal([
                         // Base test suite run
                         "runTestSuite(savingResultsIntoFileNamed:)",
@@ -177,14 +177,14 @@ appliedMutation: .negateConditionals,
                         "runTestSuite(savingResultsIntoFileNamed:)",
                         "restoreFile(at:)"
                     ]))
-                    
+
                     expect(delegateSpy.backedUpFilePaths.count).to(equal(5))
                     expect(delegateSpy.restoredFilePaths.count).to(equal(5))
                     expect(delegateSpy.backedUpFilePaths).to(equal(delegateSpy.restoredFilePaths))
-                    
+
                     expect(delegateSpy.mutatedFileContents.first).to(equal(SyntaxFactory.makeReturnKeyword().description))
                     expect(delegateSpy.mutatedFilePaths.first).to(equal("a file path"))
-                    
+
                     expect(actualReport).to(equal(expectedReport))
                 }
             }

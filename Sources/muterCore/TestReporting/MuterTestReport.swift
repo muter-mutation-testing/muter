@@ -20,7 +20,6 @@ public struct MuterTestReport {
                 let appliedMutations = outcomes
                     .include { $0.filePath == mutationScoreByFilePath.key }
                     .map{ AppliedMutationOperator(id: $0.appliedMutation, position: $0.position, testSuiteOutcome: $0.testSuiteOutcome) }
-                
 
                 return (fileName, mutationScore, appliedMutations)
             }
@@ -50,33 +49,33 @@ extension MuterTestReport: CustomStringConvertible {
         --------------------------
         Applied Mutation Operators
         --------------------------
-        
+
         These are all of the ways that Muter introduced changes into your code.
-        
+
         In total, Muter applied \(totalAppliedMutationOperators) mutation operators.
-        
+
         \(generateAppliedMutationsCLITable(from: self.fileReports))
-        
-        
-        
+
+
+
         """
-        
+
         let coloredGlobalScore = coloredMutationScore(for: self.globalMutationScore, appliedTo: "\(self.globalMutationScore)/100")
         let mutationScoreMessage = "Mutation Score of Test Suite (higher is better)".bold + ": \(coloredGlobalScore)"
         let mutationScoresMessage = """
         --------------------
         Mutation Test Scores
         --------------------
-        
+
         These are the mutation scores for your test suite, as well as the files that had mutants introduced into them.
-        
+
         Mutation scores ignore build & runtime errors.
-        
+
         \(mutationScoreMessage)
-        
+
         \(generateMutationScoresCLITable(from: self.fileReports))
         """
-        
+
         return finishedRunningMessage + appliedMutationsMessage + mutationScoresMessage
     }
 
