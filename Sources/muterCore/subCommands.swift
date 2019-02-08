@@ -1,14 +1,20 @@
 import Foundation
 
 public typealias ThrowingVoidClosure = () throws -> Void
+public typealias ThrowingCommandFlagClosure = (CommandFlag) throws -> Void
+
+public enum CommandFlag {
+    case empty
+    case jsonOutput
+}
 
 // MARK - Commandline Argument Handler
 
-public func handle(commandlineArguments: [String], setup: ThrowingVoidClosure, run running: @escaping ThrowingVoidClosure) -> (Int32, String?) {
+public func handle(commandlineArguments: [String], setup: ThrowingVoidClosure, run running: @escaping ThrowingCommandFlagClosure) -> (Int32, String?) {
 
-    let run: () -> (Int32, String?) = {
+    let run: (CommandFlag) -> (Int32, String?) = {
         do {
-            try running()
+            try running($0)
             return (0, nil)
         } catch {
             return (1, "Error running Muter - make sure your config file exists and is filled out correctly\n\n\(error)")
@@ -27,13 +33,12 @@ public func handle(commandlineArguments: [String], setup: ThrowingVoidClosure, r
         }
 
         if commandlineArguments[1] == "--output-json" {
-            return run()
+            return run(.jsonOutput)
         }
 
         return (1, "Unrecognized subcommand given to Muter\nAvailable subcommands:\n\n\tinit")
-
     default:
-        return run()
+        return run(.empty)
     }
 }
 

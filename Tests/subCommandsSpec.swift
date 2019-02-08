@@ -17,12 +17,17 @@ class CLISubcommandSpec: QuickSpec {
                     let setupSpy = { setupClosureWasCalled = true }
 
                     var runClosureWasCalled = false
-                    let runSpy = { runClosureWasCalled = true }
+                    var flagPassed: CommandFlag = .empty
+                    let runSpy: ThrowingCommandFlagClosure = {
+                        flagPassed = $0
+                        runClosureWasCalled = true
+                    }
 
                     let (exitCode, message) = handle(commandlineArguments: ["muter", "notARealSubcommand"], setup: setupSpy, run: runSpy)
 
                     expect(setupClosureWasCalled).to(beFalse())
                     expect(runClosureWasCalled).to(beFalse())
+                    expect(flagPassed).to(equal(.empty))
                     expect(exitCode).to(equal(1))
                     expect(message).to(contain("Unrecognized subcommand given to Muter\nAvailable subcommands:\n\n\tinit"))
                 }
@@ -34,12 +39,17 @@ class CLISubcommandSpec: QuickSpec {
                     let setupSpy = { setupClosureWasCalled = true }
 
                     var runClosureWasCalled = false
-                    let runSpy = { runClosureWasCalled = true }
+                    var flagPassed: CommandFlag = .empty
+                    let runSpy: ThrowingCommandFlagClosure = {
+                        flagPassed = $0
+                        runClosureWasCalled = true
+                    }
 
                     let (exitCode, message) = handle(commandlineArguments: ["muter", "init"], setup: setupSpy, run: runSpy)
 
                     expect(setupClosureWasCalled).to(beTrue())
                     expect(runClosureWasCalled).to(beFalse())
+                    expect(flagPassed).to(equal(.empty))
                     expect(exitCode).to(equal(0))
                     expect(message).to(contain("Created muter config file"))
                 }
@@ -52,12 +62,17 @@ class CLISubcommandSpec: QuickSpec {
                     }
 
                     var runClosureWasCalled = false
-                    let runSpy = { runClosureWasCalled = true }
-
+                    var flagPassed: CommandFlag = .empty
+                    let runSpy: ThrowingCommandFlagClosure = {
+                        flagPassed = $0
+                        runClosureWasCalled = true
+                    }
+                    
                     let (exitCode, message) = handle(commandlineArguments: ["muter", "init"], setup: setupSpy, run: runSpy)
 
                     expect(setupClosureWasCalled).to(beTrue())
                     expect(runClosureWasCalled).to(beFalse())
+                    expect(flagPassed).to(equal(.empty))
                     expect(exitCode).to(equal(1))
                     expect(message).to(contain("Error creating muter config file"))
                 }
@@ -69,12 +84,17 @@ class CLISubcommandSpec: QuickSpec {
                     let setupSpy = { setupClosureWasCalled = true }
 
                     var runClosureWasCalled = false
-                    let runSpy = { runClosureWasCalled = true }
+                    var flagPassed: CommandFlag = .empty
+                    let runSpy: ThrowingCommandFlagClosure = {
+                        flagPassed = $0
+                        runClosureWasCalled = true
+                    }
 
-                    let (exitCode, message) = handle(commandlineArguments: ["--output-json"], setup: setupSpy, run: runSpy)
+                    let (exitCode, message) = handle(commandlineArguments: ["muter", "--output-json"], setup: setupSpy, run: runSpy)
 
                     expect(setupClosureWasCalled).to(beFalse())
                     expect(runClosureWasCalled).to(beTrue())
+                    expect(flagPassed).to(equal(.jsonOutput))
                     expect(exitCode).to(equal(0))
                     expect(message).to(beNil())
                 }
@@ -86,12 +106,17 @@ class CLISubcommandSpec: QuickSpec {
                     let setupSpy = { setupClosureWasCalled = true }
 
                     var runClosureWasCalled = false
-                    let runSpy = { runClosureWasCalled = true }
+                    var flagPassed: CommandFlag = .empty
+                    let runSpy: ThrowingCommandFlagClosure = {
+                        flagPassed = $0
+                        runClosureWasCalled = true
+                    }
 
                     let (exitCode, message) = handle(commandlineArguments: [], setup: setupSpy, run: runSpy)
 
                     expect(setupClosureWasCalled).to(beFalse())
                     expect(runClosureWasCalled).to(beTrue())
+                    expect(flagPassed).to(equal(.empty))
                     expect(exitCode).to(equal(0))
                     expect(message).to(beNil())
                 }
@@ -101,7 +126,9 @@ class CLISubcommandSpec: QuickSpec {
                     let setupSpy = { setupClosureWasCalled = true }
 
                     var runClosureWasCalled = false
-                    let runSpy = {
+                    var flagPassed: CommandFlag = .empty
+                    let runSpy: ThrowingCommandFlagClosure = {
+                        flagPassed = $0
                         runClosureWasCalled = true
                         throw TestError.generic
                     }
@@ -110,6 +137,7 @@ class CLISubcommandSpec: QuickSpec {
 
                     expect(setupClosureWasCalled).to(beFalse())
                     expect(runClosureWasCalled).to(beTrue())
+                    expect(flagPassed).to(equal(.empty))
                     expect(exitCode).to(equal(1))
                     expect(message).to(contain("Error running Muter - make sure your config file exists and is filled out correctly"))
                 }

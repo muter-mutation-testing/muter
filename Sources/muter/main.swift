@@ -40,7 +40,7 @@ if #available(OSX 10.13, *) {
         setup: {
             try setupMuter(using: fileManager, and: currentDirectoryPath)
     },
-        run: {
+        run: { _ in
             let configurationPath = currentDirectoryPath + "/muter.conf.json"
 
             guard let configurationData = fileManager.contents(atPath: configurationPath) else {
