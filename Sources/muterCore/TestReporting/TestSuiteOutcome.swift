@@ -22,24 +22,22 @@ public enum TestSuiteOutcome: String, Codable {
 
 extension TestSuiteOutcome {
     public static func from(testLog: String) -> TestSuiteOutcome {
-
-        if logContainsTestFailure(testLog) {
-            return .failed
-        } else if logContainsRuntimeError(testLog) {
+        
+        if logContainsRuntimeError(testLog) {
             return .runtimeError
         } else if logContainsBuildError(testLog) {
             return .buildError
+        } else if logContainsTestFailure(testLog) {
+            return .failed
         }
-
+        
         return .passed
     }
 
     static private func logContainsTestFailure(_ testLog: String) -> Bool {
         let entireTestLog = NSRange(testLog.startIndex... , in: testLog)
-        let numberOfFailureMessages = testFailureRegEx.numberOfMatches(in: testLog,
-                                                                       options: [],
-                                                                       range: entireTestLog)
-        return numberOfFailureMessages > 0
+        let numberOfFailureMessages = testFailureRegEx.numberOfMatches(in: testLog, options: [], range: entireTestLog)
+        return numberOfFailureMessages > 0 || testLog.contains("** TEST FAILED **")
     }
 
     static private var testFailureRegEx: NSRegularExpression {

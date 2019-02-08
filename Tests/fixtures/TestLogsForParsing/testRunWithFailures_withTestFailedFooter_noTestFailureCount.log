@@ -1,0 +1,1518 @@
+Build settings from command line:
+    SDKROOT = macosx10.14
+
+note: Using new build system
+note: Planning build
+note: Using build description from disk
+CompileSwiftSources normal x86_64 com.apple.xcode.tools.swift.compiler (in target: BonMot-OSX)
+    cd /var/folders/0b/dxsqs2d901j1h3_d9pqwqdfh0000gn/T/TemporaryItems/(A\ Document\ Being\ Saved\ By\ muter\ 2)/BonMot
+    export DEVELOPER_DIR=/Applications/Xcode.app/Contents/Developer
+    export SDKROOT=/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.14.sdk
+    /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/swiftc -incremental -module-name BonMot -Onone -enable-batch-mode -enforce-exclusivity=checked -Xfrontend -disable-swift3-objc-inference -DDEBUG -sdk /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.14.sdk -target x86_64-apple-macosx10.11 -g -module-cache-path /Users/seandorian/Library/Developer/Xcode/DerivedData/ModuleCache.noindex -Xfrontend -serialize-debugging-options -profile-coverage-mapping -profile-generate -enable-testing -index-store-path /Users/seandorian/Library/Developer/Xcode/DerivedData/BonMot-gmfdobhmhipicwfukzxgunkbjhnu/Build/Index/DataStore -swift-version 4.2 -I /var/folders/0b/dxsqs2d901j1h3_d9pqwqdfh0000gn/T/TemporaryItems/(A\ Document\ Being\ Saved\ By\ muter\ 2)/BonMot/Build/Products/Debug -F /var/folders/0b/dxsqs2d901j1h3_d9pqwqdfh0000gn/T/TemporaryItems/(A\ Document\ Being\ Saved\ By\ muter\ 2)/BonMot/Build/Products/Debug -c -j8 /var/folders/0b/dxsqs2d901j1h3_d9pqwqdfh0000gn/T/TemporaryItems/(A\ Document\ Being\ Saved\ By\ muter\ 2)/BonMot/Sources/Compatibility.swift /var/folders/0b/dxsqs2d901j1h3_d9pqwqdfh0000gn/T/TemporaryItems/(A\ Document\ Being\ Saved\ By\ muter\ 2)/BonMot/Sources/Composable.swift /var/folders/0b/dxsqs2d901j1h3_d9pqwqdfh0000gn/T/TemporaryItems/(A\ Document\ Being\ Saved\ By\ muter\ 2)/BonMot/Sources/Tracking.swift /var/folders/0b/dxsqs2d901j1h3_d9pqwqdfh0000gn/T/TemporaryItems/(A\ Document\ Being\ Saved\ By\ muter\ 2)/BonMot/Sources/Transform.swift /var/folders/0b/dxsqs2d901j1h3_d9pqwqdfh0000gn/T/TemporaryItems/(A\ Document\ Being\ Saved\ By\ muter\ 2)/BonMot/Sources/UIKit/TextAlignmentConstraint.swift /var/folders/0b/dxsqs2d901j1h3_d9pqwqdfh0000gn/T/TemporaryItems/(A\ Document\ Being\ Saved\ By\ muter\ 2)/BonMot/Sources/ContextualAlternates.swift /var/folders/0b/dxsqs2d901j1h3_d9pqwqdfh0000gn/T/TemporaryItems/(A\ Document\ Being\ Saved\ By\ muter\ 2)/BonMot/Sources/Platform.swift /var/folders/0b/dxsqs2d901j1h3_d9pqwqdfh0000gn/T/TemporaryItems/(A\ Document\ Being\ Saved\ By\ muter\ 2)/BonMot/Sources/Tab.swift /var/folders/0b/dxsqs2d901j1h3_d9pqwqdfh0000gn/T/TemporaryItems/(A\ Document\ Being\ Saved\ By\ muter\ 2)/BonMot/Sources/StringStyle.swift /var/folders/0b/dxsqs2d901j1h3_d9pqwqdfh0000gn/T/TemporaryItems/(A\ Document\ Being\ Saved\ By\ muter\ 2)/BonMot/Sources/Special.swift /var/folders/0b/dxsqs2d901j1h3_d9pqwqdfh0000gn/T/TemporaryItems/(A\ Document\ Being\ Saved\ By\ muter\ 2)/BonMot/Sources/FontInspector.swift /var/folders/0b/dxsqs2d901j1h3_d9pqwqdfh0000gn/T/TemporaryItems/(A\ Document\ Being\ Saved\ By\ muter\ 2)/BonMot/Sources/NamedStyles.swift /var/folders/0b/dxsqs2d901j1h3_d9pqwqdfh0000gn/T/TemporaryItems/(A\ Document\ Being\ Saved\ By\ muter\ 2)/BonMot/Sources/StylisticAlternates.swift /var/folders/0b/dxsqs2d901j1h3_d9pqwqdfh0000gn/T/TemporaryItems/(A\ Document\ Being\ Saved\ By\ muter\ 2)/BonMot/Sources/Image+Tinting.swift /var/folders/0b/dxsqs2d901j1h3_d9pqwqdfh0000gn/T/TemporaryItems/(A\ Document\ Being\ Saved\ By\ muter\ 2)/BonMot/Sources/StringStyle+Part.swift /var/folders/0b/dxsqs2d901j1h3_d9pqwqdfh0000gn/T/TemporaryItems/(A\ Document\ Being\ Saved\ By\ muter\ 2)/BonMot/Sources/Ligatures.swift /var/folders/0b/dxsqs2d901j1h3_d9pqwqdfh0000gn/T/TemporaryItems/(A\ Document\ Being\ Saved\ By\ muter\ 2)/BonMot/Sources/XMLBuilder.swift /var/folders/0b/dxsqs2d901j1h3_d9pqwqdfh0000gn/T/TemporaryItems/(A\ Document\ Being\ Saved\ By\ muter\ 2)/BonMot/Sources/NSAttributedString+BonMot.swift /var/folders/0b/dxsqs2d901j1h3_d9pqwqdfh0000gn/T/TemporaryItems/(A\ Document\ Being\ Saved\ By\ muter\ 2)/BonMot/Sources/MutableCopying.swift /var/folders/0b/dxsqs2d901j1h3_d9pqwqdfh0000gn/T/TemporaryItems/(A\ Document\ Being\ Saved\ By\ muter\ 2)/BonMot/Sources/Emphasis.swift /var/folders/0b/dxsqs2d901j1h3_d9pqwqdfh0000gn/T/TemporaryItems/(A\ Document\ Being\ Saved\ By\ muter\ 2)/BonMot/Sources/FontFeatures.swift -output-file-map /var/folders/0b/dxsqs2d901j1h3_d9pqwqdfh0000gn/T/TemporaryItems/(A\ Document\ Being\ Saved\ By\ muter\ 2)/BonMot/Build/Intermediates/BonMot.build/Debug/BonMot-OSX.build/Objects-normal/x86_64/BonMot-OSX-OutputFileMap.json -parseable-output -serialize-diagnostics -emit-dependencies -emit-module -emit-module-path /var/folders/0b/dxsqs2d901j1h3_d9pqwqdfh0000gn/T/TemporaryItems/(A\ Document\ Being\ Saved\ By\ muter\ 2)/BonMot/Build/Intermediates/BonMot.build/Debug/BonMot-OSX.build/Objects-normal/x86_64/BonMot.swiftmodule -Xcc -I/var/folders/0b/dxsqs2d901j1h3_d9pqwqdfh0000gn/T/TemporaryItems/(A\ Document\ Being\ Saved\ By\ muter\ 2)/BonMot/Build/Intermediates/BonMot.build/Debug/BonMot-OSX.build/swift-overrides.hmap -Xcc -iquote -Xcc /var/folders/0b/dxsqs2d901j1h3_d9pqwqdfh0000gn/T/TemporaryItems/(A\ Document\ Being\ Saved\ By\ muter\ 2)/BonMot/Build/Intermediates/BonMot.build/Debug/BonMot-OSX.build/BonMot-generated-files.hmap -Xcc -I/var/folders/0b/dxsqs2d901j1h3_d9pqwqdfh0000gn/T/TemporaryItems/(A\ Document\ Being\ Saved\ By\ muter\ 2)/BonMot/Build/Intermediates/BonMot.build/Debug/BonMot-OSX.build/BonMot-own-target-headers.hmap -Xcc -I/var/folders/0b/dxsqs2d901j1h3_d9pqwqdfh0000gn/T/TemporaryItems/(A\ Document\ Being\ Saved\ By\ muter\ 2)/BonMot/Build/Intermediates/BonMot.build/Debug/BonMot-OSX.build/BonMot-all-non-framework-target-headers.hmap -Xcc -ivfsoverlay -Xcc /var/folders/0b/dxsqs2d901j1h3_d9pqwqdfh0000gn/T/TemporaryItems/(A\ Document\ Being\ Saved\ By\ muter\ 2)/BonMot/Build/Intermediates/BonMot.build/Debug/BonMot-OSX.build/all-product-headers.yaml -Xcc -iquote -Xcc /var/folders/0b/dxsqs2d901j1h3_d9pqwqdfh0000gn/T/TemporaryItems/(A\ Document\ Being\ Saved\ By\ muter\ 2)/BonMot/Build/Intermediates/BonMot.build/Debug/BonMot-OSX.build/BonMot-project-headers.hmap -Xcc -I/var/folders/0b/dxsqs2d901j1h3_d9pqwqdfh0000gn/T/TemporaryItems/(A\ Document\ Being\ Saved\ By\ muter\ 2)/BonMot/Build/Products/Debug/include -Xcc -I/var/folders/0b/dxsqs2d901j1h3_d9pqwqdfh0000gn/T/TemporaryItems/(A\ Document\ Being\ Saved\ By\ muter\ 2)/BonMot/Build/Intermediates/BonMot.build/Debug/BonMot-OSX.build/DerivedSources/x86_64 -Xcc -I/var/folders/0b/dxsqs2d901j1h3_d9pqwqdfh0000gn/T/TemporaryItems/(A\ Document\ Being\ Saved\ By\ muter\ 2)/BonMot/Build/Intermediates/BonMot.build/Debug/BonMot-OSX.build/DerivedSources -Xcc -DDEBUG=1 -emit-objc-header -emit-objc-header-path /var/folders/0b/dxsqs2d901j1h3_d9pqwqdfh0000gn/T/TemporaryItems/(A\ Document\ Being\ Saved\ By\ muter\ 2)/BonMot/Build/Intermediates/BonMot.build/Debug/BonMot-OSX.build/Objects-normal/x86_64/BonMot-Swift.h -Xcc -working-directory/var/folders/0b/dxsqs2d901j1h3_d9pqwqdfh0000gn/T/TemporaryItems/(A\ Document\ Being\ Saved\ By\ muter\ 2)/BonMot
+
+CompileSwift normal x86_64 /var/folders/0b/dxsqs2d901j1h3_d9pqwqdfh0000gn/T/TemporaryItems/(A\ Document\ Being\ Saved\ By\ muter\ 2)/BonMot/Sources/ContextualAlternates.swift (in target: BonMot-OSX)
+    cd /var/folders/0b/dxsqs2d901j1h3_d9pqwqdfh0000gn/T/TemporaryItems/(A\ Document\ Being\ Saved\ By\ muter\ 2)/BonMot
+    /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/swift -frontend -c /var/folders/0b/dxsqs2d901j1h3_d9pqwqdfh0000gn/T/TemporaryItems/(A\ Document\ Being\ Saved\ By\ muter\ 2)/BonMot/Sources/Compatibility.swift /var/folders/0b/dxsqs2d901j1h3_d9pqwqdfh0000gn/T/TemporaryItems/(A\ Document\ Being\ Saved\ By\ muter\ 2)/BonMot/Sources/Composable.swift /var/folders/0b/dxsqs2d901j1h3_d9pqwqdfh0000gn/T/TemporaryItems/(A\ Document\ Being\ Saved\ By\ muter\ 2)/BonMot/Sources/Tracking.swift /var/folders/0b/dxsqs2d901j1h3_d9pqwqdfh0000gn/T/TemporaryItems/(A\ Document\ Being\ Saved\ By\ muter\ 2)/BonMot/Sources/Transform.swift /var/folders/0b/dxsqs2d901j1h3_d9pqwqdfh0000gn/T/TemporaryItems/(A\ Document\ Being\ Saved\ By\ muter\ 2)/BonMot/Sources/UIKit/TextAlignmentConstraint.swift -primary-file /var/folders/0b/dxsqs2d901j1h3_d9pqwqdfh0000gn/T/TemporaryItems/(A\ Document\ Being\ Saved\ By\ muter\ 2)/BonMot/Sources/ContextualAlternates.swift /var/folders/0b/dxsqs2d901j1h3_d9pqwqdfh0000gn/T/TemporaryItems/(A\ Document\ Being\ Saved\ By\ muter\ 2)/BonMot/Sources/Platform.swift /var/folders/0b/dxsqs2d901j1h3_d9pqwqdfh0000gn/T/TemporaryItems/(A\ Document\ Being\ Saved\ By\ muter\ 2)/BonMot/Sources/Tab.swift /var/folders/0b/dxsqs2d901j1h3_d9pqwqdfh0000gn/T/TemporaryItems/(A\ Document\ Being\ Saved\ By\ muter\ 2)/BonMot/Sources/StringStyle.swift /var/folders/0b/dxsqs2d901j1h3_d9pqwqdfh0000gn/T/TemporaryItems/(A\ Document\ Being\ Saved\ By\ muter\ 2)/BonMot/Sources/Special.swift /var/folders/0b/dxsqs2d901j1h3_d9pqwqdfh0000gn/T/TemporaryItems/(A\ Document\ Being\ Saved\ By\ muter\ 2)/BonMot/Sources/FontInspector.swift /var/folders/0b/dxsqs2d901j1h3_d9pqwqdfh0000gn/T/TemporaryItems/(A\ Document\ Being\ Saved\ By\ muter\ 2)/BonMot/Sources/NamedStyles.swift /var/folders/0b/dxsqs2d901j1h3_d9pqwqdfh0000gn/T/TemporaryItems/(A\ Document\ Being\ Saved\ By\ muter\ 2)/BonMot/Sources/StylisticAlternates.swift /var/folders/0b/dxsqs2d901j1h3_d9pqwqdfh0000gn/T/TemporaryItems/(A\ Document\ Being\ Saved\ By\ muter\ 2)/BonMot/Sources/Image+Tinting.swift /var/folders/0b/dxsqs2d901j1h3_d9pqwqdfh0000gn/T/TemporaryItems/(A\ Document\ Being\ Saved\ By\ muter\ 2)/BonMot/Sources/StringStyle+Part.swift /var/folders/0b/dxsqs2d901j1h3_d9pqwqdfh0000gn/T/TemporaryItems/(A\ Document\ Being\ Saved\ By\ muter\ 2)/BonMot/Sources/Ligatures.swift /var/folders/0b/dxsqs2d901j1h3_d9pqwqdfh0000gn/T/TemporaryItems/(A\ Document\ Being\ Saved\ By\ muter\ 2)/BonMot/Sources/XMLBuilder.swift /var/folders/0b/dxsqs2d901j1h3_d9pqwqdfh0000gn/T/TemporaryItems/(A\ Document\ Being\ Saved\ By\ muter\ 2)/BonMot/Sources/NSAttributedString+BonMot.swift /var/folders/0b/dxsqs2d901j1h3_d9pqwqdfh0000gn/T/TemporaryItems/(A\ Document\ Being\ Saved\ By\ muter\ 2)/BonMot/Sources/MutableCopying.swift /var/folders/0b/dxsqs2d901j1h3_d9pqwqdfh0000gn/T/TemporaryItems/(A\ Document\ Being\ Saved\ By\ muter\ 2)/BonMot/Sources/Emphasis.swift /var/folders/0b/dxsqs2d901j1h3_d9pqwqdfh0000gn/T/TemporaryItems/(A\ Document\ Being\ Saved\ By\ muter\ 2)/BonMot/Sources/FontFeatures.swift -emit-module-path /var/folders/0b/dxsqs2d901j1h3_d9pqwqdfh0000gn/T/TemporaryItems/(A\ Document\ Being\ Saved\ By\ muter\ 2)/BonMot/Build/Intermediates/BonMot.build/Debug/BonMot-OSX.build/Objects-normal/x86_64/ContextualAlternates~partial.swiftmodule -emit-module-doc-path /var/folders/0b/dxsqs2d901j1h3_d9pqwqdfh0000gn/T/TemporaryItems/(A\ Document\ Being\ Saved\ By\ muter\ 2)/BonMot/Build/Intermediates/BonMot.build/Debug/BonMot-OSX.build/Objects-normal/x86_64/ContextualAlternates~partial.swiftdoc -serialize-diagnostics-path /var/folders/0b/dxsqs2d901j1h3_d9pqwqdfh0000gn/T/TemporaryItems/(A\ Document\ Being\ Saved\ By\ muter\ 2)/BonMot/Build/Intermediates/BonMot.build/Debug/BonMot-OSX.build/Objects-normal/x86_64/ContextualAlternates.dia -emit-dependencies-path /var/folders/0b/dxsqs2d901j1h3_d9pqwqdfh0000gn/T/TemporaryItems/(A\ Document\ Being\ Saved\ By\ muter\ 2)/BonMot/Build/Intermediates/BonMot.build/Debug/BonMot-OSX.build/Objects-normal/x86_64/ContextualAlternates.d -emit-reference-dependencies-path /var/folders/0b/dxsqs2d901j1h3_d9pqwqdfh0000gn/T/TemporaryItems/(A\ Document\ Being\ Saved\ By\ muter\ 2)/BonMot/Build/Intermediates/BonMot.build/Debug/BonMot-OSX.build/Objects-normal/x86_64/ContextualAlternates.swiftdeps -target x86_64-apple-macosx10.11 -enable-objc-interop -sdk /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.14.sdk -I /var/folders/0b/dxsqs2d901j1h3_d9pqwqdfh0000gn/T/TemporaryItems/(A\ Document\ Being\ Saved\ By\ muter\ 2)/BonMot/Build/Products/Debug -F /var/folders/0b/dxsqs2d901j1h3_d9pqwqdfh0000gn/T/TemporaryItems/(A\ Document\ Being\ Saved\ By\ muter\ 2)/BonMot/Build/Products/Debug -enable-testing -g -module-cache-path /Users/seandorian/Library/Developer/Xcode/DerivedData/ModuleCache.noindex -profile-generate -profile-coverage-mapping -swift-version 4.2 -enforce-exclusivity=checked -Onone -D DEBUG -disable-swift3-objc-inference -serialize-debugging-options -Xcc -I/var/folders/0b/dxsqs2d901j1h3_d9pqwqdfh0000gn/T/TemporaryItems/(A\ Document\ Being\ Saved\ By\ muter\ 2)/BonMot/Build/Intermediates/BonMot.build/Debug/BonMot-OSX.build/swift-overrides.hmap -Xcc -iquote -Xcc /var/folders/0b/dxsqs2d901j1h3_d9pqwqdfh0000gn/T/TemporaryItems/(A\ Document\ Being\ Saved\ By\ muter\ 2)/BonMot/Build/Intermediates/BonMot.build/Debug/BonMot-OSX.build/BonMot-generated-files.hmap -Xcc -I/var/folders/0b/dxsqs2d901j1h3_d9pqwqdfh0000gn/T/TemporaryItems/(A\ Document\ Being\ Saved\ By\ muter\ 2)/BonMot/Build/Intermediates/BonMot.build/Debug/BonMot-OSX.build/BonMot-own-target-headers.hmap -Xcc -I/var/folders/0b/dxsqs2d901j1h3_d9pqwqdfh0000gn/T/TemporaryItems/(A\ Document\ Being\ Saved\ By\ muter\ 2)/BonMot/Build/Intermediates/BonMot.build/Debug/BonMot-OSX.build/BonMot-all-non-framework-target-headers.hmap -Xcc -ivfsoverlay -Xcc /var/folders/0b/dxsqs2d901j1h3_d9pqwqdfh0000gn/T/TemporaryItems/(A\ Document\ Being\ Saved\ By\ muter\ 2)/BonMot/Build/Intermediates/BonMot.build/Debug/BonMot-OSX.build/all-product-headers.yaml -Xcc -iquote -Xcc /var/folders/0b/dxsqs2d901j1h3_d9pqwqdfh0000gn/T/TemporaryItems/(A\ Document\ Being\ Saved\ By\ muter\ 2)/BonMot/Build/Intermediates/BonMot.build/Debug/BonMot-OSX.build/BonMot-project-headers.hmap -Xcc -I/var/folders/0b/dxsqs2d901j1h3_d9pqwqdfh0000gn/T/TemporaryItems/(A\ Document\ Being\ Saved\ By\ muter\ 2)/BonMot/Build/Products/Debug/include -Xcc -I/var/folders/0b/dxsqs2d901j1h3_d9pqwqdfh0000gn/T/TemporaryItems/(A\ Document\ Being\ Saved\ By\ muter\ 2)/BonMot/Build/Intermediates/BonMot.build/Debug/BonMot-OSX.build/DerivedSources/x86_64 -Xcc -I/var/folders/0b/dxsqs2d901j1h3_d9pqwqdfh0000gn/T/TemporaryItems/(A\ Document\ Being\ Saved\ By\ muter\ 2)/BonMot/Build/Intermediates/BonMot.build/Debug/BonMot-OSX.build/DerivedSources -Xcc -DDEBUG=1 -Xcc -working-directory/var/folders/0b/dxsqs2d901j1h3_d9pqwqdfh0000gn/T/TemporaryItems/(A\ Document\ Being\ Saved\ By\ muter\ 2)/BonMot -module-name BonMot -o /var/folders/0b/dxsqs2d901j1h3_d9pqwqdfh0000gn/T/TemporaryItems/(A\ Document\ Being\ Saved\ By\ muter\ 2)/BonMot/Build/Intermediates/BonMot.build/Debug/BonMot-OSX.build/Objects-normal/x86_64/ContextualAlternates.o -index-store-path /Users/seandorian/Library/Developer/Xcode/DerivedData/BonMot-gmfdobhmhipicwfukzxgunkbjhnu/Build/Index/DataStore -index-system-modules
+
+CompileSwift normal x86_64 /var/folders/0b/dxsqs2d901j1h3_d9pqwqdfh0000gn/T/TemporaryItems/(A\ Document\ Being\ Saved\ By\ muter\ 2)/BonMot/Sources/FontFeatures.swift (in target: BonMot-OSX)
+    cd /var/folders/0b/dxsqs2d901j1h3_d9pqwqdfh0000gn/T/TemporaryItems/(A\ Document\ Being\ Saved\ By\ muter\ 2)/BonMot
+    /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/swift -frontend -c /var/folders/0b/dxsqs2d901j1h3_d9pqwqdfh0000gn/T/TemporaryItems/(A\ Document\ Being\ Saved\ By\ muter\ 2)/BonMot/Sources/Compatibility.swift /var/folders/0b/dxsqs2d901j1h3_d9pqwqdfh0000gn/T/TemporaryItems/(A\ Document\ Being\ Saved\ By\ muter\ 2)/BonMot/Sources/Composable.swift /var/folders/0b/dxsqs2d901j1h3_d9pqwqdfh0000gn/T/TemporaryItems/(A\ Document\ Being\ Saved\ By\ muter\ 2)/BonMot/Sources/Tracking.swift /var/folders/0b/dxsqs2d901j1h3_d9pqwqdfh0000gn/T/TemporaryItems/(A\ Document\ Being\ Saved\ By\ muter\ 2)/BonMot/Sources/Transform.swift /var/folders/0b/dxsqs2d901j1h3_d9pqwqdfh0000gn/T/TemporaryItems/(A\ Document\ Being\ Saved\ By\ muter\ 2)/BonMot/Sources/UIKit/TextAlignmentConstraint.swift /var/folders/0b/dxsqs2d901j1h3_d9pqwqdfh0000gn/T/TemporaryItems/(A\ Document\ Being\ Saved\ By\ muter\ 2)/BonMot/Sources/ContextualAlternates.swift /var/folders/0b/dxsqs2d901j1h3_d9pqwqdfh0000gn/T/TemporaryItems/(A\ Document\ Being\ Saved\ By\ muter\ 2)/BonMot/Sources/Platform.swift /var/folders/0b/dxsqs2d901j1h3_d9pqwqdfh0000gn/T/TemporaryItems/(A\ Document\ Being\ Saved\ By\ muter\ 2)/BonMot/Sources/Tab.swift /var/folders/0b/dxsqs2d901j1h3_d9pqwqdfh0000gn/T/TemporaryItems/(A\ Document\ Being\ Saved\ By\ muter\ 2)/BonMot/Sources/StringStyle.swift /var/folders/0b/dxsqs2d901j1h3_d9pqwqdfh0000gn/T/TemporaryItems/(A\ Document\ Being\ Saved\ By\ muter\ 2)/BonMot/Sources/Special.swift /var/folders/0b/dxsqs2d901j1h3_d9pqwqdfh0000gn/T/TemporaryItems/(A\ Document\ Being\ Saved\ By\ muter\ 2)/BonMot/Sources/FontInspector.swift /var/folders/0b/dxsqs2d901j1h3_d9pqwqdfh0000gn/T/TemporaryItems/(A\ Document\ Being\ Saved\ By\ muter\ 2)/BonMot/Sources/NamedStyles.swift /var/folders/0b/dxsqs2d901j1h3_d9pqwqdfh0000gn/T/TemporaryItems/(A\ Document\ Being\ Saved\ By\ muter\ 2)/BonMot/Sources/StylisticAlternates.swift /var/folders/0b/dxsqs2d901j1h3_d9pqwqdfh0000gn/T/TemporaryItems/(A\ Document\ Being\ Saved\ By\ muter\ 2)/BonMot/Sources/Image+Tinting.swift /var/folders/0b/dxsqs2d901j1h3_d9pqwqdfh0000gn/T/TemporaryItems/(A\ Document\ Being\ Saved\ By\ muter\ 2)/BonMot/Sources/StringStyle+Part.swift /var/folders/0b/dxsqs2d901j1h3_d9pqwqdfh0000gn/T/TemporaryItems/(A\ Document\ Being\ Saved\ By\ muter\ 2)/BonMot/Sources/Ligatures.swift /var/folders/0b/dxsqs2d901j1h3_d9pqwqdfh0000gn/T/TemporaryItems/(A\ Document\ Being\ Saved\ By\ muter\ 2)/BonMot/Sources/XMLBuilder.swift /var/folders/0b/dxsqs2d901j1h3_d9pqwqdfh0000gn/T/TemporaryItems/(A\ Document\ Being\ Saved\ By\ muter\ 2)/BonMot/Sources/NSAttributedString+BonMot.swift /var/folders/0b/dxsqs2d901j1h3_d9pqwqdfh0000gn/T/TemporaryItems/(A\ Document\ Being\ Saved\ By\ muter\ 2)/BonMot/Sources/MutableCopying.swift /var/folders/0b/dxsqs2d901j1h3_d9pqwqdfh0000gn/T/TemporaryItems/(A\ Document\ Being\ Saved\ By\ muter\ 2)/BonMot/Sources/Emphasis.swift -primary-file /var/folders/0b/dxsqs2d901j1h3_d9pqwqdfh0000gn/T/TemporaryItems/(A\ Document\ Being\ Saved\ By\ muter\ 2)/BonMot/Sources/FontFeatures.swift -emit-module-path /var/folders/0b/dxsqs2d901j1h3_d9pqwqdfh0000gn/T/TemporaryItems/(A\ Document\ Being\ Saved\ By\ muter\ 2)/BonMot/Build/Intermediates/BonMot.build/Debug/BonMot-OSX.build/Objects-normal/x86_64/FontFeatures~partial.swiftmodule -emit-module-doc-path /var/folders/0b/dxsqs2d901j1h3_d9pqwqdfh0000gn/T/TemporaryItems/(A\ Document\ Being\ Saved\ By\ muter\ 2)/BonMot/Build/Intermediates/BonMot.build/Debug/BonMot-OSX.build/Objects-normal/x86_64/FontFeatures~partial.swiftdoc -serialize-diagnostics-path /var/folders/0b/dxsqs2d901j1h3_d9pqwqdfh0000gn/T/TemporaryItems/(A\ Document\ Being\ Saved\ By\ muter\ 2)/BonMot/Build/Intermediates/BonMot.build/Debug/BonMot-OSX.build/Objects-normal/x86_64/FontFeatures.dia -emit-dependencies-path /var/folders/0b/dxsqs2d901j1h3_d9pqwqdfh0000gn/T/TemporaryItems/(A\ Document\ Being\ Saved\ By\ muter\ 2)/BonMot/Build/Intermediates/BonMot.build/Debug/BonMot-OSX.build/Objects-normal/x86_64/FontFeatures.d -emit-reference-dependencies-path /var/folders/0b/dxsqs2d901j1h3_d9pqwqdfh0000gn/T/TemporaryItems/(A\ Document\ Being\ Saved\ By\ muter\ 2)/BonMot/Build/Intermediates/BonMot.build/Debug/BonMot-OSX.build/Objects-normal/x86_64/FontFeatures.swiftdeps -target x86_64-apple-macosx10.11 -enable-objc-interop -sdk /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.14.sdk -I /var/folders/0b/dxsqs2d901j1h3_d9pqwqdfh0000gn/T/TemporaryItems/(A\ Document\ Being\ Saved\ By\ muter\ 2)/BonMot/Build/Products/Debug -F /var/folders/0b/dxsqs2d901j1h3_d9pqwqdfh0000gn/T/TemporaryItems/(A\ Document\ Being\ Saved\ By\ muter\ 2)/BonMot/Build/Products/Debug -enable-testing -g -module-cache-path /Users/seandorian/Library/Developer/Xcode/DerivedData/ModuleCache.noindex -profile-generate -profile-coverage-mapping -swift-version 4.2 -enforce-exclusivity=checked -Onone -D DEBUG -disable-swift3-objc-inference -serialize-debugging-options -Xcc -I/var/folders/0b/dxsqs2d901j1h3_d9pqwqdfh0000gn/T/TemporaryItems/(A\ Document\ Being\ Saved\ By\ muter\ 2)/BonMot/Build/Intermediates/BonMot.build/Debug/BonMot-OSX.build/swift-overrides.hmap -Xcc -iquote -Xcc /var/folders/0b/dxsqs2d901j1h3_d9pqwqdfh0000gn/T/TemporaryItems/(A\ Document\ Being\ Saved\ By\ muter\ 2)/BonMot/Build/Intermediates/BonMot.build/Debug/BonMot-OSX.build/BonMot-generated-files.hmap -Xcc -I/var/folders/0b/dxsqs2d901j1h3_d9pqwqdfh0000gn/T/TemporaryItems/(A\ Document\ Being\ Saved\ By\ muter\ 2)/BonMot/Build/Intermediates/BonMot.build/Debug/BonMot-OSX.build/BonMot-own-target-headers.hmap -Xcc -I/var/folders/0b/dxsqs2d901j1h3_d9pqwqdfh0000gn/T/TemporaryItems/(A\ Document\ Being\ Saved\ By\ muter\ 2)/BonMot/Build/Intermediates/BonMot.build/Debug/BonMot-OSX.build/BonMot-all-non-framework-target-headers.hmap -Xcc -ivfsoverlay -Xcc /var/folders/0b/dxsqs2d901j1h3_d9pqwqdfh0000gn/T/TemporaryItems/(A\ Document\ Being\ Saved\ By\ muter\ 2)/BonMot/Build/Intermediates/BonMot.build/Debug/BonMot-OSX.build/all-product-headers.yaml -Xcc -iquote -Xcc /var/folders/0b/dxsqs2d901j1h3_d9pqwqdfh0000gn/T/TemporaryItems/(A\ Document\ Being\ Saved\ By\ muter\ 2)/BonMot/Build/Intermediates/BonMot.build/Debug/BonMot-OSX.build/BonMot-project-headers.hmap -Xcc -I/var/folders/0b/dxsqs2d901j1h3_d9pqwqdfh0000gn/T/TemporaryItems/(A\ Document\ Being\ Saved\ By\ muter\ 2)/BonMot/Build/Products/Debug/include -Xcc -I/var/folders/0b/dxsqs2d901j1h3_d9pqwqdfh0000gn/T/TemporaryItems/(A\ Document\ Being\ Saved\ By\ muter\ 2)/BonMot/Build/Intermediates/BonMot.build/Debug/BonMot-OSX.build/DerivedSources/x86_64 -Xcc -I/var/folders/0b/dxsqs2d901j1h3_d9pqwqdfh0000gn/T/TemporaryItems/(A\ Document\ Being\ Saved\ By\ muter\ 2)/BonMot/Build/Intermediates/BonMot.build/Debug/BonMot-OSX.build/DerivedSources -Xcc -DDEBUG=1 -Xcc -working-directory/var/folders/0b/dxsqs2d901j1h3_d9pqwqdfh0000gn/T/TemporaryItems/(A\ Document\ Being\ Saved\ By\ muter\ 2)/BonMot -module-name BonMot -o /var/folders/0b/dxsqs2d901j1h3_d9pqwqdfh0000gn/T/TemporaryItems/(A\ Document\ Being\ Saved\ By\ muter\ 2)/BonMot/Build/Intermediates/BonMot.build/Debug/BonMot-OSX.build/Objects-normal/x86_64/FontFeatures.o -index-store-path /Users/seandorian/Library/Developer/Xcode/DerivedData/BonMot-gmfdobhmhipicwfukzxgunkbjhnu/Build/Index/DataStore -index-system-modules
+
+MergeSwiftModule normal x86_64 (in target: BonMot-OSX)
+    cd /var/folders/0b/dxsqs2d901j1h3_d9pqwqdfh0000gn/T/TemporaryItems/(A\ Document\ Being\ Saved\ By\ muter\ 2)/BonMot
+    /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/swift -frontend -merge-modules -emit-module /var/folders/0b/dxsqs2d901j1h3_d9pqwqdfh0000gn/T/TemporaryItems/(A\ Document\ Being\ Saved\ By\ muter\ 2)/BonMot/Build/Intermediates/BonMot.build/Debug/BonMot-OSX.build/Objects-normal/x86_64/Compatibility~partial.swiftmodule /var/folders/0b/dxsqs2d901j1h3_d9pqwqdfh0000gn/T/TemporaryItems/(A\ Document\ Being\ Saved\ By\ muter\ 2)/BonMot/Build/Intermediates/BonMot.build/Debug/BonMot-OSX.build/Objects-normal/x86_64/Composable~partial.swiftmodule /var/folders/0b/dxsqs2d901j1h3_d9pqwqdfh0000gn/T/TemporaryItems/(A\ Document\ Being\ Saved\ By\ muter\ 2)/BonMot/Build/Intermediates/BonMot.build/Debug/BonMot-OSX.build/Objects-normal/x86_64/Tracking~partial.swiftmodule /var/folders/0b/dxsqs2d901j1h3_d9pqwqdfh0000gn/T/TemporaryItems/(A\ Document\ Being\ Saved\ By\ muter\ 2)/BonMot/Build/Intermediates/BonMot.build/Debug/BonMot-OSX.build/Objects-normal/x86_64/Transform~partial.swiftmodule /var/folders/0b/dxsqs2d901j1h3_d9pqwqdfh0000gn/T/TemporaryItems/(A\ Document\ Being\ Saved\ By\ muter\ 2)/BonMot/Build/Intermediates/BonMot.build/Debug/BonMot-OSX.build/Objects-normal/x86_64/TextAlignmentConstraint~partial.swiftmodule /var/folders/0b/dxsqs2d901j1h3_d9pqwqdfh0000gn/T/TemporaryItems/(A\ Document\ Being\ Saved\ By\ muter\ 2)/BonMot/Build/Intermediates/BonMot.build/Debug/BonMot-OSX.build/Objects-normal/x86_64/ContextualAlternates~partial.swiftmodule /var/folders/0b/dxsqs2d901j1h3_d9pqwqdfh0000gn/T/TemporaryItems/(A\ Document\ Being\ Saved\ By\ muter\ 2)/BonMot/Build/Intermediates/BonMot.build/Debug/BonMot-OSX.build/Objects-normal/x86_64/Platform~partial.swiftmodule /var/folders/0b/dxsqs2d901j1h3_d9pqwqdfh0000gn/T/TemporaryItems/(A\ Document\ Being\ Saved\ By\ muter\ 2)/BonMot/Build/Intermediates/BonMot.build/Debug/BonMot-OSX.build/Objects-normal/x86_64/Tab~partial.swiftmodule /var/folders/0b/dxsqs2d901j1h3_d9pqwqdfh0000gn/T/TemporaryItems/(A\ Document\ Being\ Saved\ By\ muter\ 2)/BonMot/Build/Intermediates/BonMot.build/Debug/BonMot-OSX.build/Objects-normal/x86_64/StringStyle~partial.swiftmodule /var/folders/0b/dxsqs2d901j1h3_d9pqwqdfh0000gn/T/TemporaryItems/(A\ Document\ Being\ Saved\ By\ muter\ 2)/BonMot/Build/Intermediates/BonMot.build/Debug/BonMot-OSX.build/Objects-normal/x86_64/Special~partial.swiftmodule /var/folders/0b/dxsqs2d901j1h3_d9pqwqdfh0000gn/T/TemporaryItems/(A\ Document\ Being\ Saved\ By\ muter\ 2)/BonMot/Build/Intermediates/BonMot.build/Debug/BonMot-OSX.build/Objects-normal/x86_64/FontInspector~partial.swiftmodule /var/folders/0b/dxsqs2d901j1h3_d9pqwqdfh0000gn/T/TemporaryItems/(A\ Document\ Being\ Saved\ By\ muter\ 2)/BonMot/Build/Intermediates/BonMot.build/Debug/BonMot-OSX.build/Objects-normal/x86_64/NamedStyles~partial.swiftmodule /var/folders/0b/dxsqs2d901j1h3_d9pqwqdfh0000gn/T/TemporaryItems/(A\ Document\ Being\ Saved\ By\ muter\ 2)/BonMot/Build/Intermediates/BonMot.build/Debug/BonMot-OSX.build/Objects-normal/x86_64/StylisticAlternates~partial.swiftmodule /var/folders/0b/dxsqs2d901j1h3_d9pqwqdfh0000gn/T/TemporaryItems/(A\ Document\ Being\ Saved\ By\ muter\ 2)/BonMot/Build/Intermediates/BonMot.build/Debug/BonMot-OSX.build/Objects-normal/x86_64/Image+Tinting~partial.swiftmodule /var/folders/0b/dxsqs2d901j1h3_d9pqwqdfh0000gn/T/TemporaryItems/(A\ Document\ Being\ Saved\ By\ muter\ 2)/BonMot/Build/Intermediates/BonMot.build/Debug/BonMot-OSX.build/Objects-normal/x86_64/StringStyle+Part~partial.swiftmodule /var/folders/0b/dxsqs2d901j1h3_d9pqwqdfh0000gn/T/TemporaryItems/(A\ Document\ Being\ Saved\ By\ muter\ 2)/BonMot/Build/Intermediates/BonMot.build/Debug/BonMot-OSX.build/Objects-normal/x86_64/Ligatures~partial.swiftmodule /var/folders/0b/dxsqs2d901j1h3_d9pqwqdfh0000gn/T/TemporaryItems/(A\ Document\ Being\ Saved\ By\ muter\ 2)/BonMot/Build/Intermediates/BonMot.build/Debug/BonMot-OSX.build/Objects-normal/x86_64/XMLBuilder~partial.swiftmodule /var/folders/0b/dxsqs2d901j1h3_d9pqwqdfh0000gn/T/TemporaryItems/(A\ Document\ Being\ Saved\ By\ muter\ 2)/BonMot/Build/Intermediates/BonMot.build/Debug/BonMot-OSX.build/Objects-normal/x86_64/NSAttributedString+BonMot~partial.swiftmodule /var/folders/0b/dxsqs2d901j1h3_d9pqwqdfh0000gn/T/TemporaryItems/(A\ Document\ Being\ Saved\ By\ muter\ 2)/BonMot/Build/Intermediates/BonMot.build/Debug/BonMot-OSX.build/Objects-normal/x86_64/MutableCopying~partial.swiftmodule /var/folders/0b/dxsqs2d901j1h3_d9pqwqdfh0000gn/T/TemporaryItems/(A\ Document\ Being\ Saved\ By\ muter\ 2)/BonMot/Build/Intermediates/BonMot.build/Debug/BonMot-OSX.build/Objects-normal/x86_64/Emphasis~partial.swiftmodule /var/folders/0b/dxsqs2d901j1h3_d9pqwqdfh0000gn/T/TemporaryItems/(A\ Document\ Being\ Saved\ By\ muter\ 2)/BonMot/Build/Intermediates/BonMot.build/Debug/BonMot-OSX.build/Objects-normal/x86_64/FontFeatures~partial.swiftmodule -parse-as-library -sil-merge-partial-modules -disable-diagnostic-passes -disable-sil-perf-optzns -target x86_64-apple-macosx10.11 -enable-objc-interop -sdk /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.14.sdk -I /var/folders/0b/dxsqs2d901j1h3_d9pqwqdfh0000gn/T/TemporaryItems/(A\ Document\ Being\ Saved\ By\ muter\ 2)/BonMot/Build/Products/Debug -F /var/folders/0b/dxsqs2d901j1h3_d9pqwqdfh0000gn/T/TemporaryItems/(A\ Document\ Being\ Saved\ By\ muter\ 2)/BonMot/Build/Products/Debug -enable-testing -g -module-cache-path /Users/seandorian/Library/Developer/Xcode/DerivedData/ModuleCache.noindex -profile-generate -profile-coverage-mapping -swift-version 4.2 -enforce-exclusivity=checked -Onone -D DEBUG -disable-swift3-objc-inference -serialize-debugging-options -Xcc -I/var/folders/0b/dxsqs2d901j1h3_d9pqwqdfh0000gn/T/TemporaryItems/(A\ Document\ Being\ Saved\ By\ muter\ 2)/BonMot/Build/Intermediates/BonMot.build/Debug/BonMot-OSX.build/swift-overrides.hmap -Xcc -iquote -Xcc /var/folders/0b/dxsqs2d901j1h3_d9pqwqdfh0000gn/T/TemporaryItems/(A\ Document\ Being\ Saved\ By\ muter\ 2)/BonMot/Build/Intermediates/BonMot.build/Debug/BonMot-OSX.build/BonMot-generated-files.hmap -Xcc -I/var/folders/0b/dxsqs2d901j1h3_d9pqwqdfh0000gn/T/TemporaryItems/(A\ Document\ Being\ Saved\ By\ muter\ 2)/BonMot/Build/Intermediates/BonMot.build/Debug/BonMot-OSX.build/BonMot-own-target-headers.hmap -Xcc -I/var/folders/0b/dxsqs2d901j1h3_d9pqwqdfh0000gn/T/TemporaryItems/(A\ Document\ Being\ Saved\ By\ muter\ 2)/BonMot/Build/Intermediates/BonMot.build/Debug/BonMot-OSX.build/BonMot-all-non-framework-target-headers.hmap -Xcc -ivfsoverlay -Xcc /var/folders/0b/dxsqs2d901j1h3_d9pqwqdfh0000gn/T/TemporaryItems/(A\ Document\ Being\ Saved\ By\ muter\ 2)/BonMot/Build/Intermediates/BonMot.build/Debug/BonMot-OSX.build/all-product-headers.yaml -Xcc -iquote -Xcc /var/folders/0b/dxsqs2d901j1h3_d9pqwqdfh0000gn/T/TemporaryItems/(A\ Document\ Being\ Saved\ By\ muter\ 2)/BonMot/Build/Intermediates/BonMot.build/Debug/BonMot-OSX.build/BonMot-project-headers.hmap -Xcc -I/var/folders/0b/dxsqs2d901j1h3_d9pqwqdfh0000gn/T/TemporaryItems/(A\ Document\ Being\ Saved\ By\ muter\ 2)/BonMot/Build/Products/Debug/include -Xcc -I/var/folders/0b/dxsqs2d901j1h3_d9pqwqdfh0000gn/T/TemporaryItems/(A\ Document\ Being\ Saved\ By\ muter\ 2)/BonMot/Build/Intermediates/BonMot.build/Debug/BonMot-OSX.build/DerivedSources/x86_64 -Xcc -I/var/folders/0b/dxsqs2d901j1h3_d9pqwqdfh0000gn/T/TemporaryItems/(A\ Document\ Being\ Saved\ By\ muter\ 2)/BonMot/Build/Intermediates/BonMot.build/Debug/BonMot-OSX.build/DerivedSources -Xcc -DDEBUG=1 -Xcc -working-directory/var/folders/0b/dxsqs2d901j1h3_d9pqwqdfh0000gn/T/TemporaryItems/(A\ Document\ Being\ Saved\ By\ muter\ 2)/BonMot -emit-module-doc-path /var/folders/0b/dxsqs2d901j1h3_d9pqwqdfh0000gn/T/TemporaryItems/(A\ Document\ Being\ Saved\ By\ muter\ 2)/BonMot/Build/Intermediates/BonMot.build/Debug/BonMot-OSX.build/Objects-normal/x86_64/BonMot.swiftdoc -emit-objc-header-path /var/folders/0b/dxsqs2d901j1h3_d9pqwqdfh0000gn/T/TemporaryItems/(A\ Document\ Being\ Saved\ By\ muter\ 2)/BonMot/Build/Intermediates/BonMot.build/Debug/BonMot-OSX.build/Objects-normal/x86_64/BonMot-Swift.h -module-name BonMot -o /var/folders/0b/dxsqs2d901j1h3_d9pqwqdfh0000gn/T/TemporaryItems/(A\ Document\ Being\ Saved\ By\ muter\ 2)/BonMot/Build/Intermediates/BonMot.build/Debug/BonMot-OSX.build/Objects-normal/x86_64/BonMot.swiftmodule
+
+Ld /var/folders/0b/dxsqs2d901j1h3_d9pqwqdfh0000gn/T/TemporaryItems/(A\ Document\ Being\ Saved\ By\ muter\ 2)/BonMot/Build/Products/Debug/BonMot.framework/Versions/A/BonMot normal x86_64 (in target: BonMot-OSX)
+    cd /var/folders/0b/dxsqs2d901j1h3_d9pqwqdfh0000gn/T/TemporaryItems/(A\ Document\ Being\ Saved\ By\ muter\ 2)/BonMot
+    export MACOSX_DEPLOYMENT_TARGET=10.11
+    /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/clang -arch x86_64 -dynamiclib -isysroot /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.14.sdk -L/var/folders/0b/dxsqs2d901j1h3_d9pqwqdfh0000gn/T/TemporaryItems/(A\ Document\ Being\ Saved\ By\ muter\ 2)/BonMot/Build/Products/Debug -F/var/folders/0b/dxsqs2d901j1h3_d9pqwqdfh0000gn/T/TemporaryItems/(A\ Document\ Being\ Saved\ By\ muter\ 2)/BonMot/Build/Products/Debug -filelist /var/folders/0b/dxsqs2d901j1h3_d9pqwqdfh0000gn/T/TemporaryItems/(A\ Document\ Being\ Saved\ By\ muter\ 2)/BonMot/Build/Intermediates/BonMot.build/Debug/BonMot-OSX.build/Objects-normal/x86_64/BonMot.LinkFileList -install_name @rpath/BonMot.framework/Versions/A/BonMot -Xlinker -rpath -Xlinker @executable_path/../Frameworks -Xlinker -rpath -Xlinker @loader_path/Frameworks -mmacosx-version-min=10.11 -Xlinker -object_path_lto -Xlinker /var/folders/0b/dxsqs2d901j1h3_d9pqwqdfh0000gn/T/TemporaryItems/(A\ Document\ Being\ Saved\ By\ muter\ 2)/BonMot/Build/Intermediates/BonMot.build/Debug/BonMot-OSX.build/Objects-normal/x86_64/BonMot_lto.o -Xlinker -export_dynamic -Xlinker -no_deduplicate -fprofile-instr-generate -fobjc-link-runtime -L/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/swift/macosx -Xlinker -add_ast_path -Xlinker /var/folders/0b/dxsqs2d901j1h3_d9pqwqdfh0000gn/T/TemporaryItems/(A\ Document\ Being\ Saved\ By\ muter\ 2)/BonMot/Build/Intermediates/BonMot.build/Debug/BonMot-OSX.build/Objects-normal/x86_64/BonMot.swiftmodule -compatibility_version 1 -current_version 1 -Xlinker -dependency_info -Xlinker /var/folders/0b/dxsqs2d901j1h3_d9pqwqdfh0000gn/T/TemporaryItems/(A\ Document\ Being\ Saved\ By\ muter\ 2)/BonMot/Build/Intermediates/BonMot.build/Debug/BonMot-OSX.build/Objects-normal/x86_64/BonMot_dependency_info.dat -o /var/folders/0b/dxsqs2d901j1h3_d9pqwqdfh0000gn/T/TemporaryItems/(A\ Document\ Being\ Saved\ By\ muter\ 2)/BonMot/Build/Products/Debug/BonMot.framework/Versions/A/BonMot
+
+PhaseScriptExecution SwiftLint /var/folders/0b/dxsqs2d901j1h3_d9pqwqdfh0000gn/T/TemporaryItems/(A\ Document\ Being\ Saved\ By\ muter\ 2)/BonMot/Build/Intermediates/BonMot.build/Debug/BonMot-OSX.build/Script-CD4B2FD01D9B0B1F007CF808.sh (in target: BonMot-OSX)
+    cd /var/folders/0b/dxsqs2d901j1h3_d9pqwqdfh0000gn/T/TemporaryItems/(A\ Document\ Being\ Saved\ By\ muter\ 2)/BonMot
+    export ACTION=build
+    export ALTERNATE_GROUP=staff
+    export ALTERNATE_MODE=u+w,go-w,a+rX
+    export ALTERNATE_OWNER=seandorian
+    export ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES=NO
+    export ALWAYS_SEARCH_USER_PATHS=NO
+    export ALWAYS_USE_SEPARATE_HEADERMAPS=NO
+    export APPLE_INTERNAL_DEVELOPER_DIR=/AppleInternal/Developer
+    export APPLE_INTERNAL_DIR=/AppleInternal
+    export APPLE_INTERNAL_DOCUMENTATION_DIR=/AppleInternal/Documentation
+    export APPLE_INTERNAL_LIBRARY_DIR=/AppleInternal/Library
+    export APPLE_INTERNAL_TOOLS=/AppleInternal/Developer/Tools
+    export APPLICATION_EXTENSION_API_ONLY=NO
+    export APPLY_RULES_IN_COPY_FILES=NO
+    export ARCHS=x86_64
+    export ARCHS_STANDARD=x86_64
+    export ARCHS_STANDARD_32_64_BIT="x86_64 i386"
+    export ARCHS_STANDARD_32_BIT=i386
+    export ARCHS_STANDARD_64_BIT=x86_64
+    export ARCHS_STANDARD_INCLUDING_64_BIT=x86_64
+    export AVAILABLE_PLATFORMS="appletvos appletvsimulator iphoneos iphonesimulator macosx watchos watchsimulator"
+    export BITCODE_GENERATION_MODE=marker
+    export BUILD_ACTIVE_RESOURCES_ONLY=NO
+    export BUILD_COMPONENTS="headers build"
+    export BUILD_DIR="/var/folders/0b/dxsqs2d901j1h3_d9pqwqdfh0000gn/T/TemporaryItems/(A Document Being Saved By muter 2)/BonMot/Build/Products"
+    export BUILD_ROOT="/var/folders/0b/dxsqs2d901j1h3_d9pqwqdfh0000gn/T/TemporaryItems/(A Document Being Saved By muter 2)/BonMot/Build/Products"
+    export BUILD_STYLE=
+    export BUILD_VARIANTS=normal
+    export BUILT_PRODUCTS_DIR="/var/folders/0b/dxsqs2d901j1h3_d9pqwqdfh0000gn/T/TemporaryItems/(A Document Being Saved By muter 2)/BonMot/Build/Products/Debug"
+    export CACHE_ROOT=/var/folders/0b/dxsqs2d901j1h3_d9pqwqdfh0000gn/C/com.apple.DeveloperTools/10.1-10B61/Xcode
+    export CCHROOT=/var/folders/0b/dxsqs2d901j1h3_d9pqwqdfh0000gn/C/com.apple.DeveloperTools/10.1-10B61/Xcode
+    export CHMOD=/bin/chmod
+    export CHOWN=/usr/sbin/chown
+    export CLANG_ANALYZER_NONNULL=YES
+    export CLANG_COVERAGE_MAPPING=YES
+    export CLANG_CXX_LANGUAGE_STANDARD=gnu++0x
+    export CLANG_CXX_LIBRARY=libc++
+    export CLANG_ENABLE_MODULES=YES
+    export CLANG_ENABLE_OBJC_ARC=YES
+    export CLANG_MODULES_BUILD_SESSION_FILE=/Users/seandorian/Library/Developer/Xcode/DerivedData/ModuleCache.noindex/Session.modulevalidation
+    export CLANG_PROFILE_DATA_DIRECTORY="/var/folders/0b/dxsqs2d901j1h3_d9pqwqdfh0000gn/T/TemporaryItems/(A Document Being Saved By muter 2)/BonMot/Build/Intermediates/CodeCoverage/ProfileData"
+    export CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING=YES
+    export CLANG_WARN_BOOL_CONVERSION=YES
+    export CLANG_WARN_COMMA=YES
+    export CLANG_WARN_CONSTANT_CONVERSION=YES
+    export CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS=YES
+    export CLANG_WARN_DIRECT_OBJC_ISA_USAGE=YES_ERROR
+    export CLANG_WARN_DOCUMENTATION_COMMENTS=YES
+    export CLANG_WARN_EMPTY_BODY=YES
+    export CLANG_WARN_ENUM_CONVERSION=YES
+    export CLANG_WARN_INFINITE_RECURSION=YES
+    export CLANG_WARN_INT_CONVERSION=YES
+    export CLANG_WARN_NON_LITERAL_NULL_CONVERSION=YES
+    export CLANG_WARN_NULLABLE_TO_NONNULL_CONVERSION=YES
+    export CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF=YES
+    export CLANG_WARN_OBJC_LITERAL_CONVERSION=YES
+    export CLANG_WARN_OBJC_ROOT_CLASS=YES_ERROR
+    export CLANG_WARN_RANGE_LOOP_ANALYSIS=YES
+    export CLANG_WARN_STRICT_PROTOTYPES=YES
+    export CLANG_WARN_SUSPICIOUS_MOVE=YES
+    export CLANG_WARN_SUSPICIOUS_MOVES=YES
+    export CLANG_WARN_UNREACHABLE_CODE=YES
+    export CLANG_WARN__DUPLICATE_METHOD_MATCH=YES
+    export CLASS_FILE_DIR="/var/folders/0b/dxsqs2d901j1h3_d9pqwqdfh0000gn/T/TemporaryItems/(A Document Being Saved By muter 2)/BonMot/Build/Intermediates/BonMot.build/Debug/BonMot-OSX.build/JavaClasses"
+    export CLEAN_PRECOMPS=YES
+    export CLONE_HEADERS=NO
+    export CODESIGNING_FOLDER_PATH="/var/folders/0b/dxsqs2d901j1h3_d9pqwqdfh0000gn/T/TemporaryItems/(A Document Being Saved By muter 2)/BonMot/Build/Products/Debug/BonMot.framework/Versions/A"
+    export CODE_SIGNING_ALLOWED=YES
+    export CODE_SIGNING_REQUIRED=NO
+    export CODE_SIGNING_REQUIRES_TEAM=YES
+    export CODE_SIGN_INJECT_BASE_ENTITLEMENTS=YES
+    export COLOR_DIAGNOSTICS=NO
+    export COMBINE_HIDPI_IMAGES=YES
+    export COMPILER_INDEX_STORE_ENABLE=Default
+    export COMPOSITE_SDK_DIRS="/var/folders/0b/dxsqs2d901j1h3_d9pqwqdfh0000gn/T/TemporaryItems/(A Document Being Saved By muter 2)/BonMot/Build/Intermediates/CompositeSDKs"
+    export COMPRESS_PNG_FILES=NO
+    export CONFIGURATION=Debug
+    export CONFIGURATION_BUILD_DIR="/var/folders/0b/dxsqs2d901j1h3_d9pqwqdfh0000gn/T/TemporaryItems/(A Document Being Saved By muter 2)/BonMot/Build/Products/Debug"
+    export CONFIGURATION_TEMP_DIR="/var/folders/0b/dxsqs2d901j1h3_d9pqwqdfh0000gn/T/TemporaryItems/(A Document Being Saved By muter 2)/BonMot/Build/Intermediates/BonMot.build/Debug"
+    export CONTENTS_FOLDER_PATH=BonMot.framework/Versions/A
+    export COPYING_PRESERVES_HFS_DATA=NO
+    export COPY_HEADERS_RUN_UNIFDEF=NO
+    export COPY_PHASE_STRIP=NO
+    export COPY_RESOURCES_FROM_STATIC_FRAMEWORKS=YES
+    export CP=/bin/cp
+    export CREATE_INFOPLIST_SECTION_IN_BINARY=NO
+    export CURRENT_ARCH=undefined_arch
+    export CURRENT_PROJECT_VERSION=1
+    export CURRENT_VARIANT=normal
+    export CURRENT_VERSION=Current
+    export DEAD_CODE_STRIPPING=NO
+    export DEBUGGING_SYMBOLS=YES
+    export DEBUG_INFORMATION_FORMAT=dwarf
+    export DEFAULT_COMPILER=com.apple.compilers.llvm.clang.1_0
+    export DEFAULT_KEXT_INSTALL_PATH=/System/Library/Extensions
+    export DEFINES_MODULE=YES
+    export DEPLOYMENT_LOCATION=NO
+    export DEPLOYMENT_POSTPROCESSING=NO
+    export DEPLOYMENT_TARGET_CLANG_ENV_NAME=MACOSX_DEPLOYMENT_TARGET
+    export DEPLOYMENT_TARGET_CLANG_FLAG_NAME=mmacosx-version-min
+    export DEPLOYMENT_TARGET_LD_ENV_NAME=MACOSX_DEPLOYMENT_TARGET
+    export DEPLOYMENT_TARGET_LD_FLAG_NAME=macosx_version_min
+    export DEPLOYMENT_TARGET_SETTING_NAME=MACOSX_DEPLOYMENT_TARGET
+    export DEPLOYMENT_TARGET_SUGGESTED_VALUES="10.6 10.7 10.8 10.9 10.10 10.11 10.12 10.13 10.14"
+    export DERIVED_FILES_DIR="/var/folders/0b/dxsqs2d901j1h3_d9pqwqdfh0000gn/T/TemporaryItems/(A Document Being Saved By muter 2)/BonMot/Build/Intermediates/BonMot.build/Debug/BonMot-OSX.build/DerivedSources"
+    export DERIVED_FILE_DIR="/var/folders/0b/dxsqs2d901j1h3_d9pqwqdfh0000gn/T/TemporaryItems/(A Document Being Saved By muter 2)/BonMot/Build/Intermediates/BonMot.build/Debug/BonMot-OSX.build/DerivedSources"
+    export DERIVED_SOURCES_DIR="/var/folders/0b/dxsqs2d901j1h3_d9pqwqdfh0000gn/T/TemporaryItems/(A Document Being Saved By muter 2)/BonMot/Build/Intermediates/BonMot.build/Debug/BonMot-OSX.build/DerivedSources"
+    export DEVELOPER_APPLICATIONS_DIR=/Applications/Xcode.app/Contents/Developer/Applications
+    export DEVELOPER_BIN_DIR=/Applications/Xcode.app/Contents/Developer/usr/bin
+    export DEVELOPER_DIR=/Applications/Xcode.app/Contents/Developer
+    export DEVELOPER_FRAMEWORKS_DIR=/Applications/Xcode.app/Contents/Developer/Library/Frameworks
+    export DEVELOPER_FRAMEWORKS_DIR_QUOTED=/Applications/Xcode.app/Contents/Developer/Library/Frameworks
+    export DEVELOPER_LIBRARY_DIR=/Applications/Xcode.app/Contents/Developer/Library
+    export DEVELOPER_SDK_DIR=/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs
+    export DEVELOPER_TOOLS_DIR=/Applications/Xcode.app/Contents/Developer/Tools
+    export DEVELOPER_USR_DIR=/Applications/Xcode.app/Contents/Developer/usr
+    export DEVELOPMENT_LANGUAGE=English
+    export DOCUMENTATION_FOLDER_PATH=BonMot.framework/Versions/A/Resources/English.lproj/Documentation
+    export DO_HEADER_SCANNING_IN_JAM=NO
+    export DSTROOT=/tmp/BonMot.dst
+    export DT_TOOLCHAIN_DIR=/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain
+    export DWARF_DSYM_FILE_NAME=BonMot.framework.dSYM
+    export DWARF_DSYM_FILE_SHOULD_ACCOMPANY_PRODUCT=NO
+    export DWARF_DSYM_FOLDER_PATH="/var/folders/0b/dxsqs2d901j1h3_d9pqwqdfh0000gn/T/TemporaryItems/(A Document Being Saved By muter 2)/BonMot/Build/Products/Debug"
+    export DYLIB_COMPATIBILITY_VERSION=1
+    export DYLIB_CURRENT_VERSION=1
+    export DYLIB_INSTALL_NAME_BASE=@rpath
+    export EMBEDDED_CONTENT_CONTAINS_SWIFT=NO
+    export EMBEDDED_PROFILE_NAME=embedded.provisionprofile
+    export EMBED_ASSET_PACKS_IN_PRODUCT_BUNDLE=NO
+    export ENABLE_BITCODE=NO
+    export ENABLE_DEFAULT_HEADER_SEARCH_PATHS=YES
+    export ENABLE_HEADER_DEPENDENCIES=YES
+    export ENABLE_ON_DEMAND_RESOURCES=NO
+    export ENABLE_STRICT_OBJC_MSGSEND=YES
+    export ENABLE_TESTABILITY=YES
+    export ENTITLEMENTS_REQUIRED=NO
+    export EXCLUDED_INSTALLSRC_SUBDIRECTORY_PATTERNS=".DS_Store .svn .git .hg CVS"
+    export EXCLUDED_RECURSIVE_SEARCH_PATH_SUBDIRECTORIES="*.nib *.lproj *.framework *.gch *.xcode* *.xcassets (*) .DS_Store CVS .svn .git .hg *.pbproj *.pbxproj"
+    export EXECUTABLES_FOLDER_PATH=BonMot.framework/Versions/A/Resources/English.lproj
+    export EXECUTABLE_FOLDER_PATH=BonMot.framework/Versions/A
+    export EXECUTABLE_NAME=BonMot
+    export EXECUTABLE_PATH=BonMot.framework/Versions/A/BonMot
+    export FILE_LIST="/var/folders/0b/dxsqs2d901j1h3_d9pqwqdfh0000gn/T/TemporaryItems/(A Document Being Saved By muter 2)/BonMot/Build/Intermediates/BonMot.build/Debug/BonMot-OSX.build/Objects/LinkFileList"
+    export FIXED_FILES_DIR="/var/folders/0b/dxsqs2d901j1h3_d9pqwqdfh0000gn/T/TemporaryItems/(A Document Being Saved By muter 2)/BonMot/Build/Intermediates/BonMot.build/Debug/BonMot-OSX.build/FixedFiles"
+    export FRAMEWORKS_FOLDER_PATH=BonMot.framework/Versions/A/Frameworks
+    export FRAMEWORK_FLAG_PREFIX=-framework
+    export FRAMEWORK_SEARCH_PATHS="/var/folders/0b/dxsqs2d901j1h3_d9pqwqdfh0000gn/T/TemporaryItems/(A Document Being Saved By muter 2)/BonMot/Build/Products/Debug "
+    export FRAMEWORK_VERSION=A
+    export FULL_PRODUCT_NAME=BonMot.framework
+    export GCC3_VERSION=3.3
+    export GCC_C_LANGUAGE_STANDARD=gnu99
+    export GCC_DYNAMIC_NO_PIC=NO
+    export GCC_INLINES_ARE_PRIVATE_EXTERN=YES
+    export GCC_NO_COMMON_BLOCKS=YES
+    export GCC_OPTIMIZATION_LEVEL=0
+    export GCC_PFE_FILE_C_DIALECTS="c objective-c c++ objective-c++"
+    export GCC_PREPROCESSOR_DEFINITIONS="DEBUG=1 "
+    export GCC_TREAT_WARNINGS_AS_ERRORS=NO
+    export GCC_VERSION=com.apple.compilers.llvm.clang.1_0
+    export GCC_VERSION_IDENTIFIER=com_apple_compilers_llvm_clang_1_0
+    export GCC_WARN_64_TO_32_BIT_CONVERSION=YES
+    export GCC_WARN_ABOUT_RETURN_TYPE=YES_ERROR
+    export GCC_WARN_SHADOW=YES
+    export GCC_WARN_UNDECLARED_SELECTOR=YES
+    export GCC_WARN_UNINITIALIZED_AUTOS=YES_AGGRESSIVE
+    export GCC_WARN_UNUSED_FUNCTION=YES
+    export GCC_WARN_UNUSED_VARIABLE=YES
+    export GENERATE_MASTER_OBJECT_FILE=NO
+    export GENERATE_PKGINFO_FILE=NO
+    export GENERATE_PROFILING_CODE=NO
+    export GENERATE_TEXT_BASED_STUBS=NO
+    export GID=20
+    export GROUP=staff
+    export HEADERMAP_INCLUDES_FLAT_ENTRIES_FOR_TARGET_BEING_BUILT=YES
+    export HEADERMAP_INCLUDES_FRAMEWORK_ENTRIES_FOR_ALL_PRODUCT_TYPES=YES
+    export HEADERMAP_INCLUDES_NONPUBLIC_NONPRIVATE_HEADERS=YES
+    export HEADERMAP_INCLUDES_PROJECT_HEADERS=YES
+    export HEADERMAP_USES_FRAMEWORK_PREFIX_ENTRIES=YES
+    export HEADERMAP_USES_VFS=YES
+    export HEADER_SEARCH_PATHS="/var/folders/0b/dxsqs2d901j1h3_d9pqwqdfh0000gn/T/TemporaryItems/(A Document Being Saved By muter 2)/BonMot/Build/Products/Debug/include "
+    export HIDE_BITCODE_SYMBOLS=YES
+    export HOME=/Users/seandorian
+    export ICONV=/usr/bin/iconv
+    export INFOPLISTSTRINGS_PATH=BonMot.framework/Versions/A/Resources/English.lproj/InfoPlist.strings
+    export INFOPLIST_EXPAND_BUILD_SETTINGS=YES
+    export INFOPLIST_FILE=Sources/Info.plist
+    export INFOPLIST_OUTPUT_FORMAT=same-as-input
+    export INFOPLIST_PATH=BonMot.framework/Versions/A/Resources/Info.plist
+    export INFOPLIST_PREPROCESS=NO
+    export INLINE_PRIVATE_FRAMEWORKS=NO
+    export INSTALLHDRS_COPY_PHASE=NO
+    export INSTALLHDRS_SCRIPT_PHASE=NO
+    export INSTALL_DIR=/tmp/BonMot.dst/Library/Frameworks
+    export INSTALL_GROUP=staff
+    export INSTALL_MODE_FLAG=u+w,go-w,a+rX
+    export INSTALL_OWNER=seandorian
+    export INSTALL_PATH=/Library/Frameworks
+    export INSTALL_ROOT=/tmp/BonMot.dst
+    export JAVAC_DEFAULT_FLAGS="-J-Xms64m -J-XX:NewSize=4M -J-Dfile.encoding=UTF8"
+    export JAVA_APP_STUB=/System/Library/Frameworks/JavaVM.framework/Resources/MacOS/JavaApplicationStub
+    export JAVA_ARCHIVE_CLASSES=YES
+    export JAVA_ARCHIVE_TYPE=JAR
+    export JAVA_COMPILER=/usr/bin/javac
+    export JAVA_FOLDER_PATH=BonMot.framework/Versions/A/Resources/Java
+    export JAVA_FRAMEWORK_RESOURCES_DIRS=Resources
+    export JAVA_JAR_FLAGS=cv
+    export JAVA_SOURCE_SUBDIR=.
+    export JAVA_USE_DEPENDENCIES=YES
+    export JAVA_ZIP_FLAGS=-urg
+    export JIKES_DEFAULT_FLAGS="+E +OLDCSO"
+    export KASAN_DEFAULT_CFLAGS="-DKASAN=1 -fsanitize=address -mllvm -asan-globals-live-support -mllvm -asan-force-dynamic-shadow"
+    export KEEP_PRIVATE_EXTERNS=NO
+    export LD_DEPENDENCY_INFO_FILE="/var/folders/0b/dxsqs2d901j1h3_d9pqwqdfh0000gn/T/TemporaryItems/(A Document Being Saved By muter 2)/BonMot/Build/Intermediates/BonMot.build/Debug/BonMot-OSX.build/Objects-normal/undefined_arch/BonMot_dependency_info.dat"
+    export LD_DYLIB_INSTALL_NAME=@rpath/BonMot.framework/Versions/A/BonMot
+    export LD_GENERATE_MAP_FILE=NO
+    export LD_MAP_FILE_PATH="/var/folders/0b/dxsqs2d901j1h3_d9pqwqdfh0000gn/T/TemporaryItems/(A Document Being Saved By muter 2)/BonMot/Build/Intermediates/BonMot.build/Debug/BonMot-OSX.build/BonMot-LinkMap-normal-undefined_arch.txt"
+    export LD_NO_PIE=NO
+    export LD_QUOTE_LINKER_ARGUMENTS_FOR_COMPILER_DRIVER=YES
+    export LD_RUNPATH_SEARCH_PATHS=" @executable_path/../Frameworks @loader_path/Frameworks"
+    export LEGACY_DEVELOPER_DIR=/Applications/Xcode.app/Contents/PlugIns/Xcode3Core.ideplugin/Contents/SharedSupport/Developer
+    export LEX=lex
+    export LIBRARY_FLAG_NOSPACE=YES
+    export LIBRARY_FLAG_PREFIX=-l
+    export LIBRARY_KEXT_INSTALL_PATH=/Library/Extensions
+    export LIBRARY_SEARCH_PATHS="/var/folders/0b/dxsqs2d901j1h3_d9pqwqdfh0000gn/T/TemporaryItems/(A Document Being Saved By muter 2)/BonMot/Build/Products/Debug "
+    export LINKER_DISPLAYS_MANGLED_NAMES=NO
+    export LINK_FILE_LIST_normal_x86_64="/var/folders/0b/dxsqs2d901j1h3_d9pqwqdfh0000gn/T/TemporaryItems/(A Document Being Saved By muter 2)/BonMot/Build/Intermediates/BonMot.build/Debug/BonMot-OSX.build/Objects-normal/x86_64/BonMot.LinkFileList"
+    export LINK_WITH_STANDARD_LIBRARIES=YES
+    export LOCALIZED_RESOURCES_FOLDER_PATH=BonMot.framework/Versions/A/Resources/English.lproj
+    export LOCALIZED_STRING_MACRO_NAMES="NSLocalizedString CFLocalizedString"
+    export LOCAL_ADMIN_APPS_DIR=/Applications/Utilities
+    export LOCAL_APPS_DIR=/Applications
+    export LOCAL_DEVELOPER_DIR=/Library/Developer
+    export LOCAL_LIBRARY_DIR=/Library
+    export LOCROOT="/var/folders/0b/dxsqs2d901j1h3_d9pqwqdfh0000gn/T/TemporaryItems/(A Document Being Saved By muter 2)/BonMot"
+    export LOCSYMROOT="/var/folders/0b/dxsqs2d901j1h3_d9pqwqdfh0000gn/T/TemporaryItems/(A Document Being Saved By muter 2)/BonMot"
+    export MACH_O_TYPE=mh_dylib
+    export MACOSX_DEPLOYMENT_TARGET=10.11
+    export MAC_OS_X_PRODUCT_BUILD_VERSION=18C54
+    export MAC_OS_X_VERSION_ACTUAL=101402
+    export MAC_OS_X_VERSION_MAJOR=101400
+    export MAC_OS_X_VERSION_MINOR=1402
+    export METAL_LIBRARY_FILE_BASE=default
+    export METAL_LIBRARY_OUTPUT_DIR="/var/folders/0b/dxsqs2d901j1h3_d9pqwqdfh0000gn/T/TemporaryItems/(A Document Being Saved By muter 2)/BonMot/Build/Products/Debug/BonMot.framework/Versions/A/Resources"
+    export MODULE_CACHE_DIR=/Users/seandorian/Library/Developer/Xcode/DerivedData/ModuleCache.noindex
+    export MTL_ENABLE_DEBUG_INFO=YES
+    export NATIVE_ARCH=i386
+    export NATIVE_ARCH_32_BIT=i386
+    export NATIVE_ARCH_64_BIT=x86_64
+    export NATIVE_ARCH_ACTUAL=x86_64
+    export NO_COMMON=YES
+    export OBJECT_FILE_DIR="/var/folders/0b/dxsqs2d901j1h3_d9pqwqdfh0000gn/T/TemporaryItems/(A Document Being Saved By muter 2)/BonMot/Build/Intermediates/BonMot.build/Debug/BonMot-OSX.build/Objects"
+    export OBJECT_FILE_DIR_normal="/var/folders/0b/dxsqs2d901j1h3_d9pqwqdfh0000gn/T/TemporaryItems/(A Document Being Saved By muter 2)/BonMot/Build/Intermediates/BonMot.build/Debug/BonMot-OSX.build/Objects-normal"
+    export OBJROOT="/var/folders/0b/dxsqs2d901j1h3_d9pqwqdfh0000gn/T/TemporaryItems/(A Document Being Saved By muter 2)/BonMot/Build/Intermediates"
+    export ONLY_ACTIVE_ARCH=YES
+    export OS=MACOS
+    export OSAC=/usr/bin/osacompile
+    export PACKAGE_TYPE=com.apple.package-type.wrapper.framework
+    export PASCAL_STRINGS=YES
+    export PATH=/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin:/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/local/bin:/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/libexec:/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/usr/bin:/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/usr/local/bin:/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/usr/bin:/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/usr/local/bin:/Applications/Xcode.app/Contents/Developer/usr/bin:/Applications/Xcode.app/Contents/Developer/usr/local/bin:/Users/seandorian/.swiftenv/shims:/Users/seandorian/.rvm/gems/ruby-2.2.5/bin:/Users/seandorian/.rvm/gems/ruby-2.2.5@global/bin:/Users/seandorian/.rvm/rubies/ruby-2.2.5/bin:/Users/seandorian/.fastlane/bin:/usr/local/octave/3.8.0/bin/:/usr/local/sbin:/Users/seandorian/.rvm/bin:/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin:/opt/X11/bin:/Library/TeX/texbin
+    export PATH_PREFIXES_EXCLUDED_FROM_HEADER_DEPENDENCIES="/usr/include /usr/local/include /System/Library/Frameworks /System/Library/PrivateFrameworks /Applications/Xcode.app/Contents/Developer/Headers /Applications/Xcode.app/Contents/Developer/SDKs /Applications/Xcode.app/Contents/Developer/Platforms"
+    export PBDEVELOPMENTPLIST_PATH=BonMot.framework/Versions/A/pbdevelopment.plist
+    export PER_ARCH_OBJECT_FILE_DIR="/var/folders/0b/dxsqs2d901j1h3_d9pqwqdfh0000gn/T/TemporaryItems/(A Document Being Saved By muter 2)/BonMot/Build/Intermediates/BonMot.build/Debug/BonMot-OSX.build/Objects-normal/undefined_arch"
+    export PER_VARIANT_OBJECT_FILE_DIR="/var/folders/0b/dxsqs2d901j1h3_d9pqwqdfh0000gn/T/TemporaryItems/(A Document Being Saved By muter 2)/BonMot/Build/Intermediates/BonMot.build/Debug/BonMot-OSX.build/Objects-normal"
+    export PKGINFO_FILE_PATH="/var/folders/0b/dxsqs2d901j1h3_d9pqwqdfh0000gn/T/TemporaryItems/(A Document Being Saved By muter 2)/BonMot/Build/Intermediates/BonMot.build/Debug/BonMot-OSX.build/PkgInfo"
+    export PKGINFO_PATH=BonMot.framework/PkgInfo
+    export PLATFORM_DEVELOPER_APPLICATIONS_DIR=/Applications/Xcode.app/Contents/Developer/Applications
+    export PLATFORM_DEVELOPER_BIN_DIR=/Applications/Xcode.app/Contents/Developer/usr/bin
+    export PLATFORM_DEVELOPER_LIBRARY_DIR=/Applications/Xcode.app/Contents/Developer/Library
+    export PLATFORM_DEVELOPER_SDK_DIR=/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs
+    export PLATFORM_DEVELOPER_TOOLS_DIR=/Applications/Xcode.app/Contents/Developer/Tools
+    export PLATFORM_DEVELOPER_USR_DIR=/Applications/Xcode.app/Contents/Developer/usr
+    export PLATFORM_DIR=/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform
+    export PLATFORM_DISPLAY_NAME=macOS
+    export PLATFORM_NAME=macosx
+    export PLATFORM_PREFERRED_ARCH=x86_64
+    export PLATFORM_PRODUCT_BUILD_VERSION=10B61
+    export PLIST_FILE_OUTPUT_FORMAT=same-as-input
+    export PLUGINS_FOLDER_PATH=BonMot.framework/Versions/A/PlugIns
+    export PRECOMPS_INCLUDE_HEADERS_FROM_BUILT_PRODUCTS_DIR=YES
+    export PRECOMP_DESTINATION_DIR="/var/folders/0b/dxsqs2d901j1h3_d9pqwqdfh0000gn/T/TemporaryItems/(A Document Being Saved By muter 2)/BonMot/Build/Intermediates/BonMot.build/Debug/BonMot-OSX.build/PrefixHeaders"
+    export PRESERVE_DEAD_CODE_INITS_AND_TERMS=NO
+    export PRIVATE_HEADERS_FOLDER_PATH=BonMot.framework/Versions/A/PrivateHeaders
+    export PRODUCT_BUNDLE_IDENTIFIER=com.raizlabs.BonMot-OSX
+    export PRODUCT_MODULE_NAME=BonMot
+    export PRODUCT_NAME=BonMot
+    export PRODUCT_SETTINGS_PATH="/var/folders/0b/dxsqs2d901j1h3_d9pqwqdfh0000gn/T/TemporaryItems/(A Document Being Saved By muter 2)/BonMot/Sources/Info.plist"
+    export PRODUCT_TYPE=com.apple.product-type.framework
+    export PROFILING_CODE=NO
+    export PROJECT=BonMot
+    export PROJECT_DERIVED_FILE_DIR="/var/folders/0b/dxsqs2d901j1h3_d9pqwqdfh0000gn/T/TemporaryItems/(A Document Being Saved By muter 2)/BonMot/Build/Intermediates/BonMot.build/DerivedSources"
+    export PROJECT_DIR="/var/folders/0b/dxsqs2d901j1h3_d9pqwqdfh0000gn/T/TemporaryItems/(A Document Being Saved By muter 2)/BonMot"
+    export PROJECT_FILE_PATH="/var/folders/0b/dxsqs2d901j1h3_d9pqwqdfh0000gn/T/TemporaryItems/(A Document Being Saved By muter 2)/BonMot/BonMot.xcodeproj"
+    export PROJECT_NAME=BonMot
+    export PROJECT_TEMP_DIR="/var/folders/0b/dxsqs2d901j1h3_d9pqwqdfh0000gn/T/TemporaryItems/(A Document Being Saved By muter 2)/BonMot/Build/Intermediates/BonMot.build"
+    export PROJECT_TEMP_ROOT="/var/folders/0b/dxsqs2d901j1h3_d9pqwqdfh0000gn/T/TemporaryItems/(A Document Being Saved By muter 2)/BonMot/Build/Intermediates"
+    export PUBLIC_HEADERS_FOLDER_PATH=BonMot.framework/Versions/A/Headers
+    export RECURSIVE_SEARCH_PATHS_FOLLOW_SYMLINKS=YES
+    export REMOVE_CVS_FROM_RESOURCES=YES
+    export REMOVE_GIT_FROM_RESOURCES=YES
+    export REMOVE_HEADERS_FROM_EMBEDDED_BUNDLES=YES
+    export REMOVE_HG_FROM_RESOURCES=YES
+    export REMOVE_SVN_FROM_RESOURCES=YES
+    export REZ_COLLECTOR_DIR="/var/folders/0b/dxsqs2d901j1h3_d9pqwqdfh0000gn/T/TemporaryItems/(A Document Being Saved By muter 2)/BonMot/Build/Intermediates/BonMot.build/Debug/BonMot-OSX.build/ResourceManagerResources"
+    export REZ_OBJECTS_DIR="/var/folders/0b/dxsqs2d901j1h3_d9pqwqdfh0000gn/T/TemporaryItems/(A Document Being Saved By muter 2)/BonMot/Build/Intermediates/BonMot.build/Debug/BonMot-OSX.build/ResourceManagerResources/Objects"
+    export REZ_SEARCH_PATHS="/var/folders/0b/dxsqs2d901j1h3_d9pqwqdfh0000gn/T/TemporaryItems/(A Document Being Saved By muter 2)/BonMot/Build/Products/Debug "
+    export SCAN_ALL_SOURCE_FILES_FOR_INCLUDES=NO
+    export SCRIPTS_FOLDER_PATH=BonMot.framework/Versions/A/Resources/Scripts
+    export SCRIPT_INPUT_FILE_COUNT=0
+    export SCRIPT_INPUT_FILE_LIST_COUNT=0
+    export SCRIPT_OUTPUT_FILE_COUNT=0
+    export SCRIPT_OUTPUT_FILE_LIST_COUNT=0
+    export SDKROOT=/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.14.sdk
+    export SDK_DIR=/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.14.sdk
+    export SDK_DIR_macosx10_14=/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.14.sdk
+    export SDK_NAME=macosx10.14
+    export SDK_NAMES=macosx10.14
+    export SDK_PRODUCT_BUILD_VERSION=18B71
+    export SDK_VERSION=10.14
+    export SDK_VERSION_ACTUAL=101400
+    export SDK_VERSION_MAJOR=101400
+    export SDK_VERSION_MINOR=1400
+    export SED=/usr/bin/sed
+    export SEPARATE_STRIP=NO
+    export SEPARATE_SYMBOL_EDIT=NO
+    export SET_DIR_MODE_OWNER_GROUP=YES
+    export SET_FILE_MODE_OWNER_GROUP=NO
+    export SHALLOW_BUNDLE=NO
+    export SHARED_DERIVED_FILE_DIR="/var/folders/0b/dxsqs2d901j1h3_d9pqwqdfh0000gn/T/TemporaryItems/(A Document Being Saved By muter 2)/BonMot/Build/Products/Debug/DerivedSources"
+    export SHARED_FRAMEWORKS_FOLDER_PATH=BonMot.framework/Versions/A/SharedFrameworks
+    export SHARED_PRECOMPS_DIR="/var/folders/0b/dxsqs2d901j1h3_d9pqwqdfh0000gn/T/TemporaryItems/(A Document Being Saved By muter 2)/BonMot/Build/Intermediates/PrecompiledHeaders"
+    export SHARED_SUPPORT_FOLDER_PATH=BonMot.framework/Versions/A/Resources
+    export SKIP_INSTALL=YES
+    export SOURCE_ROOT="/var/folders/0b/dxsqs2d901j1h3_d9pqwqdfh0000gn/T/TemporaryItems/(A Document Being Saved By muter 2)/BonMot"
+    export SRCROOT="/var/folders/0b/dxsqs2d901j1h3_d9pqwqdfh0000gn/T/TemporaryItems/(A Document Being Saved By muter 2)/BonMot"
+    export STRINGS_FILE_OUTPUT_ENCODING=UTF-16
+    export STRIP_BITCODE_FROM_COPIED_FILES=NO
+    export STRIP_INSTALLED_PRODUCT=YES
+    export STRIP_PNG_TEXT=NO
+    export STRIP_STYLE=debugging
+    export STRIP_SWIFT_SYMBOLS=YES
+    export SUPPORTED_PLATFORMS=macosx
+    export SUPPORTS_TEXT_BASED_API=NO
+    export SWIFT_ACTIVE_COMPILATION_CONDITIONS=DEBUG
+    export SWIFT_OPTIMIZATION_LEVEL=-Onone
+    export SWIFT_PLATFORM_TARGET_PREFIX=macosx
+    export SWIFT_SWIFT3_OBJC_INFERENCE=Off
+    export SWIFT_VERSION=4.2
+    export SYMROOT="/var/folders/0b/dxsqs2d901j1h3_d9pqwqdfh0000gn/T/TemporaryItems/(A Document Being Saved By muter 2)/BonMot/Build/Products"
+    export SYSTEM_ADMIN_APPS_DIR=/Applications/Utilities
+    export SYSTEM_APPS_DIR=/Applications
+    export SYSTEM_CORE_SERVICES_DIR=/System/Library/CoreServices
+    export SYSTEM_DEMOS_DIR=/Applications/Extras
+    export SYSTEM_DEVELOPER_APPS_DIR=/Applications/Xcode.app/Contents/Developer/Applications
+    export SYSTEM_DEVELOPER_BIN_DIR=/Applications/Xcode.app/Contents/Developer/usr/bin
+    export SYSTEM_DEVELOPER_DEMOS_DIR="/Applications/Xcode.app/Contents/Developer/Applications/Utilities/Built Examples"
+    export SYSTEM_DEVELOPER_DIR=/Applications/Xcode.app/Contents/Developer
+    export SYSTEM_DEVELOPER_DOC_DIR="/Applications/Xcode.app/Contents/Developer/ADC Reference Library"
+    export SYSTEM_DEVELOPER_GRAPHICS_TOOLS_DIR="/Applications/Xcode.app/Contents/Developer/Applications/Graphics Tools"
+    export SYSTEM_DEVELOPER_JAVA_TOOLS_DIR="/Applications/Xcode.app/Contents/Developer/Applications/Java Tools"
+    export SYSTEM_DEVELOPER_PERFORMANCE_TOOLS_DIR="/Applications/Xcode.app/Contents/Developer/Applications/Performance Tools"
+    export SYSTEM_DEVELOPER_RELEASENOTES_DIR="/Applications/Xcode.app/Contents/Developer/ADC Reference Library/releasenotes"
+    export SYSTEM_DEVELOPER_TOOLS=/Applications/Xcode.app/Contents/Developer/Tools
+    export SYSTEM_DEVELOPER_TOOLS_DOC_DIR="/Applications/Xcode.app/Contents/Developer/ADC Reference Library/documentation/DeveloperTools"
+    export SYSTEM_DEVELOPER_TOOLS_RELEASENOTES_DIR="/Applications/Xcode.app/Contents/Developer/ADC Reference Library/releasenotes/DeveloperTools"
+    export SYSTEM_DEVELOPER_USR_DIR=/Applications/Xcode.app/Contents/Developer/usr
+    export SYSTEM_DEVELOPER_UTILITIES_DIR=/Applications/Xcode.app/Contents/Developer/Applications/Utilities
+    export SYSTEM_DOCUMENTATION_DIR=/Library/Documentation
+    export SYSTEM_KEXT_INSTALL_PATH=/System/Library/Extensions
+    export SYSTEM_LIBRARY_DIR=/System/Library
+    export TAPI_VERIFY_MODE=ErrorsOnly
+    export TARGETNAME=BonMot-OSX
+    export TARGET_BUILD_DIR="/var/folders/0b/dxsqs2d901j1h3_d9pqwqdfh0000gn/T/TemporaryItems/(A Document Being Saved By muter 2)/BonMot/Build/Products/Debug"
+    export TARGET_NAME=BonMot-OSX
+    export TARGET_TEMP_DIR="/var/folders/0b/dxsqs2d901j1h3_d9pqwqdfh0000gn/T/TemporaryItems/(A Document Being Saved By muter 2)/BonMot/Build/Intermediates/BonMot.build/Debug/BonMot-OSX.build"
+    export TEMP_DIR="/var/folders/0b/dxsqs2d901j1h3_d9pqwqdfh0000gn/T/TemporaryItems/(A Document Being Saved By muter 2)/BonMot/Build/Intermediates/BonMot.build/Debug/BonMot-OSX.build"
+    export TEMP_FILES_DIR="/var/folders/0b/dxsqs2d901j1h3_d9pqwqdfh0000gn/T/TemporaryItems/(A Document Being Saved By muter 2)/BonMot/Build/Intermediates/BonMot.build/Debug/BonMot-OSX.build"
+    export TEMP_FILE_DIR="/var/folders/0b/dxsqs2d901j1h3_d9pqwqdfh0000gn/T/TemporaryItems/(A Document Being Saved By muter 2)/BonMot/Build/Intermediates/BonMot.build/Debug/BonMot-OSX.build"
+    export TEMP_ROOT="/var/folders/0b/dxsqs2d901j1h3_d9pqwqdfh0000gn/T/TemporaryItems/(A Document Being Saved By muter 2)/BonMot/Build/Intermediates"
+    export TOOLCHAINS=com.apple.dt.toolchain.XcodeDefault
+    export TOOLCHAIN_DIR=/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain
+    export TREAT_MISSING_BASELINES_AS_TEST_FAILURES=NO
+    export UID=501
+    export UNLOCALIZED_RESOURCES_FOLDER_PATH=BonMot.framework/Versions/A/Resources
+    export UNSTRIPPED_PRODUCT=NO
+    export USER=seandorian
+    export USER_APPS_DIR=/Users/seandorian/Applications
+    export USER_LIBRARY_DIR=/Users/seandorian/Library
+    export USE_DYNAMIC_NO_PIC=YES
+    export USE_HEADERMAP=YES
+    export USE_HEADER_SYMLINKS=NO
+    export VALIDATE_PRODUCT=NO
+    export VALID_ARCHS="i386 x86_64"
+    export VERBOSE_PBXCP=NO
+    export VERSIONING_SYSTEM=apple-generic
+    export VERSIONPLIST_PATH=BonMot.framework/Versions/A/Resources/version.plist
+    export VERSIONS_FOLDER_PATH=BonMot.framework/Versions
+    export VERSION_INFO_BUILDER=seandorian
+    export VERSION_INFO_FILE=BonMot_vers.c
+    export VERSION_INFO_STRING=""@(#)PROGRAM:BonMot  PROJECT:BonMot-1""
+    export WRAPPER_EXTENSION=framework
+    export WRAPPER_NAME=BonMot.framework
+    export WRAPPER_SUFFIX=.framework
+    export WRAP_ASSET_PACKS_IN_SEPARATE_DIRECTORIES=NO
+    export XCODE_APP_SUPPORT_DIR=/Applications/Xcode.app/Contents/Developer/Library/Xcode
+    export XCODE_PRODUCT_BUILD_VERSION=10B61
+    export XCODE_VERSION_ACTUAL=1010
+    export XCODE_VERSION_MAJOR=1000
+    export XCODE_VERSION_MINOR=1010
+    export XPCSERVICES_FOLDER_PATH=BonMot.framework/Versions/A/XPCServices
+    export YACC=yacc
+    export arch=undefined_arch
+    export variant=normal
+    /bin/sh -c /var/folders/0b/dxsqs2d901j1h3_d9pqwqdfh0000gn/T/TemporaryItems/\\(A\\\ Document\\\ Being\\\ Saved\\\ By\\\ muter\\\ 2\\)/BonMot/Build/Intermediates/BonMot.build/Debug/BonMot-OSX.build/Script-CD4B2FD01D9B0B1F007CF808.sh
+Loading configuration from '.swiftlint.yml'
+configuration error: 'last_where' is not a valid rule identifier
+configuration error: 'unused_control_flow_label' is not a valid rule identifier
+Valid rule identifiers:
+anyobject_protocol
+array_init
+attributes
+block_based_kvo
+class_delegate_protocol
+closing_brace
+closure_body_length
+closure_end_indentation
+closure_parameter_position
+closure_spacing
+collection_alignment
+colon
+comma
+compiler_protocol_init
+conditional_returns_on_newline
+contains_over_first_not_nil
+control_statement
+convenience_type
+custom_rules
+cyclomatic_complexity
+discarded_notification_center_observer
+discouraged_direct_init
+discouraged_object_literal
+discouraged_optional_boolean
+discouraged_optional_collection
+dynamic_inline
+empty_count
+empty_enum_arguments
+empty_parameters
+empty_parentheses_with_trailing_closure
+empty_string
+empty_xctest_method
+explicit_acl
+explicit_enum_raw_value
+explicit_init
+explicit_self
+explicit_top_level_acl
+explicit_type_interface
+extension_access_modifier
+fallthrough
+fatal_error_message
+file_header
+file_length
+file_name
+first_where
+for_where
+force_cast
+force_try
+force_unwrapping
+function_body_length
+function_default_parameter_at_end
+function_parameter_count
+generic_type_name
+identical_operands
+identifier_name
+implicit_getter
+implicit_return
+implicitly_unwrapped_optional
+inert_defer
+is_disjoint
+joined_default_parameter
+large_tuple
+leading_whitespace
+legacy_cggeometry_functions
+legacy_constant
+legacy_constructor
+legacy_nsgeometry_functions
+legacy_random
+let_var_whitespace
+line_length
+literal_expression_end_indentation
+lower_acl_than_parent
+mark
+missing_docs
+modifier_order
+multiline_arguments
+multiline_arguments_brackets
+multiline_function_chains
+multiline_literal_brackets
+multiline_parameters
+multiline_parameters_brackets
+multiple_closures_with_trailing_closure
+nesting
+nimble_operator
+no_extension_access_modifier
+no_fallthrough_only
+no_grouping_extension
+notification_center_detachment
+number_separator
+object_literal
+opening_brace
+operator_usage_whitespace
+operator_whitespace
+overridden_super_call
+override_in_extension
+pattern_matching_keywords
+prefixed_toplevel_constant
+private_action
+private_outlet
+private_over_fileprivate
+private_unit_test
+prohibited_interface_builder
+prohibited_super_call
+protocol_property_accessors_order
+quick_discouraged_call
+quick_discouraged_focused_test
+quick_discouraged_pending_test
+redundant_discardable_let
+redundant_nil_coalescing
+redundant_objc_attribute
+redundant_optional_initialization
+redundant_set_access_control
+redundant_string_enum_value
+redundant_type_annotation
+redundant_void_return
+required_enum_case
+return_arrow_whitespace
+shorthand_operator
+single_test_class
+sorted_first_last
+sorted_imports
+statement_position
+static_operator
+strict_fileprivate
+superfluous_disable_command
+switch_case_alignment
+switch_case_on_newline
+syntactic_sugar
+todo
+toggle_bool
+trailing_closure
+trailing_comma
+trailing_newline
+trailing_semicolon
+trailing_whitespace
+type_body_length
+type_name
+unavailable_function
+unneeded_break_in_switch
+unneeded_parentheses_in_closure_argument
+untyped_error_in_catch
+unused_closure_parameter
+unused_enumerated
+unused_import
+unused_optional_binding
+unused_private_declaration
+valid_ibinspectable
+vertical_parameter_alignment
+vertical_parameter_alignment_on_call
+vertical_whitespace
+vertical_whitespace_between_cases
+void_return
+weak_delegate
+xctfail_message
+yoda_condition
+Linting Swift files at paths 
+Linting 'CatalogViewController.swift' (1/56)
+Linting 'DemoStrings.swift' (2/56)
+Linting 'StyleViewController.swift' (3/56)
+Linting 'AppDelegate.swift' (4/56)
+Linting 'ComposableTests.swift' (5/56)
+Linting 'NSAttributedStringDebugTests.swift' (6/56)
+Linting 'AttributedStringStyleTests.swift' (7/56)
+Linting 'EmphasisTests.swift' (8/56)
+/var/folders/0b/dxsqs2d901j1h3_d9pqwqdfh0000gn/T/TemporaryItems/(A Document Being Saved By muter 2)/BonMot/Example-iOS/DemoStrings.swift:162:17: warning: Implicit Return Violation: Prefer implicit returns in closures. (implicit_return)
+/var/folders/0b/dxsqs2d901j1h3_d9pqwqdfh0000gn/T/TemporaryItems/(A Document Being Saved By muter 2)/BonMot/Example-iOS/DemoStrings.swift:10:8: warning: Sorted Imports Violation: Imports should be sorted. (sorted_imports)
+/var/folders/0b/dxsqs2d901j1h3_d9pqwqdfh0000gn/T/TemporaryItems/(A Document Being Saved By muter 2)/BonMot/Example-iOS/StyleViewController.swift:10:8: warning: Sorted Imports Violation: Imports should be sorted. (sorted_imports)
+Linting 'AccessTests.swift' (9/56)
+/var/folders/0b/dxsqs2d901j1h3_d9pqwqdfh0000gn/T/TemporaryItems/(A Document Being Saved By muter 2)/BonMot/Tests/NSAttributedStringDebugTests.swift:10:18: warning: Sorted Imports Violation: Imports should be sorted. (sorted_imports)
+/var/folders/0b/dxsqs2d901j1h3_d9pqwqdfh0000gn/T/TemporaryItems/(A Document Being Saved By muter 2)/BonMot/Tests/AttributedStringStyleTests.swift:521:13: warning: Implicit Return Violation: Prefer implicit returns in closures. (implicit_return)
+/var/folders/0b/dxsqs2d901j1h3_d9pqwqdfh0000gn/T/TemporaryItems/(A Document Being Saved By muter 2)/BonMot/Tests/AttributedStringStyleTests.swift:527:13: warning: Implicit Return Violation: Prefer implicit returns in closures. (implicit_return)
+/var/folders/0b/dxsqs2d901j1h3_d9pqwqdfh0000gn/T/TemporaryItems/(A Document Being Saved By muter 2)/BonMot/Tests/AttributedStringStyleTests.swift:533:13: warning: Implicit Return Violation: Prefer implicit returns in closures. (implicit_return)
+/var/folders/0b/dxsqs2d901j1h3_d9pqwqdfh0000gn/T/TemporaryItems/(A Document Being Saved By muter 2)/BonMot/Tests/AttributedStringStyleTests.swift:539:13: warning: Implicit Return Violation: Prefer implicit returns in closures. (implicit_return)
+/var/folders/0b/dxsqs2d901j1h3_d9pqwqdfh0000gn/T/TemporaryItems/(A Document Being Saved By muter 2)/BonMot/Tests/AttributedStringStyleTests.swift:545:13: warning: Implicit Return Violation: Prefer implicit returns in closures. (implicit_return)
+/var/folders/0b/dxsqs2d901j1h3_d9pqwqdfh0000gn/T/TemporaryItems/(A Document Being Saved By muter 2)/BonMot/Tests/AttributedStringStyleTests.swift:551:13: warning: Implicit Return Violation: Prefer implicit returns in closures. (implicit_return)
+/var/folders/0b/dxsqs2d901j1h3_d9pqwqdfh0000gn/T/TemporaryItems/(A Document Being Saved By muter 2)/BonMot/Tests/AttributedStringStyleTests.swift:10:18: warning: Sorted Imports Violation: Imports should be sorted. (sorted_imports)
+/var/folders/0b/dxsqs2d901j1h3_d9pqwqdfh0000gn/T/TemporaryItems/(A Document Being Saved By muter 2)/BonMot/Example-iOS/AppDelegate.swift:10:8: warning: Sorted Imports Violation: Imports should be sorted. (sorted_imports)
+Linting 'Helpers.swift' (10/56)
+Linting 'UIKitBehaviorTests.swift' (11/56)
+Linting 'TextAlignmentConstraintTests.swift' (12/56)
+/var/folders/0b/dxsqs2d901j1h3_d9pqwqdfh0000gn/T/TemporaryItems/(A Document Being Saved By muter 2)/BonMot/Tests/EmphasisTests.swift:10:18: warning: Sorted Imports Violation: Imports should be sorted. (sorted_imports)
+Linting 'FontInspectorTests.swift' (13/56)
+Linting 'XMLTagStyleBuilderTests.swift' (14/56)
+Linting 'AdaptiveStyleTests.swift' (15/56)
+Linting 'AssertHelpers.swift' (16/56)
+Linting 'BONFontBehaviorTests.swift' (17/56)
+/var/folders/0b/dxsqs2d901j1h3_d9pqwqdfh0000gn/T/TemporaryItems/(A Document Being Saved By muter 2)/BonMot/Tests/FontInspectorTests.swift:10:18: warning: Sorted Imports Violation: Imports should be sorted. (sorted_imports)
+Linting 'UIKitBonMotTests.swift' (18/56)
+Linting 'TransformTests.swift' (19/56)
+/var/folders/0b/dxsqs2d901j1h3_d9pqwqdfh0000gn/T/TemporaryItems/(A Document Being Saved By muter 2)/BonMot/Tests/TextAlignmentConstraintTests.swift:18:18: warning: Sorted Imports Violation: Imports should be sorted. (sorted_imports)
+Linting 'ImageTintingTests.swift' (20/56)
+/var/folders/0b/dxsqs2d901j1h3_d9pqwqdfh0000gn/T/TemporaryItems/(A Document Being Saved By muter 2)/BonMot/Tests/XMLTagStyleBuilderTests.swift:10:8: warning: Sorted Imports Violation: Imports should be sorted. (sorted_imports)
+Linting 'Compatibility+Tests.swift' (21/56)
+/var/folders/0b/dxsqs2d901j1h3_d9pqwqdfh0000gn/T/TemporaryItems/(A Document Being Saved By muter 2)/BonMot/Tests/AdaptiveStyleTests.swift:10:8: warning: Sorted Imports Violation: Imports should be sorted. (sorted_imports)
+/var/folders/0b/dxsqs2d901j1h3_d9pqwqdfh0000gn/T/TemporaryItems/(A Document Being Saved By muter 2)/BonMot/Tests/AdaptiveStyleTests.swift:11:18: warning: Sorted Imports Violation: Imports should be sorted. (sorted_imports)
+Linting 'ContextualAlternates.swift' (22/56)
+/var/folders/0b/dxsqs2d901j1h3_d9pqwqdfh0000gn/T/TemporaryItems/(A Document Being Saved By muter 2)/BonMot/Tests/ComposableTests.swift:10:18: warning: Sorted Imports Violation: Imports should be sorted. (sorted_imports)
+Linting 'FontFeatures.swift' (23/56)
+/var/folders/0b/dxsqs2d901j1h3_d9pqwqdfh0000gn/T/TemporaryItems/(A Document Being Saved By muter 2)/BonMot/Tests/BONFontBehaviorTests.swift:10:8: warning: Sorted Imports Violation: Imports should be sorted. (sorted_imports)
+/var/folders/0b/dxsqs2d901j1h3_d9pqwqdfh0000gn/T/TemporaryItems/(A Document Being Saved By muter 2)/BonMot/Tests/AssertHelpers.swift:10:8: warning: Sorted Imports Violation: Imports should be sorted. (sorted_imports)
+Linting 'StylisticAlternates.swift' (24/56)
+Linting 'Tracking.swift' (25/56)
+/var/folders/0b/dxsqs2d901j1h3_d9pqwqdfh0000gn/T/TemporaryItems/(A Document Being Saved By muter 2)/BonMot/Tests/UIKitBonMotTests.swift:10:8: warning: Sorted Imports Violation: Imports should be sorted. (sorted_imports)
+Linting 'Emphasis.swift' (26/56)
+/var/folders/0b/dxsqs2d901j1h3_d9pqwqdfh0000gn/T/TemporaryItems/(A Document Being Saved By muter 2)/BonMot/Tests/ImageTintingTests.swift:16:18: warning: Sorted Imports Violation: Imports should be sorted. (sorted_imports)
+Linting 'NSAttributedString+BonMot.swift' (27/56)
+Linting 'StringStyle.swift' (28/56)
+/var/folders/0b/dxsqs2d901j1h3_d9pqwqdfh0000gn/T/TemporaryItems/(A Document Being Saved By muter 2)/BonMot/Sources/StylisticAlternates.swift:282:12: warning: Static Operator Violation: Operators should be declared as static functions, not free functions. (static_operator)
+Linting 'Compatibility.swift' (29/56)
+Linting 'NSAttributedString+Adaptive.swift' (30/56)
+/var/folders/0b/dxsqs2d901j1h3_d9pqwqdfh0000gn/T/TemporaryItems/(A Document Being Saved By muter 2)/BonMot/muter_tmp/ContextualAlternates.swift:89:12: warning: Static Operator Violation: Operators should be declared as static functions, not free functions. (static_operator)
+Linting 'Tracking+Adaptive.swift' (31/56)
+/var/folders/0b/dxsqs2d901j1h3_d9pqwqdfh0000gn/T/TemporaryItems/(A Document Being Saved By muter 2)/BonMot/Tests/TransformTests.swift:10:18: warning: Sorted Imports Violation: Imports should be sorted. (sorted_imports)
+Linting 'AttributedStringTransformation.swift' (32/56)
+Linting 'AdaptiveStyleTransformation.swift' (33/56)
+Linting 'AdaptiveStyle.swift' (34/56)
+Linting 'UIKit+Helpers.swift' (35/56)
+Linting 'UIKit+AdaptableTextContainerSupport.swift' (36/56)
+Linting 'Tab+Adaptive.swift' (37/56)
+Linting 'EmbeddedTransformation.swift' (38/56)
+Linting 'TextAlignmentConstraint.swift' (39/56)
+Linting 'AdaptableTextContainer.swift' (40/56)
+Linting 'StyleableUIElement.swift' (41/56)
+Linting 'ContextualAlternates.swift' (42/56)
+Linting 'AccessibilityHeadingLevel.swift' (43/56)
+Linting 'StringStyle+Part.swift' (44/56)
+Linting 'Transform.swift' (45/56)
+Linting 'Composable.swift' (46/56)
+Linting 'FontFeatures.swift' (47/56)
+Linting 'Platform.swift' (48/56)
+Linting 'Tab.swift' (49/56)
+Linting 'Image+Tinting.swift' (50/56)
+Linting 'Ligatures.swift' (51/56)
+Linting 'XMLBuilder.swift' (52/56)
+Linting 'NamedStyles.swift' (53/56)
+Linting 'MutableCopying.swift' (54/56)
+Linting 'FontInspector.swift' (55/56)
+Linting 'Special.swift' (56/56)
+/var/folders/0b/dxsqs2d901j1h3_d9pqwqdfh0000gn/T/TemporaryItems/(A Document Being Saved By muter 2)/BonMot/Sources/FontInspector.swift:12:12: warning: Sorted Imports Violation: Imports should be sorted. (sorted_imports)
+/var/folders/0b/dxsqs2d901j1h3_d9pqwqdfh0000gn/T/TemporaryItems/(A Document Being Saved By muter 2)/BonMot/Sources/ContextualAlternates.swift:89:12: warning: Static Operator Violation: Operators should be declared as static functions, not free functions. (static_operator)
+/var/folders/0b/dxsqs2d901j1h3_d9pqwqdfh0000gn/T/TemporaryItems/(A Document Being Saved By muter 2)/BonMot/Sources/FontFeatures.swift:211:17: warning: Implicit Return Violation: Prefer implicit returns in closures. (implicit_return)
+/var/folders/0b/dxsqs2d901j1h3_d9pqwqdfh0000gn/T/TemporaryItems/(A Document Being Saved By muter 2)/BonMot/muter_tmp/FontFeatures.swift:211:17: warning: Implicit Return Violation: Prefer implicit returns in closures. (implicit_return)
+Done linting! Found 30 violations, 0 serious in 56 files.
+
+PhaseScriptExecution SwiftLint /var/folders/0b/dxsqs2d901j1h3_d9pqwqdfh0000gn/T/TemporaryItems/(A\ Document\ Being\ Saved\ By\ muter\ 2)/BonMot/Build/Intermediates/BonMot.build/Debug/BonMot-OSXTests.build/Script-CD4B2FD11D9B0B2E007CF808.sh (in target: BonMot-OSXTests)
+    cd /var/folders/0b/dxsqs2d901j1h3_d9pqwqdfh0000gn/T/TemporaryItems/(A\ Document\ Being\ Saved\ By\ muter\ 2)/BonMot
+    export ACTION=build
+    export ALTERNATE_GROUP=staff
+    export ALTERNATE_MODE=u+w,go-w,a+rX
+    export ALTERNATE_OWNER=seandorian
+    export ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES=NO
+    export ALWAYS_SEARCH_USER_PATHS=NO
+    export ALWAYS_USE_SEPARATE_HEADERMAPS=NO
+    export APPLE_INTERNAL_DEVELOPER_DIR=/AppleInternal/Developer
+    export APPLE_INTERNAL_DIR=/AppleInternal
+    export APPLE_INTERNAL_DOCUMENTATION_DIR=/AppleInternal/Documentation
+    export APPLE_INTERNAL_LIBRARY_DIR=/AppleInternal/Library
+    export APPLE_INTERNAL_TOOLS=/AppleInternal/Developer/Tools
+    export APPLICATION_EXTENSION_API_ONLY=NO
+    export APPLY_RULES_IN_COPY_FILES=NO
+    export ARCHS=x86_64
+    export ARCHS_STANDARD=x86_64
+    export ARCHS_STANDARD_32_64_BIT="x86_64 i386"
+    export ARCHS_STANDARD_32_BIT=i386
+    export ARCHS_STANDARD_64_BIT=x86_64
+    export ARCHS_STANDARD_INCLUDING_64_BIT=x86_64
+    export AVAILABLE_PLATFORMS="appletvos appletvsimulator iphoneos iphonesimulator macosx watchos watchsimulator"
+    export BITCODE_GENERATION_MODE=marker
+    export BUILD_ACTIVE_RESOURCES_ONLY=NO
+    export BUILD_COMPONENTS="headers build"
+    export BUILD_DIR="/var/folders/0b/dxsqs2d901j1h3_d9pqwqdfh0000gn/T/TemporaryItems/(A Document Being Saved By muter 2)/BonMot/Build/Products"
+    export BUILD_ROOT="/var/folders/0b/dxsqs2d901j1h3_d9pqwqdfh0000gn/T/TemporaryItems/(A Document Being Saved By muter 2)/BonMot/Build/Products"
+    export BUILD_STYLE=
+    export BUILD_VARIANTS=normal
+    export BUILT_PRODUCTS_DIR="/var/folders/0b/dxsqs2d901j1h3_d9pqwqdfh0000gn/T/TemporaryItems/(A Document Being Saved By muter 2)/BonMot/Build/Products/Debug"
+    export CACHE_ROOT=/var/folders/0b/dxsqs2d901j1h3_d9pqwqdfh0000gn/C/com.apple.DeveloperTools/10.1-10B61/Xcode
+    export CCHROOT=/var/folders/0b/dxsqs2d901j1h3_d9pqwqdfh0000gn/C/com.apple.DeveloperTools/10.1-10B61/Xcode
+    export CHMOD=/bin/chmod
+    export CHOWN=/usr/sbin/chown
+    export CLANG_ANALYZER_NONNULL=YES
+    export CLANG_COVERAGE_MAPPING=YES
+    export CLANG_CXX_LANGUAGE_STANDARD=gnu++0x
+    export CLANG_CXX_LIBRARY=libc++
+    export CLANG_ENABLE_MODULES=YES
+    export CLANG_ENABLE_OBJC_ARC=YES
+    export CLANG_MODULES_BUILD_SESSION_FILE=/Users/seandorian/Library/Developer/Xcode/DerivedData/ModuleCache.noindex/Session.modulevalidation
+    export CLANG_PROFILE_DATA_DIRECTORY="/var/folders/0b/dxsqs2d901j1h3_d9pqwqdfh0000gn/T/TemporaryItems/(A Document Being Saved By muter 2)/BonMot/Build/Intermediates/CodeCoverage/ProfileData"
+    export CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING=YES
+    export CLANG_WARN_BOOL_CONVERSION=YES
+    export CLANG_WARN_COMMA=YES
+    export CLANG_WARN_CONSTANT_CONVERSION=YES
+    export CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS=YES
+    export CLANG_WARN_DIRECT_OBJC_ISA_USAGE=YES_ERROR
+    export CLANG_WARN_DOCUMENTATION_COMMENTS=YES
+    export CLANG_WARN_EMPTY_BODY=YES
+    export CLANG_WARN_ENUM_CONVERSION=YES
+    export CLANG_WARN_INFINITE_RECURSION=YES
+    export CLANG_WARN_INT_CONVERSION=YES
+    export CLANG_WARN_NON_LITERAL_NULL_CONVERSION=YES
+    export CLANG_WARN_NULLABLE_TO_NONNULL_CONVERSION=YES
+    export CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF=YES
+    export CLANG_WARN_OBJC_LITERAL_CONVERSION=YES
+    export CLANG_WARN_OBJC_ROOT_CLASS=YES_ERROR
+    export CLANG_WARN_RANGE_LOOP_ANALYSIS=YES
+    export CLANG_WARN_STRICT_PROTOTYPES=YES
+    export CLANG_WARN_SUSPICIOUS_MOVE=YES
+    export CLANG_WARN_SUSPICIOUS_MOVES=YES
+    export CLANG_WARN_UNREACHABLE_CODE=YES
+    export CLANG_WARN__DUPLICATE_METHOD_MATCH=YES
+    export CLASS_FILE_DIR="/var/folders/0b/dxsqs2d901j1h3_d9pqwqdfh0000gn/T/TemporaryItems/(A Document Being Saved By muter 2)/BonMot/Build/Intermediates/BonMot.build/Debug/BonMot-OSXTests.build/JavaClasses"
+    export CLEAN_PRECOMPS=YES
+    export CLONE_HEADERS=NO
+    export CODESIGNING_FOLDER_PATH="/var/folders/0b/dxsqs2d901j1h3_d9pqwqdfh0000gn/T/TemporaryItems/(A Document Being Saved By muter 2)/BonMot/Build/Products/Debug/BonMot-OSXTests.xctest"
+    export CODE_SIGNING_ALLOWED=YES
+    export CODE_SIGN_INJECT_BASE_ENTITLEMENTS=YES
+    export COLOR_DIAGNOSTICS=NO
+    export COMBINE_HIDPI_IMAGES=YES
+    export COMPILER_INDEX_STORE_ENABLE=Default
+    export COMPOSITE_SDK_DIRS="/var/folders/0b/dxsqs2d901j1h3_d9pqwqdfh0000gn/T/TemporaryItems/(A Document Being Saved By muter 2)/BonMot/Build/Intermediates/CompositeSDKs"
+    export COMPRESS_PNG_FILES=NO
+    export CONFIGURATION=Debug
+    export CONFIGURATION_BUILD_DIR="/var/folders/0b/dxsqs2d901j1h3_d9pqwqdfh0000gn/T/TemporaryItems/(A Document Being Saved By muter 2)/BonMot/Build/Products/Debug"
+    export CONFIGURATION_TEMP_DIR="/var/folders/0b/dxsqs2d901j1h3_d9pqwqdfh0000gn/T/TemporaryItems/(A Document Being Saved By muter 2)/BonMot/Build/Intermediates/BonMot.build/Debug"
+    export CONTENTS_FOLDER_PATH=BonMot-OSXTests.xctest/Contents
+    export COPYING_PRESERVES_HFS_DATA=NO
+    export COPY_HEADERS_RUN_UNIFDEF=NO
+    export COPY_PHASE_STRIP=NO
+    export COPY_RESOURCES_FROM_STATIC_FRAMEWORKS=YES
+    export CP=/bin/cp
+    export CREATE_INFOPLIST_SECTION_IN_BINARY=NO
+    export CURRENT_ARCH=undefined_arch
+    export CURRENT_PROJECT_VERSION=1
+    export CURRENT_VARIANT=normal
+    export DEAD_CODE_STRIPPING=NO
+    export DEBUGGING_SYMBOLS=YES
+    export DEBUG_INFORMATION_FORMAT=dwarf
+    export DEFAULT_COMPILER=com.apple.compilers.llvm.clang.1_0
+    export DEFAULT_KEXT_INSTALL_PATH=/System/Library/Extensions
+    export DEFINES_MODULE=NO
+    export DEPLOYMENT_LOCATION=NO
+    export DEPLOYMENT_POSTPROCESSING=NO
+    export DEPLOYMENT_TARGET_CLANG_ENV_NAME=MACOSX_DEPLOYMENT_TARGET
+    export DEPLOYMENT_TARGET_CLANG_FLAG_NAME=mmacosx-version-min
+    export DEPLOYMENT_TARGET_LD_ENV_NAME=MACOSX_DEPLOYMENT_TARGET
+    export DEPLOYMENT_TARGET_LD_FLAG_NAME=macosx_version_min
+    export DEPLOYMENT_TARGET_SETTING_NAME=MACOSX_DEPLOYMENT_TARGET
+    export DEPLOYMENT_TARGET_SUGGESTED_VALUES="10.6 10.7 10.8 10.9 10.10 10.11 10.12 10.13 10.14"
+    export DERIVED_FILES_DIR="/var/folders/0b/dxsqs2d901j1h3_d9pqwqdfh0000gn/T/TemporaryItems/(A Document Being Saved By muter 2)/BonMot/Build/Intermediates/BonMot.build/Debug/BonMot-OSXTests.build/DerivedSources"
+    export DERIVED_FILE_DIR="/var/folders/0b/dxsqs2d901j1h3_d9pqwqdfh0000gn/T/TemporaryItems/(A Document Being Saved By muter 2)/BonMot/Build/Intermediates/BonMot.build/Debug/BonMot-OSXTests.build/DerivedSources"
+    export DERIVED_SOURCES_DIR="/var/folders/0b/dxsqs2d901j1h3_d9pqwqdfh0000gn/T/TemporaryItems/(A Document Being Saved By muter 2)/BonMot/Build/Intermediates/BonMot.build/Debug/BonMot-OSXTests.build/DerivedSources"
+    export DEVELOPER_APPLICATIONS_DIR=/Applications/Xcode.app/Contents/Developer/Applications
+    export DEVELOPER_BIN_DIR=/Applications/Xcode.app/Contents/Developer/usr/bin
+    export DEVELOPER_DIR=/Applications/Xcode.app/Contents/Developer
+    export DEVELOPER_FRAMEWORKS_DIR=/Applications/Xcode.app/Contents/Developer/Library/Frameworks
+    export DEVELOPER_FRAMEWORKS_DIR_QUOTED=/Applications/Xcode.app/Contents/Developer/Library/Frameworks
+    export DEVELOPER_LIBRARY_DIR=/Applications/Xcode.app/Contents/Developer/Library
+    export DEVELOPER_SDK_DIR=/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs
+    export DEVELOPER_TOOLS_DIR=/Applications/Xcode.app/Contents/Developer/Tools
+    export DEVELOPER_USR_DIR=/Applications/Xcode.app/Contents/Developer/usr
+    export DEVELOPMENT_LANGUAGE=English
+    export DOCUMENTATION_FOLDER_PATH=BonMot-OSXTests.xctest/Contents/Resources/English.lproj/Documentation
+    export DO_HEADER_SCANNING_IN_JAM=NO
+    export DSTROOT=/tmp/BonMot.dst
+    export DT_TOOLCHAIN_DIR=/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain
+    export DWARF_DSYM_FILE_NAME=BonMot-OSXTests.xctest.dSYM
+    export DWARF_DSYM_FILE_SHOULD_ACCOMPANY_PRODUCT=NO
+    export DWARF_DSYM_FOLDER_PATH="/var/folders/0b/dxsqs2d901j1h3_d9pqwqdfh0000gn/T/TemporaryItems/(A Document Being Saved By muter 2)/BonMot/Build/Products/Debug"
+    export EMBEDDED_CONTENT_CONTAINS_SWIFT=NO
+    export EMBEDDED_PROFILE_NAME=embedded.provisionprofile
+    export EMBED_ASSET_PACKS_IN_PRODUCT_BUNDLE=NO
+    export ENABLE_BITCODE=NO
+    export ENABLE_DEFAULT_HEADER_SEARCH_PATHS=YES
+    export ENABLE_HEADER_DEPENDENCIES=YES
+    export ENABLE_ON_DEMAND_RESOURCES=NO
+    export ENABLE_STRICT_OBJC_MSGSEND=YES
+    export ENABLE_TESTABILITY=YES
+    export EXCLUDED_INSTALLSRC_SUBDIRECTORY_PATTERNS=".DS_Store .svn .git .hg CVS"
+    export EXCLUDED_RECURSIVE_SEARCH_PATH_SUBDIRECTORIES="*.nib *.lproj *.framework *.gch *.xcode* *.xcassets (*) .DS_Store CVS .svn .git .hg *.pbproj *.pbxproj"
+    export EXECUTABLES_FOLDER_PATH=BonMot-OSXTests.xctest/Contents/Executables
+    export EXECUTABLE_FOLDER_PATH=BonMot-OSXTests.xctest/Contents/MacOS
+    export EXECUTABLE_NAME=BonMot-OSXTests
+    export EXECUTABLE_PATH=BonMot-OSXTests.xctest/Contents/MacOS/BonMot-OSXTests
+    export FILE_LIST="/var/folders/0b/dxsqs2d901j1h3_d9pqwqdfh0000gn/T/TemporaryItems/(A Document Being Saved By muter 2)/BonMot/Build/Intermediates/BonMot.build/Debug/BonMot-OSXTests.build/Objects/LinkFileList"
+    export FIXED_FILES_DIR="/var/folders/0b/dxsqs2d901j1h3_d9pqwqdfh0000gn/T/TemporaryItems/(A Document Being Saved By muter 2)/BonMot/Build/Intermediates/BonMot.build/Debug/BonMot-OSXTests.build/FixedFiles"
+    export FRAMEWORKS_FOLDER_PATH=BonMot-OSXTests.xctest/Contents/Frameworks
+    export FRAMEWORK_FLAG_PREFIX=-framework
+    export FRAMEWORK_SEARCH_PATHS="/var/folders/0b/dxsqs2d901j1h3_d9pqwqdfh0000gn/T/TemporaryItems/(A Document Being Saved By muter 2)/BonMot/Build/Products/Debug "
+    export FRAMEWORK_VERSION=A
+    export FULL_PRODUCT_NAME=BonMot-OSXTests.xctest
+    export GCC3_VERSION=3.3
+    export GCC_C_LANGUAGE_STANDARD=gnu99
+    export GCC_DYNAMIC_NO_PIC=NO
+    export GCC_INLINES_ARE_PRIVATE_EXTERN=YES
+    export GCC_NO_COMMON_BLOCKS=YES
+    export GCC_OPTIMIZATION_LEVEL=0
+    export GCC_PFE_FILE_C_DIALECTS="c objective-c c++ objective-c++"
+    export GCC_PREPROCESSOR_DEFINITIONS="DEBUG=1 "
+    export GCC_TREAT_WARNINGS_AS_ERRORS=NO
+    export GCC_VERSION=com.apple.compilers.llvm.clang.1_0
+    export GCC_VERSION_IDENTIFIER=com_apple_compilers_llvm_clang_1_0
+    export GCC_WARN_64_TO_32_BIT_CONVERSION=YES
+    export GCC_WARN_ABOUT_RETURN_TYPE=YES_ERROR
+    export GCC_WARN_SHADOW=YES
+    export GCC_WARN_UNDECLARED_SELECTOR=YES
+    export GCC_WARN_UNINITIALIZED_AUTOS=YES_AGGRESSIVE
+    export GCC_WARN_UNUSED_FUNCTION=YES
+    export GCC_WARN_UNUSED_VARIABLE=YES
+    export GENERATE_MASTER_OBJECT_FILE=NO
+    export GENERATE_PKGINFO_FILE=NO
+    export GENERATE_PROFILING_CODE=NO
+    export GENERATE_TEXT_BASED_STUBS=NO
+    export GID=20
+    export GROUP=staff
+    export HEADERMAP_INCLUDES_FLAT_ENTRIES_FOR_TARGET_BEING_BUILT=YES
+    export HEADERMAP_INCLUDES_FRAMEWORK_ENTRIES_FOR_ALL_PRODUCT_TYPES=YES
+    export HEADERMAP_INCLUDES_NONPUBLIC_NONPRIVATE_HEADERS=YES
+    export HEADERMAP_INCLUDES_PROJECT_HEADERS=YES
+    export HEADERMAP_USES_FRAMEWORK_PREFIX_ENTRIES=YES
+    export HEADERMAP_USES_VFS=NO
+    export HEADER_SEARCH_PATHS="/var/folders/0b/dxsqs2d901j1h3_d9pqwqdfh0000gn/T/TemporaryItems/(A Document Being Saved By muter 2)/BonMot/Build/Products/Debug/include "
+    export HIDE_BITCODE_SYMBOLS=YES
+    export HOME=/Users/seandorian
+    export ICONV=/usr/bin/iconv
+    export INFOPLIST_EXPAND_BUILD_SETTINGS=YES
+    export INFOPLIST_FILE=Tests/Info.plist
+    export INFOPLIST_OUTPUT_FORMAT=same-as-input
+    export INFOPLIST_PATH=BonMot-OSXTests.xctest/Contents/Info.plist
+    export INFOPLIST_PREPROCESS=NO
+    export INFOSTRINGS_PATH=BonMot-OSXTests.xctest/Contents/Resources/English.lproj/InfoPlist.strings
+    export INLINE_PRIVATE_FRAMEWORKS=NO
+    export INSTALLHDRS_COPY_PHASE=NO
+    export INSTALLHDRS_SCRIPT_PHASE=NO
+    export INSTALL_DIR=/tmp/BonMot.dst
+    export INSTALL_GROUP=staff
+    export INSTALL_MODE_FLAG=u+w,go-w,a+rX
+    export INSTALL_OWNER=seandorian
+    export INSTALL_ROOT=/tmp/BonMot.dst
+    export JAVAC_DEFAULT_FLAGS="-J-Xms64m -J-XX:NewSize=4M -J-Dfile.encoding=UTF8"
+    export JAVA_APP_STUB=/System/Library/Frameworks/JavaVM.framework/Resources/MacOS/JavaApplicationStub
+    export JAVA_ARCHIVE_CLASSES=YES
+    export JAVA_ARCHIVE_TYPE=JAR
+    export JAVA_COMPILER=/usr/bin/javac
+    export JAVA_FOLDER_PATH=BonMot-OSXTests.xctest/Contents/Resources/Java
+    export JAVA_FRAMEWORK_RESOURCES_DIRS=Resources
+    export JAVA_JAR_FLAGS=cv
+    export JAVA_SOURCE_SUBDIR=.
+    export JAVA_USE_DEPENDENCIES=YES
+    export JAVA_ZIP_FLAGS=-urg
+    export JIKES_DEFAULT_FLAGS="+E +OLDCSO"
+    export KASAN_DEFAULT_CFLAGS="-DKASAN=1 -fsanitize=address -mllvm -asan-globals-live-support -mllvm -asan-force-dynamic-shadow"
+    export KEEP_PRIVATE_EXTERNS=NO
+    export LD_DEPENDENCY_INFO_FILE="/var/folders/0b/dxsqs2d901j1h3_d9pqwqdfh0000gn/T/TemporaryItems/(A Document Being Saved By muter 2)/BonMot/Build/Intermediates/BonMot.build/Debug/BonMot-OSXTests.build/Objects-normal/undefined_arch/BonMot-OSXTests_dependency_info.dat"
+    export LD_GENERATE_MAP_FILE=NO
+    export LD_MAP_FILE_PATH="/var/folders/0b/dxsqs2d901j1h3_d9pqwqdfh0000gn/T/TemporaryItems/(A Document Being Saved By muter 2)/BonMot/Build/Intermediates/BonMot.build/Debug/BonMot-OSXTests.build/BonMot-OSXTests-LinkMap-normal-undefined_arch.txt"
+    export LD_NO_PIE=NO
+    export LD_QUOTE_LINKER_ARGUMENTS_FOR_COMPILER_DRIVER=YES
+    export LD_RUNPATH_SEARCH_PATHS=" @executable_path/../Frameworks @loader_path/../Frameworks"
+    export LEGACY_DEVELOPER_DIR=/Applications/Xcode.app/Contents/PlugIns/Xcode3Core.ideplugin/Contents/SharedSupport/Developer
+    export LEX=lex
+    export LIBRARY_FLAG_NOSPACE=YES
+    export LIBRARY_FLAG_PREFIX=-l
+    export LIBRARY_KEXT_INSTALL_PATH=/Library/Extensions
+    export LIBRARY_SEARCH_PATHS="/var/folders/0b/dxsqs2d901j1h3_d9pqwqdfh0000gn/T/TemporaryItems/(A Document Being Saved By muter 2)/BonMot/Build/Products/Debug "
+    export LINKER_DISPLAYS_MANGLED_NAMES=NO
+    export LINK_FILE_LIST_normal_x86_64="/var/folders/0b/dxsqs2d901j1h3_d9pqwqdfh0000gn/T/TemporaryItems/(A Document Being Saved By muter 2)/BonMot/Build/Intermediates/BonMot.build/Debug/BonMot-OSXTests.build/Objects-normal/x86_64/BonMot-OSXTests.LinkFileList"
+    export LINK_WITH_STANDARD_LIBRARIES=YES
+    export LOCALIZED_RESOURCES_FOLDER_PATH=BonMot-OSXTests.xctest/Contents/Resources/English.lproj
+    export LOCALIZED_STRING_MACRO_NAMES="NSLocalizedString CFLocalizedString"
+    export LOCAL_ADMIN_APPS_DIR=/Applications/Utilities
+    export LOCAL_APPS_DIR=/Applications
+    export LOCAL_DEVELOPER_DIR=/Library/Developer
+    export LOCAL_LIBRARY_DIR=/Library
+    export LOCROOT="/var/folders/0b/dxsqs2d901j1h3_d9pqwqdfh0000gn/T/TemporaryItems/(A Document Being Saved By muter 2)/BonMot"
+    export LOCSYMROOT="/var/folders/0b/dxsqs2d901j1h3_d9pqwqdfh0000gn/T/TemporaryItems/(A Document Being Saved By muter 2)/BonMot"
+    export MACH_O_TYPE=mh_bundle
+    export MACOSX_DEPLOYMENT_TARGET=10.11
+    export MAC_OS_X_PRODUCT_BUILD_VERSION=18C54
+    export MAC_OS_X_VERSION_ACTUAL=101402
+    export MAC_OS_X_VERSION_MAJOR=101400
+    export MAC_OS_X_VERSION_MINOR=1402
+    export METAL_LIBRARY_FILE_BASE=default
+    export METAL_LIBRARY_OUTPUT_DIR="/var/folders/0b/dxsqs2d901j1h3_d9pqwqdfh0000gn/T/TemporaryItems/(A Document Being Saved By muter 2)/BonMot/Build/Products/Debug/BonMot-OSXTests.xctest/Contents/Resources"
+    export MODULE_CACHE_DIR=/Users/seandorian/Library/Developer/Xcode/DerivedData/ModuleCache.noindex
+    export MTL_ENABLE_DEBUG_INFO=YES
+    export NATIVE_ARCH=i386
+    export NATIVE_ARCH_32_BIT=i386
+    export NATIVE_ARCH_64_BIT=x86_64
+    export NATIVE_ARCH_ACTUAL=x86_64
+    export NO_COMMON=YES
+    export OBJECT_FILE_DIR="/var/folders/0b/dxsqs2d901j1h3_d9pqwqdfh0000gn/T/TemporaryItems/(A Document Being Saved By muter 2)/BonMot/Build/Intermediates/BonMot.build/Debug/BonMot-OSXTests.build/Objects"
+    export OBJECT_FILE_DIR_normal="/var/folders/0b/dxsqs2d901j1h3_d9pqwqdfh0000gn/T/TemporaryItems/(A Document Being Saved By muter 2)/BonMot/Build/Intermediates/BonMot.build/Debug/BonMot-OSXTests.build/Objects-normal"
+    export OBJROOT="/var/folders/0b/dxsqs2d901j1h3_d9pqwqdfh0000gn/T/TemporaryItems/(A Document Being Saved By muter 2)/BonMot/Build/Intermediates"
+    export ONLY_ACTIVE_ARCH=YES
+    export OS=MACOS
+    export OSAC=/usr/bin/osacompile
+    export PACKAGE_TYPE=com.apple.package-type.bundle.unit-test
+    export PASCAL_STRINGS=YES
+    export PATH=/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin:/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/local/bin:/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/libexec:/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/usr/bin:/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/usr/local/bin:/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/usr/bin:/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/usr/local/bin:/Applications/Xcode.app/Contents/Developer/usr/bin:/Applications/Xcode.app/Contents/Developer/usr/local/bin:/Users/seandorian/.swiftenv/shims:/Users/seandorian/.rvm/gems/ruby-2.2.5/bin:/Users/seandorian/.rvm/gems/ruby-2.2.5@global/bin:/Users/seandorian/.rvm/rubies/ruby-2.2.5/bin:/Users/seandorian/.fastlane/bin:/usr/local/octave/3.8.0/bin/:/usr/local/sbin:/Users/seandorian/.rvm/bin:/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin:/opt/X11/bin:/Library/TeX/texbin
+    export PATH_PREFIXES_EXCLUDED_FROM_HEADER_DEPENDENCIES="/usr/include /usr/local/include /System/Library/Frameworks /System/Library/PrivateFrameworks /Applications/Xcode.app/Contents/Developer/Headers /Applications/Xcode.app/Contents/Developer/SDKs /Applications/Xcode.app/Contents/Developer/Platforms"
+    export PBDEVELOPMENTPLIST_PATH=BonMot-OSXTests.xctest/Contents/pbdevelopment.plist
+    export PER_ARCH_OBJECT_FILE_DIR="/var/folders/0b/dxsqs2d901j1h3_d9pqwqdfh0000gn/T/TemporaryItems/(A Document Being Saved By muter 2)/BonMot/Build/Intermediates/BonMot.build/Debug/BonMot-OSXTests.build/Objects-normal/undefined_arch"
+    export PER_VARIANT_OBJECT_FILE_DIR="/var/folders/0b/dxsqs2d901j1h3_d9pqwqdfh0000gn/T/TemporaryItems/(A Document Being Saved By muter 2)/BonMot/Build/Intermediates/BonMot.build/Debug/BonMot-OSXTests.build/Objects-normal"
+    export PKGINFO_FILE_PATH="/var/folders/0b/dxsqs2d901j1h3_d9pqwqdfh0000gn/T/TemporaryItems/(A Document Being Saved By muter 2)/BonMot/Build/Intermediates/BonMot.build/Debug/BonMot-OSXTests.build/PkgInfo"
+    export PKGINFO_PATH=BonMot-OSXTests.xctest/Contents/PkgInfo
+    export PLATFORM_DEVELOPER_APPLICATIONS_DIR=/Applications/Xcode.app/Contents/Developer/Applications
+    export PLATFORM_DEVELOPER_BIN_DIR=/Applications/Xcode.app/Contents/Developer/usr/bin
+    export PLATFORM_DEVELOPER_LIBRARY_DIR=/Applications/Xcode.app/Contents/Developer/Library
+    export PLATFORM_DEVELOPER_SDK_DIR=/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs
+    export PLATFORM_DEVELOPER_TOOLS_DIR=/Applications/Xcode.app/Contents/Developer/Tools
+    export PLATFORM_DEVELOPER_USR_DIR=/Applications/Xcode.app/Contents/Developer/usr
+    export PLATFORM_DIR=/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform
+    export PLATFORM_DISPLAY_NAME=macOS
+    export PLATFORM_NAME=macosx
+    export PLATFORM_PREFERRED_ARCH=x86_64
+    export PLATFORM_PRODUCT_BUILD_VERSION=10B61
+    export PLIST_FILE_OUTPUT_FORMAT=same-as-input
+    export PLUGINS_FOLDER_PATH=BonMot-OSXTests.xctest/Contents/PlugIns
+    export PRECOMPS_INCLUDE_HEADERS_FROM_BUILT_PRODUCTS_DIR=YES
+    export PRECOMP_DESTINATION_DIR="/var/folders/0b/dxsqs2d901j1h3_d9pqwqdfh0000gn/T/TemporaryItems/(A Document Being Saved By muter 2)/BonMot/Build/Intermediates/BonMot.build/Debug/BonMot-OSXTests.build/PrefixHeaders"
+    export PRESERVE_DEAD_CODE_INITS_AND_TERMS=NO
+    export PRIVATE_HEADERS_FOLDER_PATH=BonMot-OSXTests.xctest/Contents/PrivateHeaders
+    export PRODUCT_BUNDLE_IDENTIFIER=com.raizlabs.BonMot-OSXTests
+    export PRODUCT_MODULE_NAME=BonMot_OSXTests
+    export PRODUCT_NAME=BonMot-OSXTests
+    export PRODUCT_SETTINGS_PATH="/var/folders/0b/dxsqs2d901j1h3_d9pqwqdfh0000gn/T/TemporaryItems/(A Document Being Saved By muter 2)/BonMot/Tests/Info.plist"
+    export PRODUCT_SPECIFIC_LDFLAGS="-framework XCTest"
+    export PRODUCT_TYPE=com.apple.product-type.bundle.unit-test
+    export PRODUCT_TYPE_FRAMEWORK_SEARCH_PATHS=" /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/Library/Frameworks"
+    export PROFILING_CODE=NO
+    export PROJECT=BonMot
+    export PROJECT_DERIVED_FILE_DIR="/var/folders/0b/dxsqs2d901j1h3_d9pqwqdfh0000gn/T/TemporaryItems/(A Document Being Saved By muter 2)/BonMot/Build/Intermediates/BonMot.build/DerivedSources"
+    export PROJECT_DIR="/var/folders/0b/dxsqs2d901j1h3_d9pqwqdfh0000gn/T/TemporaryItems/(A Document Being Saved By muter 2)/BonMot"
+    export PROJECT_FILE_PATH="/var/folders/0b/dxsqs2d901j1h3_d9pqwqdfh0000gn/T/TemporaryItems/(A Document Being Saved By muter 2)/BonMot/BonMot.xcodeproj"
+    export PROJECT_NAME=BonMot
+    export PROJECT_TEMP_DIR="/var/folders/0b/dxsqs2d901j1h3_d9pqwqdfh0000gn/T/TemporaryItems/(A Document Being Saved By muter 2)/BonMot/Build/Intermediates/BonMot.build"
+    export PROJECT_TEMP_ROOT="/var/folders/0b/dxsqs2d901j1h3_d9pqwqdfh0000gn/T/TemporaryItems/(A Document Being Saved By muter 2)/BonMot/Build/Intermediates"
+    export PUBLIC_HEADERS_FOLDER_PATH=BonMot-OSXTests.xctest/Contents/Headers
+    export RECURSIVE_SEARCH_PATHS_FOLLOW_SYMLINKS=YES
+    export REMOVE_CVS_FROM_RESOURCES=YES
+    export REMOVE_GIT_FROM_RESOURCES=YES
+    export REMOVE_HEADERS_FROM_EMBEDDED_BUNDLES=YES
+    export REMOVE_HG_FROM_RESOURCES=YES
+    export REMOVE_SVN_FROM_RESOURCES=YES
+    export REZ_COLLECTOR_DIR="/var/folders/0b/dxsqs2d901j1h3_d9pqwqdfh0000gn/T/TemporaryItems/(A Document Being Saved By muter 2)/BonMot/Build/Intermediates/BonMot.build/Debug/BonMot-OSXTests.build/ResourceManagerResources"
+    export REZ_OBJECTS_DIR="/var/folders/0b/dxsqs2d901j1h3_d9pqwqdfh0000gn/T/TemporaryItems/(A Document Being Saved By muter 2)/BonMot/Build/Intermediates/BonMot.build/Debug/BonMot-OSXTests.build/ResourceManagerResources/Objects"
+    export REZ_SEARCH_PATHS="/var/folders/0b/dxsqs2d901j1h3_d9pqwqdfh0000gn/T/TemporaryItems/(A Document Being Saved By muter 2)/BonMot/Build/Products/Debug "
+    export SCAN_ALL_SOURCE_FILES_FOR_INCLUDES=NO
+    export SCRIPTS_FOLDER_PATH=BonMot-OSXTests.xctest/Contents/Resources/Scripts
+    export SCRIPT_INPUT_FILE_COUNT=0
+    export SCRIPT_INPUT_FILE_LIST_COUNT=0
+    export SCRIPT_OUTPUT_FILE_COUNT=0
+    export SCRIPT_OUTPUT_FILE_LIST_COUNT=0
+    export SDKROOT=/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.14.sdk
+    export SDK_DIR=/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.14.sdk
+    export SDK_DIR_macosx10_14=/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.14.sdk
+    export SDK_NAME=macosx10.14
+    export SDK_NAMES=macosx10.14
+    export SDK_PRODUCT_BUILD_VERSION=18B71
+    export SDK_VERSION=10.14
+    export SDK_VERSION_ACTUAL=101400
+    export SDK_VERSION_MAJOR=101400
+    export SDK_VERSION_MINOR=1400
+    export SED=/usr/bin/sed
+    export SEPARATE_STRIP=NO
+    export SEPARATE_SYMBOL_EDIT=NO
+    export SET_DIR_MODE_OWNER_GROUP=YES
+    export SET_FILE_MODE_OWNER_GROUP=NO
+    export SHALLOW_BUNDLE=NO
+    export SHARED_DERIVED_FILE_DIR="/var/folders/0b/dxsqs2d901j1h3_d9pqwqdfh0000gn/T/TemporaryItems/(A Document Being Saved By muter 2)/BonMot/Build/Products/Debug/DerivedSources"
+    export SHARED_FRAMEWORKS_FOLDER_PATH=BonMot-OSXTests.xctest/Contents/SharedFrameworks
+    export SHARED_PRECOMPS_DIR="/var/folders/0b/dxsqs2d901j1h3_d9pqwqdfh0000gn/T/TemporaryItems/(A Document Being Saved By muter 2)/BonMot/Build/Intermediates/PrecompiledHeaders"
+    export SHARED_SUPPORT_FOLDER_PATH=BonMot-OSXTests.xctest/Contents/SharedSupport
+    export SKIP_INSTALL=YES
+    export SOURCE_ROOT="/var/folders/0b/dxsqs2d901j1h3_d9pqwqdfh0000gn/T/TemporaryItems/(A Document Being Saved By muter 2)/BonMot"
+    export SRCROOT="/var/folders/0b/dxsqs2d901j1h3_d9pqwqdfh0000gn/T/TemporaryItems/(A Document Being Saved By muter 2)/BonMot"
+    export STRINGS_FILE_OUTPUT_ENCODING=UTF-16
+    export STRIP_BITCODE_FROM_COPIED_FILES=NO
+    export STRIP_INSTALLED_PRODUCT=YES
+    export STRIP_PNG_TEXT=NO
+    export STRIP_STYLE=non-global
+    export STRIP_SWIFT_SYMBOLS=YES
+    export SUPPORTED_PLATFORMS=macosx
+    export SUPPORTS_TEXT_BASED_API=NO
+    export SWIFT_ACTIVE_COMPILATION_CONDITIONS=DEBUG
+    export SWIFT_OPTIMIZATION_LEVEL=-Onone
+    export SWIFT_PLATFORM_TARGET_PREFIX=macosx
+    export SWIFT_SWIFT3_OBJC_INFERENCE=Off
+    export SWIFT_VERSION=4.2
+    export SYMROOT="/var/folders/0b/dxsqs2d901j1h3_d9pqwqdfh0000gn/T/TemporaryItems/(A Document Being Saved By muter 2)/BonMot/Build/Products"
+    export SYSTEM_ADMIN_APPS_DIR=/Applications/Utilities
+    export SYSTEM_APPS_DIR=/Applications
+    export SYSTEM_CORE_SERVICES_DIR=/System/Library/CoreServices
+    export SYSTEM_DEMOS_DIR=/Applications/Extras
+    export SYSTEM_DEVELOPER_APPS_DIR=/Applications/Xcode.app/Contents/Developer/Applications
+    export SYSTEM_DEVELOPER_BIN_DIR=/Applications/Xcode.app/Contents/Developer/usr/bin
+    export SYSTEM_DEVELOPER_DEMOS_DIR="/Applications/Xcode.app/Contents/Developer/Applications/Utilities/Built Examples"
+    export SYSTEM_DEVELOPER_DIR=/Applications/Xcode.app/Contents/Developer
+    export SYSTEM_DEVELOPER_DOC_DIR="/Applications/Xcode.app/Contents/Developer/ADC Reference Library"
+    export SYSTEM_DEVELOPER_GRAPHICS_TOOLS_DIR="/Applications/Xcode.app/Contents/Developer/Applications/Graphics Tools"
+    export SYSTEM_DEVELOPER_JAVA_TOOLS_DIR="/Applications/Xcode.app/Contents/Developer/Applications/Java Tools"
+    export SYSTEM_DEVELOPER_PERFORMANCE_TOOLS_DIR="/Applications/Xcode.app/Contents/Developer/Applications/Performance Tools"
+    export SYSTEM_DEVELOPER_RELEASENOTES_DIR="/Applications/Xcode.app/Contents/Developer/ADC Reference Library/releasenotes"
+    export SYSTEM_DEVELOPER_TOOLS=/Applications/Xcode.app/Contents/Developer/Tools
+    export SYSTEM_DEVELOPER_TOOLS_DOC_DIR="/Applications/Xcode.app/Contents/Developer/ADC Reference Library/documentation/DeveloperTools"
+    export SYSTEM_DEVELOPER_TOOLS_RELEASENOTES_DIR="/Applications/Xcode.app/Contents/Developer/ADC Reference Library/releasenotes/DeveloperTools"
+    export SYSTEM_DEVELOPER_USR_DIR=/Applications/Xcode.app/Contents/Developer/usr
+    export SYSTEM_DEVELOPER_UTILITIES_DIR=/Applications/Xcode.app/Contents/Developer/Applications/Utilities
+    export SYSTEM_DOCUMENTATION_DIR=/Library/Documentation
+    export SYSTEM_KEXT_INSTALL_PATH=/System/Library/Extensions
+    export SYSTEM_LIBRARY_DIR=/System/Library
+    export TAPI_VERIFY_MODE=ErrorsOnly
+    export TARGETNAME=BonMot-OSXTests
+    export TARGET_BUILD_DIR="/var/folders/0b/dxsqs2d901j1h3_d9pqwqdfh0000gn/T/TemporaryItems/(A Document Being Saved By muter 2)/BonMot/Build/Products/Debug"
+    export TARGET_NAME=BonMot-OSXTests
+    export TARGET_TEMP_DIR="/var/folders/0b/dxsqs2d901j1h3_d9pqwqdfh0000gn/T/TemporaryItems/(A Document Being Saved By muter 2)/BonMot/Build/Intermediates/BonMot.build/Debug/BonMot-OSXTests.build"
+    export TEMP_DIR="/var/folders/0b/dxsqs2d901j1h3_d9pqwqdfh0000gn/T/TemporaryItems/(A Document Being Saved By muter 2)/BonMot/Build/Intermediates/BonMot.build/Debug/BonMot-OSXTests.build"
+    export TEMP_FILES_DIR="/var/folders/0b/dxsqs2d901j1h3_d9pqwqdfh0000gn/T/TemporaryItems/(A Document Being Saved By muter 2)/BonMot/Build/Intermediates/BonMot.build/Debug/BonMot-OSXTests.build"
+    export TEMP_FILE_DIR="/var/folders/0b/dxsqs2d901j1h3_d9pqwqdfh0000gn/T/TemporaryItems/(A Document Being Saved By muter 2)/BonMot/Build/Intermediates/BonMot.build/Debug/BonMot-OSXTests.build"
+    export TEMP_ROOT="/var/folders/0b/dxsqs2d901j1h3_d9pqwqdfh0000gn/T/TemporaryItems/(A Document Being Saved By muter 2)/BonMot/Build/Intermediates"
+    export TEST_FRAMEWORK_SEARCH_PATHS=" /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/Library/Frameworks"
+    export TOOLCHAINS=com.apple.dt.toolchain.XcodeDefault
+    export TOOLCHAIN_DIR=/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain
+    export TREAT_MISSING_BASELINES_AS_TEST_FAILURES=NO
+    export UID=501
+    export UNLOCALIZED_RESOURCES_FOLDER_PATH=BonMot-OSXTests.xctest/Contents/Resources
+    export UNSTRIPPED_PRODUCT=NO
+    export USER=seandorian
+    export USER_APPS_DIR=/Users/seandorian/Applications
+    export USER_LIBRARY_DIR=/Users/seandorian/Library
+    export USE_DYNAMIC_NO_PIC=YES
+    export USE_HEADERMAP=YES
+    export USE_HEADER_SYMLINKS=NO
+    export VALIDATE_PRODUCT=NO
+    export VALID_ARCHS="i386 x86_64"
+    export VERBOSE_PBXCP=NO
+    export VERSIONING_SYSTEM=apple-generic
+    export VERSIONPLIST_PATH=BonMot-OSXTests.xctest/Contents/version.plist
+    export VERSION_INFO_BUILDER=seandorian
+    export VERSION_INFO_FILE=BonMot-OSXTests_vers.c
+    export VERSION_INFO_STRING=""@(#)PROGRAM:BonMot-OSXTests  PROJECT:BonMot-1""
+    export WRAPPER_EXTENSION=xctest
+    export WRAPPER_NAME=BonMot-OSXTests.xctest
+    export WRAPPER_SUFFIX=.xctest
+    export WRAP_ASSET_PACKS_IN_SEPARATE_DIRECTORIES=NO
+    export XCODE_APP_SUPPORT_DIR=/Applications/Xcode.app/Contents/Developer/Library/Xcode
+    export XCODE_PRODUCT_BUILD_VERSION=10B61
+    export XCODE_VERSION_ACTUAL=1010
+    export XCODE_VERSION_MAJOR=1000
+    export XCODE_VERSION_MINOR=1010
+    export XPCSERVICES_FOLDER_PATH=BonMot-OSXTests.xctest/Contents/XPCServices
+    export YACC=yacc
+    export _WRAPPER_CONTENTS_DIR=/Contents
+    export _WRAPPER_PARENT_PATH=/..
+    export _WRAPPER_RESOURCES_DIR=/Resources
+    export arch=undefined_arch
+    export variant=normal
+    /bin/sh -c /var/folders/0b/dxsqs2d901j1h3_d9pqwqdfh0000gn/T/TemporaryItems/\\(A\\\ Document\\\ Being\\\ Saved\\\ By\\\ muter\\\ 2\\)/BonMot/Build/Intermediates/BonMot.build/Debug/BonMot-OSXTests.build/Script-CD4B2FD11D9B0B2E007CF808.sh
+Loading configuration from '.swiftlint.yml'
+configuration error: 'last_where' is not a valid rule identifier
+configuration error: 'unused_control_flow_label' is not a valid rule identifier
+Valid rule identifiers:
+anyobject_protocol
+array_init
+attributes
+block_based_kvo
+class_delegate_protocol
+closing_brace
+closure_body_length
+closure_end_indentation
+closure_parameter_position
+closure_spacing
+collection_alignment
+colon
+comma
+compiler_protocol_init
+conditional_returns_on_newline
+contains_over_first_not_nil
+control_statement
+convenience_type
+custom_rules
+cyclomatic_complexity
+discarded_notification_center_observer
+discouraged_direct_init
+discouraged_object_literal
+discouraged_optional_boolean
+discouraged_optional_collection
+dynamic_inline
+empty_count
+empty_enum_arguments
+empty_parameters
+empty_parentheses_with_trailing_closure
+empty_string
+empty_xctest_method
+explicit_acl
+explicit_enum_raw_value
+explicit_init
+explicit_self
+explicit_top_level_acl
+explicit_type_interface
+extension_access_modifier
+fallthrough
+fatal_error_message
+file_header
+file_length
+file_name
+first_where
+for_where
+force_cast
+force_try
+force_unwrapping
+function_body_length
+function_default_parameter_at_end
+function_parameter_count
+generic_type_name
+identical_operands
+identifier_name
+implicit_getter
+implicit_return
+implicitly_unwrapped_optional
+inert_defer
+is_disjoint
+joined_default_parameter
+large_tuple
+leading_whitespace
+legacy_cggeometry_functions
+legacy_constant
+legacy_constructor
+legacy_nsgeometry_functions
+legacy_random
+let_var_whitespace
+line_length
+literal_expression_end_indentation
+lower_acl_than_parent
+mark
+missing_docs
+modifier_order
+multiline_arguments
+multiline_arguments_brackets
+multiline_function_chains
+multiline_literal_brackets
+multiline_parameters
+multiline_parameters_brackets
+multiple_closures_with_trailing_closure
+nesting
+nimble_operator
+no_extension_access_modifier
+no_fallthrough_only
+no_grouping_extension
+notification_center_detachment
+number_separator
+object_literal
+opening_brace
+operator_usage_whitespace
+operator_whitespace
+overridden_super_call
+override_in_extension
+pattern_matching_keywords
+prefixed_toplevel_constant
+private_action
+private_outlet
+private_over_fileprivate
+private_unit_test
+prohibited_interface_builder
+prohibited_super_call
+protocol_property_accessors_order
+quick_discouraged_call
+quick_discouraged_focused_test
+quick_discouraged_pending_test
+redundant_discardable_let
+redundant_nil_coalescing
+redundant_objc_attribute
+redundant_optional_initialization
+redundant_set_access_control
+redundant_string_enum_value
+redundant_type_annotation
+redundant_void_return
+required_enum_case
+return_arrow_whitespace
+shorthand_operator
+single_test_class
+sorted_first_last
+sorted_imports
+statement_position
+static_operator
+strict_fileprivate
+superfluous_disable_command
+switch_case_alignment
+switch_case_on_newline
+syntactic_sugar
+todo
+toggle_bool
+trailing_closure
+trailing_comma
+trailing_newline
+trailing_semicolon
+trailing_whitespace
+type_body_length
+type_name
+unavailable_function
+unneeded_break_in_switch
+unneeded_parentheses_in_closure_argument
+untyped_error_in_catch
+unused_closure_parameter
+unused_enumerated
+unused_import
+unused_optional_binding
+unused_private_declaration
+valid_ibinspectable
+vertical_parameter_alignment
+vertical_parameter_alignment_on_call
+vertical_whitespace
+vertical_whitespace_between_cases
+void_return
+weak_delegate
+xctfail_message
+yoda_condition
+Linting Swift files at paths 
+Linting 'StyleViewController.swift' (1/56)
+Linting 'DemoStrings.swift' (2/56)
+Linting 'ComposableTests.swift' (3/56)
+Linting 'CatalogViewController.swift' (4/56)
+Linting 'AppDelegate.swift' (5/56)
+Linting 'NSAttributedStringDebugTests.swift' (6/56)
+Linting 'EmphasisTests.swift' (7/56)
+Linting 'AttributedStringStyleTests.swift' (8/56)
+Linting 'AccessTests.swift' (9/56)
+/var/folders/0b/dxsqs2d901j1h3_d9pqwqdfh0000gn/T/TemporaryItems/(A Document Being Saved By muter 2)/BonMot/Example-iOS/StyleViewController.swift:10:8: warning: Sorted Imports Violation: Imports should be sorted. (sorted_imports)
+/var/folders/0b/dxsqs2d901j1h3_d9pqwqdfh0000gn/T/TemporaryItems/(A Document Being Saved By muter 2)/BonMot/Tests/NSAttributedStringDebugTests.swift:10:18: warning: Sorted Imports Violation: Imports should be sorted. (sorted_imports)
+Linting 'Helpers.swift' (10/56)
+/var/folders/0b/dxsqs2d901j1h3_d9pqwqdfh0000gn/T/TemporaryItems/(A Document Being Saved By muter 2)/BonMot/Example-iOS/AppDelegate.swift:10:8: warning: Sorted Imports Violation: Imports should be sorted. (sorted_imports)
+Linting 'UIKitBehaviorTests.swift' (11/56)
+/var/folders/0b/dxsqs2d901j1h3_d9pqwqdfh0000gn/T/TemporaryItems/(A Document Being Saved By muter 2)/BonMot/Example-iOS/DemoStrings.swift:162:17: warning: Implicit Return Violation: Prefer implicit returns in closures. (implicit_return)
+/var/folders/0b/dxsqs2d901j1h3_d9pqwqdfh0000gn/T/TemporaryItems/(A Document Being Saved By muter 2)/BonMot/Example-iOS/DemoStrings.swift:10:8: warning: Sorted Imports Violation: Imports should be sorted. (sorted_imports)
+Linting 'TextAlignmentConstraintTests.swift' (12/56)
+Linting 'FontInspectorTests.swift' (13/56)
+/var/folders/0b/dxsqs2d901j1h3_d9pqwqdfh0000gn/T/TemporaryItems/(A Document Being Saved By muter 2)/BonMot/Tests/AttributedStringStyleTests.swift:521:13: warning: Implicit Return Violation: Prefer implicit returns in closures. (implicit_return)
+/var/folders/0b/dxsqs2d901j1h3_d9pqwqdfh0000gn/T/TemporaryItems/(A Document Being Saved By muter 2)/BonMot/Tests/AttributedStringStyleTests.swift:527:13: warning: Implicit Return Violation: Prefer implicit returns in closures. (implicit_return)
+/var/folders/0b/dxsqs2d901j1h3_d9pqwqdfh0000gn/T/TemporaryItems/(A Document Being Saved By muter 2)/BonMot/Tests/AttributedStringStyleTests.swift:533:13: warning: Implicit Return Violation: Prefer implicit returns in closures. (implicit_return)
+/var/folders/0b/dxsqs2d901j1h3_d9pqwqdfh0000gn/T/TemporaryItems/(A Document Being Saved By muter 2)/BonMot/Tests/AttributedStringStyleTests.swift:539:13: warning: Implicit Return Violation: Prefer implicit returns in closures. (implicit_return)
+/var/folders/0b/dxsqs2d901j1h3_d9pqwqdfh0000gn/T/TemporaryItems/(A Document Being Saved By muter 2)/BonMot/Tests/AttributedStringStyleTests.swift:545:13: warning: Implicit Return Violation: Prefer implicit returns in closures. (implicit_return)
+/var/folders/0b/dxsqs2d901j1h3_d9pqwqdfh0000gn/T/TemporaryItems/(A Document Being Saved By muter 2)/BonMot/Tests/AttributedStringStyleTests.swift:551:13: warning: Implicit Return Violation: Prefer implicit returns in closures. (implicit_return)
+/var/folders/0b/dxsqs2d901j1h3_d9pqwqdfh0000gn/T/TemporaryItems/(A Document Being Saved By muter 2)/BonMot/Tests/AttributedStringStyleTests.swift:10:18: warning: Sorted Imports Violation: Imports should be sorted. (sorted_imports)
+Linting 'XMLTagStyleBuilderTests.swift' (14/56)
+Linting 'AssertHelpers.swift' (15/56)
+/var/folders/0b/dxsqs2d901j1h3_d9pqwqdfh0000gn/T/TemporaryItems/(A Document Being Saved By muter 2)/BonMot/Tests/TextAlignmentConstraintTests.swift:18:18: warning: Sorted Imports Violation: Imports should be sorted. (sorted_imports)
+Linting 'AdaptiveStyleTests.swift' (16/56)
+Linting 'BONFontBehaviorTests.swift' (17/56)
+/var/folders/0b/dxsqs2d901j1h3_d9pqwqdfh0000gn/T/TemporaryItems/(A Document Being Saved By muter 2)/BonMot/Tests/EmphasisTests.swift:10:18: warning: Sorted Imports Violation: Imports should be sorted. (sorted_imports)
+Linting 'UIKitBonMotTests.swift' (18/56)
+/var/folders/0b/dxsqs2d901j1h3_d9pqwqdfh0000gn/T/TemporaryItems/(A Document Being Saved By muter 2)/BonMot/Tests/FontInspectorTests.swift:10:18: warning: Sorted Imports Violation: Imports should be sorted. (sorted_imports)
+Linting 'TransformTests.swift' (19/56)
+/var/folders/0b/dxsqs2d901j1h3_d9pqwqdfh0000gn/T/TemporaryItems/(A Document Being Saved By muter 2)/BonMot/Tests/ComposableTests.swift:10:18: warning: Sorted Imports Violation: Imports should be sorted. (sorted_imports)
+Linting 'ImageTintingTests.swift' (20/56)
+/var/folders/0b/dxsqs2d901j1h3_d9pqwqdfh0000gn/T/TemporaryItems/(A Document Being Saved By muter 2)/BonMot/Tests/XMLTagStyleBuilderTests.swift:10:8: warning: Sorted Imports Violation: Imports should be sorted. (sorted_imports)
+Linting 'Compatibility+Tests.swift' (21/56)
+/var/folders/0b/dxsqs2d901j1h3_d9pqwqdfh0000gn/T/TemporaryItems/(A Document Being Saved By muter 2)/BonMot/Tests/AdaptiveStyleTests.swift:10:8: warning: Sorted Imports Violation: Imports should be sorted. (sorted_imports)
+/var/folders/0b/dxsqs2d901j1h3_d9pqwqdfh0000gn/T/TemporaryItems/(A Document Being Saved By muter 2)/BonMot/Tests/AdaptiveStyleTests.swift:11:18: warning: Sorted Imports Violation: Imports should be sorted. (sorted_imports)
+/var/folders/0b/dxsqs2d901j1h3_d9pqwqdfh0000gn/T/TemporaryItems/(A Document Being Saved By muter 2)/BonMot/Tests/BONFontBehaviorTests.swift:10:8: warning: Sorted Imports Violation: Imports should be sorted. (sorted_imports)
+Linting 'ContextualAlternates.swift' (22/56)
+/var/folders/0b/dxsqs2d901j1h3_d9pqwqdfh0000gn/T/TemporaryItems/(A Document Being Saved By muter 2)/BonMot/Tests/AssertHelpers.swift:10:8: warning: Sorted Imports Violation: Imports should be sorted. (sorted_imports)
+Linting 'FontFeatures.swift' (23/56)
+/var/folders/0b/dxsqs2d901j1h3_d9pqwqdfh0000gn/T/TemporaryItems/(A Document Being Saved By muter 2)/BonMot/Tests/TransformTests.swift:10:18: warning: Sorted Imports Violation: Imports should be sorted. (sorted_imports)
+Linting 'StylisticAlternates.swift' (24/56)
+/var/folders/0b/dxsqs2d901j1h3_d9pqwqdfh0000gn/T/TemporaryItems/(A Document Being Saved By muter 2)/BonMot/Tests/UIKitBonMotTests.swift:10:8: warning: Sorted Imports Violation: Imports should be sorted. (sorted_imports)
+Linting 'Tracking.swift' (25/56)
+Linting 'Emphasis.swift' (26/56)
+/var/folders/0b/dxsqs2d901j1h3_d9pqwqdfh0000gn/T/TemporaryItems/(A Document Being Saved By muter 2)/BonMot/Tests/ImageTintingTests.swift:16:18: warning: Sorted Imports Violation: Imports should be sorted. (sorted_imports)
+Linting 'NSAttributedString+BonMot.swift' (27/56)
+/var/folders/0b/dxsqs2d901j1h3_d9pqwqdfh0000gn/T/TemporaryItems/(A Document Being Saved By muter 2)/BonMot/Sources/StylisticAlternates.swift:282:12: warning: Static Operator Violation: Operators should be declared as static functions, not free functions. (static_operator)
+Linting 'StringStyle.swift' (28/56)
+Linting 'Compatibility.swift' (29/56)
+/var/folders/0b/dxsqs2d901j1h3_d9pqwqdfh0000gn/T/TemporaryItems/(A Document Being Saved By muter 2)/BonMot/muter_tmp/ContextualAlternates.swift:89:12: warning: Static Operator Violation: Operators should be declared as static functions, not free functions. (static_operator)
+Linting 'NSAttributedString+Adaptive.swift' (30/56)
+Linting 'Tracking+Adaptive.swift' (31/56)
+Linting 'AttributedStringTransformation.swift' (32/56)
+Linting 'AdaptiveStyleTransformation.swift' (33/56)
+/var/folders/0b/dxsqs2d901j1h3_d9pqwqdfh0000gn/T/TemporaryItems/(A Document Being Saved By muter 2)/BonMot/muter_tmp/FontFeatures.swift:211:17: warning: Implicit Return Violation: Prefer implicit returns in closures. (implicit_return)
+Linting 'AdaptiveStyle.swift' (34/56)
+Linting 'UIKit+Helpers.swift' (35/56)
+Linting 'UIKit+AdaptableTextContainerSupport.swift' (36/56)
+Linting 'Tab+Adaptive.swift' (37/56)
+Linting 'EmbeddedTransformation.swift' (38/56)
+Linting 'TextAlignmentConstraint.swift' (39/56)
+Linting 'AdaptableTextContainer.swift' (40/56)
+Linting 'StyleableUIElement.swift' (41/56)
+Linting 'ContextualAlternates.swift' (42/56)
+Linting 'AccessibilityHeadingLevel.swift' (43/56)
+Linting 'StringStyle+Part.swift' (44/56)
+Linting 'Transform.swift' (45/56)
+Linting 'Composable.swift' (46/56)
+Linting 'FontFeatures.swift' (47/56)
+Linting 'Platform.swift' (48/56)
+Linting 'Tab.swift' (49/56)
+/var/folders/0b/dxsqs2d901j1h3_d9pqwqdfh0000gn/T/TemporaryItems/(A Document Being Saved By muter 2)/BonMot/Sources/ContextualAlternates.swift:89:12: warning: Static Operator Violation: Operators should be declared as static functions, not free functions. (static_operator)
+Linting 'Image+Tinting.swift' (50/56)
+Linting 'Ligatures.swift' (51/56)
+Linting 'XMLBuilder.swift' (52/56)
+Linting 'NamedStyles.swift' (53/56)
+Linting 'MutableCopying.swift' (54/56)
+Linting 'FontInspector.swift' (55/56)
+/var/folders/0b/dxsqs2d901j1h3_d9pqwqdfh0000gn/T/TemporaryItems/(A Document Being Saved By muter 2)/BonMot/Sources/FontFeatures.swift:211:17: warning: Implicit Return Violation: Prefer implicit returns in closures. (implicit_return)
+Linting 'Special.swift' (56/56)
+/var/folders/0b/dxsqs2d901j1h3_d9pqwqdfh0000gn/T/TemporaryItems/(A Document Being Saved By muter 2)/BonMot/Sources/FontInspector.swift:12:12: warning: Sorted Imports Violation: Imports should be sorted. (sorted_imports)
+Done linting! Found 30 violations, 0 serious in 56 files.
+
+CopySwiftLibs /var/folders/0b/dxsqs2d901j1h3_d9pqwqdfh0000gn/T/TemporaryItems/(A\ Document\ Being\ Saved\ By\ muter\ 2)/BonMot/Build/Products/Debug/BonMot-OSXTests.xctest (in target: BonMot-OSXTests)
+    cd /var/folders/0b/dxsqs2d901j1h3_d9pqwqdfh0000gn/T/TemporaryItems/(A\ Document\ Being\ Saved\ By\ muter\ 2)/BonMot
+    export CODESIGN_ALLOCATE=/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/codesign_allocate
+    export DEVELOPER_DIR=/Applications/Xcode.app/Contents/Developer
+    export SDKROOT=/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.14.sdk
+    builtin-swiftStdLibTool --copy --verbose --scan-executable /var/folders/0b/dxsqs2d901j1h3_d9pqwqdfh0000gn/T/TemporaryItems/(A\ Document\ Being\ Saved\ By\ muter\ 2)/BonMot/Build/Products/Debug/BonMot-OSXTests.xctest/Contents/MacOS/BonMot-OSXTests --scan-folder /var/folders/0b/dxsqs2d901j1h3_d9pqwqdfh0000gn/T/TemporaryItems/(A\ Document\ Being\ Saved\ By\ muter\ 2)/BonMot/Build/Products/Debug/BonMot-OSXTests.xctest/Contents/Frameworks --scan-folder /var/folders/0b/dxsqs2d901j1h3_d9pqwqdfh0000gn/T/TemporaryItems/(A\ Document\ Being\ Saved\ By\ muter\ 2)/BonMot/Build/Products/Debug/BonMot-OSXTests.xctest/Contents/PlugIns --scan-folder /var/folders/0b/dxsqs2d901j1h3_d9pqwqdfh0000gn/T/TemporaryItems/(A\ Document\ Being\ Saved\ By\ muter\ 2)/BonMot/Build/Products/Debug/BonMot.framework --platform macosx --toolchain /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain --destination /var/folders/0b/dxsqs2d901j1h3_d9pqwqdfh0000gn/T/TemporaryItems/(A\ Document\ Being\ Saved\ By\ muter\ 2)/BonMot/Build/Products/Debug/BonMot-OSXTests.xctest/Contents/Frameworks --strip-bitcode --resource-destination /var/folders/0b/dxsqs2d901j1h3_d9pqwqdfh0000gn/T/TemporaryItems/(A\ Document\ Being\ Saved\ By\ muter\ 2)/BonMot/Build/Products/Debug/BonMot-OSXTests.xctest/Contents/Resources --resource-library libswiftRemoteMirror.dylib --strip-bitcode-tool /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/bitcode_strip --emit-dependency-info /var/folders/0b/dxsqs2d901j1h3_d9pqwqdfh0000gn/T/TemporaryItems/(A\ Document\ Being\ Saved\ By\ muter\ 2)/BonMot/Build/Intermediates/BonMot.build/Debug/BonMot-OSXTests.build/SwiftStdLibToolInputDependencies.dep
+Ignoring --strip-bitcode because --sign was not passed
+Requested Swift ABI version based on scanned binaries: 6
+libswiftDispatch.dylib is up to date at /var/folders/0b/dxsqs2d901j1h3_d9pqwqdfh0000gn/T/TemporaryItems/(A Document Being Saved By muter 2)/BonMot/Build/Products/Debug/BonMot-OSXTests.xctest/Contents/Frameworks/libswiftDispatch.dylib
+libswiftXPC.dylib is up to date at /var/folders/0b/dxsqs2d901j1h3_d9pqwqdfh0000gn/T/TemporaryItems/(A Document Being Saved By muter 2)/BonMot/Build/Products/Debug/BonMot-OSXTests.xctest/Contents/Frameworks/libswiftXPC.dylib
+libswiftCoreFoundation.dylib is up to date at /var/folders/0b/dxsqs2d901j1h3_d9pqwqdfh0000gn/T/TemporaryItems/(A Document Being Saved By muter 2)/BonMot/Build/Products/Debug/BonMot-OSXTests.xctest/Contents/Frameworks/libswiftCoreFoundation.dylib
+libswiftCoreData.dylib is up to date at /var/folders/0b/dxsqs2d901j1h3_d9pqwqdfh0000gn/T/TemporaryItems/(A Document Being Saved By muter 2)/BonMot/Build/Products/Debug/BonMot-OSXTests.xctest/Contents/Frameworks/libswiftCoreData.dylib
+libswiftDarwin.dylib is up to date at /var/folders/0b/dxsqs2d901j1h3_d9pqwqdfh0000gn/T/TemporaryItems/(A Document Being Saved By muter 2)/BonMot/Build/Products/Debug/BonMot-OSXTests.xctest/Contents/Frameworks/libswiftDarwin.dylib
+libswiftQuartzCore.dylib is up to date at /var/folders/0b/dxsqs2d901j1h3_d9pqwqdfh0000gn/T/TemporaryItems/(A Document Being Saved By muter 2)/BonMot/Build/Products/Debug/BonMot-OSXTests.xctest/Contents/Frameworks/libswiftQuartzCore.dylib
+libswiftCoreGraphics.dylib is up to date at /var/folders/0b/dxsqs2d901j1h3_d9pqwqdfh0000gn/T/TemporaryItems/(A Document Being Saved By muter 2)/BonMot/Build/Products/Debug/BonMot-OSXTests.xctest/Contents/Frameworks/libswiftCoreGraphics.dylib
+libswiftAppKit.dylib is up to date at /var/folders/0b/dxsqs2d901j1h3_d9pqwqdfh0000gn/T/TemporaryItems/(A Document Being Saved By muter 2)/BonMot/Build/Products/Debug/BonMot-OSXTests.xctest/Contents/Frameworks/libswiftAppKit.dylib
+libswiftIOKit.dylib is up to date at /var/folders/0b/dxsqs2d901j1h3_d9pqwqdfh0000gn/T/TemporaryItems/(A Document Being Saved By muter 2)/BonMot/Build/Products/Debug/BonMot-OSXTests.xctest/Contents/Frameworks/libswiftIOKit.dylib
+libswiftCore.dylib is up to date at /var/folders/0b/dxsqs2d901j1h3_d9pqwqdfh0000gn/T/TemporaryItems/(A Document Being Saved By muter 2)/BonMot/Build/Products/Debug/BonMot-OSXTests.xctest/Contents/Frameworks/libswiftCore.dylib
+libswiftFoundation.dylib is up to date at /var/folders/0b/dxsqs2d901j1h3_d9pqwqdfh0000gn/T/TemporaryItems/(A Document Being Saved By muter 2)/BonMot/Build/Products/Debug/BonMot-OSXTests.xctest/Contents/Frameworks/libswiftFoundation.dylib
+libswiftCoreImage.dylib is up to date at /var/folders/0b/dxsqs2d901j1h3_d9pqwqdfh0000gn/T/TemporaryItems/(A Document Being Saved By muter 2)/BonMot/Build/Products/Debug/BonMot-OSXTests.xctest/Contents/Frameworks/libswiftCoreImage.dylib
+libswiftXCTest.dylib is up to date at /var/folders/0b/dxsqs2d901j1h3_d9pqwqdfh0000gn/T/TemporaryItems/(A Document Being Saved By muter 2)/BonMot/Build/Products/Debug/BonMot-OSXTests.xctest/Contents/Frameworks/libswiftXCTest.dylib
+libswiftos.dylib is up to date at /var/folders/0b/dxsqs2d901j1h3_d9pqwqdfh0000gn/T/TemporaryItems/(A Document Being Saved By muter 2)/BonMot/Build/Products/Debug/BonMot-OSXTests.xctest/Contents/Frameworks/libswiftos.dylib
+libswiftSwiftOnoneSupport.dylib is up to date at /var/folders/0b/dxsqs2d901j1h3_d9pqwqdfh0000gn/T/TemporaryItems/(A Document Being Saved By muter 2)/BonMot/Build/Products/Debug/BonMot-OSXTests.xctest/Contents/Frameworks/libswiftSwiftOnoneSupport.dylib
+libswiftObjectiveC.dylib is up to date at /var/folders/0b/dxsqs2d901j1h3_d9pqwqdfh0000gn/T/TemporaryItems/(A Document Being Saved By muter 2)/BonMot/Build/Products/Debug/BonMot-OSXTests.xctest/Contents/Frameworks/libswiftObjectiveC.dylib
+libswiftMetal.dylib is up to date at /var/folders/0b/dxsqs2d901j1h3_d9pqwqdfh0000gn/T/TemporaryItems/(A Document Being Saved By muter 2)/BonMot/Build/Products/Debug/BonMot-OSXTests.xctest/Contents/Frameworks/libswiftMetal.dylib
+libswiftRemoteMirror.dylib is up to date at /var/folders/0b/dxsqs2d901j1h3_d9pqwqdfh0000gn/T/TemporaryItems/(A Document Being Saved By muter 2)/BonMot/Build/Products/Debug/BonMot-OSXTests.xctest/Contents/Resources/libswiftRemoteMirror.dylib
+
+2019-02-07 22:31:56.572 xcodebuild[15773:259336]  IDETestOperationsObserverDebug: Writing diagnostic log for test session to:
+/Users/seandorian/Library/Developer/Xcode/DerivedData/BonMot-gmfdobhmhipicwfukzxgunkbjhnu/Logs/Test/Test-BonMot-OSX-2019.02.07_22-31-55--0500.xcresult/1_Test/Diagnostics/BonMot-OSXTests-A2EC3018-4807-4E79-B884-49A08904CD49/BonMot-OSXTests-989CE5E2-6FAC-4D67-82DF-29033699BE54/Session-BonMot-OSXTests-2019-02-07_223156-HGpi2o.log
+2019-02-07 22:31:56.572 xcodebuild[15773:259151] [MT] IDETestOperationsObserverDebug: (C886CA7A-DECA-4707-AD36-C1648BE9C39A) Beginning test session BonMot-OSXTests-C886CA7A-DECA-4707-AD36-C1648BE9C39A at 2019-02-07 22:31:56.572 with Xcode 10B61 on target <DVTLocalComputer: 0x7fb6f91a9640 (My Mac | x86_64h)> (10.14.2 (18C54))
+2019-02-07 22:31:56.696 xcodebuild[15773:259153]  IDETestOperationsObserverDebug: Writing diagnostic log for test session to:
+/Users/seandorian/Library/Developer/Xcode/DerivedData/BonMot-gmfdobhmhipicwfukzxgunkbjhnu/Logs/Test/Test-BonMot-OSX-2019.02.07_22-31-55--0500.xcresult/1_Test/Diagnostics/BonMot-OSXTests-A2EC3018-4807-4E79-B884-49A08904CD49/BonMot-OSXTests-26D80368-CBAF-4593-8AF0-6AE56EE41EB2/Session-BonMot-OSXTests-2019-02-07_223156-njW78t.log
+2019-02-07 22:31:56.696 xcodebuild[15773:259151] [MT] IDETestOperationsObserverDebug: (2F3AC450-A257-4E3C-B9B0-E527812AFCAB) Beginning test session BonMot-OSXTests-2F3AC450-A257-4E3C-B9B0-E527812AFCAB at 2019-02-07 22:31:56.697 with Xcode 10B61 on target <DVTLocalComputer: 0x7fb6f91a9640 (My Mac | x86_64h)> (10.14.2 (18C54))
+2019-02-07 22:31:56.698 xcodebuild[15773:259340]  IDETestOperationsObserverDebug: Writing diagnostic log for test session to:
+/Users/seandorian/Library/Developer/Xcode/DerivedData/BonMot-gmfdobhmhipicwfukzxgunkbjhnu/Logs/Test/Test-BonMot-OSX-2019.02.07_22-31-55--0500.xcresult/1_Test/Diagnostics/BonMot-OSXTests-A2EC3018-4807-4E79-B884-49A08904CD49/BonMot-OSXTests-58E64B31-353A-4F96-AB96-AA96F4115DD5/Session-BonMot-OSXTests-2019-02-07_223156-hwtyXX.log
+2019-02-07 22:31:56.698 xcodebuild[15773:259151] [MT] IDETestOperationsObserverDebug: (BD0340BA-9B2C-45C6-BE6C-87A96A0ADB56) Beginning test session BonMot-OSXTests-BD0340BA-9B2C-45C6-BE6C-87A96A0ADB56 at 2019-02-07 22:31:56.698 with Xcode 10B61 on target <DVTLocalComputer: 0x7fb6f91a9640 (My Mac | x86_64h)> (10.14.2 (18C54))
+2019-02-07 22:31:56.700 xcodebuild[15773:259153]  IDETestOperationsObserverDebug: Writing diagnostic log for test session to:
+/Users/seandorian/Library/Developer/Xcode/DerivedData/BonMot-gmfdobhmhipicwfukzxgunkbjhnu/Logs/Test/Test-BonMot-OSX-2019.02.07_22-31-55--0500.xcresult/1_Test/Diagnostics/BonMot-OSXTests-A2EC3018-4807-4E79-B884-49A08904CD49/BonMot-OSXTests-417B3D0B-7A1F-4591-A19A-949B4E59B8D8/Session-BonMot-OSXTests-2019-02-07_223156-VVb8Xs.log
+2019-02-07 22:31:56.700 xcodebuild[15773:259151] [MT] IDETestOperationsObserverDebug: (40D9E35D-4DAE-4641-B3F8-6F160227551A) Beginning test session BonMot-OSXTests-40D9E35D-4DAE-4641-B3F8-6F160227551A at 2019-02-07 22:31:56.700 with Xcode 10B61 on target <DVTLocalComputer: 0x7fb6f91a9640 (My Mac | x86_64h)> (10.14.2 (18C54))
+Testing started on 'My Mac'
+Test suite 'StringStyleTests' started on 'xctest (15794)'
+Test case 'StringStyleTests.testLigatureStyle()' passed on 'xctest (15794)' (0.142 seconds)
+Test case 'StringStyleTests.testContextualAlternatesStyle()' failed on 'xctest (15794)' (0.008 seconds)
+Test case 'StringStyleTests.testParagraphStyles()' passed on 'xctest (15794)' (0.001 seconds)
+Test suite 'TransformTests' started on 'xctest (15798)'
+Test suite 'ComposableTests' started on 'xctest (15796)'
+Test case 'StringStyleTests.testFontFeatureStyle()' failed on 'xctest (15794)' (0.016 seconds)
+Test case 'StringStyleTests.testNoKern()' passed on 'xctest (15794)' (0.001 seconds)
+Test case 'StringStyleTests.testFractionsStyle()' failed on 'xctest (15794)' (0.003 seconds)
+Test case 'StringStyleTests.testURL()' passed on 'xctest (15794)' (0.001 seconds)
+Test case 'StringStyleTests.testAlignmentStyle()' passed on 'xctest (15794)' (0.001 seconds)
+Test case 'StringStyleTests.testStrikethroughStyle()' passed on 'xctest (15794)' (0.001 seconds)
+Test case 'StringStyleTests.testUnderlineStyle()' passed on 'xctest (15794)' (0.001 seconds)
+Test case 'StringStyleTests.testEffectOfAlignmentOnKerningForComposedStrings()' passed on 'xctest (15794)' (0.002 seconds)
+Test case 'StringStyleTests.testStylisticAlternatesStyle()' failed on 'xctest (15794)' (0.005 seconds)
+Test case 'StringStyleTests.testStyleStylePart()' passed on 'xctest (15794)' (0.002 seconds)
+Test suite 'EmphasisTests' started on 'xctest (15797)'
+Test case 'StringStyleTests.testAdobeTracking()' passed on 'xctest (15794)' (0.002 seconds)
+Test case 'StringStyleTests.testOrdinalsStyle()' failed on 'xctest (15794)' (0.004 seconds)
+Test case 'StringStyleTests.testNumberCaseStyle()' failed on 'xctest (15794)' (0.004 seconds)
+Test case 'StringStyleTests.testBaselineStyle()' passed on 'xctest (15794)' (0.001 seconds)
+Test case 'StringStyleTests.testBasicAssertionUtilities()' passed on 'xctest (15794)' (0.002 seconds)
+Test case 'StringStyleTests.testParagraphStyleAdd()' passed on 'xctest (15794)' (0.001 seconds)
+Test case 'StringStyleTests.testScientificInferiorsStyle()' failed on 'xctest (15794)' (0.004 seconds)
+Test case 'StringStyleTests.testEffectOfAlignmentOnKerningForStringsComposedOfOneOffStrings()' passed on 'xctest (15794)' (0.001 seconds)
+Test case 'StringStyleTests.testOverridingProperties()' passed on 'xctest (15794)' (0.001 seconds)
+Test case 'StringStyleTests.testSmallCapsStyle()' failed on 'xctest (15794)' (0.004 seconds)
+Test case 'StringStyleTests.testPointTracking()' passed on 'xctest (15794)' (0.002 seconds)
+Test case 'StringStyleTests.testAdditiveFontFeatures()' failed on 'xctest (15794)' (0.003 seconds)
+Test case 'StringStyleTests.testSuperscriptStyle()' failed on 'xctest (15794)' (0.003 seconds)
+Test case 'StringStyleTests.testSubscriptStyle()' failed on 'xctest (15794)' (0.003 seconds)
+Test case 'StringStyleTests.testNumberSpacingStyle()' failed on 'xctest (15794)' (0.003 seconds)
+Test case 'StringStyleTests.testEffectOfAlignmentOnKerningForOneOffStrings()' passed on 'xctest (15794)' (0.001 seconds)
+Test suite 'XMLTagStyleBuilderTests' started on 'xctest (15794)'
+Test case 'XMLTagStyleBuilderTests.testInvalidXMLByStyle()' passed on 'xctest (15794)' (0.001 seconds)
+Test case 'XMLTagStyleBuilderTests.testFullXML()' passed on 'xctest (15794)' (0.001 seconds)
+Test case 'XMLTagStyleBuilderTests.testMissingTagsByStyle()' passed on 'xctest (15794)' (0.001 seconds)
+Test case 'XMLTagStyleBuilderTests.testCompositionByStyle()' passed on 'xctest (15794)' (0.002 seconds)
+Test case 'XMLTagStyleBuilderTests.testBasicParserPerformance()' passed on 'xctest (15794)' (0.028 seconds)
+Test case 'XMLTagStyleBuilderTests.testBONXML()' passed on 'xctest (15794)' (0.010 seconds)
+Test case 'XMLTagStyleBuilderTests.testUnicodeInXML()' passed on 'xctest (15794)' (0.001 seconds)
+Test case 'XMLTagStyleBuilderTests.testErrorLocation()' passed on 'xctest (15794)' (0.002 seconds)
+Test case 'XMLTagStyleBuilderTests.testMissingTags()' passed on 'xctest (15794)' (0.001 seconds)
+Test suite 'NSAttributedStringDebu2019-02-07 22:31:57.342 xcodebuild[15773:259151] [MT] IDETestOperationsObserverDebug: 0.776 elapsed -- Testing started completed.
+2019-02-07 22:31:57.343 xcodebuild[15773:259151] [MT] IDETestOperationsObserverDebug: 0.000 sec, +0.000 sec -- start
+2019-02-07 22:31:57.343 xcodebuild[15773:259151] [MT] IDETestOperationsObserverDebug: 0.776 sec, +0.776 sec -- end
+gTests' started on 'xctest (15794)'
+Test case 'NSAttributedStringDebugTests.testDebugRepresentationReplacements()' passed on 'xctest (15794)' (0.021 seconds)
+Test case 'NSAttributedStringDebugTests.testThatNSAttributedStringSpeaksUTF16()' passed on 'xctest (15794)' (0.001 seconds)
+Test case 'NSAttributedStringDebugTests.testComposedDebugRepresentation()' passed on 'xctest (15794)' (0.002 seconds)
+Test case 'NSAttributedStringDebugTests.testSpecialFromUnicodeScalar()' passed on 'xctest (15794)' (0.000 seconds)
+Test case 'NSAttributedStringDebugTests.testParagraphStyleBehavior()' passed on 'xctest (15794)' (0.000 seconds)
+Test suite 'ImageTintingTests' started on 'xctest (15794)'
+Test case 'TransformTests.testCapitalized()' passed on 'xctest (15798)' (0.164 seconds)
+Test case 'ImageTintingTests.testAccessibilityIOSAndTVOS()' passed on 'xctest (15794)' (0.001 seconds)
+Test case 'TransformTests.testCustom()' passed on 'xctest (15798)' (0.002 seconds)
+Test case 'ComposableTests.testJoiningSequence()' passed on 'xctest (15796)' (0.163 seconds)
+Test case 'ComposableTests.testAttributesArePassedAlongExtend()' passed on 'xctest (15796)' (0.001 seconds)
+Test case 'TransformTests.testLocalizedUppercase()' passed on 'xctest (15798)' (0.002 seconds)
+Test case 'TransformTests.testLowercase()' passed on 'xctest (15798)' (0.001 seconds)
+Test case 'TransformTests.testLocalizedCapitalized()' passed on 'xctest (15798)' (0.002 seconds)
+Test case 'TransformTests.testLocalizedLowercase()' passed on 'xctest (15798)' (0.002 seconds)
+Test case 'ComposableTests.testInitialParagraphStyle()' passed on 'xctest (15796)' (0.007 seconds)
+Test case 'TransformTests.testUppercase()' passed on 'xctest (15798)' (0.002 seconds)
+Test suite 'TextAlignmentConstraintTests' started on 'xctest (15798)'
+Test case 'ComposableTests.testBaseParagraphStyleIsOverridden()' passed on 'xctest (15796)' (0.009 seconds)
+Test case 'ComposableTests.testCompositionWithChangingParagraphStyles()' passed on 'xctest (15796)' (0.001 seconds)
+Test case 'ComposableTests.testImageConstructor()' passed on 'xctest (15796)' (0.001 seconds)
+Test case 'ComposableTests.testBasicJoin()' passed on 'xctest (15796)' (0.001 seconds)
+Test suite 'FontInspectorTests' started on 'xctest (15796)'
+Test case 'ImageTintingTests.testAccessibilityOSX()' passed on 'xctest (15794)' (0.036 seconds)
+Test case 'EmphasisTests.testEmphasisCombination()' passed on 'xctest (15797)' (0.169 seconds)
+Test suite 'BONFontBehaviorTests' started on 'xctest (15794)'
+Test case 'BONFontBehaviorTests.testBONFontDescriptors()' passed on 'xctest (15794)' (0.001 seconds)
+Test suite 'AccessTests' started on 'xctest (15797)'
+Test case 'TextAlignmentConstraintTests.testXHeightToCapHeightConstraint()' passed on 'xctest (15798)' (0.027 seconds)
+Test case 'TextAlignmentConstraintTests.testCapHeightToXHeightConstraint()' passed on 'xctest (15798)' (0.001 seconds)
+Test case 'FontInspectorTests.testHasFeature()' passed on 'xctest (15796)' (0.014 seconds)
+Test case 'AccessTests.testThatThingsThatShouldBePublicArePublic()' passed on 'xctest (15797)' (0.006 seconds)
+Test case 'TextAlignmentConstraintTests.testCapHeightToTopConstraint()' passed on 'xctest (15798)' (0.001 seconds)
+Test case 'TextAlignmentConstraintTests.testTopConstraint()' passed on 'xctest (15798)' (0.001 seconds)
+Test case 'TextAlignmentConstraintTests.testTopToXHeightConstraint()' passed on 'xctest (15798)' (0.001 seconds)
+Test case 'TextAlignmentConstraintTests.testTopToCapHeightConstraint()' passed on 'xctest (15798)' (0.001 seconds)
+Test case 'TextAlignmentConstraintTests.testXHeightToTopConstraint()' passed on 'xctest (15798)' (0.001 seconds)
+Test case 'TextAlignmentConstraintTests.testXHeightConstraint()' passed on 'xctest (15798)' (0.002 seconds)
+Test case 'TextAlignmentConstraintTests.testCapHeightConstraint()' passed on 'xctest (15798)' (0.002 seconds)
+Generating coverage data...
+Generated coverage report: /Users/seandorian/Library/Developer/Xcode/DerivedData/BonMot-gmfdobhmhipicwfukzxgunkbjhnu/Logs/Test/Test-BonMot-OSX-2019.02.07_22-31-55--0500.xcresult/1_Test/actFailing tests:
+	StringStyleTests.testContextualAlternatesStyle()
+	StringStyleTests.testContextualAlternatesStyle()
+	StringStyleTests.testFontFeatureStyle()
+	StringStyleTests.testFontFeatureStyle()
+	StringStyleTests.testFontFeatureStyle()
+	StringStyleTests.testFontFeatureStyle()
+	StringStyleTests.testFontFeatureStyle()
+	StringStyleTests.testFontFeatureStyle()
+	StringStyleTests.testFontFeatureStyle()
+	StringStyleTests.testFontFeatureStyle()
+	StringStyleTests.testFontFeatureStyle()
+	StringStyleTests.testFontFeatureStyle()
+	StringStyleTests.testFontFeatureStyle()
+	StringStyleTests.testFractionsStyle()
+	StringStyleTests.testFractionsStyle()
+	StringStyleTests.testStylisticAlternatesStyle()
+	StringStyleTests.testStylisticAlternatesStyle()
+	StringStyleTests.testOrdinalsStyle()
+	StringStyleTests.testOrdinalsStyle()
+	StringStyleTests.testNumberCaseStyle()
+	StringStyleTests.testNumberCaseStyle()
+	StringStyleTests.testScientificInferiorsStyle()
+	StringStyleTests.testScientificInferiorsStyle()
+	StringStyleTests.testSmallCapsStyle()
+	StringStyleTests.testSmallCapsStyle()
+	StringStyleTests.testAdditiveFontFeatures()
+	StringStyleTests.testSuperscriptStyle()
+	StringStyleTests.testSuperscriptStyle()
+	StringStyleTests.testSubscriptStyle()
+	StringStyleTests.testSubscriptStyle()
+	StringStyleTests.testNumberSpacingStyle()
+	StringStyleTests.testNumberSpacingStyle()
+** TEST FAILED **
+
+ion.xccovreport
