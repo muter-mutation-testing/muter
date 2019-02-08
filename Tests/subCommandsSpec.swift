@@ -214,7 +214,27 @@ class CLISubcommandSpec: QuickSpec {
                     return
                 }
             }
-
+        }
+        
+        describe("Running muter") {
+            describe("with json report flag") {
+                it("should save the report as json") {
+                    run(
+                        with: MuterConfiguration.fromFixture(at: "\(self.fixturesDirectory)/muter.conf.withoutExcludeList.json"),
+                        flag: .jsonOutput,
+                        in: "",
+                        copy: { "" },
+                        fileManager: FileSystemManager(),
+                        reporter: { nil }
+                    )
+                }
+            }
+            
+            describe("without json report flag") {
+                it("it should save") {
+                    
+                }
+            }
         }
     }
 }

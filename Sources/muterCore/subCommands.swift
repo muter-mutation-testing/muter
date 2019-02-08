@@ -45,13 +45,22 @@ public func handle(commandlineArguments: [String], setup: ThrowingVoidClosure, r
 // MARK - Mutation Test Run Handler
 
 @available(OSX 10.13, *)
-public func run(with configuration: MuterConfiguration, in path: String) {
+public func run(
+    with configuration: MuterConfiguration,
+    flag: CommandFlag,
+    in path: String,
+    copy: (URL, FileSystemManager) -> String = copyProject,
+    fileManager: FileSystemManager = FileManager.default,
+    reporter: (String, MuterConfiguration) -> MuterTestReport? = beginMutationTesting
+) {
 
     let currentDirectory = URL(fileURLWithPath: path)
-    let destinationPath = copyProject(in: currentDirectory)
-    let report = beginMutationTesting(in: destinationPath, with: configuration)
-    save(report, to: currentDirectory)
-
+    let destinationPath = copy(currentDirectory, fileManager)
+    let report = reporter(destinationPath, configuration)
+    
+    if flag == .jsonOutput {
+        save(report, to: currentDirectory)
+    }
 }
 
 public func copyProject(in currentDirectory: URL, using fileManager: FileSystemManager = FileManager.default) -> String {
