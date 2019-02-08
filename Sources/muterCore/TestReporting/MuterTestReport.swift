@@ -54,7 +54,7 @@ extension MuterTestReport: CustomStringConvertible {
 
         In total, Muter applied \(totalAppliedMutationOperators) mutation operators.
 
-        \(generateAppliedMutationsCLITable(from: self.fileReports))
+        \(generateAppliedMutationsCLITable(from: self.fileReports).description)
 
 
 
@@ -73,7 +73,7 @@ extension MuterTestReport: CustomStringConvertible {
 
         \(mutationScoreMessage)
 
-        \(generateMutationScoresCLITable(from: self.fileReports))
+        \(generateMutationScoresCLITable(from: self.fileReports).description)
         """
 
         return finishedRunningMessage + appliedMutationsMessage + mutationScoresMessage
