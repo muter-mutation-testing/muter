@@ -23,6 +23,9 @@ class TestSuiteResultParsingSpec: QuickSpec {
 
                     contents = loadLogFile(named: "testRunWithFailures_withTestFailedFooter_singleTestFailure.log")
                     expect(TestSuiteOutcome.from(testLog: contents)).to(equal(.failed))
+                    
+                    contents = loadLogFile(named: "testRunWithFailures_withTestFailedFooter_noTestFailureCount.log")
+                    expect(TestSuiteOutcome.from(testLog: contents)).to(equal(.failed))
                 }
             }
 
