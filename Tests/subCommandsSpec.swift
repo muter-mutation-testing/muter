@@ -233,7 +233,7 @@ class CLISubcommandSpec: QuickSpec {
                     var reporterCalled = false
                     var destinationPathPassed: String?
                     var configurationPassed: MuterConfiguration?
-                    let reporterSpy: (String, MuterConfiguration) -> MuterTestReport? = {
+                    let beginMutationTestingSpy: (String, MuterConfiguration) -> MuterTestReport? = {
                         reporterCalled = true
                         destinationPathPassed = $0
                         configurationPassed = $1
@@ -259,7 +259,7 @@ class CLISubcommandSpec: QuickSpec {
                         in: path,
                         copy: copySpy,
                         fileManager: fileManager,
-                        reporter: reporterSpy,
+                        beginMutationTesting: beginMutationTestingSpy,
                         save: saveSpy
                     )
 
@@ -291,7 +291,7 @@ class CLISubcommandSpec: QuickSpec {
                     var reporterCalled = false
                     var destinationPathPassed: String?
                     var configurationPassed: MuterConfiguration?
-                    let reporterSpy: (String, MuterConfiguration) -> MuterTestReport? = {
+                    let beginMutationTestingSpy: (String, MuterConfiguration) -> MuterTestReport? = {
                         reporterCalled = true
                         destinationPathPassed = $0
                         configurationPassed = $1
@@ -317,7 +317,7 @@ class CLISubcommandSpec: QuickSpec {
                         in: path,
                         copy: copySpy,
                         fileManager: fileManager,
-                        reporter: reporterSpy,
+                        beginMutationTesting: beginMutationTestingSpy,
                         save: saveSpy
                     )
 
