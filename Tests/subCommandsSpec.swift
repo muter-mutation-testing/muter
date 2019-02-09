@@ -219,22 +219,132 @@ class CLISubcommandSpec: QuickSpec {
         describe("Running muter") {
             describe("with json report flag") {
                 it("should save the report as json") {
-                    run(
-                        with: MuterConfiguration.fromFixture(at: "\(self.fixturesDirectory)/muter.conf.withoutExcludeList.json"),
+                    var copyCalled = false
+                    var directoryPassed: URL?
+                    var fileManagerPassed: FileSystemManager?
+                    let copySpy: (URL, FileSystemManager) -> String = {
+                        copyCalled = true
+                        directoryPassed = $0
+                        fileManagerPassed = $1
+
+                        return "destination path value"
+                    }
+
+                    var reporterCalled = false
+                    var destinationPathPassed: String?
+                    var configurationPassed: MuterConfiguration?
+                    let reporterSpy: (String, MuterConfiguration) -> MuterTestReport? = {
+                        reporterCalled = true
+                        destinationPathPassed = $0
+                        configurationPassed = $1
+
+                        return .dummy
+                    }
+
+                    var saveCalled = false
+                    var reportPassed: MuterTestReport?
+                    var currentDirectoryPassed: URL?
+                    let saveSpy: (MuterTestReport?, URL) -> Void = {
+                        saveCalled = true
+                        reportPassed = $0
+                        currentDirectoryPassed = $1
+                    }
+
+                    let path = self.productsDirectory.absoluteString
+                    let fileManager = FileManagerSpy()
+                    let configuration = MuterConfiguration.fromFixture(at: "\(self.fixturesDirectory)/muter.conf.withoutExcludeList.json")!
+                    muterCore.run(
+                        with: configuration,
                         flag: .jsonOutput,
-                        in: "",
-                        copy: { "" },
-                        fileManager: FileSystemManager(),
-                        reporter: { nil }
+                        in: path,
+                        copy: copySpy,
+                        fileManager: fileManager,
+                        reporter: reporterSpy,
+                        save: saveSpy
                     )
+
+                    expect(copyCalled).to(beTrue())
+                    expect(directoryPassed).to(equal(URL(fileURLWithPath: path)))
+                    expect(fileManagerPassed).to(be(fileManager))
+                    expect(reporterCalled).to(beTrue())
+                    expect(destinationPathPassed).to(equal("destination path value"))
+                    expect(configurationPassed).to(equal(configuration))
+                    expect(saveCalled).to(beTrue())
+                    expect(reportPassed).to(equal(.dummy))
+                    expect(currentDirectoryPassed).to(equal(URL(fileURLWithPath: path)))
                 }
             }
             
             describe("without json report flag") {
-                it("it should save") {
-                    
+                it("shouldn't save the report as json") {
+                    var copyCalled = false
+                    var directoryPassed: URL?
+                    var fileManagerPassed: FileSystemManager?
+                    let copySpy: (URL, FileSystemManager) -> String = {
+                        copyCalled = true
+                        directoryPassed = $0
+                        fileManagerPassed = $1
+
+                        return "destination path value"
+                    }
+
+                    var reporterCalled = false
+                    var destinationPathPassed: String?
+                    var configurationPassed: MuterConfiguration?
+                    let reporterSpy: (String, MuterConfiguration) -> MuterTestReport? = {
+                        reporterCalled = true
+                        destinationPathPassed = $0
+                        configurationPassed = $1
+
+                        return .dummy
+                    }
+
+                    var saveCalled = false
+                    var reportPassed: MuterTestReport?
+                    var currentDirectoryPassed: URL?
+                    let saveSpy: (MuterTestReport?, URL) -> Void = {
+                        saveCalled = true
+                        reportPassed = $0
+                        currentDirectoryPassed = $1
+                    }
+
+                    let path = self.productsDirectory.absoluteString
+                    let fileManager = FileManagerSpy()
+                    let configuration = MuterConfiguration.fromFixture(at: "\(self.fixturesDirectory)/muter.conf.withoutExcludeList.json")!
+                    muterCore.run(
+                        with: configuration,
+                        flag: .empty,
+                        in: path,
+                        copy: copySpy,
+                        fileManager: fileManager,
+                        reporter: reporterSpy,
+                        save: saveSpy
+                    )
+
+                    expect(copyCalled).to(beTrue())
+                    expect(directoryPassed).to(equal(URL(fileURLWithPath: path)))
+                    expect(fileManagerPassed).to(be(fileManager))
+                    expect(reporterCalled).to(beTrue())
+                    expect(destinationPathPassed).to(equal("destination path value"))
+                    expect(configurationPassed).to(equal(configuration))
+                    expect(saveCalled).to(beFalse())
+                    expect(reportPassed).to(beNil())
+                    expect(currentDirectoryPassed).to(beNil())
                 }
             }
         }
+    }
+}
+
+extension MuterTestReport {
+    static var dummy: MuterTestReport {
+        return .init(from:
+            [
+                .init(testSuiteOutcome: .failed,
+                      appliedMutation: .negateConditionals,
+                      filePath: "some path",
+                      position: .firstPosition)
+            ]
+        )
     }
 }
