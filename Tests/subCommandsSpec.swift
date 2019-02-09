@@ -257,8 +257,8 @@ class CLISubcommandSpec: QuickSpec {
                         with: configuration,
                         flag: .jsonOutput,
                         in: path,
-                        copy: copySpy,
                         fileManager: fileManager,
+                        copy: copySpy,
                         beginMutationTesting: beginMutationTestingSpy,
                         save: saveSpy
                     )
@@ -315,8 +315,8 @@ class CLISubcommandSpec: QuickSpec {
                         with: configuration,
                         flag: .empty,
                         in: path,
-                        copy: copySpy,
                         fileManager: fileManager,
+                        copy: copySpy,
                         beginMutationTesting: beginMutationTestingSpy,
                         save: saveSpy
                     )

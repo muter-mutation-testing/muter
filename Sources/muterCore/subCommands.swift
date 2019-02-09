@@ -49,8 +49,8 @@ public func run(
     with configuration: MuterConfiguration,
     flag: CommandFlag,
     in path: String,
-    copy: (URL, FileSystemManager) -> String = copyProject,
     fileManager: FileSystemManager = FileManager.default,
+    copy: (URL, FileSystemManager) -> String = copyProject,
     beginMutationTesting: (String, MuterConfiguration) -> MuterTestReport? = beginMutationTesting,
     save: (MuterTestReport?, URL) -> Void = save
 ) {
