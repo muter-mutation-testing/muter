@@ -51,15 +51,15 @@ public func run(
     in path: String,
     copy: (URL, FileSystemManager) -> String = copyProject,
     fileManager: FileSystemManager = FileManager.default,
-    reporter: (String, MuterConfiguration) -> MuterTestReport? = beginMutationTesting
+    reporter: (String, MuterConfiguration) -> MuterTestReport? = beginMutationTesting,
+    save: (MuterTestReport?, URL) -> Void = save
 ) {
-
     let currentDirectory = URL(fileURLWithPath: path)
     let destinationPath = copy(currentDirectory, fileManager)
     let report = reporter(destinationPath, configuration)
     
     if flag == .jsonOutput {
-        save(report, to: currentDirectory)
+        save(report, currentDirectory)
     }
 }
 
