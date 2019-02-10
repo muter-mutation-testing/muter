@@ -1,0 +1,366 @@
+{
+  "fileReports" : [
+    {
+      "appliedOperators" : [
+        {
+          "id" : "Remove Side Effects",
+          "position" : {
+            "column" : 41,
+            "line" : 63,
+            "utf8Offset" : 1886
+          },
+          "testSuiteOutcome" : "passed"
+        }
+      ],
+      "fileName" : "ContextualAlternates.swift",
+      "mutationScore" : 0
+    },
+    {
+      "appliedOperators" : [
+        {
+          "id" : "Negate Conditionals",
+          "position" : {
+            "column" : 42,
+            "line" : 34,
+            "utf8Offset" : 1105
+          },
+          "testSuiteOutcome" : "failed"
+        },
+        {
+          "id" : "Negate Conditionals",
+          "position" : {
+            "column" : 37,
+            "line" : 40,
+            "utf8Offset" : 1278
+          },
+          "testSuiteOutcome" : "failed"
+        },
+        {
+          "id" : "Remove Side Effects",
+          "position" : {
+            "column" : 53,
+            "line" : 47,
+            "utf8Offset" : 1581
+          },
+          "testSuiteOutcome" : "failed"
+        }
+      ],
+      "fileName" : "FontFeatures.swift",
+      "mutationScore" : 100
+    },
+    {
+      "appliedOperators" : [
+        {
+          "id" : "Remove Side Effects",
+          "position" : {
+            "column" : 41,
+            "line" : 204,
+            "utf8Offset" : 6466
+          },
+          "testSuiteOutcome" : "passed"
+        }
+      ],
+      "fileName" : "StylisticAlternates.swift",
+      "mutationScore" : 0
+    },
+    {
+      "appliedOperators" : [
+        {
+          "id" : "Negate Conditionals",
+          "position" : {
+            "column" : 21,
+            "line" : 23,
+            "utf8Offset" : 544
+          },
+          "testSuiteOutcome" : "passed"
+        }
+      ],
+      "fileName" : "Tracking.swift",
+      "mutationScore" : 0
+    },
+    {
+      "appliedOperators" : [
+        {
+          "id" : "Remove Side Effects",
+          "position" : {
+            "column" : 26,
+            "line" : 101,
+            "utf8Offset" : 4310
+          },
+          "testSuiteOutcome" : "passed"
+        },
+        {
+          "id" : "Negate Conditionals",
+          "position" : {
+            "column" : 38,
+            "line" : 87,
+            "utf8Offset" : 3525
+          },
+          "testSuiteOutcome" : "passed"
+        }
+      ],
+      "fileName" : "AdaptableTextContainer.swift",
+      "mutationScore" : 0
+    },
+    {
+      "appliedOperators" : [
+        {
+          "id" : "Negate Conditionals",
+          "position" : {
+            "column" : 30,
+            "line" : 79,
+            "utf8Offset" : 3034
+          },
+          "testSuiteOutcome" : "passed"
+        },
+        {
+          "id" : "Negate Conditionals",
+          "position" : {
+            "column" : 30,
+            "line" : 81,
+            "utf8Offset" : 3167
+          },
+          "testSuiteOutcome" : "passed"
+        }
+      ],
+      "fileName" : "AdaptiveStyle.swift",
+      "mutationScore" : 0
+    },
+    {
+      "appliedOperators" : [
+        {
+          "id" : "Negate Conditionals",
+          "position" : {
+            "column" : 76,
+            "line" : 51,
+            "utf8Offset" : 1936
+          },
+          "testSuiteOutcome" : "passed"
+        }
+      ],
+      "fileName" : "EmbeddedTransformation.swift",
+      "mutationScore" : 0
+    },
+    {
+      "appliedOperators" : [
+        {
+          "id" : "Remove Side Effects",
+          "position" : {
+            "column" : 33,
+            "line" : 38,
+            "utf8Offset" : 1588
+          },
+          "testSuiteOutcome" : "passed"
+        },
+        {
+          "id" : "Remove Side Effects",
+          "position" : {
+            "column" : 10,
+            "line" : 53,
+            "utf8Offset" : 2622
+          },
+          "testSuiteOutcome" : "passed"
+        },
+        {
+          "id" : "Remove Side Effects",
+          "position" : {
+            "column" : 31,
+            "line" : 54,
+            "utf8Offset" : 2653
+          },
+          "testSuiteOutcome" : "passed"
+        }
+      ],
+      "fileName" : "NSAttributedString+Adaptive.swift",
+      "mutationScore" : 0
+    },
+    {
+      "appliedOperators" : [
+        {
+          "id" : "Remove Side Effects",
+          "position" : {
+            "column" : 10,
+            "line" : 207,
+            "utf8Offset" : 8068
+          },
+          "testSuiteOutcome" : "passed"
+        },
+        {
+          "id" : "Negate Conditionals",
+          "position" : {
+            "column" : 38,
+            "line" : 84,
+            "utf8Offset" : 3301
+          },
+          "testSuiteOutcome" : "passed"
+        },
+        {
+          "id" : "Negate Conditionals",
+          "position" : {
+            "column" : 64,
+            "line" : 237,
+            "utf8Offset" : 9091
+          },
+          "testSuiteOutcome" : "passed"
+        },
+        {
+          "id" : "Negate Conditionals",
+          "position" : {
+            "column" : 32,
+            "line" : 250,
+            "utf8Offset" : 9341
+          },
+          "testSuiteOutcome" : "passed"
+        },
+        {
+          "id" : "Negate Conditionals",
+          "position" : {
+            "column" : 105,
+            "line" : 252,
+            "utf8Offset" : 9458
+          },
+          "testSuiteOutcome" : "passed"
+        }
+      ],
+      "fileName" : "StyleableUIElement.swift",
+      "mutationScore" : 0
+    },
+    {
+      "appliedOperators" : [
+        {
+          "id" : "Remove Side Effects",
+          "position" : {
+            "column" : 36,
+            "line" : 133,
+            "utf8Offset" : 4675
+          },
+          "testSuiteOutcome" : "failed"
+        },
+        {
+          "id" : "Remove Side Effects",
+          "position" : {
+            "column" : 36,
+            "line" : 134,
+            "utf8Offset" : 4711
+          },
+          "testSuiteOutcome" : "failed"
+        },
+        {
+          "id" : "Remove Side Effects",
+          "position" : {
+            "column" : 29,
+            "line" : 144,
+            "utf8Offset" : 4864
+          },
+          "testSuiteOutcome" : "passed"
+        },
+        {
+          "id" : "Remove Side Effects",
+          "position" : {
+            "column" : 25,
+            "line" : 145,
+            "utf8Offset" : 4889
+          },
+          "testSuiteOutcome" : "passed"
+        },
+        {
+          "id" : "Remove Side Effects",
+          "position" : {
+            "column" : 25,
+            "line" : 146,
+            "utf8Offset" : 4914
+          },
+          "testSuiteOutcome" : "passed"
+        },
+        {
+          "id" : "Negate Conditionals",
+          "position" : {
+            "column" : 23,
+            "line" : 176,
+            "utf8Offset" : 6184
+          },
+          "testSuiteOutcome" : "passed"
+        },
+        {
+          "id" : "Remove Side Effects",
+          "position" : {
+            "column" : 25,
+            "line" : 181,
+            "utf8Offset" : 6381
+          },
+          "testSuiteOutcome" : "passed"
+        }
+      ],
+      "fileName" : "TextAlignmentConstraint.swift",
+      "mutationScore" : 28
+    },
+    {
+      "appliedOperators" : [
+        {
+          "id" : "Remove Side Effects",
+          "position" : {
+            "column" : 25,
+            "line" : 28,
+            "utf8Offset" : 1217
+          },
+          "testSuiteOutcome" : "passed"
+        },
+        {
+          "id" : "Negate Conditionals",
+          "position" : {
+            "column" : 28,
+            "line" : 58,
+            "utf8Offset" : 2615
+          },
+          "testSuiteOutcome" : "passed"
+        },
+        {
+          "id" : "Remove Side Effects",
+          "position" : {
+            "column" : 80,
+            "line" : 65,
+            "utf8Offset" : 2920
+          },
+          "testSuiteOutcome" : "passed"
+        },
+        {
+          "id" : "Remove Side Effects",
+          "position" : {
+            "column" : 55,
+            "line" : 66,
+            "utf8Offset" : 2975
+          },
+          "testSuiteOutcome" : "passed"
+        }
+      ],
+      "fileName" : "UIKit+AdaptableTextContainerSupport.swift",
+      "mutationScore" : 0
+    },
+    {
+      "appliedOperators" : [
+        {
+          "id" : "Negate Conditionals",
+          "position" : {
+            "column" : 45,
+            "line" : 43,
+            "utf8Offset" : 1405
+          },
+          "testSuiteOutcome" : "passed"
+        },
+        {
+          "id" : "Negate Conditionals",
+          "position" : {
+            "column" : 42,
+            "line" : 49,
+            "utf8Offset" : 1675
+          },
+          "testSuiteOutcome" : "passed"
+        }
+      ],
+      "fileName" : "UIKit+Helpers.swift",
+      "mutationScore" : 0
+    }
+  ],
+  "globalMutationScore" : 15,
+  "totalAppliedMutationOperators" : 32
+}

@@ -12,6 +12,8 @@ muters_empty_state_output.txt
 .vscode
 sourcekite
 *.xcodeproj
+/Tests/bonmot_regression_test_output.json
+muterReport.json
 
 ### macOS ###
 # General

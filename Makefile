@@ -39,6 +39,9 @@ test:
 acceptance-test: build
 	./Scripts/runAcceptanceTests.sh
 
+regression-test: build
+	./Scripts/runRegressionTests.sh
+
 mutation-test: clean
 	muter
 
