@@ -17,12 +17,17 @@ class CLISubcommandSpec: QuickSpec {
                     let setupSpy = { setupClosureWasCalled = true }
 
                     var runClosureWasCalled = false
-                    let runSpy = { runClosureWasCalled = true }
+                    var flagPassed: CommandFlag = .empty
+                    let runSpy: ThrowingCommandFlagClosure = {
+                        flagPassed = $0
+                        runClosureWasCalled = true
+                    }
 
                     let (exitCode, message) = handle(commandlineArguments: ["muter", "notARealSubcommand"], setup: setupSpy, run: runSpy)
 
                     expect(setupClosureWasCalled).to(beFalse())
                     expect(runClosureWasCalled).to(beFalse())
+                    expect(flagPassed).to(equal(.empty))
                     expect(exitCode).to(equal(1))
                     expect(message).to(contain("Unrecognized subcommand given to Muter\nAvailable subcommands:\n\n\tinit"))
                 }
@@ -34,12 +39,17 @@ class CLISubcommandSpec: QuickSpec {
                     let setupSpy = { setupClosureWasCalled = true }
 
                     var runClosureWasCalled = false
-                    let runSpy = { runClosureWasCalled = true }
+                    var flagPassed: CommandFlag = .empty
+                    let runSpy: ThrowingCommandFlagClosure = {
+                        flagPassed = $0
+                        runClosureWasCalled = true
+                    }
 
                     let (exitCode, message) = handle(commandlineArguments: ["muter", "init"], setup: setupSpy, run: runSpy)
 
                     expect(setupClosureWasCalled).to(beTrue())
                     expect(runClosureWasCalled).to(beFalse())
+                    expect(flagPassed).to(equal(.empty))
                     expect(exitCode).to(equal(0))
                     expect(message).to(contain("Created muter config file"))
                 }
@@ -52,14 +62,41 @@ class CLISubcommandSpec: QuickSpec {
                     }
 
                     var runClosureWasCalled = false
-                    let runSpy = { runClosureWasCalled = true }
-
+                    var flagPassed: CommandFlag = .empty
+                    let runSpy: ThrowingCommandFlagClosure = {
+                        flagPassed = $0
+                        runClosureWasCalled = true
+                    }
+                    
                     let (exitCode, message) = handle(commandlineArguments: ["muter", "init"], setup: setupSpy, run: runSpy)
 
                     expect(setupClosureWasCalled).to(beTrue())
                     expect(runClosureWasCalled).to(beFalse())
+                    expect(flagPassed).to(equal(.empty))
                     expect(exitCode).to(equal(1))
                     expect(message).to(contain("Error creating muter config file"))
+                }
+            }
+
+            describe("with the json flag") {
+                it("runs Muter and returns an exit code of 0 on success") {
+                    var setupClosureWasCalled = false
+                    let setupSpy = { setupClosureWasCalled = true }
+
+                    var runClosureWasCalled = false
+                    var flagPassed: CommandFlag = .empty
+                    let runSpy: ThrowingCommandFlagClosure = {
+                        flagPassed = $0
+                        runClosureWasCalled = true
+                    }
+
+                    let (exitCode, message) = handle(commandlineArguments: ["muter", "--output-json"], setup: setupSpy, run: runSpy)
+
+                    expect(setupClosureWasCalled).to(beFalse())
+                    expect(runClosureWasCalled).to(beTrue())
+                    expect(flagPassed).to(equal(.jsonOutput))
+                    expect(exitCode).to(equal(0))
+                    expect(message).to(beNil())
                 }
             }
 
@@ -69,12 +106,17 @@ class CLISubcommandSpec: QuickSpec {
                     let setupSpy = { setupClosureWasCalled = true }
 
                     var runClosureWasCalled = false
-                    let runSpy = { runClosureWasCalled = true }
+                    var flagPassed: CommandFlag = .empty
+                    let runSpy: ThrowingCommandFlagClosure = {
+                        flagPassed = $0
+                        runClosureWasCalled = true
+                    }
 
                     let (exitCode, message) = handle(commandlineArguments: [], setup: setupSpy, run: runSpy)
 
                     expect(setupClosureWasCalled).to(beFalse())
                     expect(runClosureWasCalled).to(beTrue())
+                    expect(flagPassed).to(equal(.empty))
                     expect(exitCode).to(equal(0))
                     expect(message).to(beNil())
                 }
@@ -84,7 +126,9 @@ class CLISubcommandSpec: QuickSpec {
                     let setupSpy = { setupClosureWasCalled = true }
 
                     var runClosureWasCalled = false
-                    let runSpy = {
+                    var flagPassed: CommandFlag = .empty
+                    let runSpy: ThrowingCommandFlagClosure = {
+                        flagPassed = $0
                         runClosureWasCalled = true
                         throw TestError.generic
                     }
@@ -93,6 +137,7 @@ class CLISubcommandSpec: QuickSpec {
 
                     expect(setupClosureWasCalled).to(beFalse())
                     expect(runClosureWasCalled).to(beTrue())
+                    expect(flagPassed).to(equal(.empty))
                     expect(exitCode).to(equal(1))
                     expect(message).to(contain("Error running Muter - make sure your config file exists and is filled out correctly"))
                 }
@@ -169,7 +214,137 @@ class CLISubcommandSpec: QuickSpec {
                     return
                 }
             }
-
         }
+        
+        describe("Running muter") {
+            describe("with json report flag") {
+                it("should save the report as json") {
+                    var copyCalled = false
+                    var directoryPassed: URL?
+                    var fileManagerPassed: FileSystemManager?
+                    let copySpy: (URL, FileSystemManager) -> String = {
+                        copyCalled = true
+                        directoryPassed = $0
+                        fileManagerPassed = $1
+
+                        return "destination path value"
+                    }
+
+                    var reporterCalled = false
+                    var destinationPathPassed: String?
+                    var configurationPassed: MuterConfiguration?
+                    let beginMutationTestingSpy: (String, MuterConfiguration) -> MuterTestReport? = {
+                        reporterCalled = true
+                        destinationPathPassed = $0
+                        configurationPassed = $1
+
+                        return .dummy
+                    }
+
+                    var saveCalled = false
+                    var reportPassed: MuterTestReport?
+                    var currentDirectoryPassed: URL?
+                    let saveSpy: (MuterTestReport?, URL) -> Void = {
+                        saveCalled = true
+                        reportPassed = $0
+                        currentDirectoryPassed = $1
+                    }
+
+                    let path = self.productsDirectory.absoluteString
+                    let fileManager = FileManagerSpy()
+                    let configuration = MuterConfiguration.fromFixture(at: "\(self.fixturesDirectory)/muter.conf.withoutExcludeList.json")!
+                    muterCore.run(
+                        with: configuration,
+                        flag: .jsonOutput,
+                        in: path,
+                        fileManager: fileManager,
+                        copy: copySpy,
+                        beginMutationTesting: beginMutationTestingSpy,
+                        save: saveSpy
+                    )
+
+                    expect(copyCalled).to(beTrue())
+                    expect(directoryPassed).to(equal(URL(fileURLWithPath: path)))
+                    expect(fileManagerPassed).to(be(fileManager))
+                    expect(reporterCalled).to(beTrue())
+                    expect(destinationPathPassed).to(equal("destination path value"))
+                    expect(configurationPassed).to(equal(configuration))
+                    expect(saveCalled).to(beTrue())
+                    expect(reportPassed).to(equal(.dummy))
+                    expect(currentDirectoryPassed).to(equal(URL(fileURLWithPath: path)))
+                }
+            }
+            
+            describe("without json report flag") {
+                it("shouldn't save the report as json") {
+                    var copyCalled = false
+                    var directoryPassed: URL?
+                    var fileManagerPassed: FileSystemManager?
+                    let copySpy: (URL, FileSystemManager) -> String = {
+                        copyCalled = true
+                        directoryPassed = $0
+                        fileManagerPassed = $1
+
+                        return "destination path value"
+                    }
+
+                    var reporterCalled = false
+                    var destinationPathPassed: String?
+                    var configurationPassed: MuterConfiguration?
+                    let beginMutationTestingSpy: (String, MuterConfiguration) -> MuterTestReport? = {
+                        reporterCalled = true
+                        destinationPathPassed = $0
+                        configurationPassed = $1
+
+                        return .dummy
+                    }
+
+                    var saveCalled = false
+                    var reportPassed: MuterTestReport?
+                    var currentDirectoryPassed: URL?
+                    let saveSpy: (MuterTestReport?, URL) -> Void = {
+                        saveCalled = true
+                        reportPassed = $0
+                        currentDirectoryPassed = $1
+                    }
+
+                    let path = self.productsDirectory.absoluteString
+                    let fileManager = FileManagerSpy()
+                    let configuration = MuterConfiguration.fromFixture(at: "\(self.fixturesDirectory)/muter.conf.withoutExcludeList.json")!
+                    muterCore.run(
+                        with: configuration,
+                        flag: .empty,
+                        in: path,
+                        fileManager: fileManager,
+                        copy: copySpy,
+                        beginMutationTesting: beginMutationTestingSpy,
+                        save: saveSpy
+                    )
+
+                    expect(copyCalled).to(beTrue())
+                    expect(directoryPassed).to(equal(URL(fileURLWithPath: path)))
+                    expect(fileManagerPassed).to(be(fileManager))
+                    expect(reporterCalled).to(beTrue())
+                    expect(destinationPathPassed).to(equal("destination path value"))
+                    expect(configurationPassed).to(equal(configuration))
+                    expect(saveCalled).to(beFalse())
+                    expect(reportPassed).to(beNil())
+                    expect(currentDirectoryPassed).to(beNil())
+                }
+            }
+        }
+    }
+}
+
+extension MuterTestReport {
+    static var dummy: MuterTestReport {
+        return .init(from:
+            [
+                .init(testSuiteOutcome: .failed,
+                      appliedMutation: .negateConditionals,
+                      filePath: "some path",
+                      position: .firstPosition)
+            ]
+        )
     }
 }

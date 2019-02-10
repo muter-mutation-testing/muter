@@ -1,42 +1,66 @@
 import Foundation
 
 public typealias ThrowingVoidClosure = () throws -> Void
+public typealias ThrowingCommandFlagClosure = (CommandFlag) throws -> Void
+
+public enum CommandFlag {
+    case empty
+    case jsonOutput
+}
 
 // MARK - Commandline Argument Handler
 
-public func handle(commandlineArguments: [String], setup: ThrowingVoidClosure, run running: ThrowingVoidClosure) -> (Int32, String?) {
-    switch commandlineArguments.count {
-    case 2:
-        guard commandlineArguments[1] == "init" else {
-            return (1, "Unrecognized subcommand given to Muter\nAvailable subcommands:\n\n\tinit")
-        }
+public func handle(commandlineArguments: [String], setup: ThrowingVoidClosure, run running: @escaping ThrowingCommandFlagClosure) -> (Int32, String?) {
 
+    let run: (CommandFlag) -> (Int32, String?) = {
         do {
-            try setup()
-            return (0, "Created muter config file at: \(FileManager.default.currentDirectoryPath)/muter.config.json")
-        } catch {
-            return (1, "Error creating muter config file\n\n\(error)")
-        }
-    default:
-        do {
-            try running()
+            try running($0)
             return (0, nil)
         } catch {
             return (1, "Error running Muter - make sure your config file exists and is filled out correctly\n\n\(error)")
         }
+    }
+
+    switch commandlineArguments.count {
+    case 2:
+        if commandlineArguments[1] == "init" {
+            do {
+                try setup()
+                return (0, "Created muter config file at: \(FileManager.default.currentDirectoryPath)/muter.config.json")
+            } catch {
+                return (1, "Error creating muter config file\n\n\(error)")
+            }
+        }
+
+        if commandlineArguments[1] == "--output-json" {
+            return run(.jsonOutput)
+        }
+
+        return (1, "Unrecognized subcommand given to Muter\nAvailable subcommands:\n\n\tinit")
+    default:
+        return run(.empty)
     }
 }
 
 // MARK - Mutation Test Run Handler
 
 @available(OSX 10.13, *)
-public func run(with configuration: MuterConfiguration, in path: String) {
-
+public func run(
+    with configuration: MuterConfiguration,
+    flag: CommandFlag,
+    in path: String,
+    fileManager: FileSystemManager = FileManager.default,
+    copy: (URL, FileSystemManager) -> String = copyProject,
+    beginMutationTesting: (String, MuterConfiguration) -> MuterTestReport? = beginMutationTesting,
+    save: (MuterTestReport?, URL) -> Void = save
+) {
     let currentDirectory = URL(fileURLWithPath: path)
-    let destinationPath = copyProject(in: currentDirectory)
-    let report = beginMutationTesting(in: destinationPath, with: configuration)
-    save(report, to: currentDirectory)
-
+    let destinationPath = copy(currentDirectory, fileManager)
+    let report = beginMutationTesting(destinationPath, configuration)
+    
+    if flag == .jsonOutput {
+        save(report, currentDirectory)
+    }
 }
 
 public func copyProject(in currentDirectory: URL, using fileManager: FileSystemManager = FileManager.default) -> String {

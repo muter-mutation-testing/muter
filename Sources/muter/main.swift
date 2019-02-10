@@ -40,7 +40,7 @@ if #available(OSX 10.13, *) {
         setup: {
             try setupMuter(using: fileManager, and: currentDirectoryPath)
     },
-        run: {
+        run: { flag in
             let configurationPath = currentDirectoryPath + "/muter.conf.json"
 
             guard let configurationData = fileManager.contents(atPath: configurationPath) else {
@@ -48,7 +48,7 @@ if #available(OSX 10.13, *) {
             }
 
             let configuration = try JSONDecoder().decode(MuterConfiguration.self, from: configurationData)
-            run(with: configuration, in: currentDirectoryPath)
+            run(with: configuration, flag: flag, in: currentDirectoryPath)
     }
     )
 

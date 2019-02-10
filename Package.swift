@@ -6,9 +6,9 @@ let package = Package(
     name: "muter",
     dependencies: [
         .package(url: "https://github.com/apple/swift-syntax.git", .branch("0.40200.0")),
-		.package(url: "https://github.com/onevcat/Rainbow", from: "3.0.0"),
-		.package(url: "https://github.com/Quick/Quick", from: "1.3.2"),
-		.package(url: "https://github.com/Quick/Nimble", from: "7.3.1"),
+        .package(url: "https://github.com/onevcat/Rainbow", from: "3.0.0"),
+        .package(url: "https://github.com/Quick/Quick", from: "1.3.2"),
+        .package(url: "https://github.com/Quick/Nimble", from: "7.3.1"),
         .package(url: "https://github.com/pointfreeco/swift-snapshot-testing.git", from: "1.1.0")
     ],
     targets: [
