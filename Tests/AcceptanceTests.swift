@@ -62,14 +62,11 @@ class AcceptanceTests: QuickSpec {
                 beforeEach {
                     output = self.muterEmptyStateOutput
                 }
-
-<<<<<<< HEAD
+                
                 they("see a message that explains Muter wasn't able to discover any code for testing") {
                     expect(output.contains("Muter wasn't able to discover any code it could mutation test.")).to(beTrue())
                 }
-
-=======
->>>>>>> WIP
+                
                 they("see no mutation scores") {
                     let mutationScoresHeader = """
                         --------------------
