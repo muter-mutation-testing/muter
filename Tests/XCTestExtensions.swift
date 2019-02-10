@@ -17,7 +17,6 @@ public extension XCTestCase {
         return String(
             URL(fileURLWithPath: #file)
                 .deletingLastPathComponent()
-                .deletingLastPathComponent()
                 .withoutScheme()
         )
     }

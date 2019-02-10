@@ -3,6 +3,7 @@ import Quick
 import Nimble
 import SnapshotTesting
 @testable import muterCore
+import TestingExtensions
 
 @available(OSX 10.13, *)
 class RegressionTests: QuickSpec {
@@ -20,5 +21,16 @@ class RegressionTests: QuickSpec {
                 assertSnapshot(matching: testReport, as: .json)
             }
         }
+    }
+}
+
+@available(OSX 10.13, *)
+extension RegressionTests {
+    var rootTestDirectory: String {
+        return String(
+            URL(fileURLWithPath: #file)
+                .deletingLastPathComponent()
+                .withoutScheme()
+        )
     }
 }

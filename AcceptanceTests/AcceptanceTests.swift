@@ -1,8 +1,7 @@
-@testable import muterCore
-import SwiftSyntax
 import Foundation
 import Quick
 import Nimble
+import TestingExtensions
 
 @available(OSX 10.13, *)
 class AcceptanceTests: QuickSpec {
@@ -126,15 +125,14 @@ class AcceptanceTests: QuickSpec {
 }
 
 @available(OSX 10.13, *)
-private extension AcceptanceTests {
-    var exampleAppDirectory: String {
-        return AcceptanceTests().productsDirectory
-            .deletingLastPathComponent()
-            .deletingLastPathComponent()
-            .deletingLastPathComponent() // Go up 3 directories
-            .appendingPathComponent("ExampleApp") // Go down 1 directory
-            .withoutScheme() // Remove the file reference scheme
-
+extension AcceptanceTests {
+    
+    var rootTestDirectory: String {
+        return String(
+            URL(fileURLWithPath: #file)
+                .deletingLastPathComponent()
+                .withoutScheme()
+        )
     }
 
     var muterOutputPath: String { return "\(AcceptanceTests().rootTestDirectory)/muters_output.txt" }

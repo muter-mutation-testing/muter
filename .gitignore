@@ -135,3 +135,5 @@ iOSInjectionProject/
 # End of https://www.gitignore.io/api/swift,xcode,macos
 Tests/muters_aborted_testing_output.txt
 ExampleApp/muterReport.json
+AcceptanceTests/muters_aborted_testing_output.txt
+RegressionTests/bonmot_regression_test_output.json

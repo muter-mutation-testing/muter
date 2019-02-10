@@ -1,5 +1,6 @@
 import Quick
 import Nimble
+import TestingExtensions
 @testable import muterCore
 
 class MuterTestReportSpec: QuickSpec {

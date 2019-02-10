@@ -34,7 +34,8 @@ run: build
 	$(BUILDDIR)/debug/muter
 
 test: 
-	@swift test -Xswiftc -suppress-warnings
+	swift package generate-xcodeproj
+	xcodebuild -scheme muter -only-testing:muterTests test
 	
 acceptance-test: build
 	./Scripts/runAcceptanceTests.sh
