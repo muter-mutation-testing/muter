@@ -14,6 +14,9 @@ build-release:
 build-tests: 
 	swift build --target muterTests -Xswiftc -suppress-warnings
 
+release: 
+	./Scripts/shipIt.sh $(VERSION)
+
 install: build-release
 	install -d "$(bindir)" "$(libdir)"
 	install "$(BUILDDIR)/release/muter" "$(bindir)"
@@ -46,4 +49,4 @@ regression-test: build
 mutation-test: clean
 	muter
 
-.PHONY: build build-tests clean test run install uninstall  
+.PHONY: build build-tests clean test run install uninstall release
