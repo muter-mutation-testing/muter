@@ -14,6 +14,9 @@ build-release:
 build-tests: 
 	swift build --target muterTests -Xswiftc -suppress-warnings
 
+project:
+	swift package generate-xcodeproj
+
 release: 
 	./Scripts/shipIt.sh $(VERSION)
 
