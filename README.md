@@ -38,7 +38,7 @@ If you're curious about how a mutation score is different than test code coverag
 ## Example Test Report
 There's an example of [the test report that Muter generates](https://github.com/SeanROlszewski/muter/blob/master/Docs/test_report_example.md) hosted in this repository.
 
-Check out this example to fmailiarize yourself with what a report looks like.
+Check out this example to familiarize yourself with what a report looks like.
 
 ## Installation
 Muter is available through [Homebrew](https://brew.sh/). Run the following command to install Muter:
