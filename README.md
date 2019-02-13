@@ -10,19 +10,19 @@ If you're interested in checking out more about mutation testing, you can check 
 
 ## Why Should I Use This?
 
-Muter can strengthen your code and shine a light on potential weakness that you were unaware existed. It does this by generating a mutation score (which is expanded on below). This will show both the areas you may want to improve in your test suite, as well as the areas that are performing well. 
+Muter can strengthen your test suite and shine a light on weaknesses that you were unaware existed. It does this by generating a mutation score (which is expanded on below), which will show you both the areas you may want to improve in your test suite, as well as the areas that are performing well. 
 
-Specifically, it can help you:
-- Find gaps in fault/defect coverage from your test suite by identifying missing groups of tests, assertions/expectations, or test cases from your test suite
-- Determine if you are writing meaningful and effective assertions/expectations that withstand different code than what the test was originally written against
+Specifically, a mutation score can help you:
+- Find gaps in fault coverage from your test suite by identifying missing groups of tests, assertions, or test cases from your test suite
+- Determine if you are writing meaningful and effective assertions that withstand different code than what the test was originally written against
 - Assess how many tests fail as a result of one code change
 
 ## How Does It Work?
-Instead of leveraging the bugs already present in the code, Muter will add new ones. The bugs introduced by Muter are called **mutants**. Muter uses **mutation operators** to generate these and introduce them into your code. 
+Muter will introduce changes into your sourcecode based on the logic contained in your app. The changes introduced by Muter are called **mutants** which it generates using **mutation operators**.
 
 You can view the list of available mutation operators [here](https://github.com/SeanROlszewski/muter/blob/master/Docs/mutation_operators.md). 
 
-**NOTE**: Muter will always clean up after itself, so there's no need worry about it leaving bugs in your code. In fact, it does all of its work on a complete copy of your code base.
+**NOTE**: Muter does all of its work on a complete copy of your codebase, so it's not possible for it to accidentally leave anything behind.
 
 ### Mutation Score
 A **mutation score** is provided at the end of every run of Muter. The score is the ratio of the number of mutants your test suite caught versus the total number of mutants introduced.
@@ -38,7 +38,7 @@ If you're curious about how a mutation score is different than test code coverag
 ## Example Test Report
 There's an example of [the test report that Muter generates](https://github.com/SeanROlszewski/muter/blob/master/Docs/test_report_example.md) hosted in this repository.
 
-Check out this example if you are unfamiliar with the report.
+Check out this example to fmailiarize yourself with what a report looks like.
 
 ## Installation
 Muter is available through [Homebrew](https://brew.sh/). Run the following command to install Muter:
@@ -50,7 +50,7 @@ Muter is available through [Homebrew](https://brew.sh/). Run the following comma
 You will need to create a configuration file named `muter.conf.json` in the root directory of the project you're mutation testing. To make this easy, you can run `muter init` in the root directory of your project. After running the `init` command, fill in the configuration with the options listed below.
 
 ### Configuration Options
-- `executable` - the absolute path to the program which can run your test suite (like `xcodebuild` or `swift`)
+- `executable` - the absolute path to the program which can run your test suite (like `xcodebuild`, `swift`, `fastlane`, `make`, etc.)
 - `arguments` - any command line arguments the executable needs to run your test suite
 - `exclude` - a list of paths, file extensions, or names you want Muter to ignore. By default, Muter ignores files or paths containing the following phrases:
     * `.build`
