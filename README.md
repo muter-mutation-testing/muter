@@ -10,7 +10,7 @@ If you're interested in checking out more about mutation testing, you can check 
 
 ## Why Should I Use This?
 
-Muter can strengthen your test suite and shine a light on weaknesses that you were unaware existed. It does this by generating a mutation score (which is expanded on below), which will show you both the areas you may want to improve in your test suite, as well as the areas that are performing well. 
+Muter can strengthen your test suite and shine a light on weaknesses that you were unaware existed. It does this by generating a mutation score (expanded on below), which will show you both the areas you may want to improve in your test suite, as well as the areas that are performing well. 
 
 Specifically, a mutation score can help you:
 - Find gaps in fault coverage from your test suite by identifying missing groups of tests, assertions, or test cases from your test suite
