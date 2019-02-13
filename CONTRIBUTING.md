@@ -11,7 +11,7 @@ To request a feature, simply open an issue on our tracker.
 When requesting a feature, please be descriptive in what you are asking for - examples are super helpful, and links to prior art are also very helpful. We also think it's very important to understand any pain you are experiencing by not having a feature. Based on this information, we can look at other users' feature requests and determine where it falls in our priorities.
 
 ## Submitting a Pull Request
-When working on a feature or bug, fork Muter's repository and work on your own branch locally. Once you're ready to have emerged back in, open a pull request and tag whomever you've had conversation with about the issue.
+When working on a feature or bug, fork Muter's repository and work on your own branch locally. Once you're ready to have it merged back in, open a pull request and tag whomever you've had conversation with about the issue.
 
 Prefer rebasing over merging `master` into your PR branch if you need to bring it up-to-date. We're happy to work through any merge conflicts with you that you have difficulty understanding.
 
