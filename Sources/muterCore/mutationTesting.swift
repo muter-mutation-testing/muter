@@ -23,7 +23,7 @@ func performMutationTesting(using operators: [MutationOperator], delegate: Mutat
 
     let initialResult = delegate.runTestSuite(savingResultsIntoFileNamed: "initial_run")
     guard initialResult == .passed else {
-        delegate.abortTesting()
+        delegate.abortTesting(reason: .initialTestingFailed)
         return nil
     }
 
@@ -59,7 +59,7 @@ private func apply(_ operators: [MutationOperator], buildErrorsThreshold: Int = 
         buildErrors = result == .buildError ? (buildErrors + 1) : 0
 
         if buildErrors >= buildErrorsThreshold {
-            delegate.tooManyBuildErrors()
+            delegate.abortTesting(reason: .tooManyBuildErrors)
             return []
         }
     }

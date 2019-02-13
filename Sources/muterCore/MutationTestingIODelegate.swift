@@ -5,8 +5,12 @@ protocol MutationTestingIODelegate {
     func writeFile(to path: String, contents: String) throws
     func runTestSuite(savingResultsIntoFileNamed fileName: String) -> TestSuiteOutcome
     func restoreFile(at path: String)
-    func abortTesting()
-    func tooManyBuildErrors()
+    func abortTesting(reason: MutationTestingAbortReason)
+}
+
+enum MutationTestingAbortReason {
+    case initialTestingFailed
+    case tooManyBuildErrors
 }
 
 // MARK - Mutation Testing I/O Delegate
@@ -48,8 +52,10 @@ struct MutationTestingDelegate: MutationTestingIODelegate {
         copySourceCode(fromFileAt: swapFilePath, to: path)
     }
 
-    func abortTesting() {
-        printMessage("""
+    func abortTesting(reason: MutationTestingAbortReason) {
+        switch reason  {
+        case .initialTestingFailed:
+            printMessage("""
         Muter noticed that your test suite initially failed to compile or produced a test failure.
 
         This is usually due to misconfiguring the "executable" and "arguments" options inside of your muter.conf.json.
@@ -61,15 +67,14 @@ struct MutationTestingDelegate: MutationTestingIODelegate {
         If you believe that you found a bug and can reproduce it, or simply need help getting started, please consider opening an issue
         at https://github.com/SeanROlszewski/muter
         """)
-        exit(1)
-    }
-
-    func tooManyBuildErrors() {
-        printMessage("""
+        case .tooManyBuildErrors:
+            printMessage("""
         Muter noticed the last 5 attempts to apply a mutation operator resulted in a build error within your code base.
         This is considered unlikely and abnormal. If you can reproduce this, please consider filing an issue at
         https://github.com/SeanROlszewski/muter/issues/
         """)
+        }
+        
         exit(1)
     }
 }

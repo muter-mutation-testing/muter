@@ -101,8 +101,8 @@ class MutationTestingSpec: QuickSpec {
                         "writeFile(to:contents:)",
                         "runTestSuite(savingResultsIntoFileNamed:)",
                         "restoreFile(at:)",
-                        // Bail
-                        "tooManyBuildErrors()"
+                        // Abort
+                        "abortTesting(reason:)"
                     ]))
 
                     expect(delegateSpy.backedUpFilePaths.count).to(equal(5))
@@ -113,6 +113,7 @@ class MutationTestingSpec: QuickSpec {
                     expect(delegateSpy.mutatedFilePaths.first).to(equal("a file path"))
 
                     expect(actualReport).to(equal(MuterTestReport()))
+                    expect(delegateSpy.abortReasons).to(equal([.tooManyBuildErrors]))
                 }
             }
 
@@ -201,9 +202,10 @@ class MutationTestingSpec: QuickSpec {
 
                         expect(delegateSpy.methodCalls).to(equal([
                             "runTestSuite(savingResultsIntoFileNamed:)",
-                            "abortTesting()"
+                            "abortTesting(reason:)"
                         ]))
                         expect(testReport).to(beNil())
+                        expect(delegateSpy.abortReasons).to(equal([.initialTestingFailed]))
                     }
                 }
 
@@ -217,9 +219,10 @@ class MutationTestingSpec: QuickSpec {
 
                         expect(delegateSpy.methodCalls).to(equal([
                             "runTestSuite(savingResultsIntoFileNamed:)",
-                            "abortTesting()"
+                            "abortTesting(reason:)"
                         ]))
                         expect(testReport).to(beNil())
+                        expect(delegateSpy.abortReasons).to(equal([.initialTestingFailed]))
                     }
                 }
 
@@ -233,9 +236,10 @@ class MutationTestingSpec: QuickSpec {
 
                         expect(delegateSpy.methodCalls).to(equal([
                             "runTestSuite(savingResultsIntoFileNamed:)",
-                            "abortTesting()"
+                            "abortTesting(reason:)"
                         ]))
                         expect(testReport).to(beNil())
+                        expect(delegateSpy.abortReasons).to(equal([.initialTestingFailed]))
                     }
                 }
             }
