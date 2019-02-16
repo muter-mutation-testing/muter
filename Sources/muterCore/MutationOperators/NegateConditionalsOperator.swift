@@ -18,6 +18,10 @@ enum NegateConditionalsOperator {
                 return
             }
 
+            guard token.parent?.isDecl == false else {
+                return
+            }
+
             positionsOfToken.append(token.position)
         }
     }
