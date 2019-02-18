@@ -33,8 +33,8 @@ if #available(OSX 10.13, *) {
         .main(defaultVerb: RunCommand().verb) { (error) in
             print("Muter encountered an error: \n\(error)")
             exit(1)
-        }
-    
+    }
+
 } else {
     print("Muter requires macOS 10.13 or higher")
     exit(1)
