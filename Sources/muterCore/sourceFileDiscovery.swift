@@ -8,6 +8,7 @@ private let defaultExcludeList = [
     "Pods",
     "Spec",
     "Test",
+    "fastlane"
 ]
 
 func discoverSourceFiles(inDirectoryAt path: String, excludingPathsIn providedExcludeList: [String] = []) -> [String] {
