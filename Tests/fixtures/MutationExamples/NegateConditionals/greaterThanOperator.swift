@@ -14,3 +14,7 @@ struct Example {
         return a == 9 ? "goodbye" : "what"
     }
 }
+
+func < (lhs: String, rhs: String) -> Bool {
+    return false
+}

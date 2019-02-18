@@ -3,7 +3,4 @@ struct Example2 {
         let b = a != a
         return b == a ? "equal" : "not equal"
     }
-    func < (lhs: String, rhs: String) -> Bool {
-        return false
-    }
 }

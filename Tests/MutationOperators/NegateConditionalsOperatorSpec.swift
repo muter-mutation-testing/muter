@@ -41,6 +41,15 @@ class NegateConditionalsOperatorSpec: QuickSpec {
                     visitor.visit(sourceWithoutMuteableCode)
                     expect(visitor.positionsOfToken).to(haveCount(0))
                 }
+
+                it("doesn't discover any mutation operators in function declarations") {
+                    let operators = discoverMutationOperators(inFilesAt: [
+                        "\(self.fixturesDirectory)/sampleForDiscoveringMutations.swift",
+                    ])
+                    let functionOperator = operators.first(where: { $0.position.line == 18 && $0.position.column == 10 })
+
+                    expect(functionOperator).to(beNil())
+                }
             }
 
             describe("NegateConditionalsOperator.Rewriter") {

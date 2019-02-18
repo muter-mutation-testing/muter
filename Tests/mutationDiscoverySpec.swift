@@ -44,15 +44,6 @@ class MutationDiscoverySpec: QuickSpec {
                 expect(operatorsForNonSwiftCode.count).to(equal(0))
                 expect(operators.count).to(equal(2))
             }
-
-            it("doesn't discover any mutation operators in function declarations") {
-                let operators = discoverMutationOperators(inFilesAt: [
-                    "\(self.fixturesDirectory)/sampleForDiscoveringMutations.swift",
-                ])
-                let functionOperator = operators.first(where: { $0.position.line == 7 && $0.position.column == 10 })
-
-                expect(functionOperator).to(beNil())
-            }
         }
     }
 }

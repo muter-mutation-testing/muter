@@ -14,12 +14,9 @@ enum NegateConditionalsOperator {
         private(set) var positionsOfToken = [AbsolutePosition]()
 
         override func visit(_ token: TokenSyntax) {
-            guard tokens.contains(token.tokenKind) else {
-                return
-            }
-
-            guard token.parent?.isDecl == false else {
-                return
+            guard tokens.contains(token.tokenKind),
+                token.parent?.isDecl == false else {
+                    return
             }
 
             positionsOfToken.append(token.position)
