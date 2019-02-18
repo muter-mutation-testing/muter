@@ -22,7 +22,7 @@ class NegateConditionalsOperatorSpec: QuickSpec {
                     visitor.visit(sourceWithConditionalLogic)
 
                     guard visitor.positionsOfToken.count == 8 else {
-                        fail("Expected 8 tokens to be discovered, got \(visitor.positionsOfToken) instead")
+                        fail("Expected 8 tokens to be discovered, got \(visitor.positionsOfToken.count) instead")
                         return
                     }
 
@@ -42,12 +42,12 @@ class NegateConditionalsOperatorSpec: QuickSpec {
                     expect(visitor.positionsOfToken).to(haveCount(0))
                 }
 
-                it("doesn't discover any mutation operators in function declarations") {
-                    let operators = discoverMutationOperators(inFilesAt: [
-                        "\(self.fixturesDirectory)/sampleForDiscoveringMutations.swift",
-                    ])
-                    let functionOperator = operators.first(where: { $0.position.line == 18 && $0.position.column == 10 })
-
+                it("doesn't discover any mutable positions in function declarations") {
+                    
+                    let visitor = NegateConditionalsOperator.Visitor()
+                    visitor.visit(sourceWithConditionalLogic)
+                    
+                    let functionOperator = visitor.positionsOfToken.first { $0.line == 18 && $0.column == 6 }
                     expect(functionOperator).to(beNil())
                 }
             }
