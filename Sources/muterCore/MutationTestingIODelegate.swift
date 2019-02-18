@@ -74,7 +74,7 @@ struct MutationTestingDelegate: MutationTestingIODelegate {
         https://github.com/SeanROlszewski/muter/issues/
         """)
         }
-        
+
         exit(1)
     }
 }

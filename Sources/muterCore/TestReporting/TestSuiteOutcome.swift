@@ -22,7 +22,7 @@ public enum TestSuiteOutcome: String, Codable {
 
 extension TestSuiteOutcome {
     public static func from(testLog: String) -> TestSuiteOutcome {
-        
+
         if logContainsRuntimeError(testLog) {
             return .runtimeError
         } else if logContainsBuildError(testLog) {
@@ -30,7 +30,7 @@ extension TestSuiteOutcome {
         } else if logContainsTestFailure(testLog) {
             return .failed
         }
-        
+
         return .passed
     }
 

@@ -12,6 +12,10 @@ public protocol FileSystemManager {
 
     func copyItem(atPath srcPath: String,
                   toPath dstPath: String) throws
+
+    var currentDirectoryPath: String { get }
+
+    func contents(atPath path: String) -> Data?
 }
 
 extension FileManager: FileSystemManager {}
