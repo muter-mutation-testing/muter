@@ -24,7 +24,3 @@ func mutationScoreOfFiles(from outcomes: [MutationTestOutcome]) -> [String: Int]
     
     return mutationScores
 }
-
-private func ascendingFilenameOrder(lhs: (String, Int), rhs: (String, Int)) -> Bool {
-    return lhs.0 < rhs.0
-}
