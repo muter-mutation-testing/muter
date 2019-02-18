@@ -362,5 +362,6 @@
     }
   ],
   "globalMutationScore" : 15,
+  "numberOfKilledMutants" : 5,
   "totalAppliedMutationOperators" : 32
 }

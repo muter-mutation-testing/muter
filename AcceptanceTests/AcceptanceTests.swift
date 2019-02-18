@@ -41,7 +41,7 @@ class AcceptanceTests: QuickSpec {
                         """
 
                     expect(output.contains(mutationScoresHeader)).to(beTrue())
-                    expect(output.contains("giving your test suite a mutation score of 22%")).to(beTrue())
+                    expect(output.contains("Mutation Score of Test Suite: 22%")).to(beTrue())
                 }
 
                 they("see which mutation operators were applied") {
