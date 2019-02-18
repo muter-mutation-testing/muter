@@ -69,7 +69,7 @@ extension MuterTestReport: CustomStringConvertible {
 
         These are the mutation scores for your test suite, as well as the files that had mutants introduced into them.
 
-        Mutation scores ignore build & runtime errors.
+        Mutation scores ignore build errors.
 
         \(mutationScoreMessage)
 
@@ -90,6 +90,11 @@ func mutationScore(from testResults: [TestSuiteOutcome]) -> Int {
 
     let numberOfFailures = Double(testResults.count { $0 == .failed || $0 == .runtimeError })
     let totalResults = Double(testResults.count { $0 != .buildError })
+    
+    guard totalResults > 0 else {
+        return 0
+    }
+    
     return Int((numberOfFailures / totalResults) * 100.0)
 }
 

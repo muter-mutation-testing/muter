@@ -244,32 +244,5 @@ class MutationTestingSpec: QuickSpec {
                 }
             }
         }
-
-        describe("mutationScore") {
-            it("calculates a mutation score from a set of test suite results") {
-                expect(mutationScore(from: [])).to(equal(-1))
-
-                expect(mutationScore(from: [.passed])).to(equal(0))
-                expect(mutationScore(from: [.failed])).to(equal(100))
-
-                expect(mutationScore(from: [.passed, .failed])).to(equal(50))
-                expect(mutationScore(from: [.passed, .failed, .failed])).to(equal(66))
-
-                expect(mutationScore(from: [.passed, .runtimeError])).to(equal(50))
-
-                expect(mutationScore(from: [.passed, .failed, .buildError])).to(equal(50))
-            }
-
-            it("calculates a mutation score for each mutated file from a mutation test run") {
-                let expectedMutationScores = [
-                    "file1.swift": 66,
-                    "file2.swift": 100,
-                    "file3.swift": 33,
-                    "file 4.swift": 0
-                ]
-
-                expect(mutationScoreOfFiles(from: self.exampleMutationTestResults)).to(equal(expectedMutationScores))
-            }
-        }
     }
 }
