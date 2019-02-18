@@ -7,12 +7,12 @@ public struct MuterTestReport {
     let globalMutationScore: Int
     let totalAppliedMutationOperators: Int
     let fileReports: [FileReport]
+    let numberOfKilledMutants: Int
 
     public init(from outcomes: [MutationTestOutcome] = []) {
         globalMutationScore = mutationScore(from: outcomes.map { $0.testSuiteOutcome })
         totalAppliedMutationOperators = outcomes.count
         fileReports = mutationScoreOfFiles(from: outcomes)
-            .sorted(by: ascendingFilenameOrder)
             .map { mutationScoreByFilePath in
                 let filePath = mutationScoreByFilePath.key
                 let fileName = URL(fileURLWithPath: filePath).lastPathComponent
@@ -24,6 +24,8 @@ public struct MuterTestReport {
                 return (fileName, mutationScore, appliedMutations)
             }
             .map(FileReport.init(fileName:mutationScore:appliedOperators:))
+        
+        numberOfKilledMutants = outcomes.map{ $0.testSuiteOutcome }.count { $0 == .failed || $0 == .runtimeError }
     }
 
     struct FileReport: Codable, Equatable {
@@ -57,11 +59,10 @@ extension MuterTestReport: CustomStringConvertible {
         \(generateAppliedMutationsCLITable(from: self.fileReports).description)
 
 
-
         """
 
-        let coloredGlobalScore = coloredMutationScore(for: self.globalMutationScore, appliedTo: "\(self.globalMutationScore)/100")
-        let mutationScoreMessage = "Mutation Score of Test Suite (higher is better)".bold + ": \(coloredGlobalScore)"
+        let coloredGlobalScore = coloredMutationScore(for: self.globalMutationScore, appliedTo: "\(self.globalMutationScore)%")
+        let mutationScoreMessage = "giving your test suite a mutation score of ".bold + "\(coloredGlobalScore)"
         let mutationScoresMessage = """
         --------------------
         Mutation Test Scores
@@ -70,7 +71,8 @@ extension MuterTestReport: CustomStringConvertible {
         These are the mutation scores for your test suite, as well as the files that had mutants introduced into them.
 
         Mutation scores ignore build errors.
-
+        
+        Of the \(self.totalAppliedMutationOperators) mutants introduced into your code, your test suite killed \(self.numberOfKilledMutants),
         \(mutationScoreMessage)
 
         \(generateMutationScoresCLITable(from: self.fileReports).description)
@@ -78,38 +80,4 @@ extension MuterTestReport: CustomStringConvertible {
 
         return finishedRunningMessage + appliedMutationsMessage + mutationScoresMessage
     }
-
-}
-
-// MARK - Mutation Score Calculation
-
-func mutationScore(from testResults: [TestSuiteOutcome]) -> Int {
-    guard testResults.count > 0 else {
-        return -1
-    }
-
-    let numberOfFailures = Double(testResults.count { $0 == .failed || $0 == .runtimeError })
-    let totalResults = Double(testResults.count { $0 != .buildError })
-    
-    guard totalResults > 0 else {
-        return 0
-    }
-    
-    return Int((numberOfFailures / totalResults) * 100.0)
-}
-
-func mutationScoreOfFiles(from outcomes: [MutationTestOutcome]) -> [String: Int] {
-    var mutationScores: [String: Int] = [:]
-
-    let filePaths = outcomes.map { $0.filePath }.deduplicated()
-    for filePath in filePaths {
-        let testSuiteResults = outcomes.include { $0.filePath == filePath }.map { $0.testSuiteOutcome }
-        mutationScores[filePath] = mutationScore(from: testSuiteResults)
-    }
-
-    return mutationScores
-}
-
-private func ascendingFilenameOrder(lhs: (String, Int), rhs: (String, Int)) -> Bool {
-    return lhs.0 < rhs.0
 }

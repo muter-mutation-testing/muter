@@ -9,13 +9,13 @@ public enum TestSuiteOutcome: String, Codable {
     var asMutationTestOutcome: String {
         switch self {
         case .passed:
-            return "failed"
+            return "mutant survived"
         case .failed:
-            return "passed"
+            return "mutant killed (test failure)"
         case .buildError:
             return "build error"
         case .runtimeError:
-            return "runtime error"
+            return "mutant killed (runtime error)"
         }
     }
 }

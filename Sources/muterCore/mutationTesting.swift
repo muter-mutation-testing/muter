@@ -1,23 +1,6 @@
 import Foundation
 import SwiftSyntax
 
-public struct MutationTestOutcome: Equatable {
-    let testSuiteOutcome: TestSuiteOutcome
-    let appliedMutation: MutationOperator.Id
-    let filePath: String
-    let position: AbsolutePosition
-
-    public init(testSuiteOutcome: TestSuiteOutcome,
-                appliedMutation: MutationOperator.Id,
-                filePath: String,
-                position: AbsolutePosition) {
-        self.testSuiteOutcome = testSuiteOutcome
-        self.appliedMutation = appliedMutation
-        self.filePath = filePath
-        self.position = position
-    }
-}
-
 func performMutationTesting(using operators: [MutationOperator], delegate: MutationTestingIODelegate) -> MuterTestReport? {
     print("Running your test suite to determine a baseline for mutation testing")
 
@@ -50,10 +33,10 @@ private func apply(_ operators: [MutationOperator], buildErrorsThreshold: Int = 
         delegate.restoreFile(at: filePath)
 
         outcomes.append(
-            MutationTestOutcome(testSuiteOutcome: result,
-                                appliedMutation: `operator`.id,
-                                filePath: filePath,
-                                position: `operator`.position)
+            .init(testSuiteOutcome: result,
+                  appliedMutation: `operator`.id,
+                  filePath: filePath,
+                  position: `operator`.position)
         )
 
         buildErrors = result == .buildError ? (buildErrors + 1) : 0
