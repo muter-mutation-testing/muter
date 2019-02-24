@@ -5,12 +5,10 @@ import SwiftSyntax
 func generateAppliedMutationsCLITable(from fileReports: [MuterTestReport.FileReport], coloringFunction: ([CLITable.Row]) -> [CLITable.Row] = applyMutationTestResultsColor) -> CLITable {
     var appliedMutations = [CLITable.Row]()
     var fileNames = [CLITable.Row]()
-    var positions = [CLITable.Row]()
     var mutationTestResults = [CLITable.Row]()
 
-    for (fileName, position, appliedMutation, testResult) in fileReports.flatMap(operatorsToTableRows) {
+    for (fileName, appliedMutation, testResult) in fileReports.flatMap(operatorsToTableRows) {
         fileNames.append(fileName)
-        positions.append(position)
         appliedMutations.append(appliedMutation)
         mutationTestResults.append(testResult)
     }
@@ -19,16 +17,14 @@ func generateAppliedMutationsCLITable(from fileReports: [MuterTestReport.FileRep
 
     return CLITable(padding: 3, columns: [
         CLITable.Column(title: "File", rows: fileNames),
-        CLITable.Column(title: "Position", rows: positions),
         CLITable.Column(title: "Applied Mutation Operator", rows: appliedMutations),
         CLITable.Column(title: "Mutation Test Result", rows: mutationTestResults),
     ])
 }
 
-private func operatorsToTableRows(fileReport: MuterTestReport.FileReport) -> [(CLITable.Row, CLITable.Row, CLITable.Row, CLITable.Row)] {
+private func operatorsToTableRows(fileReport: MuterTestReport.FileReport) -> [(CLITable.Row, CLITable.Row, CLITable.Row)] {
     return fileReport.appliedOperators.map {
-        (CLITable.Row(value: fileReport.fileName),
-         CLITable.Row(value: "Line: \($0.position.line), Column: \($0.position.column)"),
+        (CLITable.Row(value: "\(fileReport.fileName):\($0.position.line)"),
          CLITable.Row(value: $0.id.rawValue),
          CLITable.Row(value: $0.testSuiteOutcome.asMutationTestOutcome))
     }
