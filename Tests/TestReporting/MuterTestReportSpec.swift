@@ -8,34 +8,32 @@ class MuterTestReportSpec: QuickSpec {
         describe("MuterTestReport") {
             context("when given a nonempty collection of MutationTestOutcomes") {
                 it("calculates all its fields as part of its initialization") {
-                    
                     let outcomes = self.exampleMutationTestResults + [MutationTestOutcome(testSuiteOutcome: .failed,
-                                                                                          appliedMutation: .negateConditionals,
-                                                                                          filePath: "a module.swift",
-                                                                                          position: .firstPosition)]
+                                                                                      appliedMutation: .negateConditionals,
+                                                                                      filePath: "/tmp/a module.swift",
+                                                                                      position: .firstPosition)]
                     let report = MuterTestReport(from: outcomes)
-
                     expect(report.globalMutationScore).to(equal(60))
                     expect(report.totalAppliedMutationOperators).to(equal(10))
                     expect(report.fileReports).to(haveCount(5))
 
                     expect(report.fileReports).to(equal([
-                        MuterTestReport.FileReport(fileName: "a module.swift", mutationScore: 100, appliedOperators: [
+                        MuterTestReport.FileReport(fileName: "a module.swift", path: "/tmp/a module.swift", mutationScore: 100, appliedOperators: [
                             MuterTestReport.AppliedMutationOperator(id: .negateConditionals, position: .firstPosition, testSuiteOutcome: .failed)
                             ]),
-                        MuterTestReport.FileReport(fileName: "file 4.swift", mutationScore: 0, appliedOperators: [
+                        MuterTestReport.FileReport(fileName: "file 4.swift", path: "/tmp/file 4.swift", mutationScore: 0, appliedOperators: [
                             MuterTestReport.AppliedMutationOperator(id: .negateConditionals, position: .firstPosition, testSuiteOutcome: .passed)
                             ]),
-                        MuterTestReport.FileReport(fileName: "file1.swift", mutationScore: 66, appliedOperators: [
+                        MuterTestReport.FileReport(fileName: "file1.swift", path: "/tmp/file1.swift", mutationScore: 66, appliedOperators: [
                             MuterTestReport.AppliedMutationOperator(id: .negateConditionals, position: .firstPosition, testSuiteOutcome: .failed),
                             MuterTestReport.AppliedMutationOperator(id: .negateConditionals, position: .firstPosition, testSuiteOutcome: .failed),
                             MuterTestReport.AppliedMutationOperator(id: .negateConditionals, position: .firstPosition, testSuiteOutcome: .passed)
                             ]),
-                        MuterTestReport.FileReport(fileName: "file2.swift", mutationScore: 100, appliedOperators: [
+                        MuterTestReport.FileReport(fileName: "file2.swift", path: "/tmp/file2.swift", mutationScore: 100, appliedOperators: [
                             MuterTestReport.AppliedMutationOperator(id: .removeSideEffects, position: .firstPosition, testSuiteOutcome: .failed),
                             MuterTestReport.AppliedMutationOperator(id: .removeSideEffects, position: .firstPosition, testSuiteOutcome: .failed)
                             ]),
-                        MuterTestReport.FileReport(fileName: "file3.swift", mutationScore: 33, appliedOperators: [
+                        MuterTestReport.FileReport(fileName: "file3.swift", path: "/tmp/file3.swift", mutationScore: 33, appliedOperators: [
                             MuterTestReport.AppliedMutationOperator(id: .negateConditionals, position: .firstPosition, testSuiteOutcome: .failed),
                             MuterTestReport.AppliedMutationOperator(id: .negateConditionals, position: .firstPosition, testSuiteOutcome: .passed),
                             MuterTestReport.AppliedMutationOperator(id: .negateConditionals, position: .firstPosition, testSuiteOutcome: .passed)
@@ -79,10 +77,10 @@ class MuterTestReportSpec: QuickSpec {
             
             it("calculates a mutation score for each mutated file from a mutation test run") {
                 let expectedMutationScores = [
-                    "file1.swift": 66,
-                    "file2.swift": 100,
-                    "file3.swift": 33,
-                    "file 4.swift": 0
+                    "/tmp/file1.swift": 66,
+                    "/tmp/file2.swift": 100,
+                    "/tmp/file3.swift": 33,
+                    "/tmp/file 4.swift": 0
                 ]
                 
                 expect(mutationScoreOfFiles(from: self.exampleMutationTestResults)).to(equal(expectedMutationScores))

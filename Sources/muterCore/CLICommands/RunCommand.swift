@@ -29,7 +29,7 @@ public struct RunCommand: CommandProtocol {
             .executeTesting(using: configuration)
             .map { [delegate, currentDirectory] in
                 if options.shouldOutputJSON { delegate.saveReport($0, to: currentDirectory) }
-                if options.shouldOutputXcode { /* Magic */ }
+                if options.shouldOutputXcode { printMessage(xcodeReporter(report: $0)) }
             }
 
         return .success(())
