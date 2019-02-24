@@ -25,12 +25,12 @@ public struct RunCommand: CommandProtocol {
         }
 
         delegate.backupProject(in: currentDirectory)
-        let report = delegate.executeTesting(using: configuration)
-
-        if let report = report,
-            options.shouldOutputJSON {
-            delegate.saveReport(report, to: currentDirectory)
-        }
+        delegate
+            .executeTesting(using: configuration)
+            .map { [delegate, currentDirectory] in
+                if options.shouldOutputJSON { delegate.saveReport($0, to: currentDirectory) }
+                if options.shouldOutputXcode { /* Magic */ }
+            }
 
         return .success(())
     }
@@ -40,12 +40,15 @@ public struct RunCommandOptions: OptionsProtocol {
     public typealias ClientError = MuterError
 
     let shouldOutputJSON: Bool
-    public init(shouldOutputJSON: Bool) {
+    let shouldOutputXcode: Bool
+    public init(shouldOutputJSON: Bool, shouldOutputXcode: Bool) {
         self.shouldOutputJSON = shouldOutputJSON
+        self.shouldOutputXcode = shouldOutputXcode
     }
 
     public static func evaluate(_ mode: CommandMode) -> Result<RunCommandOptions, CommandantError<ClientError>>  {
         return curry(self.init)
             <*> mode <| Option(key: "output-json", defaultValue: false, usage: "Whether or not Muter should output a json report after it's finished running.")
+            <*> mode <| Option(key: "output-xcode", defaultValue: false, usage: "Whether or not Muter should output to Xcode after it's finished running.")
     }
 }
