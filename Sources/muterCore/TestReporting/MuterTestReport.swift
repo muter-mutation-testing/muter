@@ -2,6 +2,37 @@ import Foundation
 import SwiftSyntax
 
 typealias FileName = String
+typealias FilePath = String
+
+typealias Reporter = (MuterTestReport) -> String
+
+public func textReporter(report: MuterTestReport) -> String {
+    return report.description
+}
+
+public func jsonReporter(report: MuterTestReport) -> String {
+    guard let encoded = try? JSONEncoder().encode(report),
+          let json = String(data: encoded, encoding: .utf8) else {
+        return ""
+    }
+
+    return json
+}
+
+public func xcodeReporter(report: MuterTestReport) -> String {
+        // {full_path_to_file}{:line}{:character}: {error,warning}: {content}
+        return report.fileReports.map { (file: MuterTestReport.FileReport) -> String in
+            let path = file.path
+            return file.appliedOperators
+                .filter { $0.testSuiteOutcome == .passed }
+                .map {
+                    "\(path):" +
+                        "\($0.position.line):\($0.position.column): " +
+                        "warning: " +
+                    "\"Your test suite did not kill this mutant: \($0.id.rawValue.lowercased())\""
+                }.joined(separator: "\n")
+            }.joined(separator: "\n")
+}
 
 public struct MuterTestReport {
     let globalMutationScore: Int
@@ -20,6 +51,7 @@ public struct MuterTestReport {
 extension MuterTestReport {
     struct FileReport: Codable, Equatable {
         let fileName: FileName
+        let path: FilePath
         let mutationScore: Int
         let appliedOperators: [AppliedMutationOperator]
     }
@@ -43,9 +75,9 @@ private extension MuterTestReport {
                     .include { $0.filePath == mutationScoreByFilePath.key }
                     .map{ AppliedMutationOperator(id: $0.appliedMutation, position: $0.position, testSuiteOutcome: $0.testSuiteOutcome) }
                 
-                return (fileName, mutationScore, appliedMutations)
+                return (fileName, filePath, mutationScore, appliedMutations)
             }
-            .map(FileReport.init(fileName:mutationScore:appliedOperators:))
+            .map(FileReport.init(fileName:path:mutationScore:appliedOperators:))
     }
 }
 

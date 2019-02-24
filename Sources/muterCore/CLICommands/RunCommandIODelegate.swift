@@ -93,9 +93,12 @@ public class RunCommandDelegate: RunCommandIODelegate {
 
         printMessage("Beginning mutation testing")
         let testingDelegate = MutationTestingDelegate(configuration: configuration, swapFilePathsByOriginalPath: swapFilePathsByOriginalPath)
-        let testReport = performMutationTesting(using: mutationOperators, delegate: testingDelegate)
+        guard let testReport = performMutationTesting(using: mutationOperators, delegate: testingDelegate) else {
+            printMessage("")
+            return nil
+        }
 
-        printMessage(testReport?.description ?? "")
+        printMessage(textReporter(report: testReport))
         return testReport
     }
 
@@ -105,8 +108,7 @@ public class RunCommandDelegate: RunCommandIODelegate {
         encoder.outputFormatting = .prettyPrinted
 
         do {
-            let encodedReport = try encoder.encode(report)
-            try encodedReport.write(to: fileName)
+            try jsonReporter(report: report).data(using: .utf8)?.write(to: fileName)
         } catch {
             print("""
                 Muter was unable to write its report to your disk at path \(fileName.absoluteString).
