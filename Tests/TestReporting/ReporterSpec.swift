@@ -16,20 +16,7 @@ class ReporterSpec: QuickSpec {
 
         describe("text reporter") {
             it("returns the report in text format") {
-                expect(textReporter(report: report)).to(contain(
-                    """
-                    Muter finished running!
-
-
-                    --------------------------
-                    Applied Mutation Operators
-                    --------------------------
-
-                    These are all of the ways that Muter introduced changes into your code.
-
-                    In total, Muter applied \(self.exampleMutationTestResults.count) mutation operators.
-                    """
-                ))
+                expect(textReporter(report: report)).toNot(beEmpty())
             }
         }
 
