@@ -54,6 +54,34 @@ extension MuterTestReport {
         let path: FilePath
         let mutationScore: Int
         let appliedOperators: [AppliedMutationOperator]
+        
+        enum CodingKeys: String, CodingKey {
+            case fileName
+            case mutationScore
+            case appliedOperators
+        }
+        
+        init(fileName: FileName, path: FilePath, mutationScore: Int, appliedOperators: [AppliedMutationOperator]) {
+            self.fileName = fileName
+            self.path = path
+            self.mutationScore = mutationScore
+            self.appliedOperators = appliedOperators
+        }
+        
+        init(from decoder: Decoder) throws {
+            let container = try decoder.container(keyedBy: CodingKeys.self)
+            fileName = try container.decode(FileName.self, forKey: .fileName)
+            mutationScore = try container.decode(Int.self, forKey: .mutationScore)
+            appliedOperators = try container.decode([AppliedMutationOperator].self, forKey: .appliedOperators)
+            path = ""
+        }
+        
+        func encode(to encoder: Encoder) throws {
+            var container = encoder.container(keyedBy: CodingKeys.self)
+            try container.encode(fileName, forKey: .fileName)
+            try container.encode(mutationScore, forKey: .mutationScore)
+            try container.encode(appliedOperators, forKey: .appliedOperators)
+        }
     }
     
     struct AppliedMutationOperator: Codable, Equatable {
