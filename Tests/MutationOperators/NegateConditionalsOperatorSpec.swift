@@ -50,6 +50,16 @@ class NegateConditionalsOperatorSpec: QuickSpec {
                     let functionOperator = visitor.positionsOfToken.first { $0.line == 18 && $0.column == 6 }
                     expect(functionOperator).to(beNil())
                 }
+                
+                it("doesn't discover any mutable positions in conditional conformance constraints") {
+                    
+                    let visitor = NegateConditionalsOperator.Visitor()
+                    visitor.visit(
+                        sourceCode(fromFileAt: "\(self.mutationExamplesDirectory)/NegateConditionals/conditionalConformanceConstraints.swift")!
+                    )
+                    
+                    expect(visitor.positionsOfToken).to(beEmpty())
+                }
             }
 
             describe("NegateConditionalsOperator.Rewriter") {

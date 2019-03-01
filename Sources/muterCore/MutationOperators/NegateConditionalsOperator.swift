@@ -12,7 +12,9 @@ enum NegateConditionalsOperator {
         ]
 
         private(set) var positionsOfToken = [AbsolutePosition]()
-
+        
+        override func visit(_ node: GenericWhereClauseSyntax) { }
+        
         override func visit(_ token: TokenSyntax) {
             guard tokens.contains(token.tokenKind),
                 token.parent?.isDecl == false else {

@@ -1,0 +1,11 @@
+{
+    "executable": "/usr/bin/xcodebuild",
+    "arguments": [
+        "-project",
+        "FFCParserCombinator.xcodeproj",
+        "-scheme",
+        "FFCParserCombinator-Package",
+        "test"
+    ],
+    "exclude": []
+}

@@ -21,6 +21,20 @@ class RegressionTests: QuickSpec {
                 assertSnapshot(matching: testReport, as: .json)
             }
         }
+        
+        describe("muter test report output for parser combinator") {
+            it("does not contain any changes") {
+                let path = "\(self.rootTestDirectory)/parsercombinator_regression_test_output.json"
+                
+                guard let data = FileManager.default.contents(atPath: path),
+                    let testReport = try? JSONDecoder().decode(MuterTestReport.self, from: data) else {
+                        fail("Unable to load a valid Muter test report from \(path)")
+                        return
+                }
+                
+                assertSnapshot(matching: testReport, as: .json)
+            }
+        }
     }
 }
 

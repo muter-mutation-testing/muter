@@ -28,7 +28,7 @@ class ReporterSpec: QuickSpec {
 
         describe("json reporter") {
             it("returns the report in json format") {
-                expect(jsonReporter(report: report)).to(equal("{\"globalMutationScore\":0,\"numberOfKilledMutants\":0,\"fileReports\":[{\"path\":\"\\/tmp\\/file3.swift\",\"mutationScore\":0,\"fileName\":\"file3.swift\",\"appliedOperators\":[{\"id\":\"Negate Conditionals\",\"position\":{\"line\":0,\"utf8Offset\":0,\"column\":0},\"testSuiteOutcome\":\"passed\"}]}],\"totalAppliedMutationOperators\":1}"))
+                expect(jsonReporter(report: report)).to(equal("{\"globalMutationScore\":0,\"numberOfKilledMutants\":0,\"fileReports\":[{\"mutationScore\":0,\"appliedOperators\":[{\"id\":\"Negate Conditionals\",\"position\":{\"line\":0,\"utf8Offset\":0,\"column\":0},\"testSuiteOutcome\":\"passed\"}],\"fileName\":\"file3.swift\"}],\"totalAppliedMutationOperators\":1}"))
             }
         }
     }
