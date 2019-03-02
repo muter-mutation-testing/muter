@@ -37,7 +37,7 @@ public struct RunCommand: CommandProtocol {
         delegate
             .executeTesting(using: configuration)
             .map { [delegate, currentDirectory] in
-                if options.shouldOutputJSON { delegate.saveReport($0, to: currentDirectory) }
+                if options.shouldOutputJSON { printMessage(jsonReporter(report: $0)) }
                 if options.shouldOutputXcode { printMessage(xcodeReporter(report: $0)) }
             }
 

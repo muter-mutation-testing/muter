@@ -11,7 +11,7 @@ class RunCommandSpec: QuickSpec {
             var delegateSpy: RunCommandIODelegateSpy!
 
             context("with no flags") {
-                it("executes testing and doesn't write any reports to disk") {
+                it("executes testing and emits the report as text afterwards") {
                     delegateSpy = RunCommandIODelegateSpy()
                     delegateSpy.configurationToReturn = MuterConfiguration(executable: "not empty",
                                                                            arguments: ["an argument"],
@@ -32,12 +32,11 @@ class RunCommandSpec: QuickSpec {
                                            arguments: ["an argument"],
                                            excludeList: ["and exclude"])
                     ]))
-                    expect(delegateSpy.reports).to(beEmpty())
                 }
             }
 
             context("with JSON report flag") {
-                it("executes testing and saves the report as JSON afterwards") {
+                it("executes testing and emits the report as JSON afterwards") {
 
                     delegateSpy = RunCommandIODelegateSpy()
                     delegateSpy.configurationToReturn = MuterConfiguration(executable: "not empty",
@@ -54,19 +53,16 @@ class RunCommandSpec: QuickSpec {
                     expect(delegateSpy.methodCalls).to(equal([
                         "loadConfiguration()",
                         "backupProject(in:)",
-                        "executeTesting(using:)",
-                        "saveReport(_:to:)"
+                        "executeTesting(using:)"
                     ]))
                     expect(delegateSpy.directories).to(equal([
-                        "/something/another",
                         "/something/another"
                     ]))
-                    expect(delegateSpy.reports).to(equal([.dummy]))
                 }
             }
 
             context("with Xcode report flag") {
-                it("executes testing and prints the report afterwards") {
+                it("executes testing and emits the report in xcode's format afterwards") {
 
                     delegateSpy = RunCommandIODelegateSpy()
                     delegateSpy.configurationToReturn = MuterConfiguration(executable: "not empty",
@@ -88,7 +84,6 @@ class RunCommandSpec: QuickSpec {
                     expect(delegateSpy.directories).to(equal([
                         "/something/another"
                         ]))
-                    expect(delegateSpy.reports).to(beEmpty())
                 }
             }
 

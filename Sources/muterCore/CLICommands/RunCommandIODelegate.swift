@@ -4,7 +4,6 @@ public protocol RunCommandIODelegate  {
     func loadConfiguration() -> MuterConfiguration?
     func backupProject(in directory: String)
     func executeTesting(using configuration: MuterConfiguration) -> MuterTestReport?
-    func saveReport(_ report: MuterTestReport, to directory: String)
 }
 
 @available(OSX 10.13, *)
@@ -101,26 +100,4 @@ public class RunCommandDelegate: RunCommandIODelegate {
         printMessage(textReporter(report: testReport))
         return testReport
     }
-
-    public func saveReport(_ report: MuterTestReport, to directory: String) {
-        let fileName = URL(fileURLWithPath: directory).appendingPathComponent("muterReport.json")
-        let encoder = JSONEncoder()
-        encoder.outputFormatting = .prettyPrinted
-
-        do {
-            try jsonReporter(report: report).data(using: .utf8)?.write(to: fileName)
-        } catch {
-            print("""
-                Muter was unable to write its report to your disk at path \(fileName.absoluteString).
-
-                If you can reproduce this, please consider filing a bug
-                at https://github.com/SeanROlszewski/muter
-
-                Please include the following in the bug report:
-                *********************
-                \(error)
-                """)
-        }
-    }
-
 }

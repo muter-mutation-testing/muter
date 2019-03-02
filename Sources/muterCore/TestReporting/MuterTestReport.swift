@@ -4,21 +4,6 @@ import SwiftSyntax
 typealias FileName = String
 typealias FilePath = String
 
-typealias Reporter = (MuterTestReport) -> String
-
-public func textReporter(report: MuterTestReport) -> String {
-    return report.description
-}
-
-public func jsonReporter(report: MuterTestReport) -> String {
-    guard let encoded = try? JSONEncoder().encode(report),
-          let json = String(data: encoded, encoding: .utf8) else {
-        return ""
-    }
-
-    return json
-}
-
 public func xcodeReporter(report: MuterTestReport) -> String {
         // {full_path_to_file}{:line}{:character}: {error,warning}: {content}
         return report.fileReports.map { (file: MuterTestReport.FileReport) -> String in
@@ -111,44 +96,6 @@ private extension MuterTestReport {
 
 private func ascendingFilenameOrder(lhs: (key: String, value: Int), rhs: (key: String, value: Int)) -> Bool {
     return lhs.key < rhs.key
-}
-
-extension MuterTestReport: CustomStringConvertible {
-    public var description: String {
-        let finishedRunningMessage = "Muter finished running!\n\n"
-        let appliedMutationsMessage = """
-        --------------------------
-        Applied Mutation Operators
-        --------------------------
-        
-        These are all of the ways that Muter introduced changes into your code.
-        
-        In total, Muter applied \(totalAppliedMutationOperators) mutation operators.
-        
-        \(generateAppliedMutationsCLITable(from: self.fileReports).description)
-        
-        
-        """
-        
-        let coloredGlobalScore = coloredMutationScore(for: self.globalMutationScore, appliedTo: "\(self.globalMutationScore)%")
-        let mutationScoreMessage = "Mutation Score of Test Suite: ".bold + "\(coloredGlobalScore)"
-        let mutationScoresMessage = """
-        --------------------
-        Mutation Test Scores
-        --------------------
-        
-        These are the mutation scores for your test suite, as well as the files that had mutants introduced into them.
-        
-        Mutation scores ignore build errors.
-        
-        Of the \(self.totalAppliedMutationOperators) mutants introduced into your code, your test suite killed \(self.numberOfKilledMutants).
-        \(mutationScoreMessage)
-        
-        \(generateMutationScoresCLITable(from: self.fileReports).description)
-        """
-        
-        return finishedRunningMessage + appliedMutationsMessage + mutationScoresMessage
-    }
 }
 
 extension MuterTestReport: Equatable {}

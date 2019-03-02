@@ -41,28 +41,6 @@ class RunCommandDelegateSpec: QuickSpec {
                 }
             }
 
-            describe("saving mutation test reports") {
-                afterEach {
-                    try? FileManager.default.removeItem(atPath: "\(self.rootTestDirectory)/muterReport.json")
-                }
-
-                it("saves a JSON version of the generated mutation test report to a specified directory") {
-                    let realFileManager = FileManager.default
-                    let outcome = MutationTestOutcome(testSuiteOutcome: .failed,
-                                                      appliedMutation: .negateConditionals,
-                                                      filePath: "some path",
-                                                      position: .firstPosition)
-                    let report = MuterTestReport(from: [outcome])
-
-                    RunCommandDelegate(fileManager: realFileManager).saveReport(report, to: self.rootTestDirectory)
-
-                    guard let _ = realFileManager.contents(atPath: "\(self.rootTestDirectory)/muterReport.json") else {
-                        fail("Expected a JSON file to be written to \(self.rootTestDirectory)/muterReport.json")
-                        return
-                    }
-                }
-            }
-
             describe("loading a configuration") {
                 beforeEach {
                     fileManagerSpy = FileManagerSpy()
