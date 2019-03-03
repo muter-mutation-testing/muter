@@ -18,6 +18,8 @@ public struct InitCommand: CommandProtocol {
     }
 
     public func run(_ options: Options) -> Result<(), ClientError> {
+        notificationCenter.post(name: .muterLaunched, object: nil)
+
         let path = "\(self.directory)/muter.conf.json"
         let configuration = MuterConfiguration(executable: "absolute path to the executable that runs your tests",
                                                arguments: ["an argument the test runner needs", "another argument the test runner needs"],
@@ -27,10 +29,9 @@ public struct InitCommand: CommandProtocol {
         let data = try! encoder.encode(configuration)
 
         FileManager.default.createFile(atPath: path, contents: data, attributes: nil)
-        //print("Successfully created configuration file at \(path)")
-        notificationCenter.post(name: .configurationFileCreated, object: nil)
+       
+        notificationCenter.post(name: .configurationFileCreated, object: path)
 
         return Result.success(())
-
     }
 }

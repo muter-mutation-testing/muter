@@ -21,13 +21,18 @@ public struct RunCommand: CommandProtocol {
 
     private let delegate: RunCommandIODelegate
     private let currentDirectory: String
-    public init(delegate: RunCommandIODelegate = RunCommandDelegate(), currentDirectory: String = FileManager.default.currentDirectoryPath) {
+    private let notificationCenter: NotificationCenter
+
+    public init(delegate: RunCommandIODelegate = RunCommandDelegate(), currentDirectory: String = FileManager.default.currentDirectoryPath, notificationCenter: NotificationCenter = .default) {
         self.delegate = delegate
         self.currentDirectory = currentDirectory
+        self.notificationCenter = notificationCenter
     }
 
     public func run(_ options: Options) -> Result<(), ClientError> {
-        let stdoutObserver = StdoutObserver(reporter: options.reporter)
+        let _ = RunCommandObserver(reporter: options.reporter, shouldLog: options.shouldLog)
+        
+        notificationCenter.post(name: .muterLaunched, object: nil)
 
         guard let configuration = delegate.loadConfiguration() else {
             return .failure(.configurationError)
@@ -43,14 +48,18 @@ public struct RunCommand: CommandProtocol {
 public struct RunCommandOptions: OptionsProtocol {
     public typealias ClientError = MuterError
     let reporter: Reporter
+    let shouldLog: Bool
 
     public init(shouldOutputJSON: Bool, shouldOutputXcode: Bool) {
         if shouldOutputJSON {
             reporter = jsonReporter
+            shouldLog = false
         } else if shouldOutputXcode {
             reporter = xcodeReporter
+            shouldLog = false
         } else {
             reporter = textReporter
+            shouldLog = true
         }
     }
 

@@ -3,7 +3,7 @@ import Foundation
 public protocol RunCommandIODelegate  {
     func loadConfiguration() -> MuterConfiguration?
     func backupProject(in directory: String)
-    func executeTesting(using configuration: MuterConfiguration) -> MuterTestReport?
+    func executeTesting(using configuration: MuterConfiguration)
 }
 
 @available(OSX 10.13, *)
@@ -56,7 +56,7 @@ public class RunCommandDelegate: RunCommandIODelegate {
         return destination.path
     }
 
-    public func executeTesting(using configuration: MuterConfiguration) -> MuterTestReport? {
+    public func executeTesting(using configuration: MuterConfiguration) {
 
         let workingDirectoryPath = createWorkingDirectory(in: temporaryDirectoryURL!)
         notificationCenter.post(name: .sourceFileDiscoveryStarted, object: temporaryDirectoryURL!)
@@ -69,18 +69,17 @@ public class RunCommandDelegate: RunCommandIODelegate {
         let mutationOperators = discoverMutationOperators(inFilesAt: sourceFilePaths)
         guard mutationOperators.count >= 1 else {
             notificationCenter.post(name: .noMutationOperatorsDiscovered, object: nil)
-            return nil
+            return
         }
         notificationCenter.post(name: .mutationOperatorDiscoveryFinished, object: mutationOperators)
 
         FileManager.default.changeCurrentDirectoryPath(temporaryDirectoryURL!)
 
         notificationCenter.post(name: .mutationTestingStarted, object: nil)
-        
+
         let testingDelegate = MutationTestingDelegate(configuration: configuration, swapFilePathsByOriginalPath: swapFilePathsByOriginalPath)
         let report = performMutationTesting(using: mutationOperators, delegate: testingDelegate)
 
         notificationCenter.post(name: .mutationTestingFinished, object: report)
-        return report
     }
 }

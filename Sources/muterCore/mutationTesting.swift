@@ -26,7 +26,6 @@ private func apply(_ operators: [MutationOperator], buildErrorsThreshold: Int = 
             remainingOperatorsCount: operators.count - (index + 1))
         )
 
-
         delegate.backupFile(at: filePath)
 
         let mutatedSource = `operator`.apply()

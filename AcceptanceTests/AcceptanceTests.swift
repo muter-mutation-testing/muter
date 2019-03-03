@@ -17,7 +17,7 @@ class AcceptanceTests: QuickSpec {
                     }
                     
                     they("see that their files are copied to a temp folder") {
-                        expect(output.contains("Copying your project for mutation testing")).to(beTrue())
+                        expect(output.contains("Copying your project to a temporary directory for testing")).to(beTrue())
                     }
                     
                     they("see the list of files that Muter discovered") {
