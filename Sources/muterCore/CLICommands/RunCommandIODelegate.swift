@@ -62,6 +62,7 @@ public class RunCommandDelegate: RunCommandIODelegate {
     }
 
     public func executeTesting(using configuration: MuterConfiguration) -> MuterTestReport? {
+        
         let workingDirectoryPath = createWorkingDirectory(in: temporaryDirectoryURL!)
         printMessage("Created working directory (muter_tmp) in:\n\n\(temporaryDirectoryURL!)")
 
@@ -92,12 +93,6 @@ public class RunCommandDelegate: RunCommandIODelegate {
 
         printMessage("Beginning mutation testing")
         let testingDelegate = MutationTestingDelegate(configuration: configuration, swapFilePathsByOriginalPath: swapFilePathsByOriginalPath)
-        guard let testReport = performMutationTesting(using: mutationOperators, delegate: testingDelegate) else {
-            printMessage("")
-            return nil
-        }
-
-        printMessage(textReporter(report: testReport))
-        return testReport
+        return performMutationTesting(using: mutationOperators, delegate: testingDelegate)
     }
 }

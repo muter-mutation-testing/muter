@@ -36,9 +36,8 @@ public struct RunCommand: CommandProtocol {
         delegate.backupProject(in: currentDirectory)
         delegate
             .executeTesting(using: configuration)
-            .map { [delegate, currentDirectory] in
-                if options.shouldOutputJSON { printMessage(jsonReporter(report: $0)) }
-                if options.shouldOutputXcode { printMessage(xcodeReporter(report: $0)) }
+            .map {
+                print(options.reporter($0))
             }
 
         return .success(())
@@ -47,12 +46,16 @@ public struct RunCommand: CommandProtocol {
 
 public struct RunCommandOptions: OptionsProtocol {
     public typealias ClientError = MuterError
-
-    let shouldOutputJSON: Bool
-    let shouldOutputXcode: Bool
+    let reporter: Reporter
+    
     public init(shouldOutputJSON: Bool, shouldOutputXcode: Bool) {
-        self.shouldOutputJSON = shouldOutputJSON
-        self.shouldOutputXcode = shouldOutputXcode
+        if shouldOutputJSON  {
+            reporter = jsonReporter
+        } else if shouldOutputXcode {
+            reporter = xcodeReporter
+        } else {
+            reporter = textReporter
+        }
     }
 
     public static func evaluate(_ mode: CommandMode) -> Result<RunCommandOptions, CommandantError<ClientError>>  {
