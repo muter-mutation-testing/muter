@@ -10,8 +10,11 @@ public struct InitCommand: CommandProtocol {
     public let function: String = "Creates the configuration file that Muter uses."
 
     private let directory: String
-    public init(directory: String = FileManager.default.currentDirectoryPath) {
+    private let notificationCenter: NotificationCenter
+    
+    public init(directory: String = FileManager.default.currentDirectoryPath, notificationCenter: NotificationCenter = .default) {
         self.directory = directory
+        self.notificationCenter = notificationCenter
     }
 
     public func run(_ options: Options) -> Result<(), ClientError> {
@@ -24,8 +27,9 @@ public struct InitCommand: CommandProtocol {
         let data = try! encoder.encode(configuration)
         
         FileManager.default.createFile(atPath: path, contents: data, attributes: nil)
+//print("Successfully created configuration file at \(path)")
+        notificationCenter.post(name: .configurationFileCreated, object: nil)
 
-        print("Successfully created configuration file at \(path)")
         return Result.success(())
 
     }

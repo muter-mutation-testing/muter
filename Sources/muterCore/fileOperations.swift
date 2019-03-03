@@ -19,15 +19,6 @@ func createWorkingDirectory(in directory: String, fileManager: FileSystemManager
     return workingDirectory
 }
 
-func removeWorkingDirectory(at path: String) {
-    do {
-        try FileManager.default.removeItem(atPath: path)
-    } catch {
-        printMessage("Encountered error removing Muter's working directory")
-        printMessage("\(error)")
-    }
-}
-
 // MARK - Swap File Path
 func swapFilePaths(forFilesAt paths: [String], using workingDirectoryPath: String) ->  [String: String] {
     var swapFilePathsByOriginalPath: [String: String] = [:]

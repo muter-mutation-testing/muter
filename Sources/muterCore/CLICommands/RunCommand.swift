@@ -21,24 +21,20 @@ public struct RunCommand: CommandProtocol {
 
     private let delegate: RunCommandIODelegate
     private let currentDirectory: String
-    public init(delegate: RunCommandIODelegate = RunCommandDelegate(),
-                currentDirectory: String = FileManager.default.currentDirectoryPath) {
+    public init(delegate: RunCommandIODelegate = RunCommandDelegate(), currentDirectory: String = FileManager.default.currentDirectoryPath) {
         self.delegate = delegate
         self.currentDirectory = currentDirectory
     }
 
     public func run(_ options: Options) -> Result<(), ClientError> {
-                
+        let stdoutObserver = StdoutObserver(reporter: options.reporter)
+        
         guard let configuration = delegate.loadConfiguration() else {
             return .failure(.configurationError)
         }
 
         delegate.backupProject(in: currentDirectory)
-        delegate
-            .executeTesting(using: configuration)
-            .map {
-                print(options.reporter($0))
-            }
+        delegate.executeTesting(using: configuration)
 
         return .success(())
     }
@@ -49,7 +45,7 @@ public struct RunCommandOptions: OptionsProtocol {
     let reporter: Reporter
     
     public init(shouldOutputJSON: Bool, shouldOutputXcode: Bool) {
-        if shouldOutputJSON  {
+        if shouldOutputJSON {
             reporter = jsonReporter
         } else if shouldOutputXcode {
             reporter = xcodeReporter

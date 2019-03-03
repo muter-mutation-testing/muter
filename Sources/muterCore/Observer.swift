@@ -16,13 +16,20 @@ extension Notification.Name {
     
     static let mutationTestingStarted = Notification.Name("mutationTestingStarted")
     static let mutationTestingFinished = Notification.Name("mutationTestingFinished")
+    static let mutationTestingAborted = Notification.Name("mutationTestingAborted")
     
+    static let appliedNewMutationOperator = Notification.Name("applyingNewMutationOperator")
+
+    static let configurationFileCreated = Notification.Name("configurationFileCreated")
 }
 
-public class StdoutObserver {
+class StdoutObserver {
     private let notificationCenter: NotificationCenter = .default
+    private let reporter: Reporter
     
-    public init() {
+    init(reporter: @escaping Reporter) {
+        self.reporter = reporter
+        
         notificationCenter.addObserver(forName: .projectCopyStarted, object: nil, queue: nil, using: handle)
         notificationCenter.addObserver(forName: .projectCopyFinished, object: nil, queue: nil, using: handle)
         notificationCenter.addObserver(forName: .projectCopyFailed, object: nil, queue: nil, using: handle)
@@ -34,7 +41,6 @@ public class StdoutObserver {
         notificationCenter.addObserver(forName: .noMutationOperatorsDiscovered, object: nil, queue: nil, using: handle)
         notificationCenter.addObserver(forName: .mutationTestingStarted, object: nil, queue: nil, using: handle)
         notificationCenter.addObserver(forName: .mutationTestingFinished, object: nil, queue: nil, using: handle)
-        
     }
     
     deinit {

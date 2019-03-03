@@ -66,6 +66,7 @@ public class RunCommandDelegate: RunCommandIODelegate {
         return destination.path
     }
 
+    
     public func executeTesting(using configuration: MuterConfiguration) -> MuterTestReport? {
         
         let workingDirectoryPath = createWorkingDirectory(in: temporaryDirectoryURL!)
@@ -109,7 +110,7 @@ public class RunCommandDelegate: RunCommandIODelegate {
         FileManager.default.changeCurrentDirectoryPath(temporaryDirectoryURL!)
 
         notificationCenter.post(name: .mutationTestingStarted, object: nil)
-
+//print("Running your test suite to determine a baseline for mutation testing")
         let testingDelegate = MutationTestingDelegate(configuration: configuration, swapFilePathsByOriginalPath: swapFilePathsByOriginalPath)
         let report = performMutationTesting(using: mutationOperators, delegate: testingDelegate)
         
