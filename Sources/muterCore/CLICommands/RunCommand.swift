@@ -11,7 +11,7 @@ public struct RunCommand: CommandProtocol {
     public let verb: String = "run"
     public let function: String = """
     Performs mutation testing for the Swift project contained within the current directory.
-    
+
     Available flags:
 
        --output-json    Output test results to a json file
@@ -21,25 +21,25 @@ public struct RunCommand: CommandProtocol {
 
     private let delegate: RunCommandIODelegate
     private let currentDirectory: String
-    public init(delegate: RunCommandIODelegate = RunCommandDelegate(),
-                currentDirectory: String = FileManager.default.currentDirectoryPath) {
+    private let notificationCenter: NotificationCenter
+
+    public init(delegate: RunCommandIODelegate = RunCommandDelegate(), currentDirectory: String = FileManager.default.currentDirectoryPath, notificationCenter: NotificationCenter = .default) {
         self.delegate = delegate
         self.currentDirectory = currentDirectory
+        self.notificationCenter = notificationCenter
     }
 
     public func run(_ options: Options) -> Result<(), ClientError> {
+        let _ = RunCommandObserver(reporter: options.reporter, shouldLog: options.shouldLog)
         
+        notificationCenter.post(name: .muterLaunched, object: nil)
+
         guard let configuration = delegate.loadConfiguration() else {
             return .failure(.configurationError)
         }
 
         delegate.backupProject(in: currentDirectory)
-        delegate
-            .executeTesting(using: configuration)
-            .map { [delegate, currentDirectory] in
-                if options.shouldOutputJSON { printMessage(jsonReporter(report: $0)) }
-                if options.shouldOutputXcode { printMessage(xcodeReporter(report: $0)) }
-            }
+        delegate.executeTesting(using: configuration)
 
         return .success(())
     }
@@ -47,12 +47,20 @@ public struct RunCommand: CommandProtocol {
 
 public struct RunCommandOptions: OptionsProtocol {
     public typealias ClientError = MuterError
+    let reporter: Reporter
+    let shouldLog: Bool
 
-    let shouldOutputJSON: Bool
-    let shouldOutputXcode: Bool
     public init(shouldOutputJSON: Bool, shouldOutputXcode: Bool) {
-        self.shouldOutputJSON = shouldOutputJSON
-        self.shouldOutputXcode = shouldOutputXcode
+        if shouldOutputJSON {
+            reporter = jsonReporter
+            shouldLog = false
+        } else if shouldOutputXcode {
+            reporter = xcodeReporter
+            shouldLog = false
+        } else {
+            reporter = textReporter
+            shouldLog = true
+        }
     }
 
     public static func evaluate(_ mode: CommandMode) -> Result<RunCommandOptions, CommandantError<ClientError>>  {

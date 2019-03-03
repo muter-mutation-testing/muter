@@ -139,3 +139,4 @@ AcceptanceTests/muters_aborted_testing_output.txt
 RegressionTests/bonmot_regression_test_output.json
 AcceptanceTests/muters_help_output.txt
 AcceptanceTests/created_config.json
+RegressionTests/parsercombinator_regression_test_output.json

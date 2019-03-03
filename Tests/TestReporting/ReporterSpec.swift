@@ -15,24 +15,24 @@ class ReporterSpec: QuickSpec {
                 position: .firstPosition
             )
         ])
-        
+
         describe("text reporter") {
             it("returns the report in text format") {
                 expect(textReporter(report: report)).toNot(beEmpty())
             }
         }
-        
+
         describe("xcode reporter") {
             it("returns the report in xcode format") {
                 expect(xcodeReporter(report: report)).to(equal("/tmp/file3.swift:0:0: warning: \"Your test suite did not kill this mutant: negate conditionals\""))
             }
         }
-        
+
         describe("json reporter") {
             it("returns the report in json format") {
-                
+
                 let json = jsonReporter(report: report)
-                
+
                 guard let data = json.data(using: .utf8),
                     let actualReport = try? JSONDecoder().decode(MuterTestReport.self, from: data) else {
                         fail("Expected a valid JSON object, but didn't get one")

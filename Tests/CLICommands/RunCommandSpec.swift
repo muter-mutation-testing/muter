@@ -42,7 +42,6 @@ class RunCommandSpec: QuickSpec {
                     delegateSpy.configurationToReturn = MuterConfiguration(executable: "not empty",
                                                                            arguments: ["an argument"],
                                                                            excludeList: ["and exclude"])
-                    delegateSpy.reportToReturn = .dummy
                     let options = RunCommandOptions(shouldOutputJSON: true, shouldOutputXcode: false)
                     let command = RunCommand(delegate: delegateSpy, currentDirectory: "/something/another")
 
@@ -68,7 +67,6 @@ class RunCommandSpec: QuickSpec {
                     delegateSpy.configurationToReturn = MuterConfiguration(executable: "not empty",
                                                                            arguments: ["an argument"],
                                                                            excludeList: ["and exclude"])
-                    delegateSpy.reportToReturn = .dummy
                     let options = RunCommandOptions(shouldOutputJSON: false, shouldOutputXcode: true)
                     let command = RunCommand(delegate: delegateSpy, currentDirectory: "/something/another")
 
@@ -80,10 +78,10 @@ class RunCommandSpec: QuickSpec {
                         "loadConfiguration()",
                         "backupProject(in:)",
                         "executeTesting(using:)"
-                        ]))
+                    ]))
                     expect(delegateSpy.directories).to(equal([
                         "/something/another"
-                        ]))
+                    ]))
                 }
             }
 

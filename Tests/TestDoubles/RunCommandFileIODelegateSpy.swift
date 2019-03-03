@@ -5,7 +5,6 @@ class RunCommandIODelegateSpy: Spy, RunCommandIODelegate {
     private(set) var methodCalls: [String] = []
     private(set) var directories: [String] = []
     private(set) var configurations: [MuterConfiguration] = []
-    public var reportToReturn: MuterTestReport?
     public var configurationToReturn: MuterConfiguration!
 
     func loadConfiguration() -> MuterConfiguration? {
@@ -18,9 +17,8 @@ class RunCommandIODelegateSpy: Spy, RunCommandIODelegate {
         directories.append(directory)
     }
 
-    func executeTesting(using configuration: MuterConfiguration) -> MuterTestReport? {
+    func executeTesting(using configuration: MuterConfiguration) {
         methodCalls.append(#function)
         configurations.append(configuration)
-        return reportToReturn
     }
 }

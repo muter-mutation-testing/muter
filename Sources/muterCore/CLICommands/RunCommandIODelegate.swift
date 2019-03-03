@@ -3,17 +3,20 @@ import Foundation
 public protocol RunCommandIODelegate  {
     func loadConfiguration() -> MuterConfiguration?
     func backupProject(in directory: String)
-    func executeTesting(using configuration: MuterConfiguration) -> MuterTestReport?
+    func executeTesting(using configuration: MuterConfiguration)
 }
 
 @available(OSX 10.13, *)
 public class RunCommandDelegate: RunCommandIODelegate {
 
     private let fileManager: FileSystemManager
+    private let notificationCenter: NotificationCenter
+
     public var temporaryDirectoryURL: String?
 
-    public init(fileManager: FileSystemManager = FileManager.default) {
+    public init(fileManager: FileSystemManager = FileManager.default, notificationCenter: NotificationCenter = NotificationCenter.default) {
         self.fileManager = fileManager
+        self.notificationCenter = notificationCenter
     }
 
     public func loadConfiguration() -> MuterConfiguration? {
@@ -36,23 +39,15 @@ public class RunCommandDelegate: RunCommandIODelegate {
                 create: true // the create parameter is ignored when passing .itemReplacementDirectory
             )
 
+            notificationCenter.post(name: .projectCopyStarted, object: nil)
             let destinationPath = destinationDirectoryPath(in: temporaryDirectory, withProjectName: URL(fileURLWithPath: directory).lastPathComponent)
-            print("Copying your project for mutation testing")
             try fileManager.copyItem(atPath: directory, toPath: destinationPath)
             temporaryDirectoryURL = destinationPath
 
+            notificationCenter.post(name: .projectCopyFinished, object: nil)
+
         } catch {
-            fatalError("""
-                Muter was unable to create a temporary directory,
-                or was unable to copy your project, and cannot continue.
-
-                If you can reproduce this, please consider filing a bug
-                at https://github.com/SeanROlszewski/muter
-
-                Please include the following in the bug report:
-                *********************
-                FileManager error: \(error)
-                """)
+            notificationCenter.post(name: .projectCopyFailed, object: error)
         }
     }
 
@@ -61,43 +56,30 @@ public class RunCommandDelegate: RunCommandIODelegate {
         return destination.path
     }
 
-    public func executeTesting(using configuration: MuterConfiguration) -> MuterTestReport? {
-        let workingDirectoryPath = createWorkingDirectory(in: temporaryDirectoryURL!)
-        printMessage("Created working directory (muter_tmp) in:\n\n\(temporaryDirectoryURL!)")
+    public func executeTesting(using configuration: MuterConfiguration) {
 
-        printMessage("Discovering source code in:\n\n\(temporaryDirectoryURL!)")
+        let workingDirectoryPath = createWorkingDirectory(in: temporaryDirectoryURL!)
+        notificationCenter.post(name: .sourceFileDiscoveryStarted, object: temporaryDirectoryURL!)
+
         let sourceFilePaths = discoverSourceFiles(inDirectoryAt: temporaryDirectoryURL!, excludingPathsIn: configuration.excludeList)
         let swapFilePathsByOriginalPath = swapFilePaths(forFilesAt: sourceFilePaths, using: workingDirectoryPath)
-        printDiscoveryMessage(for: sourceFilePaths)
+        notificationCenter.post(name: .sourceFileDiscoveryFinished, object: sourceFilePaths)
 
-        printMessage("Discovering applicable Mutation Operators in:\n\n\(temporaryDirectoryURL!)")
+        notificationCenter.post(name: .mutationOperatorDiscoveryStarted, object: temporaryDirectoryURL!)
         let mutationOperators = discoverMutationOperators(inFilesAt: sourceFilePaths)
-
         guard mutationOperators.count >= 1 else {
-            printMessage("""
-        Muter wasn't able to discover any code it could mutation test.
-
-        This is likely caused by misconfiguring Muter, usually by excluding a directory that contains your code.
-
-        If you feel this is a bug, or want help figuring out what could be happening, please open an issue at
-        https://github.com/SeanROlszewski/muter/issues
-
-        """)
-            exit(1)
+            notificationCenter.post(name: .noMutationOperatorsDiscovered, object: nil)
+            return
         }
-
-        printDiscoveryMessage(for: mutationOperators)
+        notificationCenter.post(name: .mutationOperatorDiscoveryFinished, object: mutationOperators)
 
         FileManager.default.changeCurrentDirectoryPath(temporaryDirectoryURL!)
 
-        printMessage("Beginning mutation testing")
-        let testingDelegate = MutationTestingDelegate(configuration: configuration, swapFilePathsByOriginalPath: swapFilePathsByOriginalPath)
-        guard let testReport = performMutationTesting(using: mutationOperators, delegate: testingDelegate) else {
-            printMessage("")
-            return nil
-        }
+        notificationCenter.post(name: .mutationTestingStarted, object: nil)
 
-        printMessage(textReporter(report: testReport))
-        return testReport
+        let testingDelegate = MutationTestingDelegate(configuration: configuration, swapFilePathsByOriginalPath: swapFilePathsByOriginalPath)
+        let report = performMutationTesting(using: mutationOperators, delegate: testingDelegate)
+
+        notificationCenter.post(name: .mutationTestingFinished, object: report)
     }
 }
