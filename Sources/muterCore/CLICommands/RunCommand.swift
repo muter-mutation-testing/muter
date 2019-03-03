@@ -9,7 +9,15 @@ public struct RunCommand: CommandProtocol {
     public typealias Options = RunCommandOptions
     public typealias ClientError = MuterError
     public let verb: String = "run"
-    public let function: String = "Performs mutation testing for the Swift project contained within the current directory."
+    public let function: String = """
+    Performs mutation testing for the Swift project contained within the current directory.
+    
+    Available flags:
+
+       --output-json    Output test results to a json file
+       --output-xcode   Output test results in a format consumable by an Xcode run script step
+
+    """
 
     private let delegate: RunCommandIODelegate
     private let currentDirectory: String
@@ -20,6 +28,7 @@ public struct RunCommand: CommandProtocol {
     }
 
     public func run(_ options: Options) -> Result<(), ClientError> {
+        
         guard let configuration = delegate.loadConfiguration() else {
             return .failure(.configurationError)
         }

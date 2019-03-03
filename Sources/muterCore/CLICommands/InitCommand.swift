@@ -15,15 +15,17 @@ public struct InitCommand: CommandProtocol {
     }
 
     public func run(_ options: Options) -> Result<(), ClientError> {
+        let path = "\(self.directory)/muter.conf.json"
         let configuration = MuterConfiguration(executable: "absolute path to the executable that runs your tests",
                                                arguments: ["an argument the test runner needs", "another argument the test runner needs"],
                                                excludeList: [])
         let encoder = JSONEncoder()
         encoder.outputFormatting = [.prettyPrinted, .sortedKeys]
         let data = try! encoder.encode(configuration)
+        
+        FileManager.default.createFile(atPath: path, contents: data, attributes: nil)
 
-        FileManager.default.createFile(atPath: "\(self.directory)/muter.conf.json", contents: data, attributes: nil)
-
+        print("Successfully created configuration file at \(path)")
         return Result.success(())
 
     }

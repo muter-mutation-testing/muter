@@ -18,6 +18,17 @@ cd ./Repositories/ProjectWithFailures
 ../../.build/x86_64-apple-macosx10.10/debug/muter > ../../AcceptanceTests/muters_aborted_testing_output.txt
 cd ../..
 
+echo "Running Muter's init on an uninitialized project..."
+cd ./Repositories/UninitializedApp
+../../.build/x86_64-apple-macosx10.10/debug/muter init
+cp ./muter.conf.json ../../AcceptanceTests/created_config.json
+cd ../..
+
+echo "Running Muter's help command..."
+cd ./Repositories/UninitializedApp
+../../.build/x86_64-apple-macosx10.10/debug/muter help > ../../AcceptanceTests/muters_help_output.txt
+cd ../..
+
 echo "Running tests..."
 swift package generate-xcodeproj
 xcodebuild -scheme muter -only-testing:muterAcceptanceTests test
