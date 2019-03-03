@@ -10,10 +10,13 @@ public protocol RunCommandIODelegate  {
 public class RunCommandDelegate: RunCommandIODelegate {
 
     private let fileManager: FileSystemManager
+    private let notificationCenter: NotificationCenter
+    
     public var temporaryDirectoryURL: String?
 
-    public init(fileManager: FileSystemManager = FileManager.default) {
+    public init(fileManager: FileSystemManager = FileManager.default, notificationCenter: NotificationCenter = NotificationCenter.default) {
         self.fileManager = fileManager
+        self.notificationCenter = notificationCenter
     }
 
     public func loadConfiguration() -> MuterConfiguration? {
@@ -37,22 +40,24 @@ public class RunCommandDelegate: RunCommandIODelegate {
             )
 
             let destinationPath = destinationDirectoryPath(in: temporaryDirectory, withProjectName: URL(fileURLWithPath: directory).lastPathComponent)
-            print("Copying your project for mutation testing")
             try fileManager.copyItem(atPath: directory, toPath: destinationPath)
             temporaryDirectoryURL = destinationPath
+            notificationCenter.post(name: .projectCopyFinished, object: nil)
 
         } catch {
-            fatalError("""
-                Muter was unable to create a temporary directory,
-                or was unable to copy your project, and cannot continue.
+//            fatalError("""
+//                Muter was unable to create a temporary directory,
+//                or was unable to copy your project, and cannot continue.
+//
+//                If you can reproduce this, please consider filing a bug
+//                at https://github.com/SeanROlszewski/muter
+//
+//                Please include the following in the bug report:
+//                *********************
+//                FileManager error: \(error)
+//                """)
+            notificationCenter.post(name: .projectCopyFailed, object: nil)
 
-                If you can reproduce this, please consider filing a bug
-                at https://github.com/SeanROlszewski/muter
-
-                Please include the following in the bug report:
-                *********************
-                FileManager error: \(error)
-                """)
         }
     }
 
@@ -64,35 +69,51 @@ public class RunCommandDelegate: RunCommandIODelegate {
     public func executeTesting(using configuration: MuterConfiguration) -> MuterTestReport? {
         
         let workingDirectoryPath = createWorkingDirectory(in: temporaryDirectoryURL!)
-        printMessage("Created working directory (muter_tmp) in:\n\n\(temporaryDirectoryURL!)")
+//        printMessage("Created working directory (muter_tmp) in:\n\n\(temporaryDirectoryURL!)")
+        notificationCenter.post(name: .workingDirectoryCreated, object: nil)
 
-        printMessage("Discovering source code in:\n\n\(temporaryDirectoryURL!)")
+
+//        printMessage("Discovering source code in:\n\n\(temporaryDirectoryURL!)")
+        notificationCenter.post(name: .sourceFileDiscoveryStarted, object: nil)
+
         let sourceFilePaths = discoverSourceFiles(inDirectoryAt: temporaryDirectoryURL!, excludingPathsIn: configuration.excludeList)
         let swapFilePathsByOriginalPath = swapFilePaths(forFilesAt: sourceFilePaths, using: workingDirectoryPath)
-        printDiscoveryMessage(for: sourceFilePaths)
+        notificationCenter.post(name: .sourceFileDiscoveryFinished, object: nil)
 
-        printMessage("Discovering applicable Mutation Operators in:\n\n\(temporaryDirectoryURL!)")
+//        printDiscoveryMessage(for: sourceFilePaths)
+
+//        printMessage("Discovering applicable Mutation Operators in:\n\n\(temporaryDirectoryURL!)")
+        notificationCenter.post(name: .mutationOperatorDiscoveryStarted, object: nil)
+
         let mutationOperators = discoverMutationOperators(inFilesAt: sourceFilePaths)
 
         guard mutationOperators.count >= 1 else {
-            printMessage("""
-        Muter wasn't able to discover any code it could mutation test.
-
-        This is likely caused by misconfiguring Muter, usually by excluding a directory that contains your code.
-
-        If you feel this is a bug, or want help figuring out what could be happening, please open an issue at
-        https://github.com/SeanROlszewski/muter/issues
-
-        """)
-            exit(1)
+//            printMessage("""
+//        Muter wasn't able to discover any code it could mutation test.
+//
+//        This is likely caused by misconfiguring Muter, usually by excluding a directory that contains your code.
+//
+//        If you feel this is a bug, or want help figuring out what could be happening, please open an issue at
+//        https://github.com/SeanROlszewski/muter/issues
+//
+//        """)
+//            exit(1)
+            notificationCenter.post(name: .noMutationOperatorsDiscovered, object: nil)
+            return nil
         }
 
-        printDiscoveryMessage(for: mutationOperators)
+//        printDiscoveryMessage(for: mutationOperators)
+        notificationCenter.post(name: .mutationOperatorDiscoveryFinished, object: nil)
+
 
         FileManager.default.changeCurrentDirectoryPath(temporaryDirectoryURL!)
 
-        printMessage("Beginning mutation testing")
+        notificationCenter.post(name: .mutationTestingStarted, object: nil)
+
         let testingDelegate = MutationTestingDelegate(configuration: configuration, swapFilePathsByOriginalPath: swapFilePathsByOriginalPath)
-        return performMutationTesting(using: mutationOperators, delegate: testingDelegate)
+        let report = performMutationTesting(using: mutationOperators, delegate: testingDelegate)
+        
+        notificationCenter.post(name: .mutationTestingFinished, object: nil)
+        return report
     }
 }

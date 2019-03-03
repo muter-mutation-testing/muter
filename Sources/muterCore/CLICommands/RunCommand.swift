@@ -28,7 +28,7 @@ public struct RunCommand: CommandProtocol {
     }
 
     public func run(_ options: Options) -> Result<(), ClientError> {
-        
+                
         guard let configuration = delegate.loadConfiguration() else {
             return .failure(.configurationError)
         }

@@ -26,7 +26,7 @@ public func printHeader() {
 
 if #available(OSX 10.13, *) {
     printHeader()
-    
+    let stdoutObserver = StdoutObserver()
     let registry = CommandRegistry<MuterError>()
     registry
         .register(InitCommand())
