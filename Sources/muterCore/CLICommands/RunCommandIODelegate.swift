@@ -11,7 +11,7 @@ public class RunCommandDelegate: RunCommandIODelegate {
 
     private let fileManager: FileSystemManager
     private let notificationCenter: NotificationCenter
-    
+
     public var temporaryDirectoryURL: String?
 
     public init(fileManager: FileSystemManager = FileManager.default, notificationCenter: NotificationCenter = NotificationCenter.default) {
@@ -39,25 +39,15 @@ public class RunCommandDelegate: RunCommandIODelegate {
                 create: true // the create parameter is ignored when passing .itemReplacementDirectory
             )
 
+            notificationCenter.post(name: .projectCopyStarted, object: nil)
             let destinationPath = destinationDirectoryPath(in: temporaryDirectory, withProjectName: URL(fileURLWithPath: directory).lastPathComponent)
             try fileManager.copyItem(atPath: directory, toPath: destinationPath)
             temporaryDirectoryURL = destinationPath
+
             notificationCenter.post(name: .projectCopyFinished, object: nil)
 
         } catch {
-//            fatalError("""
-//                Muter was unable to create a temporary directory,
-//                or was unable to copy your project, and cannot continue.
-//
-//                If you can reproduce this, please consider filing a bug
-//                at https://github.com/SeanROlszewski/muter
-//
-//                Please include the following in the bug report:
-//                *********************
-//                FileManager error: \(error)
-//                """)
-            notificationCenter.post(name: .projectCopyFailed, object: nil)
-
+            notificationCenter.post(name: .projectCopyFailed, object: error)
         }
     }
 
@@ -66,55 +56,31 @@ public class RunCommandDelegate: RunCommandIODelegate {
         return destination.path
     }
 
-    
     public func executeTesting(using configuration: MuterConfiguration) -> MuterTestReport? {
-        
+
         let workingDirectoryPath = createWorkingDirectory(in: temporaryDirectoryURL!)
-//        printMessage("Created working directory (muter_tmp) in:\n\n\(temporaryDirectoryURL!)")
-        notificationCenter.post(name: .workingDirectoryCreated, object: nil)
-
-
-//        printMessage("Discovering source code in:\n\n\(temporaryDirectoryURL!)")
-        notificationCenter.post(name: .sourceFileDiscoveryStarted, object: nil)
+        notificationCenter.post(name: .sourceFileDiscoveryStarted, object: temporaryDirectoryURL!)
 
         let sourceFilePaths = discoverSourceFiles(inDirectoryAt: temporaryDirectoryURL!, excludingPathsIn: configuration.excludeList)
         let swapFilePathsByOriginalPath = swapFilePaths(forFilesAt: sourceFilePaths, using: workingDirectoryPath)
-        notificationCenter.post(name: .sourceFileDiscoveryFinished, object: nil)
+        notificationCenter.post(name: .sourceFileDiscoveryFinished, object: sourceFilePaths)
 
-//        printDiscoveryMessage(for: sourceFilePaths)
-
-//        printMessage("Discovering applicable Mutation Operators in:\n\n\(temporaryDirectoryURL!)")
-        notificationCenter.post(name: .mutationOperatorDiscoveryStarted, object: nil)
-
+        notificationCenter.post(name: .mutationOperatorDiscoveryStarted, object: temporaryDirectoryURL!)
         let mutationOperators = discoverMutationOperators(inFilesAt: sourceFilePaths)
-
         guard mutationOperators.count >= 1 else {
-//            printMessage("""
-//        Muter wasn't able to discover any code it could mutation test.
-//
-//        This is likely caused by misconfiguring Muter, usually by excluding a directory that contains your code.
-//
-//        If you feel this is a bug, or want help figuring out what could be happening, please open an issue at
-//        https://github.com/SeanROlszewski/muter/issues
-//
-//        """)
-//            exit(1)
             notificationCenter.post(name: .noMutationOperatorsDiscovered, object: nil)
             return nil
         }
-
-//        printDiscoveryMessage(for: mutationOperators)
-        notificationCenter.post(name: .mutationOperatorDiscoveryFinished, object: nil)
-
+        notificationCenter.post(name: .mutationOperatorDiscoveryFinished, object: mutationOperators)
 
         FileManager.default.changeCurrentDirectoryPath(temporaryDirectoryURL!)
 
         notificationCenter.post(name: .mutationTestingStarted, object: nil)
-//print("Running your test suite to determine a baseline for mutation testing")
+        
         let testingDelegate = MutationTestingDelegate(configuration: configuration, swapFilePathsByOriginalPath: swapFilePathsByOriginalPath)
         let report = performMutationTesting(using: mutationOperators, delegate: testingDelegate)
-        
-        notificationCenter.post(name: .mutationTestingFinished, object: nil)
+
+        notificationCenter.post(name: .mutationTestingFinished, object: report)
         return report
     }
 }

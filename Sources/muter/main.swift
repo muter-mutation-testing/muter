@@ -26,7 +26,7 @@ public func printHeader() {
 
 if #available(OSX 10.13, *) {
     printHeader()
-    
+
     let registry = CommandRegistry<MuterError>()
     registry
         .register(InitCommand())
@@ -36,7 +36,7 @@ if #available(OSX 10.13, *) {
             print("Muter encountered an error: \n\(error)")
             exit(1)
     }
-    
+
 } else {
     print("Muter requires macOS 10.13 or higher")
     exit(1)

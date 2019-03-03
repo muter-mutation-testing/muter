@@ -11,7 +11,7 @@ public struct InitCommand: CommandProtocol {
 
     private let directory: String
     private let notificationCenter: NotificationCenter
-    
+
     public init(directory: String = FileManager.default.currentDirectoryPath, notificationCenter: NotificationCenter = .default) {
         self.directory = directory
         self.notificationCenter = notificationCenter
@@ -25,9 +25,9 @@ public struct InitCommand: CommandProtocol {
         let encoder = JSONEncoder()
         encoder.outputFormatting = [.prettyPrinted, .sortedKeys]
         let data = try! encoder.encode(configuration)
-        
+
         FileManager.default.createFile(atPath: path, contents: data, attributes: nil)
-//print("Successfully created configuration file at \(path)")
+        //print("Successfully created configuration file at \(path)")
         notificationCenter.post(name: .configurationFileCreated, object: nil)
 
         return Result.success(())

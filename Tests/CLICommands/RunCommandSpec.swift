@@ -80,10 +80,10 @@ class RunCommandSpec: QuickSpec {
                         "loadConfiguration()",
                         "backupProject(in:)",
                         "executeTesting(using:)"
-                        ]))
+                    ]))
                     expect(delegateSpy.directories).to(equal([
                         "/something/another"
-                        ]))
+                    ]))
                 }
             }
 

@@ -20,10 +20,12 @@ private func apply(_ operators: [MutationOperator], buildErrorsThreshold: Int = 
     for (index, `operator`) in operators.enumerated() {
         let filePath = `operator`.filePath
         let fileName = URL(fileURLWithPath: filePath).lastPathComponent
-        
-        notificationCenter.post(name: .appliedNewMutationOperator, object: nil)
-//        print("Testing mutation operator in \(fileName)")
-//        print("There are \(operators.count - (index + 1)) left to apply")
+
+        notificationCenter.post(name: .appliedNewMutationOperator, object: (
+            fileName: fileName,
+            remainingOperatorsCount: operators.count - (index + 1))
+        )
+
 
         delegate.backupFile(at: filePath)
 

@@ -11,7 +11,7 @@ public struct RunCommand: CommandProtocol {
     public let verb: String = "run"
     public let function: String = """
     Performs mutation testing for the Swift project contained within the current directory.
-    
+
     Available flags:
 
        --output-json    Output test results to a json file
@@ -28,7 +28,7 @@ public struct RunCommand: CommandProtocol {
 
     public func run(_ options: Options) -> Result<(), ClientError> {
         let stdoutObserver = StdoutObserver(reporter: options.reporter)
-        
+
         guard let configuration = delegate.loadConfiguration() else {
             return .failure(.configurationError)
         }
@@ -43,7 +43,7 @@ public struct RunCommand: CommandProtocol {
 public struct RunCommandOptions: OptionsProtocol {
     public typealias ClientError = MuterError
     let reporter: Reporter
-    
+
     public init(shouldOutputJSON: Bool, shouldOutputXcode: Bool) {
         if shouldOutputJSON {
             reporter = jsonReporter

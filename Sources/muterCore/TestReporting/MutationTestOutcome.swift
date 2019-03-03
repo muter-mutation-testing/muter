@@ -5,7 +5,7 @@ public struct MutationTestOutcome: Equatable {
     let appliedMutation: MutationOperator.Id
     let filePath: String
     let position: AbsolutePosition
-    
+
     public init(testSuiteOutcome: TestSuiteOutcome,
                 appliedMutation: MutationOperator.Id,
                 filePath: String,
