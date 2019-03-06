@@ -70,6 +70,7 @@ class NegateConditionalsOperatorSpec: QuickSpec {
 
                     let mutatedSource = rewriter.visit(sourceWithConditionalLogic)
                     expect(mutatedSource.description).to(equal(expectedSource.description))
+                    expect(rewriter.description).to(equal("changed == to !="))
                 }
 
                 it("replaces an inequality operator with an equality operator") {
@@ -79,6 +80,7 @@ class NegateConditionalsOperatorSpec: QuickSpec {
 
                     let mutatedSource = rewriter.visit(sourceWithConditionalLogic)
                     expect(mutatedSource.description).to(equal(expectedSource.description))
+                    expect(rewriter.description).to(equal("changed != to =="))
                 }
 
                 it("replaces a greater than or equal to operator with a less than or equal to operator") {
@@ -88,6 +90,7 @@ class NegateConditionalsOperatorSpec: QuickSpec {
 
                     let mutatedSource = rewriter.visit(sourceWithConditionalLogic)
                     expect(mutatedSource.description).to(equal(expectedSource.description))
+                    expect(rewriter.description).to(equal("changed >= to <="))
                 }
 
                 it("replaces a less than or equal to operator with a greater than or equal to operator") {
@@ -97,6 +100,7 @@ class NegateConditionalsOperatorSpec: QuickSpec {
 
                     let mutatedSource = rewriter.visit(sourceWithConditionalLogic)
                     expect(mutatedSource.description).to(equal(expectedSource.description))
+                    expect(rewriter.description).to(equal("changed <= to >="))
                 }
 
                 it("replaces a less than operator with a greater than operator") {
@@ -106,6 +110,7 @@ class NegateConditionalsOperatorSpec: QuickSpec {
 
                     let mutatedSource = rewriter.visit(sourceWithConditionalLogic)
                     expect(mutatedSource.description).to(equal(expectedSource.description))
+                    expect(rewriter.description).to(equal("changed < to >"))
                 }
 
                 it("replaces a greater than operator with a less than operator") {
@@ -115,6 +120,7 @@ class NegateConditionalsOperatorSpec: QuickSpec {
 
                     let mutatedSource = rewriter.visit(sourceWithConditionalLogic)
                     expect(mutatedSource.description).to(equal(expectedSource.description))
+                    expect(rewriter.description).to(equal("changed > to <"))
                 }
             }
 

@@ -47,6 +47,7 @@ enum RemoveSideEffectsOperator {
 extension RemoveSideEffectsOperator {
     class Rewriter: SyntaxRewriter, PositionSpecificRewriter {
         let positionToMutate: AbsolutePosition
+        let description: String = "removed line"
 
         required init(positionToMutate: AbsolutePosition) {
             self.positionToMutate = positionToMutate

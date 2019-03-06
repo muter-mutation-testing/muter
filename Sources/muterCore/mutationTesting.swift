@@ -38,7 +38,9 @@ private func apply(_ operators: [MutationOperator], buildErrorsThreshold: Int = 
             .init(testSuiteOutcome: result,
                   appliedMutation: `operator`.id,
                   filePath: filePath,
-                  position: `operator`.position)
+                  position: `operator`.position,
+                  operatorDescription: `operator`.description
+            )
         )
 
         buildErrors = result == .buildError ? (buildErrors + 1) : 0

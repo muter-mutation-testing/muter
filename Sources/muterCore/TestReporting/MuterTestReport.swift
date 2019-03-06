@@ -14,7 +14,7 @@ public func xcodeReporter(report: MuterTestReport) -> String {
                 "\(path):" +
                     "\($0.position.line):\($0.position.column): " +
                     "warning: " +
-                "\"Your test suite did not kill this mutant: \($0.id.rawValue.lowercased())\""
+                "\"Your test suite did not kill this mutant: \($0.description)\""
             }.joined(separator: "\n")
         }.joined(separator: "\n")
 }
@@ -72,7 +72,29 @@ extension MuterTestReport {
     struct AppliedMutationOperator: Codable, Equatable {
         let id: MutationOperator.Id
         let position: AbsolutePosition
+        let description: String
         let testSuiteOutcome: TestSuiteOutcome
+
+        enum CodingKeys: String, CodingKey {
+            case id
+            case position
+            case testSuiteOutcome
+        }
+
+        init(id: MutationOperator.Id, position: AbsolutePosition, description: String, testSuiteOutcome: TestSuiteOutcome) {
+            self.id = id
+            self.position = position
+            self.description = description
+            self.testSuiteOutcome = testSuiteOutcome
+        }
+
+        init(from decoder: Decoder) throws {
+            let container = try decoder.container(keyedBy: CodingKeys.self)
+            id = try container.decode(MutationOperator.Id.self, forKey: .id)
+            position = try container.decode(AbsolutePosition.self, forKey: .position)
+            testSuiteOutcome = try container.decode(TestSuiteOutcome.self, forKey: .testSuiteOutcome)
+            description = ""
+        }
     }
 }
 
@@ -86,7 +108,7 @@ private extension MuterTestReport {
                 let mutationScore = mutationScoreByFilePath.value
                 let appliedMutations = outcomes
                     .include { $0.filePath == mutationScoreByFilePath.key }
-                    .map{ AppliedMutationOperator(id: $0.appliedMutation, position: $0.position, testSuiteOutcome: $0.testSuiteOutcome) }
+                    .map{ AppliedMutationOperator(id: $0.appliedMutation, position: $0.position, description: $0.operatorDescription, testSuiteOutcome: $0.testSuiteOutcome) }
 
                 return (fileName, filePath, mutationScore, appliedMutations)
             }
