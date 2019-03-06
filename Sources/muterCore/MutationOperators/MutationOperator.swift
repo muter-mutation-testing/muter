@@ -5,7 +5,11 @@ typealias MutationIdVisitorPair = (id: MutationOperator.Id, visitor: VisitorInit
 typealias RewriterInitializer = (AbsolutePosition) -> PositionSpecificRewriter
 typealias VisitorInitializer = () -> PositionDiscoveringVisitor
 
-public struct MutationOperator {
+public struct MutationOperator: CustomStringConvertible {
+
+    public var description: String {
+        return id.description(for: source, at: position)
+    }
 
     public enum Id: String, Codable {
         case negateConditionals = "Negate Conditionals"
@@ -21,6 +25,12 @@ public struct MutationOperator {
                 let visitor = Id.rewriterPairs[self]!(position)
                 return visitor.visit(source)
             }
+        }
+
+        func description(for syntax: Syntax, at position: AbsolutePosition) -> String {
+            let rewriter = Id.rewriterPairs[self]!(position)
+            _ = rewriter.visit(syntax)
+            return rewriter.description
         }
     }
 
@@ -43,7 +53,7 @@ public struct MutationOperator {
     }
 }
 
-protocol PositionSpecificRewriter {
+protocol PositionSpecificRewriter: CustomStringConvertible {
     var positionToMutate: AbsolutePosition { get }
     init(positionToMutate: AbsolutePosition)
     func visit(_ token: Syntax) -> Syntax

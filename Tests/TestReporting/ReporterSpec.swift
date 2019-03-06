@@ -12,7 +12,8 @@ class ReporterSpec: QuickSpec {
                 testSuiteOutcome: .passed,
                 appliedMutation: .negateConditionals,
                 filePath: "/tmp/file3.swift",
-                position: .firstPosition
+                position: .firstPosition,
+                operatorDescription: "changed from != to =="
             )
         ])
 
@@ -24,7 +25,7 @@ class ReporterSpec: QuickSpec {
 
         describe("xcode reporter") {
             it("returns the report in xcode format") {
-                expect(xcodeReporter(report: report)).to(equal("/tmp/file3.swift:0:0: warning: \"Your test suite did not kill this mutant: negate conditionals\""))
+                expect(xcodeReporter(report: report)).to(equal("/tmp/file3.swift:0:0: warning: \"Your test suite did not kill this mutant: changed from != to ==\""))
             }
         }
 

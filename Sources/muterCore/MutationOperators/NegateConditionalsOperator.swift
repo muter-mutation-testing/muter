@@ -29,6 +29,8 @@ enum NegateConditionalsOperator {
 extension NegateConditionalsOperator {
     class Rewriter: SyntaxRewriter, PositionSpecificRewriter {
         let positionToMutate: AbsolutePosition
+        private(set) var description: String = ""
+
         private let oppositeOperatorMapping: [String: String] = [
             "==": "!=",
             "!=": "==",
@@ -47,6 +49,9 @@ extension NegateConditionalsOperator {
                 let `oppositeOperator` = oppositeOperator(for: token.tokenKind) else {
                     return token
             }
+
+            description = "changed \(token.description.trimmed) to \(oppositeOperator)"
+
             return mutated(token, using: `oppositeOperator`)
         }
 

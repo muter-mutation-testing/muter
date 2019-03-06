@@ -8,13 +8,14 @@ class RemoveSideEffectsOperatorSpec: QuickSpec {
 
         func applyMutation(toFileAt path: String,
                            atPosition positionToMutate: AbsolutePosition,
-                           expectedOutcome: String) -> (mutatedSource: Syntax, expectedSource: Syntax) {
+                           expectedOutcome: String) -> (mutatedSource: Syntax, expectedSource: Syntax, rewriter: PositionSpecificRewriter) {
 
             let rewriter = RemoveSideEffectsOperator.Rewriter(positionToMutate: positionToMutate)
 
             return (
                 mutatedSource: rewriter.visit(sourceCode(fromFileAt: path)!),
-                expectedSource: sourceCode(fromFileAt: expectedOutcome)!
+                expectedSource: sourceCode(fromFileAt: expectedOutcome)!,
+                rewriter
             )
         }
 
@@ -65,6 +66,8 @@ class RemoveSideEffectsOperatorSpec: QuickSpec {
 
                 expect(firstResults.mutatedSource.description).to(equal(firstResults.expectedSource.description))
                 expect(secondResults.mutatedSource.description).to(equal(secondResults.expectedSource.description))
+                expect(firstResults.rewriter.description).to(equal("removed line"))
+                expect(secondResults.rewriter.description).to(equal("removed line"))
             }
 
             it("deletes a void function call that spans 1 line") {
@@ -75,6 +78,7 @@ class RemoveSideEffectsOperatorSpec: QuickSpec {
                 let results = applyMutation(toFileAt: path, atPosition: line21, expectedOutcome: expectedSourcePath)
 
                 expect(results.mutatedSource.description).to(equal(results.expectedSource.description))
+                expect(results.rewriter.description).to(equal("removed line"))
             }
 
             it("deletes a void function call that spans multiple lines") {
@@ -85,6 +89,7 @@ class RemoveSideEffectsOperatorSpec: QuickSpec {
                 let results = applyMutation(toFileAt: path, atPosition: line38, expectedOutcome: expectedSourcePath)
 
                 expect(results.mutatedSource.description) == results.expectedSource.description
+                expect(results.rewriter.description.trimmed) == "removed line"
             }
         }
 

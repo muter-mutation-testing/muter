@@ -9,21 +9,21 @@ class TestReportTableGenerationSpec: QuickSpec {
 
             let fileReports = [
                 MuterTestReport.FileReport(fileName: "file1.swift", path: "/tmp/file1.swift", mutationScore: 66, appliedOperators: [
-                    MuterTestReport.AppliedMutationOperator(id: .negateConditionals, position: .firstPosition, testSuiteOutcome: .failed),
-                    MuterTestReport.AppliedMutationOperator(id: .negateConditionals, position: .firstPosition, testSuiteOutcome: .failed),
-                    MuterTestReport.AppliedMutationOperator(id: .negateConditionals, position: .firstPosition, testSuiteOutcome: .passed)
+                    MuterTestReport.AppliedMutationOperator(id: .negateConditionals, position: .firstPosition, description: "", testSuiteOutcome: .failed),
+                    MuterTestReport.AppliedMutationOperator(id: .negateConditionals, position: .firstPosition, description: "", testSuiteOutcome: .failed),
+                    MuterTestReport.AppliedMutationOperator(id: .negateConditionals, position: .firstPosition, description: "", testSuiteOutcome: .passed)
                 ]),
                 MuterTestReport.FileReport(fileName: "file2.swift", path: "/tmp/file2.swift", mutationScore: 100, appliedOperators: [
-                    MuterTestReport.AppliedMutationOperator(id: .removeSideEffects, position: .firstPosition, testSuiteOutcome: .failed),
-                    MuterTestReport.AppliedMutationOperator(id: .removeSideEffects, position: .firstPosition, testSuiteOutcome: .failed)
+                    MuterTestReport.AppliedMutationOperator(id: .removeSideEffects, position: .firstPosition, description: "", testSuiteOutcome: .failed),
+                    MuterTestReport.AppliedMutationOperator(id: .removeSideEffects, position: .firstPosition, description: "", testSuiteOutcome: .failed)
                 ]),
                 MuterTestReport.FileReport(fileName: "file3.swift", path: "/tmp/file3.swift", mutationScore: 33, appliedOperators: [
-                    MuterTestReport.AppliedMutationOperator(id: .negateConditionals, position: .firstPosition, testSuiteOutcome: .failed),
-                    MuterTestReport.AppliedMutationOperator(id: .negateConditionals, position: .firstPosition, testSuiteOutcome: .passed),
-                    MuterTestReport.AppliedMutationOperator(id: .negateConditionals, position: .firstPosition, testSuiteOutcome: .passed)
+                    MuterTestReport.AppliedMutationOperator(id: .negateConditionals, position: .firstPosition, description: "", testSuiteOutcome: .failed),
+                    MuterTestReport.AppliedMutationOperator(id: .negateConditionals, position: .firstPosition, description: "", testSuiteOutcome: .passed),
+                    MuterTestReport.AppliedMutationOperator(id: .negateConditionals, position: .firstPosition, description: "", testSuiteOutcome: .passed)
                 ]),
                 MuterTestReport.FileReport(fileName: "file 4.swift", path: "/tmp/file 4.swift", mutationScore: 0, appliedOperators: [
-                    MuterTestReport.AppliedMutationOperator(id: .negateConditionals, position: .firstPosition, testSuiteOutcome: .passed)
+                    MuterTestReport.AppliedMutationOperator(id: .negateConditionals, position: .firstPosition, description: "", testSuiteOutcome: .passed)
                 ])
             ]
 
