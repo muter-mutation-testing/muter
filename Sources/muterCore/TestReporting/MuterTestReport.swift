@@ -4,21 +4,6 @@ import SwiftSyntax
 typealias FileName = String
 typealias FilePath = String
 
-public func xcodeReporter(report: MuterTestReport) -> String {
-    // {full_path_to_file}{:line}{:character}: {error,warning}: {content}
-    return report.fileReports.map { (file: MuterTestReport.FileReport) -> String in
-        let path = file.path
-        return file.appliedOperators
-            .filter { $0.testSuiteOutcome == .passed }
-            .map {
-                "\(path):" +
-                    "\($0.position.line):\($0.position.column): " +
-                    "warning: " +
-                "\"Your test suite did not kill this mutant: \($0.description)\""
-            }.joined(separator: "\n")
-        }.joined(separator: "\n")
-}
-
 public struct MuterTestReport {
     let globalMutationScore: Int
     let totalAppliedMutationOperators: Int
