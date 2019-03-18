@@ -8,6 +8,21 @@ import TestingExtensions
 class AcceptanceTests: QuickSpec {
     override func spec() {
         describe("someone using Muter for mutation testing", flags: [:]) {
+            
+            let messages = (
+                mutationScoreOfTestSuite: "Mutation Score of Test Suite: 40%",
+                mutationScoresHeader: """
+                        --------------------
+                        Mutation Test Scores
+                        --------------------
+                        """,
+                appliedMutationOperatorsHeader: """
+                        --------------------------
+                        Applied Mutation Operators
+                        --------------------------
+                        """
+            )
+            
             context("with the 'run' command") {
                 context("when Muter discovers operators it can apply", flags: [:]) {
                     var output: String!
@@ -31,28 +46,16 @@ class AcceptanceTests: QuickSpec {
                     }
                     
                     they("see how many mutation operators it's able to perform") {
-                        expect(output.contains("In total, Muter applied 9 mutation operators.")).to(beTrue())
+                        expect(output.contains("In total, Muter applied 5 mutation operators.")).to(beTrue())
                     }
                     
                     they("see the mutation scores for their test suite") {
-                        let mutationScoresHeader = """
-                        --------------------
-                        Mutation Test Scores
-                        --------------------
-                        """
-                        
-                        expect(output.contains(mutationScoresHeader)).to(beTrue())
-                        expect(output.contains("Mutation Score of Test Suite: 22%")).to(beTrue())
+                        expect(output.contains(messages.mutationScoresHeader)).to(beTrue())
+                        expect(output.contains(messages.mutationScoreOfTestSuite)).to(beTrue())
                     }
                     
                     they("see which mutation operators were applied") {
-                        let appliedMutationOperatorsHeader = """
-                        --------------------------
-                        Applied Mutation Operators
-                        --------------------------
-                        """
-                        
-                        expect(output.contains(appliedMutationOperatorsHeader)).to(beTrue())
+                        expect(output.contains(messages.appliedMutationOperatorsHeader)).to(beTrue())
                     }
                 }
                 
@@ -68,24 +71,12 @@ class AcceptanceTests: QuickSpec {
                     }
                     
                     they("see no mutation scores") {
-                        let mutationScoresHeader = """
-                        --------------------
-                        Mutation Test Scores
-                        --------------------
-                        """
-                        
-                        expect(output.contains(mutationScoresHeader)).to(beFalse())
-                        expect(output.contains("Mutation Score of Test Suite (higher is better): 33/100")).to(beFalse())
+                        expect(output.contains(messages.mutationScoresHeader)).to(beFalse())
+                        expect(output.contains(messages.mutationScoreOfTestSuite)).to(beFalse())
                     }
                     
                     they("don't see a list of mutation operators that were applied") {
-                        let appliedMutationOperatorsHeader = """
-                        --------------------------
-                        Applied Mutation Operators
-                        --------------------------
-                        """
-                        
-                        expect(output.contains(appliedMutationOperatorsHeader)).to(beFalse())
+                        expect(output.contains(messages.appliedMutationOperatorsHeader)).to(beFalse())
                     }
                 }
                 
@@ -101,27 +92,14 @@ class AcceptanceTests: QuickSpec {
                     }
                     
                     they("see no mutation scores") {
-                        let mutationScoresHeader = """
-                        --------------------
-                        Mutation Test Scores
-                        --------------------
-                        """
-                        
-                        expect(output.contains(mutationScoresHeader)).to(beFalse())
-                        expect(output.contains("Mutation Score of Test Suite (higher is better): 33/100")).to(beFalse())
+                        expect(output.contains(messages.mutationScoresHeader)).to(beFalse())
+                        expect(output.contains(messages.mutationScoreOfTestSuite)).to(beFalse())
                     }
                     
                     they("don't see a list of mutation operators that were applied") {
-                        let appliedMutationOperatorsHeader = """
-                        --------------------------
-                        Applied Mutation Operators
-                        --------------------------
-                        """
-                        
-                        expect(output.contains(appliedMutationOperatorsHeader)).to(beFalse())
+                        expect(output.contains(messages.appliedMutationOperatorsHeader)).to(beFalse())
                     }
                 }
-                
             }
             
             context("with the 'init' command") {
