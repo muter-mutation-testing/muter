@@ -6,6 +6,7 @@ echo "Setting up environment for testing..."
 echo "Running Muter on a codebase with a test suite..."
 cd ./Repositories/ExampleApp
 ../../.build/x86_64-apple-macosx10.10/debug/muter > ../../AcceptanceTests/muters_output.txt
+../../.build/x86_64-apple-macosx10.10/debug/muter --output-xcode > ../../AcceptanceTests/muters_xcode_output.txt
 cd ../..
 
 echo "Running Muter on an empty example codebase..."

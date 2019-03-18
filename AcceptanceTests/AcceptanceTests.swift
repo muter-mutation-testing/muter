@@ -1,12 +1,16 @@
-import Foundation
 import Quick
 import Nimble
-@testable import muterCore
+
+import Foundation
 import TestingExtensions
+import SnapshotTesting
+@testable import muterCore
 
 @available(OSX 10.13, *)
 class AcceptanceTests: QuickSpec {
+    
     override func spec() {
+        
         describe("someone using Muter for mutation testing", flags: [:]) {
             
             let messages = (
@@ -24,42 +28,57 @@ class AcceptanceTests: QuickSpec {
             )
             
             context("with the 'run' command") {
-                context("when Muter discovers operators it can apply", flags: [:]) {
-                    var output: String!
-                    
-                    beforeEach {
-                        output = self.muterOutput
-                    }
-                    
-                    they("see that their files are copied to a temp folder") {
-                        expect(output.contains("Copying your project to a temporary directory for testing")).to(beTrue())
-                    }
-                    
-                    they("see the list of files that Muter discovered") {
-                        expect(output.contains("Discovered 3 Swift files")).to(beTrue())
-                        expect(self.numberOfDiscoveredFileLists(in: output)).to(beGreaterThanOrEqualTo(1))
-                    }
-                    
-                    they("see that Muter is working in a temporary directory") {
-                        expect(output.contains("/var/folders")).to(beTrue())
-                        expect(output.contains("/T/TemporaryItems/")).to(beTrue())
-                    }
-                    
-                    they("see how many mutation operators it's able to perform") {
-                        expect(output.contains("In total, Muter applied 5 mutation operators.")).to(beTrue())
-                    }
-                    
-                    they("see the mutation scores for their test suite") {
-                        expect(output.contains(messages.mutationScoresHeader)).to(beTrue())
-                        expect(output.contains(messages.mutationScoreOfTestSuite)).to(beTrue())
-                    }
-                    
-                    they("see which mutation operators were applied") {
-                        expect(output.contains(messages.appliedMutationOperatorsHeader)).to(beTrue())
+                context("without any arguments") {
+                    context("when Muter discovers operators it can apply") {
+                        var output: String!
+                        
+                        beforeEach {
+                            output = self.muterOutput
+                        }
+                        
+                        they("see that their files are copied to a temp folder") {
+                            expect(output.contains("Copying your project to a temporary directory for testing")).to(beTrue())
+                        }
+                        
+                        they("see the list of files that Muter discovered") {
+                            expect(output.contains("Discovered 3 Swift files")).to(beTrue())
+                            expect(self.numberOfDiscoveredFileLists(in: output)).to(beGreaterThanOrEqualTo(1))
+                        }
+                        
+                        they("see that Muter is working in a temporary directory") {
+                            expect(output.contains("/var/folders")).to(beTrue())
+                            expect(output.contains("/T/TemporaryItems/")).to(beTrue())
+                        }
+                        
+                        they("see how many mutation operators it's able to perform") {
+                            expect(output.contains("In total, Muter applied 5 mutation operators.")).to(beTrue())
+                        }
+                        
+                        they("see the mutation scores for their test suite") {
+                            expect(output.contains(messages.mutationScoresHeader)).to(beTrue())
+                            expect(output.contains(messages.mutationScoreOfTestSuite)).to(beTrue())
+                        }
+                        
+                        they("see which mutation operators were applied") {
+                            expect(output.contains(messages.appliedMutationOperatorsHeader)).to(beTrue())
+                        }
                     }
                 }
                 
-                context("when Muter doesn't discover any mutation operators", flags: [:]) {
+                context("with --output-xcode as an argument") {
+                    var output: String!
+                    
+                    beforeEach {
+                        output = self.muterXcodeOutput
+                    }
+                    
+                    they("see their results in a format consumable by an Xcode build script") {
+                        expect(self.numberOfXcodeFormattedMessages(in: output)).to(equal(3))
+                    }
+                }
+
+                
+                context("when Muter doesn't discover any mutation operators") {
                     var output: String!
                     
                     beforeEach {
@@ -136,6 +155,11 @@ extension AcceptanceTests {
     var muterOutput: String {
         return contentsOfFileAsString(at: muterOutputPath)
     }
+    
+    var muterXcodeOutputPath: String { return "\(AcceptanceTests().rootTestDirectory)/muters_xcode_output.txt" }
+    var muterXcodeOutput: String {
+        return contentsOfFileAsString(at: muterXcodeOutputPath)
+    }
 
     var muterEmptyStateOutputPath: String { return "\(AcceptanceTests().rootTestDirectory)/muters_empty_state_output.txt" }
     var muterEmptyStateOutput: String {
@@ -173,7 +197,16 @@ extension AcceptanceTests {
     }
 
     func numberOfDiscoveredFileLists(in output: String) -> Int {
-        let filePathRegex = try! NSRegularExpression(pattern: "Discovered \\d* Swift files:\n\n(/[^/ ]*)+/?", options: .anchorsMatchLines)
+        return applyRegex("Discovered \\d* Swift files:\n\n(/[^/ ]*)+/?", to: output)
+    }
+    
+    func numberOfXcodeFormattedMessages(in output: String) -> Int {
+        return applyRegex("[\\/[:alnum:]\\/]+[a-zA-Z]+.swift\\:[0-9]+:[0-9]+\\: warning: [a-zA-Z ]+: [a-zA-Z[:punct:] ]+/?",
+                          to: output)
+    }
+    
+    func applyRegex(_ regex: String, to output: String) -> Int {
+        let filePathRegex = try! NSRegularExpression(pattern: regex, options: .anchorsMatchLines)
         let entireString = NSRange(location: 0, length: output.count)
         return filePathRegex.numberOfMatches(in: output,
                                              options: .withoutAnchoringBounds,

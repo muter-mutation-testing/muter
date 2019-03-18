@@ -1,4 +1,5 @@
 import Foundation
+import Darwin.C
 
 extension Notification.Name {
     static let muterLaunched = Notification.Name("muterLaunched")
@@ -19,16 +20,19 @@ extension Notification.Name {
     static let mutationTestingFinished = Notification.Name("mutationTestingFinished")
     static let mutationTestingAborted = Notification.Name("mutationTestingAborted")
 
-    static let appliedNewMutationOperator = Notification.Name("applyingNewMutationOperator")
+    static let newMutationTestOutcomeAvailable = Notification.Name("newMutationTestOutcomeAvailable")
 
     static let configurationFileCreated = Notification.Name("configurationFileCreated")
 }
 
+func flushStdOut() {
+    fflush(stdout)
+}
+
 class RunCommandObserver {
-    private let notificationCenter: NotificationCenter = .default
     private let reporter: Reporter
-    private let shouldLog: Bool
-    
+    private let flushStdOut: () -> Void
+    private let notificationCenter: NotificationCenter = .default
     private var notificationHandlerMappings: [(name: Notification.Name, handler: (Notification) -> Void)] {
        return [
             (name: .muterLaunched, handler: handleMuterLaunched),
@@ -45,16 +49,15 @@ class RunCommandObserver {
             (name: .noMutationOperatorsDiscovered, handler: handleNoMutationOperatorsDiscovered),
             
             (name: .mutationTestingStarted, handler: handleMutationTestingStarted),
-            (name: .appliedNewMutationOperator, handler: handleAppliedNewMutationOperator),
+            (name: .newMutationTestOutcomeAvailable, handler: handleNewMutationTestOutcomeAvailable),
             (name: .mutationTestingAborted, handler: handleMutationTestingAborted),
             (name: .mutationTestingFinished, handler: handleMutationTestingFinished),
         ]
     }
     
-    
-    init(reporter: @escaping Reporter, shouldLog: Bool) {
+    init(reporter: Reporter, flushHandler: @escaping () -> Void) {
         self.reporter = reporter
-        self.shouldLog = shouldLog
+        self.flushStdOut = flushHandler
         
         for (name, handler) in notificationHandlerMappings {
             notificationCenter.addObserver(forName: name, object: nil, queue: nil, using: handler)
@@ -66,21 +69,21 @@ class RunCommandObserver {
     }
 }
 
-private extension RunCommandObserver {    
+extension RunCommandObserver {    
     func handleMuterLaunched(notification: Notification) {
-        if shouldLog {
+        if reporter == .plainText {
             printHeader()
         }
     }
     
     func handleProjectCopyStarted(notification: Notification) {
-        if shouldLog {
+        if reporter == .plainText {
             print("Copying your project to a temporary directory for testing")
         }
     }
 
     func handleProjectCopyFinished(notification: Notification) {
-        if shouldLog {
+        if reporter == .plainText {
             print("Finished copying your project to a temporary directory for testing")
         }
     }
@@ -100,13 +103,13 @@ private extension RunCommandObserver {
     }
 
     func handleSourceFileDiscoveryStarted(notification: Notification) {
-        if shouldLog {
+        if reporter == .plainText {
             printMessage("Discovering source code in:\n\n\(notification.object as! String)")
         }
     }
 
     func handleSourceFileDiscoveryFinished(notification: Notification) {
-        if shouldLog {
+        if reporter == .plainText {
             let discoveredFilePaths = notification.object as! [String]
             let filePaths = discoveredFilePaths.joined(separator: "\n")
             printMessage("Discovered \(discoveredFilePaths.count) Swift files:\n\n\(filePaths)")
@@ -114,13 +117,13 @@ private extension RunCommandObserver {
     }
 
     func handleMutationOperatorDiscoveryStarted(notification: Notification) {
-        if shouldLog {
+        if reporter == .plainText {
             print("Discovering applicable Mutation Operators in:\n\n\(notification.object as! String)")
         }
     }
 
     func handleMutationOperatorDiscoveryFinished(notification: Notification) {
-        if shouldLog {
+        if reporter == .plainText {
             let discoveredMutationOperators = notification.object as! [MutationOperator]
 
             printMessage("Discovered \(discoveredMutationOperators.count) mutants to introduce:\n")
@@ -148,29 +151,36 @@ private extension RunCommandObserver {
     }
 
     func handleMutationTestingStarted(notification: Notification) {
-        if shouldLog {
+        if reporter == .plainText {
             printMessage("Mutation testing will now begin.\nRunning your test suite to determine a baseline for mutation testing")
         }
     }
 
-    func handleAppliedNewMutationOperator(notification: Notification) {
-        if shouldLog {
-            let values = notification.object as! (fileName: String, remainingOperatorsCount: Int)
+    func handleNewMutationTestOutcomeAvailable(notification: Notification) {
+        let values = notification.object as! (outcome: MutationTestOutcome, remainingOperatorsCount: Int)
+        
+        if reporter == .plainText {
+            let fileName = URL(fileURLWithPath: values.outcome.filePath).lastPathComponent
 
-            print("Testing mutation operator in \(values.fileName)")
-            print("There are \(values.remainingOperatorsCount) left to apply")
+            print("""
+                Testing mutation operator in \(fileName)
+                There are \(values.remainingOperatorsCount) left to apply
+            """)
+        } else if reporter == .xcode {
+            print(reporter.generateReport(from: [values.outcome]))
+            flushStdOut()
         }
     }
 
     func handleMutationTestingAborted(notification: Notification) {
-        if shouldLog {
-            printMessage(notification.object as! String)
-        }
+        printMessage(notification.object as! String)
         exit(1)
     }
 
     func handleMutationTestingFinished(notification: Notification) {
-        let report = notification.object as! MuterTestReport
-        print(reporter(report))
+        if reporter != .xcode { // xcode reports are generated in real-time, so don't report them once mutation testing has finished
+            let outcomes = notification.object as! [MutationTestOutcome]
+            print(reporter.generateReport(from: outcomes))
+        }
     }
 }

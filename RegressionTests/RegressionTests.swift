@@ -18,7 +18,7 @@ class RegressionTests: QuickSpec {
                         return
                 }
 
-                assertSnapshot(matching: testReport, as: .json)
+                assertSnapshot(matching: testReport, as: .json, named: "1")
             }
         }
         
@@ -32,7 +32,7 @@ class RegressionTests: QuickSpec {
                         return
                 }
                 
-                assertSnapshot(matching: testReport, as: .json)
+                assertSnapshot(matching: testReport, as: .json, named: "2")
             }
         }
     }

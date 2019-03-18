@@ -1,8 +1,25 @@
 import Foundation
 
-typealias Reporter = (MuterTestReport) -> String
+enum Reporter {
+    case plainText
+    case json
+    case xcode
+    
+    func generateReport(from outcomes: [MutationTestOutcome]) -> String {
+        switch self {
+        case .plainText:
+            return textReport(from: outcomes)
+        case .json:
+            return jsonReport(from: outcomes)
+        case .xcode:
+            return xcodeReport(from: outcomes)
+        }
+    }
+}
 
-public func jsonReporter(report: MuterTestReport) -> String {
+
+private func jsonReport(from outcomes: [MutationTestOutcome]) -> String {
+    let report = MuterTestReport(from: outcomes)
     let encoder = JSONEncoder()
     encoder.outputFormatting = .prettyPrinted
 
@@ -14,22 +31,24 @@ public func jsonReporter(report: MuterTestReport) -> String {
     return json
 }
 
-public func xcodeReporter(report: MuterTestReport) -> String {
-    // {full_path_to_file}{:line}{:character}: {error,warning}: {content}
-    return report.fileReports.map { (file: MuterTestReport.FileReport) -> String in
-        let path = file.path
-        return file.appliedOperators
-            .filter { $0.testSuiteOutcome == .passed }
-            .map {
-                "\(path):" +
-                    "\($0.position.line):\($0.position.column): " +
-                    "warning: " +
-                "\"Your test suite did not kill this mutant: \($0.id.rawValue.lowercased())\""
-            }.joined(separator: "\n")
-        }.joined(separator: "\n")
+private func xcodeReport(from outcomes: [MutationTestOutcome]) -> String {
+    return outcomes
+        .include { $0.testSuiteOutcome == .passed }
+        .map(outcomeIntoXcodeString)
+        .joined(separator: "\n")
 }
 
-public func textReporter(report: MuterTestReport) -> String {
+private func outcomeIntoXcodeString(outcome: MutationTestOutcome)  -> String  {
+    // {full_path_to_file}{:line}{:character}: {error,warning}: {content}
+    return "\(outcome.filePath):" +
+        "\(outcome.position.line):\(outcome.position.column): " +
+        "warning: " +
+        "Your test suite did not kill this mutant: \(outcome.operatorDescription)"
+}
+
+private func textReport(from outcomes: [MutationTestOutcome]) -> String {
+    let report = MuterTestReport(from: outcomes)
+    
     let finishedRunningMessage = "Muter finished running!\n\n"
     let appliedMutationsMessage = """
     --------------------------

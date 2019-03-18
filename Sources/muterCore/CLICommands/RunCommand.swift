@@ -30,7 +30,8 @@ public struct RunCommand: CommandProtocol {
     }
 
     public func run(_ options: Options) -> Result<(), ClientError> {
-        let _ = RunCommandObserver(reporter: options.reporter, shouldLog: options.shouldLog)
+        let _ = RunCommandObserver(reporter: options.reporter,
+                                   flushHandler: flushStdOut)
         
         notificationCenter.post(name: .muterLaunched, object: nil)
 
@@ -48,18 +49,14 @@ public struct RunCommand: CommandProtocol {
 public struct RunCommandOptions: OptionsProtocol {
     public typealias ClientError = MuterError
     let reporter: Reporter
-    let shouldLog: Bool
-
+    
     public init(shouldOutputJSON: Bool, shouldOutputXcode: Bool) {
         if shouldOutputJSON {
-            reporter = jsonReporter
-            shouldLog = false
+            reporter = .json
         } else if shouldOutputXcode {
-            reporter = xcodeReporter
-            shouldLog = false
+            reporter = .xcode
         } else {
-            reporter = textReporter
-            shouldLog = true
+            reporter = .plainText
         }
     }
 

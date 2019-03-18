@@ -1,16 +1,15 @@
 import Foundation
 import SwiftSyntax
 
-func performMutationTesting(using operators: [MutationOperator], delegate: MutationTestingIODelegate) -> MuterTestReport? {
+func performMutationTesting(using operators: [MutationOperator], delegate: MutationTestingIODelegate) -> [MutationTestOutcome] {
 
     let initialResult = delegate.runTestSuite(savingResultsIntoFileNamed: "initial_run")
     guard initialResult == .passed else {
         delegate.abortTesting(reason: .initialTestingFailed)
-        return nil
+        return []
     }
 
-    let testOutcomes = apply(operators, delegate: delegate)
-    return MuterTestReport(from: testOutcomes)
+    return apply(operators, delegate: delegate)
 }
 
 private func apply(_ operators: [MutationOperator], buildErrorsThreshold: Int = 5, delegate: MutationTestingIODelegate, notificationCenter: NotificationCenter = .default) -> [MutationTestOutcome] {
@@ -21,11 +20,6 @@ private func apply(_ operators: [MutationOperator], buildErrorsThreshold: Int = 
         let filePath = `operator`.filePath
         let fileName = URL(fileURLWithPath: filePath).lastPathComponent
 
-        notificationCenter.post(name: .appliedNewMutationOperator, object: (
-            fileName: fileName,
-            remainingOperatorsCount: operators.count - (index + 1))
-        )
-
         delegate.backupFile(at: filePath)
 
         let mutatedSource = `operator`.apply()
@@ -33,14 +27,17 @@ private func apply(_ operators: [MutationOperator], buildErrorsThreshold: Int = 
 
         let result = delegate.runTestSuite(savingResultsIntoFileNamed: "\(fileName)_\(`operator`.id.rawValue)_\(`operator`.position).log")
         delegate.restoreFile(at: filePath)
-
-        outcomes.append(
-            .init(testSuiteOutcome: result,
-                  appliedMutation: `operator`.id,
-                  filePath: filePath,
-                  position: `operator`.position,
-                  operatorDescription: `operator`.description
-            )
+        
+        let outcome = MutationTestOutcome(testSuiteOutcome: result,
+                                          appliedMutation: `operator`.id,
+                                          filePath: filePath,
+                                          position: `operator`.position,
+                                          operatorDescription: `operator`.description)
+        outcomes.append(outcome)
+        
+        notificationCenter.post(name: .newMutationTestOutcomeAvailable, object: (
+            outcome: outcome,
+            remainingOperatorsCount: operators.count - (index + 1))
         )
 
         buildErrors = result == .buildError ? (buildErrors + 1) : 0
