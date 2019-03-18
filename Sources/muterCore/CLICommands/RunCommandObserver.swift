@@ -1,4 +1,9 @@
 import Foundation
+#if os(Linux)
+import Glibc
+#else
+import Darwin.C
+#endif
 
 extension Notification.Name {
     static let muterLaunched = Notification.Name("muterLaunched")
@@ -19,7 +24,7 @@ extension Notification.Name {
     static let mutationTestingFinished = Notification.Name("mutationTestingFinished")
     static let mutationTestingAborted = Notification.Name("mutationTestingAborted")
 
-    static let appliedNewMutationOperator = Notification.Name("applyingNewMutationOperator")
+    static let newMutationTestOutcomeAvailable = Notification.Name("newMutationTestOutcomeAvailable")
 
     static let configurationFileCreated = Notification.Name("configurationFileCreated")
 }
@@ -45,12 +50,11 @@ class RunCommandObserver {
             (name: .noMutationOperatorsDiscovered, handler: handleNoMutationOperatorsDiscovered),
             
             (name: .mutationTestingStarted, handler: handleMutationTestingStarted),
-            (name: .appliedNewMutationOperator, handler: handleAppliedNewMutationOperator),
+            (name: .newMutationTestOutcomeAvailable, handler: handleNewMutationTestOutcomeAvailable),
             (name: .mutationTestingAborted, handler: handleMutationTestingAborted),
             (name: .mutationTestingFinished, handler: handleMutationTestingFinished),
         ]
     }
-    
     
     init(reporter: @escaping Reporter, shouldLog: Bool) {
         self.reporter = reporter
@@ -66,7 +70,7 @@ class RunCommandObserver {
     }
 }
 
-private extension RunCommandObserver {    
+extension RunCommandObserver {    
     func handleMuterLaunched(notification: Notification) {
         if shouldLog {
             printHeader()
@@ -153,12 +157,17 @@ private extension RunCommandObserver {
         }
     }
 
-    func handleAppliedNewMutationOperator(notification: Notification) {
+    func handleNewMutationTestOutcomeAvailable(notification: Notification) {
+        let values = notification.object as! (outcome: MutationTestOutcome, remainingOperatorsCount: Int)
+        
         if shouldLog {
-            let values = notification.object as! (fileName: String, remainingOperatorsCount: Int)
+            let fileName = URL(fileURLWithPath: values.outcome.filePath).lastPathComponent
 
-            print("Testing mutation operator in \(values.fileName)")
+            print("Testing mutation operator in \(fileName)")
             print("There are \(values.remainingOperatorsCount) left to apply")
+        } else {
+            print(reporter([values.outcome]))
+            fflush(stdout)
         }
     }
 
@@ -170,7 +179,9 @@ private extension RunCommandObserver {
     }
 
     func handleMutationTestingFinished(notification: Notification) {
-        let report = notification.object as! MuterTestReport
-        print(reporter(report))
+        if shouldLog {
+            let outcomes = notification.object as! [MutationTestOutcome]
+            print(reporter(outcomes))
+        }
     }
 }
