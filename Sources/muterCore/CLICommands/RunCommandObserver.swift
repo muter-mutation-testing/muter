@@ -179,9 +179,7 @@ extension RunCommandObserver {
     }
 
     func handleMutationTestingFinished(notification: Notification) {
-        if shouldLog {
-            let outcomes = notification.object as! [MutationTestOutcome]
-            print(reporter(outcomes))
-        }
+        let outcomes = notification.object as! [MutationTestOutcome]
+        print(reporter(outcomes))
     }
 }
