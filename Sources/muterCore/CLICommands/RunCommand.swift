@@ -10,7 +10,9 @@ public struct RunCommand: CommandProtocol {
     public typealias ClientError = MuterError
     public let verb: String = "run"
     public let function: String = """
-    Performs mutation testing for the Swift project contained within the current directory.
+    Performs mutation testing for the Swift project contained within the current directory
+
+    Muter defaults to run when you don't specify any subcommands
 
     Available flags:
 

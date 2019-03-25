@@ -7,7 +7,7 @@ public struct InitCommand: CommandProtocol {
     public typealias Options = NoOptions<MuterError>
     public typealias ClientError = MuterError
     public let verb: String = "init"
-    public let function: String = "Creates the configuration file that Muter uses."
+    public let function: String = "Creates the configuration file that Muter uses"
 
     private let directory: String
     private let notificationCenter: NotificationCenter
