@@ -84,7 +84,7 @@ class MuterTestReportSpec: QuickSpec {
                     "/tmp/file 4.swift": 0
                 ]
 
-                expect(mutationScoreOfFiles(from: self.exampleMutationTestResults)).to(equal(expectedMutationScores))
+                expect(mutationScoresOfFiles(from: self.exampleMutationTestResults)).to(equal(expectedMutationScores))
             }
         }
     }

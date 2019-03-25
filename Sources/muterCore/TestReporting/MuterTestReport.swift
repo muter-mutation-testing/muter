@@ -13,7 +13,9 @@ public struct MuterTestReport {
     public init(from outcomes: [MutationTestOutcome] = []) {
         globalMutationScore = mutationScore(from: outcomes.map { $0.testSuiteOutcome })
         totalAppliedMutationOperators = outcomes.count
-        numberOfKilledMutants = outcomes.map{ $0.testSuiteOutcome }.count { $0 == .failed || $0 == .runtimeError }
+        numberOfKilledMutants = outcomes
+            .map { $0.testSuiteOutcome }
+            .count { $0 == .failed || $0 == .runtimeError }
         fileReports = MuterTestReport.fileReports(from: outcomes)
     }
 }
@@ -85,7 +87,7 @@ extension MuterTestReport {
 
 private extension MuterTestReport {
     static func fileReports(from outcomes: [MutationTestOutcome]) -> [FileReport] {
-        return mutationScoreOfFiles(from: outcomes)
+        return mutationScoresOfFiles(from: outcomes)
             .sorted(by: ascendingFilenameOrder)
             .map { mutationScoreByFilePath in
                 let filePath = mutationScoreByFilePath.key
