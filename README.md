@@ -100,9 +100,24 @@ The configuration file will end up looking something like this:
 
 Check out the `muter.conf.json` in the root directory of this repository for another example.
 
+### Xcode Setup
+Setting up Muter to run within Xcode is simple. After creating your configuation:
+
+1) **Create a new Aggregate Build Target** in the Xcode project of the codebase you're mutation testing. We suggest calling it "Mutation Test"
+2) **Add a run script step** to the newly created aggregate build target.
+3) **Add the Muter xcode command** to the build step:
+
+    ```muter --output-xcode```
+
 
 ## Running Muter
-Running Muter is easy. Once you've created your configuration file, simply run `muter` in your terminal from any directory of the project you're mutation testing. Muter will take it from there. 
+
+### From the command line
+
+Once you've created your configuration file, simply run `muter` in your terminal from any directory of the project you're mutation testing. Muter will take it from there. 
+
+### Within Xcode
+Build (Cmd + B) your aggregate build target and let Muter run. The mutants which survive testing will be called out in the issue navigator. Once the target finishes building, testing has completed.
 
 ## Limitations
 - Muter assumes you always put spaces around your operators. For example, it expects an equality check to look like
@@ -112,7 +127,7 @@ Running Muter is easy. Once you've created your configuration file, simply run `
     not like:
 
     `a==b (Muter won't mutate this)`
-- Muter assumes you aren't putting multiple expressions on one line (and I have the opinion you shouldn't be doing this anyway). Basically, if you aren't using semicolons in your code then Muter shouldn't have an issue mutating it.
+- Muter assumes you aren't putting multiple expressions on one line (and we have the opinion you shouldn't be doing this anyway). Basically, if you aren't using semicolons in your code then Muter shouldn't have an issue mutating it.
 
 ## Best Practices
 - Commit your `muter.conf.json`
