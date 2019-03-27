@@ -21,6 +21,7 @@ cd ../..
 
 echo "Running Muter's init on an uninitialized project..."
 cd ./Repositories/UninitializedApp
+rm muter.conf.json
 ../../.build/x86_64-apple-macosx10.10/debug/muter init
 cp ./muter.conf.json ../../AcceptanceTests/created_config.json
 cd ../..
