@@ -11,7 +11,7 @@ muters_output.txt
 muters_empty_state_output.txt
 .vscode
 sourcekite
-*.xcodeproj
+muter.xcodeproj
 /Tests/bonmot_regression_test_output.json
 muterReport.json
 
@@ -141,3 +141,4 @@ AcceptanceTests/muters_help_output.txt
 AcceptanceTests/created_config.json
 RegressionTests/parsercombinator_regression_test_output.json
 AcceptanceTests/muters_xcode_output.txt
+Repositories/UninitializedApp/muter.conf.json
