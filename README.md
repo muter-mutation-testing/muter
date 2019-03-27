@@ -6,7 +6,7 @@ Use this mode to rapidly diagnose areas where you can begin improving your test 
  
 ![Muter running inside Xcode](https://i.imgur.com/ApxFrFc.png) 
 
-#### Muter can be ran from the commandline
+#### Muter can be run from the command line
 Use this mode to get detailed information about the health and quality of your entire test suite
 
 [![Muter running from the commandline](https://asciinema.org/a/cDQDbPMEZzYprLTsTPcwNd7Ch.svg)](https://asciinema.org/a/cDQDbPMEZzYprLTsTPcwNd7Ch?speed=30&loop=1)
@@ -28,18 +28,18 @@ Specifically, a mutation score can help you:
 - Assess how many tests fail as a result of one code change
 
 ## How Does It Work?
-Muter will introduce changes into your sourcecode based on the logic contained in your app. The changes introduced by Muter are called **mutants** which it generates using **mutation operators**.
+Muter will introduce changes into your source code based on the logic contained in your app. The changes introduced by Muter are called **mutants** which it generates using **mutation operators**.
 
 You can view the list of available mutation operators [here](https://github.com/SeanROlszewski/muter/blob/master/Docs/mutation_operators.md). 
 
 **NOTE**: Muter does all of its work on a complete copy of your codebase, so it's not possible for it to accidentally leave anything behind.
 
 ### Mutation Score
-A **mutation score** is provided at the end of every run of Muter. The score is the ratio of the number of mutants your test suite caught versus the total number of mutants introduced.
+A **mutation score** is provided at the end of every run of Muter. The score is the ratio of the number of mutants your test suite killed versus the total number of mutants introduced.
 
 `mutation score = number of mutants killed / total number of mutants`
 
-For example, if your test suite caught 50 mutants of the 75 introduced by Muter, your score would be 66. A well-engineered test suite should strive to be as close to 100 as possible.
+For example, if your test suite killrf 50 mutants of the 75 introduced by Muter, your score would be 67%. A well-engineered test suite should strive to be as close to 100% as possible.
 
 Muter not only provides a mutation score for your entire test suite, but it also generates individual scores for the files it has mutated.
 
@@ -102,7 +102,7 @@ Check out the `muter.conf.json` in the root directory of this repository for ano
 
 
 ## Running Muter
-Running Muter is easy. Once you've created your configuration file simply run `muter` in your terminal from any directory of the project you're mutation testing. Muter will take it from there. 
+Running Muter is easy. Once you've created your configuration file, simply run `muter` in your terminal from any directory of the project you're mutation testing. Muter will take it from there. 
 
 ## Limitations
 - Muter assumes you always put spaces around your operators. For example, it expects an equality check to look like
@@ -116,21 +116,21 @@ Running Muter is easy. Once you've created your configuration file simply run `m
 
 ## Best Practices
 - Commit your `muter.conf.json`
-- Disable or relax linting rules that would cause a build error as a consequence of a code change not matching your project 's style. Muter operates on your source code then rebuilds it, and the change it introduces could trigger your linter if it's part of your build process.
+- Disable or relax linting rules that would cause a build error as a consequence of a code change not matching your project's style. Muter operates on your source code and then rebuilds it, and the change it introduces could trigger your linter if it's part of your build process.
 - Running Muter can be a lengthy process, so be sure to allocate enough time for the test to finish.
 - Because Muter can take a while to run, it is recommend to exclude UI or journey tests from your test suite. We recommend creating a separate schemes or targets for mutation testing. However, you should feel free to run these kinds of tests if you're okay with the longer feedback cycle.
-- Don’t be dogmatic about your mutation score - in practice, 100/100 is often times not possible.
+- Don’t be dogmatic about your mutation score - in practice, 100% is not always possible.
 
 ## FAQ
 **What platforms does Muter support?**
 
 Muter supports any platform that compiles and tests using `xcodebuild`, which includes iOS, macOS, tvOS, and watchOS. 
 
-Muter can only run on macOS 10.13 or higher.
+Muter can run only on macOS 10.13 or higher.
 
 **Does Muter support UI test suites?**
 
-Yes! However, these can be very lengthy test suites, and mutation testing can take a long time. I recommend you start using Muter only on your unit tests. Once you have a feel for interpreting mutation scores, you can then ease into incorporating your longer running tests.
+Yes! However, these can be very lengthy test suites, and mutation testing can take a long time. I recommend you start using Muter only on your unit tests. Once you have a feel for interpreting mutation scores, you can then ease into incorporating your longer-running tests.
 
 **Does Muter support Objective-C?**
 
