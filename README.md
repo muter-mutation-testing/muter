@@ -105,7 +105,7 @@ Setting up Muter to run within Xcode is simple. After creating your configuation
 
 1) **Create a new Aggregate Build Target** in the Xcode project of the codebase you're mutation testing. We suggest calling it "Mutation Test"
 2) **Add a run script step** to the newly created aggregate build target.
-3) **Add the Muter xcode command** to the build step:
+3) **Add the Muter Xcode command** to the build step:
 
     ```muter --output-xcode```
 
