@@ -11,29 +11,6 @@ public struct MutationOperator: CustomStringConvertible {
         return id.description(for: source, at: position)
     }
 
-    public enum Id: String, Codable {
-        case negateConditionals = "Negate Conditionals"
-        case removeSideEffects = "Remove Side Effects"
-
-        static let rewriterPairs: [Id: RewriterInitializer] = [
-            .removeSideEffects: RemoveSideEffectsOperator.Rewriter.init,
-            .negateConditionals: NegateConditionalsOperator.Rewriter.init
-        ]
-
-        func transformation(for position: AbsolutePosition) -> SourceCodeTransformation {
-            return { source in
-                let visitor = Id.rewriterPairs[self]!(position)
-                return visitor.visit(source)
-            }
-        }
-
-        func description(for syntax: Syntax, at position: AbsolutePosition) -> String {
-            let rewriter = Id.rewriterPairs[self]!(position)
-            _ = rewriter.visit(syntax)
-            return rewriter.description
-        }
-    }
-
     let id: Id
     let filePath: String
     let position: AbsolutePosition
@@ -50,6 +27,35 @@ public struct MutationOperator: CustomStringConvertible {
 
     func apply() -> Syntax {
         return transformation(source)
+    }
+}
+
+extension MutationOperator {
+    public enum Id: String, Codable, CaseIterable {
+        case negateConditionals = "Negate Conditionals"
+        case removeSideEffects = "Remove Side Effects"
+        
+        var rewriterVisitorPair: (rewriter: RewriterInitializer, visitor: VisitorInitializer) {
+            switch self {
+            case .removeSideEffects:
+               return (rewriter: RemoveSideEffectsOperator.Rewriter.init, visitor: RemoveSideEffectsOperator.Visitor.init)
+            case .negateConditionals:
+                return (rewriter: NegateConditionalsOperator.Rewriter.init, visitor: NegateConditionalsOperator.Visitor.init)
+            }
+        }
+        
+        func transformation(for position: AbsolutePosition) -> SourceCodeTransformation {
+            return { source in
+                let visitor = self.rewriterVisitorPair.rewriter(position)
+                return visitor.visit(source)
+            }
+        }
+        
+        func description(for syntax: Syntax, at position: AbsolutePosition) -> String {
+            let rewriter = self.rewriterVisitorPair.rewriter(position)
+            _ = rewriter.visit(syntax)
+            return rewriter.description
+        }
     }
 }
 

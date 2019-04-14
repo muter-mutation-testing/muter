@@ -13,25 +13,19 @@ func discoverMutationOperators(inFilesAt filePaths: [String]) -> [MutationOperat
     }
 }
 
-private let idVisitorPairs: [MutationIdVisitorPair] = [
-    (id: .removeSideEffects, visitor: RemoveSideEffectsOperator.Visitor.init),
-    (id: .negateConditionals, visitor: NegateConditionalsOperator.Visitor.init)
-]
-
 private func newlyDiscoveredOperators(inFileAt path: String, containing source: SourceFileSyntax) -> [MutationOperator] {
-    return idVisitorPairs.accumulate(into: []) { newOperators, values in
+    return MutationOperator.Id.allCases.accumulate(into: []) { newOperators, mutationOperatorId in
 
-        let id = values.id
-        let visitor = values.visitor()
+        let visitor = mutationOperatorId.rewriterVisitorPair.visitor()
         visitor.visit(source)
 
         return newOperators + visitor.positionsOfToken.map { position in
 
-            return MutationOperator(id: id,
+            return MutationOperator(id: mutationOperatorId,
                                     filePath: path,
                                     position: position,
                                     source: source,
-                                    transformation: id.transformation(for: position))
+                                    transformation: mutationOperatorId.transformation(for: position))
 
         }
     }
