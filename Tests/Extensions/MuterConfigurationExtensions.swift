@@ -2,7 +2,7 @@
 import Foundation
 
 public extension MuterConfiguration {
-    public static func fromFixture(at path: String) -> MuterConfiguration? {
+    static func fromFixture(at path: String) -> MuterConfiguration? {
 
         guard let data = FileManager.default.contents(atPath: path),
             let configuration = try? JSONDecoder().decode(MuterConfiguration.self, from: data) else {

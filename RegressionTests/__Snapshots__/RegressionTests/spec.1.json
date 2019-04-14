@@ -81,20 +81,20 @@
     {
       "appliedOperators" : [
         {
-          "id" : "Remove Side Effects",
-          "position" : {
-            "column" : 26,
-            "line" : 101,
-            "utf8Offset" : 4310
-          },
-          "testSuiteOutcome" : "passed"
-        },
-        {
           "id" : "Negate Conditionals",
           "position" : {
             "column" : 38,
             "line" : 87,
             "utf8Offset" : 3525
+          },
+          "testSuiteOutcome" : "passed"
+        },
+        {
+          "id" : "Remove Side Effects",
+          "position" : {
+            "column" : 26,
+            "line" : 101,
+            "utf8Offset" : 4310
           },
           "testSuiteOutcome" : "passed"
         }
@@ -177,20 +177,20 @@
     {
       "appliedOperators" : [
         {
-          "id" : "Remove Side Effects",
-          "position" : {
-            "column" : 10,
-            "line" : 207,
-            "utf8Offset" : 8068
-          },
-          "testSuiteOutcome" : "passed"
-        },
-        {
           "id" : "Negate Conditionals",
           "position" : {
             "column" : 38,
             "line" : 84,
             "utf8Offset" : 3301
+          },
+          "testSuiteOutcome" : "passed"
+        },
+        {
+          "id" : "Remove Side Effects",
+          "position" : {
+            "column" : 10,
+            "line" : 207,
+            "utf8Offset" : 8068
           },
           "testSuiteOutcome" : "passed"
         }
@@ -200,6 +200,15 @@
     },
     {
       "appliedOperators" : [
+        {
+          "id" : "Negate Conditionals",
+          "position" : {
+            "column" : 23,
+            "line" : 176,
+            "utf8Offset" : 6184
+          },
+          "testSuiteOutcome" : "passed"
+        },
         {
           "id" : "Remove Side Effects",
           "position" : {
@@ -242,15 +251,6 @@
             "column" : 25,
             "line" : 146,
             "utf8Offset" : 4914
-          },
-          "testSuiteOutcome" : "passed"
-        },
-        {
-          "id" : "Negate Conditionals",
-          "position" : {
-            "column" : 23,
-            "line" : 176,
-            "utf8Offset" : 6184
           },
           "testSuiteOutcome" : "passed"
         },
