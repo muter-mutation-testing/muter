@@ -123,15 +123,21 @@ class NegateConditionalsOperatorSpec: QuickSpec {
                     expect(rewriter.description).to(equal("changed > to <"))
                 }
             }
-
+            
             describe("MutationOperator.Id.negateConditionals.transformation") {
+                let line3Column19 = AbsolutePosition(line: 3, column: 19, utf8Offset: 76)
+                sourceWithConditionalLogic = sourceCode(fromFileAt: "\(self.fixturesDirectory)/sample.swift")!
+                let expectedSource = sourceCode(fromFileAt: "\(self.mutationExamplesDirectory)/NegateConditionals/equalityOperator.swift")!
+                let transformation = MutationOperator.Id.negateConditionals.transformation(for: line3Column19)
+                
+                let (actualMutatedSource, actualDescription) = transformation(sourceWithConditionalLogic)
+                
                 it("behaves like a NegateConditionalsOperator.Rewriter") {
-                    let line3Column19 = AbsolutePosition(line: 3, column: 19, utf8Offset: 76)
-                    let expectedSource = sourceCode(fromFileAt: "\(self.mutationExamplesDirectory)/NegateConditionals/equalityOperator.swift")!
-
-                    let transformation = MutationOperator.Id.negateConditionals.transformation(for: line3Column19)
-
-                    expect(transformation(sourceWithConditionalLogic).description).to(equal(expectedSource.description))
+                    expect(actualMutatedSource.description).to(equal(expectedSource.description))
+                }
+                
+                it("provides a description of the operator that was applied") {
+                    expect(actualDescription).to(equal("changed == to !="))
                 }
             }
         }

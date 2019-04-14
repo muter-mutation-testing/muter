@@ -1,15 +1,11 @@
 import SwiftSyntax
 
-typealias SourceCodeTransformation = (Syntax) -> Syntax
+typealias SourceCodeTransformation = (Syntax) -> (mutatedSource: Syntax, description: String)
 typealias MutationIdVisitorPair = (id: MutationOperator.Id, visitor: VisitorInitializer)
 typealias RewriterInitializer = (AbsolutePosition) -> PositionSpecificRewriter
 typealias VisitorInitializer = () -> PositionDiscoveringVisitor
 
-public struct MutationOperator: CustomStringConvertible {
-
-    public var description: String {
-        return id.description(for: source, at: position)
-    }
+public struct MutationOperator {
 
     let id: Id
     let filePath: String
@@ -25,7 +21,7 @@ public struct MutationOperator: CustomStringConvertible {
         self.transformation = transformation
     }
 
-    func apply() -> Syntax {
+    func apply() -> (mutatedSource: Syntax, description: String) {
         return transformation(source)
     }
 }
@@ -47,14 +43,12 @@ extension MutationOperator {
         func transformation(for position: AbsolutePosition) -> SourceCodeTransformation {
             return { source in
                 let visitor = self.rewriterVisitorPair.rewriter(position)
-                return visitor.visit(source)
+                let mutatedSource = visitor.visit(source)
+                return (
+                    mutatedSource: mutatedSource,
+                    description: visitor.description
+                )
             }
-        }
-        
-        func description(for syntax: Syntax, at position: AbsolutePosition) -> String {
-            let rewriter = self.rewriterVisitorPair.rewriter(position)
-            _ = rewriter.visit(syntax)
-            return rewriter.description
         }
     }
 }

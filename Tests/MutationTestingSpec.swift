@@ -15,7 +15,7 @@ class MutationTestingSpec: QuickSpec {
                 mutationOperatorStub = MutationOperator(id: .negateConditionals,
                                                         filePath: "a file path",
                                                         position: .firstPosition,
-                                                        source: SyntaxFactory.makeReturnKeyword()) { return $0 }
+                                                        source: SyntaxFactory.makeReturnKeyword()) { return ($0, "empty description") }
             }
 
             context("when the baseline test run passes") {
@@ -30,12 +30,12 @@ class MutationTestingSpec: QuickSpec {
                                             appliedMutation: .negateConditionals,
                                             filePath: "a file path",
                                             position: .firstPosition,
-                                            operatorDescription: ""),
+                                            operatorDescription: "empty description"),
                         MutationTestOutcome(testSuiteOutcome: .failed,
                                             appliedMutation: .negateConditionals,
                                             filePath: "a file path",
                                             position: .firstPosition,
-                                            operatorDescription: ""),
+                                            operatorDescription: "empty description"),
                     ]
 
                     let actualTestOutcomes = performMutationTesting(using: [mutationOperatorStub, mutationOperatorStub], delegate: delegateSpy)
@@ -184,27 +184,27 @@ class MutationTestingSpec: QuickSpec {
                                             appliedMutation: .negateConditionals,
                                             filePath: "a file path",
                                             position: .firstPosition,
-                                            operatorDescription: ""),
+                                            operatorDescription: "empty description"),
                         MutationTestOutcome(testSuiteOutcome: .buildError,
                                             appliedMutation: .negateConditionals,
                                             filePath: "a file path",
                                             position: .firstPosition,
-                                            operatorDescription: ""),
+                                            operatorDescription: "empty description"),
                         MutationTestOutcome(testSuiteOutcome: .buildError,
                                             appliedMutation: .negateConditionals,
                                             filePath: "a file path",
                                             position: .firstPosition,
-                                            operatorDescription: ""),
+                                            operatorDescription: "empty description"),
                         MutationTestOutcome(testSuiteOutcome: .buildError,
                                             appliedMutation: .negateConditionals,
                                             filePath: "a file path",
                                             position: .firstPosition,
-                                            operatorDescription: ""),
+                                            operatorDescription: "empty description"),
                         MutationTestOutcome(testSuiteOutcome: .failed,
                                             appliedMutation: .negateConditionals,
                                             filePath: "a file path",
                                             position: .firstPosition,
-                                            operatorDescription: ""),
+                                            operatorDescription: "empty description"),
                     ]
 
                     let actualTestOutcomes = performMutationTesting(using: Array(repeating: mutationOperatorStub, count: 5), delegate: delegateSpy)

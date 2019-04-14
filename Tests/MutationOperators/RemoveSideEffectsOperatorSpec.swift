@@ -92,16 +92,21 @@ class RemoveSideEffectsOperatorSpec: QuickSpec {
                 expect(results.rewriter.description.trimmed) == "removed line"
             }
         }
-
-        describe("MutationOperator.Id.sideEffects.transformation") {
-            it("behaves like a SideEffectsOperator.Rewriter") {
-                let sourceWithSideEffects = sourceCode(fromFileAt: "\(self.fixturesDirectory)/MutationExamples/SideEffect/unusedReturnResult.swift")!
-                let expectedSource = sourceCode(fromFileAt:  "\(self.fixturesDirectory)/MutationExamples/SideEffect/removedVoidFunctionCall_line21.swift")!
-                let line21 = AbsolutePosition(line: 21, column: -1, utf8Offset: -1)
-
-                let transformation = MutationOperator.Id.removeSideEffects.transformation(for: line21)
-
-                expect(transformation(sourceWithSideEffects).description).to(equal(expectedSource.description))
+        
+        describe("MutationOperator.Id.removeSideEffects.transformation") {
+            let sourceWithSideEffects = sourceCode(fromFileAt: "\(self.fixturesDirectory)/MutationExamples/SideEffect/unusedReturnResult.swift")!
+            let expectedSource = sourceCode(fromFileAt:  "\(self.fixturesDirectory)/MutationExamples/SideEffect/removedVoidFunctionCall_line21.swift")!
+            let line21 = AbsolutePosition(line: 21, column: -1, utf8Offset: -1)
+            let transformation = MutationOperator.Id.removeSideEffects.transformation(for: line21)
+            
+            let (actualMutatedSource, actualDescription) = transformation(sourceWithSideEffects)
+            
+            it("behaves like a RemoveSideEffectsOperator.Rewriter") {
+                expect(actualMutatedSource.description).to(equal(expectedSource.description))
+            }
+            
+            it("provides a description of the operator that was applied") {
+                expect(actualDescription).to(equal("removed line"))
             }
         }
     }
