@@ -21,7 +21,7 @@ class RemoveSideEffectsOperatorSpec: QuickSpec {
 
         describe("RemoveSideEffectsOperator.Visitor") {
             it("records the positions of code that causes a side effect") {
-                let sourceWithSideEffects = sourceCode(fromFileAt: "\(self.fixturesDirectory)/MutationExamples/SideEffect/unusedReturnResult.swift")!
+                let sourceWithSideEffects = sourceCode(fromFileAt: "\(self.fixturesDirectory)/MutationExamples/SideEffect/sampleWithSideEffects.swift")!
 
                 let visitor = RemoveSideEffectsOperator.Visitor()
                 visitor.visit(sourceWithSideEffects)
@@ -38,7 +38,7 @@ class RemoveSideEffectsOperatorSpec: QuickSpec {
             }
 
             it("records no positions when a file doesn't contain code that causes a side effect") {
-                let sourceWithoutSideEffects = sourceCode(fromFileAt: "\(self.fixturesDirectory)/sample.swift")!
+                let sourceWithoutSideEffects = sourceCode(fromFileAt: "\(self.mutationExamplesDirectory)/NegateConditionals/sampleWithConditionalOperators.swift")!
 
                 let visitor = RemoveSideEffectsOperator.Visitor()
                 visitor.visit(sourceWithoutSideEffects)
@@ -49,7 +49,7 @@ class RemoveSideEffectsOperatorSpec: QuickSpec {
 
         describe("RemoveSideEffectsOperator.Rewriter") {
             it("deletes a statement with an explicitly discarded result") {
-                let path = "\(self.fixturesDirectory)/MutationExamples/SideEffect/unusedReturnResult.swift"
+                let path = "\(self.fixturesDirectory)/MutationExamples/SideEffect/sampleWithSideEffects.swift"
 
                 let firstExpectedSource = "\(self.mutationExamplesDirectory)/SideEffect/removedUnusedReturnResult_line3.swift"
                 let secondExpectedSource = "\(self.mutationExamplesDirectory)/SideEffect/removedUnusedReturnResult_line10.swift"
@@ -71,7 +71,7 @@ class RemoveSideEffectsOperatorSpec: QuickSpec {
             }
 
             it("deletes a void function call that spans 1 line") {
-                let path = "\(self.fixturesDirectory)/MutationExamples/SideEffect/unusedReturnResult.swift"
+                let path = "\(self.fixturesDirectory)/MutationExamples/SideEffect/sampleWithSideEffects.swift"
                 let expectedSourcePath = "\(self.fixturesDirectory)/MutationExamples/SideEffect/removedVoidFunctionCall_line21.swift"
                 let line21 = AbsolutePosition(line: 21, column: -1, utf8Offset: -1)
 
@@ -82,7 +82,7 @@ class RemoveSideEffectsOperatorSpec: QuickSpec {
             }
 
             it("deletes a void function call that spans multiple lines") {
-                let path = "\(self.fixturesDirectory)/MutationExamples/SideEffect/unusedReturnResult.swift"
+                let path = "\(self.fixturesDirectory)/MutationExamples/SideEffect/sampleWithSideEffects.swift"
                 let expectedSourcePath = "\(self.fixturesDirectory)/MutationExamples/SideEffect/removedVoidFunctionCall_line36.swift"
                 let line38 = AbsolutePosition(line: 38, column: -1, utf8Offset: -1)
 
@@ -94,7 +94,7 @@ class RemoveSideEffectsOperatorSpec: QuickSpec {
         }
         
         describe("MutationOperator.Id.removeSideEffects.transformation") {
-            let sourceWithSideEffects = sourceCode(fromFileAt: "\(self.fixturesDirectory)/MutationExamples/SideEffect/unusedReturnResult.swift")!
+            let sourceWithSideEffects = sourceCode(fromFileAt: "\(self.fixturesDirectory)/MutationExamples/SideEffect/sampleWithSideEffects.swift")!
             let expectedSource = sourceCode(fromFileAt:  "\(self.fixturesDirectory)/MutationExamples/SideEffect/removedVoidFunctionCall_line21.swift")!
             let line21 = AbsolutePosition(line: 21, column: -1, utf8Offset: -1)
             let transformation = MutationOperator.Id.removeSideEffects.transformation(for: line21)

@@ -11,7 +11,7 @@ class NegateConditionalsOperatorSpec: QuickSpec {
             var sourceWithoutMuteableCode: SourceFileSyntax!
 
             beforeEach {
-                sourceWithConditionalLogic = sourceCode(fromFileAt: "\(self.fixturesDirectory)/sample.swift")!
+                sourceWithConditionalLogic = sourceCode(fromFileAt: "\(self.mutationExamplesDirectory)/NegateConditionals/sampleWithConditionalOperators.swift")!
                 sourceWithoutMuteableCode = sourceCode(fromFileAt: "\(self.fixturesDirectory)/sourceWithoutMuteableCode.swift")!
             }
 
@@ -126,7 +126,7 @@ class NegateConditionalsOperatorSpec: QuickSpec {
             
             describe("MutationOperator.Id.negateConditionals.transformation") {
                 let line3Column19 = AbsolutePosition(line: 3, column: 19, utf8Offset: 76)
-                sourceWithConditionalLogic = sourceCode(fromFileAt: "\(self.fixturesDirectory)/sample.swift")!
+                sourceWithConditionalLogic = sourceCode(fromFileAt: "\(self.mutationExamplesDirectory)/NegateConditionals/sampleWithConditionalOperators.swift")!
                 let expectedSource = sourceCode(fromFileAt: "\(self.mutationExamplesDirectory)/NegateConditionals/equalityOperator.swift")!
                 let transformation = MutationOperator.Id.negateConditionals.transformation(for: line3Column19)
                 
