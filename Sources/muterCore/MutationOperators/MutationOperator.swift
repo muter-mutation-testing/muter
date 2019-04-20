@@ -30,6 +30,7 @@ extension MutationOperator {
     public enum Id: String, Codable, CaseIterable {
         case negateConditionals = "Negate Conditionals"
         case removeSideEffects = "Remove Side Effects"
+        case logicalOperator = "Logical Operator"
         
         var rewriterVisitorPair: (rewriter: RewriterInitializer, visitor: VisitorInitializer) {
             switch self {
@@ -37,6 +38,8 @@ extension MutationOperator {
                return (rewriter: RemoveSideEffectsOperator.Rewriter.init, visitor: RemoveSideEffectsOperator.Visitor.init)
             case .negateConditionals:
                 return (rewriter: NegateConditionalsOperator.Rewriter.init, visitor: NegateConditionalsOperator.Visitor.init)
+            case .logicalOperator:
+                return (rewriter: LogicalOperatorOperator.Rewriter.init, visitor: LogicalOperatorOperator.Visitor.init)
             }
         }
         

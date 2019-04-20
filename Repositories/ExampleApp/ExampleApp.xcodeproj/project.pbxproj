@@ -6,6 +6,20 @@
 	objectVersion = 50;
 	objects = {
 
+/* Begin PBXAggregateTarget section */
+		9DAD784C225E482400E11AE6 /* Mutation Test */ = {
+			isa = PBXAggregateTarget;
+			buildConfigurationList = 9DAD784F225E482400E11AE6 /* Build configuration list for PBXAggregateTarget "Mutation Test" */;
+			buildPhases = (
+				9DAD7850225E482900E11AE6 /* ShellScript */,
+			);
+			dependencies = (
+			);
+			name = "Mutation Test";
+			productName = "Mutation Test";
+		};
+/* End PBXAggregateTarget section */
+
 /* Begin PBXBuildFile section */
 		9D13CAC8218FC9F800DB1FDA /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9D13CAC7218FC9F800DB1FDA /* AppDelegate.swift */; };
 		9D13CACA218FC9F800DB1FDA /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9D13CAC9218FC9F800DB1FDA /* ViewController.swift */; };
@@ -149,6 +163,9 @@
 					9D13CAD7218FC9FA00DB1FDA = {
 						CreatedOnToolsVersion = 10.0;
 					};
+					9DAD784C225E482400E11AE6 = {
+						CreatedOnToolsVersion = 10.2;
+					};
 				};
 			};
 			buildConfigurationList = 9D13CABF218FC9F800DB1FDA /* Build configuration list for PBXProject "ExampleApp" */;
@@ -166,6 +183,7 @@
 			targets = (
 				9D13CAC3218FC9F800DB1FDA /* ExampleApp */,
 				9D13CAD7218FC9FA00DB1FDA /* ExampleAppTests */,
+				9DAD784C225E482400E11AE6 /* Mutation Test */,
 			);
 		};
 /* End PBXProject section */
@@ -189,6 +207,26 @@
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXResourcesBuildPhase section */
+
+/* Begin PBXShellScriptBuildPhase section */
+		9DAD7850225E482900E11AE6 /* ShellScript */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+			);
+			outputFileListPaths = (
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "# Type a script or drag a script file from your workspace to insert its path.\nmuter --output-xcode\n";
+		};
+/* End PBXShellScriptBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
 		9D13CAC0218FC9F800DB1FDA /* Sources */ = {
@@ -424,6 +462,22 @@
 			};
 			name = Release;
 		};
+		9DAD784D225E482400E11AE6 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_STYLE = Automatic;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+			};
+			name = Debug;
+		};
+		9DAD784E225E482400E11AE6 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_STYLE = Automatic;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+			};
+			name = Release;
+		};
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
@@ -450,6 +504,15 @@
 			buildConfigurations = (
 				9D13CAF0218FC9FA00DB1FDA /* Debug */,
 				9D13CAF1218FC9FA00DB1FDA /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		9DAD784F225E482400E11AE6 /* Build configuration list for PBXAggregateTarget "Mutation Test" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				9DAD784D225E482400E11AE6 /* Debug */,
+				9DAD784E225E482400E11AE6 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;

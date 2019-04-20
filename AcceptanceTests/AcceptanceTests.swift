@@ -11,10 +11,10 @@ class AcceptanceTests: QuickSpec {
     
     override func spec() {
         
-        describe("someone using Muter for mutation testing", flags: [:]) {
+        describe("someone using Muter for mutation testing") {
             
             let messages = (
-                mutationScoreOfTestSuite: "Mutation Score of Test Suite: 40%",
+                mutationScoreOfTestSuite: "Mutation Score of Test Suite: 57%",
                 mutationScoresHeader: """
                         --------------------
                         Mutation Test Scores
@@ -51,7 +51,7 @@ class AcceptanceTests: QuickSpec {
                         }
                         
                         they("see how many mutation operators it's able to perform") {
-                            expect(output.contains("In total, Muter applied 5 mutation operators.")).to(beTrue())
+                            expect(output.contains("In total, Muter applied 7 mutation operators.")).to(beTrue())
                         }
                         
                         they("see the mutation scores for their test suite") {

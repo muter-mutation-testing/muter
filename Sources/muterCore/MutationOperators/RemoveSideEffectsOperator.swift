@@ -3,7 +3,7 @@ import Foundation
 
 enum RemoveSideEffectsOperator {
     class Visitor: SyntaxVisitor, PositionDiscoveringVisitor {
-        private(set) var positionsOfToken = [AbsolutePosition]()
+        var positionsOfToken = [AbsolutePosition]()
 
         override func visit(_ node: FunctionDeclSyntax) {
             guard let body = node.body else {

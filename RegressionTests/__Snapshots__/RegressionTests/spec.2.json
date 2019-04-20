@@ -28,6 +28,15 @@
             "utf8Offset" : 2282
           },
           "testSuiteOutcome" : "runtimeError"
+        },
+        {
+          "id" : "Logical Operator",
+          "position" : {
+            "column" : 30,
+            "line" : 64,
+            "utf8Offset" : 2082
+          },
+          "testSuiteOutcome" : "runtimeError"
         }
       ],
       "fileName" : "FFCParserCombinator.swift",
@@ -104,6 +113,6 @@
     }
   ],
   "globalMutationScore" : 100,
-  "numberOfKilledMutants" : 10,
-  "totalAppliedMutationOperators" : 10
+  "numberOfKilledMutants" : 11,
+  "totalAppliedMutationOperators" : 11
 }
