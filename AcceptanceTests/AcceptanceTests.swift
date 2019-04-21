@@ -41,7 +41,7 @@ class AcceptanceTests: QuickSpec {
                         }
                         
                         they("see the list of files that Muter discovered") {
-                            expect(output.contains("Discovered 3 Swift files")).to(beTrue())
+                            expect(output.contains("Discovered 4 Swift files")).to(beTrue())
                             expect(self.numberOfDiscoveredFileLists(in: output)).to(beGreaterThanOrEqualTo(1))
                         }
                         
@@ -122,9 +122,22 @@ class AcceptanceTests: QuickSpec {
             }
             
             context("with the 'init' command") {
-                they("have a configuration file created for them") {
-                    let decodedConfiguration = try? JSONDecoder().decode(MuterConfiguration.self, from: self.createdConfiguration)
-                    expect(decodedConfiguration).toNot(beNil())
+                context("ran inside of a directory containing an iOS project") {
+                    they("have a configuration file created for them") {
+                        let decodedConfiguration = try? JSONDecoder().decode(MuterConfiguration.self, from: self.createdIOSConfiguration)
+                        expect(decodedConfiguration?.testCommandExecutable) == "/usr/bin/xcodebuild"
+                        expect(decodedConfiguration?.testCommandArguments).to(contain("-destination"))
+                        expect(decodedConfiguration?.testCommandArguments).to(contain("platform=iOS Simulator,name=iPhone 8"))
+                    }
+                }
+                
+                context("ran inside of a directory containing a macOS project") {
+                    they("have a configuration file created for them") {
+                        let decodedConfiguration: MuterConfiguration? = try? JSONDecoder().decode(MuterConfiguration.self, from: self.createdMacOSConfiguration)
+                        expect(decodedConfiguration?.testCommandExecutable) == "/usr/bin/xcodebuild"
+                        expect(decodedConfiguration?.testCommandArguments).toNot(contain("-destination"))
+                        expect(decodedConfiguration?.testCommandArguments).toNot(contain("platform=iOS Simulator,name=iPhone 8"))
+                    }
                 }
             }
             
@@ -171,9 +184,14 @@ extension AcceptanceTests {
         return contentsOfFileAsString(at: muterAbortedTestingOutputPath)
     }
     
-    var createdConfigurationPath: String { return "\(AcceptanceTests().rootTestDirectory)/created_config.json" }
-    var createdConfiguration: Data {
-        return contentsOfFileAsData(at: createdConfigurationPath)
+    var createdIOSConfigurationPath: String { return "\(AcceptanceTests().rootTestDirectory)/created_iOS_config.json" }
+    var createdIOSConfiguration: Data {
+        return contentsOfFileAsData(at: createdIOSConfigurationPath)
+    }
+
+    var createdMacOSConfigurationPath: String { return "\(AcceptanceTests().rootTestDirectory)/created_macOS_config.json" }
+    var createdMacOSConfiguration: Data {
+        return contentsOfFileAsData(at: createdMacOSConfigurationPath)
     }
     
     var muterHelpOutputPath: String { return "\(AcceptanceTests().rootTestDirectory)/muters_help_output.txt" }

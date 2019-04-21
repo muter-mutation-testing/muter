@@ -10,27 +10,26 @@ public struct InitCommand: CommandProtocol {
     public let function: String = "Creates the configuration file that Muter uses"
 
     private let directory: String
+    private let fileManager: FileManager
     private let notificationCenter: NotificationCenter
 
-    public init(directory: String = FileManager.default.currentDirectoryPath, notificationCenter: NotificationCenter = .default) {
+    public init(directory: String = FileManager.default.currentDirectoryPath,
+                fileManager: FileManager = FileManager.default,
+                notificationCenter: NotificationCenter = .default) {
         self.directory = directory
+        self.fileManager = fileManager
         self.notificationCenter = notificationCenter
     }
 
     public func run(_ options: Options) -> Result<(), ClientError> {
         notificationCenter.post(name: .muterLaunched, object: nil)
 
-        let path = "\(self.directory)/muter.conf.json"
-        let configuration = MuterConfiguration(executable: "absolute path to the executable that runs your tests",
-                                               arguments: ["an argument the test runner needs", "another argument the test runner needs"],
-                                               excludeList: [])
-        let encoder = JSONEncoder()
-        encoder.outputFormatting = [.prettyPrinted, .sortedKeys]
-        let data = try! encoder.encode(configuration)
-
-        FileManager.default.createFile(atPath: path, contents: data, attributes: nil)
-       
-        notificationCenter.post(name: .configurationFileCreated, object: path)
+        let directoryContents = fileManager.subpaths(atPath: self.directory) ?? []
+        fileManager.createFile(atPath: "\(self.directory)/muter.conf.json",
+                               contents: MuterConfiguration(from: directoryContents).asJSONData,
+                               attributes: nil)
+        
+        notificationCenter.post(name: .configurationFileCreated, object: "\(self.directory)/muter.conf.json")
 
         return Result.success(())
     }

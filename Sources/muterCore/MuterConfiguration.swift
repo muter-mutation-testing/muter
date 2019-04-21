@@ -1,3 +1,5 @@
+import Foundation
+
 public struct MuterConfiguration: Equatable, Codable {
     let testCommandArguments: [String]
     let testCommandExecutable: String
@@ -9,7 +11,7 @@ public struct MuterConfiguration: Equatable, Codable {
         case excludeList = "exclude"
     }
 
-    public init(executable: String, arguments: [String], excludeList: [String]) {
+    public init(executable: String, arguments: [String], excludeList: [String] = []) {
         self.testCommandExecutable = executable
         self.testCommandArguments = arguments
         self.excludeList = excludeList
@@ -23,5 +25,14 @@ public struct MuterConfiguration: Equatable, Codable {
 
         let excludeList = try? container.decode([String].self, forKey: .excludeList)
         self.excludeList = excludeList ?? []
+    }
+}
+
+@available(OSX 10.13, *)
+extension MuterConfiguration {
+    var asJSONData: Data {
+        let encoder = JSONEncoder()
+        encoder.outputFormatting = [.prettyPrinted, .sortedKeys]
+        return try! encoder.encode(self)
     }
 }

@@ -1,0 +1,15 @@
+{
+  "arguments" : [
+    "-project",
+    "ExampleApp.xcodeproj",
+    "-scheme",
+    "ExampleApp",
+    "-destination",
+    "platform=iOS Simulator,name=iPhone 8",
+    "test"
+  ],
+  "exclude" : [
+
+  ],
+  "executable" : "\/usr\/bin\/xcodebuild"
+}
