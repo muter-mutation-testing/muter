@@ -142,3 +142,5 @@ AcceptanceTests/created_config.json
 RegressionTests/parsercombinator_regression_test_output.json
 AcceptanceTests/muters_xcode_output.txt
 Repositories/UninitializedApp/muter.conf.json
+AcceptanceTests/created_macOS_config.json
+AcceptanceTests/created_iOS_config.json
