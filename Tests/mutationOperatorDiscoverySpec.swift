@@ -3,7 +3,7 @@ import SwiftSyntax
 import Quick
 import Nimble
 
-class MutationDiscoverySpec: QuickSpec {
+class MutationOperatorDiscoverySpec: QuickSpec {
     override func spec() {
         describe("discoverMutationOperators") {
             it("discovers the mutation operators that can be applied to a Swift file") {
