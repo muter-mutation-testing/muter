@@ -22,6 +22,7 @@ extension Notification.Name {
     static let mutationTestingAborted = Notification.Name("mutationTestingAborted")
 
     static let newMutationTestOutcomeAvailable = Notification.Name("newMutationTestOutcomeAvailable")
+    static let newTestLogAvailable = Notification.Name("newTestLogAvailable")
 
     static let configurationFileCreated = Notification.Name("configurationFileCreated")
 }
@@ -32,6 +33,8 @@ func flushStdOut() {
 
 class RunCommandObserver {
     private let reporter: Reporter
+    private let fileManager: FileSystemManager
+    private let loggingDirectory: String
     private let flushStdOut: () -> Void
     private let notificationCenter: NotificationCenter = .default
     private var notificationHandlerMappings: [(name: Notification.Name, handler: (Notification) -> Void)] {
@@ -50,16 +53,21 @@ class RunCommandObserver {
             (name: .noMutationOperatorsDiscovered, handler: handleNoMutationOperatorsDiscovered),
             
             (name: .mutationTestingStarted, handler: handleMutationTestingStarted),
+
             (name: .newMutationTestOutcomeAvailable, handler: handleNewMutationTestOutcomeAvailable),
+            (name: .newTestLogAvailable, handler: handleNewTestLogAvailable),
+
             (name: .mutationTestingAborted, handler: handleMutationTestingAborted),
             (name: .mutationTestingFinished, handler: handleMutationTestingFinished),
         ]
     }
     
-    init(reporter: Reporter, flushHandler: @escaping () -> Void) {
+    init(reporter: Reporter, fileManager: FileSystemManager, flushHandler: @escaping () -> Void) {
         self.reporter = reporter
+        self.fileManager = fileManager
         self.flushStdOut = flushHandler
-        
+        self.loggingDirectory = createLoggingDirectory(in: fileManager.currentDirectoryPath, fileManager: fileManager)
+
         for (name, handler) in notificationHandlerMappings {
             notificationCenter.addObserver(forName: name, object: nil, queue: nil, using: handler)
         }
@@ -170,6 +178,19 @@ extension RunCommandObserver {
             print(reporter.generateReport(from: [values.outcome]))
             flushStdOut()
         }
+    }
+
+    func handleNewTestLogAvailable(notification: Notification) {
+        guard let (fileName, contents) = notification.object as? (String, String) else {
+            return
+        }
+
+        let path = "\(loggingDirectory)/\(fileName).log"
+        _ = fileManager.createFile(
+            atPath: path,
+            contents: contents.data(using: .utf8),
+            attributes: nil
+        )
     }
 
     func handleMutationTestingAborted(notification: Notification) {

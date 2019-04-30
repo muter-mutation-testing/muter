@@ -19,6 +19,15 @@ func createWorkingDirectory(in directory: String, fileManager: FileSystemManager
     return workingDirectory
 }
 
+// MARK - Logging Directory
+func createLoggingDirectory(in directory: String, fileManager: FileSystemManager = FileManager.default, timestamp: () -> Date = Date.init) -> String {
+    let formatter = DateFormatter()
+    formatter.dateFormat = "dd-MM-HH-mm"
+    let logginDirectory = "\(directory)/muter_logs/\(formatter.string(from: timestamp()))"
+    try! fileManager.createDirectory(atPath: logginDirectory, withIntermediateDirectories: true, attributes: nil)
+    return logginDirectory
+}
+
 // MARK - Swap File Path
 func swapFilePaths(forFilesAt paths: [String], using workingDirectoryPath: String) ->  [String: String] {
     var swapFilePathsByOriginalPath: [String: String] = [:]
