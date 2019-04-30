@@ -42,6 +42,9 @@ struct MutationTestingDelegate: MutationTestingIODelegate {
             testProcessFileHandle.closeFile()
 
             let contents = try String(contentsOf: testLogUrl)
+
+            notificationCenter.post(name: .newTestLogAvailable, object: (testLogUrl.lastPathComponent, contents))
+
             return TestSuiteOutcome.from(testLog: contents)
 
         } catch {

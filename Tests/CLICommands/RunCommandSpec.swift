@@ -16,9 +16,13 @@ class RunCommandSpec: QuickSpec {
                         delegateSpy.configurationToReturn = MuterConfiguration(executable: "not empty",
                                                                                arguments: ["an argument"],
                                                                                excludeList: ["and exclude"])
+                        let fileManagerSpy = FileManagerSpy()
+                        fileManagerSpy.currentDirectoryPathToReturn = "/something/another"
+
                         let command = RunCommand(delegate: delegateSpy,
-                                                 currentDirectory: "/something/another",
+                                                 fileManager: fileManagerSpy,
                                                  notificationCenter: NotificationCenter())
+
                         let options = RunCommandOptions(shouldOutputJSON: false, shouldOutputXcode: false)
                         
                         _ = command.run(options)
@@ -45,8 +49,12 @@ class RunCommandSpec: QuickSpec {
                                                                                arguments: ["an argument"],
                                                                                excludeList: ["and exclude"])
                         let options = RunCommandOptions(shouldOutputJSON: true, shouldOutputXcode: false)
+
+                        let fileManagerSpy = FileManagerSpy()
+                        fileManagerSpy.currentDirectoryPathToReturn = "/something/another"
+
                         let command = RunCommand(delegate: delegateSpy,
-                                                 currentDirectory: "/something/another",
+                                                 fileManager: fileManagerSpy,
                                                  notificationCenter: NotificationCenter())
                         
                         guard case .success = command.run(options) else {
@@ -73,8 +81,12 @@ class RunCommandSpec: QuickSpec {
                                                                                arguments: ["an argument"],
                                                                                excludeList: ["and exclude"])
                         let options = RunCommandOptions(shouldOutputJSON: false, shouldOutputXcode: true)
+
+                        let fileManagerSpy = FileManagerSpy()
+                        fileManagerSpy.currentDirectoryPathToReturn = "/something/another"
+
                         let command = RunCommand(delegate: delegateSpy,
-                                                 currentDirectory: "/something/another",
+                                                 fileManager: fileManagerSpy,
                                                  notificationCenter: NotificationCenter())
                         
                         guard case .success = command.run(options) else {
@@ -101,7 +113,7 @@ class RunCommandSpec: QuickSpec {
                     
                     it("doesn't execute testing") {
                         let command = RunCommand(delegate: delegateSpy,
-                                                 currentDirectory: "/something/another",
+                                                 fileManager: FileManagerSpy(),
                                                  notificationCenter: NotificationCenter())
                         let options = RunCommandOptions(shouldOutputJSON: false, shouldOutputXcode: false)
                         

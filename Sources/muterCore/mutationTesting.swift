@@ -14,6 +14,8 @@ func performMutationTesting(using operators: [MutationOperator], delegate: Mutat
 
 private func apply(_ operators: [MutationOperator], buildErrorsThreshold: Int = 5, delegate: MutationTestingIODelegate, notificationCenter: NotificationCenter = .default) -> [MutationTestOutcome] {
     var outcomes: [MutationTestOutcome] = []
+    outcomes.reserveCapacity(operators.count)
+
     var buildErrors = 0
 
     for (index, `operator`) in operators.enumerated() {
@@ -33,6 +35,7 @@ private func apply(_ operators: [MutationOperator], buildErrorsThreshold: Int = 
                                           filePath: filePath,
                                           position: `operator`.position,
                                           operatorDescription: description)
+
         outcomes.append(outcome)
         
         notificationCenter.post(name: .newMutationTestOutcomeAvailable, object: (

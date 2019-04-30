@@ -22,17 +22,20 @@ public struct RunCommand: CommandProtocol {
     """
 
     private let delegate: RunCommandIODelegate
+    private let fileManager: FileSystemManager
     private let currentDirectory: String
     private let notificationCenter: NotificationCenter
 
-    public init(delegate: RunCommandIODelegate = RunCommandDelegate(), currentDirectory: String = FileManager.default.currentDirectoryPath, notificationCenter: NotificationCenter = .default) {
+    public init(delegate: RunCommandIODelegate = RunCommandDelegate(), fileManager: FileSystemManager = FileManager.default, notificationCenter: NotificationCenter = .default) {
         self.delegate = delegate
-        self.currentDirectory = currentDirectory
+        self.fileManager = fileManager
+        self.currentDirectory = fileManager.currentDirectoryPath
         self.notificationCenter = notificationCenter
     }
 
     public func run(_ options: Options) -> Result<(), ClientError> {
         let _ = RunCommandObserver(reporter: options.reporter,
+                                   fileManager: fileManager,
                                    flushHandler: flushStdOut)
         
         notificationCenter.post(name: .muterLaunched, object: nil)

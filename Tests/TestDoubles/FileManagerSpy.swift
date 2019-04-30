@@ -24,6 +24,13 @@ class FileManagerSpy: Spy, FileSystemManager {
         createsIntermediates.append(createIntermediates)
     }
 
+    func createFile(atPath path: String, contents data: Data?, attributes attr: [FileAttributeKey : Any]?) -> Bool {
+        methodCalls.append(#function)
+        paths.append(path)
+
+        return true
+    }
+
     func url(for directory: FileManager.SearchPathDirectory,
              in domain: FileManager.SearchPathDomainMask,
              appropriateFor url: URL?,
