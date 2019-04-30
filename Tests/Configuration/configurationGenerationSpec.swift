@@ -64,19 +64,40 @@ class ConfigurationGenerationSpec: QuickSpec {
                 }
             }
             
-            context("for project using a Xcode workspace") {
-                it("prevails a configuration to use `xcodebuild -workspace test`") {
-                    let projectDirectoryContents = ["/some/path/ExampleApp.xcworkspace",
-                                                    "/some/path/AppDelegate.swift"]
+            context("for an iOS project using a Xcode workspace") {
+                it("prefills a configuration to use `xcodebuild -workspace -destination test`") {
+                    let projectDirectoryContents = [
+                        "\(self.fixturesDirectory)/XcodeProjectFiles/iOSApp.xcodeproj",
+                        "/some/path/iOSApp.xcworkspace", // does not need to be a real file - just needs to share a name
+                        "/some/path/AppDelegate.swift"
+                    ]
                     
                     let generatedConfiguration = MuterConfiguration(from: projectDirectoryContents)
                     expect(generatedConfiguration) == MuterConfiguration(executable: "/usr/bin/xcodebuild",
                                                                          arguments: ["-workspace",
-                                                                                     "ExampleApp.xcworkspace",
+                                                                                     "iOSApp.xcworkspace",
                                                                                      "-scheme",
-                                                                                     "ExampleApp",
+                                                                                     "iOSApp",
                                                                                      "-destination",
                                                                                      "platform=iOS Simulator,name=iPhone 8",
+                                                                                     "test"])
+                }
+            }
+            
+            context("for a macOS project using a Xcode workspace") {
+                it("prefills a configuration to use `xcodebuild -project test`") {
+                    let projectDirectoryContents = [
+                        "\(self.fixturesDirectory)/XcodeProjectFiles/CocoaApp.xcodeproj",
+                        "/some/path/CocoaApp.xcworkspace", // does not need to be a real file - just needs to share a name
+                        "/some/path/AppDelegate.swift",
+                    ]
+                    
+                    let generatedConfiguration = MuterConfiguration(from: projectDirectoryContents)
+                    expect(generatedConfiguration) == MuterConfiguration(executable: "/usr/bin/xcodebuild",
+                                                                         arguments: ["-workspace",
+                                                                                     "CocoaApp.xcworkspace",
+                                                                                     "-scheme",
+                                                                                     "CocoaApp",
                                                                                      "test"])
                 }
             }

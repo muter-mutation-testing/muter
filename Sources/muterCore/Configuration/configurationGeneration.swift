@@ -20,8 +20,9 @@ extension MuterConfiguration {
 private extension MuterConfiguration {
     
     static func generateXcodeProjectConfiguration(from directoryContents: [URL]) -> MuterConfiguration? {
-        guard let index = directoryContents.firstIndex(where: { $0.lastPathComponent.contains(".xcodeproj") }),
-            let arguments = arguments(forProjectFileAt: directoryContents[index]) else {
+        guard !directoryContainsXcodeWorkspace(directoryContents),
+            let index = directoryContents.firstIndex(where: { $0.lastPathComponent.contains(".xcodeproj") }),
+            let arguments = arguments(forProjectFileAt: directoryContents[index], isWorkSpace: false) else {
             return nil
         }
         
@@ -29,16 +30,32 @@ private extension MuterConfiguration {
                                   arguments: arguments)
     }
     
-    static func arguments(forProjectFileAt url: URL) -> [String]? {
-        guard let projectFile = try? String(contentsOf: url.appendingPathComponent("project.pbxproj"), encoding: .utf8) else {
+    static func generateXcodeWorkspaceConfiguration(from directoryContents: [URL]) -> MuterConfiguration? {
+        guard directoryContainsXcodeWorkspace(directoryContents),
+            let index = directoryContents.firstIndex(where: { $0.lastPathComponent.contains(".xcodeproj") }),
+            let arguments = arguments(forProjectFileAt: directoryContents[index], isWorkSpace: true) else {
+            return nil
+        }
+        
+        return MuterConfiguration(executable: "/usr/bin/xcodebuild",
+                                  arguments: arguments)
+    }
+    
+    static func directoryContainsXcodeWorkspace(_ directoryContents: [URL]) -> Bool {
+        return directoryContents.firstIndex(where: { $0.lastPathComponent.contains(".xcworkspace") }) != nil
+    }
+    
+    static func arguments(forProjectFileAt url: URL, isWorkSpace: Bool) -> [String]? {
+        guard let projectFile = try? String(contentsOf: url.appendingPathComponent("project.pbxproj"), encoding: .utf8),
+            let projectName = url.lastPathComponent.split(separator: ".").first else {
             return nil
         }
         
         let defaultArguments = [
-            "-project",
-            "\(url.lastPathComponent)",
+            isWorkSpace ? "-workspace" : "-project",
+            isWorkSpace ? "\(projectName).xcworkspace" : "\(projectName).xcodeproj",
             "-scheme",
-            "\(url.lastPathComponent.split(separator: ".").first!)"
+            "\(projectName)"
         ]
         
         let destination = projectFile.contains("SDKROOT = iphoneos") ?
@@ -47,25 +64,9 @@ private extension MuterConfiguration {
         
         return defaultArguments + destination + ["test"]
     }
-    
-    static func generateXcodeWorkspaceConfiguration(from directoryContents: [URL]) -> MuterConfiguration? {
-        guard let index = directoryContents.firstIndex(where: { $0.lastPathComponent.contains(".xcworkspace") }) else {
-            return nil
-        }
-        
-        let fileUrl = directoryContents[index]
-        return MuterConfiguration(executable: "/usr/bin/xcodebuild",
-                                  arguments: [
-                                    "-workspace",
-                                    "\(fileUrl.lastPathComponent)",
-                                    "-scheme",
-                                    "\(fileUrl.lastPathComponent.split(separator: ".").first!)",
-                                    "-destination",
-                                    "platform=iOS Simulator,name=iPhone 8",
-                                    "test"
-                                  ],
-                                  excludeList: [])
-    }
+}
+
+private extension MuterConfiguration {
     
     static func generateSPMConfiguration(from directoryContents: [URL]) -> MuterConfiguration? {
         if directoryContents.contains(where: { $0.lastPathComponent == "Package.swift" }) {
