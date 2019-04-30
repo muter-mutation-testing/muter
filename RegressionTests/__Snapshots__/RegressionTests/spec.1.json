@@ -3,6 +3,57 @@
     {
       "appliedOperators" : [
         {
+          "id" : "Logical Operator",
+          "position" : {
+            "column" : 17,
+            "line" : 39,
+            "utf8Offset" : 702
+          },
+          "testSuiteOutcome" : "passed"
+        },
+        {
+          "id" : "Logical Operator",
+          "position" : {
+            "column" : 29,
+            "line" : 39,
+            "utf8Offset" : 714
+          },
+          "testSuiteOutcome" : "passed"
+        },
+        {
+          "id" : "Logical Operator",
+          "position" : {
+            "column" : 17,
+            "line" : 68,
+            "utf8Offset" : 2000
+          },
+          "testSuiteOutcome" : "passed"
+        }
+      ],
+      "fileName" : "Compatibility.swift",
+      "mutationScore" : 0
+    },
+    {
+      "appliedOperators" : [
+        {
+          "id" : "Logical Operator",
+          "position" : {
+            "column" : 13,
+            "line" : 16,
+            "utf8Offset" : 255
+          },
+          "testSuiteOutcome" : "passed"
+        },
+        {
+          "id" : "Logical Operator",
+          "position" : {
+            "column" : 25,
+            "line" : 16,
+            "utf8Offset" : 267
+          },
+          "testSuiteOutcome" : "buildError"
+        },
+        {
           "id" : "Remove Side Effects",
           "position" : {
             "column" : 41,
@@ -17,6 +68,24 @@
     },
     {
       "appliedOperators" : [
+        {
+          "id" : "Logical Operator",
+          "position" : {
+            "column" : 13,
+            "line" : 16,
+            "utf8Offset" : 244
+          },
+          "testSuiteOutcome" : "passed"
+        },
+        {
+          "id" : "Logical Operator",
+          "position" : {
+            "column" : 25,
+            "line" : 16,
+            "utf8Offset" : 256
+          },
+          "testSuiteOutcome" : "buildError"
+        },
         {
           "id" : "Negate Conditionals",
           "position" : {
@@ -46,10 +115,271 @@
         }
       ],
       "fileName" : "FontFeatures.swift",
-      "mutationScore" : 100
+      "mutationScore" : 75
     },
     {
       "appliedOperators" : [
+        {
+          "id" : "Logical Operator",
+          "position" : {
+            "column" : 13,
+            "line" : 10,
+            "utf8Offset" : 187
+          },
+          "testSuiteOutcome" : "passed"
+        },
+        {
+          "id" : "Logical Operator",
+          "position" : {
+            "column" : 25,
+            "line" : 10,
+            "utf8Offset" : 199
+          },
+          "testSuiteOutcome" : "buildError"
+        }
+      ],
+      "fileName" : "FontInspector.swift",
+      "mutationScore" : 0
+    },
+    {
+      "appliedOperators" : [
+        {
+          "id" : "Logical Operator",
+          "position" : {
+            "column" : 13,
+            "line" : 11,
+            "utf8Offset" : 171
+          },
+          "testSuiteOutcome" : "passed"
+        },
+        {
+          "id" : "Logical Operator",
+          "position" : {
+            "column" : 28,
+            "line" : 11,
+            "utf8Offset" : 186
+          },
+          "testSuiteOutcome" : "passed"
+        }
+      ],
+      "fileName" : "MutableCopying.swift",
+      "mutationScore" : 0
+    },
+    {
+      "appliedOperators" : [
+        {
+          "id" : "Logical Operator",
+          "position" : {
+            "column" : 29,
+            "line" : 37,
+            "utf8Offset" : 1211
+          },
+          "testSuiteOutcome" : "passed"
+        },
+        {
+          "id" : "Logical Operator",
+          "position" : {
+            "column" : 41,
+            "line" : 37,
+            "utf8Offset" : 1223
+          },
+          "testSuiteOutcome" : "failed"
+        },
+        {
+          "id" : "Logical Operator",
+          "position" : {
+            "column" : 60,
+            "line" : 72,
+            "utf8Offset" : 2915
+          },
+          "testSuiteOutcome" : "passed"
+        }
+      ],
+      "fileName" : "NSAttributedString+BonMot.swift",
+      "mutationScore" : 33
+    },
+    {
+      "appliedOperators" : [
+        {
+          "id" : "Logical Operator",
+          "position" : {
+            "column" : 17,
+            "line" : 16,
+            "utf8Offset" : 355
+          },
+          "testSuiteOutcome" : "passed"
+        }
+      ],
+      "fileName" : "NamedStyles.swift",
+      "mutationScore" : 0
+    },
+    {
+      "appliedOperators" : [
+        {
+          "id" : "Logical Operator",
+          "position" : {
+            "column" : 17,
+            "line" : 33,
+            "utf8Offset" : 1302
+          },
+          "testSuiteOutcome" : "passed"
+        },
+        {
+          "id" : "Logical Operator",
+          "position" : {
+            "column" : 13,
+            "line" : 40,
+            "utf8Offset" : 1463
+          },
+          "testSuiteOutcome" : "passed"
+        },
+        {
+          "id" : "Logical Operator",
+          "position" : {
+            "column" : 17,
+            "line" : 49,
+            "utf8Offset" : 1831
+          },
+          "testSuiteOutcome" : "passed"
+        },
+        {
+          "id" : "Logical Operator",
+          "position" : {
+            "column" : 29,
+            "line" : 49,
+            "utf8Offset" : 1843
+          },
+          "testSuiteOutcome" : "passed"
+        }
+      ],
+      "fileName" : "Platform.swift",
+      "mutationScore" : 0
+    },
+    {
+      "appliedOperators" : [
+        {
+          "id" : "Logical Operator",
+          "position" : {
+            "column" : 21,
+            "line" : 30,
+            "utf8Offset" : 713
+          },
+          "testSuiteOutcome" : "passed"
+        },
+        {
+          "id" : "Logical Operator",
+          "position" : {
+            "column" : 33,
+            "line" : 30,
+            "utf8Offset" : 725
+          },
+          "testSuiteOutcome" : "passed"
+        },
+        {
+          "id" : "Logical Operator",
+          "position" : {
+            "column" : 21,
+            "line" : 88,
+            "utf8Offset" : 3245
+          },
+          "testSuiteOutcome" : "passed"
+        },
+        {
+          "id" : "Logical Operator",
+          "position" : {
+            "column" : 33,
+            "line" : 88,
+            "utf8Offset" : 3257
+          },
+          "testSuiteOutcome" : "buildError"
+        },
+        {
+          "id" : "Logical Operator",
+          "position" : {
+            "column" : 21,
+            "line" : 105,
+            "utf8Offset" : 3738
+          },
+          "testSuiteOutcome" : "passed"
+        },
+        {
+          "id" : "Logical Operator",
+          "position" : {
+            "column" : 21,
+            "line" : 108,
+            "utf8Offset" : 3825
+          },
+          "testSuiteOutcome" : "passed"
+        },
+        {
+          "id" : "Logical Operator",
+          "position" : {
+            "column" : 29,
+            "line" : 230,
+            "utf8Offset" : 8511
+          },
+          "testSuiteOutcome" : "passed"
+        },
+        {
+          "id" : "Logical Operator",
+          "position" : {
+            "column" : 41,
+            "line" : 230,
+            "utf8Offset" : 8523
+          },
+          "testSuiteOutcome" : "passed"
+        },
+        {
+          "id" : "Logical Operator",
+          "position" : {
+            "column" : 29,
+            "line" : 255,
+            "utf8Offset" : 9730
+          },
+          "testSuiteOutcome" : "failed"
+        },
+        {
+          "id" : "Logical Operator",
+          "position" : {
+            "column" : 40,
+            "line" : 255,
+            "utf8Offset" : 9741
+          },
+          "testSuiteOutcome" : "passed"
+        },
+        {
+          "id" : "Logical Operator",
+          "position" : {
+            "column" : 37,
+            "line" : 280,
+            "utf8Offset" : 11203
+          },
+          "testSuiteOutcome" : "passed"
+        }
+      ],
+      "fileName" : "StringStyle+Part.swift",
+      "mutationScore" : 10
+    },
+    {
+      "appliedOperators" : [
+        {
+          "id" : "Logical Operator",
+          "position" : {
+            "column" : 13,
+            "line" : 16,
+            "utf8Offset" : 254
+          },
+          "testSuiteOutcome" : "passed"
+        },
+        {
+          "id" : "Logical Operator",
+          "position" : {
+            "column" : 25,
+            "line" : 16,
+            "utf8Offset" : 266
+          },
+          "testSuiteOutcome" : "buildError"
+        },
         {
           "id" : "Remove Side Effects",
           "position" : {
@@ -95,6 +425,15 @@
             "column" : 26,
             "line" : 101,
             "utf8Offset" : 4310
+          },
+          "testSuiteOutcome" : "passed"
+        },
+        {
+          "id" : "Logical Operator",
+          "position" : {
+            "column" : 13,
+            "line" : 116,
+            "utf8Offset" : 5033
           },
           "testSuiteOutcome" : "passed"
         }
@@ -334,7 +673,7 @@
       "mutationScore" : 0
     }
   ],
-  "globalMutationScore" : 17,
-  "numberOfKilledMutants" : 5,
-  "totalAppliedMutationOperators" : 29
+  "globalMutationScore" : 12,
+  "numberOfKilledMutants" : 7,
+  "totalAppliedMutationOperators" : 62
 }

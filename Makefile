@@ -44,10 +44,10 @@ test:
 	xcodebuild -scheme muter -only-testing:muterTests test
 	
 acceptance-test: build
-	./Scripts/runAcceptanceTests.sh
+	./AcceptanceTests/runAcceptanceTests.sh
 
 regression-test: build
-	./Scripts/runRegressionTests.sh
+	./RegressionTests/runRegressionTests.sh
 
 mutation-test: clean
 	muter

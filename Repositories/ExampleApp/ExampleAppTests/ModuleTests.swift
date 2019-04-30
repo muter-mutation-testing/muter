@@ -11,4 +11,9 @@ class Module2Tests: XCTestCase {
     func test() {
         XCTAssertFalse(alwaysReturnsFalse())
     }
+    
+    func testAnother() {
+        XCTAssert(shouldReturnTrue())
+        XCTAssertFalse(shouldReturnTrue2())
+    }
 }

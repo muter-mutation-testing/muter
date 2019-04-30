@@ -13,7 +13,6 @@ class FileOperationSpec: QuickSpec {
                                        "some/path/to/anotherFile": "~/anotherFile"]
 
                 expect(swapFilePaths(forFilesAt: paths, using: workingDirectory)).to(equal(expectedMapping))
-
             }
 
             it("generates swap file paths") {

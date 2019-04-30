@@ -10,7 +10,7 @@ if #available(OSX 10.13, *) {
         .register(RunCommand())
         .register(HelpCommand(registry: registry))
         .main(defaultVerb: RunCommand().verb) { (error) in
-            print("Muter encountered an error: \n\(error)")
+            print("\(error)")
             exit(1)
     }
 

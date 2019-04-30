@@ -1,16 +1,12 @@
 import SwiftSyntax
 
-extension NegateConditionalsOperator {
+extension LogicalOperatorOperator {
     class Rewriter: OperatorAwareRewriter {
         required init(positionToMutate: AbsolutePosition) {
             super.init(positionToMutate: positionToMutate)
             oppositeOperatorMapping = [
-                "==": "!=",
-                "!=": "==",
-                ">=": "<=",
-                "<=": ">=",
-                ">": "<",
-                "<": ">"
+                "||": "&&",
+                "&&": "||",
             ]
         }
     }
