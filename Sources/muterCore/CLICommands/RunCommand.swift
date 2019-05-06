@@ -23,13 +23,11 @@ public struct RunCommand: CommandProtocol {
 
     private let delegate: RunCommandIODelegate
     private let fileManager: FileSystemManager
-    private let currentDirectory: String
     private let notificationCenter: NotificationCenter
 
     public init(delegate: RunCommandIODelegate = RunCommandDelegate(), fileManager: FileSystemManager = FileManager.default, notificationCenter: NotificationCenter = .default) {
         self.delegate = delegate
         self.fileManager = fileManager
-        self.currentDirectory = fileManager.currentDirectoryPath
         self.notificationCenter = notificationCenter
     }
 
@@ -44,7 +42,7 @@ public struct RunCommand: CommandProtocol {
             return .failure(.configurationError)
         }
 
-        delegate.backupProject(in: currentDirectory)
+        delegate.backupProject(in: fileManager.currentDirectoryPath)
         delegate.executeTesting(using: configuration)
 
         return .success(())
