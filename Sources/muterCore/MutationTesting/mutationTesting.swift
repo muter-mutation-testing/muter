@@ -27,9 +27,11 @@ private func apply(_ operators: [MutationOperator], buildErrorsThreshold: Int = 
         let (mutatedSource, description) = `operator`.apply()
         try! delegate.writeFile(to: filePath, contents: mutatedSource.description)
 
-        let result = delegate.runTestSuite(savingResultsIntoFileNamed: "\(fileName)_\(`operator`.id.rawValue)_\(`operator`.position).log")
+        let (result, log) = delegate.runTestSuite(savingResultsIntoFileNamed: "\(fileName)_\(`operator`.id.rawValue)_\(`operator`.position).log")
         delegate.restoreFile(at: filePath)
-        
+
+        notificationCenter.post(name: .newTestLogAvailable, object: (testLogUrl.lastPathComponent, log))
+
         let outcome = MutationTestOutcome(testSuiteOutcome: result,
                                           appliedMutation: `operator`.id,
                                           filePath: filePath,

@@ -20,8 +20,10 @@ func createWorkingDirectory(in directory: String, fileManager: FileSystemManager
 }
 
 // MARK - Logging Directory
-func createLoggingDirectory(in directory: String, fileManager: FileSystemManager = FileManager.default) -> String {
-    let logginDirectory = "\(directory)/\(Date().dateTime)"
+func createLoggingDirectory(in directory: String, fileManager: FileSystemManager = FileManager.default, timestamp: Date = Date()) -> String {
+    let formatter = DateFormatter()
+    formatter.dateFormat = "dd-MM-HH-mm"
+    let logginDirectory = directory + "/" + formatter.string(from: timestamp)
     try! fileManager.createDirectory(atPath: logginDirectory, withIntermediateDirectories: true, attributes: nil)
     return logginDirectory
 }

@@ -1,6 +1,7 @@
 @testable import muterCore
 import Quick
 import Nimble
+import Foundation
 
 class FileOperationSpec: QuickSpec {
     override func spec() {
@@ -38,6 +39,19 @@ class FileOperationSpec: QuickSpec {
                 expect(fileManagerSpy.methodCalls).to(equal(["createDirectory(atPath:withIntermediateDirectories:attributes:)"]))
                 expect(fileManagerSpy.createsIntermediates).to(equal([true]))
                 expect(fileManagerSpy.paths).to(equal(["~/some/path/muter_tmp"]))
+            }
+        }
+
+        describe("Logging Directory Creation") {
+            it("creates a logging directory") {
+                let fileManagerSpy = FileManagerSpy()
+                let now =  Date(timeIntervalSince1970: 1557609508000) // "5 Sep 51328 16:46"
+                let loggingDirectory = createLoggingDirectory(in: "~/some/path", fileManager: fileManagerSpy, timestamp: now)
+
+                expect(loggingDirectory).to(equal("~/some/path/05-09-16-46"))
+                expect(fileManagerSpy.methodCalls).to(equal(["createDirectory(atPath:withIntermediateDirectories:attributes:)"]))
+                expect(fileManagerSpy.createsIntermediates).to(equal([true]))
+                expect(fileManagerSpy.paths).to(equal(["~/some/path/05-09-16-46"]))
             }
         }
     }
