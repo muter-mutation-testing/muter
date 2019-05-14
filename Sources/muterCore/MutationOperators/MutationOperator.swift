@@ -31,6 +31,7 @@ extension MutationOperator {
         case negateConditionals = "Negate Conditionals"
         case removeSideEffects = "Remove Side Effects"
         case logicalOperator = "Logical Operator"
+        case forceFalseConditionals = "Force False Conditionals"
         
         var rewriterVisitorPair: (rewriter: RewriterInitializer, visitor: VisitorInitializer) {
             switch self {
@@ -40,6 +41,8 @@ extension MutationOperator {
                 return (rewriter: NegateConditionalsOperator.Rewriter.init, visitor: NegateConditionalsOperator.Visitor.init)
             case .logicalOperator:
                 return (rewriter: LogicalOperatorOperator.Rewriter.init, visitor: LogicalOperatorOperator.Visitor.init)
+            case .forceFalseConditionals:
+                return (rewriter: ForceFalseConditionalOperator.Rewriter.init, visitor: ForceFalseConditionalOperator.Visitor.init)
             }
         }
         

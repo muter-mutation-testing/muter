@@ -46,3 +46,14 @@ enum LogicalOperatorOperator {
         }
     }
 }
+
+enum ForceFalseConditionalOperator {
+    class Visitor: TokenAwareVisitor {
+        override init() {
+            super.init()
+            tokensToDiscover = [
+                .ifKeyword
+            ]
+        }
+    }
+}
