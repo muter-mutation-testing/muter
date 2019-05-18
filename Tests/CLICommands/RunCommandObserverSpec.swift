@@ -21,9 +21,7 @@ class RunCommandObserverSpec: QuickSpec {
                         name: .newMutationTestOutcomeAvailable,
                         object: (
                             outcome: MutationTestOutcome(testSuiteOutcome: .failed,
-                                                         appliedMutation: .negateConditionals,
-                                                         filePath: "some/path",
-                                                         position: .firstPosition,
+                                                         mutationPoint: MutationPoint(mutationOperatorId: .negateConditionals, filePath: "some/path", position: .firstPosition),
                                                          operatorDescription: "some description"),
                             remainingOperatorsCount: 0
                         ),

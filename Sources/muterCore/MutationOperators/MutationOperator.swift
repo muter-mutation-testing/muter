@@ -4,27 +4,20 @@ typealias SourceCodeTransformation = (Syntax) -> (mutatedSource: Syntax, descrip
 typealias RewriterInitializer = (AbsolutePosition) -> PositionSpecificRewriter
 typealias VisitorInitializer = () -> PositionDiscoveringVisitor
 
-public struct MutationPoint {
+public struct MutationPoint: Equatable, Codable {
+    let mutationOperatorId: MutationOperator.Id
     let filePath: String
     let position: AbsolutePosition
 }
 
 public struct MutationOperator {
 
-    let id: Id
     let mutationPoint: MutationPoint
-    private let source: Syntax
-    private let transformation: SourceCodeTransformation
+    let source: Syntax
 
-    init(id: Id, mutationPoint: MutationPoint, source: Syntax, transformation: @escaping SourceCodeTransformation) {
-        self.id = id
+    init(mutationPoint: MutationPoint, source: Syntax) {
         self.mutationPoint = mutationPoint
         self.source = source
-        self.transformation = transformation
-    }
-
-    func apply() -> (mutatedSource: Syntax, description: String) {
-        return transformation(source)
     }
 }
 

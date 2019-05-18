@@ -24,8 +24,8 @@ func generateAppliedMutationsCLITable(from fileReports: [MuterTestReport.FileRep
 
 private func operatorsToTableRows(fileReport: MuterTestReport.FileReport) -> [(CLITable.Row, CLITable.Row, CLITable.Row)] {
     return fileReport.appliedOperators.map {
-        (CLITable.Row(value: "\(fileReport.fileName):\($0.position.line)"),
-         CLITable.Row(value: $0.id.rawValue),
+        (CLITable.Row(value: "\(fileReport.fileName):\($0.mutationPoint.position.line)"),
+         CLITable.Row(value: $0.mutationPoint.mutationOperatorId.rawValue),
          CLITable.Row(value: $0.testSuiteOutcome.asMutationTestOutcome))
     }
 }

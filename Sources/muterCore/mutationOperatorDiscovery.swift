@@ -21,10 +21,8 @@ private func newlyDiscoveredOperators(inFileAt path: String, containing source: 
 
         return newOperators + visitor.positionsOfToken.map { position in
 
-            return MutationOperator(id: mutationOperatorId,
-                                    mutationPoint: MutationPoint(filePath: path, position: position),
-                                    source: source,
-                                    transformation: mutationOperatorId.transformation(for: position))
+            return MutationOperator(mutationPoint: MutationPoint(mutationOperatorId: mutationOperatorId, filePath: path, position: position),
+                                    source: source)
 
         }
     }

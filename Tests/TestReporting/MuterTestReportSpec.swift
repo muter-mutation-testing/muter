@@ -9,38 +9,20 @@ class MuterTestReportSpec: QuickSpec {
             context("when given a nonempty collection of MutationTestOutcomes") {
                 it("calculates all its fields as part of its initialization") {
                     let outcomes = self.exampleMutationTestResults + [MutationTestOutcome(testSuiteOutcome: .failed,
-                                                                                          appliedMutation: .negateConditionals,
-                                                                                          filePath: "/tmp/a module.swift",
-                                                                                          position: .firstPosition,
+                                                                                          mutationPoint: MutationPoint(mutationOperatorId: .negateConditionals,
+                                                                                            filePath: "/tmp/a module.swift", position: .firstPosition),
                                                                                           operatorDescription: "from == to !=")]
                     let report = MuterTestReport(from: outcomes)
                     expect(report.globalMutationScore).to(equal(60))
                     expect(report.totalAppliedMutationOperators).to(equal(10))
                     expect(report.fileReports).to(haveCount(5))
-
-                    expect(report.fileReports).to(equal([
-                        MuterTestReport.FileReport(fileName: "a module.swift", path: "/tmp/a module.swift", mutationScore: 100, appliedOperators: [
-                            MuterTestReport.AppliedMutationOperator(id: .negateConditionals, position: .firstPosition, description: "from == to !=", testSuiteOutcome: .failed)
-                        ]),
-                        MuterTestReport.FileReport(fileName: "file 4.swift", path: "/tmp/file 4.swift", mutationScore: 0, appliedOperators: [
-                            MuterTestReport.AppliedMutationOperator(id: .negateConditionals, position: .firstPosition, description: "from == to !=", testSuiteOutcome: .passed)
-                        ]),
-                        MuterTestReport.FileReport(fileName: "file1.swift", path: "/tmp/file1.swift", mutationScore: 66, appliedOperators: [
-                            MuterTestReport.AppliedMutationOperator(id: .negateConditionals, position: .firstPosition, description: "from == to !=", testSuiteOutcome: .failed),
-                            MuterTestReport.AppliedMutationOperator(id: .negateConditionals, position: .firstPosition, description: "from == to !=", testSuiteOutcome: .failed),
-                            MuterTestReport.AppliedMutationOperator(id: .negateConditionals, position: .firstPosition, description: "from == to !=", testSuiteOutcome: .passed)
-                        ]),
-                        MuterTestReport.FileReport(fileName: "file2.swift", path: "/tmp/file2.swift", mutationScore: 100, appliedOperators: [
-                            MuterTestReport.AppliedMutationOperator(id: .removeSideEffects, position: .firstPosition, description: "from == to !=", testSuiteOutcome: .failed),
-                            MuterTestReport.AppliedMutationOperator(id: .removeSideEffects, position: .firstPosition, description: "from == to !=", testSuiteOutcome: .failed)
-                        ]),
-                        MuterTestReport.FileReport(fileName: "file3.swift", path: "/tmp/file3.swift", mutationScore: 33, appliedOperators: [
-                            MuterTestReport.AppliedMutationOperator(id: .negateConditionals, position: .firstPosition, description: "from == to !=", testSuiteOutcome: .failed),
-                            MuterTestReport.AppliedMutationOperator(id: .negateConditionals, position: .firstPosition, description: "from == to !=", testSuiteOutcome: .passed),
-                            MuterTestReport.AppliedMutationOperator(id: .negateConditionals, position: .firstPosition, description: "from == to !=", testSuiteOutcome: .passed)
-                        ])
-                    ]))
-
+                    expect(report.fileReports) == [
+                        FileReportProvider.expectedFileReport1,
+                        FileReportProvider.expectedFileReport2,
+                        FileReportProvider.expectedFileReport3,
+                        FileReportProvider.expectedFileReport4,
+                        FileReportProvider.expectedFileReport5
+                    ]
                 }
             }
 
@@ -89,4 +71,5 @@ class MuterTestReportSpec: QuickSpec {
         }
     }
 }
+
 

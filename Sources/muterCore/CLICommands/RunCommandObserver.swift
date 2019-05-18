@@ -1,5 +1,6 @@
 import Foundation
 import Darwin.C
+import SwiftSyntax
 
 extension Notification.Name {
     static let muterLaunched = Notification.Name("muterLaunched")
@@ -90,16 +91,16 @@ extension RunCommandObserver {
 
     func handleProjectCopyFailed(notification: Notification) {
         fatalError("""
-            Muter was unable to create a temporary directory,
-            or was unable to copy your project, and cannot continue.
+        Muter was unable to create a temporary directory,
+        or was unable to copy your project, and cannot continue.
 
-            If you can reproduce this, please consider filing a bug
-            at https://github.com/SeanROlszewski/muter
+        If you can reproduce this, please consider filing a bug
+        at https://github.com/SeanROlszewski/muter
 
-            Please include the following in the bug report:
-            *********************
-            FileManager error: \(String(describing: notification.object))
-            """)
+        Please include the following in the bug report:
+        *********************
+        FileManager error: \(String(describing: notification.object))
+        """)
     }
 
     func handleSourceFileDiscoveryStarted(notification: Notification) {
@@ -138,13 +139,12 @@ extension RunCommandObserver {
 
     func handleNoMutationOperatorsDiscovered(notification: Notification) {
         printMessage("""
+        Muter wasn't able to discover any code it could mutation test.
 
-                    Muter wasn't able to discover any code it could mutation test.
+        This is likely caused by misconfiguring Muter, usually by excluding a directory that contains your code.
 
-                    This is likely caused by misconfiguring Muter, usually by excluding a directory that contains your code.
-
-                    If you feel this is a bug, or want help figuring out what could be happening, please open an issue at
-                    https://github.com/SeanROlszewski/muter/issues
+        If you feel this is a bug, or want help figuring out what could be happening, please open an issue at
+        https://github.com/SeanROlszewski/muter/issues
 
         """)
         exit(1)
@@ -160,11 +160,11 @@ extension RunCommandObserver {
         let values = notification.object as! (outcome: MutationTestOutcome, remainingOperatorsCount: Int)
         
         if reporter == .plainText {
-            let fileName = URL(fileURLWithPath: values.outcome.filePath).lastPathComponent
+            let fileName = URL(fileURLWithPath: values.outcome.mutationPoint.filePath).lastPathComponent
 
             print("""
-                Testing mutation operator in \(fileName)
-                There are \(values.remainingOperatorsCount) left to apply
+            Testing mutation operator in \(fileName)
+            There are \(values.remainingOperatorsCount) left to apply
             """)
         } else if reporter == .xcode {
             print(reporter.generateReport(from: [values.outcome]))
@@ -184,3 +184,6 @@ extension RunCommandObserver {
         }
     }
 }
+
+
+

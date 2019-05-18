@@ -2,20 +2,14 @@ import SwiftSyntax
 
 public struct MutationTestOutcome: Equatable {
     let testSuiteOutcome: TestSuiteOutcome
-    let appliedMutation: MutationOperator.Id
-    let filePath: String
-    let position: AbsolutePosition
+    let mutationPoint: MutationPoint
     let operatorDescription: String
 
     public init(testSuiteOutcome: TestSuiteOutcome,
-                appliedMutation: MutationOperator.Id,
-                filePath: String,
-                position: AbsolutePosition,
+                mutationPoint: MutationPoint,
                 operatorDescription: String) {
         self.testSuiteOutcome = testSuiteOutcome
-        self.appliedMutation = appliedMutation
-        self.filePath = filePath
-        self.position = position
+        self.mutationPoint = mutationPoint
         self.operatorDescription = operatorDescription
     }
 }
