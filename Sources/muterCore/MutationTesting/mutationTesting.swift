@@ -17,7 +17,7 @@ private func apply(_ operators: [MutationOperator], buildErrorsThreshold: Int = 
     var buildErrors = 0
 
     for (index, `operator`) in operators.enumerated() {
-        let filePath = `operator`.filePath
+        let filePath = `operator`.mutationPoint.filePath
         let fileName = URL(fileURLWithPath: filePath).lastPathComponent
 
         delegate.backupFile(at: filePath)
@@ -25,13 +25,13 @@ private func apply(_ operators: [MutationOperator], buildErrorsThreshold: Int = 
         let (mutatedSource, description) = `operator`.apply()
         try! delegate.writeFile(to: filePath, contents: mutatedSource.description)
 
-        let result = delegate.runTestSuite(savingResultsIntoFileNamed: "\(fileName)_\(`operator`.id.rawValue)_\(`operator`.position).log")
+        let result = delegate.runTestSuite(savingResultsIntoFileNamed: "\(fileName)_\(`operator`.id.rawValue)_\(`operator`.mutationPoint.position).log")
         delegate.restoreFile(at: filePath)
         
         let outcome = MutationTestOutcome(testSuiteOutcome: result,
                                           appliedMutation: `operator`.id,
                                           filePath: filePath,
-                                          position: `operator`.position,
+                                          position: `operator`.mutationPoint.position,
                                           operatorDescription: description)
         outcomes.append(outcome)
         

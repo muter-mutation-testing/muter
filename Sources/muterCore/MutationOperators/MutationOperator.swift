@@ -1,22 +1,24 @@
 import SwiftSyntax
 
 typealias SourceCodeTransformation = (Syntax) -> (mutatedSource: Syntax, description: String)
-typealias MutationIdVisitorPair = (id: MutationOperator.Id, visitor: VisitorInitializer)
 typealias RewriterInitializer = (AbsolutePosition) -> PositionSpecificRewriter
 typealias VisitorInitializer = () -> PositionDiscoveringVisitor
+
+public struct MutationPoint {
+    let filePath: String
+    let position: AbsolutePosition
+}
 
 public struct MutationOperator {
 
     let id: Id
-    let filePath: String
-    let position: AbsolutePosition
+    let mutationPoint: MutationPoint
     private let source: Syntax
     private let transformation: SourceCodeTransformation
 
-    init(id: Id, filePath: String, position: AbsolutePosition, source: Syntax, transformation: @escaping SourceCodeTransformation) {
+    init(id: Id, mutationPoint: MutationPoint, source: Syntax, transformation: @escaping SourceCodeTransformation) {
         self.id = id
-        self.filePath = filePath
-        self.position = position
+        self.mutationPoint = mutationPoint
         self.source = source
         self.transformation = transformation
     }
