@@ -22,8 +22,7 @@ private func newlyDiscoveredOperators(inFileAt path: String, containing source: 
         return newOperators + visitor.positionsOfToken.map { position in
 
             return MutationOperator(id: mutationOperatorId,
-                                    filePath: path,
-                                    position: position,
+                                    mutationPoint: MutationPoint(filePath: path, position: position),
                                     source: source,
                                     transformation: mutationOperatorId.transformation(for: position))
 
@@ -32,7 +31,8 @@ private func newlyDiscoveredOperators(inFileAt path: String, containing source: 
 }
 
 private func filePositionOrder(lhs: MutationOperator, rhs: MutationOperator) -> Bool {
-    return lhs.position.line < rhs.position.line && lhs.position.column < rhs.position.column
+    return lhs.mutationPoint.position.line < rhs.mutationPoint.position.line &&
+        lhs.mutationPoint.position.column < rhs.mutationPoint.position.column
 }
 
 private func pathContainsDotSwift(_ filePath: String) -> Bool {

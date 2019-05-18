@@ -13,8 +13,7 @@ class MutationTestingSpec: QuickSpec {
             beforeEach {
                 delegateSpy = MutationTestingDelegateSpy()
                 mutationOperatorStub = MutationOperator(id: .negateConditionals,
-                                                        filePath: "a file path",
-                                                        position: .firstPosition,
+                                                        mutationPoint: MutationPoint(filePath: "a file path", position: .firstPosition),
                                                         source: SyntaxFactory.makeReturnKeyword()) { return ($0, "empty description") }
             }
 

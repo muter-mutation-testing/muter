@@ -130,7 +130,7 @@ extension RunCommandObserver {
 
             for (index, `operator`) in discoveredMutationOperators.enumerated() {
                 let listPosition = "\(index+1))"
-                let fileName = URL(fileURLWithPath: `operator`.filePath).lastPathComponent
+                let fileName = URL(fileURLWithPath: `operator`.mutationPoint.filePath).lastPathComponent
                 print("\(listPosition) \(fileName)")
             }
         }
