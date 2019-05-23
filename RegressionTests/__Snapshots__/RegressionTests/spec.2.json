@@ -3,38 +3,50 @@
     {
       "appliedOperators" : [
         {
-          "id" : "Negate Conditionals",
-          "position" : {
-            "column" : 23,
-            "line" : 64,
-            "utf8Offset" : 2075
+          "mutationPoint" : {
+            "filePath" : "\/var\/folders\/0b\/dxsqs2d901j1h3_d9pqwqdfh0000gn\/T\/TemporaryItems\/(A Document Being Saved By muter 14)\/FFCParserCombinator\/Sources\/FFCParserCombinator\/FFCParserCombinator.swift",
+            "mutationOperatorId" : "Negate Conditionals",
+            "position" : {
+              "column" : 23,
+              "line" : 64,
+              "utf8Offset" : 2075
+            }
           },
           "testSuiteOutcome" : "runtimeError"
         },
         {
-          "id" : "Negate Conditionals",
-          "position" : {
-            "column" : 46,
-            "line" : 64,
-            "utf8Offset" : 2098
+          "mutationPoint" : {
+            "filePath" : "\/var\/folders\/0b\/dxsqs2d901j1h3_d9pqwqdfh0000gn\/T\/TemporaryItems\/(A Document Being Saved By muter 14)\/FFCParserCombinator\/Sources\/FFCParserCombinator\/FFCParserCombinator.swift",
+            "mutationOperatorId" : "Negate Conditionals",
+            "position" : {
+              "column" : 46,
+              "line" : 64,
+              "utf8Offset" : 2098
+            }
           },
           "testSuiteOutcome" : "failed"
         },
         {
-          "id" : "Negate Conditionals",
-          "position" : {
-            "column" : 29,
-            "line" : 68,
-            "utf8Offset" : 2282
+          "mutationPoint" : {
+            "filePath" : "\/var\/folders\/0b\/dxsqs2d901j1h3_d9pqwqdfh0000gn\/T\/TemporaryItems\/(A Document Being Saved By muter 14)\/FFCParserCombinator\/Sources\/FFCParserCombinator\/FFCParserCombinator.swift",
+            "mutationOperatorId" : "Negate Conditionals",
+            "position" : {
+              "column" : 29,
+              "line" : 68,
+              "utf8Offset" : 2282
+            }
           },
           "testSuiteOutcome" : "runtimeError"
         },
         {
-          "id" : "Logical Operator",
-          "position" : {
-            "column" : 30,
-            "line" : 64,
-            "utf8Offset" : 2082
+          "mutationPoint" : {
+            "filePath" : "\/var\/folders\/0b\/dxsqs2d901j1h3_d9pqwqdfh0000gn\/T\/TemporaryItems\/(A Document Being Saved By muter 14)\/FFCParserCombinator\/Sources\/FFCParserCombinator\/FFCParserCombinator.swift",
+            "mutationOperatorId" : "Logical Operator",
+            "position" : {
+              "column" : 30,
+              "line" : 64,
+              "utf8Offset" : 2082
+            }
           },
           "testSuiteOutcome" : "runtimeError"
         }
@@ -45,65 +57,86 @@
     {
       "appliedOperators" : [
         {
-          "id" : "Negate Conditionals",
-          "position" : {
-            "column" : 73,
-            "line" : 89,
-            "utf8Offset" : 3211
+          "mutationPoint" : {
+            "filePath" : "\/var\/folders\/0b\/dxsqs2d901j1h3_d9pqwqdfh0000gn\/T\/TemporaryItems\/(A Document Being Saved By muter 14)\/FFCParserCombinator\/Sources\/FFCParserCombinator\/StringParsing.swift",
+            "mutationOperatorId" : "Negate Conditionals",
+            "position" : {
+              "column" : 73,
+              "line" : 89,
+              "utf8Offset" : 3211
+            }
           },
           "testSuiteOutcome" : "runtimeError"
         },
         {
-          "id" : "Negate Conditionals",
-          "position" : {
-            "column" : 54,
-            "line" : 144,
-            "utf8Offset" : 4763
+          "mutationPoint" : {
+            "filePath" : "\/var\/folders\/0b\/dxsqs2d901j1h3_d9pqwqdfh0000gn\/T\/TemporaryItems\/(A Document Being Saved By muter 14)\/FFCParserCombinator\/Sources\/FFCParserCombinator\/StringParsing.swift",
+            "mutationOperatorId" : "Negate Conditionals",
+            "position" : {
+              "column" : 54,
+              "line" : 144,
+              "utf8Offset" : 4763
+            }
           },
           "testSuiteOutcome" : "runtimeError"
         },
         {
-          "id" : "Negate Conditionals",
-          "position" : {
-            "column" : 38,
-            "line" : 168,
-            "utf8Offset" : 5536
+          "mutationPoint" : {
+            "filePath" : "\/var\/folders\/0b\/dxsqs2d901j1h3_d9pqwqdfh0000gn\/T\/TemporaryItems\/(A Document Being Saved By muter 14)\/FFCParserCombinator\/Sources\/FFCParserCombinator\/StringParsing.swift",
+            "mutationOperatorId" : "Negate Conditionals",
+            "position" : {
+              "column" : 38,
+              "line" : 168,
+              "utf8Offset" : 5536
+            }
           },
           "testSuiteOutcome" : "runtimeError"
         },
         {
-          "id" : "Negate Conditionals",
-          "position" : {
-            "column" : 42,
-            "line" : 204,
-            "utf8Offset" : 6812
+          "mutationPoint" : {
+            "filePath" : "\/var\/folders\/0b\/dxsqs2d901j1h3_d9pqwqdfh0000gn\/T\/TemporaryItems\/(A Document Being Saved By muter 14)\/FFCParserCombinator\/Sources\/FFCParserCombinator\/StringParsing.swift",
+            "mutationOperatorId" : "Negate Conditionals",
+            "position" : {
+              "column" : 42,
+              "line" : 204,
+              "utf8Offset" : 6812
+            }
           },
           "testSuiteOutcome" : "runtimeError"
         },
         {
-          "id" : "Negate Conditionals",
-          "position" : {
-            "column" : 48,
-            "line" : 210,
-            "utf8Offset" : 7077
+          "mutationPoint" : {
+            "filePath" : "\/var\/folders\/0b\/dxsqs2d901j1h3_d9pqwqdfh0000gn\/T\/TemporaryItems\/(A Document Being Saved By muter 14)\/FFCParserCombinator\/Sources\/FFCParserCombinator\/StringParsing.swift",
+            "mutationOperatorId" : "Negate Conditionals",
+            "position" : {
+              "column" : 48,
+              "line" : 210,
+              "utf8Offset" : 7077
+            }
           },
           "testSuiteOutcome" : "failed"
         },
         {
-          "id" : "Negate Conditionals",
-          "position" : {
-            "column" : 76,
-            "line" : 210,
-            "utf8Offset" : 7105
+          "mutationPoint" : {
+            "filePath" : "\/var\/folders\/0b\/dxsqs2d901j1h3_d9pqwqdfh0000gn\/T\/TemporaryItems\/(A Document Being Saved By muter 14)\/FFCParserCombinator\/Sources\/FFCParserCombinator\/StringParsing.swift",
+            "mutationOperatorId" : "Negate Conditionals",
+            "position" : {
+              "column" : 76,
+              "line" : 210,
+              "utf8Offset" : 7105
+            }
           },
           "testSuiteOutcome" : "failed"
         },
         {
-          "id" : "Negate Conditionals",
-          "position" : {
-            "column" : 106,
-            "line" : 210,
-            "utf8Offset" : 7135
+          "mutationPoint" : {
+            "filePath" : "\/var\/folders\/0b\/dxsqs2d901j1h3_d9pqwqdfh0000gn\/T\/TemporaryItems\/(A Document Being Saved By muter 14)\/FFCParserCombinator\/Sources\/FFCParserCombinator\/StringParsing.swift",
+            "mutationOperatorId" : "Negate Conditionals",
+            "position" : {
+              "column" : 106,
+              "line" : 210,
+              "utf8Offset" : 7135
+            }
           },
           "testSuiteOutcome" : "failed"
         }
