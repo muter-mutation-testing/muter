@@ -40,9 +40,14 @@ private extension MuterConfiguration {
         return MuterConfiguration(executable: "/usr/bin/xcodebuild",
                                   arguments: arguments)
     }
-    
+
     static func directoryContainsXcodeWorkspace(_ directoryContents: [URL]) -> Bool {
-        return directoryContents.firstIndex(where: { $0.lastPathComponent.contains(".xcworkspace") }) != nil
+        
+        let indexOfUserGeneratedWorkSpace = directoryContents
+            .exclude { $0.absoluteString.contains("project.xcworkspace") }
+            .firstIndex { $0.lastPathComponent.contains(".xcworkspace") }
+        
+        return indexOfUserGeneratedWorkSpace != nil
     }
     
     static func arguments(forProjectFileAt url: URL, isWorkSpace: Bool) -> [String]? {
