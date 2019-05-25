@@ -16,7 +16,7 @@ Original Operator | Negated Operator
 The purpose of this operator is to highlight how your tests respond to changes in branching logic. A well-engineered test suite will be able to fail clearly in response to code taking a different branch than it expected.
 
 ### Mutating an equality check
-```
+```swift
 if myValue == 50 {
     // something happens here
 }
@@ -24,7 +24,7 @@ if myValue == 50 {
 
 becomes
 
-```
+```swift
 if myValue != 50 {
     // something happens here
 }
@@ -41,7 +41,7 @@ The purpose of this operator is to highlight how your tests respond to the absen
 
 ### Mutating an explicitly discarded return result
 
-```
+```swift
 func initialize() {
     _ = self.view
     view.results = self.results
@@ -50,7 +50,7 @@ func initialize() {
 
 becomes
 
-```
+```swift
 func initialize() {
     view.results = self.results
 }
@@ -59,7 +59,7 @@ func initialize() {
 
 ### Mutating a void function call
 
-```
+```swift
 func update(email: String, for userId: String) {
     var userRecord = record(for: userId)
     userRecord.email = email
@@ -69,7 +69,7 @@ func update(email: String, for userId: String) {
 
 becomes
 
-```
+```swift
 func update(email: String, for userId: String) {
     var userRecord = record(for: userId)
     userRecord.email = email
