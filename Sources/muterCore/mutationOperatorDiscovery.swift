@@ -9,6 +9,7 @@ func discoverMutationOperators(inFilesAt filePaths: [String]) -> [MutationOperat
                 return alreadyDiscoveredOperators
         }
 
+
         return alreadyDiscoveredOperators + newlyDiscoveredOperators(inFileAt: path, containing: source).sorted(by: filePositionOrder)
     }
 }
