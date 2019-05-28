@@ -1,4 +1,5 @@
 @testable import muterCore
+import Foundation
 import SwiftSyntax
 import Quick
 import Nimble
@@ -57,6 +58,43 @@ class MutationTestingSpec: QuickSpec {
                     expect(delegateSpy.mutatedFilePaths.first).to(equal("a file path"))
                     
                     expect(actualTestOutcomes).to(equal(expectedTestOutcomes))
+                }
+                
+                it("generates logs for every mutation operator") {
+                    let notificationSpy = NotificationCenterSpy()
+                    let _ = performMutationTesting(
+                        using: [
+                            MutationOperator(
+                                mutationPoint: MutationPoint(mutationOperatorId: .negateConditionals, filePath: "/some/file/path/first.swift", position: .firstPosition),
+                                
+                                source: SyntaxFactory.makeReturnKeyword()),
+                            MutationOperator(
+                                mutationPoint: MutationPoint(mutationOperatorId: .negateConditionals, filePath: "/some/file/path/second.swift", position: .firstPosition),
+                                
+                                source: SyntaxFactory.makeReturnKeyword())
+                        ],
+                        delegate: delegateSpy,
+                        notificationCenter: notificationSpy
+                    )
+                    
+                    expect(notificationSpy.methodCalls).to(equal([
+                        "post(name:object:userInfo:)",
+                        "post(name:object:userInfo:)",
+                        "post(name:object:userInfo:)",
+                        "post(name:object:userInfo:)"
+                    ]))
+                    
+                    let logs = notificationSpy.payloads
+                        .filter { $0.name == .newTestLogAvailable }
+                        .map { $0.object as? (fileName: String, log: String) }
+                    
+                    expect(logs.count).to(equal(2))
+                    
+                    expect(logs[0]?.fileName).to(equal("first"))
+                    expect(logs[0]?.log).to(equal("testLog"))
+                    
+                    expect(logs[1]?.fileName).to(equal("second"))
+                    expect(logs[1]?.log).to(equal("testLog"))
                 }
             }
             
@@ -230,4 +268,13 @@ class MutationTestingSpec: QuickSpec {
     }
 }
 
+typealias NotificationPayload = (name: NSNotification.Name, object: Any?, userInfo: [AnyHashable: Any]?)
+private class NotificationCenterSpy: NotificationCenter {
+    var methodCalls = [String]()
+    var payloads = [NotificationPayload]()
 
+    override func post(name aName: NSNotification.Name, object anObject: Any?, userInfo aUserInfo: [AnyHashable: Any]? = nil) {
+        methodCalls.append(#function)
+        payloads.append((name: aName, object: anObject, userInfo: aUserInfo))
+    }
+}
