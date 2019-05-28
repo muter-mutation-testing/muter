@@ -24,20 +24,20 @@ if reviewersCount == 0
   fail("🕵 Whoops, I don't see any reviewers. Remember to add one.")
 elsif reviewersCount == 1
   warn(
-    "It's great to have ${reviewersCount} reviewers. Remember though that more than 1 reviewer may lead to uncertainty as to who is responsible for the review."
+    "It's great to have at least 1 reviewer. However, remember that having more than 1 reviewer may lead to uncertainty as to who is responsible for the review."
   )
 else
   message("✅ Looks like you have enough reviewers selected.")
 end
 
 # Make it more obvious that a PR is a work in progress and/or shouldn't be merged yet
-github.pr_json[:labels].each do |label|
-  if label[:name] == "WIP"
-    warn("PR is classed as Work in Progress")
-  elsif label[:name] == "DO NOT MERGE"
-    warn("PR is classed as Do Not Merge")
-  end
-end
+# github.pr_json[:labels].each do |label|
+#   if label[:name] == "WIP"
+#     warn("PR is classed as Work in Progress")
+#   elsif label[:name] == "DO NOT MERGE"
+#     warn("PR is classed as Do Not Merge")
+#   end
+# end
 
 # Warn when there is a big PR (unless protos were updated)
 if git.lines_of_code > 500 && !has_proto_changes
