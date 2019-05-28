@@ -1,7 +1,7 @@
 import Foundation
 import SwiftSyntax
 
-func performMutationTesting(using operators: [MutationOperator], delegate: MutationTestingIODelegate) -> [MutationTestOutcome] {
+func performMutationTesting(using operators: [MutationOperator], delegate: MutationTestingIODelegate, notificationCenter: NotificationCenter = .default) -> [MutationTestOutcome] {
 
     let initialResult = delegate.runTestSuite(savingResultsIntoFileNamed: "initial_run")
     guard initialResult.outcome == .passed else {
@@ -9,7 +9,7 @@ func performMutationTesting(using operators: [MutationOperator], delegate: Mutat
         return []
     }
 
-    return apply(operators, delegate: delegate)
+    return apply(operators, delegate: delegate, notificationCenter: notificationCenter)
 }
 
 private func apply(_ operators: [MutationOperator], buildErrorsThreshold: Int = 5, delegate: MutationTestingIODelegate, notificationCenter: NotificationCenter = .default) -> [MutationTestOutcome] {
@@ -31,7 +31,7 @@ private func apply(_ operators: [MutationOperator], buildErrorsThreshold: Int = 
         let (result, log) = delegate.runTestSuite(savingResultsIntoFileNamed: "\(fileName)_\(`operator`.mutationPoint.mutationOperatorId.rawValue)_\(`operator`.mutationPoint.position).log")
         delegate.restoreFile(at: filePath)
 
-        notificationCenter.post(name: .newTestLogAvailable, object: (fileName, log))
+        notificationCenter.post(name: .newTestLogAvailable, object: ((fileName as NSString).deletingPathExtension, log))
 
         let outcome = MutationTestOutcome(testSuiteOutcome: result,
                                           mutationPoint: `operator`.mutationPoint,
