@@ -1,9 +1,10 @@
 import Foundation
 
+typealias TestSuiteResult = (outcome: TestSuiteOutcome, testLog: String)
 protocol MutationTestingIODelegate {
     func backupFile(at path: String)
     func writeFile(to path: String, contents: String) throws
-    func runTestSuite(savingResultsIntoFileNamed fileName: String) -> (outcome: TestSuiteOutcome, testLog: String)
+    func runTestSuite(savingResultsIntoFileNamed fileName: String) -> TestSuiteResult
     func restoreFile(at path: String)
     func abortTesting(reason: MutationTestingAbortReason)
 }
