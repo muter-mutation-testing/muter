@@ -57,12 +57,20 @@ Muter is available through [Homebrew](https://brew.sh/). Run the following comma
 
 ## Setup
 ### Muter's Configuration
-You will need to create a configuration file named `muter.conf.json` in the root directory of the project you're mutation testing. To make this easy, you can run `muter init` in the root directory of your project. After running the `init` command, fill in the configuration with the options listed below.
+To get started using Muter, run `muter init` in the root of your project directory. Muter will take its best guess at a configuration that will work for your project. Muter supports generating configurations for the following build systems:
+* Xcode Projects & Workspace
+* Swift Package Manager
+
+It saves its configuration into a file named `muter.conf.json`, which you should keep in the root directory of your project. You should version control your configuration file as well. 
+
+After running `muter init`, you should look at the generated configuration and ensure that it will run your project. We recommend trying the settings it generates in your terminal, and verifying those commands run your tests.
+
+Should you need to modify any of the options, you can use the list below to understand what each configuration option does.
 
 ### Configuration Options
 - `executable` - the absolute path to the program which can run your test suite (like `xcodebuild`, `swift`, `fastlane`, `make`, etc.)
 - `arguments` - any command line arguments the executable needs to run your test suite
-- `exclude` - a list of paths, file extensions, or names you want Muter to ignore. By default, Muter ignores files or paths containing the following phrases:
+- `exclude` - a list of paths, file extensions, or names you want Muter to ignore. By default, Muter ignores all non-Swift files, and any files or paths containing the following phrases:
     * `.build`
     * `.framework`
     * `.swiftdep`
@@ -76,9 +84,9 @@ You will need to create a configuration file named `muter.conf.json` in the root
 
     The `exclude` option is optional.
 
-**NOTE**: Muter uses a substring match to determine if something should be excluded.
+**NOTE**: Muter uses a substring match to determine if a file should be excluded from mutation testing. You should not use glob expressions (like `**/*Model.swift`) or regex.
 
-Below is an example pulled directly from the `ExampleApp` directory.
+Below is an example pulled directly from the `ExampleApp` project.
 The configuration file will end up looking something like this:
 ```json
 {
@@ -131,6 +139,7 @@ Build (Cmd + B) your aggregate build target and let Muter run. The mutants which
 
 ## Best Practices
 - Commit your `muter.conf.json`
+- It's possible for Muter to cause compile time warnings. As a result of this, we recommend you don't treat Swift warnings as errors while mutation testing by adding the argument `SWIFT_TREAT_WARNINGS_AS_ERRORS=NO` to your `muter.conf.json` if you're using `xcodebuild`.
 - Disable or relax linting rules that would cause a build error as a consequence of a code change not matching your project's style. Muter operates on your source code and then rebuilds it, and the change it introduces could trigger your linter if it's part of your build process.
 - Running Muter can be a lengthy process, so be sure to allocate enough time for the test to finish.
 - Because Muter can take a while to run, it is recommend to exclude UI or journey tests from your test suite. We recommend creating a separate schemes or targets for mutation testing. However, you should feel free to run these kinds of tests if you're okay with the longer feedback cycle.
