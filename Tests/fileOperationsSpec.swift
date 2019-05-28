@@ -12,7 +12,7 @@ class FileOperationSpec: QuickSpec {
                 let workingDirectory = "~"
                 let expectedMapping = ["some/path/to/aFile": "~/aFile",
                                        "some/path/to/anotherFile": "~/anotherFile"]
-
+                
                 expect(swapFilePaths(forFilesAt: paths, using: workingDirectory)).to(equal(expectedMapping))
             }
 

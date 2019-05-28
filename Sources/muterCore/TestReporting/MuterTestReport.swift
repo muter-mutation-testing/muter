@@ -55,32 +55,27 @@ extension MuterTestReport {
             try container.encode(appliedOperators, forKey: .appliedOperators)
         }
     }
+}
 
+public extension MuterTestReport {
     struct AppliedMutationOperator: Codable, Equatable {
-        let id: MutationOperator.Id
-        let position: AbsolutePosition
-        let description: String
+        let mutationPoint: MutationPoint
         let testSuiteOutcome: TestSuiteOutcome
-
+        
         enum CodingKeys: String, CodingKey {
-            case id
-            case position
+            case mutationPoint
             case testSuiteOutcome
         }
-
-        init(id: MutationOperator.Id, position: AbsolutePosition, description: String, testSuiteOutcome: TestSuiteOutcome) {
-            self.id = id
-            self.position = position
-            self.description = description
+        
+        init(mutationPoint: MutationPoint, testSuiteOutcome: TestSuiteOutcome) {
+            self.mutationPoint = mutationPoint
             self.testSuiteOutcome = testSuiteOutcome
         }
-
-        init(from decoder: Decoder) throws {
+        
+        public init(from decoder: Decoder) throws {
             let container = try decoder.container(keyedBy: CodingKeys.self)
-            id = try container.decode(MutationOperator.Id.self, forKey: .id)
-            position = try container.decode(AbsolutePosition.self, forKey: .position)
+            mutationPoint = try container.decode(MutationPoint.self, forKey: .mutationPoint)
             testSuiteOutcome = try container.decode(TestSuiteOutcome.self, forKey: .testSuiteOutcome)
-            description = ""
         }
     }
 }
@@ -93,11 +88,12 @@ private extension MuterTestReport {
                 let filePath = mutationScoreByFilePath.key
                 let fileName = URL(fileURLWithPath: filePath).lastPathComponent
                 let mutationScore = mutationScoreByFilePath.value
-                let appliedMutations = outcomes
-                    .include { $0.filePath == mutationScoreByFilePath.key }
-                    .map{ AppliedMutationOperator(id: $0.appliedMutation, position: $0.position, description: $0.operatorDescription, testSuiteOutcome: $0.testSuiteOutcome) }
+                let appliedOperators = outcomes
+                    .include { $0.mutationPoint.filePath == mutationScoreByFilePath.key }
+                    .map { AppliedMutationOperator(mutationPoint: $0.mutationPoint,
+                                                   testSuiteOutcome: $0.testSuiteOutcome) }
 
-                return (fileName, filePath, mutationScore, appliedMutations)
+                return (fileName, filePath, mutationScore, appliedOperators)
             }
             .map(FileReport.init(fileName:path:mutationScore:appliedOperators:))
     }

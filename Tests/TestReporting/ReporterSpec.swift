@@ -9,9 +9,7 @@ class ReporterSpec: QuickSpec {
 
         let outcomes = [
             MutationTestOutcome(testSuiteOutcome: .passed,
-                                appliedMutation: .negateConditionals,
-                                filePath: "/tmp/file3.swift",
-                                position: .firstPosition,
+                                mutationPoint: MutationPoint(mutationOperatorId: .negateConditionals, filePath: "/tmp/file3.swift", position: .firstPosition),
                                 operatorDescription: "changed from != to ==")
         ]
 
@@ -24,14 +22,10 @@ class ReporterSpec: QuickSpec {
         describe("xcode reporter") {
             it("returns the report in xcode format") {
                 let outcomes = outcomes + [MutationTestOutcome(testSuiteOutcome: .failed,
-                                                               appliedMutation: .negateConditionals,
-                                                               filePath: "/tmp/file4.swift",
-                                                               position: .firstPosition,
+                                                               mutationPoint: MutationPoint(mutationOperatorId: .negateConditionals, filePath: "/tmp/file4.swift", position: .firstPosition),
                                                                operatorDescription: "changed from == to !="),
                                            MutationTestOutcome(testSuiteOutcome: .passed,
-                                                               appliedMutation: .negateConditionals,
-                                                               filePath: "/tmp/file5.swift",
-                                                               position: .firstPosition,
+                                                               mutationPoint: MutationPoint(mutationOperatorId: .negateConditionals, filePath: "/tmp/file5.swift", position: .firstPosition),
                                                                operatorDescription: "changed from == to !=")]
                 
                 expect(Reporter.xcode.generateReport(from: outcomes)) == """

@@ -13,6 +13,7 @@ echo " > Running in CLI mode..."
 echo " > Running in Xcode mode..."
 ../../.build/x86_64-apple-macosx/debug/muter --output-xcode > ../../AcceptanceTests/muters_xcode_output.txt
 
+
 rm muter.conf.json # cleanup the created configuration file for the next test run
 cd ../..
 
@@ -23,6 +24,7 @@ echo " > Creating a configuration file..."
 ../../.build/x86_64-apple-macosx/debug/muter init
 cp ./muter.conf.json ../../AcceptanceTests/created_macOS_config.json
 
+echo " > Cleaning up after test..."
 rm muter.conf.json # cleanup the created configuration file for the next test run
 cd ../..
 

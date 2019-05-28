@@ -4,7 +4,7 @@ import SwiftSyntax
 func performMutationTesting(using operators: [MutationOperator], delegate: MutationTestingIODelegate) -> [MutationTestOutcome] {
 
     let initialResult = delegate.runTestSuite(savingResultsIntoFileNamed: "initial_run")
-    guard initialResult == .passed else {
+    guard initialResult.outcome == .passed else {
         delegate.abortTesting(reason: .initialTestingFailed)
         return []
     }
@@ -19,23 +19,22 @@ private func apply(_ operators: [MutationOperator], buildErrorsThreshold: Int = 
     var buildErrors = 0
 
     for (index, `operator`) in operators.enumerated() {
-        let filePath = `operator`.filePath
+        let filePath = `operator`.mutationPoint.filePath
         let fileName = URL(fileURLWithPath: filePath).lastPathComponent
 
         delegate.backupFile(at: filePath)
-
-        let (mutatedSource, description) = `operator`.apply()
+        
+        let sourceOperator = `operator`.mutationPoint.mutationOperatorId.transformation(for: `operator`.mutationPoint.position)
+        let (mutatedSource, description) = sourceOperator(`operator`.source)
         try! delegate.writeFile(to: filePath, contents: mutatedSource.description)
 
-        let (result, log) = delegate.runTestSuite(savingResultsIntoFileNamed: "\(fileName)_\(`operator`.id.rawValue)_\(`operator`.position).log")
+        let (result, log) = delegate.runTestSuite(savingResultsIntoFileNamed: "\(fileName)_\(`operator`.mutationPoint.mutationOperatorId.rawValue)_\(`operator`.mutationPoint.position).log")
         delegate.restoreFile(at: filePath)
 
-        notificationCenter.post(name: .newTestLogAvailable, object: (testLogUrl.lastPathComponent, log))
+        notificationCenter.post(name: .newTestLogAvailable, object: (fileName, log))
 
         let outcome = MutationTestOutcome(testSuiteOutcome: result,
-                                          appliedMutation: `operator`.id,
-                                          filePath: filePath,
-                                          position: `operator`.position,
+                                          mutationPoint: `operator`.mutationPoint,
                                           operatorDescription: description)
 
         outcomes.append(outcome)

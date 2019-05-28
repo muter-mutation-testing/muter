@@ -16,7 +16,7 @@ Original Operator | Negated Operator
 The purpose of this operator is to highlight how your tests respond to changes in branching logic. A well-engineered test suite will be able to fail clearly in response to code taking a different branch than it expected.
 
 ### Mutating an equality check
-```
+```swift
 if myValue == 50 {
     // something happens here
 }
@@ -24,9 +24,38 @@ if myValue == 50 {
 
 becomes
 
-```
+```swift
 if myValue != 50 {
     // something happens here
+}
+```
+
+## Change Logical Connector
+The change logical connector operator will change conditional operators in your code based on this table:
+
+Original Operator | Changed Operator
+------------------|-----------------
+`&&`|`||`
+`||`|`&&`
+
+The purpose of this operator is to highlight how your tests respond to changes in logic. A well-engineered test suite will be able to fail clearly in response to different logical constraints.
+
+### Mutating a Logical AND
+```swift
+func isValidPassword(_ text: String, _ repeatedText: String) -> Bool {
+    let meetsMinimumLength = text.count >= 8
+    let passwordsMatch = repeatedText == text
+    return meetsMinimumLength && passwordsMatch
+}
+```
+
+becomes
+
+```swift
+func isValidPassword(_ text: String, _ repeatedText: String) -> Bool {
+    let meetsMinimumLength = text.count >= 8
+    let passwordsMatch = repeatedText == text
+    return meetsMinimumLength || passwordsMatch
 }
 ```
 
@@ -37,11 +66,11 @@ The Remove Side Effects operator will remove code it determines is causing a sid
 * A line contains a function call and doesn't save the result of the function call into a named variable or constant (i.e. a line implicitly discards a return result or doesn't produce one)
 * A line does not contain a call to `print`, `exit`, `fatalError`, or `abort`
 
-The purpose of this operator is to highlight how your tests respond to the absence of expected side effects. 
+The purpose of this operator is to highlight how your tests respond to the absence of expected side effects.
 
 ### Mutating an explicitly discarded return result
 
-```
+```swift
 func initialize() {
     _ = self.view
     view.results = self.results
@@ -50,7 +79,7 @@ func initialize() {
 
 becomes
 
-```
+```swift
 func initialize() {
     view.results = self.results
 }
@@ -59,7 +88,7 @@ func initialize() {
 
 ### Mutating a void function call
 
-```
+```swift
 func update(email: String, for userId: String) {
     var userRecord = record(for: userId)
     userRecord.email = email
@@ -69,7 +98,7 @@ func update(email: String, for userId: String) {
 
 becomes
 
-```
+```swift
 func update(email: String, for userId: String) {
     var userRecord = record(for: userId)
     userRecord.email = email

@@ -79,8 +79,8 @@ private extension Reporter {
     
     private func outcomeIntoXcodeString(outcome: MutationTestOutcome)  -> String  {
         // {full_path_to_file}{:line}{:character}: {error,warning}: {content}
-        return "\(outcome.filePath):" +
-            "\(outcome.position.line):\(outcome.position.column): " +
+        return "\(outcome.mutationPoint.filePath):" +
+            "\(outcome.mutationPoint.position.line):\(outcome.mutationPoint.position.column): " +
             "warning: " +
         "Your test suite did not kill this mutant: \(outcome.operatorDescription)"
     }

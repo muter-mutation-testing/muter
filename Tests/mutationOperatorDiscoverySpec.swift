@@ -17,15 +17,15 @@ class MutationOperatorDiscoverySpec: QuickSpec {
                     return
                 }
 
-                expect(operators[0].filePath).to(equal("\(self.fixturesDirectory)/sampleForDiscoveringMutations.swift"))
-                expect(operators[1].filePath).to(equal("\(self.fixturesDirectory)/sampleForDiscoveringMutations.swift"))
-                expect(operators[2].filePath).to(equal("\(self.fixturesDirectory)/sample With Spaces For Discovering Mutations.swift"))
-                expect(operators[3].filePath).to(equal("\(self.fixturesDirectory)/sample With Spaces For Discovering Mutations.swift"))
+                expect(operators[0].mutationPoint.filePath).to(equal("\(self.fixturesDirectory)/sampleForDiscoveringMutations.swift"))
+                expect(operators[1].mutationPoint.filePath).to(equal("\(self.fixturesDirectory)/sampleForDiscoveringMutations.swift"))
+                expect(operators[2].mutationPoint.filePath).to(equal("\(self.fixturesDirectory)/sample With Spaces For Discovering Mutations.swift"))
+                expect(operators[3].mutationPoint.filePath).to(equal("\(self.fixturesDirectory)/sample With Spaces For Discovering Mutations.swift"))
 
-                expect(operators[0].position.line).to(equal(3))
-                expect(operators[1].position.line).to(equal(4))
-                expect(operators[2].position.line).to(equal(6))
-                expect(operators[3].position.line).to(equal(7))
+                expect(operators[0].mutationPoint.position.line).to(equal(3))
+                expect(operators[1].mutationPoint.position.line).to(equal(4))
+                expect(operators[2].mutationPoint.position.line).to(equal(6))
+                expect(operators[3].mutationPoint.position.line).to(equal(7))
             }
 
             it("doesn't discover any mutation operators when the Swift code isn't mutable by the operators Muter implements") {
@@ -39,7 +39,7 @@ class MutationOperatorDiscoverySpec: QuickSpec {
                     "\(self.fixturesDirectory)/muter.conf.json",
                 ])
 
-                let operatorsForNonSwiftCode = operators.exclude { $0.filePath.contains(".swift") }
+                let operatorsForNonSwiftCode = operators.exclude { $0.mutationPoint.filePath.contains(".swift") }
 
                 expect(operatorsForNonSwiftCode.count).to(equal(0))
                 expect(operators.count).to(equal(2))
