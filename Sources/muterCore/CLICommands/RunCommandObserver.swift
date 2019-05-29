@@ -185,7 +185,7 @@ extension RunCommandObserver {
             return
         }
 
-        let path = loggingDirectory + "/" + fileName
+        let path = "\(loggingDirectory)/\(fileName).log"
         _ = fileManager.createFile(
             atPath: path,
             contents: contents.data(using: .utf8),

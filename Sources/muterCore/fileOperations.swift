@@ -23,7 +23,7 @@ func createWorkingDirectory(in directory: String, fileManager: FileSystemManager
 func createLoggingDirectory(in directory: String, fileManager: FileSystemManager = FileManager.default, timestamp: Date = Date()) -> String {
     let formatter = DateFormatter()
     formatter.dateFormat = "dd-MM-HH-mm"
-    let logginDirectory = directory + "/" + formatter.string(from: timestamp)
+    let logginDirectory = "\(directory)/muter_logs/\(formatter.string(from: timestamp))"
     try! fileManager.createDirectory(atPath: logginDirectory, withIntermediateDirectories: true, attributes: nil)
     return logginDirectory
 }

@@ -1,6 +1,8 @@
 #!/bin/sh
 echo "📴📴📴📴📴📴📴 Acceptance Testing has started 📴📴📴📴📴📴📴"
 
+rm -rf ./AcceptanceTests/muter_logs
+
 echo "Running Muter on an iOS codebase with a test suite..."
 cd ./Repositories/ExampleApp
 
@@ -10,9 +12,13 @@ cp ./muter.conf.json ../../AcceptanceTests/created_iOS_config.json
 
 echo " > Running in CLI mode..."
 ../../.build/x86_64-apple-macosx/debug/muter > ../../AcceptanceTests/muters_output.txt
+echo " > Copying logs..."
+cp -R ./muter_logs ../../AcceptanceTests/
+rm -rf ./muter_logs
+
 echo " > Running in Xcode mode..."
 ../../.build/x86_64-apple-macosx/debug/muter --output-xcode > ../../AcceptanceTests/muters_xcode_output.txt
-
+rm -rf ./muter_logs # don't pollute the staging area
 
 rm muter.conf.json # cleanup the created configuration file for the next test run
 cd ../..
@@ -40,6 +46,8 @@ cd ./Repositories/ProjectWithFailures
 
 echo " > Running in CLI mode..."
 ../../.build/x86_64-apple-macosx/debug/muter > ../../AcceptanceTests/muters_aborted_testing_output.txt
+rm -rf ./muter_logs # don't pollute the staging area
+
 cd ../..
 
 echo "Running Muter's help command..."

@@ -3,7 +3,11 @@ import SwiftSyntax
 
 func performMutationTesting(using operators: [MutationOperator], delegate: MutationTestingIODelegate, notificationCenter: NotificationCenter = .default) -> [MutationTestOutcome] {
 
-    let initialResult = delegate.runTestSuite(savingResultsIntoFileNamed: "initial_run")
+    let fileName = "initial_run"
+    let initialResult = delegate.runTestSuite(savingResultsIntoFileNamed: fileName)
+    
+    notificationCenter.post(name: .newTestLogAvailable, object: (fileName, initialResult.testLog))
+    
     guard initialResult.outcome == .passed else {
         delegate.abortTesting(reason: .initialTestingFailed)
         return []
