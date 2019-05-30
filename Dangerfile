@@ -39,11 +39,6 @@ end
 #   end
 # end
 
-# Warn when there is a big PR (unless protos were updated)
-if git.lines_of_code > 500 && !has_proto_changes
-  warn("This is a large pull request. Maybe consider breaking it up for easier reviewing")
-end
-
 # App changes without tests
 if has_app_changes && !has_test_changes
     warn "This PR likely needs tests. \
