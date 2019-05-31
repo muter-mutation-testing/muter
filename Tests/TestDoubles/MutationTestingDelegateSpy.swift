@@ -23,9 +23,9 @@ class MutationTestingDelegateSpy: Spy, MutationTestingIODelegate {
         mutatedFileContents.append(contents)
     }
 
-    func runTestSuite(savingResultsIntoFileNamed: String) -> TestSuiteOutcome {
+    func runTestSuite(savingResultsIntoFileNamed: String) -> (outcome: TestSuiteOutcome, testLog: String) {
         methodCalls.append(#function)
-        return testSuiteOutcomes.remove(at: 0)
+        return (testSuiteOutcomes.remove(at: 0), "testLog")
     }
 
     func restoreFile(at path: String) {

@@ -1,9 +1,10 @@
 import Foundation
 
+typealias TestSuiteResult = (outcome: TestSuiteOutcome, testLog: String)
 protocol MutationTestingIODelegate {
     func backupFile(at path: String)
     func writeFile(to path: String, contents: String) throws
-    func runTestSuite(savingResultsIntoFileNamed fileName: String) -> TestSuiteOutcome
+    func runTestSuite(savingResultsIntoFileNamed fileName: String) -> TestSuiteResult
     func restoreFile(at path: String)
     func abortTesting(reason: MutationTestingAbortReason)
 }
@@ -26,7 +27,7 @@ struct MutationTestingDelegate: MutationTestingIODelegate {
         try contents.write(toFile: path, atomically: true, encoding: .utf8)
     }
 
-    func runTestSuite(savingResultsIntoFileNamed fileName: String) -> TestSuiteOutcome {
+    func runTestSuite(savingResultsIntoFileNamed fileName: String) -> (outcome: TestSuiteOutcome, testLog: String) {
         do {
             let (testProcessFileHandle, testLogUrl) = try fileHandle(for: fileName)
 
@@ -36,11 +37,15 @@ struct MutationTestingDelegate: MutationTestingIODelegate {
             testProcessFileHandle.closeFile()
 
             let contents = try String(contentsOf: testLogUrl)
-            return TestSuiteOutcome.from(testLog: contents)
+
+            return (
+                outcome: TestSuiteOutcome.from(testLog: contents),
+                testLog: contents
+            )
 
         } catch {
             abortTesting(reason: .unknownError(error.localizedDescription))
-            return .buildError // this should never be executed
+            return (.buildError, "") // this should never be executed
         }
     }
 

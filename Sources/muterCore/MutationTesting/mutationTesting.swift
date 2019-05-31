@@ -1,19 +1,24 @@
 import Foundation
 import SwiftSyntax
 
-func performMutationTesting(using operators: [MutationOperator], delegate: MutationTestingIODelegate) -> [MutationTestOutcome] {
-
-    let initialResult = delegate.runTestSuite(savingResultsIntoFileNamed: "initial_run")
-    guard initialResult == .passed else {
+func performMutationTesting(using operators: [MutationOperator], delegate: MutationTestingIODelegate, notificationCenter: NotificationCenter = .default) -> [MutationTestOutcome] {
+    let fileName = "initial_run"
+    let initialResult = delegate.runTestSuite(savingResultsIntoFileNamed: fileName)
+    
+    notificationCenter.post(name: .newTestLogAvailable, object: (fileName, initialResult.testLog))
+    
+    guard initialResult.outcome == .passed else {
         delegate.abortTesting(reason: .initialTestingFailed)
         return []
     }
 
-    return apply(operators, delegate: delegate)
+    return apply(operators, delegate: delegate, notificationCenter: notificationCenter)
 }
 
 private func apply(_ operators: [MutationOperator], buildErrorsThreshold: Int = 5, delegate: MutationTestingIODelegate, notificationCenter: NotificationCenter = .default) -> [MutationTestOutcome] {
     var outcomes: [MutationTestOutcome] = []
+    outcomes.reserveCapacity(operators.count)
+
     var buildErrors = 0
 
     for (index, `operator`) in operators.enumerated() {
@@ -26,12 +31,15 @@ private func apply(_ operators: [MutationOperator], buildErrorsThreshold: Int = 
         let (mutatedSource, description) = sourceOperator(`operator`.source)
         try! delegate.writeFile(to: filePath, contents: mutatedSource.description)
 
-        let result = delegate.runTestSuite(savingResultsIntoFileNamed: "\(fileName)_\(`operator`.mutationPoint.mutationOperatorId.rawValue)_\(`operator`.mutationPoint.position).log")
+        let (result, log) = delegate.runTestSuite(savingResultsIntoFileNamed: "\(fileName)_\(`operator`.mutationPoint.mutationOperatorId.rawValue)_\(`operator`.mutationPoint.position).log")
         delegate.restoreFile(at: filePath)
-        
+
+        notificationCenter.post(name: .newTestLogAvailable, object: ((fileName as NSString).deletingPathExtension, log))
+
         let outcome = MutationTestOutcome(testSuiteOutcome: result,
                                           mutationPoint: `operator`.mutationPoint,
                                           operatorDescription: description)
+
         outcomes.append(outcome)
         
         notificationCenter.post(name: .newMutationTestOutcomeAvailable, object: (

@@ -1,4 +1,5 @@
 @testable import muterCore
+import Foundation
 import SwiftSyntax
 import Quick
 import Nimble
@@ -229,5 +230,3 @@ class MutationTestingSpec: QuickSpec {
         }
     }
 }
-
-

@@ -77,7 +77,6 @@ class AcceptanceTests: QuickSpec {
                     }
                 }
 
-                
                 context("when Muter doesn't discover any mutation operators") {
                     var output: String!
                     
@@ -99,7 +98,7 @@ class AcceptanceTests: QuickSpec {
                     }
                 }
                 
-                context("when a user's test suite doesn't pass an initial run", flags: [:]) {
+                context("when a user's test suite doesn't pass an initial run") {
                     var output: String!
                     
                     beforeEach {
@@ -117,6 +116,28 @@ class AcceptanceTests: QuickSpec {
                     
                     they("don't see a list of mutation operators that were applied") {
                         expect(output.contains(messages.appliedMutationOperatorsHeader)).to(beFalse())
+                    }
+                }
+                
+                context("when Muter runs") {
+                    var output: [String]!
+                    
+                    beforeEach {
+                        output = self.muterLogFiles
+                    }
+                    
+                    they("see the logs from the test suite") {
+                        expect(output.count).to(equal(4))
+                        expect(output).to(equal([
+                            "Module.log",
+                            "Module2.log",
+                            "initial_run.log",
+                            "ViewController.log"
+                        ]))
+                        expect(self.contentsOfLogFile(named: output[0])).notTo(beEmpty())
+                        expect(self.contentsOfLogFile(named: output[1])).notTo(beEmpty())
+                        expect(self.contentsOfLogFile(named: output[2])).notTo(beEmpty())
+                        expect(self.contentsOfLogFile(named: output[3])).notTo(beEmpty())
                     }
                 }
             }
@@ -184,6 +205,13 @@ extension AcceptanceTests {
         return contentsOfFileAsString(at: muterAbortedTestingOutputPath)
     }
     
+    var muterLogsRootPath: String { return "\(AcceptanceTests().rootTestDirectory)/muter_logs/" }
+    var muterLogFiles: [String] {
+        return contentsOfDirectory(at: muterLogsRootPath)
+            .map { muterLogsRootPath + "/" + $0 }
+            .flatMap (contentsOfDirectory(at:))
+    }
+    
     var createdIOSConfigurationPath: String { return "\(AcceptanceTests().rootTestDirectory)/created_iOS_config.json" }
     var createdIOSConfiguration: Data {
         return contentsOfFileAsData(at: createdIOSConfigurationPath)
@@ -213,7 +241,18 @@ extension AcceptanceTests {
         }
         return data
     }
+    
+    func contentsOfDirectory(at path: String) -> [String] {
+        return try! FileManager.default.contentsOfDirectory(atPath: path)
+    }
 
+    func contentsOfLogFile(named fileName: String) -> String {
+        return contentsOfDirectory(at: muterLogsRootPath)
+            .first
+            .map { muterLogsRootPath + $0 + "/" + fileName }
+            .map (contentsOfFileAsString(at:))!
+    }
+    
     func numberOfDiscoveredFileLists(in output: String) -> Int {
         return applyRegex("Discovered \\d* Swift files:\n\n(/[^/ ]*)+/?", to: output)
     }

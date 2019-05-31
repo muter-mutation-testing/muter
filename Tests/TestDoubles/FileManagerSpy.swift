@@ -15,13 +15,20 @@ class FileManagerSpy: Spy, FileSystemManager {
     var currentDirectoryPathToReturn: String!
 
     var currentDirectoryPath: String {
-        return currentDirectoryPathToReturn
+        return currentDirectoryPathToReturn ?? "/"
     }
 
     func createDirectory(atPath path: String, withIntermediateDirectories createIntermediates: Bool, attributes: [FileAttributeKey : Any]? = nil) throws {
         methodCalls.append(#function)
         paths.append(path)
         createsIntermediates.append(createIntermediates)
+    }
+
+    func createFile(atPath path: String, contents data: Data?, attributes attr: [FileAttributeKey : Any]?) -> Bool {
+        methodCalls.append(#function)
+        paths.append(path)
+
+        return true
     }
 
     func url(for directory: FileManager.SearchPathDirectory,
