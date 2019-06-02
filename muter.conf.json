@@ -8,6 +8,8 @@
         "main.swift",
         "sourcekite",
         "Package.swift",
-        "Repositories"
+        "Repositories",
+        "RunCommandIODelegate.swift",
+        "RunCommandObserver.swift"
     ]
 }
