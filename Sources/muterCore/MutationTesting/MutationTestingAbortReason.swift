@@ -1,13 +1,13 @@
-enum MutationTestingAbortReason: Equatable {
-    case initialTestingFailed
+public enum MutationTestingAbortReason: Equatable {
+    case baselineTestFailed
     case tooManyBuildErrors
     case unknownError(String)
 }
 
 extension MutationTestingAbortReason: CustomStringConvertible {
-    var description: String {
+    public var description: String {
         switch self {
-        case .initialTestingFailed:
+        case .baselineTestFailed:
             return """
             Muter noticed that your test suite initially failed to compile or produced a test failure.
             

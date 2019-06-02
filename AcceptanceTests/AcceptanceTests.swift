@@ -3,7 +3,6 @@ import Nimble
 
 import Foundation
 import TestingExtensions
-import SnapshotTesting
 @testable import muterCore
 
 @available(OSX 10.13, *)

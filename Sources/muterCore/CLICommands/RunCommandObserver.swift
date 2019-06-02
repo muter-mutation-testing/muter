@@ -13,9 +13,9 @@ extension Notification.Name {
     static let sourceFileDiscoveryStarted = Notification.Name("sourceFileDiscoveryStarted")
     static let sourceFileDiscoveryFinished = Notification.Name("sourceFileDiscoveryFinished")
 
-    static let mutationOperatorDiscoveryStarted = Notification.Name("mutationOperatorDiscoveryStarted")
-    static let mutationOperatorDiscoveryFinished = Notification.Name("mutationOperatorDiscoveryFinished")
-    static let noMutationOperatorsDiscovered = Notification.Name("noMutationOperatorsDiscovered")
+    static let mutationPointDiscoveryStarted = Notification.Name("mutationPointDiscoveryStarted")
+    static let mutationPointDiscoveryFinished = Notification.Name("mutationPointDiscoveryFinished")
+    static let noMutationPointsDiscovered = Notification.Name("noMutationPointsDiscovered")
 
     static let mutationTestingStarted = Notification.Name("mutationTestingStarted")
     static let mutationTestingFinished = Notification.Name("mutationTestingFinished")
@@ -43,14 +43,12 @@ class RunCommandObserver {
             
             (name: .projectCopyStarted, handler: handleProjectCopyStarted),
             (name: .projectCopyFinished, handler: handleProjectCopyFinished),
-            (name: .projectCopyFailed, handler: handleProjectCopyFailed),
             
             (name: .sourceFileDiscoveryStarted, handler: handleSourceFileDiscoveryStarted),
             (name: .sourceFileDiscoveryFinished, handler: handleSourceFileDiscoveryFinished),
             
-            (name: .mutationOperatorDiscoveryStarted, handler: handleMutationOperatorDiscoveryStarted),
-            (name: .mutationOperatorDiscoveryFinished, handler: handleMutationOperatorDiscoveryFinished),
-            (name: .noMutationOperatorsDiscovered, handler: handleNoMutationOperatorsDiscovered),
+            (name: .mutationPointDiscoveryStarted, handler: handleMutationPointDiscoveryStarted),
+            (name: .mutationPointDiscoveryFinished, handler: handleMutationPointDiscoveryFinished),
             
             (name: .mutationTestingStarted, handler: handleMutationTestingStarted),
 
@@ -96,24 +94,12 @@ extension RunCommandObserver {
             print("Finished copying your project to a temporary directory for testing")
         }
     }
+    
 
-    func handleProjectCopyFailed(notification: Notification) {
-        fatalError("""
-        Muter was unable to create a temporary directory,
-        or was unable to copy your project, and cannot continue.
-
-        If you can reproduce this, please consider filing a bug
-        at https://github.com/SeanROlszewski/muter
-
-        Please include the following in the bug report:
-        *********************
-        FileManager error: \(String(describing: notification.object))
-        """)
-    }
 
     func handleSourceFileDiscoveryStarted(notification: Notification) {
         if reporter == .plainText {
-            printMessage("Discovering source code in:\n\n\(notification.object as! String)")
+            printMessage("Discovering source code in:\n\n\(notification.object)")
         }
     }
 
@@ -125,37 +111,24 @@ extension RunCommandObserver {
         }
     }
 
-    func handleMutationOperatorDiscoveryStarted(notification: Notification) {
+    func handleMutationPointDiscoveryStarted(notification: Notification) {
         if reporter == .plainText {
-            print("Discovering applicable Mutation Operators in:\n\n\(notification.object as! String)")
+            print("Discovering applicable Mutation Operators in:\n\n\(notification.object )")
         }
     }
 
-    func handleMutationOperatorDiscoveryFinished(notification: Notification) {
+    func handleMutationPointDiscoveryFinished(notification: Notification) {
         if reporter == .plainText {
-            let discoveredMutationOperators = notification.object as! [MutationOperator]
+            let discoveredMutationPoints = notification.object as! [MutationPoint]
 
-            printMessage("Discovered \(discoveredMutationOperators.count) mutants to introduce:\n")
+            printMessage("Discovered \(discoveredMutationPoints.count) mutants to introduce:\n")
 
-            for (index, `operator`) in discoveredMutationOperators.enumerated() {
+            for (index, mutationPoint) in discoveredMutationPoints.enumerated() {
                 let listPosition = "\(index+1))"
-                let fileName = URL(fileURLWithPath: `operator`.mutationPoint.filePath).lastPathComponent
+                let fileName = URL(fileURLWithPath: mutationPoint.filePath).lastPathComponent
                 print("\(listPosition) \(fileName)")
             }
         }
-    }
-
-    func handleNoMutationOperatorsDiscovered(notification: Notification) {
-        printMessage("""
-        Muter wasn't able to discover any code it could mutation test.
-
-        This is likely caused by misconfiguring Muter, usually by excluding a directory that contains your code.
-
-        If you feel this is a bug, or want help figuring out what could be happening, please open an issue at
-        https://github.com/SeanROlszewski/muter/issues
-
-        """)
-        exit(1)
     }
 
     func handleMutationTestingStarted(notification: Notification) {

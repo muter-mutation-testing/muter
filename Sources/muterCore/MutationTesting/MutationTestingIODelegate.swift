@@ -1,25 +1,20 @@
 import Foundation
 
-typealias TestSuiteResult = (outcome: TestSuiteOutcome, testLog: String)
 protocol MutationTestingIODelegate {
-    func backupFile(at path: String)
+    func backupFile(at path: String, using swapFilePaths: [FilePath: FilePath])
     func writeFile(to path: String, contents: String) throws
-    func runTestSuite(savingResultsIntoFileNamed fileName: String) -> TestSuiteResult
-    func restoreFile(at path: String)
+    func runTestSuite(using configuration: MuterConfiguration, savingResultsIntoFileNamed fileName: String) -> (outcome: TestSuiteOutcome, testLog: String)
+    func restoreFile(at path: String, using swapFilePaths: [FilePath: FilePath])
     func abortTesting(reason: MutationTestingAbortReason)
 }
 
 // MARK - Mutation Testing I/O Delegate
 @available(OSX 10.13, *)
 struct MutationTestingDelegate: MutationTestingIODelegate {
-
-    let configuration: MuterConfiguration
-    let swapFilePathsByOriginalPath: [String: String]
-
     private let notificationCenter: NotificationCenter = .default
 
-    func backupFile(at path: String) {
-        let swapFilePath = swapFilePathsByOriginalPath[path]!
+    func backupFile(at path: String, using swapFilePaths: [FilePath: FilePath]) {
+        let swapFilePath = swapFilePaths[path]!
         copySourceCode(fromFileAt: path, to: swapFilePath)
     }
 
@@ -27,7 +22,8 @@ struct MutationTestingDelegate: MutationTestingIODelegate {
         try contents.write(toFile: path, atomically: true, encoding: .utf8)
     }
 
-    func runTestSuite(savingResultsIntoFileNamed fileName: String) -> (outcome: TestSuiteOutcome, testLog: String) {
+    func runTestSuite(using configuration: MuterConfiguration,
+                      savingResultsIntoFileNamed fileName: String) -> (outcome: TestSuiteOutcome, testLog: String) {
         do {
             let (testProcessFileHandle, testLogUrl) = try fileHandle(for: fileName)
 
@@ -49,8 +45,8 @@ struct MutationTestingDelegate: MutationTestingIODelegate {
         }
     }
 
-    func restoreFile(at path: String) {
-        let swapFilePath = swapFilePathsByOriginalPath[path]!
+    func restoreFile(at path: String, using swapFilePaths: [FilePath: FilePath]) {
+        let swapFilePath = swapFilePaths[path]!
         copySourceCode(fromFileAt: swapFilePath, to: path)
     }
 

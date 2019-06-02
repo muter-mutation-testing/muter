@@ -10,18 +10,7 @@ public struct MutationPoint: Equatable, Codable {
     let position: AbsolutePosition
 }
 
-public struct MutationOperator {
-
-    let mutationPoint: MutationPoint
-    let source: Syntax
-
-    init(mutationPoint: MutationPoint, source: Syntax) {
-        self.mutationPoint = mutationPoint
-        self.source = source
-    }
-}
-
-extension MutationOperator {
+struct MutationOperator {
     public enum Id: String, Codable, CaseIterable {
         case negateConditionals = "NegateConditionals"
         case removeSideEffects = "RemoveSideEffects"
@@ -30,15 +19,18 @@ extension MutationOperator {
         var rewriterVisitorPair: (rewriter: RewriterInitializer, visitor: VisitorInitializer) {
             switch self {
             case .removeSideEffects:
-               return (rewriter: RemoveSideEffectsOperator.Rewriter.init, visitor: RemoveSideEffectsOperator.Visitor.init)
+               return (rewriter: RemoveSideEffectsOperator.Rewriter.init,
+                       visitor: RemoveSideEffectsOperator.Visitor.init)
             case .negateConditionals:
-                return (rewriter: NegateConditionalsOperator.Rewriter.init, visitor: NegateConditionalsOperator.Visitor.init)
+                return (rewriter: NegateConditionalsOperator.Rewriter.init,
+                        visitor: NegateConditionalsOperator.Visitor.init)
             case .logicalOperator:
-                return (rewriter: LogicalOperatorOperator.Rewriter.init, visitor: LogicalOperatorOperator.Visitor.init)
+                return (rewriter: LogicalOperatorOperator.Rewriter.init,
+                        visitor: LogicalOperatorOperator.Visitor.init)
             }
         }
         
-        func transformation(for position: AbsolutePosition) -> SourceCodeTransformation {
+        func mutationOperator(for position: AbsolutePosition) -> SourceCodeTransformation {
             return { source in
                 let visitor = self.rewriterVisitorPair.rewriter(position)
                 let mutatedSource = visitor.visit(source)

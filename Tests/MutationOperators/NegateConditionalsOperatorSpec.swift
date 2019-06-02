@@ -128,7 +128,7 @@ class NegateConditionalsOperatorSpec: QuickSpec {
                 let line3Column19 = AbsolutePosition(line: 3, column: 19, utf8Offset: 76)
                 sourceWithConditionalLogic = sourceCode(fromFileAt: "\(self.mutationExamplesDirectory)/NegateConditionals/sampleWithConditionalOperators.swift")!
                 let expectedSource = sourceCode(fromFileAt: "\(self.mutationExamplesDirectory)/NegateConditionals/equalityOperator.swift")!
-                let transformation = MutationOperator.Id.negateConditionals.transformation(for: line3Column19)
+                let transformation = MutationOperator.Id.negateConditionals.mutationOperator(for: line3Column19)
                 
                 let (actualMutatedSource, actualDescription) = transformation(sourceWithConditionalLogic)
                 
