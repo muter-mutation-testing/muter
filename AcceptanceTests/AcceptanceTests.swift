@@ -31,9 +31,11 @@ class AcceptanceTests: QuickSpec {
                 context("without any arguments") {
                     context("when Muter discovers operators it can apply") {
                         var output: String!
+                        var logFiles: [String]!
                         
                         beforeEach {
                             output = self.muterOutput
+                            logFiles = self.muterLogFiles
                         }
                         
                         they("see that their files are copied to a temp folder") {
@@ -62,6 +64,25 @@ class AcceptanceTests: QuickSpec {
                         they("see which mutation operators were applied") {
                             expect(output.contains(messages.appliedMutationOperatorsHeader)).to(beTrue())
                         }
+                        
+                        they("see the logs from their test runner copied into their project's directory") {
+                            let expectedLogFiles = [
+                                "baseline run.log",
+                                "ChangeLogicalConnector @ Module2.swift:6:18.log",
+                                "ChangeLogicalConnector @ Module2.swift:10:17.log",
+                                "NegateConditionals @ Module.swift:4:18.log",
+                                "NegateConditionals @ Module.swift:8:18.log",
+                                "NegateConditionals @ Module.swift:12:18.log",
+                                "NegateConditionals @ Module2.swift:2:17.log",
+                                "RemoveSideEffects @ ViewController.swift:5:28.log"
+                            ]
+                            let numberOfEmptyLogFiles = expectedLogFiles
+                                .map(self.contentsOfLogFile(named:))
+                                .count { $0.isEmpty }
+                            
+                            expect(logFiles.sorted()).to(equal(expectedLogFiles.sorted())) // Sort these so it's easier to reason about and erroneously fails less frequently
+                            expect(numberOfEmptyLogFiles) == 0
+                        }
                     }
                 }
                 
@@ -76,7 +97,7 @@ class AcceptanceTests: QuickSpec {
                         expect(self.numberOfXcodeFormattedMessages(in: output)).to(equal(3))
                     }
                 }
-
+                
                 context("when Muter doesn't discover any mutation operators") {
                     var output: String!
                     
@@ -116,28 +137,6 @@ class AcceptanceTests: QuickSpec {
                     
                     they("don't see a list of mutation operators that were applied") {
                         expect(output.contains(messages.appliedMutationOperatorsHeader)).to(beFalse())
-                    }
-                }
-                
-                context("when Muter runs") {
-                    var output: [String]!
-                    
-                    beforeEach {
-                        output = self.muterLogFiles
-                    }
-                    
-                    they("see the logs from the test suite") {
-                        expect(output.count).to(equal(4))
-                        expect(output).to(equal([
-                            "Module.log",
-                            "Module2.log",
-                            "initial_run.log",
-                            "ViewController.log"
-                        ]))
-                        expect(self.contentsOfLogFile(named: output[0])).notTo(beEmpty())
-                        expect(self.contentsOfLogFile(named: output[1])).notTo(beEmpty())
-                        expect(self.contentsOfLogFile(named: output[2])).notTo(beEmpty())
-                        expect(self.contentsOfLogFile(named: output[3])).notTo(beEmpty())
                     }
                 }
             }

@@ -23,9 +23,9 @@ public struct MutationOperator {
 
 extension MutationOperator {
     public enum Id: String, Codable, CaseIterable {
-        case negateConditionals = "Negate Conditionals"
-        case removeSideEffects = "Remove Side Effects"
-        case logicalOperator = "Logical Operator"
+        case negateConditionals = "NegateConditionals"
+        case removeSideEffects = "RemoveSideEffects"
+        case logicalOperator = "ChangeLogicalConnector"
         
         var rewriterVisitorPair: (rewriter: RewriterInitializer, visitor: VisitorInitializer) {
             switch self {
