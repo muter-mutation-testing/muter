@@ -14,6 +14,7 @@ sourcekite
 muter.xcodeproj
 /Tests/bonmot_regression_test_output.json
 muterReport.json
+muter_logs
 
 ### macOS ###
 # General
