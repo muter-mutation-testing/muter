@@ -22,10 +22,6 @@ requested_reviewers = github.pr_json[:requested_reviewers]
 reviewersCount = requested_reviewers.length
 if reviewersCount == 0
   fail("🕵 Whoops, I don't see any reviewers. Remember to add one.")
-elsif reviewersCount == 1
-  warn(
-    "It's great to have at least 1 reviewer. However, remember that having more than 1 reviewer may lead to uncertainty as to who is responsible for the review."
-  )
 else
   message("✅ Looks like you have enough reviewers selected.")
 end
