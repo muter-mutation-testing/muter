@@ -28,23 +28,23 @@ let package = Package(
         ),        
         .target(
             name: "TestingExtensions",
-            dependencies: ["SwiftSyntax", "muterCore", "Quick"],
+            dependencies: ["SwiftSyntax", "muterCore", "Quick", "Nimble"],
             path: "Tests/Extensions"
         ),
         .testTarget(
             name: "muterTests",
-            dependencies: ["muterCore", "Quick", "Nimble", "SnapshotTesting", "TestingExtensions"],
+            dependencies: ["muterCore", "TestingExtensions"],
             path: "Tests",
             exclude: ["fixtures", "Extensions"]
         ),
         .testTarget(
             name: "muterAcceptanceTests",
-            dependencies: ["muterCore", "Nimble", "TestingExtensions"],
+            dependencies: ["muterCore", "TestingExtensions"],
             path: "AcceptanceTests"
         ),
         .testTarget(
             name: "muterRegressionTests",
-            dependencies: ["muterCore", "Nimble", "TestingExtensions"],
+            dependencies: ["muterCore", "TestingExtensions", "SnapshotTesting"],
             path: "RegressionTests"
         )
     ]

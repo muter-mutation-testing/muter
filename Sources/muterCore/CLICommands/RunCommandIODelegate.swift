@@ -40,6 +40,7 @@ public class RunCommandDelegate: RunCommandIODelegate {
             )
 
             notificationCenter.post(name: .projectCopyStarted, object: nil)
+            
             let destinationPath = destinationDirectoryPath(in: temporaryDirectory, withProjectName: URL(fileURLWithPath: directory).lastPathComponent)
             try fileManager.copyItem(atPath: directory, toPath: destinationPath)
             temporaryDirectoryURL = destinationPath
@@ -55,31 +56,31 @@ public class RunCommandDelegate: RunCommandIODelegate {
         let destination = temporaryDirectory.appendingPathComponent(name, isDirectory: true)
         return destination.path
     }
+}
 
+@available(OSX 10.13, *)
+extension RunCommandDelegate {
+    
     public func executeTesting(using configuration: MuterConfiguration) {
 
-        let workingDirectoryPath = createWorkingDirectory(in: temporaryDirectoryURL!)
-        notificationCenter.post(name: .sourceFileDiscoveryStarted, object: temporaryDirectoryURL!)
+    }
+    
+    private func discoverSourceFiles(using configuration: MuterConfiguration) -> [String] {
 
-        let sourceFilePaths = discoverSourceFiles(inDirectoryAt: temporaryDirectoryURL!, excludingPathsIn: configuration.excludeList)
-        let swapFilePathsByOriginalPath = swapFilePaths(forFilesAt: sourceFilePaths, using: workingDirectoryPath)
-        notificationCenter.post(name: .sourceFileDiscoveryFinished, object: sourceFilePaths)
+        return []
+    }
+    
+    private func discoverMutationPoints(using configuration: MuterConfiguration, sourceFilePaths: [String]) -> [MutationPoint] {
 
-        notificationCenter.post(name: .mutationOperatorDiscoveryStarted, object: temporaryDirectoryURL!)
-        let mutationOperators = discoverMutationOperators(inFilesAt: sourceFilePaths)
-        guard mutationOperators.count >= 1 else {
-            notificationCenter.post(name: .noMutationOperatorsDiscovered, object: nil)
-            return
-        }
-        notificationCenter.post(name: .mutationOperatorDiscoveryFinished, object: mutationOperators)
-
-        FileManager.default.changeCurrentDirectoryPath(temporaryDirectoryURL!)
-
+        return []
+    }
+    
+    private func performMutationTesting(using configuration: MuterConfiguration, mutationPoints: [MutationPoint], swapFilePathsByOriginalPath: [FilePath: FilePath]) {
         notificationCenter.post(name: .mutationTestingStarted, object: nil)
+        
 
-        let testingDelegate = MutationTestingDelegate(configuration: configuration, swapFilePathsByOriginalPath: swapFilePathsByOriginalPath)
-        let report = performMutationTesting(using: mutationOperators, delegate: testingDelegate)
-
-        notificationCenter.post(name: .mutationTestingFinished, object: report)
+//        let mutationTestingOutcomes = muterCore.performMutationTesting(using: mutationPoints, delegate: testingDelegate)
+        
+        notificationCenter.post(name: .mutationTestingFinished, object: [])
     }
 }

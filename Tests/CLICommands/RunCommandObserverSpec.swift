@@ -14,6 +14,9 @@ class RunCommandObserverSpec: QuickSpec {
                     flushHandlerWasCalled = true
                 }
                 
+                let fileManagerSpy = FileManagerSpy()
+                fileManagerSpy.currentDirectoryPathToReturn = "/"
+                
                 var notification: Notification!
                 
                 beforeEach {
@@ -31,19 +34,25 @@ class RunCommandObserverSpec: QuickSpec {
                 }
                 
                 it("flushes stdout when using an Xcode reporter") {
-                    let subject = RunCommandObserver(reporter: .xcode, fileManager: FileManagerSpy(), flushHandler: flushHandlerSpy)
+                    let subject = RunCommandObserver(reporter: .xcode,
+                                                     fileManager: fileManagerSpy,
+                                                     flushHandler: flushHandlerSpy)
                     subject.handleNewMutationTestOutcomeAvailable(notification: notification)
                     expect(flushHandlerWasCalled) == true
                 }
                 
                 it("doesn't flush stdout when using a JSON reporter") {
-                    let subject = RunCommandObserver(reporter: .json, fileManager: FileManagerSpy(), flushHandler: flushHandlerSpy)
+                    let subject = RunCommandObserver(reporter: .json,
+                                                     fileManager: fileManagerSpy,
+                                                     flushHandler: flushHandlerSpy)
                     subject.handleNewMutationTestOutcomeAvailable(notification: notification)
                     expect(flushHandlerWasCalled) == false
                 }
                 
                 it("doesn't flush stdout when using a plain text reporter") {
-                    let subject = RunCommandObserver(reporter: .plainText, fileManager: FileManagerSpy(), flushHandler: flushHandlerSpy)
+                    let subject = RunCommandObserver(reporter: .plainText,
+                                                     fileManager: fileManagerSpy,
+                                                     flushHandler: flushHandlerSpy)
                     subject.handleNewMutationTestOutcomeAvailable(notification: notification)
                     expect(flushHandlerWasCalled) == false
                 }

@@ -12,7 +12,7 @@ class MutationTestingDelegateSpy: Spy, MutationTestingIODelegate {
 
     var testSuiteOutcomes: [TestSuiteOutcome]!
 
-    func backupFile(at path: String) {
+    func backupFile(at path: String, using swapFilePaths: [FilePath : FilePath]) {
         methodCalls.append(#function)
         backedUpFilePaths.append(path)
     }
@@ -23,12 +23,12 @@ class MutationTestingDelegateSpy: Spy, MutationTestingIODelegate {
         mutatedFileContents.append(contents)
     }
 
-    func runTestSuite(savingResultsIntoFileNamed: String) -> (outcome: TestSuiteOutcome, testLog: String) {
+    func runTestSuite(using configuration: MuterConfiguration, savingResultsIntoFileNamed fileName: String) -> (outcome: TestSuiteOutcome, testLog: String) {
         methodCalls.append(#function)
         return (testSuiteOutcomes.remove(at: 0), "testLog")
     }
-
-    func restoreFile(at path: String) {
+    
+    func restoreFile(at path: String, using swapFilePaths: [FilePath : FilePath]) {
         methodCalls.append(#function)
         restoredFilePaths.append(path)
     }

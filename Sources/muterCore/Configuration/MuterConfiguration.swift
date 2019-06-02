@@ -11,7 +11,7 @@ public struct MuterConfiguration: Equatable, Codable {
         case excludeList = "exclude"
     }
 
-    public init(executable: String, arguments: [String], excludeList: [String] = []) {
+    public init(executable: String = "", arguments: [String] = [], excludeList: [String] = []) {
         self.testCommandExecutable = executable
         self.testCommandArguments = arguments
         self.excludeList = excludeList

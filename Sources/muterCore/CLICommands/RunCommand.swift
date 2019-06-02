@@ -38,14 +38,13 @@ public struct RunCommand: CommandProtocol {
         
         notificationCenter.post(name: .muterLaunched, object: nil)
 
-        guard let configuration = delegate.loadConfiguration() else {
-            return .failure(.configurationError)
+        let result = RunCommandHandler().handle()
+        switch result {
+        case .success(_):
+            return .success(())
+        case .failure(let error):
+            return .failure(error)
         }
-
-        delegate.backupProject(in: fileManager.currentDirectoryPath)
-        delegate.executeTesting(using: configuration)
-
-        return .success(())
     }
 }
 
