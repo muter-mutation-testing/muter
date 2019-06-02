@@ -2,10 +2,10 @@ import Foundation
 import SwiftSyntax
 
 func performMutationTesting(using operators: [MutationOperator], delegate: MutationTestingIODelegate, notificationCenter: NotificationCenter = .default) -> [MutationTestOutcome] {
-    let fileName = "initial_run"
+    let fileName = "baseline run.log"
     let initialResult = delegate.runTestSuite(savingResultsIntoFileNamed: fileName)
     
-    notificationCenter.post(name: .newTestLogAvailable, object: (fileName, initialResult.testLog))
+    notificationCenter.post(name: .newTestLogAvailable, object: (nil as MutationPoint?, initialResult.testLog))
     
     guard initialResult.outcome == .passed else {
         delegate.abortTesting(reason: .initialTestingFailed)
@@ -34,7 +34,7 @@ private func apply(_ operators: [MutationOperator], buildErrorsThreshold: Int = 
         let (result, log) = delegate.runTestSuite(savingResultsIntoFileNamed: "\(fileName)_\(`operator`.mutationPoint.mutationOperatorId.rawValue)_\(`operator`.mutationPoint.position).log")
         delegate.restoreFile(at: filePath)
 
-        notificationCenter.post(name: .newTestLogAvailable, object: ((fileName as NSString).deletingPathExtension, log))
+        notificationCenter.post(name: .newTestLogAvailable, object: (`operator`.mutationPoint, log))
 
         let outcome = MutationTestOutcome(testSuiteOutcome: result,
                                           mutationPoint: `operator`.mutationPoint,

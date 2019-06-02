@@ -4,8 +4,8 @@
       "appliedOperators" : [
         {
           "mutationPoint" : {
-            "filePath" : "\/var\/folders\/0b\/dxsqs2d901j1h3_d9pqwqdfh0000gn\/T\/TemporaryItems\/(A Document Being Saved By muter 14)\/FFCParserCombinator\/Sources\/FFCParserCombinator\/FFCParserCombinator.swift",
-            "mutationOperatorId" : "Negate Conditionals",
+            "filePath" : "\/var\/folders\/0b\/dxsqs2d901j1h3_d9pqwqdfh0000gn\/T\/TemporaryItems\/(A Document Being Saved By muter 16)\/FFCParserCombinator\/Sources\/FFCParserCombinator\/FFCParserCombinator.swift",
+            "mutationOperatorId" : "NegateConditionals",
             "position" : {
               "column" : 23,
               "line" : 64,
@@ -16,8 +16,8 @@
         },
         {
           "mutationPoint" : {
-            "filePath" : "\/var\/folders\/0b\/dxsqs2d901j1h3_d9pqwqdfh0000gn\/T\/TemporaryItems\/(A Document Being Saved By muter 14)\/FFCParserCombinator\/Sources\/FFCParserCombinator\/FFCParserCombinator.swift",
-            "mutationOperatorId" : "Negate Conditionals",
+            "filePath" : "\/var\/folders\/0b\/dxsqs2d901j1h3_d9pqwqdfh0000gn\/T\/TemporaryItems\/(A Document Being Saved By muter 16)\/FFCParserCombinator\/Sources\/FFCParserCombinator\/FFCParserCombinator.swift",
+            "mutationOperatorId" : "NegateConditionals",
             "position" : {
               "column" : 46,
               "line" : 64,
@@ -28,8 +28,8 @@
         },
         {
           "mutationPoint" : {
-            "filePath" : "\/var\/folders\/0b\/dxsqs2d901j1h3_d9pqwqdfh0000gn\/T\/TemporaryItems\/(A Document Being Saved By muter 14)\/FFCParserCombinator\/Sources\/FFCParserCombinator\/FFCParserCombinator.swift",
-            "mutationOperatorId" : "Negate Conditionals",
+            "filePath" : "\/var\/folders\/0b\/dxsqs2d901j1h3_d9pqwqdfh0000gn\/T\/TemporaryItems\/(A Document Being Saved By muter 16)\/FFCParserCombinator\/Sources\/FFCParserCombinator\/FFCParserCombinator.swift",
+            "mutationOperatorId" : "NegateConditionals",
             "position" : {
               "column" : 29,
               "line" : 68,
@@ -40,8 +40,8 @@
         },
         {
           "mutationPoint" : {
-            "filePath" : "\/var\/folders\/0b\/dxsqs2d901j1h3_d9pqwqdfh0000gn\/T\/TemporaryItems\/(A Document Being Saved By muter 14)\/FFCParserCombinator\/Sources\/FFCParserCombinator\/FFCParserCombinator.swift",
-            "mutationOperatorId" : "Logical Operator",
+            "filePath" : "\/var\/folders\/0b\/dxsqs2d901j1h3_d9pqwqdfh0000gn\/T\/TemporaryItems\/(A Document Being Saved By muter 16)\/FFCParserCombinator\/Sources\/FFCParserCombinator\/FFCParserCombinator.swift",
+            "mutationOperatorId" : "ChangeLogicalConnector",
             "position" : {
               "column" : 30,
               "line" : 64,
@@ -58,8 +58,8 @@
       "appliedOperators" : [
         {
           "mutationPoint" : {
-            "filePath" : "\/var\/folders\/0b\/dxsqs2d901j1h3_d9pqwqdfh0000gn\/T\/TemporaryItems\/(A Document Being Saved By muter 14)\/FFCParserCombinator\/Sources\/FFCParserCombinator\/StringParsing.swift",
-            "mutationOperatorId" : "Negate Conditionals",
+            "filePath" : "\/var\/folders\/0b\/dxsqs2d901j1h3_d9pqwqdfh0000gn\/T\/TemporaryItems\/(A Document Being Saved By muter 16)\/FFCParserCombinator\/Sources\/FFCParserCombinator\/StringParsing.swift",
+            "mutationOperatorId" : "NegateConditionals",
             "position" : {
               "column" : 73,
               "line" : 89,
@@ -70,8 +70,8 @@
         },
         {
           "mutationPoint" : {
-            "filePath" : "\/var\/folders\/0b\/dxsqs2d901j1h3_d9pqwqdfh0000gn\/T\/TemporaryItems\/(A Document Being Saved By muter 14)\/FFCParserCombinator\/Sources\/FFCParserCombinator\/StringParsing.swift",
-            "mutationOperatorId" : "Negate Conditionals",
+            "filePath" : "\/var\/folders\/0b\/dxsqs2d901j1h3_d9pqwqdfh0000gn\/T\/TemporaryItems\/(A Document Being Saved By muter 16)\/FFCParserCombinator\/Sources\/FFCParserCombinator\/StringParsing.swift",
+            "mutationOperatorId" : "NegateConditionals",
             "position" : {
               "column" : 54,
               "line" : 144,
@@ -82,8 +82,8 @@
         },
         {
           "mutationPoint" : {
-            "filePath" : "\/var\/folders\/0b\/dxsqs2d901j1h3_d9pqwqdfh0000gn\/T\/TemporaryItems\/(A Document Being Saved By muter 14)\/FFCParserCombinator\/Sources\/FFCParserCombinator\/StringParsing.swift",
-            "mutationOperatorId" : "Negate Conditionals",
+            "filePath" : "\/var\/folders\/0b\/dxsqs2d901j1h3_d9pqwqdfh0000gn\/T\/TemporaryItems\/(A Document Being Saved By muter 16)\/FFCParserCombinator\/Sources\/FFCParserCombinator\/StringParsing.swift",
+            "mutationOperatorId" : "NegateConditionals",
             "position" : {
               "column" : 38,
               "line" : 168,
@@ -94,8 +94,8 @@
         },
         {
           "mutationPoint" : {
-            "filePath" : "\/var\/folders\/0b\/dxsqs2d901j1h3_d9pqwqdfh0000gn\/T\/TemporaryItems\/(A Document Being Saved By muter 14)\/FFCParserCombinator\/Sources\/FFCParserCombinator\/StringParsing.swift",
-            "mutationOperatorId" : "Negate Conditionals",
+            "filePath" : "\/var\/folders\/0b\/dxsqs2d901j1h3_d9pqwqdfh0000gn\/T\/TemporaryItems\/(A Document Being Saved By muter 16)\/FFCParserCombinator\/Sources\/FFCParserCombinator\/StringParsing.swift",
+            "mutationOperatorId" : "NegateConditionals",
             "position" : {
               "column" : 42,
               "line" : 204,
@@ -106,8 +106,8 @@
         },
         {
           "mutationPoint" : {
-            "filePath" : "\/var\/folders\/0b\/dxsqs2d901j1h3_d9pqwqdfh0000gn\/T\/TemporaryItems\/(A Document Being Saved By muter 14)\/FFCParserCombinator\/Sources\/FFCParserCombinator\/StringParsing.swift",
-            "mutationOperatorId" : "Negate Conditionals",
+            "filePath" : "\/var\/folders\/0b\/dxsqs2d901j1h3_d9pqwqdfh0000gn\/T\/TemporaryItems\/(A Document Being Saved By muter 16)\/FFCParserCombinator\/Sources\/FFCParserCombinator\/StringParsing.swift",
+            "mutationOperatorId" : "NegateConditionals",
             "position" : {
               "column" : 48,
               "line" : 210,
@@ -118,8 +118,8 @@
         },
         {
           "mutationPoint" : {
-            "filePath" : "\/var\/folders\/0b\/dxsqs2d901j1h3_d9pqwqdfh0000gn\/T\/TemporaryItems\/(A Document Being Saved By muter 14)\/FFCParserCombinator\/Sources\/FFCParserCombinator\/StringParsing.swift",
-            "mutationOperatorId" : "Negate Conditionals",
+            "filePath" : "\/var\/folders\/0b\/dxsqs2d901j1h3_d9pqwqdfh0000gn\/T\/TemporaryItems\/(A Document Being Saved By muter 16)\/FFCParserCombinator\/Sources\/FFCParserCombinator\/StringParsing.swift",
+            "mutationOperatorId" : "NegateConditionals",
             "position" : {
               "column" : 76,
               "line" : 210,
@@ -130,8 +130,8 @@
         },
         {
           "mutationPoint" : {
-            "filePath" : "\/var\/folders\/0b\/dxsqs2d901j1h3_d9pqwqdfh0000gn\/T\/TemporaryItems\/(A Document Being Saved By muter 14)\/FFCParserCombinator\/Sources\/FFCParserCombinator\/StringParsing.swift",
-            "mutationOperatorId" : "Negate Conditionals",
+            "filePath" : "\/var\/folders\/0b\/dxsqs2d901j1h3_d9pqwqdfh0000gn\/T\/TemporaryItems\/(A Document Being Saved By muter 16)\/FFCParserCombinator\/Sources\/FFCParserCombinator\/StringParsing.swift",
+            "mutationOperatorId" : "NegateConditionals",
             "position" : {
               "column" : 106,
               "line" : 210,

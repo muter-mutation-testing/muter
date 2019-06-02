@@ -4,8 +4,8 @@
       "appliedOperators" : [
         {
           "mutationPoint" : {
-            "filePath" : "\/var\/folders\/0b\/dxsqs2d901j1h3_d9pqwqdfh0000gn\/T\/TemporaryItems\/(A Document Being Saved By muter 13)\/BonMot\/Sources\/Compatibility.swift",
-            "mutationOperatorId" : "Logical Operator",
+            "filePath" : "\/var\/folders\/0b\/dxsqs2d901j1h3_d9pqwqdfh0000gn\/T\/TemporaryItems\/(A Document Being Saved By muter 15)\/BonMot\/Sources\/Compatibility.swift",
+            "mutationOperatorId" : "ChangeLogicalConnector",
             "position" : {
               "column" : 17,
               "line" : 39,
@@ -16,8 +16,8 @@
         },
         {
           "mutationPoint" : {
-            "filePath" : "\/var\/folders\/0b\/dxsqs2d901j1h3_d9pqwqdfh0000gn\/T\/TemporaryItems\/(A Document Being Saved By muter 13)\/BonMot\/Sources\/Compatibility.swift",
-            "mutationOperatorId" : "Logical Operator",
+            "filePath" : "\/var\/folders\/0b\/dxsqs2d901j1h3_d9pqwqdfh0000gn\/T\/TemporaryItems\/(A Document Being Saved By muter 15)\/BonMot\/Sources\/Compatibility.swift",
+            "mutationOperatorId" : "ChangeLogicalConnector",
             "position" : {
               "column" : 29,
               "line" : 39,
@@ -28,8 +28,8 @@
         },
         {
           "mutationPoint" : {
-            "filePath" : "\/var\/folders\/0b\/dxsqs2d901j1h3_d9pqwqdfh0000gn\/T\/TemporaryItems\/(A Document Being Saved By muter 13)\/BonMot\/Sources\/Compatibility.swift",
-            "mutationOperatorId" : "Logical Operator",
+            "filePath" : "\/var\/folders\/0b\/dxsqs2d901j1h3_d9pqwqdfh0000gn\/T\/TemporaryItems\/(A Document Being Saved By muter 15)\/BonMot\/Sources\/Compatibility.swift",
+            "mutationOperatorId" : "ChangeLogicalConnector",
             "position" : {
               "column" : 17,
               "line" : 68,
@@ -46,8 +46,8 @@
       "appliedOperators" : [
         {
           "mutationPoint" : {
-            "filePath" : "\/var\/folders\/0b\/dxsqs2d901j1h3_d9pqwqdfh0000gn\/T\/TemporaryItems\/(A Document Being Saved By muter 13)\/BonMot\/Sources\/ContextualAlternates.swift",
-            "mutationOperatorId" : "Logical Operator",
+            "filePath" : "\/var\/folders\/0b\/dxsqs2d901j1h3_d9pqwqdfh0000gn\/T\/TemporaryItems\/(A Document Being Saved By muter 15)\/BonMot\/Sources\/ContextualAlternates.swift",
+            "mutationOperatorId" : "ChangeLogicalConnector",
             "position" : {
               "column" : 13,
               "line" : 16,
@@ -58,8 +58,8 @@
         },
         {
           "mutationPoint" : {
-            "filePath" : "\/var\/folders\/0b\/dxsqs2d901j1h3_d9pqwqdfh0000gn\/T\/TemporaryItems\/(A Document Being Saved By muter 13)\/BonMot\/Sources\/ContextualAlternates.swift",
-            "mutationOperatorId" : "Logical Operator",
+            "filePath" : "\/var\/folders\/0b\/dxsqs2d901j1h3_d9pqwqdfh0000gn\/T\/TemporaryItems\/(A Document Being Saved By muter 15)\/BonMot\/Sources\/ContextualAlternates.swift",
+            "mutationOperatorId" : "ChangeLogicalConnector",
             "position" : {
               "column" : 25,
               "line" : 16,
@@ -70,8 +70,8 @@
         },
         {
           "mutationPoint" : {
-            "filePath" : "\/var\/folders\/0b\/dxsqs2d901j1h3_d9pqwqdfh0000gn\/T\/TemporaryItems\/(A Document Being Saved By muter 13)\/BonMot\/Sources\/ContextualAlternates.swift",
-            "mutationOperatorId" : "Remove Side Effects",
+            "filePath" : "\/var\/folders\/0b\/dxsqs2d901j1h3_d9pqwqdfh0000gn\/T\/TemporaryItems\/(A Document Being Saved By muter 15)\/BonMot\/Sources\/ContextualAlternates.swift",
+            "mutationOperatorId" : "RemoveSideEffects",
             "position" : {
               "column" : 41,
               "line" : 63,
@@ -88,8 +88,8 @@
       "appliedOperators" : [
         {
           "mutationPoint" : {
-            "filePath" : "\/var\/folders\/0b\/dxsqs2d901j1h3_d9pqwqdfh0000gn\/T\/TemporaryItems\/(A Document Being Saved By muter 13)\/BonMot\/Sources\/FontFeatures.swift",
-            "mutationOperatorId" : "Logical Operator",
+            "filePath" : "\/var\/folders\/0b\/dxsqs2d901j1h3_d9pqwqdfh0000gn\/T\/TemporaryItems\/(A Document Being Saved By muter 15)\/BonMot\/Sources\/FontFeatures.swift",
+            "mutationOperatorId" : "ChangeLogicalConnector",
             "position" : {
               "column" : 13,
               "line" : 16,
@@ -100,8 +100,8 @@
         },
         {
           "mutationPoint" : {
-            "filePath" : "\/var\/folders\/0b\/dxsqs2d901j1h3_d9pqwqdfh0000gn\/T\/TemporaryItems\/(A Document Being Saved By muter 13)\/BonMot\/Sources\/FontFeatures.swift",
-            "mutationOperatorId" : "Logical Operator",
+            "filePath" : "\/var\/folders\/0b\/dxsqs2d901j1h3_d9pqwqdfh0000gn\/T\/TemporaryItems\/(A Document Being Saved By muter 15)\/BonMot\/Sources\/FontFeatures.swift",
+            "mutationOperatorId" : "ChangeLogicalConnector",
             "position" : {
               "column" : 25,
               "line" : 16,
@@ -112,8 +112,8 @@
         },
         {
           "mutationPoint" : {
-            "filePath" : "\/var\/folders\/0b\/dxsqs2d901j1h3_d9pqwqdfh0000gn\/T\/TemporaryItems\/(A Document Being Saved By muter 13)\/BonMot\/Sources\/FontFeatures.swift",
-            "mutationOperatorId" : "Negate Conditionals",
+            "filePath" : "\/var\/folders\/0b\/dxsqs2d901j1h3_d9pqwqdfh0000gn\/T\/TemporaryItems\/(A Document Being Saved By muter 15)\/BonMot\/Sources\/FontFeatures.swift",
+            "mutationOperatorId" : "NegateConditionals",
             "position" : {
               "column" : 42,
               "line" : 34,
@@ -124,8 +124,8 @@
         },
         {
           "mutationPoint" : {
-            "filePath" : "\/var\/folders\/0b\/dxsqs2d901j1h3_d9pqwqdfh0000gn\/T\/TemporaryItems\/(A Document Being Saved By muter 13)\/BonMot\/Sources\/FontFeatures.swift",
-            "mutationOperatorId" : "Negate Conditionals",
+            "filePath" : "\/var\/folders\/0b\/dxsqs2d901j1h3_d9pqwqdfh0000gn\/T\/TemporaryItems\/(A Document Being Saved By muter 15)\/BonMot\/Sources\/FontFeatures.swift",
+            "mutationOperatorId" : "NegateConditionals",
             "position" : {
               "column" : 37,
               "line" : 40,
@@ -136,8 +136,8 @@
         },
         {
           "mutationPoint" : {
-            "filePath" : "\/var\/folders\/0b\/dxsqs2d901j1h3_d9pqwqdfh0000gn\/T\/TemporaryItems\/(A Document Being Saved By muter 13)\/BonMot\/Sources\/FontFeatures.swift",
-            "mutationOperatorId" : "Remove Side Effects",
+            "filePath" : "\/var\/folders\/0b\/dxsqs2d901j1h3_d9pqwqdfh0000gn\/T\/TemporaryItems\/(A Document Being Saved By muter 15)\/BonMot\/Sources\/FontFeatures.swift",
+            "mutationOperatorId" : "RemoveSideEffects",
             "position" : {
               "column" : 53,
               "line" : 47,
@@ -154,8 +154,8 @@
       "appliedOperators" : [
         {
           "mutationPoint" : {
-            "filePath" : "\/var\/folders\/0b\/dxsqs2d901j1h3_d9pqwqdfh0000gn\/T\/TemporaryItems\/(A Document Being Saved By muter 13)\/BonMot\/Sources\/FontInspector.swift",
-            "mutationOperatorId" : "Logical Operator",
+            "filePath" : "\/var\/folders\/0b\/dxsqs2d901j1h3_d9pqwqdfh0000gn\/T\/TemporaryItems\/(A Document Being Saved By muter 15)\/BonMot\/Sources\/FontInspector.swift",
+            "mutationOperatorId" : "ChangeLogicalConnector",
             "position" : {
               "column" : 13,
               "line" : 10,
@@ -166,8 +166,8 @@
         },
         {
           "mutationPoint" : {
-            "filePath" : "\/var\/folders\/0b\/dxsqs2d901j1h3_d9pqwqdfh0000gn\/T\/TemporaryItems\/(A Document Being Saved By muter 13)\/BonMot\/Sources\/FontInspector.swift",
-            "mutationOperatorId" : "Logical Operator",
+            "filePath" : "\/var\/folders\/0b\/dxsqs2d901j1h3_d9pqwqdfh0000gn\/T\/TemporaryItems\/(A Document Being Saved By muter 15)\/BonMot\/Sources\/FontInspector.swift",
+            "mutationOperatorId" : "ChangeLogicalConnector",
             "position" : {
               "column" : 25,
               "line" : 10,
@@ -184,8 +184,8 @@
       "appliedOperators" : [
         {
           "mutationPoint" : {
-            "filePath" : "\/var\/folders\/0b\/dxsqs2d901j1h3_d9pqwqdfh0000gn\/T\/TemporaryItems\/(A Document Being Saved By muter 13)\/BonMot\/Sources\/MutableCopying.swift",
-            "mutationOperatorId" : "Logical Operator",
+            "filePath" : "\/var\/folders\/0b\/dxsqs2d901j1h3_d9pqwqdfh0000gn\/T\/TemporaryItems\/(A Document Being Saved By muter 15)\/BonMot\/Sources\/MutableCopying.swift",
+            "mutationOperatorId" : "ChangeLogicalConnector",
             "position" : {
               "column" : 13,
               "line" : 11,
@@ -196,8 +196,8 @@
         },
         {
           "mutationPoint" : {
-            "filePath" : "\/var\/folders\/0b\/dxsqs2d901j1h3_d9pqwqdfh0000gn\/T\/TemporaryItems\/(A Document Being Saved By muter 13)\/BonMot\/Sources\/MutableCopying.swift",
-            "mutationOperatorId" : "Logical Operator",
+            "filePath" : "\/var\/folders\/0b\/dxsqs2d901j1h3_d9pqwqdfh0000gn\/T\/TemporaryItems\/(A Document Being Saved By muter 15)\/BonMot\/Sources\/MutableCopying.swift",
+            "mutationOperatorId" : "ChangeLogicalConnector",
             "position" : {
               "column" : 28,
               "line" : 11,
@@ -214,8 +214,8 @@
       "appliedOperators" : [
         {
           "mutationPoint" : {
-            "filePath" : "\/var\/folders\/0b\/dxsqs2d901j1h3_d9pqwqdfh0000gn\/T\/TemporaryItems\/(A Document Being Saved By muter 13)\/BonMot\/Sources\/NSAttributedString+BonMot.swift",
-            "mutationOperatorId" : "Logical Operator",
+            "filePath" : "\/var\/folders\/0b\/dxsqs2d901j1h3_d9pqwqdfh0000gn\/T\/TemporaryItems\/(A Document Being Saved By muter 15)\/BonMot\/Sources\/NSAttributedString+BonMot.swift",
+            "mutationOperatorId" : "ChangeLogicalConnector",
             "position" : {
               "column" : 29,
               "line" : 37,
@@ -226,8 +226,8 @@
         },
         {
           "mutationPoint" : {
-            "filePath" : "\/var\/folders\/0b\/dxsqs2d901j1h3_d9pqwqdfh0000gn\/T\/TemporaryItems\/(A Document Being Saved By muter 13)\/BonMot\/Sources\/NSAttributedString+BonMot.swift",
-            "mutationOperatorId" : "Logical Operator",
+            "filePath" : "\/var\/folders\/0b\/dxsqs2d901j1h3_d9pqwqdfh0000gn\/T\/TemporaryItems\/(A Document Being Saved By muter 15)\/BonMot\/Sources\/NSAttributedString+BonMot.swift",
+            "mutationOperatorId" : "ChangeLogicalConnector",
             "position" : {
               "column" : 41,
               "line" : 37,
@@ -238,8 +238,8 @@
         },
         {
           "mutationPoint" : {
-            "filePath" : "\/var\/folders\/0b\/dxsqs2d901j1h3_d9pqwqdfh0000gn\/T\/TemporaryItems\/(A Document Being Saved By muter 13)\/BonMot\/Sources\/NSAttributedString+BonMot.swift",
-            "mutationOperatorId" : "Logical Operator",
+            "filePath" : "\/var\/folders\/0b\/dxsqs2d901j1h3_d9pqwqdfh0000gn\/T\/TemporaryItems\/(A Document Being Saved By muter 15)\/BonMot\/Sources\/NSAttributedString+BonMot.swift",
+            "mutationOperatorId" : "ChangeLogicalConnector",
             "position" : {
               "column" : 60,
               "line" : 72,
@@ -256,8 +256,8 @@
       "appliedOperators" : [
         {
           "mutationPoint" : {
-            "filePath" : "\/var\/folders\/0b\/dxsqs2d901j1h3_d9pqwqdfh0000gn\/T\/TemporaryItems\/(A Document Being Saved By muter 13)\/BonMot\/Sources\/NamedStyles.swift",
-            "mutationOperatorId" : "Logical Operator",
+            "filePath" : "\/var\/folders\/0b\/dxsqs2d901j1h3_d9pqwqdfh0000gn\/T\/TemporaryItems\/(A Document Being Saved By muter 15)\/BonMot\/Sources\/NamedStyles.swift",
+            "mutationOperatorId" : "ChangeLogicalConnector",
             "position" : {
               "column" : 17,
               "line" : 16,
@@ -274,8 +274,8 @@
       "appliedOperators" : [
         {
           "mutationPoint" : {
-            "filePath" : "\/var\/folders\/0b\/dxsqs2d901j1h3_d9pqwqdfh0000gn\/T\/TemporaryItems\/(A Document Being Saved By muter 13)\/BonMot\/Sources\/Platform.swift",
-            "mutationOperatorId" : "Logical Operator",
+            "filePath" : "\/var\/folders\/0b\/dxsqs2d901j1h3_d9pqwqdfh0000gn\/T\/TemporaryItems\/(A Document Being Saved By muter 15)\/BonMot\/Sources\/Platform.swift",
+            "mutationOperatorId" : "ChangeLogicalConnector",
             "position" : {
               "column" : 17,
               "line" : 33,
@@ -286,8 +286,8 @@
         },
         {
           "mutationPoint" : {
-            "filePath" : "\/var\/folders\/0b\/dxsqs2d901j1h3_d9pqwqdfh0000gn\/T\/TemporaryItems\/(A Document Being Saved By muter 13)\/BonMot\/Sources\/Platform.swift",
-            "mutationOperatorId" : "Logical Operator",
+            "filePath" : "\/var\/folders\/0b\/dxsqs2d901j1h3_d9pqwqdfh0000gn\/T\/TemporaryItems\/(A Document Being Saved By muter 15)\/BonMot\/Sources\/Platform.swift",
+            "mutationOperatorId" : "ChangeLogicalConnector",
             "position" : {
               "column" : 13,
               "line" : 40,
@@ -298,8 +298,8 @@
         },
         {
           "mutationPoint" : {
-            "filePath" : "\/var\/folders\/0b\/dxsqs2d901j1h3_d9pqwqdfh0000gn\/T\/TemporaryItems\/(A Document Being Saved By muter 13)\/BonMot\/Sources\/Platform.swift",
-            "mutationOperatorId" : "Logical Operator",
+            "filePath" : "\/var\/folders\/0b\/dxsqs2d901j1h3_d9pqwqdfh0000gn\/T\/TemporaryItems\/(A Document Being Saved By muter 15)\/BonMot\/Sources\/Platform.swift",
+            "mutationOperatorId" : "ChangeLogicalConnector",
             "position" : {
               "column" : 17,
               "line" : 49,
@@ -310,8 +310,8 @@
         },
         {
           "mutationPoint" : {
-            "filePath" : "\/var\/folders\/0b\/dxsqs2d901j1h3_d9pqwqdfh0000gn\/T\/TemporaryItems\/(A Document Being Saved By muter 13)\/BonMot\/Sources\/Platform.swift",
-            "mutationOperatorId" : "Logical Operator",
+            "filePath" : "\/var\/folders\/0b\/dxsqs2d901j1h3_d9pqwqdfh0000gn\/T\/TemporaryItems\/(A Document Being Saved By muter 15)\/BonMot\/Sources\/Platform.swift",
+            "mutationOperatorId" : "ChangeLogicalConnector",
             "position" : {
               "column" : 29,
               "line" : 49,
@@ -328,8 +328,8 @@
       "appliedOperators" : [
         {
           "mutationPoint" : {
-            "filePath" : "\/var\/folders\/0b\/dxsqs2d901j1h3_d9pqwqdfh0000gn\/T\/TemporaryItems\/(A Document Being Saved By muter 13)\/BonMot\/Sources\/StringStyle+Part.swift",
-            "mutationOperatorId" : "Logical Operator",
+            "filePath" : "\/var\/folders\/0b\/dxsqs2d901j1h3_d9pqwqdfh0000gn\/T\/TemporaryItems\/(A Document Being Saved By muter 15)\/BonMot\/Sources\/StringStyle+Part.swift",
+            "mutationOperatorId" : "ChangeLogicalConnector",
             "position" : {
               "column" : 21,
               "line" : 30,
@@ -340,8 +340,8 @@
         },
         {
           "mutationPoint" : {
-            "filePath" : "\/var\/folders\/0b\/dxsqs2d901j1h3_d9pqwqdfh0000gn\/T\/TemporaryItems\/(A Document Being Saved By muter 13)\/BonMot\/Sources\/StringStyle+Part.swift",
-            "mutationOperatorId" : "Logical Operator",
+            "filePath" : "\/var\/folders\/0b\/dxsqs2d901j1h3_d9pqwqdfh0000gn\/T\/TemporaryItems\/(A Document Being Saved By muter 15)\/BonMot\/Sources\/StringStyle+Part.swift",
+            "mutationOperatorId" : "ChangeLogicalConnector",
             "position" : {
               "column" : 33,
               "line" : 30,
@@ -352,8 +352,8 @@
         },
         {
           "mutationPoint" : {
-            "filePath" : "\/var\/folders\/0b\/dxsqs2d901j1h3_d9pqwqdfh0000gn\/T\/TemporaryItems\/(A Document Being Saved By muter 13)\/BonMot\/Sources\/StringStyle+Part.swift",
-            "mutationOperatorId" : "Logical Operator",
+            "filePath" : "\/var\/folders\/0b\/dxsqs2d901j1h3_d9pqwqdfh0000gn\/T\/TemporaryItems\/(A Document Being Saved By muter 15)\/BonMot\/Sources\/StringStyle+Part.swift",
+            "mutationOperatorId" : "ChangeLogicalConnector",
             "position" : {
               "column" : 21,
               "line" : 88,
@@ -364,8 +364,8 @@
         },
         {
           "mutationPoint" : {
-            "filePath" : "\/var\/folders\/0b\/dxsqs2d901j1h3_d9pqwqdfh0000gn\/T\/TemporaryItems\/(A Document Being Saved By muter 13)\/BonMot\/Sources\/StringStyle+Part.swift",
-            "mutationOperatorId" : "Logical Operator",
+            "filePath" : "\/var\/folders\/0b\/dxsqs2d901j1h3_d9pqwqdfh0000gn\/T\/TemporaryItems\/(A Document Being Saved By muter 15)\/BonMot\/Sources\/StringStyle+Part.swift",
+            "mutationOperatorId" : "ChangeLogicalConnector",
             "position" : {
               "column" : 33,
               "line" : 88,
@@ -376,8 +376,8 @@
         },
         {
           "mutationPoint" : {
-            "filePath" : "\/var\/folders\/0b\/dxsqs2d901j1h3_d9pqwqdfh0000gn\/T\/TemporaryItems\/(A Document Being Saved By muter 13)\/BonMot\/Sources\/StringStyle+Part.swift",
-            "mutationOperatorId" : "Logical Operator",
+            "filePath" : "\/var\/folders\/0b\/dxsqs2d901j1h3_d9pqwqdfh0000gn\/T\/TemporaryItems\/(A Document Being Saved By muter 15)\/BonMot\/Sources\/StringStyle+Part.swift",
+            "mutationOperatorId" : "ChangeLogicalConnector",
             "position" : {
               "column" : 21,
               "line" : 105,
@@ -388,8 +388,8 @@
         },
         {
           "mutationPoint" : {
-            "filePath" : "\/var\/folders\/0b\/dxsqs2d901j1h3_d9pqwqdfh0000gn\/T\/TemporaryItems\/(A Document Being Saved By muter 13)\/BonMot\/Sources\/StringStyle+Part.swift",
-            "mutationOperatorId" : "Logical Operator",
+            "filePath" : "\/var\/folders\/0b\/dxsqs2d901j1h3_d9pqwqdfh0000gn\/T\/TemporaryItems\/(A Document Being Saved By muter 15)\/BonMot\/Sources\/StringStyle+Part.swift",
+            "mutationOperatorId" : "ChangeLogicalConnector",
             "position" : {
               "column" : 21,
               "line" : 108,
@@ -400,8 +400,8 @@
         },
         {
           "mutationPoint" : {
-            "filePath" : "\/var\/folders\/0b\/dxsqs2d901j1h3_d9pqwqdfh0000gn\/T\/TemporaryItems\/(A Document Being Saved By muter 13)\/BonMot\/Sources\/StringStyle+Part.swift",
-            "mutationOperatorId" : "Logical Operator",
+            "filePath" : "\/var\/folders\/0b\/dxsqs2d901j1h3_d9pqwqdfh0000gn\/T\/TemporaryItems\/(A Document Being Saved By muter 15)\/BonMot\/Sources\/StringStyle+Part.swift",
+            "mutationOperatorId" : "ChangeLogicalConnector",
             "position" : {
               "column" : 29,
               "line" : 230,
@@ -412,8 +412,8 @@
         },
         {
           "mutationPoint" : {
-            "filePath" : "\/var\/folders\/0b\/dxsqs2d901j1h3_d9pqwqdfh0000gn\/T\/TemporaryItems\/(A Document Being Saved By muter 13)\/BonMot\/Sources\/StringStyle+Part.swift",
-            "mutationOperatorId" : "Logical Operator",
+            "filePath" : "\/var\/folders\/0b\/dxsqs2d901j1h3_d9pqwqdfh0000gn\/T\/TemporaryItems\/(A Document Being Saved By muter 15)\/BonMot\/Sources\/StringStyle+Part.swift",
+            "mutationOperatorId" : "ChangeLogicalConnector",
             "position" : {
               "column" : 41,
               "line" : 230,
@@ -424,8 +424,8 @@
         },
         {
           "mutationPoint" : {
-            "filePath" : "\/var\/folders\/0b\/dxsqs2d901j1h3_d9pqwqdfh0000gn\/T\/TemporaryItems\/(A Document Being Saved By muter 13)\/BonMot\/Sources\/StringStyle+Part.swift",
-            "mutationOperatorId" : "Logical Operator",
+            "filePath" : "\/var\/folders\/0b\/dxsqs2d901j1h3_d9pqwqdfh0000gn\/T\/TemporaryItems\/(A Document Being Saved By muter 15)\/BonMot\/Sources\/StringStyle+Part.swift",
+            "mutationOperatorId" : "ChangeLogicalConnector",
             "position" : {
               "column" : 29,
               "line" : 255,
@@ -436,8 +436,8 @@
         },
         {
           "mutationPoint" : {
-            "filePath" : "\/var\/folders\/0b\/dxsqs2d901j1h3_d9pqwqdfh0000gn\/T\/TemporaryItems\/(A Document Being Saved By muter 13)\/BonMot\/Sources\/StringStyle+Part.swift",
-            "mutationOperatorId" : "Logical Operator",
+            "filePath" : "\/var\/folders\/0b\/dxsqs2d901j1h3_d9pqwqdfh0000gn\/T\/TemporaryItems\/(A Document Being Saved By muter 15)\/BonMot\/Sources\/StringStyle+Part.swift",
+            "mutationOperatorId" : "ChangeLogicalConnector",
             "position" : {
               "column" : 40,
               "line" : 255,
@@ -448,8 +448,8 @@
         },
         {
           "mutationPoint" : {
-            "filePath" : "\/var\/folders\/0b\/dxsqs2d901j1h3_d9pqwqdfh0000gn\/T\/TemporaryItems\/(A Document Being Saved By muter 13)\/BonMot\/Sources\/StringStyle+Part.swift",
-            "mutationOperatorId" : "Logical Operator",
+            "filePath" : "\/var\/folders\/0b\/dxsqs2d901j1h3_d9pqwqdfh0000gn\/T\/TemporaryItems\/(A Document Being Saved By muter 15)\/BonMot\/Sources\/StringStyle+Part.swift",
+            "mutationOperatorId" : "ChangeLogicalConnector",
             "position" : {
               "column" : 37,
               "line" : 280,
@@ -466,8 +466,8 @@
       "appliedOperators" : [
         {
           "mutationPoint" : {
-            "filePath" : "\/var\/folders\/0b\/dxsqs2d901j1h3_d9pqwqdfh0000gn\/T\/TemporaryItems\/(A Document Being Saved By muter 13)\/BonMot\/Sources\/StylisticAlternates.swift",
-            "mutationOperatorId" : "Logical Operator",
+            "filePath" : "\/var\/folders\/0b\/dxsqs2d901j1h3_d9pqwqdfh0000gn\/T\/TemporaryItems\/(A Document Being Saved By muter 15)\/BonMot\/Sources\/StylisticAlternates.swift",
+            "mutationOperatorId" : "ChangeLogicalConnector",
             "position" : {
               "column" : 13,
               "line" : 16,
@@ -478,8 +478,8 @@
         },
         {
           "mutationPoint" : {
-            "filePath" : "\/var\/folders\/0b\/dxsqs2d901j1h3_d9pqwqdfh0000gn\/T\/TemporaryItems\/(A Document Being Saved By muter 13)\/BonMot\/Sources\/StylisticAlternates.swift",
-            "mutationOperatorId" : "Logical Operator",
+            "filePath" : "\/var\/folders\/0b\/dxsqs2d901j1h3_d9pqwqdfh0000gn\/T\/TemporaryItems\/(A Document Being Saved By muter 15)\/BonMot\/Sources\/StylisticAlternates.swift",
+            "mutationOperatorId" : "ChangeLogicalConnector",
             "position" : {
               "column" : 25,
               "line" : 16,
@@ -490,8 +490,8 @@
         },
         {
           "mutationPoint" : {
-            "filePath" : "\/var\/folders\/0b\/dxsqs2d901j1h3_d9pqwqdfh0000gn\/T\/TemporaryItems\/(A Document Being Saved By muter 13)\/BonMot\/Sources\/StylisticAlternates.swift",
-            "mutationOperatorId" : "Remove Side Effects",
+            "filePath" : "\/var\/folders\/0b\/dxsqs2d901j1h3_d9pqwqdfh0000gn\/T\/TemporaryItems\/(A Document Being Saved By muter 15)\/BonMot\/Sources\/StylisticAlternates.swift",
+            "mutationOperatorId" : "RemoveSideEffects",
             "position" : {
               "column" : 41,
               "line" : 204,
@@ -508,8 +508,8 @@
       "appliedOperators" : [
         {
           "mutationPoint" : {
-            "filePath" : "\/var\/folders\/0b\/dxsqs2d901j1h3_d9pqwqdfh0000gn\/T\/TemporaryItems\/(A Document Being Saved By muter 13)\/BonMot\/Sources\/Tracking.swift",
-            "mutationOperatorId" : "Negate Conditionals",
+            "filePath" : "\/var\/folders\/0b\/dxsqs2d901j1h3_d9pqwqdfh0000gn\/T\/TemporaryItems\/(A Document Being Saved By muter 15)\/BonMot\/Sources\/Tracking.swift",
+            "mutationOperatorId" : "NegateConditionals",
             "position" : {
               "column" : 21,
               "line" : 23,
@@ -526,8 +526,8 @@
       "appliedOperators" : [
         {
           "mutationPoint" : {
-            "filePath" : "\/var\/folders\/0b\/dxsqs2d901j1h3_d9pqwqdfh0000gn\/T\/TemporaryItems\/(A Document Being Saved By muter 13)\/BonMot\/Sources\/UIKit\/AdaptableTextContainer.swift",
-            "mutationOperatorId" : "Negate Conditionals",
+            "filePath" : "\/var\/folders\/0b\/dxsqs2d901j1h3_d9pqwqdfh0000gn\/T\/TemporaryItems\/(A Document Being Saved By muter 15)\/BonMot\/Sources\/UIKit\/AdaptableTextContainer.swift",
+            "mutationOperatorId" : "NegateConditionals",
             "position" : {
               "column" : 38,
               "line" : 87,
@@ -538,8 +538,8 @@
         },
         {
           "mutationPoint" : {
-            "filePath" : "\/var\/folders\/0b\/dxsqs2d901j1h3_d9pqwqdfh0000gn\/T\/TemporaryItems\/(A Document Being Saved By muter 13)\/BonMot\/Sources\/UIKit\/AdaptableTextContainer.swift",
-            "mutationOperatorId" : "Remove Side Effects",
+            "filePath" : "\/var\/folders\/0b\/dxsqs2d901j1h3_d9pqwqdfh0000gn\/T\/TemporaryItems\/(A Document Being Saved By muter 15)\/BonMot\/Sources\/UIKit\/AdaptableTextContainer.swift",
+            "mutationOperatorId" : "RemoveSideEffects",
             "position" : {
               "column" : 26,
               "line" : 101,
@@ -550,8 +550,8 @@
         },
         {
           "mutationPoint" : {
-            "filePath" : "\/var\/folders\/0b\/dxsqs2d901j1h3_d9pqwqdfh0000gn\/T\/TemporaryItems\/(A Document Being Saved By muter 13)\/BonMot\/Sources\/UIKit\/AdaptableTextContainer.swift",
-            "mutationOperatorId" : "Logical Operator",
+            "filePath" : "\/var\/folders\/0b\/dxsqs2d901j1h3_d9pqwqdfh0000gn\/T\/TemporaryItems\/(A Document Being Saved By muter 15)\/BonMot\/Sources\/UIKit\/AdaptableTextContainer.swift",
+            "mutationOperatorId" : "ChangeLogicalConnector",
             "position" : {
               "column" : 13,
               "line" : 116,
@@ -568,8 +568,8 @@
       "appliedOperators" : [
         {
           "mutationPoint" : {
-            "filePath" : "\/var\/folders\/0b\/dxsqs2d901j1h3_d9pqwqdfh0000gn\/T\/TemporaryItems\/(A Document Being Saved By muter 13)\/BonMot\/Sources\/UIKit\/AdaptiveStyle.swift",
-            "mutationOperatorId" : "Negate Conditionals",
+            "filePath" : "\/var\/folders\/0b\/dxsqs2d901j1h3_d9pqwqdfh0000gn\/T\/TemporaryItems\/(A Document Being Saved By muter 15)\/BonMot\/Sources\/UIKit\/AdaptiveStyle.swift",
+            "mutationOperatorId" : "NegateConditionals",
             "position" : {
               "column" : 30,
               "line" : 79,
@@ -580,8 +580,8 @@
         },
         {
           "mutationPoint" : {
-            "filePath" : "\/var\/folders\/0b\/dxsqs2d901j1h3_d9pqwqdfh0000gn\/T\/TemporaryItems\/(A Document Being Saved By muter 13)\/BonMot\/Sources\/UIKit\/AdaptiveStyle.swift",
-            "mutationOperatorId" : "Negate Conditionals",
+            "filePath" : "\/var\/folders\/0b\/dxsqs2d901j1h3_d9pqwqdfh0000gn\/T\/TemporaryItems\/(A Document Being Saved By muter 15)\/BonMot\/Sources\/UIKit\/AdaptiveStyle.swift",
+            "mutationOperatorId" : "NegateConditionals",
             "position" : {
               "column" : 30,
               "line" : 81,
@@ -598,8 +598,8 @@
       "appliedOperators" : [
         {
           "mutationPoint" : {
-            "filePath" : "\/var\/folders\/0b\/dxsqs2d901j1h3_d9pqwqdfh0000gn\/T\/TemporaryItems\/(A Document Being Saved By muter 13)\/BonMot\/Sources\/UIKit\/EmbeddedTransformation.swift",
-            "mutationOperatorId" : "Negate Conditionals",
+            "filePath" : "\/var\/folders\/0b\/dxsqs2d901j1h3_d9pqwqdfh0000gn\/T\/TemporaryItems\/(A Document Being Saved By muter 15)\/BonMot\/Sources\/UIKit\/EmbeddedTransformation.swift",
+            "mutationOperatorId" : "NegateConditionals",
             "position" : {
               "column" : 76,
               "line" : 51,
@@ -616,8 +616,8 @@
       "appliedOperators" : [
         {
           "mutationPoint" : {
-            "filePath" : "\/var\/folders\/0b\/dxsqs2d901j1h3_d9pqwqdfh0000gn\/T\/TemporaryItems\/(A Document Being Saved By muter 13)\/BonMot\/Sources\/UIKit\/NSAttributedString+Adaptive.swift",
-            "mutationOperatorId" : "Remove Side Effects",
+            "filePath" : "\/var\/folders\/0b\/dxsqs2d901j1h3_d9pqwqdfh0000gn\/T\/TemporaryItems\/(A Document Being Saved By muter 15)\/BonMot\/Sources\/UIKit\/NSAttributedString+Adaptive.swift",
+            "mutationOperatorId" : "RemoveSideEffects",
             "position" : {
               "column" : 33,
               "line" : 38,
@@ -628,8 +628,8 @@
         },
         {
           "mutationPoint" : {
-            "filePath" : "\/var\/folders\/0b\/dxsqs2d901j1h3_d9pqwqdfh0000gn\/T\/TemporaryItems\/(A Document Being Saved By muter 13)\/BonMot\/Sources\/UIKit\/NSAttributedString+Adaptive.swift",
-            "mutationOperatorId" : "Remove Side Effects",
+            "filePath" : "\/var\/folders\/0b\/dxsqs2d901j1h3_d9pqwqdfh0000gn\/T\/TemporaryItems\/(A Document Being Saved By muter 15)\/BonMot\/Sources\/UIKit\/NSAttributedString+Adaptive.swift",
+            "mutationOperatorId" : "RemoveSideEffects",
             "position" : {
               "column" : 10,
               "line" : 53,
@@ -640,8 +640,8 @@
         },
         {
           "mutationPoint" : {
-            "filePath" : "\/var\/folders\/0b\/dxsqs2d901j1h3_d9pqwqdfh0000gn\/T\/TemporaryItems\/(A Document Being Saved By muter 13)\/BonMot\/Sources\/UIKit\/NSAttributedString+Adaptive.swift",
-            "mutationOperatorId" : "Remove Side Effects",
+            "filePath" : "\/var\/folders\/0b\/dxsqs2d901j1h3_d9pqwqdfh0000gn\/T\/TemporaryItems\/(A Document Being Saved By muter 15)\/BonMot\/Sources\/UIKit\/NSAttributedString+Adaptive.swift",
+            "mutationOperatorId" : "RemoveSideEffects",
             "position" : {
               "column" : 31,
               "line" : 54,
@@ -658,8 +658,8 @@
       "appliedOperators" : [
         {
           "mutationPoint" : {
-            "filePath" : "\/var\/folders\/0b\/dxsqs2d901j1h3_d9pqwqdfh0000gn\/T\/TemporaryItems\/(A Document Being Saved By muter 13)\/BonMot\/Sources\/UIKit\/StyleableUIElement.swift",
-            "mutationOperatorId" : "Negate Conditionals",
+            "filePath" : "\/var\/folders\/0b\/dxsqs2d901j1h3_d9pqwqdfh0000gn\/T\/TemporaryItems\/(A Document Being Saved By muter 15)\/BonMot\/Sources\/UIKit\/StyleableUIElement.swift",
+            "mutationOperatorId" : "NegateConditionals",
             "position" : {
               "column" : 38,
               "line" : 84,
@@ -670,8 +670,8 @@
         },
         {
           "mutationPoint" : {
-            "filePath" : "\/var\/folders\/0b\/dxsqs2d901j1h3_d9pqwqdfh0000gn\/T\/TemporaryItems\/(A Document Being Saved By muter 13)\/BonMot\/Sources\/UIKit\/StyleableUIElement.swift",
-            "mutationOperatorId" : "Remove Side Effects",
+            "filePath" : "\/var\/folders\/0b\/dxsqs2d901j1h3_d9pqwqdfh0000gn\/T\/TemporaryItems\/(A Document Being Saved By muter 15)\/BonMot\/Sources\/UIKit\/StyleableUIElement.swift",
+            "mutationOperatorId" : "RemoveSideEffects",
             "position" : {
               "column" : 10,
               "line" : 207,
@@ -688,8 +688,8 @@
       "appliedOperators" : [
         {
           "mutationPoint" : {
-            "filePath" : "\/var\/folders\/0b\/dxsqs2d901j1h3_d9pqwqdfh0000gn\/T\/TemporaryItems\/(A Document Being Saved By muter 13)\/BonMot\/Sources\/UIKit\/TextAlignmentConstraint.swift",
-            "mutationOperatorId" : "Negate Conditionals",
+            "filePath" : "\/var\/folders\/0b\/dxsqs2d901j1h3_d9pqwqdfh0000gn\/T\/TemporaryItems\/(A Document Being Saved By muter 15)\/BonMot\/Sources\/UIKit\/TextAlignmentConstraint.swift",
+            "mutationOperatorId" : "NegateConditionals",
             "position" : {
               "column" : 23,
               "line" : 176,
@@ -700,8 +700,8 @@
         },
         {
           "mutationPoint" : {
-            "filePath" : "\/var\/folders\/0b\/dxsqs2d901j1h3_d9pqwqdfh0000gn\/T\/TemporaryItems\/(A Document Being Saved By muter 13)\/BonMot\/Sources\/UIKit\/TextAlignmentConstraint.swift",
-            "mutationOperatorId" : "Remove Side Effects",
+            "filePath" : "\/var\/folders\/0b\/dxsqs2d901j1h3_d9pqwqdfh0000gn\/T\/TemporaryItems\/(A Document Being Saved By muter 15)\/BonMot\/Sources\/UIKit\/TextAlignmentConstraint.swift",
+            "mutationOperatorId" : "RemoveSideEffects",
             "position" : {
               "column" : 36,
               "line" : 133,
@@ -712,8 +712,8 @@
         },
         {
           "mutationPoint" : {
-            "filePath" : "\/var\/folders\/0b\/dxsqs2d901j1h3_d9pqwqdfh0000gn\/T\/TemporaryItems\/(A Document Being Saved By muter 13)\/BonMot\/Sources\/UIKit\/TextAlignmentConstraint.swift",
-            "mutationOperatorId" : "Remove Side Effects",
+            "filePath" : "\/var\/folders\/0b\/dxsqs2d901j1h3_d9pqwqdfh0000gn\/T\/TemporaryItems\/(A Document Being Saved By muter 15)\/BonMot\/Sources\/UIKit\/TextAlignmentConstraint.swift",
+            "mutationOperatorId" : "RemoveSideEffects",
             "position" : {
               "column" : 36,
               "line" : 134,
@@ -724,8 +724,8 @@
         },
         {
           "mutationPoint" : {
-            "filePath" : "\/var\/folders\/0b\/dxsqs2d901j1h3_d9pqwqdfh0000gn\/T\/TemporaryItems\/(A Document Being Saved By muter 13)\/BonMot\/Sources\/UIKit\/TextAlignmentConstraint.swift",
-            "mutationOperatorId" : "Remove Side Effects",
+            "filePath" : "\/var\/folders\/0b\/dxsqs2d901j1h3_d9pqwqdfh0000gn\/T\/TemporaryItems\/(A Document Being Saved By muter 15)\/BonMot\/Sources\/UIKit\/TextAlignmentConstraint.swift",
+            "mutationOperatorId" : "RemoveSideEffects",
             "position" : {
               "column" : 29,
               "line" : 144,
@@ -736,8 +736,8 @@
         },
         {
           "mutationPoint" : {
-            "filePath" : "\/var\/folders\/0b\/dxsqs2d901j1h3_d9pqwqdfh0000gn\/T\/TemporaryItems\/(A Document Being Saved By muter 13)\/BonMot\/Sources\/UIKit\/TextAlignmentConstraint.swift",
-            "mutationOperatorId" : "Remove Side Effects",
+            "filePath" : "\/var\/folders\/0b\/dxsqs2d901j1h3_d9pqwqdfh0000gn\/T\/TemporaryItems\/(A Document Being Saved By muter 15)\/BonMot\/Sources\/UIKit\/TextAlignmentConstraint.swift",
+            "mutationOperatorId" : "RemoveSideEffects",
             "position" : {
               "column" : 25,
               "line" : 145,
@@ -748,8 +748,8 @@
         },
         {
           "mutationPoint" : {
-            "filePath" : "\/var\/folders\/0b\/dxsqs2d901j1h3_d9pqwqdfh0000gn\/T\/TemporaryItems\/(A Document Being Saved By muter 13)\/BonMot\/Sources\/UIKit\/TextAlignmentConstraint.swift",
-            "mutationOperatorId" : "Remove Side Effects",
+            "filePath" : "\/var\/folders\/0b\/dxsqs2d901j1h3_d9pqwqdfh0000gn\/T\/TemporaryItems\/(A Document Being Saved By muter 15)\/BonMot\/Sources\/UIKit\/TextAlignmentConstraint.swift",
+            "mutationOperatorId" : "RemoveSideEffects",
             "position" : {
               "column" : 25,
               "line" : 146,
@@ -760,8 +760,8 @@
         },
         {
           "mutationPoint" : {
-            "filePath" : "\/var\/folders\/0b\/dxsqs2d901j1h3_d9pqwqdfh0000gn\/T\/TemporaryItems\/(A Document Being Saved By muter 13)\/BonMot\/Sources\/UIKit\/TextAlignmentConstraint.swift",
-            "mutationOperatorId" : "Remove Side Effects",
+            "filePath" : "\/var\/folders\/0b\/dxsqs2d901j1h3_d9pqwqdfh0000gn\/T\/TemporaryItems\/(A Document Being Saved By muter 15)\/BonMot\/Sources\/UIKit\/TextAlignmentConstraint.swift",
+            "mutationOperatorId" : "RemoveSideEffects",
             "position" : {
               "column" : 25,
               "line" : 181,
@@ -778,8 +778,8 @@
       "appliedOperators" : [
         {
           "mutationPoint" : {
-            "filePath" : "\/var\/folders\/0b\/dxsqs2d901j1h3_d9pqwqdfh0000gn\/T\/TemporaryItems\/(A Document Being Saved By muter 13)\/BonMot\/Sources\/UIKit\/UIKit+AdaptableTextContainerSupport.swift",
-            "mutationOperatorId" : "Remove Side Effects",
+            "filePath" : "\/var\/folders\/0b\/dxsqs2d901j1h3_d9pqwqdfh0000gn\/T\/TemporaryItems\/(A Document Being Saved By muter 15)\/BonMot\/Sources\/UIKit\/UIKit+AdaptableTextContainerSupport.swift",
+            "mutationOperatorId" : "RemoveSideEffects",
             "position" : {
               "column" : 25,
               "line" : 28,
@@ -790,8 +790,8 @@
         },
         {
           "mutationPoint" : {
-            "filePath" : "\/var\/folders\/0b\/dxsqs2d901j1h3_d9pqwqdfh0000gn\/T\/TemporaryItems\/(A Document Being Saved By muter 13)\/BonMot\/Sources\/UIKit\/UIKit+AdaptableTextContainerSupport.swift",
-            "mutationOperatorId" : "Negate Conditionals",
+            "filePath" : "\/var\/folders\/0b\/dxsqs2d901j1h3_d9pqwqdfh0000gn\/T\/TemporaryItems\/(A Document Being Saved By muter 15)\/BonMot\/Sources\/UIKit\/UIKit+AdaptableTextContainerSupport.swift",
+            "mutationOperatorId" : "NegateConditionals",
             "position" : {
               "column" : 28,
               "line" : 58,
@@ -802,8 +802,8 @@
         },
         {
           "mutationPoint" : {
-            "filePath" : "\/var\/folders\/0b\/dxsqs2d901j1h3_d9pqwqdfh0000gn\/T\/TemporaryItems\/(A Document Being Saved By muter 13)\/BonMot\/Sources\/UIKit\/UIKit+AdaptableTextContainerSupport.swift",
-            "mutationOperatorId" : "Remove Side Effects",
+            "filePath" : "\/var\/folders\/0b\/dxsqs2d901j1h3_d9pqwqdfh0000gn\/T\/TemporaryItems\/(A Document Being Saved By muter 15)\/BonMot\/Sources\/UIKit\/UIKit+AdaptableTextContainerSupport.swift",
+            "mutationOperatorId" : "RemoveSideEffects",
             "position" : {
               "column" : 80,
               "line" : 65,
@@ -814,8 +814,8 @@
         },
         {
           "mutationPoint" : {
-            "filePath" : "\/var\/folders\/0b\/dxsqs2d901j1h3_d9pqwqdfh0000gn\/T\/TemporaryItems\/(A Document Being Saved By muter 13)\/BonMot\/Sources\/UIKit\/UIKit+AdaptableTextContainerSupport.swift",
-            "mutationOperatorId" : "Remove Side Effects",
+            "filePath" : "\/var\/folders\/0b\/dxsqs2d901j1h3_d9pqwqdfh0000gn\/T\/TemporaryItems\/(A Document Being Saved By muter 15)\/BonMot\/Sources\/UIKit\/UIKit+AdaptableTextContainerSupport.swift",
+            "mutationOperatorId" : "RemoveSideEffects",
             "position" : {
               "column" : 55,
               "line" : 66,
@@ -832,8 +832,8 @@
       "appliedOperators" : [
         {
           "mutationPoint" : {
-            "filePath" : "\/var\/folders\/0b\/dxsqs2d901j1h3_d9pqwqdfh0000gn\/T\/TemporaryItems\/(A Document Being Saved By muter 13)\/BonMot\/Sources\/UIKit\/UIKit+Helpers.swift",
-            "mutationOperatorId" : "Negate Conditionals",
+            "filePath" : "\/var\/folders\/0b\/dxsqs2d901j1h3_d9pqwqdfh0000gn\/T\/TemporaryItems\/(A Document Being Saved By muter 15)\/BonMot\/Sources\/UIKit\/UIKit+Helpers.swift",
+            "mutationOperatorId" : "NegateConditionals",
             "position" : {
               "column" : 45,
               "line" : 43,
@@ -844,8 +844,8 @@
         },
         {
           "mutationPoint" : {
-            "filePath" : "\/var\/folders\/0b\/dxsqs2d901j1h3_d9pqwqdfh0000gn\/T\/TemporaryItems\/(A Document Being Saved By muter 13)\/BonMot\/Sources\/UIKit\/UIKit+Helpers.swift",
-            "mutationOperatorId" : "Negate Conditionals",
+            "filePath" : "\/var\/folders\/0b\/dxsqs2d901j1h3_d9pqwqdfh0000gn\/T\/TemporaryItems\/(A Document Being Saved By muter 15)\/BonMot\/Sources\/UIKit\/UIKit+Helpers.swift",
+            "mutationOperatorId" : "NegateConditionals",
             "position" : {
               "column" : 42,
               "line" : 49,

@@ -181,16 +181,26 @@ extension RunCommandObserver {
     }
 
     func handleNewTestLogAvailable(notification: Notification) {
-        guard let (fileName, contents) = notification.object as? (String, String) else {
+        guard let (mutationPoint, contents) = notification.object as? (MutationPoint?, String) else {
             return
         }
-
-        let path = "\(loggingDirectory)/\(fileName).log"
+        
+        let path = "\(loggingDirectory)/\(logFileName(from: mutationPoint))"
         _ = fileManager.createFile(
             atPath: path,
             contents: contents.data(using: .utf8),
             attributes: nil
         )
+    }
+    
+    func logFileName(from mutationPoint: MutationPoint?) -> String {
+        guard let mutationPoint = mutationPoint else {
+            return "baseline run.log"
+        }
+        
+        let fileName = URL(fileURLWithPath: mutationPoint.filePath).lastPathComponent
+        
+        return "\(mutationPoint.mutationOperatorId.rawValue) @ \(fileName):\(mutationPoint.position.line):\(mutationPoint.position.column).log"
     }
 
     func handleMutationTestingAborted(notification: Notification) {
