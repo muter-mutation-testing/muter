@@ -82,6 +82,25 @@ class AcceptanceTests: QuickSpec {
                             expect(logFiles.sorted()).to(equal(expectedLogFiles.sorted())) // Sort these so it's easier to reason about and erroneously fails less frequently
                             expect(numberOfEmptyLogFiles) == 0
                         }
+                        
+                        they("see the logs from their test suite's runs saved to a directory") {
+                            var output: [String] = self.muterLogFiles
+                            guard output.count == 4 else {
+                                fail("expected there to be 4 log files written but got \(output.count)")
+                                return
+                            }
+                            
+                            expect(output).to(equal([
+                                "Module.log",
+                                "Module2.log",
+                                "initial_run.log",
+                                "ViewController.log"
+                                ]))
+                            expect(self.contentsOfLogFile(named: output[0])).notTo(beEmpty())
+                            expect(self.contentsOfLogFile(named: output[1])).notTo(beEmpty())
+                            expect(self.contentsOfLogFile(named: output[2])).notTo(beEmpty())
+                            expect(self.contentsOfLogFile(named: output[3])).notTo(beEmpty())
+                        }
                     }
                 }
                 
@@ -182,7 +201,7 @@ extension AcceptanceTests {
                 .withoutScheme()
         )
     }
-
+    
     var muterOutputPath: String { return "\(AcceptanceTests().rootTestDirectory)/muters_output.txt" }
     var muterOutput: String {
         return contentsOfFileAsString(at: muterOutputPath)
@@ -192,12 +211,12 @@ extension AcceptanceTests {
     var muterXcodeOutput: String {
         return contentsOfFileAsString(at: muterXcodeOutputPath)
     }
-
+    
     var muterEmptyStateOutputPath: String { return "\(AcceptanceTests().rootTestDirectory)/muters_empty_state_output.txt" }
     var muterEmptyStateOutput: String {
         return contentsOfFileAsString(at: muterEmptyStateOutputPath)
     }
-
+    
     var muterAbortedTestingOutputPath: String { return "\(AcceptanceTests().rootTestDirectory)/muters_aborted_testing_output.txt" }
     var muterAbortedTestingOutput: String {
         return contentsOfFileAsString(at: muterAbortedTestingOutputPath)
@@ -214,7 +233,7 @@ extension AcceptanceTests {
     var createdIOSConfiguration: Data {
         return contentsOfFileAsData(at: createdIOSConfigurationPath)
     }
-
+    
     var createdMacOSConfigurationPath: String { return "\(AcceptanceTests().rootTestDirectory)/created_macOS_config.json" }
     var createdMacOSConfiguration: Data {
         return contentsOfFileAsData(at: createdMacOSConfigurationPath)
@@ -224,7 +243,7 @@ extension AcceptanceTests {
     var muterHelpOutput: String {
         return contentsOfFileAsString(at: muterHelpOutputPath)
     }
-
+    
     func contentsOfFileAsString(at path: String) -> String {
         guard let data = FileManager.default.contents(atPath: path),
             let output = String(data: data, encoding: .utf8) else {
@@ -235,7 +254,7 @@ extension AcceptanceTests {
     
     func contentsOfFileAsData(at path: String) -> Data {
         guard let data = FileManager.default.contents(atPath: path) else {
-                fatalError("Unable to find a valid output file from a prior run of Muter at \(path)")
+            fatalError("Unable to find a valid output file from a prior run of Muter at \(path)")
         }
         return data
     }
@@ -243,7 +262,7 @@ extension AcceptanceTests {
     func contentsOfDirectory(at path: String) -> [String] {
         return try! FileManager.default.contentsOfDirectory(atPath: path)
     }
-
+    
     func contentsOfLogFile(named fileName: String) -> String {
         return contentsOfDirectory(at: muterLogsRootPath)
             .first
