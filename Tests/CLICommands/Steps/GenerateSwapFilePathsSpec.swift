@@ -38,8 +38,12 @@ class GenerateSwapFilePathsSpec: QuickSpec {
                         return
                     }
                     
-                    expect(stateChanges) == [.swapFilePathGenerated(["/folder/file1.swift":"/workspace/muter_tmp/file1.swift",
-                                                                     "/folder/file2.swift":"/workspace/muter_tmp/file2.swift"])]
+                    expect(stateChanges) == [
+                        .swapFilePathGenerated([
+                            "/folder/file1.swift": "/workspace/muter_tmp/file1.swift",
+                            "/folder/file2.swift":"/workspace/muter_tmp/file2.swift"
+                        ])
+                    ]
                 }
             }
             
@@ -88,5 +92,3 @@ class GenerateSwapFilePathsSpec: QuickSpec {
         }
     }
 }
-
-

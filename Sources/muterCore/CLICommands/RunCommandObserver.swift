@@ -94,8 +94,6 @@ extension RunCommandObserver {
             print("Finished copying your project to a temporary directory for testing")
         }
     }
-    
-
 
     func handleSourceFileDiscoveryStarted(notification: Notification) {
         if reporter == .plainText {

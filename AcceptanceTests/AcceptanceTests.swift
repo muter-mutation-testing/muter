@@ -79,27 +79,8 @@ class AcceptanceTests: QuickSpec {
                                 .map(self.contentsOfLogFile(named:))
                                 .count { $0.isEmpty }
                             
-                            expect(logFiles.sorted()).to(equal(expectedLogFiles.sorted())) // Sort these so it's easier to reason about and erroneously fails less frequently
+                            expect(logFiles.sorted()).to(equal(expectedLogFiles.sorted())) // Sort these so it's easier to reason about any erroneous failures
                             expect(numberOfEmptyLogFiles) == 0
-                        }
-                        
-                        they("see the logs from their test suite's runs saved to a directory") {
-                            var output: [String] = self.muterLogFiles
-                            guard output.count == 4 else {
-                                fail("expected there to be 4 log files written but got \(output.count)")
-                                return
-                            }
-                            
-                            expect(output).to(equal([
-                                "Module.log",
-                                "Module2.log",
-                                "initial_run.log",
-                                "ViewController.log"
-                                ]))
-                            expect(self.contentsOfLogFile(named: output[0])).notTo(beEmpty())
-                            expect(self.contentsOfLogFile(named: output[1])).notTo(beEmpty())
-                            expect(self.contentsOfLogFile(named: output[2])).notTo(beEmpty())
-                            expect(self.contentsOfLogFile(named: output[3])).notTo(beEmpty())
                         }
                     }
                 }
@@ -222,11 +203,16 @@ extension AcceptanceTests {
         return contentsOfFileAsString(at: muterAbortedTestingOutputPath)
     }
     
+    var muterHelpOutputPath: String { return "\(AcceptanceTests().rootTestDirectory)/muters_help_output.txt" }
+    var muterHelpOutput: String {
+        return contentsOfFileAsString(at: muterHelpOutputPath)
+    }
+    
     var muterLogsRootPath: String { return "\(AcceptanceTests().rootTestDirectory)/muter_logs/" }
     var muterLogFiles: [String] {
         return contentsOfDirectory(at: muterLogsRootPath)
             .map { muterLogsRootPath + "/" + $0 }
-            .flatMap (contentsOfDirectory(at:))
+            .flatMap(contentsOfDirectory(at:))
     }
     
     var createdIOSConfigurationPath: String { return "\(AcceptanceTests().rootTestDirectory)/created_iOS_config.json" }
@@ -238,16 +224,29 @@ extension AcceptanceTests {
     var createdMacOSConfiguration: Data {
         return contentsOfFileAsData(at: createdMacOSConfigurationPath)
     }
+}
+
+@available(OSX 10.13, *)
+extension AcceptanceTests {
     
-    var muterHelpOutputPath: String { return "\(AcceptanceTests().rootTestDirectory)/muters_help_output.txt" }
-    var muterHelpOutput: String {
-        return contentsOfFileAsString(at: muterHelpOutputPath)
+    func contentsOfLogFile(named fileName: String) -> String {
+        return contentsOfDirectory(at: muterLogsRootPath)
+            .first
+            .map { muterLogsRootPath + $0 + "/" + fileName }
+            .map (contentsOfFileAsString(at:))!
+    }
+    
+    func contentsOfDirectory(at path: String) -> [String] {
+        return try! FileManager
+            .default
+            .contentsOfDirectory(atPath: path)
+            .exclude { $0.starts(with: ".") } // this filters out hidden files/folders
     }
     
     func contentsOfFileAsString(at path: String) -> String {
         guard let data = FileManager.default.contents(atPath: path),
             let output = String(data: data, encoding: .utf8) else {
-                fatalError("Unable to find a valid output file from a prior run of Muter at \(path)")
+                fatalError("u dun fuked up, son.")
         }
         return output
     }
@@ -258,18 +257,10 @@ extension AcceptanceTests {
         }
         return data
     }
-    
-    func contentsOfDirectory(at path: String) -> [String] {
-        return try! FileManager.default.contentsOfDirectory(atPath: path)
-    }
-    
-    func contentsOfLogFile(named fileName: String) -> String {
-        return contentsOfDirectory(at: muterLogsRootPath)
-            .first
-            .map { muterLogsRootPath + $0 + "/" + fileName }
-            .map (contentsOfFileAsString(at:))!
-    }
-    
+}
+
+@available(OSX 10.13, *)
+extension AcceptanceTests {
     func numberOfDiscoveredFileLists(in output: String) -> Int {
         return applyRegex("Discovered \\d* Swift files:\n\n(/[^/ ]*)+/?", to: output)
     }

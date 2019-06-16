@@ -21,12 +21,11 @@ public struct RunCommand: CommandProtocol {
 
     """
 
-    private let delegate: RunCommandIODelegate
     private let fileManager: FileSystemManager
     private let notificationCenter: NotificationCenter
 
-    public init(delegate: RunCommandIODelegate = RunCommandDelegate(), fileManager: FileSystemManager = FileManager.default, notificationCenter: NotificationCenter = .default) {
-        self.delegate = delegate
+    public init(fileManager: FileSystemManager = FileManager.default,
+                notificationCenter: NotificationCenter = .default) {
         self.fileManager = fileManager
         self.notificationCenter = notificationCenter
     }

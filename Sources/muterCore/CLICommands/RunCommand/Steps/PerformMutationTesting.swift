@@ -1,11 +1,11 @@
 import Foundation
-import SwiftSyntax
 
 @available(OSX 10.13, *)
 struct PerformMutationTesting: RunCommandStep {
     private let ioDelegate: MutationTestingIODelegate
     private let notificationCenter: NotificationCenter
     private let buildErrorsThreshold: Int = 5
+    private let fileManager = FileManager.default
     
     init(ioDelegate: MutationTestingIODelegate = MutationTestingDelegate(),
          notificationCenter: NotificationCenter = .default) {
@@ -14,8 +14,7 @@ struct PerformMutationTesting: RunCommandStep {
     }
     
     func run(with state: AnyRunCommandState) -> Result<[RunCommandState.Change], MuterError> {
-        #warning("come back to this")
-        FileManager.default.changeCurrentDirectoryPath(state.tempDirectoryURL.path)
+        fileManager.changeCurrentDirectoryPath(state.tempDirectoryURL.path)
 
         let result = performMutationTesting(using: state)
         switch result {
@@ -31,25 +30,23 @@ struct PerformMutationTesting: RunCommandStep {
 @available(OSX 10.13, *)
 private extension PerformMutationTesting {
     func performMutationTesting(using state: AnyRunCommandState) -> Result<[MutationTestOutcome], MuterError> {
-        let fileName = "initial_run"
         let initialResult = ioDelegate.runTestSuite(using: state.muterConfiguration,
-                                                    savingResultsIntoFileNamed: fileName)
+                                                    savingResultsIntoFileNamed: "baseline run")
         
-        notificationCenter.post(name: .mutationTestingStarted, object: (fileName, initialResult.testLog))
-        notificationCenter.post(name: .newTestLogAvailable, object: (fileName, initialResult.testLog))
+        notificationCenter.post(name: .mutationTestingStarted, object: nil)
+        notificationCenter.post(name: .newTestLogAvailable, object: (MutationPoint?.none, initialResult.testLog))
         
         guard initialResult.outcome == .passed else {
             ioDelegate.abortTesting(reason: .baselineTestFailed)
             return .failure(.mutationTestingAborted(reason: .baselineTestFailed))
         }
         
-        return mutate(using: state)
+        return insertMutants(using: state)
     }
     
-    func mutate(using state: AnyRunCommandState) -> Result<[MutationTestOutcome], MuterError> {
+    func insertMutants(using state: AnyRunCommandState) -> Result<[MutationTestOutcome], MuterError> {
         var outcomes: [MutationTestOutcome] = []
         outcomes.reserveCapacity(state.mutationPoints.count)
-        
         var buildErrors = 0
         
         for (index, mutationPoint) in state.mutationPoints.enumerated() {
@@ -69,7 +66,7 @@ private extension PerformMutationTesting {
                                                         savingResultsIntoFileNamed: logFileName)
             ioDelegate.restoreFile(at: filePath, using: state.swapFilePathsByOriginalPath)
             
-            notificationCenter.post(name: .newTestLogAvailable, object: ((fileName as NSString).deletingPathExtension, log))
+            notificationCenter.post(name: .newTestLogAvailable, object: (mutationPoint, log))
             
             let outcome = MutationTestOutcome(testSuiteOutcome: result,
                                               mutationPoint: mutationPoint,

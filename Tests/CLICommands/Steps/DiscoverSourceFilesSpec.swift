@@ -77,10 +77,6 @@ class DiscoverSourceFilesSpec: QuickSpec {
                         result = discoverSourceFiles.run(with: state)
                     }
                     
-                    it("discovers 0 Swift files") {
-                        expect(state.sourceFileCandidates).to(beEmpty())
-                    }
-                    
                     it("cascades a failure") {
                         guard case .failure(.noSourceFilesDiscovered) = result! else {
                             fail("expected noSourceFilesDiscovered but got \(String(describing: result!))")
@@ -96,10 +92,6 @@ class DiscoverSourceFilesSpec: QuickSpec {
                         
                         state.tempDirectoryURL = URL(fileURLWithPath: path, isDirectory: true)
                         result = discoverSourceFiles.run(with: state)
-                    }
-                    
-                    it("discovers 0 Swift files") {
-                        expect(state.sourceFileCandidates).to(beEmpty())
                     }
                     
                     it("cascades a failure") {
