@@ -29,7 +29,7 @@ class CopyProjectToTempDirectorySpec: QuickSpec {
                     result = copyProjectToTempDirectory.run(with: state)
                 }
                 
-                it("returns the state changes the step produces") {
+                it("returns the temp directory location for Muter to use") {
                     guard case .success(let stateChanges) = result! else {
                         fail("expected success but got \(String(describing: result!))")
                         return
@@ -68,10 +68,6 @@ class CopyProjectToTempDirectorySpec: QuickSpec {
                     copyProjectToTempDirectory = CopyProjectToTempDirectory(fileManager: fileManagerSpy)
                     
                     result = copyProjectToTempDirectory.run(with: state)
-                }
-                
-                it("doesn't add the temporary directory url to the state") {
-                    expect(state.tempDirectoryURL) != URL(fileURLWithPath: "/tmp/projectName")
                 }
                 
                 it("cascades the failure up with a reason that explains why the project copy failed") {

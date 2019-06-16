@@ -7,6 +7,9 @@ import SwiftSyntax
 class RunCommandObserverSpec: QuickSpec {
     override func spec() {
         describe("RunCommandObserver") {
+            let fileManagerSpy = FileManagerSpy()
+            fileManagerSpy.currentDirectoryPathToReturn = "/"
+            
             describe("handleNewMutationTestOutcomeAvailable") {
                 
                 var flushHandlerWasCalled: Bool!
@@ -14,8 +17,7 @@ class RunCommandObserverSpec: QuickSpec {
                     flushHandlerWasCalled = true
                 }
                 
-                let fileManagerSpy = FileManagerSpy()
-                fileManagerSpy.currentDirectoryPathToReturn = "/"
+
                 
                 var notification: Notification!
                 
@@ -60,7 +62,7 @@ class RunCommandObserverSpec: QuickSpec {
             
             describe("logFileName(from:)") {
                 it("names a log file as baseline run.log when there is no MutationPoint") {
-                    let subject = RunCommandObserver(reporter: .plainText, fileManager: FileManagerSpy(), flushHandler: {})
+                    let subject = RunCommandObserver(reporter: .plainText, fileManager: fileManagerSpy, flushHandler: {})
                     expect(subject.logFileName(from: nil)) == "baseline run.log"
                 }
                 
@@ -73,7 +75,7 @@ class RunCommandObserverSpec: QuickSpec {
                                                        filePath: "~/user/file2.swift",
                                                        position: AbsolutePosition(line: 5, column: 6, utf8Offset: 2))
                     
-                    let subject = RunCommandObserver(reporter: .plainText, fileManager: FileManagerSpy(), flushHandler: {})
+                    let subject = RunCommandObserver(reporter: .plainText, fileManager: fileManagerSpy, flushHandler: {})
                     
                     expect(subject.logFileName(from: mutationPoint1)) == "NegateConditionals @ file.swift:0:0.log"
                     expect(subject.logFileName(from: mutationPoint2)) == "RemoveSideEffects @ file2.swift:5:6.log"
