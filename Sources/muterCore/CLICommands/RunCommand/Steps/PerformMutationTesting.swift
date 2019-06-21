@@ -37,7 +37,6 @@ private extension PerformMutationTesting {
         notificationCenter.post(name: .newTestLogAvailable, object: (MutationPoint?.none, initialResult.testLog))
         
         guard initialResult.outcome == .passed else {
-            ioDelegate.abortTesting(reason: .baselineTestFailed)
             return .failure(.mutationTestingAborted(reason: .baselineTestFailed))
         }
         
@@ -83,7 +82,6 @@ private extension PerformMutationTesting {
             buildErrors = result == .buildError ? (buildErrors + 1) : 0
             
             if buildErrors >= buildErrorsThreshold {
-                ioDelegate.abortTesting(reason: .tooManyBuildErrors)
                 return .failure(.mutationTestingAborted(reason: .tooManyBuildErrors))
             }
         }

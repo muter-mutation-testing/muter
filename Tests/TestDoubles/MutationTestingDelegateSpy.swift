@@ -8,7 +8,6 @@ class MutationTestingDelegateSpy: Spy, MutationTestingIODelegate {
     private(set) var mutatedFileContents: [String] = []
     private(set) var mutatedFilePaths: [String] = []
     private(set) var restoredFilePaths: [String] = []
-    private(set) var abortReasons: [MutationTestingAbortReason] = []
 
     var testSuiteOutcomes: [TestSuiteOutcome]!
 
@@ -31,10 +30,5 @@ class MutationTestingDelegateSpy: Spy, MutationTestingIODelegate {
     func restoreFile(at path: String, using swapFilePaths: [FilePath : FilePath]) {
         methodCalls.append(#function)
         restoredFilePaths.append(path)
-    }
-
-    func abortTesting(reason: MutationTestingAbortReason) {
-        methodCalls.append(#function)
-        abortReasons.append(reason)
     }
 }

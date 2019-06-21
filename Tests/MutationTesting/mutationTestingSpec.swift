@@ -87,10 +87,7 @@ class MutationTestingSpec: QuickSpec {
                     it("doesn't perform any mutation testing") {
                         expect(delegateSpy.methodCalls).to(equal([
                             "runTestSuite(using:savingResultsIntoFileNamed:)",
-                            "abortTesting(reason:)"
-                            ]))
-                        expect(state.mutationTestOutcomes).to(beEmpty())
-                        expect(delegateSpy.abortReasons).to(equal([.baselineTestFailed]))
+                        ]))
                     }
                     
                     it("cascades a failure") {
@@ -110,10 +107,7 @@ class MutationTestingSpec: QuickSpec {
                     it("doesn't perform any mutation testing") {
                         expect(delegateSpy.methodCalls).to(equal([
                             "runTestSuite(using:savingResultsIntoFileNamed:)",
-                            "abortTesting(reason:)"
-                            ]))
-                        expect(state.mutationTestOutcomes).to(beEmpty())
-                        expect(delegateSpy.abortReasons).to(equal([.baselineTestFailed]))
+                        ]))
                     }
                     
                     it("cascades a failure") {
@@ -133,9 +127,7 @@ class MutationTestingSpec: QuickSpec {
                     it("doesn't perform any mutation testing") {
                         expect(delegateSpy.methodCalls).to(equal([
                             "runTestSuite(using:savingResultsIntoFileNamed:)",
-                            "abortTesting(reason:)"
-                            ]))
-                        expect(delegateSpy.abortReasons).to(equal([.baselineTestFailed]))
+                        ]))
                     }
                     
                     it("cascades a failure") {
@@ -183,9 +175,7 @@ class MutationTestingSpec: QuickSpec {
                         "backupFile(at:using:)",
                         "writeFile(to:contents:)",
                         "runTestSuite(using:savingResultsIntoFileNamed:)",
-                        "restoreFile(at:using:)",
-                        // Abort
-                        "abortTesting(reason:)"
+                        "restoreFile(at:using:)"
                         ]))
                     
                     expect(delegateSpy.backedUpFilePaths.count).to(equal(5))
@@ -193,8 +183,13 @@ class MutationTestingSpec: QuickSpec {
                     expect(delegateSpy.backedUpFilePaths).to(equal(delegateSpy.restoredFilePaths))
                 expect(delegateSpy.mutatedFileContents.first).to(equal(SyntaxFactory.makeBlankSourceFile().description))
                     expect(delegateSpy.mutatedFilePaths.first).to(equal("a file path"))
-                    
-                    expect(delegateSpy.abortReasons).to(equal([.tooManyBuildErrors]))
+                }
+                
+                it("cascades a failure") {
+                    guard case .failure(.mutationTestingAborted(reason: .tooManyBuildErrors)) = result! else {
+                        fail("expected a mutationTestingAborted failure but got \(String(describing: result!))")
+                        return
+                    }
                 }
             }
             

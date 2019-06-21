@@ -28,7 +28,6 @@ struct CopyProjectToTempDirectory: RunCommandStep {
                 .tempDirectoryUrlCreated(URL(fileURLWithPath: destinationPath))
             ])
         } catch {
-            notificationCenter.post(name: .projectCopyFailed, object: error)
             return .failure(.projectCopyFailed(reason: error.localizedDescription))
         }
     }

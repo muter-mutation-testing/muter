@@ -6,7 +6,6 @@ extension Notification.Name {
     static let muterLaunched = Notification.Name("muterLaunched")
     static let projectCopyStarted = Notification.Name("projectCopyStarted")
     static let projectCopyFinished = Notification.Name("projectCopyFinished")
-    static let projectCopyFailed = Notification.Name("projectCopyFailed")
 
     static let workingDirectoryCreated = Notification.Name("workingDirectoryCreated")
 
@@ -15,11 +14,9 @@ extension Notification.Name {
 
     static let mutationPointDiscoveryStarted = Notification.Name("mutationPointDiscoveryStarted")
     static let mutationPointDiscoveryFinished = Notification.Name("mutationPointDiscoveryFinished")
-    static let noMutationPointsDiscovered = Notification.Name("noMutationPointsDiscovered")
 
     static let mutationTestingStarted = Notification.Name("mutationTestingStarted")
     static let mutationTestingFinished = Notification.Name("mutationTestingFinished")
-    static let mutationTestingAborted = Notification.Name("mutationTestingAborted")
 
     static let newMutationTestOutcomeAvailable = Notification.Name("newMutationTestOutcomeAvailable")
     static let newTestLogAvailable = Notification.Name("newTestLogAvailable")
@@ -55,7 +52,6 @@ class RunCommandObserver {
             (name: .newMutationTestOutcomeAvailable, handler: handleNewMutationTestOutcomeAvailable),
             (name: .newTestLogAvailable, handler: handleNewTestLogAvailable),
 
-            (name: .mutationTestingAborted, handler: handleMutationTestingAborted),
             (name: .mutationTestingFinished, handler: handleMutationTestingFinished),
         ]
     }
@@ -172,11 +168,6 @@ extension RunCommandObserver {
         let fileName = URL(fileURLWithPath: mutationPoint.filePath).lastPathComponent
         
         return "\(mutationPoint.mutationOperatorId.rawValue) @ \(fileName):\(mutationPoint.position.line):\(mutationPoint.position.column).log"
-    }
-
-    func handleMutationTestingAborted(notification: Notification) {
-        printMessage(notification.object as! String)
-        exit(1)
     }
 
     func handleMutationTestingFinished(notification: Notification) {

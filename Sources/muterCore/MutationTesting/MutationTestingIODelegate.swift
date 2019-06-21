@@ -5,10 +5,8 @@ protocol MutationTestingIODelegate {
     func writeFile(to path: String, contents: String) throws
     func runTestSuite(using configuration: MuterConfiguration, savingResultsIntoFileNamed fileName: String) -> (outcome: TestSuiteOutcome, testLog: String)
     func restoreFile(at path: String, using swapFilePaths: [FilePath: FilePath])
-    func abortTesting(reason: MutationTestingAbortReason)
 }
 
-// MARK - Mutation Testing I/O Delegate
 @available(OSX 10.13, *)
 struct MutationTestingDelegate: MutationTestingIODelegate {
     private let notificationCenter: NotificationCenter = .default
@@ -40,7 +38,6 @@ struct MutationTestingDelegate: MutationTestingIODelegate {
             )
 
         } catch {
-            abortTesting(reason: .unknownError(error.localizedDescription))
             return (.buildError, "") // this should never be executed
         }
     }
@@ -49,15 +46,16 @@ struct MutationTestingDelegate: MutationTestingIODelegate {
         let swapFilePath = swapFilePaths[path]!
         copySourceCode(fromFileAt: swapFilePath, to: path)
     }
-
-    func abortTesting(reason: MutationTestingAbortReason) {
-        notificationCenter.post(name: .mutationTestingAborted, object: reason.description)
-    }
 }
 
 @available(OSX 10.13, *)
 private extension MutationTestingDelegate {
 
+    func copySourceCode(fromFileAt sourcePath: String, to destinationPath: String) {
+        let source = sourceCode(fromFileAt: sourcePath)
+        try? source?.description.write(toFile: destinationPath, atomically: true, encoding: .utf8)
+    }
+    
     func fileHandle(for logFileName: String) throws -> (handle: FileHandle, logFileUrl: URL) {
         let testLogUrl = URL(fileURLWithPath: FileManager.default.currentDirectoryPath + "/" + logFileName)
         try Data().write(to: testLogUrl)
