@@ -246,7 +246,7 @@ extension AcceptanceTests {
     func contentsOfFileAsString(at path: String) -> String {
         guard let data = FileManager.default.contents(atPath: path),
             let output = String(data: data, encoding: .utf8) else {
-                fatalError("u dun fuked up, son.")
+                fatalError("File not found at \(path)")
         }
         return output
     }

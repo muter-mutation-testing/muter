@@ -13,7 +13,6 @@ struct DiscoverMutationPoints: RunCommandStep {
         notificationCenter.post(name: .mutationPointDiscoveryFinished, object: mutationPoints)
         
         guard mutationPoints.count >= 1 else {
-            notificationCenter.post(name: .noMutationPointsDiscovered, object: nil)
             return .failure(.noMutationPointsDiscovered)
         }
         
