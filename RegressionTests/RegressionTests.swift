@@ -7,7 +7,10 @@ import TestingExtensions
 
 @available(OSX 10.13, *)
 class RegressionTests: QuickSpec {
+    
+    
     override func spec() {
+        
         describe("muter test report output for bon mot") {
             it("does not contain any changes") {
                 let path = "\(self.rootTestDirectory)/bonmot_regression_test_output.json"
@@ -17,8 +20,9 @@ class RegressionTests: QuickSpec {
                         fail("Unable to load a valid Muter test report from \(path)")
                         return
                 }
-
-                assertSnapshot(matching: testReport, as: .json, named: "1")
+                assertSnapshot(matching: testReport,
+                               as: .json(excludingKeysMatching: { $0 == "filePath" }),
+                               named: "1")
             }
         }
         
@@ -32,7 +36,10 @@ class RegressionTests: QuickSpec {
                         return
                 }
                 
-                assertSnapshot(matching: testReport, as: .json, named: "2")
+                assertSnapshot(matching: testReport,
+                               as: .json(excludingKeysMatching: { $0 == "filePath" }),
+                               named: "2")
+                
             }
         }
     }
@@ -48,3 +55,4 @@ extension RegressionTests {
         )
     }
 }
+
