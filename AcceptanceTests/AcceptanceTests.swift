@@ -13,7 +13,7 @@ class AcceptanceTests: QuickSpec {
         describe("someone using Muter for mutation testing") {
             
             let messages = (
-                mutationScoreOfTestSuite: "Mutation Score of Test Suite: 57%",
+                mutationScoreOfTestSuite: "Mutation Score of Test Suite: 33%",
                 mutationScoresHeader: """
                         --------------------
                         Mutation Test Scores
@@ -52,7 +52,7 @@ class AcceptanceTests: QuickSpec {
                         }
                         
                         they("see how many mutation operators it's able to perform") {
-                            expect(output.contains("In total, Muter applied 7 mutation operators.")).to(beTrue())
+                            expect(output.contains("In total, Muter applied 3 mutation operators.")).to(beTrue())
                         }
                         
                         they("see the mutation scores for their test suite") {
@@ -67,18 +67,14 @@ class AcceptanceTests: QuickSpec {
                         they("see the logs from their test runner copied into their project's directory") {
                             let expectedLogFiles = [
                                 "baseline run.log",
-                                "ChangeLogicalConnector @ Module2.swift:6:18.log",
-                                "ChangeLogicalConnector @ Module2.swift:10:17.log",
-                                "NegateConditionals @ Module.swift:4:18.log",
-                                "NegateConditionals @ Module.swift:8:18.log",
-                                "NegateConditionals @ Module.swift:12:18.log",
-                                "NegateConditionals @ Module2.swift:2:17.log",
-                                "RemoveSideEffects @ ViewController.swift:5:28.log"
+                                "ChangeLogicalConnector @ Module2.swift-2-17.log",
+                                "NegateConditionals @ Module.swift-4-18.log",
+                                "RemoveSideEffects @ ViewController.swift-5-28.log"
                             ]
                             let numberOfEmptyLogFiles = expectedLogFiles
                                 .map(self.contentsOfLogFile(named:))
                                 .count { $0.isEmpty }
-                            
+
                             expect(logFiles.sorted()).to(equal(expectedLogFiles.sorted())) // Sort these so it's easier to reason about any erroneous failures
                             expect(numberOfEmptyLogFiles) == 0
                         }
@@ -93,7 +89,7 @@ class AcceptanceTests: QuickSpec {
                     }
                     
                     they("see their results in a format consumable by an Xcode build script") {
-                        expect(self.numberOfXcodeFormattedMessages(in: output)).to(equal(3))
+                        expect(self.numberOfXcodeFormattedMessages(in: output)).to(equal(1))
                     }
                 }
                 

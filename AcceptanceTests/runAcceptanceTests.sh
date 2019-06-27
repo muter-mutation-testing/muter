@@ -1,7 +1,10 @@
 #!/bin/sh
 echo "📴📴📴📴📴📴📴 Acceptance Testing has started 📴📴📴📴📴📴📴"
 
+echo "Cleaning up from prior acceptance test runs..."
 rm -rf ./AcceptanceTests/muter_logs
+rm ./AcceptanceTests/*.txt
+rm ./AcceptanceTests/*.json
 
 echo "Running Muter on an iOS codebase with a test suite..."
 cd ./Repositories/ExampleApp

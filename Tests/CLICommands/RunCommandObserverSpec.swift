@@ -77,8 +77,8 @@ class RunCommandObserverSpec: QuickSpec {
                     
                     let subject = RunCommandObserver(reporter: .plainText, fileManager: fileManagerSpy, flushHandler: {})
                     
-                    expect(subject.logFileName(from: mutationPoint1)) == "NegateConditionals @ file.swift:0:0.log"
-                    expect(subject.logFileName(from: mutationPoint2)) == "RemoveSideEffects @ file2.swift:5:6.log"
+                    expect(subject.logFileName(from: mutationPoint1)) == "NegateConditionals @ file.swift-0-0.log"
+                    expect(subject.logFileName(from: mutationPoint2)) == "RemoveSideEffects @ file2.swift-5-6.log"
                 }
             }
         }

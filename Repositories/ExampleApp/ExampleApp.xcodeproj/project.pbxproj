@@ -159,9 +159,11 @@
 				TargetAttributes = {
 					9D13CAC3218FC9F800DB1FDA = {
 						CreatedOnToolsVersion = 10.0;
+						LastSwiftMigration = 1020;
 					};
 					9D13CAD7218FC9FA00DB1FDA = {
 						CreatedOnToolsVersion = 10.0;
+						LastSwiftMigration = 1020;
 					};
 					9DAD784C225E482400E11AE6 = {
 						CreatedOnToolsVersion = 10.2;
@@ -403,7 +405,7 @@
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = chefski.ExampleApp;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				SWIFT_VERSION = 4.2;
+				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
 			name = Debug;
@@ -421,7 +423,7 @@
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = chefski.ExampleApp;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				SWIFT_VERSION = 4.2;
+				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
 			name = Release;
@@ -440,7 +442,7 @@
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = chefski.ExampleApp;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				SWIFT_VERSION = 4.2;
+				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
 			name = Debug;
@@ -459,7 +461,7 @@
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = chefski.ExampleApp;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				SWIFT_VERSION = 4.2;
+				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
 			name = Release;
