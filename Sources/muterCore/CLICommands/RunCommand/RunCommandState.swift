@@ -23,7 +23,9 @@ class RunCommandState: AnyRunCommandState {
     var sourceCodeByFilePath: [FilePath: SourceFileSyntax] = [:]
     var swapFilePathsByOriginalPath: [FilePath: FilePath] = [:]
     var mutationTestOutcomes: [MutationTestOutcome] = []
-    
+}
+
+extension RunCommandState {
     enum Change: Equatable {
         case configurationParsed(MuterConfiguration)
         case projectDirectoryUrlDiscovered(URL)
@@ -36,25 +38,27 @@ class RunCommandState: AnyRunCommandState {
     }
 }
 
-extension RunCommandState.Change {
-    func apply(to state: inout RunCommandState) {
-        switch self {
-        case .configurationParsed(let configuration):
-            state.muterConfiguration = configuration
-        case .projectDirectoryUrlDiscovered(let projectDirectoryURL):
-            state.projectDirectoryURL = projectDirectoryURL
-        case .tempDirectoryUrlCreated(let tempDirectoryURL):
-            state.tempDirectoryURL = tempDirectoryURL
-        case .sourceFileCandidatesDiscovered(let sourceFileCandidates):
-            state.sourceFileCandidates = sourceFileCandidates
-        case .mutationPointsDiscovered(let mutationPoints):
-            state.mutationPoints = mutationPoints
-        case .sourceCodeParsed(let sourceCodeByFilePath):
-            state.sourceCodeByFilePath = sourceCodeByFilePath
-        case .swapFilePathGenerated(let swapFilePathsByOriginalPath):
-            state.swapFilePathsByOriginalPath = swapFilePathsByOriginalPath
-        case .mutationTestOutcomesGenerated(let mutationTestOutcomes):
-            state.mutationTestOutcomes = mutationTestOutcomes
+extension RunCommandState {
+    func apply(_ stateChanges: [RunCommandState.Change]) {
+        for change in stateChanges {
+            switch change {
+            case .configurationParsed(let configuration):
+                self.muterConfiguration = configuration
+            case .projectDirectoryUrlDiscovered(let projectDirectoryURL):
+                self.projectDirectoryURL = projectDirectoryURL
+            case .tempDirectoryUrlCreated(let tempDirectoryURL):
+                self.tempDirectoryURL = tempDirectoryURL
+            case .sourceFileCandidatesDiscovered(let sourceFileCandidates):
+                self.sourceFileCandidates = sourceFileCandidates
+            case .mutationPointsDiscovered(let mutationPoints):
+                self.mutationPoints = mutationPoints
+            case .sourceCodeParsed(let sourceCodeByFilePath):
+                self.sourceCodeByFilePath = sourceCodeByFilePath
+            case .swapFilePathGenerated(let swapFilePathsByOriginalPath):
+                self.swapFilePathsByOriginalPath = swapFilePathsByOriginalPath
+            case .mutationTestOutcomesGenerated(let mutationTestOutcomes):
+                self.mutationTestOutcomes = mutationTestOutcomes
+            }
         }
     }
 }

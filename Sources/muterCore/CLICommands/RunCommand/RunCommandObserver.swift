@@ -93,7 +93,8 @@ extension RunCommandObserver {
 
     func handleSourceFileDiscoveryStarted(notification: Notification) {
         if reporter == .plainText {
-            printMessage("Discovering source code in:\n\n\(notification.object)")
+            let url = notification.object as! URL
+            printMessage("Discovering source code in:\n\n\(url.path)")
         }
     }
 
@@ -107,7 +108,8 @@ extension RunCommandObserver {
 
     func handleMutationPointDiscoveryStarted(notification: Notification) {
         if reporter == .plainText {
-            print("Discovering applicable Mutation Operators in:\n\n\(notification.object )")
+            let url = notification.object as! URL
+            print("Discovering applicable Mutation Operators in:\n\n\(url.path)")
         }
     }
 
@@ -167,7 +169,7 @@ extension RunCommandObserver {
         
         let fileName = URL(fileURLWithPath: mutationPoint.filePath).lastPathComponent
         
-        return "\(mutationPoint.mutationOperatorId.rawValue) @ \(fileName):\(mutationPoint.position.line):\(mutationPoint.position.column).log"
+        return "\(mutationPoint.mutationOperatorId.rawValue) @ \(fileName)-\(mutationPoint.position.line)-\(mutationPoint.position.column).log"
     }
 
     func handleMutationTestingFinished(notification: Notification) {

@@ -17,9 +17,7 @@ class RunCommandHandler {
             case .failure(let error):
                 return .failure(error)
             case .success(let stateChanges):
-                for change in stateChanges {
-                    change.apply(to: &state)
-                }
+                state.apply(stateChanges)
             }
         }
         return .success(())
