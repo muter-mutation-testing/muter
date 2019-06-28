@@ -25,9 +25,6 @@ extension MuterError: CustomStringConvertible {
             FileManager Error:
             \(reason)
             ******************
-            
-            If you feel this is a bug, or want help figuring out what could be happening, please open an issue at
-            https://github.com/SeanROlszewski/muter/issues
             """
         case .projectCopyFailed(let reason):
             return """
@@ -35,9 +32,6 @@ extension MuterError: CustomStringConvertible {
             
             This is unusual. Try running Muter again to see if that fixes the issue.
             Alternatively, try clearing all temp files from your temp directory by restarting your computer.
-            
-            If you can reproduce this, please consider filing a bug
-            at https://github.com/SeanROlszewski/muter
             
             Please include the following in the bug report:
             *********************
@@ -49,9 +43,6 @@ extension MuterError: CustomStringConvertible {
             
             This is unusual. Try running Muter again to see if that fixes the issue. Alternatively, try clearing all temp files from your temp directory by restarting your computer.
             
-            If you can reproduce this, please consider filing a bug
-            at https://github.com/SeanROlszewski/muter
-            
             Please include the following in the bug report:
             *********************
             FileManager error: \(reason)
@@ -61,18 +52,12 @@ extension MuterError: CustomStringConvertible {
             Muter wasn't able to discover any code it could mutation test.
             
             This is likely caused by misconfiguring Muter, usually by excluding a directory that contains your code.
-            
-            If you feel this is a bug, or want help figuring out what could be happening, please open an issue at
-            https://github.com/SeanROlszewski/muter/issues
             """
         case .noMutationPointsDiscovered:
             return """
             Muter wasn't able to discover any code it could mutation test.
             
             This is likely caused by misconfiguring Muter, usually by excluding a directory that contains your code.
-            
-            If you feel this is a bug, or want help figuring out what could be happening, please open an issue at
-            https://github.com/SeanROlszewski/muter/issues
             """
         case .mutationTestingAborted(let reason):
             return """

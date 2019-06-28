@@ -10,7 +10,14 @@ if #available(OSX 10.13, *) {
         .register(RunCommand())
         .register(HelpCommand(registry: registry))
         .main(defaultVerb: RunCommand().verb) { (error) in
-            print("\n\n⚠️ Muter has encountered an error ⚠️\n\(error)")
+            print("""
+            ⚠️ ⚠️ ⚠️ ⚠️ ⚠️  Muter has encountered an error  ⚠️ ⚠️ ⚠️ ⚠️ ⚠️
+            \(error)
+            
+            If you feel like this is a bug, or want help figuring out what could be happening, please open an issue at
+            https://github.com/SeanROlszewski/muter/issues
+                
+            """)
             exit(1)
     }
 
