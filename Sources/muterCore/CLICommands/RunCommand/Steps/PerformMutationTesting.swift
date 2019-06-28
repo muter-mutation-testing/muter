@@ -1,4 +1,5 @@
 import Foundation
+import SwiftSyntax
 
 @available(OSX 10.13, *)
 struct PerformMutationTesting: RunCommandStep {
@@ -30,62 +31,77 @@ struct PerformMutationTesting: RunCommandStep {
 @available(OSX 10.13, *)
 private extension PerformMutationTesting {
     func performMutationTesting(using state: AnyRunCommandState) -> Result<[MutationTestOutcome], MuterError> {
-        let initialResult = ioDelegate.runTestSuite(using: state.muterConfiguration,
-                                                    savingResultsIntoFileNamed: "baseline run")
-        
         notificationCenter.post(name: .mutationTestingStarted, object: nil)
-        notificationCenter.post(name: .newTestLogAvailable, object: (MutationPoint?.none, initialResult.testLog))
+
+        let initialTime = Date()
+        let (testSuiteOutcome, testLog) = ioDelegate.runTestSuite(using: state.muterConfiguration,
+                                                                  savingResultsIntoFileNamed: "baseline run")
+        let timeAfterRunningTestSuite = Date()
+        let timePerBuildTestCycle = DateInterval(start: initialTime, end: timeAfterRunningTestSuite).duration
         
-        guard initialResult.outcome == .passed else {
+        notificationCenter.post(name: .newTestLogAvailable, object: (
+            mutationPoint: MutationPoint?.none,
+            testLog: testLog,
+            estimatedTimeRemaining: timePerBuildTestCycle * Double(state.mutationPoints.count)
+        ))
+        
+        guard testSuiteOutcome == .passed else {
             return .failure(.mutationTestingAborted(reason: .baselineTestFailed))
         }
         
-        return insertMutants(using: state)
+        return insertMutants(using: state, timePerBuildTestCycle: timePerBuildTestCycle)
     }
     
-    func insertMutants(using state: AnyRunCommandState) -> Result<[MutationTestOutcome], MuterError> {
+    func insertMutants(using state: AnyRunCommandState, timePerBuildTestCycle: TimeInterval) -> Result<[MutationTestOutcome], MuterError> {
         var outcomes: [MutationTestOutcome] = []
         outcomes.reserveCapacity(state.mutationPoints.count)
         var buildErrors = 0
         
-        for (index, mutationPoint) in state.mutationPoints.enumerated() {
-            let filePath = mutationPoint.filePath
-            let fileName = URL(fileURLWithPath: filePath).lastPathComponent
+        for mutationPoint in state.mutationPoints {
+
+            ioDelegate.backupFile(at: mutationPoint.filePath, using: state.swapFilePathsByOriginalPath)
             
-            ioDelegate.backupFile(at: filePath, using: state.swapFilePathsByOriginalPath)
-            
-            let mutationOperator = mutationPoint.mutationOperatorId.mutationOperator(for: mutationPoint.position)
             let sourceCode = state.sourceCodeByFilePath[mutationPoint.filePath]!
+            let mutantDescription = insertMutant(at: mutationPoint, within: sourceCode)
             
-            let (mutatedSource, description) = mutationOperator(sourceCode)
-            try! ioDelegate.writeFile(to: filePath, contents: mutatedSource.description)
+            let (testSuiteOutcome, testLog) = ioDelegate.runTestSuite(using: state.muterConfiguration,
+                                                                      savingResultsIntoFileNamed: logFileName(for: mutationPoint))
+            ioDelegate.restoreFile(at: mutationPoint.filePath, using: state.swapFilePathsByOriginalPath)
             
-            let logFileName = "\(fileName)_\(mutationPoint.mutationOperatorId.rawValue)_\(mutationPoint.position).log"
-            let (result, log) = ioDelegate.runTestSuite(using: state.muterConfiguration,
-                                                        savingResultsIntoFileNamed: logFileName)
-            ioDelegate.restoreFile(at: filePath, using: state.swapFilePathsByOriginalPath)
-            
-            notificationCenter.post(name: .newTestLogAvailable, object: (mutationPoint, log))
-            
-            let outcome = MutationTestOutcome(testSuiteOutcome: result,
+            let outcome = MutationTestOutcome(testSuiteOutcome: testSuiteOutcome,
                                               mutationPoint: mutationPoint,
-                                              operatorDescription: description)
-            
+                                              operatorDescription: mutantDescription)
             outcomes.append(outcome)
             
+            
+            let remainingOperatorsCount = state.mutationPoints.count - outcomes.count
             notificationCenter.post(name: .newMutationTestOutcomeAvailable, object: (
-                    outcome: outcome,
-                    remainingOperatorsCount: state.mutationPoints.count - (index + 1)
-                )
-            )
+                outcome: outcome,
+                remainingOperatorsCount: remainingOperatorsCount
+            ))
+            notificationCenter.post(name: .newTestLogAvailable, object: (
+                mutationPoint: mutationPoint,
+                testLog: testLog,
+                estimatedTimeRemaining: timePerBuildTestCycle * Double(remainingOperatorsCount + 1)
+            ))
             
-            buildErrors = result == .buildError ? (buildErrors + 1) : 0
-            
+            buildErrors = testSuiteOutcome == .buildError ? (buildErrors + 1) : 0
             if buildErrors >= buildErrorsThreshold {
                 return .failure(.mutationTestingAborted(reason: .tooManyBuildErrors))
             }
         }
         
         return .success(outcomes)
+    }
+    
+    func insertMutant(at mutationPoint: MutationPoint, within sourceCode: SourceFileSyntax) -> String {
+        let (mutatedSource, description) = mutationPoint.mutationOperator(sourceCode)
+        try! ioDelegate.writeFile(to: mutationPoint.filePath, contents: mutatedSource.description)
+        
+        return description
+    }
+    
+    func logFileName(for mutationPoint: MutationPoint) -> String {
+        return "\(mutationPoint.fileName)_\(mutationPoint.mutationOperatorId.rawValue)_\(mutationPoint.position).log"
     }
 }

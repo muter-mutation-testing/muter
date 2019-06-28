@@ -1,4 +1,5 @@
 import SwiftSyntax
+import Foundation
 
 typealias SourceCodeTransformation = (Syntax) -> (mutatedSource: Syntax, description: String)
 typealias RewriterInitializer = (AbsolutePosition) -> PositionSpecificRewriter
@@ -8,6 +9,14 @@ public struct MutationPoint: Equatable, Codable {
     let mutationOperatorId: MutationOperator.Id
     let filePath: String
     let position: AbsolutePosition
+    
+    var fileName: String {
+        return URL(fileURLWithPath: self.filePath).lastPathComponent
+    }
+    
+    var mutationOperator: SourceCodeTransformation {
+        return mutationOperatorId.mutationOperator(for: position)
+    }
 }
 
 struct MutationOperator {

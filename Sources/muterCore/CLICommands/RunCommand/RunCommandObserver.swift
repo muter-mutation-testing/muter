@@ -109,7 +109,7 @@ extension RunCommandObserver {
     func handleMutationPointDiscoveryStarted(notification: Notification) {
         if reporter == .plainText {
             let url = notification.object as! URL
-            print("Discovering applicable Mutation Operators in:\n\n\(url.path)")
+            print("Discovering mutants to insert in project at path:\n\n\(url.path)")
         }
     }
 
@@ -121,15 +121,17 @@ extension RunCommandObserver {
 
             for (index, mutationPoint) in discoveredMutationPoints.enumerated() {
                 let listPosition = "\(index+1))"
-                let fileName = URL(fileURLWithPath: mutationPoint.filePath).lastPathComponent
-                print("\(listPosition) \(fileName)")
+                print("\(listPosition) \(mutationPoint.fileName)")
             }
         }
     }
 
     func handleMutationTestingStarted(notification: Notification) {
         if reporter == .plainText {
-            printMessage("Mutation testing will now begin.\nRunning your test suite to determine a baseline for mutation testing")
+            printMessage("""
+            Mutation testing will now begin.
+            Running your test suite to determine a baseline for mutation testing
+            """)
         }
     }
 
@@ -137,10 +139,8 @@ extension RunCommandObserver {
         let values = notification.object as! (outcome: MutationTestOutcome, remainingOperatorsCount: Int)
         
         if reporter == .plainText {
-            let fileName = URL(fileURLWithPath: values.outcome.mutationPoint.filePath).lastPathComponent
-
             print("""
-            Testing mutation operator in \(fileName)
+            Testing mutation operator in \(values.outcome.mutationPoint.fileName)
             There are \(values.remainingOperatorsCount) left to apply
             """)
         } else if reporter == .xcode {
@@ -150,14 +150,20 @@ extension RunCommandObserver {
     }
 
     func handleNewTestLogAvailable(notification: Notification) {
-        guard let (mutationPoint, contents) = notification.object as? (MutationPoint?, String) else {
+        guard let (mutationPoint, testLog, estimatedTimeRemaining) = notification.object as? (MutationPoint?, String, TimeInterval) else {
             return
         }
         
-        let path = "\(loggingDirectory)/\(logFileName(from: mutationPoint))"
+        if [.plainText, .xcode].contains(reporter) {
+            let numberOfMinutes = Int(ceil(estimatedTimeRemaining / 60))
+            print("""
+            Muter will finish in about \(numberOfMinutes) minutes
+            """)
+        }
+        
         _ = fileManager.createFile(
-            atPath: path,
-            contents: contents.data(using: .utf8),
+            atPath: "\(loggingDirectory)/\(logFileName(from: mutationPoint))",
+            contents: testLog.data(using: .utf8),
             attributes: nil
         )
     }
@@ -166,10 +172,8 @@ extension RunCommandObserver {
         guard let mutationPoint = mutationPoint else {
             return "baseline run.log"
         }
-        
-        let fileName = URL(fileURLWithPath: mutationPoint.filePath).lastPathComponent
-        
-        return "\(mutationPoint.mutationOperatorId.rawValue) @ \(fileName)-\(mutationPoint.position.line)-\(mutationPoint.position.column).log"
+                
+        return "\(mutationPoint.mutationOperatorId.rawValue) @ \(mutationPoint.fileName)-\(mutationPoint.position.line)-\(mutationPoint.position.column).log"
     }
 
     func handleMutationTestingFinished(notification: Notification) {
