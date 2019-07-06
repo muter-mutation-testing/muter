@@ -42,17 +42,18 @@ private extension PerformMutationTesting {
         notificationCenter.post(name: .newTestLogAvailable, object: (
             mutationPoint: MutationPoint?.none,
             testLog: testLog,
-            estimatedTimeRemaining: timePerBuildTestCycle * Double(state.mutationPoints.count)
+            timePerBuildTestCycle: timePerBuildTestCycle,
+            remainingOperatorsCount: state.mutationPoints.count
         ))
         
         guard testSuiteOutcome == .passed else {
             return .failure(.mutationTestingAborted(reason: .baselineTestFailed))
         }
         
-        return insertMutants(using: state, timePerBuildTestCycle: timePerBuildTestCycle)
+        return insertMutants(using: state)
     }
     
-    func insertMutants(using state: AnyRunCommandState, timePerBuildTestCycle: TimeInterval) -> Result<[MutationTestOutcome], MuterError> {
+    func insertMutants(using state: AnyRunCommandState) -> Result<[MutationTestOutcome], MuterError> {
         var outcomes: [MutationTestOutcome] = []
         outcomes.reserveCapacity(state.mutationPoints.count)
         var buildErrors = 0
@@ -66,6 +67,8 @@ private extension PerformMutationTesting {
             
             let (testSuiteOutcome, testLog) = ioDelegate.runTestSuite(using: state.muterConfiguration,
                                                                       savingResultsIntoFileNamed: logFileName(for: mutationPoint))
+
+
             ioDelegate.restoreFile(at: mutationPoint.filePath, using: state.swapFilePathsByOriginalPath)
             
             let outcome = MutationTestOutcome(testSuiteOutcome: testSuiteOutcome,
@@ -73,16 +76,13 @@ private extension PerformMutationTesting {
                                               operatorDescription: mutantDescription)
             outcomes.append(outcome)
             
-            
-            let remainingOperatorsCount = state.mutationPoints.count - outcomes.count
-            notificationCenter.post(name: .newMutationTestOutcomeAvailable, object: (
-                outcome: outcome,
-                remainingOperatorsCount: remainingOperatorsCount
-            ))
+            notificationCenter.post(name: .newMutationTestOutcomeAvailable,
+                                    object: outcome)
             notificationCenter.post(name: .newTestLogAvailable, object: (
                 mutationPoint: mutationPoint,
                 testLog: testLog,
-                estimatedTimeRemaining: timePerBuildTestCycle * Double(remainingOperatorsCount + 1)
+                timePerBuildTestCycle: TimeInterval?.none,
+                remainingOperatorsCount: Int?.none
             ))
             
             buildErrors = testSuiteOutcome == .buildError ? (buildErrors + 1) : 0

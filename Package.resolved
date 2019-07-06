@@ -29,6 +29,15 @@
         }
       },
       {
+        "package": "Progress",
+        "repositoryURL": "https://github.com/jkandzi/Progress.swift",
+        "state": {
+          "branch": null,
+          "revision": "fed6598735d7982058690acf8f52a0a5fdaeb3e0",
+          "version": "0.4.0"
+        }
+      },
+      {
         "package": "Quick",
         "repositoryURL": "https://github.com/Quick/Quick",
         "state": {

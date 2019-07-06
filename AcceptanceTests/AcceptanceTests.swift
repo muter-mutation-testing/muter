@@ -55,6 +55,11 @@ class AcceptanceTests: QuickSpec {
                             expect(output.contains("In total, Muter applied 3 mutation operators.")).to(beTrue())
                         }
                         
+                        they("see an estimated time til completion with progress updates") {
+                            expect(self.numberOfProgressUpdates(in: output)) == 4
+                            expect(self.numberOfDurationEstimates(in: output)) == 4
+                        }
+                        
                         they("see the mutation scores for their test suite") {
                             expect(output.contains(messages.mutationScoresHeader)).to(beTrue())
                             expect(output.contains(messages.mutationScoreOfTestSuite)).to(beTrue())
@@ -71,6 +76,7 @@ class AcceptanceTests: QuickSpec {
                                 "NegateConditionals @ Module.swift-4-18.log",
                                 "RemoveSideEffects @ ViewController.swift-5-28.log"
                             ]
+                            
                             let numberOfEmptyLogFiles = expectedLogFiles
                                 .map(self.contentsOfLogFile(named:))
                                 .count { $0.isEmpty }
@@ -263,6 +269,16 @@ extension AcceptanceTests {
     
     func numberOfXcodeFormattedMessages(in output: String) -> Int {
         return applyRegex("[\\/[:alnum:]\\/]+[a-zA-Z]+.swift\\:[0-9]+:[0-9]+\\: warning: [a-zA-Z ]+: [a-zA-Z[:punct:] ]+/?",
+                          to: output)
+    }
+    
+    func numberOfProgressUpdates(in output: String) -> Int {
+        return applyRegex("Percentage complete:  [0-9]+%/?",
+                          to: output)
+    }
+    
+    func numberOfDurationEstimates(in output: String) -> Int {
+        return applyRegex("ETC: [0-9]+ minute/?",
                           to: output)
     }
     

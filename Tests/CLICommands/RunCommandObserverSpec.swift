@@ -4,6 +4,7 @@ import Foundation
 import SwiftSyntax
 @testable import muterCore
 
+@available(OSX 10.12, *)
 class RunCommandObserverSpec: QuickSpec {
     override func spec() {
         describe("RunCommandObserver") {
@@ -25,12 +26,9 @@ class RunCommandObserverSpec: QuickSpec {
                     flushHandlerWasCalled = false
                     notification = Notification(
                         name: .newMutationTestOutcomeAvailable,
-                        object: (
-                            outcome: MutationTestOutcome(testSuiteOutcome: .failed,
-                                                         mutationPoint: MutationPoint(mutationOperatorId: .negateConditionals, filePath: "some/path", position: .firstPosition),
-                                                         operatorDescription: "some description"),
-                            remainingOperatorsCount: 0
-                        ),
+                        object: MutationTestOutcome(testSuiteOutcome: .failed,
+                                                    mutationPoint: MutationPoint(mutationOperatorId: .negateConditionals, filePath: "some/path", position: .firstPosition),
+                                                    operatorDescription: "some description"),
                         userInfo: nil
                     )
                 }

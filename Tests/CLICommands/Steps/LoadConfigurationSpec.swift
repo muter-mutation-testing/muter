@@ -38,6 +38,7 @@ class LoadConfigurationSpec: QuickSpec {
                     state.projectDirectoryURL = URL(string: "/some/projectName")!
                     
                     loadConfiguration = LoadConfiguration()
+                    loadConfiguration = LoadConfiguration(currentDirectory: "/some/projectName")
                     
                     result = loadConfiguration.run(with: state)
                 }

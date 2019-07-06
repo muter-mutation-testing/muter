@@ -1,6 +1,8 @@
 import Foundation
 import Darwin.C
 import SwiftSyntax
+import Progress
+import Rainbow
 
 extension Notification.Name {
     static let muterLaunched = Notification.Name("muterLaunched")
@@ -28,11 +30,14 @@ func flushStdOut() {
     fflush(stdout)
 }
 
+@available(OSX 10.12, *)
 class RunCommandObserver {
     private let reporter: Reporter
     private let fileManager: FileSystemManager
     private let loggingDirectory: String
     private let flushStdOut: () -> Void
+    private var progressBar: ProgressBar!
+    private var numberOfMutationPoints: Int!
     private let notificationCenter: NotificationCenter = .default
     private var notificationHandlerMappings: [(name: Notification.Name, handler: (Notification) -> Void)] {
        return [
@@ -72,7 +77,8 @@ class RunCommandObserver {
     }
 }
 
-extension RunCommandObserver {    
+@available(OSX 10.12, *)
+extension RunCommandObserver {
     func handleMuterLaunched(notification: Notification) {
         if reporter == .plainText {
             printHeader()
@@ -109,16 +115,15 @@ extension RunCommandObserver {
     func handleMutationPointDiscoveryStarted(notification: Notification) {
         if reporter == .plainText {
             let url = notification.object as! URL
-            print("Discovering mutants to insert in project at path:\n\n\(url.path)")
+            printMessage("Discovering mutants to insert in project at path:\n\n\(url.path)")
         }
     }
 
     func handleMutationPointDiscoveryFinished(notification: Notification) {
         if reporter == .plainText {
             let discoveredMutationPoints = notification.object as! [MutationPoint]
-
+            numberOfMutationPoints = discoveredMutationPoints.count
             printMessage("Discovered \(discoveredMutationPoints.count) mutants to introduce:\n")
-
             for (index, mutationPoint) in discoveredMutationPoints.enumerated() {
                 let listPosition = "\(index+1))"
                 print("\(listPosition) \(mutationPoint.fileName)")
@@ -128,37 +133,47 @@ extension RunCommandObserver {
 
     func handleMutationTestingStarted(notification: Notification) {
         if reporter == .plainText {
-            printMessage("""
-            Mutation testing will now begin.
-            Running your test suite to determine a baseline for mutation testing
-            """)
+            printMessage("Mutation testing will now begin\nRunning your test suite to determine a baseline for mutation testing")
         }
     }
 
     func handleNewMutationTestOutcomeAvailable(notification: Notification) {
-        let values = notification.object as! (outcome: MutationTestOutcome, remainingOperatorsCount: Int)
+        let outcome = notification.object as! MutationTestOutcome
         
-        if reporter == .plainText {
-            print("""
-            Testing mutation operator in \(values.outcome.mutationPoint.fileName)
-            There are \(values.remainingOperatorsCount) left to apply
-            """)
-        } else if reporter == .xcode {
-            print(reporter.generateReport(from: [values.outcome]))
+        if reporter == .xcode {
+            print(reporter.generateReport(from: [outcome]))
             flushStdOut()
         }
     }
 
     func handleNewTestLogAvailable(notification: Notification) {
-        guard let (mutationPoint, testLog, estimatedTimeRemaining) = notification.object as? (MutationPoint?, String, TimeInterval) else {
+        guard let (mutationPoint, testLog, timePerBuildTestCycle, remainingMutationPointsCount) = notification.object as? (MutationPoint?, String, TimeInterval?, Int?) else {
             return
         }
         
-        if [.plainText, .xcode].contains(reporter) {
-            let numberOfMinutes = Int(ceil(estimatedTimeRemaining / 60))
-            print("""
-            Muter will finish in about \(numberOfMinutes) minutes
-            """)
+        if reporter == .plainText {
+            if mutationPoint == nil {
+                print("""
+                Determined baseline for mutation testing
+                Muter is now going to apply each mutant one at a time and run your test suite for each mutant
+                This may take a while
+
+
+                """)
+                progressBar = ProgressBar(count: numberOfMutationPoints,
+                                          configuration: [
+                                            ProgressString(string: "Applying mutant"),
+                                            ProgressOneIndexed(),
+                                            ProgressString(string: "\nPercentage complete: "),
+                                            ProgressPercent(),
+                                            ColoredProgressBarLine(barLength: 50),
+                                            SimpleTimeEstimate(initialEstimate: Double(remainingMutationPointsCount!) * timePerBuildTestCycle!)
+                                          ],
+                                          printer: ProgressBarMultilineTerminalPrinter(numberOfLines: 2))
+                progressBar.next()
+            } else {
+                progressBar.next()
+            }
         }
         
         _ = fileManager.createFile(
@@ -183,6 +198,3 @@ extension RunCommandObserver {
         }
     }
 }
-
-
-

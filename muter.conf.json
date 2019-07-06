@@ -10,6 +10,7 @@
         "Package.swift",
         "Repositories",
         "RunCommandIODelegate.swift",
-        "RunCommandObserver.swift"
+        "RunCommandObserver.swift",
+        "ProgressExtensions.swift"
     ]
 }
