@@ -35,7 +35,7 @@ enum NegateConditionalsOperator {
     }
 }
 
-enum LogicalOperatorOperator {
+enum ChangeLogicalConnectorOperator {
     class Visitor: TokenAwareVisitor {
         override init() {
             super.init()
