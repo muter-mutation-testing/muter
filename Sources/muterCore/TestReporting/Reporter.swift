@@ -22,7 +22,7 @@ private extension Reporter {
     func textReport(from outcomes: [MutationTestOutcome]) -> String {
         let report = MuterTestReport(from: outcomes)
         
-        let finishedRunningMessage = "Muter finished running!\n\n"
+        let finishedRunningMessage = "Muter finished running!\n\nHere's your test report:\n\n"
         let appliedMutationsMessage = """
         --------------------------
         Applied Mutation Operators
@@ -30,9 +30,9 @@ private extension Reporter {
         
         These are all of the ways that Muter introduced changes into your code.
         
-        In total, Muter applied \(report.totalAppliedMutationOperators) mutation operators.
+        In total, Muter introduced \(report.totalAppliedMutationOperators) mutants in \(report.fileReports.count) files.
         
-        \(generateAppliedMutationsCLITable(from: report.fileReports).description)
+        \(generateAppliedMutationOperatorsCLITable(from: report.fileReports).description)
         
         
         """

@@ -2,7 +2,7 @@ import Foundation
 import Rainbow
 import SwiftSyntax
 
-func generateAppliedMutationsCLITable(from fileReports: [MuterTestReport.FileReport], coloringFunction: ([CLITable.Row]) -> [CLITable.Row] = applyMutationTestResultsColor) -> CLITable {
+func generateAppliedMutationOperatorsCLITable(from fileReports: [MuterTestReport.FileReport], coloringFunction: ([CLITable.Row]) -> [CLITable.Row] = applyMutationTestResultsColor) -> CLITable {
     var appliedMutations = [CLITable.Row]()
     var fileNames = [CLITable.Row]()
     var mutationTestResults = [CLITable.Row]()
@@ -32,12 +32,12 @@ private func operatorsToTableRows(fileReport: MuterTestReport.FileReport) -> [(C
 
 func generateMutationScoresCLITable(from fileReports: [MuterTestReport.FileReport], coloringFunction: ([CLITable.Row]) -> [CLITable.Row] = applyMutationScoreColor) -> CLITable {
     var fileNames = [CLITable.Row]()
-    var numberOfAppliedMutations = [CLITable.Row]()
+    var numberOfInsertedMutants = [CLITable.Row]()
     var mutationScores = [CLITable.Row]()
 
     for fileReport in fileReports  {
         fileNames.append(CLITable.Row(value: fileReport.fileName))
-        numberOfAppliedMutations.append(CLITable.Row(value: "\(fileReport.appliedOperators.count)"))
+        numberOfInsertedMutants.append(CLITable.Row(value: "\(fileReport.appliedOperators.count)"))
         mutationScores.append(CLITable.Row(value: "\(fileReport.mutationScore)"))
     }
 
@@ -45,7 +45,7 @@ func generateMutationScoresCLITable(from fileReports: [MuterTestReport.FileRepor
 
     return CLITable(padding: 3, columns: [
         CLITable.Column(title: "File", rows: fileNames),
-        CLITable.Column(title: "# of Applied Mutation Operators", rows: numberOfAppliedMutations),
+        CLITable.Column(title: "# of Introduced Mutants", rows: numberOfInsertedMutants),
         CLITable.Column(title: "Mutation Score", rows: mutationScores),
     ])
 }

@@ -5,10 +5,10 @@ struct DiscoverSourceFiles: RunCommandStep {
     
     func run(with state: AnyRunCommandState) -> Result<[RunCommandState.Change], MuterError> {
         
-        notificationCenter.post(name: .sourceFileDiscoveryStarted, object: state.tempDirectoryURL)
+        notificationCenter.post(name: .sourceFileDiscoveryStarted, object: nil)
         
         let sourceFileCandidates = discoverSourceFiles(inDirectoryAt: state.tempDirectoryURL.path,
-                                                         excludingPathsIn: state.muterConfiguration.excludeList)
+                                                       excludingPathsIn: state.muterConfiguration.excludeList)
         
         notificationCenter.post(name: .sourceFileDiscoveryFinished, object: sourceFileCandidates)
 

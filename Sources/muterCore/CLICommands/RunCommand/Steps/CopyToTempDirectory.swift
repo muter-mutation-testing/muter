@@ -23,7 +23,7 @@ struct CopyProjectToTempDirectory: RunCommandStep {
             let destinationPath = destinationDirectoryPath(in: temporaryDirectory, withProjectName: projectDirectory.lastPathComponent)
             try fileManager.copyItem(atPath: projectDirectory.path, toPath: destinationPath)
             
-            notificationCenter.post(name: .projectCopyFinished, object: nil)
+            notificationCenter.post(name: .projectCopyFinished, object: destinationPath)
             return .success([
                 .tempDirectoryUrlCreated(URL(fileURLWithPath: destinationPath))
             ])

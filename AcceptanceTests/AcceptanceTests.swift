@@ -42,7 +42,7 @@ class AcceptanceTests: QuickSpec {
                         }
                         
                         they("see the list of files that Muter discovered") {
-                            expect(output.contains("Discovered 4 Swift files")).to(beTrue())
+                            expect(output.contains("In total, Muter discovered 4 Swift files")).to(beTrue())
                             expect(self.numberOfDiscoveredFileLists(in: output)).to(beGreaterThanOrEqualTo(1))
                         }
                         
@@ -51,8 +51,8 @@ class AcceptanceTests: QuickSpec {
                             expect(output.contains("/T/TemporaryItems/")).to(beTrue())
                         }
                         
-                        they("see how many mutation operators it's able to perform") {
-                            expect(output.contains("In total, Muter applied 3 mutation operators.")).to(beTrue())
+                        they("see how many mutants were inserted") {
+                            expect(output.contains("In total, Muter introduced 3 mutants in 3 files.")).to(beTrue())
                         }
                         
                         they("see an estimated time til completion with progress updates") {
@@ -264,7 +264,7 @@ extension AcceptanceTests {
 @available(OSX 10.13, *)
 extension AcceptanceTests {
     func numberOfDiscoveredFileLists(in output: String) -> Int {
-        return applyRegex("Discovered \\d* Swift files:\n\n(/[^/ ]*)+/?", to: output)
+        return applyRegex("[a-zA-Z]+.swift \\([0-9]+ mutants\\)", to: output)
     }
     
     func numberOfXcodeFormattedMessages(in output: String) -> Int {

@@ -6,7 +6,7 @@ struct DiscoverMutationPoints: RunCommandStep {
     
     func run(with state: AnyRunCommandState) -> Result<[RunCommandState.Change], MuterError> {
         
-        notificationCenter.post(name: .mutationPointDiscoveryStarted, object: state.tempDirectoryURL)
+        notificationCenter.post(name: .mutationPointDiscoveryStarted, object: nil)
         
         let (mutationPoints, sourceCodeByFilePath) = discoverMutationPoints(inFilesAt: state.sourceFileCandidates)
         
