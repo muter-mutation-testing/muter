@@ -5,7 +5,7 @@ import Quick
 import Nimble
 
 @available(OSX 10.13, *)
-class MutationTestingSpec: QuickSpec {
+class PerformMutationTestingSpec: QuickSpec {
     override func spec() {
         
         var delegateSpy: MutationTestingDelegateSpy!
@@ -91,10 +91,11 @@ class MutationTestingSpec: QuickSpec {
                     }
                     
                     it("cascades a failure") {
-                        guard case .failure(.mutationTestingAborted(reason: .baselineTestFailed)) = result! else {
+                        guard case .failure(.mutationTestingAborted(reason: .baselineTestFailed(let log))) = result! else {
                             fail("expected a failure but got \(String(describing: result!))")
                             return
                         }
+                        expect(log).notTo(beEmpty())
                     }
                 }
                 
@@ -111,10 +112,11 @@ class MutationTestingSpec: QuickSpec {
                     }
                     
                     it("cascades a failure") {
-                        guard case .failure(.mutationTestingAborted(reason: .baselineTestFailed)) = result! else {
+                        guard case .failure(.mutationTestingAborted(reason: .baselineTestFailed(let log))) = result! else {
                             fail("expected a mutationTestingAborted failure but got \(String(describing: result!))")
                             return
                         }
+                        expect(log).notTo(beEmpty())
                     }
                 }
                 
@@ -131,7 +133,7 @@ class MutationTestingSpec: QuickSpec {
                     }
                     
                     it("cascades a failure") {
-                        guard case .failure(.mutationTestingAborted(reason: .baselineTestFailed)) = result! else {
+                        guard case .failure(.mutationTestingAborted(reason: .baselineTestFailed(let wrong))) = result! else {
                             fail("expected a mutationTestingAborted failure but got \(String(describing: result!))")
                             return
                         }

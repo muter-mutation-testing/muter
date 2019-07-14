@@ -39,16 +39,16 @@ private extension PerformMutationTesting {
         let timeAfterRunningTestSuite = Date()
         let timePerBuildTestCycle = DateInterval(start: initialTime, end: timeAfterRunningTestSuite).duration
         
+        guard testSuiteOutcome == .passed else {
+            return .failure(.mutationTestingAborted(reason: .baselineTestFailed(log: testLog)))
+        }
+        
         notificationCenter.post(name: .newTestLogAvailable, object: (
             mutationPoint: MutationPoint?.none,
             testLog: testLog,
             timePerBuildTestCycle: timePerBuildTestCycle,
             remainingOperatorsCount: state.mutationPoints.count
         ))
-        
-        guard testSuiteOutcome == .passed else {
-            return .failure(.mutationTestingAborted(reason: .baselineTestFailed))
-        }
         
         return insertMutants(using: state)
     }
