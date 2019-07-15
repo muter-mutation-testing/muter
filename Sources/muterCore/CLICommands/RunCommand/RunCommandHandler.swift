@@ -1,12 +1,18 @@
 @available(OSX 10.13, *)
 class RunCommandHandler {
     let steps: [RunCommandStep]
-    var state: RunCommandState
+    var state: AnyRunCommandState
 
     init(steps: [RunCommandStep] = RunCommandHandler.defaultSteps,
          state: RunCommandState = .init()) {
         self.steps = steps
         self.state = state
+    }
+    
+    init(options: RunCommandOptions,
+         steps: [RunCommandStep] = RunCommandHandler.defaultSteps) {
+        self.steps = steps
+        self.state = RunCommandState(from: options)
     }
     
     func handle() -> Result<(), MuterError> {

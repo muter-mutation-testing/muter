@@ -99,6 +99,18 @@ class AcceptanceTests: QuickSpec {
                     }
                 }
                 
+                context("with --files-to-mutate as an argument") {
+                    var output: String!
+                    
+                    beforeEach {
+                        output = self.muterFilesToMutateOutput
+                    }
+                    
+                    they("only mutate the given list") {
+                        expect(output.contains("In total, Muter discovered 1 mutants in 1 files")).to(beTrue())
+                    }
+                }
+                
                 context("when Muter doesn't discover any mutation operators") {
                     var output: String!
                     
@@ -168,6 +180,7 @@ class AcceptanceTests: QuickSpec {
                     expect(self.muterHelpOutput).to(contain("help"))
                     expect(self.muterHelpOutput).to(contain("--output-json"))
                     expect(self.muterHelpOutput).to(contain("--output-xcode"))
+                    expect(self.muterHelpOutput).to(contain("--files-to-mutate"))
                 }
             }
         }
@@ -193,6 +206,11 @@ extension AcceptanceTests {
     var muterXcodeOutputPath: String { return "\(AcceptanceTests().rootTestDirectory)/muters_xcode_output.txt" }
     var muterXcodeOutput: String {
         return contentsOfFileAsString(at: muterXcodeOutputPath)
+    }
+    
+    var muterFilesToMutateOutputPath: String { return "\(AcceptanceTests().rootTestDirectory)/muters_files_to_mutate_output.txt" }
+    var muterFilesToMutateOutput: String {
+        return contentsOfFileAsString(at: muterFilesToMutateOutputPath)
     }
     
     var muterEmptyStateOutputPath: String { return "\(AcceptanceTests().rootTestDirectory)/muters_empty_state_output.txt" }
