@@ -34,8 +34,8 @@ struct MutationOperator {
                 return (rewriter: NegateConditionalsOperator.Rewriter.init,
                         visitor: NegateConditionalsOperator.Visitor.init)
             case .logicalOperator:
-                return (rewriter: LogicalOperatorOperator.Rewriter.init,
-                        visitor: LogicalOperatorOperator.Visitor.init)
+                return (rewriter: ChangeLogicalConnectorOperator.Rewriter.init,
+                        visitor: ChangeLogicalConnectorOperator.Visitor.init)
             }
         }
         

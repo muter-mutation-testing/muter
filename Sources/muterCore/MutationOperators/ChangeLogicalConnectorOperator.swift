@@ -1,6 +1,6 @@
 import SwiftSyntax
 
-extension LogicalOperatorOperator {
+extension ChangeLogicalConnectorOperator {
     class Rewriter: OperatorAwareRewriter {
         required init(positionToMutate: AbsolutePosition) {
             super.init(positionToMutate: positionToMutate)

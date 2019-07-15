@@ -3,7 +3,7 @@ import Nimble
 import SwiftSyntax
 @testable import muterCore
 
-class LogicalOperatorMutationOperatorSpec: QuickSpec {
+class ChangeLogicalConnectorOperatorSpec: QuickSpec {
     override func spec() {
         describe("") {
             let sourceWithLogicalOperators = sourceCode(fromFileAt: "\(self.fixturesDirectory)/MutationExamples/LogicalOperator/sampleWithLogicalOperators.swift")!
@@ -14,7 +14,7 @@ class LogicalOperatorMutationOperatorSpec: QuickSpec {
                     let line2Column18 = AbsolutePosition(line: 2, column: 18, utf8Offset: 43)
                     let expectedSource = sourceCode(fromFileAt: "\(self.fixturesDirectory)/MutationExamples/LogicalOperator/changedANDOperator.swift")!
                     
-                    let rewriter = LogicalOperatorOperator.Rewriter(positionToMutate: line2Column18)
+                    let rewriter = ChangeLogicalConnectorOperator.Rewriter(positionToMutate: line2Column18)
                     let mutatedSource = rewriter.visit(sourceWithLogicalOperators)
                     
                     expect(mutatedSource.description) == expectedSource.description
@@ -24,7 +24,7 @@ class LogicalOperatorMutationOperatorSpec: QuickSpec {
                     let line6Column17 = AbsolutePosition(line: 6, column: 17, utf8Offset: 102)
                     let expectedSource = sourceCode(fromFileAt: "\(self.fixturesDirectory)/MutationExamples/LogicalOperator/changedOROperator.swift")!
                     
-                    let rewriter = LogicalOperatorOperator.Rewriter(positionToMutate: line6Column17)
+                    let rewriter = ChangeLogicalConnectorOperator.Rewriter(positionToMutate: line6Column17)
                     let mutatedSource = rewriter.visit(sourceWithLogicalOperators)
                     
                     expect(mutatedSource.description) == expectedSource.description
@@ -35,7 +35,7 @@ class LogicalOperatorMutationOperatorSpec: QuickSpec {
             describe("LogicalOperator.Visitor") {
                 it("records the positions of code that contains a logical operator") {
                     
-                    let visitor = LogicalOperatorOperator.Visitor()
+                    let visitor = ChangeLogicalConnectorOperator.Visitor()
                     visitor.visit(sourceWithLogicalOperators)
                     
                     guard visitor.positionsOfToken.count == 2 else {

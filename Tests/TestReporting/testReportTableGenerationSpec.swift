@@ -52,7 +52,7 @@ class TestReportTableGenerationSpec: QuickSpec {
                         ]),
                     ])
 
-                    let generatedCLITable = generateAppliedMutationsCLITable(from: fileReports, coloringFunction: { $0 })
+                    let generatedCLITable = generateAppliedMutationOperatorsCLITable(from: fileReports, coloringFunction: { $0 })
 
                     expect(generatedCLITable).to(equal(expectedCLITable))
                 }
@@ -67,7 +67,7 @@ class TestReportTableGenerationSpec: QuickSpec {
                             CLITable.Row(value: "file3.swift"),
                             CLITable.Row(value: "file 4.swift"),
                         ]),
-                        CLITable.Column(title: "# of Applied Mutation Operators", rows: [
+                        CLITable.Column(title: "# of Introduced Mutants", rows: [
                             CLITable.Row(value: "3"),
                             CLITable.Row(value: "2"),
                             CLITable.Row(value: "3"),

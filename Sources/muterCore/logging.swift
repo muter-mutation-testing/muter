@@ -2,7 +2,6 @@ import Foundation
 import Rainbow
 
 func printHeader() {
-   
     print(
         """
         
@@ -17,16 +16,14 @@ func printHeader() {
         
         You are running version \("\(version)".bold)
         
-        Want help?
-        https://github.com/SeanROlszewski/muter/issues
-        +----------------------------------------------+
+        Want help? Have suggestions? Want to get involved?
+         ↳ https://github.com/SeanROlszewski/muter/issues
+        +------------------------------------------------+
         
         """)
 }
 
 func printMessage(_ message: String) {
-    print("+-------------------+")
+    print("+-----------------+")
     print(message)
-    print("")
 }
-
