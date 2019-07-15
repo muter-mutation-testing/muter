@@ -48,7 +48,7 @@ class PerformMutationTestingSpec: QuickSpec {
                         "writeFile(to:contents:)",
                         "runTestSuite(using:savingResultsIntoFileNamed:)",
                         "restoreFile(at:using:)"
-                        ]))
+                    ]))
                     
                     expect(delegateSpy.backedUpFilePaths.count) == 2
                     expect(delegateSpy.restoredFilePaths.count) == 2
@@ -137,6 +137,8 @@ class PerformMutationTestingSpec: QuickSpec {
                             fail("expected a mutationTestingAborted failure but got \(String(describing: result!))")
                             return
                         }
+                        
+                        expect(wrong).notTo(beEmpty())
                     }
                 }
             }
@@ -178,7 +180,7 @@ class PerformMutationTestingSpec: QuickSpec {
                         "writeFile(to:contents:)",
                         "runTestSuite(using:savingResultsIntoFileNamed:)",
                         "restoreFile(at:using:)"
-                        ]))
+                    ]))
                     
                     expect(delegateSpy.backedUpFilePaths.count).to(equal(5))
                     expect(delegateSpy.restoredFilePaths.count).to(equal(5))
@@ -234,7 +236,7 @@ class PerformMutationTestingSpec: QuickSpec {
                         "writeFile(to:contents:)",
                         "runTestSuite(using:savingResultsIntoFileNamed:)",
                         "restoreFile(at:using:)",
-                        ]))
+                    ]))
                     
                     expect(delegateSpy.backedUpFilePaths.count) == 5
                     expect(delegateSpy.restoredFilePaths.count) == 5

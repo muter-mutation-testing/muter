@@ -68,7 +68,6 @@ private extension PerformMutationTesting {
             let (testSuiteOutcome, testLog) = ioDelegate.runTestSuite(using: state.muterConfiguration,
                                                                       savingResultsIntoFileNamed: logFileName(for: mutationPoint))
 
-
             ioDelegate.restoreFile(at: mutationPoint.filePath, using: state.swapFilePathsByOriginalPath)
             
             let outcome = MutationTestOutcome(testSuiteOutcome: testSuiteOutcome,

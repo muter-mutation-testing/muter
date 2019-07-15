@@ -29,6 +29,15 @@
         }
       },
       {
+        "package": "Pathos",
+        "repositoryURL": "https://github.com/dduan/Pathos",
+        "state": {
+          "branch": null,
+          "revision": "8541adb66a08b879d91cd19e73750fa00d47f4b4",
+          "version": "0.2.0"
+        }
+      },
+      {
         "package": "Progress",
         "repositoryURL": "https://github.com/jkandzi/Progress.swift",
         "state": {
