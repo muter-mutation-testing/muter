@@ -18,8 +18,6 @@ class RunCommandObserverSpec: QuickSpec {
                     flushHandlerWasCalled = true
                 }
                 
-
-                
                 var notification: Notification!
                 
                 beforeEach {

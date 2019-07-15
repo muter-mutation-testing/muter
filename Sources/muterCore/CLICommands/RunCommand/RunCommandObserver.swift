@@ -58,7 +58,7 @@ class RunCommandObserver {
             (name: .newTestLogAvailable, handler: handleNewTestLogAvailable),
 
             (name: .mutationTestingFinished, handler: handleMutationTestingFinished),
-        ]
+       ]
     }
     
     init(reporter: Reporter, fileManager: FileSystemManager, flushHandler: @escaping () -> Void) {

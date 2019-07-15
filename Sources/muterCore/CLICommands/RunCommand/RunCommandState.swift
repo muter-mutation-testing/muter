@@ -8,21 +8,29 @@ protocol AnyRunCommandState {
     var sourceFileCandidates: [FilePath] { get }
     var mutationPoints: [MutationPoint] { get }
     var sourceCodeByFilePath: [FilePath: SourceFileSyntax] { get }
+    var filesToMutate: [String] { get }
     var swapFilePathsByOriginalPath: [FilePath: FilePath] { get }
     var mutationTestOutcomes: [MutationTestOutcome] { get }
+    
+    func apply(_ stateChanges: [RunCommandState.Change])
 }
 
 class RunCommandState: AnyRunCommandState {
-    static let shared = RunCommandState()
-    
     var muterConfiguration: MuterConfiguration = .init()
     var projectDirectoryURL: URL = URL(string: "example.com")!
     var tempDirectoryURL: URL = URL(string: "example.com")!
     var sourceFileCandidates: [FilePath] = []
     var mutationPoints: [MutationPoint] = []
     var sourceCodeByFilePath: [FilePath: SourceFileSyntax] = [:]
+    var filesToMutate: [String] = []
     var swapFilePathsByOriginalPath: [FilePath: FilePath] = [:]
     var mutationTestOutcomes: [MutationTestOutcome] = []
+
+    init() { }
+
+    init(from options: RunCommandOptions) {
+        self.filesToMutate = options.filesToMutate
+    }
 }
 
 extension RunCommandState {

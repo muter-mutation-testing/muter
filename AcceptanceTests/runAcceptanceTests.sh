@@ -23,6 +23,10 @@ echo " > Running in Xcode mode..."
 ../../.build/x86_64-apple-macosx/debug/muter --output-xcode > ../../AcceptanceTests/muters_xcode_output.txt
 rm -rf ./muter_logs # don't pollute the staging area
 
+echo " > Running with --filesToMutate flag"
+../../.build/x86_64-apple-macosx/debug/muter --files-to-mutate "/ExampleApp/Module.swift" > ../../AcceptanceTests/muters_files_to_mutate_output.txt
+rm -rf ./muter_logs # don't pollute the staging area
+
 rm muter.conf.json # cleanup the created configuration file for the next test run
 cd ../..
 

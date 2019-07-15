@@ -21,7 +21,6 @@ class DiscoverMutationPointSpec: QuickSpec {
                     result = DiscoverMutationPoints().run(with: state)
                 }
                 
-                
                 it("returns state changes which can add mutation points and the parsed source code") {
                     let filePath1 = "\(self.fixturesDirectory)/sampleForDiscoveringMutations.swift"
                     let filePath2 = "\(self.fixturesDirectory)/sample With Spaces For Discovering Mutations.swift"
@@ -36,7 +35,7 @@ class DiscoverMutationPointSpec: QuickSpec {
                         let expectedSourceCode = Set([
                             sourceCode(fromFileAt: filePath1)!.description,
                             sourceCode(fromFileAt: filePath2)!.description
-                            ])
+                        ])
                         
                         if case .sourceCodeParsed(let parsedSourceCode) = $0 {
                             let actualFilePaths = Set(parsedSourceCode.map { $0.key })

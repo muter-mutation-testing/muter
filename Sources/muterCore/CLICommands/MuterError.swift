@@ -5,6 +5,7 @@ public enum MuterError: Error, Equatable {
     case projectCopyFailed(reason: String)
     case unableToCreateSwapFileDirectory(reason: String)
     case noSourceFilesDiscovered
+    case noSourceFilesOnExclusiveList
     case noMutationPointsDiscovered
     case mutationTestingAborted(reason: MutationTestingAbortReason)
 }
@@ -52,6 +53,12 @@ extension MuterError: CustomStringConvertible {
             Muter wasn't able to discover any code it could mutation test.
             
             This is likely caused by misconfiguring Muter, usually by excluding a directory that contains your code.
+            """
+        case .noSourceFilesOnExclusiveList:
+            return """
+            Muter wasn't able to discover on list provided by the `--files-to-mutate` flag.
+            
+            Please check the list of files and try again.
             """
         case .noMutationPointsDiscovered:
             return """
