@@ -19,7 +19,7 @@ class FileOperationSpec: QuickSpec {
                 
                 let loggingDirectory = createLoggingDirectory(in: "~/some/path",
                                                               fileManager: fileManagerSpy,
-                                                              locale: Locale(identifier: "enUS"),
+                                                              locale: Locale(identifier: "en_US"),
                                                               timestamp:  { timestamp.date! })
 
                 expect(loggingDirectory).to(equal("~/some/path/muter_logs/May 10, 2019 at 2:42 AM"))
