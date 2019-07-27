@@ -14,6 +14,8 @@ class FileManagerSpy: Spy, FileSystemManager {
     var fileContentsToReturn: Data!
     var currentDirectoryPathToReturn: String!
     var errorToThrow: Error?
+    var subpathsToReturn: [String]?
+    var fileExistsToReturn: Bool!
 
     var currentDirectoryPath: String {
         return currentDirectoryPathToReturn 
@@ -62,6 +64,16 @@ class FileManagerSpy: Spy, FileSystemManager {
     func contents(atPath path: String) -> Data? {
         methodCalls.append(#function)
         return fileContentsToReturn
+    }
+    
+    func subpaths(atPath path: String) -> [String]? {
+        methodCalls.append(#function)
+        return subpathsToReturn
+    }
+    
+    func fileExists(atPath path: String) -> Bool {
+        methodCalls.append(#function)
+        return fileExistsToReturn
     }
 
 }

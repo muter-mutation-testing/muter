@@ -105,22 +105,22 @@ class DiscoverSourceFilesSpec: QuickSpec {
                 context("and it contains a glob expression") {
                     var result: Result<[RunCommandState.Change], MuterError>! // keep this as locally defined as possible to avoid test pollution
                     let path = "\(self.fixturesDirectory)/FilesToDiscover"
-                    
+
                     beforeEach {
                         state.filesToMutate = ["/Directory2/**/*.swift", "file1.swift", "/ExampleApp/*.swift"]
                         state.tempDirectoryURL = URL(fileURLWithPath: path, isDirectory: true)
-                        
+
                         discoverSourceFiles = DiscoverSourceFiles()
-                        
+
                         result = discoverSourceFiles.run(with: state)
                     }
-                    
+
                     it("evaluate the expression returning the list of files") {
                         guard case .success(let stateChanges) = result! else {
                             fail("expected success but got \(String(describing: result!))")
                             return
                         }
-                        
+
                         expect(stateChanges) == [.sourceFileCandidatesDiscovered([
                             "\(path)/Directory2/Directory3/file6.swift",
                             "\(path)/ExampleApp/ExampleAppCode.swift",
@@ -132,12 +132,15 @@ class DiscoverSourceFilesSpec: QuickSpec {
                 context("and it doesn't contains a glob expression") {
                     var result: Result<[RunCommandState.Change], MuterError>! // keep this as locally defined as possible to avoid test pollution
                     let path = "\(self.fixturesDirectory)/FilesToDiscover"
+                    let fileManager = FileManagerSpy()
+                    fileManager.subpathsToReturn = []
+                    fileManager.fileExistsToReturn = true
                     
                     beforeEach {
                         state.filesToMutate = ["file1.swift", "file2.swift", "/Directory2/Directory3/file6.swift"]
                         state.tempDirectoryURL = URL(fileURLWithPath: path, isDirectory: true)
                         
-                        discoverSourceFiles = DiscoverSourceFiles()
+                        discoverSourceFiles = DiscoverSourceFiles(fileManager: fileManager)
                         
                         result = discoverSourceFiles.run(with: state)
                     }
@@ -153,6 +156,12 @@ class DiscoverSourceFilesSpec: QuickSpec {
                             "\(path)/file1.swift",
                             "\(path)/file2.swift"
                         ])]
+                        
+                        expect(fileManager.methodCalls).to(equal([
+                            "fileExists(atPath:)",
+                            "fileExists(atPath:)",
+                            "fileExists(atPath:)"
+                        ]))
                     }
                 }
             }

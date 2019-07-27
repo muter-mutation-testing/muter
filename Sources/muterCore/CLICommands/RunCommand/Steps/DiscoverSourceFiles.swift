@@ -3,7 +3,14 @@ import Pathos
 import Curry
 
 struct DiscoverSourceFiles: RunCommandStep {
-    private let notificationCenter: NotificationCenter = .default
+    private let notificationCenter: NotificationCenter
+    private let fileManager: FileSystemManager
+    
+    init(notificationCenter: NotificationCenter = .default,
+         fileManager: FileSystemManager = FileManager.default) {
+        self.notificationCenter = notificationCenter
+        self.fileManager = fileManager
+    }
     
     func run(with state: AnyRunCommandState) -> Result<[RunCommandState.Change], MuterError> {
         
@@ -44,7 +51,7 @@ private extension DiscoverSourceFiles {
     func discoverSourceFiles(inDirectoryAt path: String,
                              excludingPathsIn providedExcludeList: [String] = []) -> [FilePath] {
         let excludeList = providedExcludeList + defaultExcludeList
-        let subpaths = FileManager.default.subpaths(atPath: path) ?? []
+        let subpaths = fileManager.subpaths(atPath: path) ?? []
         return includeSwiftFiles(
             from: subpaths
                 .exclude(pathsContainingItems(from: excludeList))
@@ -71,11 +78,11 @@ private extension DiscoverSourceFiles {
     }
     
     func expandGlobExpressions(root: String, pattern: String) -> [String] {
-        let globPath = normalize(path: root + "/" + pattern)
+        let globPath = append(root: root, to: pattern)
         guard pattern.contains("*"),
             let paths = try? glob(globPath),
             !paths.isEmpty else {
-                return [pattern]
+                return []
         }
         
         return paths
@@ -88,7 +95,7 @@ private extension DiscoverSourceFiles {
     func includeSwiftFiles(from paths: [FilePath]) -> [FilePath] {
         return paths
             .include(swiftFiles)
-            .include(FileManager.default.fileExists)
+            .include(fileManager.fileExists)
             .sorted()
     }
 
