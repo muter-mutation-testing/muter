@@ -16,12 +16,12 @@ public struct RunCommand: CommandProtocol {
 
     Available flags:
 
+       --files-to-mutate    Only mutate a given list of source code files
        --output-json        Output test results to a json file
        --output-xcode       Output test results in a format consumable by an Xcode run script step
-       --files-to-mutate    Only mutate a given list of source code files
 
     """
-
+    
     private let fileManager: FileSystemManager
     private let notificationCenter: NotificationCenter
 
