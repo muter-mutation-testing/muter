@@ -208,9 +208,15 @@ extension RunCommandObserver {
     }
 
     func handleMutationTestingFinished(notification: Notification) {
-        if reporter != .xcode { // xcode reports are generated in real-time, so don't report them once mutation testing has finished
-            let outcomes = notification.object as! [MutationTestOutcome]
-            printMessage(reporter.generateReport(from: outcomes))
+        let outcomes = notification.object as! [MutationTestOutcome]
+        let report = reporter.generateReport(from: outcomes)
+        switch reporter {
+        case .json:
+            print(report)
+        case .plainText:
+            printMessage(report)
+        case .xcode: // xcode reports are generated in real-time, so don't report them once mutation testing has finished
+            return
         }
     }
 }

@@ -5,41 +5,49 @@ import SnapshotTesting
 @testable import muterCore
 import TestingExtensions
 
+extension String: Error {}
+
 @available(OSX 10.13, *)
 class RegressionTests: QuickSpec {
-    
-    
+
     override func spec() {
+        
+        func runRegressionTest(forFixtureNamed fixtureName: String, withResultAt path: FilePath) -> Result<(), String> {
+            guard let data = FileManager.default.contents(atPath: path) else {
+                return .failure("Unable to load a valid Muter test report from \(path)")
+            }
+            
+            do {
+                let testReport = try JSONDecoder().decode(MuterTestReport.self, from: data)
+                assertSnapshot(matching: testReport,
+                               as: .json(excludingKeysMatching: { $0 == "filePath" }),
+                               named: fixtureName)
+                return .success(())
+            } catch let deserializationError {
+                return .failure("""
+                    Unable to deserialize a valid Muter test report from \(path)
+                    
+                    \(deserializationError)
+                    """)
+            }
+            
+        }
         
         describe("muter test report output for bon mot") {
             it("does not contain any changes") {
                 let path = "\(self.rootTestDirectory)/bonmot_regression_test_output.json"
-
-                guard let data = FileManager.default.contents(atPath: path),
-                    let testReport = try? JSONDecoder().decode(MuterTestReport.self, from: data) else {
-                        fail("Unable to load a valid Muter test report from \(path)")
-                        return
+                if case .failure(let description) = runRegressionTest(forFixtureNamed: "bonmot", withResultAt: path) {
+                    fail(description)
                 }
-                assertSnapshot(matching: testReport,
-                               as: .json(excludingKeysMatching: { $0 == "filePath" }),
-                               named: "1")
             }
         }
         
         describe("muter test report output for parser combinator") {
             it("does not contain any changes") {
                 let path = "\(self.rootTestDirectory)/parsercombinator_regression_test_output.json"
-                
-                guard let data = FileManager.default.contents(atPath: path),
-                    let testReport = try? JSONDecoder().decode(MuterTestReport.self, from: data) else {
-                        fail("Unable to load a valid Muter test report from \(path)")
-                        return
+                if case .failure(let description) = runRegressionTest(forFixtureNamed: "parsercombinator", withResultAt: path) {
+                    fail(description)
                 }
-                
-                assertSnapshot(matching: testReport,
-                               as: .json(excludingKeysMatching: { $0 == "filePath" }),
-                               named: "2")
-                
             }
         }
     }
@@ -55,4 +63,3 @@ extension RegressionTests {
         )
     }
 }
-
