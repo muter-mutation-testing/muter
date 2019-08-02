@@ -35,7 +35,7 @@ struct DiscoverSourceFiles: RunCommandStep {
 }
 
 private extension DiscoverSourceFiles {
-    var defaultExcludeList: [String] {
+    var defaultExcludeList: [FilePath] {
         return [
             ".build",
             "Build",
@@ -48,8 +48,8 @@ private extension DiscoverSourceFiles {
         ]
     }
     
-    func discoverSourceFiles(inDirectoryAt path: String,
-                             excludingPathsIn providedExcludeList: [String] = []) -> [FilePath] {
+    func discoverSourceFiles(inDirectoryAt path: FilePath,
+                             excludingPathsIn providedExcludeList: [FilePath] = []) -> [FilePath] {
         let excludeList = providedExcludeList + defaultExcludeList
         let subpaths = fileManager.subpaths(atPath: path) ?? []
         return includeSwiftFiles(
@@ -59,8 +59,8 @@ private extension DiscoverSourceFiles {
         )
     }
     
-    func pathsContainingItems(from excludeList: [String]) -> (String) -> Bool {
-        return { (path: String) in
+    func pathsContainingItems(from excludeList: [FilePath]) -> (FilePath) -> Bool {
+        return { (path: FilePath) in
             
             for item in excludeList where path.contains(item) {
                 return true
@@ -70,17 +70,21 @@ private extension DiscoverSourceFiles {
         }
     }
     
-    func findFilesToMutate(files: [String],
-                           inDirectoryAt path: String) -> [FilePath] {
-        let glob = files.map(curry(expandGlobExpressions)(path)).flatMap { $0 }
+    func findFilesToMutate(files: [FilePath],
+                           inDirectoryAt path: FilePath) -> [FilePath] {
+        let glob = files
+            .map(curry(expandGlobExpressions)(path))
+            .flatMap { $0 }
         let list = files.map(curry(append)(path))
-        return includeSwiftFiles(from: glob + list)
+        let result = (glob + list).map(standardizing(path:))
+        return includeSwiftFiles(from: result)
     }
     
-    func expandGlobExpressions(root: String, pattern: String) -> [String] {
-        let globPath = append(root: root, to: pattern)
+    func expandGlobExpressions(root: FilePath,
+                               pattern: FilePath) -> [FilePath] {
+        let path = append(root: root, to: pattern)
         guard pattern.contains("*"),
-            let paths = try? glob(globPath),
+            let paths = try? glob(path),
             !paths.isEmpty else {
                 return []
         }
@@ -88,8 +92,24 @@ private extension DiscoverSourceFiles {
         return paths
     }
     
-    func append(root: String, to path: String) -> String {
+    func append(root: FilePath, to path: FilePath) -> FilePath {
         return normalize(path: root + "/" + path)
+    }
+    
+    func standardizing(path: String) -> String {
+        let components = (path as NSString).pathComponents
+        guard components.contains(".") || components.contains("..") else {
+            return path
+        }
+        let result = URL(
+                string: path,
+                relativeTo: URL(fileURLWithPath: fileManager.currentDirectoryPath)
+            )
+            .map(\.absoluteString)
+            .map(dropScheme)
+            ?? path
+        
+        return result
     }
     
     func includeSwiftFiles(from paths: [FilePath]) -> [FilePath] {
@@ -99,7 +119,15 @@ private extension DiscoverSourceFiles {
             .sorted()
     }
 
-    func swiftFiles(path: String) -> Bool {
+    func swiftFiles(path: FilePath) -> Bool {
         return path.hasSuffix(".swift")
+    }
+    
+    func dropScheme(from path: FilePath) -> FilePath {
+        return URLComponents(string: path)
+            .map(\.scheme)
+            .flatMap { $0 }
+            .map { path.removingSubrange(path.range(of: "\($0)://")) }
+            ?? path
     }
 }

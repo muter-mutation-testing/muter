@@ -104,8 +104,9 @@ class DiscoverSourceFilesSpec: QuickSpec {
             context("when there is a list of files to mutate") {
                 context("and it contains a glob expression") {
                     var result: Result<[RunCommandState.Change], MuterError>! // keep this as locally defined as possible to avoid test pollution
-                    let path = "\(self.fixturesDirectory)/FilesToDiscover"
-
+                    let path = "\(self.fixturesDirectory)/FilesToMutate"
+                    var currentDirectoryPath = FileManager.default.currentDirectoryPath
+                    
                     beforeEach {
                         state.filesToMutate = ["/Directory2/**/*.swift", "file1.swift", "/ExampleApp/*.swift"]
                         state.tempDirectoryURL = URL(fileURLWithPath: path, isDirectory: true)
@@ -113,6 +114,10 @@ class DiscoverSourceFilesSpec: QuickSpec {
                         discoverSourceFiles = DiscoverSourceFiles()
 
                         result = discoverSourceFiles.run(with: state)
+                    }
+                    
+                    afterEach {
+                        FileManager.default.changeCurrentDirectoryPath(currentDirectoryPath)
                     }
 
                     it("evaluate the expression returning the list of files") {
@@ -129,9 +134,59 @@ class DiscoverSourceFilesSpec: QuickSpec {
                     }
                 }
 
+                context("and it contains relative paths") {
+                    var result: Result<[RunCommandState.Change], MuterError>! // keep this as locally defined as possible to avoid test pollution
+                    let path = "\(self.fixturesDirectory)/FilesToMutate"
+                    let currentDirectoryPath = FileManager.default.currentDirectoryPath
+                    
+                    beforeEach {
+                        FileManager.default.changeCurrentDirectoryPath(path)
+                        state.filesToMutate = [
+                            "./ProjectName/ProjectName/AppDelegate.swift",
+                            "../ProjectName/AnotherFolder/Module.swift",
+                            "./*.swift",
+                            "./ProjectName/ProjectName/Models/*.swift",
+                            "./**/*.swift"
+                        ]
+                        
+                        state.tempDirectoryURL = URL(fileURLWithPath: path, isDirectory: true)
+                        
+                        discoverSourceFiles = DiscoverSourceFiles()
+                        
+                        result = discoverSourceFiles.run(with: state)
+                    }
+                    
+                    afterEach {
+                        FileManager.default.changeCurrentDirectoryPath(currentDirectoryPath)
+                    }
+                    
+                    it("returns the Swift files, sorted alphabetically") {
+                        guard case .success(let stateChanges) = result! else {
+                            fail("expected success but got \(String(describing: result!))")
+                            return
+                        }
+                        
+                        expect(stateChanges) == [.sourceFileCandidatesDiscovered([
+                            "\(path)/Directory2/Directory3/file6.swift",
+                            "\(path)/Directory5/file1.swift",
+                            "\(path)/ExampleApp/ExampleAppCode.swift",
+                            "\(path)/ProjectName/AnotherFolder/Module.swift",
+                            "\(path)/ProjectName/ProjectName/AppDelegate.swift",
+                            "\(path)/ProjectName/ProjectName/AppDelegate.swift",
+                            "\(path)/ProjectName/ProjectName/Models/file 1.swift",
+                            "\(path)/ProjectName/ProjectName/Models/file 1.swift",
+                            "\(path)/ProjectName/ProjectName/Models/file 2.swift",
+                            "\(path)/ProjectName/ProjectName/Models/file 2.swift",
+                            "\(path)/ProjectName/ProjectName/Models/file 3.swift",
+                            "\(path)/ProjectName/ProjectName/Models/file 3.swift",
+                            "\(path)/file1.swift"
+                        ])]
+                    }
+                }
+                
                 context("and it doesn't contains a glob expression") {
                     var result: Result<[RunCommandState.Change], MuterError>! // keep this as locally defined as possible to avoid test pollution
-                    let path = "\(self.fixturesDirectory)/FilesToDiscover"
+                    let path = "\(self.fixturesDirectory)/FilesToMutate"
                     let fileManager = FileManagerSpy()
                     fileManager.subpathsToReturn = []
                     fileManager.fileExistsToReturn = true
@@ -169,7 +224,7 @@ class DiscoverSourceFilesSpec: QuickSpec {
             context("when the list of files to mutate fails") {
                 context("because the file doesn't exists") {
                     var result: Result<[RunCommandState.Change], MuterError>! // keep this as locally defined as possible to avoid test pollution
-                    let path = "\(self.fixturesDirectory)/FilesToDiscover"
+                    let path = "\(self.fixturesDirectory)/FilesToMutate"
                     
                     beforeEach {
                         state.filesToMutate = ["doesntExist.swift"]
@@ -190,7 +245,7 @@ class DiscoverSourceFilesSpec: QuickSpec {
                 
                 context("because it's not a Swift file") {
                     var result: Result<[RunCommandState.Change], MuterError>! // keep this as locally defined as possible to avoid test pollution
-                    let path = "\(self.fixturesDirectory)/FilesToDiscover"
+                    let path = "\(self.fixturesDirectory)/FilesToMutate"
                     
                     beforeEach {
                         state.filesToMutate = ["/Directory2/Directory3/file6"]
