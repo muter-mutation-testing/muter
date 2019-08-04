@@ -9,8 +9,10 @@ class ReporterSpec: QuickSpec {
 
         let outcomes = [
             MutationTestOutcome(testSuiteOutcome: .passed,
-                                mutationPoint: MutationPoint(mutationOperatorId: .negateConditionals, filePath: "/tmp/file3.swift", position: .firstPosition),
-                                operatorDescription: "changed from != to ==")
+                                mutationPoint: MutationPoint(mutationOperatorId: .negateConditionals, filePath: "/tmp/project/file3.swift", position: .firstPosition),
+                                operatorDescription: "changed from != to ==",
+                                originalProjectDirectoryUrl: URL(string: "/user/project")!
+                                )
         ]
 
         describe("text reporter") {
@@ -22,15 +24,17 @@ class ReporterSpec: QuickSpec {
         describe("xcode reporter") {
             it("returns the report in xcode format") {
                 let outcomes = outcomes + [MutationTestOutcome(testSuiteOutcome: .failed,
-                                                               mutationPoint: MutationPoint(mutationOperatorId: .negateConditionals, filePath: "/tmp/file4.swift", position: .firstPosition),
-                                                               operatorDescription: "changed from == to !="),
+                                                               mutationPoint: MutationPoint(mutationOperatorId: .negateConditionals, filePath: "/tmp/project/file4.swift", position: .firstPosition),
+                                                               operatorDescription: "changed from == to !=",
+                                                               originalProjectDirectoryUrl: URL(string: "/user/project")!),
                                            MutationTestOutcome(testSuiteOutcome: .passed,
-                                                               mutationPoint: MutationPoint(mutationOperatorId: .negateConditionals, filePath: "/tmp/file5.swift", position: .firstPosition),
-                                                               operatorDescription: "changed from == to !=")]
+                                                               mutationPoint: MutationPoint(mutationOperatorId: .negateConditionals, filePath: "/tmp/project/file5.swift", position: .firstPosition),
+                                                               operatorDescription: "changed from == to !=",
+                                                               originalProjectDirectoryUrl: URL(string: "/user/project")!)]
                 
                 expect(Reporter.xcode.generateReport(from: outcomes)) == """
-                /tmp/file3.swift:0:0: warning: Your test suite did not kill this mutant: changed from != to ==
-                /tmp/file5.swift:0:0: warning: Your test suite did not kill this mutant: changed from == to !=
+                /user/project/file3.swift:0:0: warning: Your test suite did not kill this mutant: changed from != to ==
+                /user/project/file5.swift:0:0: warning: Your test suite did not kill this mutant: changed from == to !=
                 """
             }
         }

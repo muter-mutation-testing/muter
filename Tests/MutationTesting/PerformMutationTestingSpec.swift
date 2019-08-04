@@ -13,7 +13,7 @@ class PerformMutationTestingSpec: QuickSpec {
         var state: RunCommandState!
         var result: Result<[RunCommandState.Change], MuterError>!
         let expectedMutationPoint = MutationPoint(mutationOperatorId: .negateConditionals,
-                                                  filePath: "a file path",
+                                                  filePath: "/tmp/project/file.swift",
                                                   position: .firstPosition)
         
         describe("the PerformMutationTesting step") {
@@ -21,7 +21,8 @@ class PerformMutationTestingSpec: QuickSpec {
                 delegateSpy = MutationTestingDelegateSpy()
                 
                 state = RunCommandState()
-                state.sourceCodeByFilePath["a file path"] = SyntaxFactory.makeBlankSourceFile()
+                state.projectDirectoryURL = URL(fileURLWithPath: "/project")
+                state.sourceCodeByFilePath["/tmp/project/file.swift"] = SyntaxFactory.makeBlankSourceFile()
                 state.mutationPoints = [expectedMutationPoint, expectedMutationPoint]
                 
                 performMutationTesting = PerformMutationTesting(ioDelegate: delegateSpy)
@@ -54,7 +55,7 @@ class PerformMutationTestingSpec: QuickSpec {
                     expect(delegateSpy.restoredFilePaths.count) == 2
                     expect(delegateSpy.backedUpFilePaths) == delegateSpy.restoredFilePaths
                     expect(delegateSpy.mutatedFileContents.first) == SyntaxFactory.makeBlankSourceFile().description
-                    expect(delegateSpy.mutatedFilePaths.first) == "a file path"
+                    expect(delegateSpy.mutatedFilePaths.first) == "/tmp/project/file.swift"
                     
                 }
                 
@@ -62,11 +63,15 @@ class PerformMutationTestingSpec: QuickSpec {
                     let expectedTestOutcomes = [
                         MutationTestOutcome(testSuiteOutcome: .failed,
                                             mutationPoint: expectedMutationPoint,
-                                            operatorDescription: ""),
+                                            operatorDescription: "",
+                                            originalProjectDirectoryUrl: URL(fileURLWithPath: "/project")),
+                        
                         MutationTestOutcome(testSuiteOutcome: .failed,
                                             mutationPoint: expectedMutationPoint,
-                                            operatorDescription: ""),
-                    ]
+                                            operatorDescription: "",
+                                            originalProjectDirectoryUrl: URL(fileURLWithPath: "/project")),
+
+                        ]
                     
                     guard case .success(let stateChanges) = result! else {
                         fail("expected sccess but got \(String(describing: result!))")
@@ -186,7 +191,7 @@ class PerformMutationTestingSpec: QuickSpec {
                     expect(delegateSpy.restoredFilePaths.count).to(equal(5))
                     expect(delegateSpy.backedUpFilePaths).to(equal(delegateSpy.restoredFilePaths))
                 expect(delegateSpy.mutatedFileContents.first).to(equal(SyntaxFactory.makeBlankSourceFile().description))
-                    expect(delegateSpy.mutatedFilePaths.first).to(equal("a file path"))
+                    expect(delegateSpy.mutatedFilePaths.first).to(equal("/tmp/project/file.swift"))
                 }
                 
                 it("cascades a failure") {
@@ -243,18 +248,20 @@ class PerformMutationTestingSpec: QuickSpec {
                     expect(delegateSpy.backedUpFilePaths) == delegateSpy.restoredFilePaths
                     
                     expect(delegateSpy.mutatedFileContents.first) == SyntaxFactory.makeBlankSourceFile().description
-                    expect(delegateSpy.mutatedFilePaths.first) == "a file path"
+                    expect(delegateSpy.mutatedFilePaths.first) == "/tmp/project/file.swift"
                 }
 
                 it("returns the mutation test outcomes") {
                     
                     let expectedBuildErrorOutcome = MutationTestOutcome(testSuiteOutcome: .buildError,
-                                                                        mutationPoint: MutationPoint(mutationOperatorId: .negateConditionals, filePath: "a file path", position: .firstPosition),
-                                                                        operatorDescription: "")
+                                                                        mutationPoint: MutationPoint(mutationOperatorId: .negateConditionals, filePath: "/tmp/project/file.swift", position: .firstPosition),
+                                                                        operatorDescription: "",
+                                                                        originalProjectDirectoryUrl: URL(fileURLWithPath: "/project"))
                     
                     let expectedFailingOutcome = MutationTestOutcome(testSuiteOutcome: .failed,
-                                                                     mutationPoint: MutationPoint(mutationOperatorId: .negateConditionals, filePath: "a file path", position: .firstPosition),
-                                                                     operatorDescription: "")
+                                                                     mutationPoint: MutationPoint(mutationOperatorId: .negateConditionals, filePath: "/tmp/project/file.swift", position: .firstPosition),
+                                                                     operatorDescription: "",
+                                                                     originalProjectDirectoryUrl: URL(fileURLWithPath: "/project"))
                     
                     let expectedTestOutcomes = Array(repeating: expectedBuildErrorOutcome, count: 4) + [expectedFailingOutcome]
                     
