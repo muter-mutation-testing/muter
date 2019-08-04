@@ -2,7 +2,7 @@ import Foundation
 import SwiftSyntax
 
 typealias FileName = String
-typealias FilePath = String
+public typealias FilePath = String
 
 public struct MuterTestReport {
     let globalMutationScore: Int

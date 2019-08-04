@@ -97,6 +97,13 @@ class AcceptanceTests: QuickSpec {
                     they("see their results in a format consumable by an Xcode build script") {
                         expect(self.numberOfXcodeFormattedMessages(in: output)).to(equal(1))
                     }
+                    
+                    they("see only one temporary path") {
+                        let numberOfTemporaryPaths = output.split(separator: "\n").count {
+                            $0.contains("/T/TemporaryItems/")
+                        }
+                        expect(numberOfTemporaryPaths) == 1
+                    }
                 }
                 
                 context("with --files-to-mutate as an argument") {
