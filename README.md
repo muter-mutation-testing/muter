@@ -12,6 +12,12 @@ Use this mode to get detailed information about the health and quality of your e
 
 ![Muter running from the commandline](Docs/muter-cli-output-v2.gif)
 
+
+#### Muter can be run in your CI
+Use this script to easily mutation test your projects incrementally, enabling you to have per-commit updates on how code changes impact the quality of your test suite. Seemlessly connect the output of this CI step into your dashboard or communication channel of choice, or use it as a starting point for thinking about how you want to incrementally test your code.
+
+```muter --files-to-mutate $(echo \"$(git diff --name-only HEAD HEAD~1 | tr '\n' ',')\")```  
+
 ## What Is Muter?
 Muter is a mutation testing utility that is used to help you determine the quality of your test suite.
 
