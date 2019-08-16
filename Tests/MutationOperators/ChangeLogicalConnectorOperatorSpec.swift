@@ -3,6 +3,83 @@ import Nimble
 import SwiftSyntax
 @testable import muterCore
 
+class InstrumentationVisitor: SyntaxRewriter {
+    private let instrumentation: CodeBlockItemSyntax
+    
+    init(instrumentation: CodeBlockItemSyntax) {
+        self.instrumentation = instrumentation
+    }
+    
+    override func visit(_ node: FunctionDeclSyntax) -> DeclSyntax {
+        let existingBody = node.body!
+        return node.withBody(existingBody.withStatements(
+            existingBody
+                .statements
+                .inserting(instrumentation, at: 0)
+        ))
+    }
+    
+}
+
+
+
+
+import XCTest
+
+class Observer: NSObject, XCTestObservation {
+    func testBundleDidFinish(_ testBundle: Bundle) {
+        print("ea")
+        CodeCoverageInstrumenter.shared.recordFunctionInvocation(with: Id<Int>(value: 5))
+    }
+    
+}
+
+
+
+class CodeCoverageSpec: QuickSpec {
+    
+    func something(_ value: String) -> [Result<(), Never>] {
+        let function = #function
+
+        return []
+    }
+    
+    func something(_ value: Int) -> [Result<(), Never>] {
+        let function = #function
+        
+        
+        return []
+    }
+    
+    override func spec() {
+        describe("CodeCoverageInstrumenter") {
+            XCTestObservationCenter.shared.addTestObserver(Observer())
+            it("records the strings that get passed to it") {
+                
+//                self.something("")
+                self.something(0)
+            }
+            
+        }
+        describe("InstrumentationVisitor") {
+            it("inserts instrumentation code at the first line of every function") {
+                let source = sourceCode(fromFileAt: "\(self.fixturesDirectory)/sampleForDiscoveringMutations.swift")!
+                let expectedSource = sourceCode(fromFileAt: "\(self.fixturesDirectory)/instrumentedSample.swift")!
+                let instrumentation = SyntaxFactory.makeBlankCodeBlockItem().withItem(SyntaxFactory.makeTokenList([
+                    SyntaxFactory
+                        .makeIdentifier("instrumented")
+                        .withLeadingTrivia([.newlines(1), .spaces(8), .docLineComment("//"), .spaces(1)])
+                ]))
+                
+                let instrumentedCode = InstrumentationVisitor(instrumentation: instrumentation).visit(source)
+                
+                expect(instrumentedCode.description) == expectedSource.description
+            }
+        }
+    }
+}
+
+
 class ChangeLogicalConnectorOperatorSpec: QuickSpec {
     override func spec() {
         describe("") {
