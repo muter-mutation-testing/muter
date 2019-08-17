@@ -37,7 +37,16 @@ extension TestSuiteOutcome {
     static private func logContainsTestFailure(_ testLog: String) -> Bool {
         let entireTestLog = NSRange(testLog.startIndex... , in: testLog)
         let numberOfFailureMessages = testFailureRegEx.numberOfMatches(in: testLog, options: [], range: entireTestLog)
-        return numberOfFailureMessages > 0 || testLog.contains("** TEST FAILED **")
+        return numberOfFailureMessages > 0 ||
+            testLog.contains(testFailedMessage(from: .xcodebuild)) ||
+            testLog.contains(testFailedMessage(from: .buck))
+    }
+
+    static private func testFailedMessage(from binaryType: BinaryType) -> String {
+        switch binaryType {
+        case .xcodebuild: return "** TEST FAILED **"
+        case .buck: return "TESTS FAILED: "
+        }
     }
 
     static private var testFailureRegEx: NSRegularExpression {
@@ -54,4 +63,9 @@ extension TestSuiteOutcome {
             testLog.contains("failed with a nonzero exit code") ||
             testLog.contains("Testing cancelled because the build failed")
     }
+}
+
+private enum BinaryType {
+    case xcodebuild
+    case buck
 }
