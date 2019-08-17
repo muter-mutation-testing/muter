@@ -1,7 +1,7 @@
 import SwiftSyntax
 
-struct Id<T: Hashable>: Hashable {
-    let value: T
+struct Id<Value: Hashable & Equatable>: Hashable, Equatable {
+    let value: Value
 }
 
 class CodeCoverageInstrumenter {

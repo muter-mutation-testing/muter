@@ -5,7 +5,7 @@ struct Example2 {
         return b == a ? "equal" : "not equal"
     }
     
-    func areAlsoEqualAsString(_ a: Int) -> String {
+    func areEqualAsString(_ a: Float) -> String {
         // instrumented
         return ""
     }
