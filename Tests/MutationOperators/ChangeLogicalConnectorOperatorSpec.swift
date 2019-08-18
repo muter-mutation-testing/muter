@@ -3,17 +3,6 @@ import Nimble
 import SwiftSyntax
 @testable import muterCore
 
-//import XCTest
-//
-////            XCTestObservationCenter.shared.addTestObserver(Observer())
-//class Observer: NSObject, XCTestObservation {
-//    func testBundleDidFinish(_ testBundle: Bundle) {
-//        //        print("ea")
-//        //        CodeCoverageInstrumenter.shared.recordFunctionInvocation(with: Id<Int>(value: 5))
-//    }
-//
-//}
-
 extension Id where Value == Int {
     private static var _nextId: Int = 0
     
@@ -24,101 +13,76 @@ extension Id where Value == Int {
     }
 }
 
-class InstrumentationVisitor: SyntaxRewriter {
-    private let instrumentation: CodeBlockItemSyntax
-    private(set) var instrumentedFunctions: [String] = []
-    private var typeNameStack: [String] = []
-    
-    init(instrumentation: CodeBlockItemSyntax) {
-        self.instrumentation = instrumentation
-    }
-    
-    override func visitPost(_ node: Syntax) {
-        switch node {
-        case is StructDeclSyntax,
-             is EnumDeclSyntax,
-             is ClassDeclSyntax,
-             is ExtensionDeclSyntax:
-            _ = typeNameStack.popLast()
-        default:
-            break
-        }
-    }
-    
-    override func visit(_ node: StructDeclSyntax) -> DeclSyntax {
-        typeNameStack.append(node.identifier.text.trimmed)
-        return super.visit(node)
-    }
-    
-    override func visit(_ node: EnumDeclSyntax) -> DeclSyntax {
-        typeNameStack.append(node.identifier.text.trimmed)
-        return super.visit(node)
-    }
-    
-    override func visit(_ node: ClassDeclSyntax) -> DeclSyntax {
-        typeNameStack.append(node.identifier.text.trimmed)
-        return super.visit(node)
-    }
-    
-    override func visit(_ node: ExtensionDeclSyntax) -> DeclSyntax {
-        typeNameStack.append(node.extendedType.description.trimmed)
-        return super.visit(node)
-    }
-    
-    override func visit(_ node: FunctionDeclSyntax) -> DeclSyntax {
-        guard let existingBody = node.body else {
-            return super.visit(node)
-        }
-        
-        instrumentedFunctions.append(fullyQualifiedFunctionName(for: node))
-        
-        return node.withBody(existingBody.withStatements(
-            existingBody
-                .statements
-                .inserting(instrumentation, at: 0)
-        ))
-    }
-    
-    private func fullyQualifiedFunctionName(for node: FunctionDeclSyntax) -> String {
-        let typeName = typeNameStack.accumulate(into: "") {
-            $0.isEmpty ?
-                $1 + "." :
-                $0 + "\($1)."
-        }
-        return (typeName +
-            node.identifier.description +
-            node.signature.description).trimmed
-    }
-}
-
+//{
+//let instance: Observer = Observer()
+//XCTestObservationCenter.shared.addTestObserver(instance)
+//}
 class CodeCoverageSpec: QuickSpec {
     
     override func spec() {
         describe("CodeCoverageInstrumenter") {
             it("records the strings that get passed to it") {
+                let instrumenter = CodeCoverageInstrumenter() { _ in /* no op */ }
+
+                expect(instrumenter.functionCallCounts[#function]).to(beNil())
+
+                instrumenter.recordFunctionCall(forFunctionNamed: #function)
                 
+                expect(instrumenter.functionCallCounts[#function]) == 1
             }
             
+            it("uses its persistence handler") {
+                var recordedFunctionInvocations: [String: Int]?
+                let persistenceSpy =  {
+                    recordedFunctionInvocations = $0
+                }
+                
+                let instrumenter = CodeCoverageInstrumenter(persistenceHandler: persistenceSpy)
+                
+                instrumenter.recordFunctionCall(forFunctionNamed: #function)
+                instrumenter.recordFunctionCall(forFunctionNamed: #function)
+
+                instrumenter.persistFunctionCalls()
+                
+                expect(recordedFunctionInvocations?[#function]) == 2
+            }
         }
+        
         describe("InstrumentationVisitor") {
-            let source = sourceCode(fromFileAt: "\(self.fixturesDirectory)/sampleForDiscoveringMutations.swift")!
+            let source = sourceCode(fromFileAt: "\(self.fixturesDirectory)/uninstrumentedSample.swift")!
             let expectedSource = sourceCode(fromFileAt: "\(self.fixturesDirectory)/instrumentedSample.swift")!
-            let instrumentation = SyntaxFactory.makeBlankCodeBlockItem().withItem(SyntaxFactory.makeTokenList([
-                SyntaxFactory
-                    .makeIdentifier("instrumented")
-                    .withLeadingTrivia([.newlines(1), .spaces(8), .docLineComment("//"), .spaces(1)])
-                ]))
+
             
             it("inserts instrumentation code at the first line of every function") {
                 
-                let instrumentedCode = InstrumentationVisitor(instrumentation: instrumentation).visit(source)
+                let visitor = InstrumentationVisitor { functionName in
+                    return SyntaxFactory
+                        .makeBlankCodeBlockItem()
+                        .withItem(SyntaxFactory.makeTokenList([
+                            SyntaxFactory
+                                .makeIdentifier("\(functionName)")
+                                .withLeadingTrivia([.newlines(1)])
+                            ]))
+                }
+
+                let instrumentedCode = visitor.visit(source)
                 
-                                expect(instrumentedCode.description) == expectedSource.description
+                expect(instrumentedCode.description) == expectedSource.description
+
             }
             
-            it("inserts instrumentation code at the first line of every function") {
-                let visitor = InstrumentationVisitor(instrumentation: instrumentation)
+            it("") {
+                let source = sourceCode(fromFileAt: "\(self.fixturesDirectory)/sampleForParsingFunctionNames.swift")!
+
+                var instrumentedFunctions: [String] = []
+                let visitor = InstrumentationVisitor {
+                    instrumentedFunctions.append($0)
+                    return SyntaxFactory.makeBlankCodeBlockItem()
+                }
+                
                 _ = visitor.visit(source)
+
+                expect(visitor.instrumentedFunctions) == instrumentedFunctions
                 expect(visitor.instrumentedFunctions) == [
                     "Example2.areEqualAsString(_ a: Int) -> String",
                     "Example2.areEqualAsString(_ a: Float) -> String",
@@ -138,8 +102,15 @@ class CodeCoverageSpec: QuickSpec {
                     "Info.CustomError.AnotherLayer.ofHell(dictionary: [String: Result<(), Never>]) -> ExampleEnum",
                     "ItsAlmostLikeItNeverEnds.DoesIt.endIt() -> Please"
                 ]
+
             }
-            
+
+            it("returns instrumentation for measuring code coverage") {
+                let expectedSource = sourceCode(fromFileAt: "\(self.fixturesDirectory)/instrumentationExample.swift")!
+                let source = InstrumentationVisitor.default("foo")
+                expect(source.description.trimmed) == expectedSource.description.trimmed
+
+            }
         }
     }
 }
