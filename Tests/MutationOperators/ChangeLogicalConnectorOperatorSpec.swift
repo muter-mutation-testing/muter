@@ -34,7 +34,7 @@ extension Id where Value == Int {
 class InstrumentationVisitor: SyntaxRewriter {
     private let instrumentation: CodeBlockItemSyntax
     private(set) var functionIds: [String: Id<Int>] = [:]
-    private var typeNames: [String] = []
+    private var typeNameStack: [String] = []
     
     init(instrumentation: CodeBlockItemSyntax) {
         self.instrumentation = instrumentation
@@ -42,36 +42,33 @@ class InstrumentationVisitor: SyntaxRewriter {
     
     override func visitPost(_ node: Syntax) {
         switch node {
-        case is StructDeclSyntax:
-            _ = typeNames.popLast()
-        case is EnumDeclSyntax:
-            _ = typeNames.popLast()
-        case is ClassDeclSyntax:
-            _ = typeNames.popLast()
-        case is ExtensionDeclSyntax:
-            _ = typeNames.popLast()
+        case is StructDeclSyntax,
+             is EnumDeclSyntax,
+             is ClassDeclSyntax,
+             is ExtensionDeclSyntax:
+            _ = typeNameStack.popLast()
         default:
             break
         }
     }
-    
-    override func visit(_ node: ExtensionDeclSyntax) -> DeclSyntax {
-        typeNames.append(node.extendedType.description.trimmed)
-        return super.visit(node)
-    }
-    
+
     override func visit(_ node: StructDeclSyntax) -> DeclSyntax {
-        typeNames.append(node.identifier.text.trimmed)
+        updateTypeNameStack(with: node.identifier.text)
         return super.visit(node)
     }
     
     override func visit(_ node: EnumDeclSyntax) -> DeclSyntax {
-        typeNames.append(node.identifier.text.trimmed)
+        updateTypeNameStack(with: node.identifier.text)
         return super.visit(node)
     }
     
     override func visit(_ node: ClassDeclSyntax) -> DeclSyntax {
-        typeNames.append(node.identifier.text.trimmed)
+        updateTypeNameStack(with: node.identifier.text)
+        return super.visit(node)
+    }
+    
+    override func visit(_ node: ExtensionDeclSyntax) -> DeclSyntax {
+        updateTypeNameStack(with: node.extendedType.description)
         return super.visit(node)
     }
     
@@ -80,9 +77,7 @@ class InstrumentationVisitor: SyntaxRewriter {
             return super.visit(node)
         }
         
-        let typeName = typeNames.last != nil ? "\(typeNames.last!)." : ""
-        let functionName = (typeName + node.identifier.description + node.signature.description).trimmed
-        functionIds[functionName] = .nextId
+        functionIds[fullyQualifiedFunctionName(for: node)] = .nextId
         
         return node.withBody(existingBody.withStatements(
             existingBody
@@ -91,6 +86,20 @@ class InstrumentationVisitor: SyntaxRewriter {
         ))
     }
     
+    private func fullyQualifiedFunctionName(for node: FunctionDeclSyntax) -> String {
+        let typeName = typeNameStack.last != nil ? "\(typeNameStack.last!)." : ""
+        return (typeName + node.identifier.description + node.signature.description).trimmed
+    }
+    
+    private func updateTypeNameStack(with identifier: String) {
+        if typeNameStack.isEmpty {
+            typeNameStack.append(identifier.trimmed)
+        } else {
+            var typeName = typeNameStack.last!
+            typeName += ".\(identifier.trimmed)"
+            typeNameStack[typeNameStack.endIndex - 1] = typeName
+        }
+    }
 }
 
 class CodeCoverageSpec: QuickSpec {
@@ -112,6 +121,13 @@ class CodeCoverageSpec: QuickSpec {
                 ]))
             
             it("inserts instrumentation code at the first line of every function") {
+                
+                let instrumentedCode = InstrumentationVisitor(instrumentation: instrumentation).visit(source)
+                
+                //                expect(instrumentedCode.description) == expectedSource.description
+            }
+            
+            it("inserts instrumentation code at the first line of every function") {
                 Id<Int>.resetIds() // This ensures that the id values start @ 0 for this test
                 
                 let visitor = InstrumentationVisitor(instrumentation: instrumentation)
@@ -123,7 +139,7 @@ class CodeCoverageSpec: QuickSpec {
                     lhs.1.value < rhs.1.value
                 }
                 
-                let expectedIdCount = 11
+                let expectedIdCount = 17
                 guard actualIds.count == expectedIdCount else {
                     fail("expected there to be \(expectedIdCount) ids but got \(actualIds.count)")
                     return
@@ -161,15 +177,27 @@ class CodeCoverageSpec: QuickSpec {
                 
                 expect(actualIds[10].0) == "thisShouldntBeASurpriseByNow()"
                 expect(actualIds[10].1) == Id(value: 10)
+                
+                expect(actualIds[11].0) == "Baz.Info.foo()"
+                expect(actualIds[11].1) == Id(value: 11)
+                
+                expect(actualIds[12].0) == "Bar.Info.foo()"
+                expect(actualIds[12].1) == Id(value: 12)
+                
+                expect(actualIds[13].0) == "Info.foo()"
+                expect(actualIds[13].1) == Id(value: 13)
+                
+                expect(actualIds[14].0) == "Info.CustomError.haltAndCatchFire ()" // note the space
+                expect(actualIds[14].1) == Id(value: 14)
+                
+                expect(actualIds[15].0) == "Info.CustomError.AnotherLayer.ofHell(dictionary: [String: Result<(), Never>]) -> ExampleEnum"
+                expect(actualIds[15].1) == Id(value: 15)
+                
+                expect(actualIds[16].0) == "ItsAlmostLikeItNeverEnds.DoesIt.endIt() -> Please"
+                expect(actualIds[16].1) == Id(value: 16)
             }
             
-            it("inserts instrumentation code at the first line of every function") {
 
-                
-                let instrumentedCode = InstrumentationVisitor(instrumentation: instrumentation).visit(source)
-                
-                expect(instrumentedCode.description) == expectedSource.description
-            }
             
            
         }

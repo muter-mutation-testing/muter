@@ -52,3 +52,37 @@ extension SomeProtocol {
 func thisShouldntBeASurpriseByNow() {
     return ""
 }
+
+class Baz {
+    struct Info {
+        func foo() {}
+    }
+}
+
+class Bar {
+    struct Info {
+        func foo() {}
+    }
+}
+
+struct Info {
+    func foo() {}
+    
+    class CustomError: Error {
+        func haltAndCatchFire () {} // note the space before the parentheses
+        
+        enum AnotherLayer {
+            case value
+            func ofHell(dictionary: [String: Result<(), Never>]) -> ExampleEnum {
+                return self
+            }
+        }
+
+    }
+}
+
+extension ItsAlmostLikeItNeverEnds {
+    struct DoesIt {
+        func endIt() -> Please {}
+    }
+}
