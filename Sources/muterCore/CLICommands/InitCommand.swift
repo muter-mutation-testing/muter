@@ -26,9 +26,9 @@ public struct InitCommand: CommandProtocol {
 
         let directoryContents = fileManager.subpaths(atPath: self.directory) ?? []
         fileManager.createFile(atPath: "\(self.directory)/muter.conf.json",
-                               contents: MuterConfiguration(from: directoryContents).asJSONData,
-                               attributes: nil)
-        
+            contents: MuterConfiguration(from: directoryContents).asJSONData,
+            attributes: nil)
+
         notificationCenter.post(name: .configurationFileCreated, object: "\(self.directory)/muter.conf.json")
 
         return Result.success(())

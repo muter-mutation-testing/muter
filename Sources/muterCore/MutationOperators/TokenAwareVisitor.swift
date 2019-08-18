@@ -1,10 +1,10 @@
 import SwiftSyntax
 
 class TokenAwareVisitor: SyntaxVisitor, PositionDiscoveringVisitor {
-    
+
     fileprivate(set) var tokensToDiscover = [TokenKind]()
     private(set) var positionsOfToken = [AbsolutePosition]()
-    
+
     override func visit(_ token: TokenSyntax) {
         if canMutateToken(token) {
             positionsOfToken.append(token.position)
@@ -30,7 +30,7 @@ enum NegateConditionalsOperator {
                 .spacedBinaryOperator(">"),
             ]
         }
-        
+
         override func visit(_ node: GenericWhereClauseSyntax) {}
     }
 }

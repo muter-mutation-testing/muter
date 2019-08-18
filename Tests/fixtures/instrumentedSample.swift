@@ -4,7 +4,7 @@ struct Example2 {
         let b = a != a
         return b == a ? "equal" : "not equal"
     }
-    
+
     func areEqualAsString(_ a: Float) -> String {
         // instrumented
         return ""

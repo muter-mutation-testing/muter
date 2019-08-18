@@ -21,7 +21,7 @@ public struct RunCommand: CommandProtocol {
        --output-xcode       Output test results in a format consumable by an Xcode run script step
 
     """
-    
+
     private let fileManager: FileSystemManager
     private let notificationCenter: NotificationCenter
 
@@ -35,7 +35,7 @@ public struct RunCommand: CommandProtocol {
         let _ = RunCommandObserver(reporter: options.reporter,
                                    fileManager: fileManager,
                                    flushHandler: flushStdOut)
-        
+
         notificationCenter.post(name: .muterLaunched, object: nil)
 
         let result = RunCommandHandler(options: options).handle()
@@ -52,7 +52,7 @@ public struct RunCommandOptions: OptionsProtocol {
     public typealias ClientError = MuterError
     let reporter: Reporter
     let filesToMutate: [String]
-    
+
     public init(shouldOutputJSON: Bool, shouldOutputXcode: Bool, filesToMutate list: [String]) {
         if shouldOutputJSON {
             reporter = .json
@@ -61,7 +61,7 @@ public struct RunCommandOptions: OptionsProtocol {
         } else {
             reporter = .plainText
         }
-        
+
         filesToMutate = list
     }
 

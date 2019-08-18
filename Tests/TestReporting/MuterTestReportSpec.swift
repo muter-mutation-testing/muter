@@ -11,7 +11,7 @@ class MuterTestReportSpec: QuickSpec {
                 it("calculates all its fields as part of its initialization") {
                     let outcomes = self.exampleMutationTestResults + [MutationTestOutcome(testSuiteOutcome: .failed,
                                                                                           mutationPoint: MutationPoint(mutationOperatorId: .negateConditionals,
-                                                                                            filePath: "/tmp/a module.swift", position: .firstPosition),
+                                                                                                                       filePath: "/tmp/a module.swift", position: .firstPosition),
                                                                                           operatorDescription: "from == to !=")]
                     let report = MuterTestReport(from: outcomes)
                     expect(report.globalMutationScore).to(equal(60))

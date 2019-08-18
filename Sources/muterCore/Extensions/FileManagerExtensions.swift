@@ -20,9 +20,9 @@ public protocol FileSystemManager {
     var currentDirectoryPath: String { get }
 
     func contents(atPath path: String) -> Data?
-    
+
     func subpaths(atPath path: String) -> [String]?
-    
+
     func fileExists(atPath path: String) -> Bool
 }
 

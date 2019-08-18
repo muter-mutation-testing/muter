@@ -55,7 +55,7 @@ private extension MutationTestingDelegate {
         let source = sourceCode(fromFileAt: sourcePath)
         try? source?.description.write(toFile: destinationPath, atomically: true, encoding: .utf8)
     }
-    
+
     func fileHandle(for logFileName: String) throws -> (handle: FileHandle, logFileUrl: URL) {
         let testLogUrl = URL(fileURLWithPath: FileManager.default.currentDirectoryPath + "/" + logFileName)
         try Data().write(to: testLogUrl)

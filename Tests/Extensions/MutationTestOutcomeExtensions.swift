@@ -9,6 +9,6 @@ public extension MutationTestOutcome {
                   mutationPoint: mutationPoint,
                   operatorDescription: operatorDescription,
                   originalProjectDirectoryUrl: URL(fileURLWithPath: ""))
-        
+
     }
 }

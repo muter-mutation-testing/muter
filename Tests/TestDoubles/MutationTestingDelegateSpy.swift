@@ -26,7 +26,7 @@ class MutationTestingDelegateSpy: Spy, MutationTestingIODelegate {
         methodCalls.append(#function)
         return (testSuiteOutcomes.remove(at: 0), "testLog")
     }
-    
+
     func restoreFile(at path: String, using swapFilePaths: [FilePath : FilePath]) {
         methodCalls.append(#function)
         restoredFilePaths.append(path)

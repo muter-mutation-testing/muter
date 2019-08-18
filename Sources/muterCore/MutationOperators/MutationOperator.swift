@@ -9,11 +9,11 @@ public struct MutationPoint: Equatable, Codable {
     let mutationOperatorId: MutationOperator.Id
     let filePath: String
     let position: AbsolutePosition
-    
+
     var fileName: String {
         return URL(fileURLWithPath: self.filePath).lastPathComponent
     }
-    
+
     var mutationOperator: SourceCodeTransformation {
         return mutationOperatorId.mutationOperator(for: position)
     }
@@ -24,12 +24,12 @@ struct MutationOperator {
         case negateConditionals = "NegateConditionals"
         case removeSideEffects = "RemoveSideEffects"
         case logicalOperator = "ChangeLogicalConnector"
-        
+
         var rewriterVisitorPair: (rewriter: RewriterInitializer, visitor: VisitorInitializer) {
             switch self {
             case .removeSideEffects:
-               return (rewriter: RemoveSideEffectsOperator.Rewriter.init,
-                       visitor: RemoveSideEffectsOperator.Visitor.init)
+                return (rewriter: RemoveSideEffectsOperator.Rewriter.init,
+                        visitor: RemoveSideEffectsOperator.Visitor.init)
             case .negateConditionals:
                 return (rewriter: NegateConditionalsOperator.Rewriter.init,
                         visitor: NegateConditionalsOperator.Visitor.init)
@@ -38,7 +38,7 @@ struct MutationOperator {
                         visitor: ChangeLogicalConnectorOperator.Visitor.init)
             }
         }
-        
+
         func mutationOperator(for position: AbsolutePosition) -> SourceCodeTransformation {
             return { source in
                 let visitor = self.rewriterVisitorPair.rewriter(position)

@@ -8,7 +8,7 @@ class DiscoverSourceFilesSpec: QuickSpec {
         describe("the DiscoverSourceFiles step") {
             var discoverSourceFiles: DiscoverSourceFiles!
             var state: RunCommandState!
-            
+
             beforeEach {
                 state = RunCommandState()
                 discoverSourceFiles = DiscoverSourceFiles()
@@ -71,7 +71,7 @@ class DiscoverSourceFilesSpec: QuickSpec {
                 context("because a project directory contains 0 Swift files") {
                     beforeEach {
                         state.tempDirectoryURL = URL(fileURLWithPath: "\(self.fixturesDirectory)/FilesToDiscover/Directory4",
-                                                     isDirectory: true)
+                            isDirectory: true)
                         result = discoverSourceFiles.run(with: state)
                     }
 
@@ -106,7 +106,7 @@ class DiscoverSourceFilesSpec: QuickSpec {
                     var result: Result<[RunCommandState.Change], MuterError>! // keep this as locally defined as possible to avoid test pollution
                     let path = "\(self.fixturesDirectory)/FilesToMutate"
                     var currentDirectoryPath = FileManager.default.currentDirectoryPath
-                    
+
                     beforeEach {
                         state.filesToMutate = ["/Directory2/**/*.swift", "file1.swift", "/ExampleApp/*.swift"]
                         state.tempDirectoryURL = URL(fileURLWithPath: path, isDirectory: true)
@@ -115,7 +115,7 @@ class DiscoverSourceFilesSpec: QuickSpec {
 
                         result = discoverSourceFiles.run(with: state)
                     }
-                    
+
                     afterEach {
                         FileManager.default.changeCurrentDirectoryPath(currentDirectoryPath)
                     }
@@ -138,7 +138,7 @@ class DiscoverSourceFilesSpec: QuickSpec {
                     var result: Result<[RunCommandState.Change], MuterError>! // keep this as locally defined as possible to avoid test pollution
                     let path = "\(self.fixturesDirectory)/FilesToMutate"
                     let currentDirectoryPath = FileManager.default.currentDirectoryPath
-                    
+
                     beforeEach {
                         FileManager.default.changeCurrentDirectoryPath(path)
                         state.filesToMutate = [
@@ -148,24 +148,24 @@ class DiscoverSourceFilesSpec: QuickSpec {
                             "./ProjectName/ProjectName/Models/*.swift",
                             "./**/*.swift"
                         ]
-                        
+
                         state.tempDirectoryURL = URL(fileURLWithPath: path, isDirectory: true)
-                        
+
                         discoverSourceFiles = DiscoverSourceFiles()
-                        
+
                         result = discoverSourceFiles.run(with: state)
                     }
-                    
+
                     afterEach {
                         FileManager.default.changeCurrentDirectoryPath(currentDirectoryPath)
                     }
-                    
+
                     it("returns the Swift files, sorted alphabetically") {
                         guard case .success(let stateChanges) = result! else {
                             fail("expected success but got \(String(describing: result!))")
                             return
                         }
-                        
+
                         expect(stateChanges) == [.sourceFileCandidatesDiscovered([
                             "\(path)/Directory2/Directory3/file6.swift",
                             "\(path)/Directory5/file1.swift",
@@ -183,35 +183,35 @@ class DiscoverSourceFilesSpec: QuickSpec {
                         ])]
                     }
                 }
-                
+
                 context("and it doesn't contains a glob expression") {
                     var result: Result<[RunCommandState.Change], MuterError>! // keep this as locally defined as possible to avoid test pollution
                     let path = "\(self.fixturesDirectory)/FilesToMutate"
                     let fileManager = FileManagerSpy()
                     fileManager.subpathsToReturn = []
                     fileManager.fileExistsToReturn = true
-                    
+
                     beforeEach {
                         state.filesToMutate = ["file1.swift", "file2.swift", "/Directory2/Directory3/file6.swift"]
                         state.tempDirectoryURL = URL(fileURLWithPath: path, isDirectory: true)
-                        
+
                         discoverSourceFiles = DiscoverSourceFiles(fileManager: fileManager)
-                        
+
                         result = discoverSourceFiles.run(with: state)
                     }
-                    
+
                     it("returns the Swift files, sorted alphabetically") {
                         guard case .success(let stateChanges) = result! else {
                             fail("expected success but got \(String(describing: result!))")
                             return
                         }
-                        
+
                         expect(stateChanges) == [.sourceFileCandidatesDiscovered([
                             "\(path)/Directory2/Directory3/file6.swift",
                             "\(path)/file1.swift",
                             "\(path)/file2.swift"
                         ])]
-                        
+
                         expect(fileManager.methodCalls).to(equal([
                             "fileExists(atPath:)",
                             "fileExists(atPath:)",
@@ -220,21 +220,21 @@ class DiscoverSourceFilesSpec: QuickSpec {
                     }
                 }
             }
-            
+
             context("when the list of files to mutate fails") {
                 context("because the file doesn't exists") {
                     var result: Result<[RunCommandState.Change], MuterError>! // keep this as locally defined as possible to avoid test pollution
                     let path = "\(self.fixturesDirectory)/FilesToMutate"
-                    
+
                     beforeEach {
                         state.filesToMutate = ["doesntExist.swift"]
                         state.tempDirectoryURL = URL(fileURLWithPath: path, isDirectory: true)
-                        
+
                         discoverSourceFiles = DiscoverSourceFiles()
-                        
+
                         result = discoverSourceFiles.run(with: state)
                     }
-                    
+
                     it("cascades a failure") {
                         guard case .failure(.noSourceFilesOnExclusiveList) = result! else {
                             fail("expected noSourceFilesDiscovered but got \(String(describing: result!))")
@@ -242,20 +242,20 @@ class DiscoverSourceFilesSpec: QuickSpec {
                         }
                     }
                 }
-                
+
                 context("because it's not a Swift file") {
                     var result: Result<[RunCommandState.Change], MuterError>! // keep this as locally defined as possible to avoid test pollution
                     let path = "\(self.fixturesDirectory)/FilesToMutate"
-                    
+
                     beforeEach {
                         state.filesToMutate = ["/Directory2/Directory3/file6"]
                         state.tempDirectoryURL = URL(fileURLWithPath: path, isDirectory: true)
-                        
+
                         discoverSourceFiles = DiscoverSourceFiles()
-                        
+
                         result = discoverSourceFiles.run(with: state)
                     }
-                    
+
                     it("cascades a failure") {
                         guard case .failure(.noSourceFilesOnExclusiveList) = result! else {
                             fail("expected noSourceFilesDiscovered but got \(String(describing: result!))")

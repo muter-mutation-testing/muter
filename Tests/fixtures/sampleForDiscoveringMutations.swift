@@ -3,7 +3,7 @@ struct Example2 {
         let b = a != a
         return b == a ? "equal" : "not equal"
     }
-    
+
     func areEqualAsString(_ a: Float) -> String {
         return ""
     }
@@ -67,10 +67,10 @@ class Bar {
 
 struct Info {
     func foo() {}
-    
+
     class CustomError: Error {
         func haltAndCatchFire () {} // note the space before the parentheses
-        
+
         enum AnotherLayer {
             case value
             func ofHell(dictionary: [String: Result<(), Never>]) -> ExampleEnum {

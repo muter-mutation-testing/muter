@@ -30,14 +30,14 @@ public extension XCTestCase {
             MutationTestOutcome(testSuiteOutcome: .failed, mutationPoint: MutationPoint(mutationOperatorId: .negateConditionals, filePath: "/tmp/file1.swift", position: .firstPosition), operatorDescription: "from == to !="),
             MutationTestOutcome(testSuiteOutcome: .failed, mutationPoint: MutationPoint(mutationOperatorId: .negateConditionals, filePath: "/tmp/file1.swift", position: .firstPosition), operatorDescription: "from == to !="),
             MutationTestOutcome(testSuiteOutcome: .passed, mutationPoint: MutationPoint(mutationOperatorId: .negateConditionals, filePath: "/tmp/file1.swift", position: .firstPosition), operatorDescription: "from == to !="),
-            
+
             MutationTestOutcome(testSuiteOutcome: .failed, mutationPoint: MutationPoint(mutationOperatorId: .removeSideEffects, filePath: "/tmp/file2.swift", position: .firstPosition), operatorDescription: "from == to !="),
             MutationTestOutcome(testSuiteOutcome: .failed, mutationPoint: MutationPoint(mutationOperatorId: .removeSideEffects, filePath: "/tmp/file2.swift", position: .firstPosition), operatorDescription: "from == to !="),
-            
+
             MutationTestOutcome(testSuiteOutcome: .failed, mutationPoint: MutationPoint(mutationOperatorId: .negateConditionals, filePath: "/tmp/file3.swift", position: .firstPosition), operatorDescription: "from == to !="),
             MutationTestOutcome(testSuiteOutcome: .passed, mutationPoint: MutationPoint(mutationOperatorId: .negateConditionals, filePath: "/tmp/file3.swift", position: .firstPosition), operatorDescription: "from == to !="),
             MutationTestOutcome(testSuiteOutcome: .passed, mutationPoint: MutationPoint(mutationOperatorId: .negateConditionals, filePath: "/tmp/file3.swift", position: .firstPosition), operatorDescription: "from == to !="),
-            
+
             MutationTestOutcome(testSuiteOutcome: .passed, mutationPoint: MutationPoint(mutationOperatorId: .negateConditionals, filePath: "/tmp/file 4.swift", position: .firstPosition), operatorDescription: "from == to !=") // this file name intentionally has a space in it
         ]
     }

@@ -5,27 +5,27 @@ import Curry
 struct DiscoverSourceFiles: RunCommandStep {
     private let notificationCenter: NotificationCenter
     private let fileManager: FileSystemManager
-    
+
     init(notificationCenter: NotificationCenter = .default,
          fileManager: FileSystemManager = FileManager.default) {
         self.notificationCenter = notificationCenter
         self.fileManager = fileManager
     }
-    
+
     func run(with state: AnyRunCommandState) -> Result<[RunCommandState.Change], MuterError> {
-        
+
         notificationCenter.post(name: .sourceFileDiscoveryStarted, object: nil)
-        
+
         let sourceFileCandidates = state.filesToMutate.isEmpty ?
             discoverSourceFiles(inDirectoryAt: state.tempDirectoryURL.path,
                                 excludingPathsIn: state.muterConfiguration.excludeList) :
             findFilesToMutate(files: state.filesToMutate,
                               inDirectoryAt: state.tempDirectoryURL.path)
-        
+
         let failure = state.filesToMutate.isEmpty ?
             MuterError.noSourceFilesDiscovered :
             .noSourceFilesOnExclusiveList
-        
+
         notificationCenter.post(name: .sourceFileDiscoveryFinished, object: sourceFileCandidates)
 
         return sourceFileCandidates.count >= 1 ?
@@ -47,7 +47,7 @@ private extension DiscoverSourceFiles {
             "fastlane"
         ]
     }
-    
+
     func discoverSourceFiles(inDirectoryAt path: FilePath,
                              excludingPathsIn providedExcludeList: [FilePath] = []) -> [FilePath] {
         let excludeList = providedExcludeList + defaultExcludeList
@@ -58,18 +58,18 @@ private extension DiscoverSourceFiles {
                 .map(curry(append)(path))
         )
     }
-    
+
     func pathsContainingItems(from excludeList: [FilePath]) -> (FilePath) -> Bool {
         return { (path: FilePath) in
-            
+
             for item in excludeList where path.contains(item) {
                 return true
             }
-            
+
             return false
         }
     }
-    
+
     func findFilesToMutate(files: [FilePath],
                            inDirectoryAt path: FilePath) -> [FilePath] {
         let glob = files
@@ -79,7 +79,7 @@ private extension DiscoverSourceFiles {
         let result = (glob + list).map(standardizing(path:))
         return includeSwiftFiles(from: result)
     }
-    
+
     func expandGlobExpressions(root: FilePath,
                                pattern: FilePath) -> [FilePath] {
         let path = append(root: root, to: pattern)
@@ -88,30 +88,30 @@ private extension DiscoverSourceFiles {
             !paths.isEmpty else {
                 return []
         }
-        
+
         return paths
     }
-    
+
     func append(root: FilePath, to path: FilePath) -> FilePath {
         return normalize(path: root + "/" + path)
     }
-    
+
     func standardizing(path: String) -> String {
         let components = (path as NSString).pathComponents
         guard components.contains(".") || components.contains("..") else {
             return path
         }
         let result = URL(
-                string: path,
-                relativeTo: URL(fileURLWithPath: fileManager.currentDirectoryPath)
+            string: path,
+            relativeTo: URL(fileURLWithPath: fileManager.currentDirectoryPath)
             )
             .map(\.absoluteString)
             .map(dropScheme)
             ?? path
-        
+
         return result
     }
-    
+
     func includeSwiftFiles(from paths: [FilePath]) -> [FilePath] {
         return paths
             .include(swiftFiles)
@@ -122,7 +122,7 @@ private extension DiscoverSourceFiles {
     func swiftFiles(path: FilePath) -> Bool {
         return path.hasSuffix(".swift")
     }
-    
+
     func dropScheme(from path: FilePath) -> FilePath {
         return URLComponents(string: path)
             .map(\.scheme)

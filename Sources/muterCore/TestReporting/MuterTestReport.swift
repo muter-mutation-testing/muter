@@ -61,17 +61,17 @@ public extension MuterTestReport {
     struct AppliedMutationOperator: Codable, Equatable {
         let mutationPoint: MutationPoint
         let testSuiteOutcome: TestSuiteOutcome
-        
+
         enum CodingKeys: String, CodingKey {
             case mutationPoint
             case testSuiteOutcome
         }
-        
+
         init(mutationPoint: MutationPoint, testSuiteOutcome: TestSuiteOutcome) {
             self.mutationPoint = mutationPoint
             self.testSuiteOutcome = testSuiteOutcome
         }
-        
+
         public init(from decoder: Decoder) throws {
             let container = try decoder.container(keyedBy: CodingKeys.self)
             mutationPoint = try container.decode(MutationPoint.self, forKey: .mutationPoint)

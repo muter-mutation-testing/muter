@@ -16,7 +16,7 @@ class FileOperationSpec: QuickSpec {
                     hour: 2,
                     minute: 42
                 )
-                
+
                 let loggingDirectory = createLoggingDirectory(in: "~/some/path",
                                                               fileManager: fileManagerSpy,
                                                               locale: Locale(identifier: "en_US"),

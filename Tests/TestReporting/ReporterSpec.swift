@@ -12,7 +12,7 @@ class ReporterSpec: QuickSpec {
                                 mutationPoint: MutationPoint(mutationOperatorId: .negateConditionals, filePath: "/tmp/project/file3.swift", position: .firstPosition),
                                 operatorDescription: "changed from != to ==",
                                 originalProjectDirectoryUrl: URL(string: "/user/project")!
-                                )
+            )
         ]
 
         describe("text reporter") {
@@ -31,7 +31,7 @@ class ReporterSpec: QuickSpec {
                                                                mutationPoint: MutationPoint(mutationOperatorId: .negateConditionals, filePath: "/tmp/project/file5.swift", position: .firstPosition),
                                                                operatorDescription: "changed from == to !=",
                                                                originalProjectDirectoryUrl: URL(string: "/user/project")!)]
-                
+
                 expect(Reporter.xcode.generateReport(from: outcomes)) == """
                 /user/project/file3.swift:0:0: warning: Your test suite did not kill this mutant: changed from != to ==
                 /user/project/file5.swift:0:0: warning: Your test suite did not kill this mutant: changed from == to !=

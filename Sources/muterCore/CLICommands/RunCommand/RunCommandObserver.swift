@@ -40,27 +40,27 @@ class RunCommandObserver {
     private var numberOfMutationPoints: Int!
     private let notificationCenter: NotificationCenter = .default
     private var notificationHandlerMappings: [(name: Notification.Name, handler: (Notification) -> Void)] {
-       return [
+        return [
             (name: .muterLaunched, handler: handleMuterLaunched),
-            
+
             (name: .projectCopyStarted, handler: handleProjectCopyStarted),
             (name: .projectCopyFinished, handler: handleProjectCopyFinished),
-            
+
             (name: .sourceFileDiscoveryStarted, handler: handleSourceFileDiscoveryStarted),
             (name: .sourceFileDiscoveryFinished, handler: handleSourceFileDiscoveryFinished),
-            
+
             (name: .mutationPointDiscoveryStarted, handler: handleMutationPointDiscoveryStarted),
             (name: .mutationPointDiscoveryFinished, handler: handleMutationPointDiscoveryFinished),
-            
+
             (name: .mutationTestingStarted, handler: handleMutationTestingStarted),
 
             (name: .newMutationTestOutcomeAvailable, handler: handleNewMutationTestOutcomeAvailable),
             (name: .newTestLogAvailable, handler: handleNewTestLogAvailable),
 
             (name: .mutationTestingFinished, handler: handleMutationTestingFinished),
-       ]
+        ]
     }
-    
+
     init(reporter: Reporter, fileManager: FileSystemManager, flushHandler: @escaping () -> Void) {
         self.reporter = reporter
         self.fileManager = fileManager
@@ -84,7 +84,7 @@ extension RunCommandObserver {
             printHeader()
         }
     }
-    
+
     func handleProjectCopyStarted(notification: Notification) {
         if reporter == .plainText {
             print("Copying your project to a temporary directory for testing...")
@@ -124,23 +124,23 @@ extension RunCommandObserver {
             let discoveredMutationPoints = notification.object as! [MutationPoint]
             numberOfMutationPoints = discoveredMutationPoints.count
             let numberOfFiles = discoveredMutationPoints.map { $0.fileName }.deduplicated().count
-            
+
             print("In total, Muter discovered \(discoveredMutationPoints.count) mutants in \(numberOfFiles) files\n")
             for (fileName, mutantCount) in mutationPointsByFileName(from: discoveredMutationPoints) {
                 print("\(fileName) (\(mutantCount) mutants)".bold)
             }
         }
     }
-    
+
     func mutationPointsByFileName(from mutationPoints: [MutationPoint]) -> [String: Int] {
         var result: [String: Int] = [:]
-        
+
         for mutationPoint in mutationPoints {
             if result[mutationPoint.fileName] == nil {
                 result[mutationPoint.fileName] = 1
                 continue
             }
-            
+
             result[mutationPoint.fileName]! += 1
         }
         return result
@@ -154,7 +154,7 @@ extension RunCommandObserver {
 
     func handleNewMutationTestOutcomeAvailable(notification: Notification) {
         let outcome = notification.object as! MutationTestOutcome
-        
+
         if reporter == .xcode {
             print(reporter.generateReport(from: [outcome]))
             flushStdOut()
@@ -165,7 +165,7 @@ extension RunCommandObserver {
         guard let (mutationPoint, testLog, timePerBuildTestCycle, remainingMutationPointsCount) = notification.object as? (MutationPoint?, String, TimeInterval?, Int?) else {
             return
         }
-        
+
         if reporter == .plainText {
             if mutationPoint == nil {
                 print("""
@@ -173,7 +173,7 @@ extension RunCommandObserver {
                 Muter is now going to apply each mutant one at a time and run your test suite for each mutant
                 After this step, Muter will generate a report detailing the efficacy of your test suite
                 This step may take a while
-                
+
 
                 """)
                 progressBar = ProgressBar(count: numberOfMutationPoints,
@@ -191,19 +191,19 @@ extension RunCommandObserver {
                 progressBar.next()
             }
         }
-        
+
         _ = fileManager.createFile(
             atPath: "\(loggingDirectory)/\(logFileName(from: mutationPoint))",
             contents: testLog.data(using: .utf8),
             attributes: nil
         )
     }
-    
+
     func logFileName(from mutationPoint: MutationPoint?) -> String {
         guard let mutationPoint = mutationPoint else {
             return "baseline run.log"
         }
-                
+
         return "\(mutationPoint.mutationOperatorId.rawValue) @ \(mutationPoint.fileName)-\(mutationPoint.position.line)-\(mutationPoint.position.column).log"
     }
 

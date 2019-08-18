@@ -3,7 +3,6 @@ import Nimble
 import SwiftSyntax
 @testable import muterCore
 
-
 //import XCTest
 //
 ////            XCTestObservationCenter.shared.addTestObserver(Observer())
@@ -18,12 +17,6 @@ import SwiftSyntax
 extension Id where Value == Int {
     private static var _nextId: Int = 0
     
-    #if DEBUG
-    static func resetIds() { // This is a testing hook
-        _nextId = 0
-    }
-    #endif
-    
     static var nextId: Id {
         let next = Id(value: _nextId)
         _nextId += 1
@@ -33,7 +26,7 @@ extension Id where Value == Int {
 
 class InstrumentationVisitor: SyntaxRewriter {
     private let instrumentation: CodeBlockItemSyntax
-    private(set) var functionIds: [String: Id<Int>] = [:]
+    private(set) var instrumentedFunctions: [String] = []
     private var typeNameStack: [String] = []
     
     init(instrumentation: CodeBlockItemSyntax) {
@@ -51,24 +44,24 @@ class InstrumentationVisitor: SyntaxRewriter {
             break
         }
     }
-
+    
     override func visit(_ node: StructDeclSyntax) -> DeclSyntax {
-        updateTypeNameStack(with: node.identifier.text)
+        typeNameStack.append(node.identifier.text.trimmed)
         return super.visit(node)
     }
     
     override func visit(_ node: EnumDeclSyntax) -> DeclSyntax {
-        updateTypeNameStack(with: node.identifier.text)
+        typeNameStack.append(node.identifier.text.trimmed)
         return super.visit(node)
     }
     
     override func visit(_ node: ClassDeclSyntax) -> DeclSyntax {
-        updateTypeNameStack(with: node.identifier.text)
+        typeNameStack.append(node.identifier.text.trimmed)
         return super.visit(node)
     }
     
     override func visit(_ node: ExtensionDeclSyntax) -> DeclSyntax {
-        updateTypeNameStack(with: node.extendedType.description)
+        typeNameStack.append(node.extendedType.description.trimmed)
         return super.visit(node)
     }
     
@@ -77,7 +70,7 @@ class InstrumentationVisitor: SyntaxRewriter {
             return super.visit(node)
         }
         
-        functionIds[fullyQualifiedFunctionName(for: node)] = .nextId
+        instrumentedFunctions.append(fullyQualifiedFunctionName(for: node))
         
         return node.withBody(existingBody.withStatements(
             existingBody
@@ -87,27 +80,23 @@ class InstrumentationVisitor: SyntaxRewriter {
     }
     
     private func fullyQualifiedFunctionName(for node: FunctionDeclSyntax) -> String {
-        let typeName = typeNameStack.last != nil ? "\(typeNameStack.last!)." : ""
-        return (typeName + node.identifier.description + node.signature.description).trimmed
-    }
-    
-    private func updateTypeNameStack(with identifier: String) {
-        if typeNameStack.isEmpty {
-            typeNameStack.append(identifier.trimmed)
-        } else {
-            var typeName = typeNameStack.last!
-            typeName += ".\(identifier.trimmed)"
-            typeNameStack[typeNameStack.endIndex - 1] = typeName
+        let typeName = typeNameStack.accumulate(into: "") {
+            $0.isEmpty ?
+                $1 + "." :
+                $0 + "\($1)."
         }
+        return (typeName +
+            node.identifier.description +
+            node.signature.description).trimmed
     }
 }
 
 class CodeCoverageSpec: QuickSpec {
-
+    
     override func spec() {
         describe("CodeCoverageInstrumenter") {
             it("records the strings that get passed to it") {
-
+                
             }
             
         }
@@ -124,86 +113,36 @@ class CodeCoverageSpec: QuickSpec {
                 
                 let instrumentedCode = InstrumentationVisitor(instrumentation: instrumentation).visit(source)
                 
-                //                expect(instrumentedCode.description) == expectedSource.description
+                                expect(instrumentedCode.description) == expectedSource.description
             }
             
             it("inserts instrumentation code at the first line of every function") {
-                Id<Int>.resetIds() // This ensures that the id values start @ 0 for this test
-                
                 let visitor = InstrumentationVisitor(instrumentation: instrumentation)
                 _ = visitor.visit(source)
-                
-                
-                let actualIds =
-                    visitor.functionIds.map { ($0.key, $0.value) }.sorted { (lhs, rhs) in
-                    lhs.1.value < rhs.1.value
-                }
-                
-                let expectedIdCount = 17
-                guard actualIds.count == expectedIdCount else {
-                    fail("expected there to be \(expectedIdCount) ids but got \(actualIds.count)")
-                    return
-                    
-                }
-                expect(actualIds[0].0) == "Example2.areEqualAsString(_ a: Int) -> String"
-                expect(actualIds[0].1) == Id(value: 0)
-                
-                expect(actualIds[1].0) == "Example2.areEqualAsString(_ a: Float) -> String"
-                expect(actualIds[1].1) == Id(value: 1)
-                
-                expect(actualIds[2].0) == "areEqualAsString(_ a: Float) -> String"
-                expect(actualIds[2].1) == Id(value: 2)
-                
-                expect(actualIds[3].0) == "Example.foo(_ a: [Int])"
-                expect(actualIds[3].1) == Id(value: 3)
-                
-                expect(actualIds[4].0) == "notTheSameThing()"
-                expect(actualIds[4].1) == Id(value: 4)
-                
-                expect(actualIds[5].0) == "ExampleEnum.foo(dictionary: [String: Result<(), Never>]) -> ExampleEnum"
-                expect(actualIds[5].1) == Id(value: 5)
-                
-                expect(actualIds[6].0) == "anotherNotTheSameThing()"
-                expect(actualIds[6].1) == Id(value: 6)
-                
-                expect(actualIds[7].0) == "ExampleEnum.bar()"
-                expect(actualIds[7].1) == Id(value: 7)
-                
-                expect(actualIds[8].0) == "andAnotherNotTheSameThing()"
-                expect(actualIds[8].1) == Id(value: 8)
-                
-                expect(actualIds[9].0) == "SomeProtocol.kangaroo()"
-                expect(actualIds[9].1) == Id(value: 9)
-                
-                expect(actualIds[10].0) == "thisShouldntBeASurpriseByNow()"
-                expect(actualIds[10].1) == Id(value: 10)
-                
-                expect(actualIds[11].0) == "Baz.Info.foo()"
-                expect(actualIds[11].1) == Id(value: 11)
-                
-                expect(actualIds[12].0) == "Bar.Info.foo()"
-                expect(actualIds[12].1) == Id(value: 12)
-                
-                expect(actualIds[13].0) == "Info.foo()"
-                expect(actualIds[13].1) == Id(value: 13)
-                
-                expect(actualIds[14].0) == "Info.CustomError.haltAndCatchFire ()" // note the space
-                expect(actualIds[14].1) == Id(value: 14)
-                
-                expect(actualIds[15].0) == "Info.CustomError.AnotherLayer.ofHell(dictionary: [String: Result<(), Never>]) -> ExampleEnum"
-                expect(actualIds[15].1) == Id(value: 15)
-                
-                expect(actualIds[16].0) == "ItsAlmostLikeItNeverEnds.DoesIt.endIt() -> Please"
-                expect(actualIds[16].1) == Id(value: 16)
+                expect(visitor.instrumentedFunctions) == [
+                    "Example2.areEqualAsString(_ a: Int) -> String",
+                    "Example2.areEqualAsString(_ a: Float) -> String",
+                    "areEqualAsString(_ a: Float) -> String",
+                    "Example.foo(_ a: [Int])",
+                    "notTheSameThing()",
+                    "ExampleEnum.foo(dictionary: [String: Result<(), Never>]) -> ExampleEnum",
+                    "anotherNotTheSameThing()",
+                    "ExampleEnum.bar()",
+                    "andAnotherNotTheSameThing()",
+                    "SomeProtocol.kangaroo()",
+                    "thisShouldntBeASurpriseByNow()",
+                    "Baz.Info.foo()",
+                    "Bar.Info.foo()",
+                    "Info.foo()",
+                    "Info.CustomError.haltAndCatchFire ()", // note the space
+                    "Info.CustomError.AnotherLayer.ofHell(dictionary: [String: Result<(), Never>]) -> ExampleEnum",
+                    "ItsAlmostLikeItNeverEnds.DoesIt.endIt() -> Please"
+                ]
             }
             
-
-            
-           
         }
     }
 }
-
 
 class ChangeLogicalConnectorOperatorSpec: QuickSpec {
     override func spec() {
@@ -231,7 +170,7 @@ class ChangeLogicalConnectorOperatorSpec: QuickSpec {
                     
                     expect(mutatedSource.description) == expectedSource.description
                 }
-
+                
             }
             
             describe("LogicalOperator.Visitor") {

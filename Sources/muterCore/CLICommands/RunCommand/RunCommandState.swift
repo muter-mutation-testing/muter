@@ -11,7 +11,7 @@ protocol AnyRunCommandState {
     var filesToMutate: [String] { get }
     var swapFilePathsByOriginalPath: [FilePath: FilePath] { get }
     var mutationTestOutcomes: [MutationTestOutcome] { get }
-    
+
     func apply(_ stateChanges: [RunCommandState.Change])
 }
 
