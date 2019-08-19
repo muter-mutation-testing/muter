@@ -61,7 +61,8 @@ extension TestSuiteOutcome {
         return testLog.contains("xcodebuild: error:") ||
             testLog.contains("error: terminated") ||
             testLog.contains("failed with a nonzero exit code") ||
-            testLog.contains("Testing cancelled because the build failed")
+            testLog.contains("Testing cancelled because the build failed") ||
+            testLog.contains("Command failed with exit code 1.")
     }
 }
 
