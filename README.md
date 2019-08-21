@@ -18,6 +18,18 @@ Use this script to easily mutation test your projects incrementally, enabling yo
 
 ```muter --files-to-mutate $(echo \"$(git diff --name-only HEAD HEAD~1 | tr '\n' ',')\")```  
 
+## Table of Contents
+### Introduction
+1. [What Is Muter?](#what-is-muter)
+1. [Why Should I Use This?](#why-should-i-use-this)
+1. [How Does It Work?](#how-does-it-work)
+### Getting Started
+1. [Installation](#installation)
+1. [Setup](#setup)
+1. [Running Muter](#running-muter)
+1. [Assumptions](#assumptions)
+1. [Best Practices](#best-practices)
+
 ## What Is Muter?
 Muter is a mutation testing utility that is used to help you determine the quality of your test suite.
 
@@ -52,15 +64,26 @@ Muter not only provides a mutation score for your entire test suite, but it also
 
 If you're curious about how a mutation score is different than test code coverage, then check out [this document](https://github.com/SeanROlszewski/muter/blob/master/Docs/mutation_score_vs_test_code_coverage.md).
 
-## Example Test Report
-There's an example of [the test report that Muter generates](https://github.com/SeanROlszewski/muter/blob/master/Docs/test_report_example.md) hosted in this repository.
-
-Check out this example to familiarize yourself with what a report looks like.
-
 ## Installation
 Muter is available through [Homebrew](https://brew.sh/). Run the following command to install Muter:
 
 `brew install seanrolszewski/formulae/muter`
+
+### Building From Source
+You can build Muter from source, and get the latest set of features/improvements, by running the following: 
+
+```
+git clone 
+cd muter
+make install
+```
+
+If you've already installed Muter via homebrew, this will install over it. If you've done this, and want to go back to the latest version you've downloaded through homebrew, run the following: 
+
+```
+make uninstall
+brew link muter
+```
 
 ## Setup
 ### Muter's Configuration
@@ -124,17 +147,31 @@ Setting up Muter to run within Xcode is simple. After creating your configuation
 
     ```muter --output-xcode```
 
-
 ## Running Muter
 
 ### From the command line
 
 Once you've created your configuration file, simply run `muter` in your terminal from any directory of the project you're mutation testing. Muter will take it from there. 
 
+**Available Subcommands**
+```
+   help   Display general or command-specific help
+   init   Creates the configuration file that Muter uses
+   run    Performs mutation testing for the Swift project contained within the current directory
+```
+Muter defaults to run when you don't specify any subcommands
+
+**Available Flags**
+```
+   --files-to-mutate    Only mutate a given list of source code files (Supports glob expressions like Sources/**/*.swift)
+   --output-json        Output test results to a json file
+   --output-xcode       Output test results in a format consumable by an Xcode run script step
+```
+
 ### Within Xcode
 Build (Cmd + B) your aggregate build target and let Muter run. The mutants which survive testing will be called out in the issue navigator. Once the target finishes building, testing has completed.
 
-## Limitations
+## Assumptions
 - Muter assumes you always put spaces around your operators. For example, it expects an equality check to look like
 
     `a == b (Muter will mutate this)`
@@ -152,6 +189,11 @@ Build (Cmd + B) your aggregate build target and let Muter run. The mutants which
 - Because Muter can take a while to run, it is recommend to exclude UI or journey tests from your test suite. We recommend creating a separate schemes or targets for mutation testing. However, you should feel free to run these kinds of tests if you're okay with the longer feedback cycle.
 - Don’t be dogmatic about your mutation score - in practice, 100% is not always possible.
 
+## Example Test Report
+There's an example of [the test report that Muter generates](https://github.com/SeanROlszewski/muter/blob/master/Docs/test_report_example.md) hosted in this repository.
+
+Check out this example to familiarize yourself with what a report looks like.
+
 ## FAQ
 **What platforms does Muter support?**
 
@@ -161,11 +203,13 @@ Muter can run only on macOS 10.13 or higher.
 
 **Does Muter support UI test suites?**
 
-Yes! However, these can be very lengthy test suites, and mutation testing can take a long time. I recommend you start using Muter only on your unit tests. Once you have a feel for interpreting mutation scores, you can then ease into incorporating your longer-running tests.
+Yes! Muter supports any kind of test target or test suite, provided your application code is written in Swift. 
+
+However, UI test suites can be very lengthy, and mutation testing can take a long time. I recommend you start using Muter only on your unit tests. Once you have a feel for interpreting mutation scores, you can then ease into incorporating your longer-running tests.
 
 **Does Muter support Objective-C?**
 
-No, not at this time. Objective-C support will come at a later time. Until then, Muter only supports Swift code. Any bridging code that's written in Swift, but ultimately calls down to Objective-C, is compatible with Muter.
+No, not at this time. Objective-C support may come at a later time. Until then, Muter only supports Swift code. Any bridging code that's written in Swift, but ultimately calls down to Objective-C, is compatible with Muter.
 
 **Is Muter self-hosted?**
 
