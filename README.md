@@ -1,5 +1,8 @@
 # Muter 
-[![Swift 5](https://img.shields.io/badge/swift-5-ED523F.svg?style=flat)](https://swift.org/download/) [![Build Status](https://app.bitrise.io/app/84b65f2a76ed7616/status.svg?token=ZtVl3AxP2ybPB17Ug1wIJQ)](https://app.bitrise.io/app/84b65f2a76ed7616)
+[![Swift 5 support](https://img.shields.io/badge/swift-5-ED523F.svg?style=flat)](https://swift.org/download/) 
+[![Build Status](https://app.bitrise.io/app/84b65f2a76ed7616/status.svg?token=ZtVl3AxP2ybPB17Ug1wIJQ)](https://app.bitrise.io/app/84b65f2a76ed7616)
+![Mutation score is 75](https://img.shields.io/badge/mutation%20score-75-blue?style=flat)
+
 ### Automated [mutation testing](https://en.wikipedia.org/wiki/Mutation_testing) for Swift inspired by [Stryker](https://github.com/stryker-mutator/stryker), [PITest](https://github.com/hcoles/pitest), and [Mull](https://github.com/mull-project/mull).
 
 #### Muter can be run within Xcode
