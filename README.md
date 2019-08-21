@@ -29,6 +29,7 @@ Use this script to easily mutation test your projects incrementally, enabling yo
 1. [Running Muter](#running-muter)
 1. [Assumptions](#assumptions)
 1. [Best Practices](#best-practices)
+1. [FAQs](#faqs)
 
 ## What Is Muter?
 Muter is a mutation testing utility that is used to help you determine the quality of your test suite.
