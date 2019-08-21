@@ -198,7 +198,7 @@ There's an example of [the test report that Muter generates](https://github.com/
 
 Check out this example to familiarize yourself with what a report looks like.
 
-## FAQ
+## FAQs
 **What platforms does Muter support?**
 
 Muter supports any platform that compiles and tests using `xcodebuild`, which includes iOS, macOS, tvOS, and watchOS. 
