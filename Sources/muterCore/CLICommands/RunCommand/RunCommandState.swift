@@ -10,12 +10,12 @@ protocol AnyRunCommandState {
     var sourceCodeByFilePath: [FilePath: SourceFileSyntax] { get }
     var filesToMutate: [String] { get }
     var swapFilePathsByOriginalPath: [FilePath: FilePath] { get }
+    var codeCoverageReport: CodeCoverageReport { get }
     var mutationTestOutcomes: [MutationTestOutcome] { get }
-
-    func apply(_ stateChanges: [RunCommandState.Change])
 }
 
 class RunCommandState: AnyRunCommandState {
+    
     var muterConfiguration: MuterConfiguration = .init()
     var projectDirectoryURL: URL = URL(string: "example.com")!
     var tempDirectoryURL: URL = URL(string: "example.com")!
@@ -24,6 +24,7 @@ class RunCommandState: AnyRunCommandState {
     var sourceCodeByFilePath: [FilePath: SourceFileSyntax] = [:]
     var filesToMutate: [String] = []
     var swapFilePathsByOriginalPath: [FilePath: FilePath] = [:]
+    var codeCoverageReport: CodeCoverageReport = .init()
     var mutationTestOutcomes: [MutationTestOutcome] = []
 
     init() { }
@@ -42,6 +43,7 @@ extension RunCommandState {
         case mutationPointsDiscovered([MutationPoint])
         case sourceCodeParsed([FilePath: SourceFileSyntax])
         case swapFilePathGenerated([FilePath: FilePath])
+        case codeCoverageReportGenerated(CodeCoverageReport)
         case mutationTestOutcomesGenerated([MutationTestOutcome])
     }
 }
@@ -66,7 +68,10 @@ extension RunCommandState {
                 self.swapFilePathsByOriginalPath = swapFilePathsByOriginalPath
             case .mutationTestOutcomesGenerated(let mutationTestOutcomes):
                 self.mutationTestOutcomes = mutationTestOutcomes
+            case .codeCoverageReportGenerated(let codeCoverageReport):
+                self.codeCoverageReport = codeCoverageReport
             }
+            
         }
     }
 }
