@@ -5,7 +5,7 @@ class InstrumentationVisitor: SyntaxRewriter {
     private(set) var instrumentedFunctions: [String] = []
     private var typeNameStack: [String] = []
     
-    init(instrumentation: @escaping (String) -> CodeBlockItemSyntax) {
+    init(instrumentation: @escaping (String) -> CodeBlockItemSyntax = InstrumentationVisitor.defaultInstrumentation) {
         self.instrumentation = instrumentation
     }
     
@@ -71,7 +71,7 @@ class InstrumentationVisitor: SyntaxRewriter {
 }
 
 extension InstrumentationVisitor {
-    static let `default`: (String) -> CodeBlockItemSyntax = { functionName in
+    static let `defaultInstrumentation`: (String) -> CodeBlockItemSyntax = { functionName in
 
         let instrumentationFunctionName = "CodeCoverageInstrumenter.shared.recordFunctionCall"
         return SyntaxFactory

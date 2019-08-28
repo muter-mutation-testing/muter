@@ -1,7 +1,11 @@
+import Foundation
+
 class CodeCoverageInstrumenter {
     static let shared = CodeCoverageInstrumenter() {
         functionCallCounts in
-        print("we cookin' with gas")
+        
+//        let report = CodeCoverageReport(functionCallCounts: functionCallCounts)
+//        print("****** BEGIN COVERAGE REPORT ******")
         print(functionCallCounts)
     }
     

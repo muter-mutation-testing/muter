@@ -59,7 +59,7 @@ class PerformMutationTestingSpec: QuickSpec {
 
                 }
 
-                it("returns the mutation test outcomes ") {
+                it("returns the mutation test outcomes") {
                     let expectedTestOutcomes = [
                         MutationTestOutcome(testSuiteOutcome: .failed,
                                             mutationPoint: expectedMutationPoint,
@@ -138,12 +138,12 @@ class PerformMutationTestingSpec: QuickSpec {
                     }
 
                     it("cascades a failure") {
-                        guard case .failure(.mutationTestingAborted(reason: .baselineTestFailed(let wrong))) = result! else {
+                        guard case .failure(.mutationTestingAborted(reason: .baselineTestFailed(let reason))) = result! else {
                             fail("expected a mutationTestingAborted failure but got \(String(describing: result!))")
                             return
                         }
 
-                        expect(wrong).notTo(beEmpty())
+                        expect(reason).notTo(beEmpty())
                     }
                 }
             }

@@ -1,7 +1,7 @@
 @available(OSX 10.13, *)
 class RunCommandHandler {
     let steps: [RunCommandStep]
-    var state: AnyRunCommandState
+    var state: RunCommandState
 
     init(steps: [RunCommandStep] = RunCommandHandler.defaultSteps,
          state: RunCommandState = .init()) {
