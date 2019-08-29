@@ -9,7 +9,6 @@ protocol MutationTestingIODelegate {
 
 @available(OSX 10.13, *)
 struct MutationTestingDelegate: MutationTestingIODelegate {
-    private let notificationCenter: NotificationCenter = .default
 
     func backupFile(at path: String, using swapFilePaths: [FilePath: FilePath]) {
         let swapFilePath = swapFilePaths[path]!

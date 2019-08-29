@@ -10,6 +10,7 @@ class MutationTestingDelegateSpy: Spy, MutationTestingIODelegate {
     private(set) var restoredFilePaths: [String] = []
 
     var testSuiteOutcomes: [TestSuiteOutcome]!
+    var testLogs: [String]!
 
     func backupFile(at path: String, using swapFilePaths: [FilePath : FilePath]) {
         methodCalls.append(#function)
@@ -24,7 +25,7 @@ class MutationTestingDelegateSpy: Spy, MutationTestingIODelegate {
 
     func runTestSuite(using configuration: MuterConfiguration, savingResultsIntoFileNamed fileName: String) -> (outcome: TestSuiteOutcome, testLog: String) {
         methodCalls.append(#function)
-        return (testSuiteOutcomes.remove(at: 0), "testLog")
+        return (testSuiteOutcomes.remove(at: 0), testLogs.remove(at: 0))
     }
 
     func restoreFile(at path: String, using swapFilePaths: [FilePath : FilePath]) {

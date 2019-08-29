@@ -2,11 +2,9 @@ import Foundation
 
 class CodeCoverageInstrumenter {
     static let shared = CodeCoverageInstrumenter() {
-        functionCallCounts in
-        
-//        let report = CodeCoverageReport(functionCallCounts: functionCallCounts)
-//        print("****** BEGIN COVERAGE REPORT ******")
-        print(functionCallCounts)
+        let codeCoverageReport = CodeCoverageReport(functionCallCounts: $0)
+        print("****** BEGIN COVERAGE REPORT ******")
+        print(try! JSONEncoder().encode(codeCoverageReport))
     }
     
     private(set) var functionCallCounts: [String: Int] = [:]

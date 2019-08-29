@@ -32,6 +32,8 @@ class PerformMutationTestingSpec: QuickSpec {
 
                 beforeEach {
                     delegateSpy.testSuiteOutcomes = [.passed, .failed, .failed]
+                    delegateSpy.testLogs = ["testLog", "testLog", "testLog"]
+
                     result = performMutationTesting.run(with: state)
                 }
 
@@ -86,6 +88,8 @@ class PerformMutationTestingSpec: QuickSpec {
                 context("due to a failing test") {
                     beforeEach {
                         delegateSpy.testSuiteOutcomes = [.failed]
+                        delegateSpy.testLogs = ["testLog"]
+
                         result = performMutationTesting.run(with: state)
                     }
 
@@ -107,6 +111,7 @@ class PerformMutationTestingSpec: QuickSpec {
                 context("due to a build error") {
                     beforeEach {
                         delegateSpy.testSuiteOutcomes = [.buildError]
+                        delegateSpy.testLogs = ["testLog"]
                         result = performMutationTesting.run(with: state)
                     }
 
@@ -128,6 +133,7 @@ class PerformMutationTestingSpec: QuickSpec {
                 context("due to a runtime error") {
                     beforeEach {
                         delegateSpy.testSuiteOutcomes = [.runtimeError]
+                        delegateSpy.testLogs = ["testLog"]
                         result = performMutationTesting.run(with: state)
                     }
 
@@ -152,6 +158,8 @@ class PerformMutationTestingSpec: QuickSpec {
 
                 beforeEach {
                     delegateSpy.testSuiteOutcomes = [.passed, .buildError, .buildError, .buildError, .buildError, .buildError]
+                    delegateSpy.testLogs = Array(repeating: "testLog", count: delegateSpy.testSuiteOutcomes.count)
+
                     state.mutationPoints = Array(repeating: expectedMutationPoint, count: 5)
                     result = performMutationTesting.run(with: state)
                 }
@@ -206,6 +214,7 @@ class PerformMutationTestingSpec: QuickSpec {
 
                 beforeEach {
                     delegateSpy.testSuiteOutcomes = [.passed, .buildError, .buildError, .buildError, .buildError, .failed, .passed]
+                    delegateSpy.testLogs = Array(repeating: "testLog", count: delegateSpy.testSuiteOutcomes.count)
                     state.mutationPoints = Array(repeating: expectedMutationPoint, count: 5)
 
                     result = performMutationTesting.run(with: state)
