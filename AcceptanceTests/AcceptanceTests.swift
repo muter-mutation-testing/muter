@@ -73,7 +73,7 @@ class AcceptanceTests: QuickSpec {
                             let expectedLogFiles = [
                                 "baseline run.log",
                                 "ChangeLogicalConnector @ Module2.swift-2-17.log",
-                                "NegateConditionals @ Module.swift-4-18.log",
+                                "RelationalOperatorReplacement @ Module.swift-4-18.log",
                                 "RemoveSideEffects @ ViewController.swift-5-28.log"
                             ]
                             

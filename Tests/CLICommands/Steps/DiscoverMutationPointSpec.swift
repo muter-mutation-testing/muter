@@ -48,10 +48,10 @@ class DiscoverMutationPointSpec: QuickSpec {
                     let stateChangesIncludesMutationPoints = stateChanges.contains {
                         if case .mutationPointsDiscovered(let actualMutationPoints) = $0 {
                             return actualMutationPoints == [
-                                MutationPoint(mutationOperatorId: .negateConditionals,
+                                MutationPoint(mutationOperatorId: .ror,
                                               filePath: filePath1,
                                               position: AbsolutePosition(line: 3, column: 19, utf8Offset: 84)),
-                                MutationPoint(mutationOperatorId: .negateConditionals,
+                                MutationPoint(mutationOperatorId: .ror,
                                               filePath: filePath1,
                                               position: AbsolutePosition(line: 4, column: 18, utf8Offset: 106)),
                                 MutationPoint(mutationOperatorId: .removeSideEffects,
