@@ -25,7 +25,7 @@ class RunCommandObserverSpec: QuickSpec {
                     notification = Notification(
                         name: .newMutationTestOutcomeAvailable,
                         object: MutationTestOutcome(testSuiteOutcome: .failed,
-                                                    mutationPoint: MutationPoint(mutationOperatorId: .negateConditionals, filePath: "some/path", position: .firstPosition),
+                                                    mutationPoint: MutationPoint(mutationOperatorId: .ror, filePath: "some/path", position: .firstPosition),
                                                     operatorDescription: "some description"),
                         userInfo: nil
                     )
@@ -64,7 +64,7 @@ class RunCommandObserverSpec: QuickSpec {
                 
                 it("names a log file using the mutation point when it's provided") {
 
-                    let mutationPoint1 = MutationPoint(mutationOperatorId: .negateConditionals,
+                    let mutationPoint1 = MutationPoint(mutationOperatorId: .ror,
                                                               filePath: "~/user/file.swift",
                                                               position: .firstPosition)
                     let mutationPoint2 = MutationPoint(mutationOperatorId: .removeSideEffects,
@@ -73,7 +73,7 @@ class RunCommandObserverSpec: QuickSpec {
                     
                     let subject = RunCommandObserver(reporter: .plainText, fileManager: fileManagerSpy, flushHandler: {})
                     
-                    expect(subject.logFileName(from: mutationPoint1)) == "NegateConditionals @ file.swift-0-0.log"
+                    expect(subject.logFileName(from: mutationPoint1)) == "RelationalOperatorReplacement @ file.swift-0-0.log"
                     expect(subject.logFileName(from: mutationPoint2)) == "RemoveSideEffects @ file2.swift-5-6.log"
                 }
             }

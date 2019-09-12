@@ -21,7 +21,7 @@ public struct MutationPoint: Equatable, Codable {
 
 struct MutationOperator {
     public enum Id: String, Codable, CaseIterable {
-        case negateConditionals = "NegateConditionals"
+        case ror = "RelationalOperatorReplacement"
         case removeSideEffects = "RemoveSideEffects"
         case logicalOperator = "ChangeLogicalConnector"
         
@@ -30,9 +30,9 @@ struct MutationOperator {
             case .removeSideEffects:
                return (rewriter: RemoveSideEffectsOperator.Rewriter.init,
                        visitor: RemoveSideEffectsOperator.Visitor.init)
-            case .negateConditionals:
-                return (rewriter: NegateConditionalsOperator.Rewriter.init,
-                        visitor: NegateConditionalsOperator.Visitor.init)
+            case .ror:
+                return (rewriter: ROROperator.Rewriter.init,
+                        visitor: ROROperator.Visitor.init)
             case .logicalOperator:
                 return (rewriter: ChangeLogicalConnectorOperator.Rewriter.init,
                         visitor: ChangeLogicalConnectorOperator.Visitor.init)

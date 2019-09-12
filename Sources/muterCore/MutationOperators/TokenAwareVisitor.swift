@@ -17,7 +17,7 @@ class TokenAwareVisitor: SyntaxVisitor, PositionDiscoveringVisitor {
     }
 }
 
-enum NegateConditionalsOperator {
+enum ROROperator {
     class Visitor: TokenAwareVisitor {
         override init() {
             super.init()

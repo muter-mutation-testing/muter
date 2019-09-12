@@ -10,7 +10,7 @@ class MuterTestReportSpec: QuickSpec {
             context("when given a nonempty collection of MutationTestOutcomes") {
                 it("calculates all its fields as part of its initialization") {
                     let outcomes = self.exampleMutationTestResults + [MutationTestOutcome(testSuiteOutcome: .failed,
-                                                                                          mutationPoint: MutationPoint(mutationOperatorId: .negateConditionals,
+                                                                                          mutationPoint: MutationPoint(mutationOperatorId: .ror,
                                                                                             filePath: "/tmp/a module.swift", position: .firstPosition),
                                                                                           operatorDescription: "from == to !=")]
                     let report = MuterTestReport(from: outcomes)

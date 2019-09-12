@@ -1,6 +1,6 @@
 import SwiftSyntax
 
-extension NegateConditionalsOperator {
+extension ROROperator {
     class Rewriter: OperatorAwareRewriter {
         required init(positionToMutate: AbsolutePosition) {
             super.init(positionToMutate: positionToMutate)
