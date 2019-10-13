@@ -45,6 +45,23 @@ class RemoveSideEffectsOperatorSpec: QuickSpec {
 
                 expect(visitor.positionsOfToken).to(haveCount(0))
             }
+
+            it("ignores side effect code that may lead to deadlock") {
+                let sourceWithConcurrency = sourceCode(fromFileAt: "\(self.fixturesDirectory)/MutationExamples/SideEffect/sampleWithConcurrency.swift")!
+
+                let visitor = RemoveSideEffectsOperator.Visitor()
+                visitor.visit(sourceWithConcurrency)
+
+                guard visitor.positionsOfToken.count == 4 else {
+                    fail("Expected 4 tokens to be discovered, got \(visitor.positionsOfToken.count) instead")
+                    return
+                }
+
+                expect(visitor.positionsOfToken[0].line).to(equal(10))
+                expect(visitor.positionsOfToken[1].line).to(equal(16))
+                expect(visitor.positionsOfToken[2].line).to(equal(22))
+                expect(visitor.positionsOfToken[3].line).to(equal(28))
+            }
         }
 
         describe("RemoveSideEffectsOperator.Rewriter") {
