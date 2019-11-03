@@ -77,7 +77,7 @@ Muter is available through [Homebrew](https://brew.sh/). Run the following comma
 You can build Muter from source, and get the latest set of features/improvements, by running the following: 
 
 ```
-git clone https://github.com/SeanROlszewski/muter.git
+git clone https://github.com/muter-mutation-testing/muter.git
 cd muter
 make install
 ```
