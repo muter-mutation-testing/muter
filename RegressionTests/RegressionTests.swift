@@ -50,6 +50,15 @@ class RegressionTests: QuickSpec {
                 }
             }
         }
+        
+        describe("muter test report output for a project with concurrency") {
+            it("does not contain any changes") {
+                let path = "\(self.rootTestDirectory)/projectwithconcurrency_test_output.json"
+                if case .failure(let description) = runRegressionTest(forFixtureNamed: "projectwithconcurrency", withResultAt: path) {
+                    fail(description)
+                }
+            }
+        }
     }
 }
 
