@@ -15,6 +15,13 @@ swift package generate-xcodeproj
 cp ./muterReport.json ../../RegressionTests/parsercombinator_regression_test_output.json
 cd ../..
 
+echo "Running Regression Test on Project With Concurrency..."
+cd ./Repositories/ProjectWithConcurrency
+swift package generate-xcodeproj
+../../.build/x86_64-apple-macosx/debug/muter --output-json > muterReport.json
+cp ./muterReport.json ../../RegressionTests/projectwithconcurrency_test_output.json
+cd ../..
+
 swift package generate-xcodeproj
 xcodebuild -scheme muter -only-testing:muterRegressionTests test
 

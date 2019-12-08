@@ -15,6 +15,14 @@ muter.xcodeproj
 /Tests/bonmot_regression_test_output.json
 muterReport.json
 muter_logs
+AcceptanceTests/*.json
+AcceptanceTests/*.txt
+Tests/muters_aborted_testing_output.txt
+ExampleApp/muterReport.json
+RegressionTests/bonmot_regression_test_output.json
+RegressionTests/parsercombinator_regression_test_output.json
+Repositories/UninitializedApp/muter.conf.json
+.swiftpm
 
 ### macOS ###
 # General
@@ -134,10 +142,3 @@ iOSInjectionProject/
 **/xcshareddata/WorkspaceSettings.xcsettings
 
 # End of https://www.gitignore.io/api/swift,xcode,macos
-AcceptanceTests/*.json
-AcceptanceTests/*.txt
-Tests/muters_aborted_testing_output.txt
-ExampleApp/muterReport.json
-RegressionTests/bonmot_regression_test_output.json
-RegressionTests/parsercombinator_regression_test_output.json
-Repositories/UninitializedApp/muter.conf.json

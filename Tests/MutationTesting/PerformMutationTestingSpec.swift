@@ -12,7 +12,7 @@ class PerformMutationTestingSpec: QuickSpec {
         var performMutationTesting: PerformMutationTesting!
         var state: RunCommandState!
         var result: Result<[RunCommandState.Change], MuterError>!
-        let expectedMutationPoint = MutationPoint(mutationOperatorId: .negateConditionals,
+        let expectedMutationPoint = MutationPoint(mutationOperatorId: .ror,
                                                   filePath: "/tmp/project/file.swift",
                                                   position: .firstPosition)
         
@@ -254,12 +254,12 @@ class PerformMutationTestingSpec: QuickSpec {
                 it("returns the mutation test outcomes") {
                     
                     let expectedBuildErrorOutcome = MutationTestOutcome(testSuiteOutcome: .buildError,
-                                                                        mutationPoint: MutationPoint(mutationOperatorId: .negateConditionals, filePath: "/tmp/project/file.swift", position: .firstPosition),
+                                                                        mutationPoint: MutationPoint(mutationOperatorId: .ror, filePath: "/tmp/project/file.swift", position: .firstPosition),
                                                                         operatorDescription: "",
                                                                         originalProjectDirectoryUrl: URL(fileURLWithPath: "/project"))
                     
                     let expectedFailingOutcome = MutationTestOutcome(testSuiteOutcome: .failed,
-                                                                     mutationPoint: MutationPoint(mutationOperatorId: .negateConditionals, filePath: "/tmp/project/file.swift", position: .firstPosition),
+                                                                     mutationPoint: MutationPoint(mutationOperatorId: .ror, filePath: "/tmp/project/file.swift", position: .firstPosition),
                                                                      operatorDescription: "",
                                                                      originalProjectDirectoryUrl: URL(fileURLWithPath: "/project"))
                     

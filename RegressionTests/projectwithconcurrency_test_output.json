@@ -1,0 +1,61 @@
+{
+  "globalMutationScore" : 0,
+  "numberOfKilledMutants" : 0,
+  "fileReports" : [
+    {
+      "mutationScore" : 0,
+      "appliedOperators" : [
+        {
+          "testSuiteOutcome" : "passed",
+          "mutationPoint" : {
+            "mutationOperatorId" : "RemoveSideEffects",
+            "position" : {
+              "line" : 11,
+              "utf8Offset" : 317,
+              "column" : 12
+            },
+            "filePath" : "\/var\/folders\/h0\/j5sld7ss2kl3cycjxfh6nx6c0000gn\/T\/TemporaryItems\/(A Document Being Saved By muter 59)\/ProjectWithConcurrency\/ProjectWithConcurrency\/main.swift"
+          }
+        },
+        {
+          "testSuiteOutcome" : "passed",
+          "mutationPoint" : {
+            "mutationOperatorId" : "RemoveSideEffects",
+            "position" : {
+              "line" : 17,
+              "utf8Offset" : 424,
+              "column" : 12
+            },
+            "filePath" : "\/var\/folders\/h0\/j5sld7ss2kl3cycjxfh6nx6c0000gn\/T\/TemporaryItems\/(A Document Being Saved By muter 59)\/ProjectWithConcurrency\/ProjectWithConcurrency\/main.swift"
+          }
+        },
+        {
+          "testSuiteOutcome" : "passed",
+          "mutationPoint" : {
+            "mutationOperatorId" : "RemoveSideEffects",
+            "position" : {
+              "line" : 23,
+              "utf8Offset" : 539,
+              "column" : 12
+            },
+            "filePath" : "\/var\/folders\/h0\/j5sld7ss2kl3cycjxfh6nx6c0000gn\/T\/TemporaryItems\/(A Document Being Saved By muter 59)\/ProjectWithConcurrency\/ProjectWithConcurrency\/main.swift"
+          }
+        },
+        {
+          "testSuiteOutcome" : "passed",
+          "mutationPoint" : {
+            "mutationOperatorId" : "RemoveSideEffects",
+            "position" : {
+              "line" : 29,
+              "utf8Offset" : 698,
+              "column" : 12
+            },
+            "filePath" : "\/var\/folders\/h0\/j5sld7ss2kl3cycjxfh6nx6c0000gn\/T\/TemporaryItems\/(A Document Being Saved By muter 59)\/ProjectWithConcurrency\/ProjectWithConcurrency\/main.swift"
+          }
+        }
+      ],
+      "fileName" : "main.swift"
+    }
+  ],
+  "totalAppliedMutationOperators" : 4
+}

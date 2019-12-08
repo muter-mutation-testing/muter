@@ -4,7 +4,21 @@ import Foundation
 enum RemoveSideEffectsOperator {
     class Visitor: SyntaxVisitor, PositionDiscoveringVisitor {
         var positionsOfToken = [AbsolutePosition]()
+        private var concurencyPropertiesInFiles = [String]()
+        private let concurrencyTypes = [
+            "DispatchSemaphore",
+            "NSRecursiveLock",
+            "NSCondition",
+            "NSConditionLock"
+        ]
 
+        override func visit(_ node: PatternBindingListSyntax) {
+            for statement in node where statementsContainsConcurrencyTypes(statement) {
+                let property = propertyName(from: statement)
+                concurencyPropertiesInFiles.append(property)
+            }
+        }
+        
         override func visit(_ node: FunctionDeclSyntax) {
             guard let body = node.body else {
                 return
@@ -19,12 +33,17 @@ enum RemoveSideEffectsOperator {
         private func statementContainsMutableToken(_ statement: CodeBlockItemListSyntaxIterator.Element) -> Bool {
             let doesntContainVariableAssignment = statement.children.count(variableAssignmentStatements) == 0
             let containsDiscardedResult = statement.description.contains("_ = ")
+
             let containsFunctionCall = statement.children
                 .include(functionCallStatements)
                 .exclude(specialFunctionCallStatements)
                 .count >= 1
 
-            return doesntContainVariableAssignment && (containsDiscardedResult || containsFunctionCall)
+            let doesntContainPossibleDeadlock = !statement.children
+                .exclude(concurrencyStatements).isEmpty
+            
+            return doesntContainVariableAssignment &&
+                doesntContainPossibleDeadlock && (containsDiscardedResult || containsFunctionCall)
         }
 
         private func variableAssignmentStatements(_ node: Syntax) -> Bool {
@@ -35,11 +54,36 @@ enum RemoveSideEffectsOperator {
             return node is FunctionCallExprSyntax
         }
 
+        private func concurrencyStatements(_ node: Syntax) -> Bool {
+            guard let functionCallSyntax = node as? FunctionCallExprSyntax,
+                  let memberAccessSyntax = functionCallSyntax.calledExpression as? MemberAccessExprSyntax else {
+                return false
+            }
+
+            let variable = memberAccessSyntax.base.description.trimmed
+
+            return concurencyPropertiesInFiles.contains(variable)
+        }
+
         private func specialFunctionCallStatements(_ node: Syntax) -> Bool {
             return node.description.contains("print") ||
                 node.description.contains("fatalError") ||
                 node.description.contains("exit") ||
                 node.description.contains("abort")
+        }
+
+        private func statementsContainsConcurrencyTypes(_ statement: PatternBindingSyntax) -> Bool {
+            guard let functionCallSyntax = statement.initializer?.value as? FunctionCallExprSyntax else {
+                return false
+            }
+
+            let expressionSyntax = functionCallSyntax.calledExpression
+
+            return concurrencyTypes.contains(expressionSyntax.description.trimmed)
+        }
+        
+        private func propertyName(from patternSyntax: PatternBindingSyntax) -> String {
+            return patternSyntax.pattern.description.trimmed
         }
     }
 }

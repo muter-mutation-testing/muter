@@ -1,0 +1,57 @@
+{
+  "fileReports" : [
+    {
+      "appliedOperators" : [
+        {
+          "mutationPoint" : {
+            "mutationOperatorId" : "RemoveSideEffects",
+            "position" : {
+              "column" : 12,
+              "line" : 11,
+              "utf8Offset" : 317
+            }
+          },
+          "testSuiteOutcome" : "passed"
+        },
+        {
+          "mutationPoint" : {
+            "mutationOperatorId" : "RemoveSideEffects",
+            "position" : {
+              "column" : 12,
+              "line" : 17,
+              "utf8Offset" : 424
+            }
+          },
+          "testSuiteOutcome" : "passed"
+        },
+        {
+          "mutationPoint" : {
+            "mutationOperatorId" : "RemoveSideEffects",
+            "position" : {
+              "column" : 12,
+              "line" : 23,
+              "utf8Offset" : 539
+            }
+          },
+          "testSuiteOutcome" : "passed"
+        },
+        {
+          "mutationPoint" : {
+            "mutationOperatorId" : "RemoveSideEffects",
+            "position" : {
+              "column" : 12,
+              "line" : 29,
+              "utf8Offset" : 698
+            }
+          },
+          "testSuiteOutcome" : "passed"
+        }
+      ],
+      "fileName" : "main.swift",
+      "mutationScore" : 0
+    }
+  ],
+  "globalMutationScore" : 0,
+  "numberOfKilledMutants" : 0,
+  "totalAppliedMutationOperators" : 4
+}

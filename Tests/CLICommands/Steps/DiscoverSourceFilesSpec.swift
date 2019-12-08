@@ -105,7 +105,7 @@ class DiscoverSourceFilesSpec: QuickSpec {
                 context("and it contains a glob expression") {
                     var result: Result<[RunCommandState.Change], MuterError>! // keep this as locally defined as possible to avoid test pollution
                     let path = "\(self.fixturesDirectory)/FilesToMutate"
-                    var currentDirectoryPath = FileManager.default.currentDirectoryPath
+                    let currentDirectoryPath = FileManager.default.currentDirectoryPath
                     
                     beforeEach {
                         state.filesToMutate = ["/Directory2/**/*.swift", "file1.swift", "/ExampleApp/*.swift"]

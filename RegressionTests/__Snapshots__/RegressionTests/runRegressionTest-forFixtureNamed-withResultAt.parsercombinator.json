@@ -4,7 +4,7 @@
       "appliedOperators" : [
         {
           "mutationPoint" : {
-            "mutationOperatorId" : "NegateConditionals",
+            "mutationOperatorId" : "RelationalOperatorReplacement",
             "position" : {
               "column" : 23,
               "line" : 64,
@@ -15,7 +15,7 @@
         },
         {
           "mutationPoint" : {
-            "mutationOperatorId" : "NegateConditionals",
+            "mutationOperatorId" : "RelationalOperatorReplacement",
             "position" : {
               "column" : 46,
               "line" : 64,
@@ -26,7 +26,7 @@
         },
         {
           "mutationPoint" : {
-            "mutationOperatorId" : "NegateConditionals",
+            "mutationOperatorId" : "RelationalOperatorReplacement",
             "position" : {
               "column" : 29,
               "line" : 68,
@@ -54,7 +54,7 @@
       "appliedOperators" : [
         {
           "mutationPoint" : {
-            "mutationOperatorId" : "NegateConditionals",
+            "mutationOperatorId" : "RelationalOperatorReplacement",
             "position" : {
               "column" : 73,
               "line" : 89,
@@ -65,7 +65,7 @@
         },
         {
           "mutationPoint" : {
-            "mutationOperatorId" : "NegateConditionals",
+            "mutationOperatorId" : "RelationalOperatorReplacement",
             "position" : {
               "column" : 54,
               "line" : 144,
@@ -76,7 +76,7 @@
         },
         {
           "mutationPoint" : {
-            "mutationOperatorId" : "NegateConditionals",
+            "mutationOperatorId" : "RelationalOperatorReplacement",
             "position" : {
               "column" : 38,
               "line" : 168,
@@ -87,7 +87,7 @@
         },
         {
           "mutationPoint" : {
-            "mutationOperatorId" : "NegateConditionals",
+            "mutationOperatorId" : "RelationalOperatorReplacement",
             "position" : {
               "column" : 42,
               "line" : 204,
@@ -98,7 +98,7 @@
         },
         {
           "mutationPoint" : {
-            "mutationOperatorId" : "NegateConditionals",
+            "mutationOperatorId" : "RelationalOperatorReplacement",
             "position" : {
               "column" : 48,
               "line" : 210,
@@ -109,7 +109,7 @@
         },
         {
           "mutationPoint" : {
-            "mutationOperatorId" : "NegateConditionals",
+            "mutationOperatorId" : "RelationalOperatorReplacement",
             "position" : {
               "column" : 76,
               "line" : 210,
@@ -120,7 +120,7 @@
         },
         {
           "mutationPoint" : {
-            "mutationOperatorId" : "NegateConditionals",
+            "mutationOperatorId" : "RelationalOperatorReplacement",
             "position" : {
               "column" : 106,
               "line" : 210,

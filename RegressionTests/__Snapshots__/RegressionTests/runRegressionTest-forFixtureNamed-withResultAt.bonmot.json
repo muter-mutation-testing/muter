@@ -104,7 +104,7 @@
         },
         {
           "mutationPoint" : {
-            "mutationOperatorId" : "NegateConditionals",
+            "mutationOperatorId" : "RelationalOperatorReplacement",
             "position" : {
               "column" : 42,
               "line" : 34,
@@ -115,7 +115,7 @@
         },
         {
           "mutationPoint" : {
-            "mutationOperatorId" : "NegateConditionals",
+            "mutationOperatorId" : "RelationalOperatorReplacement",
             "position" : {
               "column" : 37,
               "line" : 40,
@@ -471,7 +471,7 @@
       "appliedOperators" : [
         {
           "mutationPoint" : {
-            "mutationOperatorId" : "NegateConditionals",
+            "mutationOperatorId" : "RelationalOperatorReplacement",
             "position" : {
               "column" : 21,
               "line" : 23,
@@ -488,7 +488,7 @@
       "appliedOperators" : [
         {
           "mutationPoint" : {
-            "mutationOperatorId" : "NegateConditionals",
+            "mutationOperatorId" : "RelationalOperatorReplacement",
             "position" : {
               "column" : 38,
               "line" : 87,
@@ -527,7 +527,7 @@
       "appliedOperators" : [
         {
           "mutationPoint" : {
-            "mutationOperatorId" : "NegateConditionals",
+            "mutationOperatorId" : "RelationalOperatorReplacement",
             "position" : {
               "column" : 30,
               "line" : 79,
@@ -538,7 +538,7 @@
         },
         {
           "mutationPoint" : {
-            "mutationOperatorId" : "NegateConditionals",
+            "mutationOperatorId" : "RelationalOperatorReplacement",
             "position" : {
               "column" : 30,
               "line" : 81,
@@ -555,7 +555,7 @@
       "appliedOperators" : [
         {
           "mutationPoint" : {
-            "mutationOperatorId" : "NegateConditionals",
+            "mutationOperatorId" : "RelationalOperatorReplacement",
             "position" : {
               "column" : 76,
               "line" : 51,
@@ -611,7 +611,7 @@
       "appliedOperators" : [
         {
           "mutationPoint" : {
-            "mutationOperatorId" : "NegateConditionals",
+            "mutationOperatorId" : "RelationalOperatorReplacement",
             "position" : {
               "column" : 38,
               "line" : 84,
@@ -639,7 +639,7 @@
       "appliedOperators" : [
         {
           "mutationPoint" : {
-            "mutationOperatorId" : "NegateConditionals",
+            "mutationOperatorId" : "RelationalOperatorReplacement",
             "position" : {
               "column" : 23,
               "line" : 176,
@@ -733,7 +733,7 @@
         },
         {
           "mutationPoint" : {
-            "mutationOperatorId" : "NegateConditionals",
+            "mutationOperatorId" : "RelationalOperatorReplacement",
             "position" : {
               "column" : 28,
               "line" : 58,
@@ -772,7 +772,7 @@
       "appliedOperators" : [
         {
           "mutationPoint" : {
-            "mutationOperatorId" : "NegateConditionals",
+            "mutationOperatorId" : "RelationalOperatorReplacement",
             "position" : {
               "column" : 45,
               "line" : 43,
@@ -783,7 +783,7 @@
         },
         {
           "mutationPoint" : {
-            "mutationOperatorId" : "NegateConditionals",
+            "mutationOperatorId" : "RelationalOperatorReplacement",
             "position" : {
               "column" : 42,
               "line" : 49,
