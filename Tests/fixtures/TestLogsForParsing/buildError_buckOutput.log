@@ -1,0 +1,279 @@
+./buck project //Config:workspace //Config:ifoodstore_workspace
+Starting new Buck daemon...
+PARSING BUCK FILES: FINISHED IN 1.9s
+PARSING BUCK FILES: FINISHED IN 2.1s
+PARSING BUCK FILES: FINISHED IN 6.0s
+CREATING ACTION GRAPH: FINISHED IN 0.0s
+DOWNLOADED 0 ARTIFACTS, 0.00 BYTES, 0.0% CACHE MISS
+BUILDING: FINISHED IN 0.4s (100%) 5/5 JOBS, 5 UPDATED
+BUILD SUCCEEDED
+killall Simulator || true
+No matching processes belonging to you were found
+PARSING BUCK FILES: FINISHED IN 0.2s
+sleep 0.5
+./buck install //iFood:XCUITestsHostApp --config-file ./BuildConfigurations/Testing.buckconfig -n "iPhone 6"
+Invalidating internal cached state: Buck configuration options changed between invocations. This may cause slower builds.
+  Changed value cxx.cflags='-g -fmodules -fobjc-arc -D BUCK -w -f...' (was '-g -fmodules -fobjc-arc -D BUCK -w ')
+  ... and 8 more. See logs for all changes
+PARSING BUCK FILES: FINISHED IN 0.5s
+PARSING BUCK FILES: FINISHED IN 0.5s
+CREATING ACTION GRAPH: FINISHED IN 0.1s
+BUILT 3/6 JOBS 0.0s //iFood:XCUITestsHostAppBinary#iphonesimulator-x86_64,swift-companion
+BUILT 4/6 JOBS 0.0s //iFood:XCUITestsHostAppBinary#iphonesimulator-x86_64,strip-non-global
+BUILT 6/6 JOBS 6.2s //iFood:XCUITestsHostApp#dwarf-and-dsym,no-include-frameworks
+DOWNLOADED 0 ARTIFACTS, 0.00 BYTES, 25.0% CACHE MISS
+BUILDING: FINISHED IN 6.4s (100%) 6/6 JOBS, 6 UPDATED
+BUILD SUCCEEDED
+Successfully installed //iFood:XCUITestsHostApp. (Use `buck install -r //iFood:XCUITestsHostApp` to run.)
+INSTALLING: FINISHED IN 19.4s
+set -o pipefail && ./buck test //Libraries/uUI:UITests //Libraries/uCardStack:CardStackTests //Libraries/uKitchenCommon:KitchenCommonTests //Libraries/Config/uUseless:UselessTests //Libraries/uFormatter:FormatterTests //Libraries/uLogger:LoggerTests //Libraries/uCommonColors:CommonColorsTests //Libraries/uDonations:DonationsTests //Libraries/uLoop:LoopTests //Libraries/uOptIn:OptInTests //Libraries/uNewsFeedDomain:NewsFeedDomainTests //Libraries/uEvaluationModel:EvaluationModelTests //Libraries/uChatFAB:ChatFABTests //Libraries/uLoopDomain:LoopDomainTests //Libraries/uCommonAssets:CommonAssetsTests //Libraries/uLoyalty:LoyaltyTests //Libraries/uDrone:DroneTests //Libraries/uPersistency:PersistencyTests //Libraries/uAccountModel:AccountModelTests //Libraries/uPaymentModel:PaymentModelTests //Libraries/uAnalytics:AnalyticsTests //Libraries/uVoucherModel:VoucherModelTests //Libraries/uLogin:LoginTests //Libraries/uExampleUtils:ExampleUtilsTests //Libraries/uChatProtocols:ChatProtocolsTests //Libraries/uNewsFeed:NewsFeedTests //Libraries/uHelp:HelpTests //Libraries/uSendBirdProvider:SendBirdProviderTests //Libraries/uAddressModel:AddressModelTests //Libraries/uBootstrap:BootstrapTests //Libraries/uInbox:InboxTests //Libraries/uRestaurantReviews:RestaurantReviewsTests //Libraries/uWaitingModel:WaitingModelTests //Libraries/uWebView:WebViewTests //Libraries/uRemoteConfig:RemoteConfigTests //Libraries/uSwiftUtils:SwiftUtilsTests //Libraries/uNPS:NPSTests //Libraries/uCheckoutUI:CheckoutUITests //Libraries/uLoopModel:LoopModelTests //iFood:iFoodTests //Libraries/uPriceHelper:PriceHelperTests //Libraries/uChatModels:ChatModelsTests //Libraries/uLocalNotification:LocalNotificationTests //Libraries/uTestsUtils:TestsUtilsTests //Libraries/uChat:ChatTests //Libraries/uMerchantModel:MerchantModelTests //Libraries/uSnapshot:SnapshotTests //Libraries/uCallToRestaurant:CallToRestaurantTests //Libraries/uUserData:UserDataTests //Libraries/uNewsFeedData:NewsFeedDataTests //Libraries/uChatFacade:ChatFacadeTests //Libraries/uOrderModel:OrderModelTests //Libraries/uCheckout:CheckoutTests //Libraries/uItemModel:ItemModelTests //Libraries/uImageFetcher:ImageFetcherTests //Libraries/uOffice:OfficeTests //Libraries/uGamificationDomain:GamificationDomainTests //Libraries/uElementaryUI:ElementaryUITests //Libraries/uKitchen:KitchenTests //iFoodStore:iFoodStoreTests //Libraries/uCommonLocalizable:CommonLocalizableTests //Libraries/uBenefitsDomain:BenefitsDomainTests --config-file ./BuildConfigurations/Testing.buckconfig --test-runner-env XCTOOL_TEST_ENV_LLVM_PROFILE_FILE="/Users/vagrant/git/buck-out/tmp/code-%p.profraw%15x" 2>&1 | tee /Users/vagrant/git/buck-out/iFoodTestLog.log
+PARSING BUCK FILES: FINISHED IN 2.0s
+CREATING ACTION GRAPH: FINISHED IN 2.4s
+BUILT 1/1599 JOBS 0.0s //Libraries/uSwiftUtils:SwiftUtils
+BUILT 2/1599 JOBS 0.0s //Libraries/uItemModel:uItemModelStrings
+BUILT 3/1599 JOBS 0.0s //Libraries/uPriceHelper:PriceHelper
+BUILT 4/1599 JOBS 0.0s //Pods:Alamofire
+BUILT 5/1599 JOBS 0.0s //Pods:Unbox
+BUILT 6/1599 JOBS 0.0s //Pods:Kingfisher
+BUILT 7/1599 JOBS 0.0s //Pods:Wrap
+BUILT 8/1599 JOBS 0.0s //Pods:Gzip
+BUILT 9/1599 JOBS 0.0s //Libraries/uItemModel:SwiftGen
+BUILT 10/1599 JOBS 0.0s //Pods:DeviceGuruResources
+BUILT 11/1599 JOBS 0.0s //Pods:Reachability
+BUILT 12/1599 JOBS 0.0s //Libraries/uCommonLocalizable:uCommonLocalizableStrings
+BUILT 13/1599 JOBS 0.0s //Libraries/uCommonLocalizable:SwiftGen
+BUILT 14/1599 JOBS 0.1s //Pods:Cartography
+BUILT 15/1599 JOBS 0.1s //Pods:Lottie
+BUILT 16/1599 JOBS 0.0s //Libraries/uCallToRestaurant:SwiftGen
+BUILT 17/1599 JOBS 0.0s //Libraries/uBenefitsDomain:BenefitsStrings
+BUILT 18/1599 JOBS 0.0s //Libraries/uCallToRestaurant:uCallToRestaurantCatalog
+BUILT 19/1599 JOBS 0.0s //Libraries/uCallToRestaurant:uCallToRestaurantStrings
+BUILT 20/1599 JOBS 0.0s //Libraries/uCardStack:CardStack
+BUILT 21/1599 JOBS 0.1s //Libraries/uBenefitsDomain:SwiftGen
+BUILT 22/1599 JOBS 0.0s //Libraries/uCommonAssets:uCommonAssetsCatalog
+BUILT 23/1599 JOBS 0.1s //Libraries/uCommonAssets:SwiftGen
+BUILT 24/1599 JOBS 0.0s //Libraries/uCommonColors:SwiftGen
+BUILT 25/1599 JOBS 0.0s //Libraries/uUI:uUIFonts
+BUILT 26/1599 JOBS 0.0s //Libraries/uUI:uUILottieJsons
+BUILT 27/1599 JOBS 0.0s //Libraries/uLogin:LoginAppAsset
+BUILT 28/1599 JOBS 0.0s //Libraries/uUI:uUIAssetCatalog
+BUILT 29/1599 JOBS 0.0s //Libraries/uChatFAB:uChatFABCatalog
+BUILT 30/1599 JOBS 0.0s //PodsLocal:TextAttributes
+BUILT 31/1599 JOBS 0.0s //Libraries/uChatFAB:SwiftGen
+BUILT 32/1599 JOBS 0.0s //Libraries/uChat:uChatCatalog
+BUILT 33/1599 JOBS 0.0s //Libraries/uChat:uChatStrings
+BUILT 34/1599 JOBS 0.0s //Libraries/uChat:SwiftGen
+BUILT 35/1599 JOBS 0.0s //Libraries/uFormatter:Formatter
+BUILT 38/1599 JOBS 0.0s //Pods:AmplitudeResources
+BUILT 39/1599 JOBS 0.0s //Libraries/uLogin:SwiftGen
+BUILT 40/1599 JOBS 0.0s //Libraries/uLogin:uLoginAssetCatalog
+BUILT 41/1599 JOBS 0.0s //Libraries/uLogin:uLoginFileResources
+BUILT 42/1599 JOBS 0.0s //Pods:KeychainAccess
+BUILT 43/1599 JOBS 0.0s //Libraries/uLogin:uLoginStrings
+BUILT 44/1599 JOBS 0.0s //Libraries/uSendBirdProvider:SwiftGen
+BUILT 45/1599 JOBS 0.0s //Libraries/uSendBirdProvider:uSendBirdProviderCatalog
+BUILT 46/1599 JOBS 0.0s //Pods:FasterCoreOBJCProxy
+BUILT 47/1599 JOBS 0.0s //Libraries/uWebView:uWebViewStrings
+BUILT 48/1599 JOBS 0.0s //iFood:IntentsKitResources
+BUILT 49/1599 JOBS 0.0s //Libraries/uWebView:SwiftGen
+BUILT 50/1599 JOBS 0.0s //Pods:SwiftyRSAOBJCProxy
+BUILT 51/1599 JOBS 0.0s //Libraries/uSendBirdProvider:uSendBirdProviderStrings
+BUILT 52/1599 JOBS 0.0s //Pods:INSPhotoGalleryResources
+BUILT 57/1599 JOBS 0.0s //Libraries/uKitchen:KitchenAppStoryboards
+BUILT 58/1599 JOBS 0.0s //Libraries/uKitchen:KitchenAppAsset
+BUILT 59/1599 JOBS 0.0s //Libraries/uKitchen:KitchenAppUtilJsons
+BUILT 60/1599 JOBS 0.0s //PodsLocal:FBSDKCoreKitResources
+BUILT 61/1599 JOBS 0.0s //Pods:IQKeyboardManagerResources
+BUILT 62/1599 JOBS 0.0s //PodsLocal:Bolts
+BUILT 63/1599 JOBS 0.0s //Libraries/uLocalNotification:LocalNotification
+BUILT 64/1599 JOBS 0.0s //Libraries/uLogin:LoginAppStoryboards
+BUILT 65/1599 JOBS 0.0s //Libraries/uLoop:SwiftGen
+BUILT 66/1599 JOBS 0.0s //Libraries/uLoop:uLoopAssetCatalog
+BUILT 67/1599 JOBS 0.0s //Libraries/uWaitingModel:SwiftGen
+BUILT 68/1599 JOBS 0.0s //Libraries/uWaitingModel:uWaitingJsonStubs
+BUILT 69/1599 JOBS 0.0s //Libraries/uLoop:uLoopStrings
+BUILT 70/1599 JOBS 0.0s //Libraries/uWaitingModel:uWaitingModelStrings
+BUILT 71/1599 JOBS 0.0s //Libraries/uLoop:LoopAppAsset
+BUILT 72/1599 JOBS 0.0s //Libraries/uLoop:LoopImagesStubs
+BUILT 73/1599 JOBS 0.0s //Libraries/uLoop:LoopAppStoryboards
+BUILT 74/1599 JOBS 0.0s //Libraries/uLoop:LoopAppStubs
+BUILT 75/1599 JOBS 0.1s //Libraries/uCheckout:uCheckoutCatalog
+BUILT 76/1599 JOBS 0.1s //Libraries/uCheckout:SwiftGen
+BUILT 77/1599 JOBS 0.1s //Libraries/uCheckout:uCheckoutStrings
+BUILT 78/1599 JOBS 0.0s //Libraries/uCheckoutUI:uCheckoutUIStrings
+BUILT 79/1599 JOBS 0.0s //Libraries/uCheckoutUI:SwiftGen
+BUILT 80/1599 JOBS 0.0s //PodsLocal:OHHTTPStubsOBJCProxy
+BUILT 81/1599 JOBS 0.0s //Libraries/uVoucherModel:uVoucherModelStrings
+BUILT 82/1599 JOBS 0.0s //Libraries/uVoucherModel:SwiftGen
+BUILT 83/1599 JOBS 0.0s //Pods:AdyenCSE
+BUILT 84/1599 JOBS 0.0s //Libraries/uNewsFeed:uNewsFeedAssetCatalog
+BUILT 85/1599 JOBS 0.1s //Libraries/uNewsFeed:SwiftGen
+BUILT 86/1599 JOBS 0.0s //Libraries/uUI:UIAppStoryboards
+BUILT 87/1599 JOBS 0.3s //Libraries/uNewsFeed:uNewsFeedStrings
+BUILT 88/1599 JOBS 0.3s //Libraries/uNewsFeedDomain:NewsFeedDomain
+BUILT 90/1599 JOBS 0.3s //Libraries/uNewsFeed:NewsFeedAppAsset
+BUILT 91/1599 JOBS 0.2s //Libraries/uUI:UIAppAsset
+BUILT 92/1599 JOBS 0.0s //Libraries/uDonations:SwiftGen
+BUILT 93/1599 JOBS 0.0s //Libraries/StaticFrameworks:StaticFrameworksGeneratorHack
+BUILT 94/1599 JOBS 0.0s //Libraries/uDrone:SwiftGen
+BUILT 95/1599 JOBS 0.0s //Libraries/uDonations:uDonationsStrings
+BUILT 96/1599 JOBS 0.0s //Libraries/uDonations:uDonationsAssetCatalog
+BUILT 97/1599 JOBS 0.0s //Libraries/uDrone:uDroneStrings
+BUILT 98/1599 JOBS 0.0s //Libraries/uInbox:SwiftGen
+BUILT 99/1599 JOBS 0.0s //Libraries/uHelp:uHelpLocalizable
+BUILT 100/1599 JOBS 0.0s //Libraries/uInbox:uInboxCatalog
+BUILT 101/1599 JOBS 0.0s //Libraries/uLoyalty:SwiftGenStrings
+BUILT 102/1599 JOBS 0.0s //Libraries/uLoyalty:SwiftGenAssets
+BUILT 103/1599 JOBS 0.0s //Libraries/uNPS:SwiftGen
+BUILT 104/1599 JOBS 0.0s //Libraries/uHelp:SwiftGen
+BUILT 105/1599 JOBS 0.0s //Libraries/uNPS:uNPSLocalizable
+BUILT 106/1599 JOBS 0.0s //Pods:AppboyResourceFiles
+BUILT 108/1599 JOBS 0.0s //Pods:AppboyResourceVariants
+BUILT 109/1599 JOBS 0.0s //Pods:FLAnimatedImage
+BUILT 110/1599 JOBS 0.1s //Libraries/uInbox:uInboxStrings
+BUILT 111/1599 JOBS 0.0s //Libraries/uOffice:SwiftGen
+BUILT 112/1599 JOBS 0.1s //Libraries/uGamificationDomain:GamificationDomain
+BUILT 113/1599 JOBS 0.0s //Libraries/uLoyalty:uLoyaltyStrings
+BUILT 114/1599 JOBS 0.0s //Libraries/uOptIn:SwiftGen
+BUILT 115/1599 JOBS 0.0s //Libraries/uOptIn:uOptInAssetCatalog
+BUILT 116/1599 JOBS 0.0s //Libraries/uOptIn:uOptInStrings
+BUILT 117/1599 JOBS 0.0s //Libraries/uRestaurantReviews:SwiftGenAssets
+BUILT 119/1599 JOBS 0.0s //Libraries/uRestaurantReviews:SwiftGenStrings
+BUILT 120/1599 JOBS 0.0s //Libraries/uRestaurantReviews:uRestaurantReviewsAssetCatalog
+BUILT 121/1599 JOBS 0.0s //Libraries/uRestaurantReviews:uRestaurantReviewsStrings
+BUILT 122/1599 JOBS 0.0s //Libraries/uOffice:uOfficeStrings
+BUILT 123/1599 JOBS 0.0s //Pods:AppboyVendoredFramework
+BUILT 124/1599 JOBS 0.0s //Pods:Cache
+BUILT 125/1599 JOBS 0.0s //Pods:CryptoSwift
+BUILT 126/1599 JOBS 0.0s //Pods:AppboyResourceBundle
+BUILT 127/1599 JOBS 0.0s //Pods:FasterRemoteConfigOBJCProxy
+BUILT 128/1599 JOBS 0.0s //Libraries/uLoyalty:uLoyaltyAssetCatalog
+BUILT 129/1599 JOBS 0.0s //Pods:MovilePayAssets
+BUILT 130/1599 JOBS 0.0s //Pods:DZNSegmentedControl
+BUILT 131/1599 JOBS 0.0s //Pods:MovilePayResources
+BUILT 132/1599 JOBS 0.0s //Pods:TagListView
+BUILT 133/1599 JOBS 0.0s //Pods:StalkerKit
+BUILT 134/1599 JOBS 0.0s //Libraries/uOffice:uOfficeAssetCatalog
+BUILT 136/1599 JOBS 0.0s //iFood:IntentsKitAssets
+BUILT 137/1599 JOBS 0.0s //Pods:UIImageViewAlignedSwift
+BUILT 138/1599 JOBS 0.0s //iFood:iFoodObjCUtils
+BUILT 139/1599 JOBS 0.0s //PodsLocal:FPCrashHandler
+BUILT 140/1599 JOBS 0.0s //iFood/BuildPhases:PodsManifestXcode
+BUILT 141/1599 JOBS 0.7s //Pods:SendBirdSDK
+BUILT 142/1599 JOBS 0.1s //PodsLocal:AppsFlyerLib
+BUILT 143/1599 JOBS 0.0s //iFood/BuildPhases:SwiftGenStringsXcode
+BUILT 144/1599 JOBS 0.3s //Libraries/StaticFrameworks:TrustDefender
+BUILT 145/1599 JOBS 0.0s //iFood/BuildPhases:SwiftGenXcode
+BUILT 146/1599 JOBS 0.0s //iFood/BuildPhases:SwiftLintXcode
+BUILT 147/1599 JOBS 0.0s //iFood/Resources:iFoodAssets
+BUILT 148/1599 JOBS 0.0s //iFood/Resources:iFoodVariantStrings
+BUILT 149/1599 JOBS 0.0s //iFood/Resources:iFoodVariantStoryboards
+BUILT 150/1599 JOBS 0.0s //iFood/Resources:iFoodFileResources
+BUILT 151/1599 JOBS 0.0s //iFood/Resources:iFoodDirResources
+BUILT 152/1599 JOBS 0.3s //Pods:Apptimize
+BUILT 153/1599 JOBS 0.0s //Libraries/uLogger:Logger
+BUILT 154/1599 JOBS 0.0s //Libraries/uAnalytics:Analytics
+BUILT 155/1599 JOBS 0.0s //Pods:DeviceGuru
+BUILT 156/1599 JOBS 0.0s //Libraries/uImageFetcher:ImageFetcher
+BUILT 157/1599 JOBS 0.0s //Libraries/uKitchenCommon:KitchenCommon
+BUILT 158/1599 JOBS 0.0s //Libraries/uCommonLocalizable:CommonLocalizable
+BUILT 162/1599 JOBS 0.4s //Pods:Fabric
+BUILT 167/1599 JOBS 0.0s //Libraries/uCommonAssets:CommonAssets
+BUILT 168/1599 JOBS 0.0s //Libraries/uCommonColors:CommonColors
+BUILT 172/1590 JOBS 0.0s //Pods:Amplitude_iOS
+BUILT 173/1590 JOBS 0.0s //Pods:FasterCore
+BUILT 174/1590 JOBS 0.0s //Pods:SwiftyRSA
+BUILT 175/1590 JOBS 0.0s //Pods:INSPhotoGallery
+BUILT 176/1587 JOBS 0.9s //Pods:Crashlytics
+BUILT 178/1577 JOBS 0.0s //Pods:IQKeyboardManager
+BUILT 179/1577 JOBS 0.0s //PodsLocal:FBSDKCoreKit
+BUILT 180/1577 JOBS 0.0s //PodsLocal:OHHTTPStubs
+BUILT 182/1577 JOBS 0.0s //Pods:SDWebImage
+BUILT 183/1577 JOBS 0.0s //Pods:AccountKitResources
+BUILT 189/1570 JOBS 0.0s //Pods:MovilePay
+BUILT 192/1570 JOBS 0.0s //Libraries/uPersistency:Persistency
+BUILT 193/1553 JOBS 0.0s //Libraries/uLoopModel:LoopModel
+BUILT 194/1522 JOBS 0.0s //Libraries/uBootstrap:Bootstrap
+BUILT 197/1522 JOBS 0.0s //Libraries/uExampleUtils:ExampleUtils
+BUILT 201/1522 JOBS 0.0s //Libraries/uAddressModel:AddressModel
+BUILT 206/1427 JOBS 0.0s //Pods:InstabugResources
+BUILT 210/1404 JOBS 0.0s //iFood:IntentsDefinition
+BUILT 211/1373 JOBS 0.0s //PodsLocal:GooglePlacesResources
+BUILT 212/1277 JOBS 0.0s //PodsLocal:GoogleMapsResources
+BUILT 216/1277 JOBS 0.0s //Pods:FasterAnalytics
+BUILT 224/1242 JOBS 0.0s //PodsLocal:FBSDKLoginKit
+BUILT 227/1183 JOBS 0.0s //Pods:Appboy_iOS_SDK
+BUILT 233/1183 JOBS 0.0s //Libraries/uPaymentModel:PaymentModel
+BUILT 235/1179 JOBS 0.0s //Libraries/uAccountModel:AccountModel
+BUILT 250/1179 JOBS 1.2s //PodsLocal:GoogleMapsBase
+BUILT 252/1179 JOBS 0.2s //PodsLocal:GoogleUtilities
+BUILT 253/1179 JOBS 0.8s //Pods:AccountKit
+BUILT 254/1179 JOBS 0.0s //PodsLocal:Protobuf
+BUILT 255/1179 JOBS 0.0s //Pods:FasterRemoteConfig
+BUILT 257/1179 JOBS 0.0s //Libraries/uNewsFeedData:NewsFeedData
+BUILT 258/1179 JOBS 0.0s //Libraries/uBenefitsDomain:BenefitsDomain
+BUILT 259/1179 JOBS 0.0s //Libraries/uVoucherModel:VoucherModel
+BUILT 261/1179 JOBS 0.0s //Libraries/uMerchantModel:MerchantModel
+BUILT 262/1179 JOBS 0.0s //Libraries/uEvaluationModel:EvaluationModel
+BUILT 263/1179 JOBS 0.2s //PodsLocal:FirebaseCoreDiagnostics
+BUILT 264/1179 JOBS 0.0s //PodsLocal:nanopb
+BUILT 265/1179 JOBS 2.2s //PodsLocal:GoogleMapsCore
+BUILT 266/1179 JOBS 1.7s //Pods:Instabug
+BUILT 267/1179 JOBS 0.0s //PodsLocal:FirebaseCore
+BUILT 268/1179 JOBS 0.3s //PodsLocal:GooglePlaces
+BUILT 269/1179 JOBS 0.0s //Pods:Cartography#header-mode-symlink-tree-with-modulemap,headers,iphonesimulator-x86_64
+BUILT 271/1179 JOBS 0.0s //Pods:Cartography#apple-swift-objc-generated-header,iphonesimulator-x86_64
+BUILT 272/1179 JOBS 0.0s //Libraries/uItemModel:ItemModel
+BUILT 273/1179 JOBS 0.1s //PodsLocal:FIRAnalyticsConnector
+BUILT 274/1179 JOBS 0.0s //Pods:Kingfisher#apple-swift-objc-generated-header,iphonesimulator-x86_64
+BUILT 275/1179 JOBS 0.0s //Pods:Kingfisher#header-mode-symlink-tree-with-modulemap,headers,iphonesimulator-x86_64
+BUILT 276/1179 JOBS 0.4s //PodsLocal:GoogleAppMeasurement
+BUILT 277/1179 JOBS 0.0s //PodsLocal:FirebaseInstanceID
+BUILT 278/1179 JOBS 0.1s //PodsLocal:FirebaseABTesting
+BUILT 280/1179 JOBS 0.0s //Libraries/uGamificationDomain:GamificationDomain#apple-swift-objc-generated-header,iphonesimulator-x86_64
+BUILT 281/1179 JOBS 0.0s //Libraries/uGamificationDomain:GamificationDomain#header-mode-symlink-tree-with-modulemap,headers,iphonesimulator-x86_64
+BUILT 283/1179 JOBS 0.0s //Libraries/uOrderModel:OrderModel
+Libraries/uGamificationDomain/Sources/Classes/Models/Achievement.swift:2:8: error: no such module 'Logger'
+import Logger
+       ^
+[2019-12-07 17:48:26.680][error][command:0d14b7eb-dca0-4ba0-b359-f0b788191038][tid:320][com.facebook.buck.swift.SwiftCompileStep] Error running /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/swiftc -frontend -sdk /Applications/Xcode.app/Contents/Developer/Platforms/iPhoneSimulator.platform/Developer/SDKs/iPhoneSimulator.sdk -target x86_64-apple-ios10.0 -c -enable-objc-interop -parse-as-library -serialize-debugging-options -module-name GamificationDomain -emit-module -emit-module-path buck-out/gen/Libraries/uGamificationDomain/GamificationDomain#apple-swift-compile,iphonesimulator-x86_64/GamificationDomain.swiftmodule -emit-objc-header-path buck-out/gen/Libraries/uGamificationDomain/GamificationDomain#apple-swift-compile,iphonesimulator-x86_64/GamificationDomain-Swift.h -o buck-out/gen/Libraries/uGamificationDomain/GamificationDomain#apple-swift-compile,iphonesimulator-x86_64/GamificationDomain.o -swift-version 5 -DBUCK -DTESTING -enable-testing -g -Onone -Xcc -Wno-incomplete-umbrella -profile-generate -profile-coverage-mapping -filelist /Users/vagrant/git/buck-out/bin/Libraries/uGamificationDomain/GamificationDomain#apple-swift-compile,iphonesimulator-x86_64__filelist.txt: Optional[Libraries/uGamificationDomain/Sources/Classes/Models/Achievement.swift:2:8: error: no such module 'Logger'
+import Logger
+       ^
+]
+
+BUILT 284/1179 JOBS 0.7s //PodsLocal:GoogleMaps
+BUILT 285/1170 JOBS 0.0s //PodsLocal:FirebaseAnalytics
+BUILT 286/1169 JOBS 0.0s //Pods:Wrap#apple-swift-objc-generated-header,iphonesimulator-x86_64
+BUILT 287/1169 JOBS 0.0s //Libraries/uPaymentModel:PaymentModel#apple-swift-objc-generated-header,iphonesimulator-x86_64
+BUILT 288/1169 JOBS 0.0s //Libraries/uPersistency:Persistency#apple-swift-objc-generated-header,iphonesimulator-x86_64
+BUILT 289/1169 JOBS 0.0s //Pods:Gzip#apple-swift-objc-generated-header,iphonesimulator-x86_64
+BUILT 290/1169 JOBS 0.0s //Libraries/uSwiftUtils:SwiftUtils#apple-swift-objc-generated-header,iphonesimulator-x86_64
+BUILT 291/1169 JOBS 0.0s //Libraries/uPersistency:Persistency#header-mode-symlink-tree-with-modulemap,headers,iphonesimulator-x86_64
+BUILT 292/1169 JOBS 0.0s //Libraries/uLogger:Logger#header-mode-symlink-tree-with-modulemap,headers,iphonesimulator-x86_64
+BUILT 293/1169 JOBS 0.0s //Pods:Unbox#header-mode-symlink-tree-with-modulemap,headers,iphonesimulator-x86_64
+BUILT 294/1169 JOBS 0.0s //Pods:Wrap#header-mode-symlink-tree-with-modulemap,headers,iphonesimulator-x86_64
+BUILT 295/1169 JOBS 0.0s //Libraries/uKitchenCommon:KitchenCommon#header-mode-symlink-tree-with-modulemap,headers,iphonesimulator-x86_64
+BUILT 296/1169 JOBS 0.0s //Pods:Gzip#header-mode-symlink-tree-with-modulemap,headers,iphonesimulator-x86_64
+BUILT 297/1169 JOBS 0.0s //Libraries/uLogger:Logger#apple-swift-objc-generated-header,iphonesimulator-x86_64
+BUILT 298/1169 JOBS 0.0s //Libraries/uSwiftUtils:SwiftUtils#header-mode-symlink-tree-with-modulemap,headers,iphonesimulator-x86_64
+BUILT 299/1169 JOBS 0.0s //Libraries/uPaymentModel:PaymentModel#header-mode-symlink-tree-with-modulemap,headers,iphonesimulator-x86_64
+BUILT 300/1169 JOBS 0.0s //Pods:Unbox#apple-swift-objc-generated-header,iphonesimulator-x86_64
+BUILT 301/1169 JOBS 0.0s //Libraries/uKitchenCommon:KitchenCommon#apple-swift-objc-generated-header,iphonesimulator-x86_64
+BUILT 302/1169 JOBS 0.0s //Libraries/uFormatter:Formatter#apple-swift-objc-generated-header,iphonesimulator-x86_64
+BUILT 303/1169 JOBS 0.0s //Libraries/uFormatter:Formatter#header-mode-symlink-tree-with-modulemap,headers,iphonesimulator-x86_64
+BUILT 304/1169 JOBS 0.0s //Libraries/uAccountModel:AccountModel#apple-swift-objc-generated-header,iphonesimulator-x86_64
+BUILT 305/1169 JOBS 0.0s //Libraries/uAddressModel:AddressModel#apple-swift-objc-generated-header,iphonesimulator-x86_64
+BUILT 306/1169 JOBS 0.0s //Libraries/uAddressModel:AddressModel#header-mode-symlink-tree-with-modulemap,headers,iphonesimulator-x86_64
+BUILT 307/1169 JOBS 0.0s //Libraries/uAccountModel:AccountModel#header-mode-symlink-tree-with-modulemap,headers,iphonesimulator-x86_64
+BUILT 319/717 JOBS 4.6s //Libraries/uImageFetcher:ImageFetcher#apple-swift-compile,iphonesimulator-x86_64
+BUILT 320/717 JOBS 4.7s //Libraries/uCommonColors:CommonColors#apple-swift-compile,iphonesimulator-x86_64
+BUILT 321/717 JOBS 7.3s //Libraries/uFormatter:Formatter#apple-swift-compile,iphonesimulator-x86_64
+Command failed with exit code 1.
+command: [/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/swiftc, -frontend, -sdk, /Applications/Xcode.app/Contents/Developer/Platforms/iPhoneSimulator.platform/Developer/SDKs/iPhoneSimulator.sdk, -target, x86_64-apple-ios10.0, -c, -enable-objc-interop, -parse-as-library, -serialize-debugging-options, -module-name, GamificationDomain, -emit-module, -emit-module-path, buck-out/gen/Libraries/uGamificationDomain/GamificationDomain#apple-swift-compile,iphonesimulator-x86_64/GamificationDomain.swiftmodule, -emit-objc-header-path, buck-out/gen/Libraries/uGamificationDomain/GamificationDomain#apple-swift-compile,iphonesimulator-x86_64/GamificationDomain-Swift.h, -o, buck-out/gen/Libraries/uGamificationDomain/GamificationDomain#apple-swift-compile,iphonesimulator-x86_64/GamificationDomain.o, -swift-version, 5, -DBUCK, -DTESTING, -enable-testing, -g, -Onone, -Xcc, -Wno-incomplete-umbrella, -profile-generate, -profile-coverage-mapping, -filelist, /Users/vagrant/git/buck-out/bin/Libraries/uGamificationDomain/GamificationDomain#apple-swift-compile,iphonesimulator-x86_64__filelist.txt]
+stderr: Libraries/uGamificationDomain/Sources/Classes/Models/Achievement.swift:2:8: error: no such module 'Logger'
+import Logger
+       ^
+
+    When running <swift compile>.
+    When building rule //Libraries/uGamificationDomain:GamificationDomain#apple-swift-compile,iphonesimulator-x86_64.
+make: *** [test_ifood] Error 1

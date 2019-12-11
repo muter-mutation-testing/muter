@@ -8,7 +8,10 @@ class TestSuiteResultParsingSpec: QuickSpec {
         describe("TestSuiteResult.from(testLog:)") {
             context("when a test log doesn't contain a failure, runtime error, or build error") {
                 it("returns a passed test result") {
-                    let contents = loadLogFile(named: "testRunWithoutFailures_withTestSucceededFooter.log")
+                    var contents = loadLogFile(named: "testRunWithoutFailures_withTestSucceededFooter.log")
+                    expect(TestSuiteOutcome.from(testLog: contents)).to(equal(.passed))
+
+                    contents = loadLogFile(named: "testRunWithoutFailures_withTestSucceededFooter_buckOutput.log")
                     expect(TestSuiteOutcome.from(testLog: contents)).to(equal(.passed))
                 }
             }
@@ -25,6 +28,9 @@ class TestSuiteResultParsingSpec: QuickSpec {
                     expect(TestSuiteOutcome.from(testLog: contents)).to(equal(.failed))
 
                     contents = loadLogFile(named: "testRunWithFailures_withTestFailedFooter_noTestFailureCount.log")
+                    expect(TestSuiteOutcome.from(testLog: contents)).to(equal(.failed))
+
+                    contents = loadLogFile(named: "testRunWithFailures_withTestFailedFooter_buckOutput.log")
                     expect(TestSuiteOutcome.from(testLog: contents)).to(equal(.failed))
                 }
             }
@@ -48,6 +54,9 @@ class TestSuiteResultParsingSpec: QuickSpec {
                     expect(TestSuiteOutcome.from(testLog: contents)).to(equal(.buildError))
 
                     contents = loadLogFile(named: "buildError_withTestFailedFooter.log")
+                    expect(TestSuiteOutcome.from(testLog: contents)).to(equal(.buildError))
+
+                    contents = loadLogFile(named: "buildError_buckOutput.log")
                     expect(TestSuiteOutcome.from(testLog: contents)).to(equal(.buildError))
                 }
             }
