@@ -17,7 +17,7 @@ func printHeader() {
         You are running version \("\(version)".bold)
         
         Want help? Have suggestions? Want to get involved?
-         ↳ https://github.com/SeanROlszewski/muter/issues
+         ↳ https://github.com/muter-mutation-testing/muter/issues
         +------------------------------------------------+
         
         """)

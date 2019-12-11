@@ -16,7 +16,7 @@ else
     git push origin head --tags
 
     echo "Generating SHA256 hash of the new version..."
-    curl -L "https://github.com/SeanROlszewski/muter/archive/$1.zip" -o new_muter_version.zip
+    curl -L "https://github.com/muter-mutation-testing/muter/archive/$1.zip" -o new_muter_version.zip
     SHA=$(shasum -a 256 "./new_muter_version.zip" | cut -d " " -f 1) 
     rm new_muter_version.zip
 

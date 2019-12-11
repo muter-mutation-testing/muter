@@ -19,7 +19,7 @@ if #available(OSX 10.13, *) {
             ⚠️ ⚠️ ⚠️ ⚠️ ⚠️  See the Muter error log above this line  ⚠️ ⚠️ ⚠️ ⚠️ ⚠️
             
             If you feel like this is a bug, or want help figuring out what could be happening, please open an issue at
-            https://github.com/SeanROlszewski/muter/issues
+            https://github.com/muter-mutation-testing/muter/issues
                 
             """)
             exit(1)
