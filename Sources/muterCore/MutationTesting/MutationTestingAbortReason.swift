@@ -26,7 +26,7 @@ extension MutationTestingAbortReason: CustomStringConvertible {
             return """
             Muter noticed the last 5 attempts to apply a mutation operator resulted in a build error within your code base.
             This is considered unlikely and abnormal. If you can reproduce this, please consider filing an issue at
-            https://github.com/SeanROlszewski/muter/issues/
+            https://github.com/muter-mutation-testing/muter/issues/
             """
             
         case .unknownError(let error):

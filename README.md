@@ -53,7 +53,7 @@ Specifically, a mutation score can help you:
 ## How Does It Work?
 Muter will introduce changes into your source code based on the logic contained in your app. The changes introduced by Muter are called **mutants** which it generates using **mutation operators**.
 
-You can view the list of available mutation operators [here](https://github.com/SeanROlszewski/muter/blob/master/Docs/mutation_operators.md). 
+You can view the list of available mutation operators [here](https://github.com/muter-mutation-testing/muter/blob/master/Docs/mutation_operators.md). 
 
 **NOTE**: Muter does all of its work on a complete copy of your codebase, so it's not possible for it to accidentally leave anything behind.
 
@@ -66,7 +66,7 @@ For example, if your test suite killed 50 mutants of the 75 introduced by Muter,
 
 Muter not only provides a mutation score for your entire test suite, but it also generates individual scores for the files it has mutated.
 
-If you're curious about how a mutation score is different than test code coverage, then check out [this document](https://github.com/SeanROlszewski/muter/blob/master/Docs/mutation_score_vs_test_code_coverage.md).
+If you're curious about how a mutation score is different than test code coverage, then check out [this document](https://github.com/muter-mutation-testing/muter/blob/master/Docs/mutation_score_vs_test_code_coverage.md).
 
 ## Installation
 Muter is available through [Homebrew](https://brew.sh/). Run the following command to install Muter:
@@ -194,7 +194,7 @@ Build (Cmd + B) your aggregate build target and let Muter run. The mutants which
 - Don’t be dogmatic about your mutation score - in practice, 100% is not always possible.
 
 ## Example Test Report
-There's an example of [the test report that Muter generates](https://github.com/SeanROlszewski/muter/blob/master/Docs/test_report_example.md) hosted in this repository.
+There's an example of [the test report that Muter generates](https://github.com/muter-mutation-testing/muter/blob/master/Docs/test_report_example.md) hosted in this repository.
 
 Check out this example to familiarize yourself with what a report looks like.
 
