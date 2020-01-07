@@ -12,8 +12,14 @@ import struct SwiftSyntax.AbsolutePosition
 
 let muterSkipMarker = "muter:skip"
 
+struct ExclusionPoint {
+    let mutationOperatorId: MutationOperator.Id?
+    let filePath: String
+    let line: Int
+}
+
 extension DiscoverMutationPoints {
-    func loadMutationPointsToExclude(inFilesAt filePaths: [String]) -> [MutationPoint] {
+    func loadMutationPointsToExclude(inFilesAt filePaths: [String]) -> [ExclusionPoint] {
         let launchPath = "/usr/bin/fgrep"
         let args: [String] = ["-Hn", muterSkipMarker] + filePaths   // -H shows the filename, -n shows the line number
         guard let output = shell(launchPath: launchPath, arguments: args) else {
@@ -25,9 +31,9 @@ extension DiscoverMutationPoints {
             guard components.count >= 2, let path = components.first, let line = Int(components[1]) else {
                 return nil
             }
-            return MutationPoint(mutationOperatorId: .ror,  // TODO: Get the real mutation operator, or let it be optional
-                                 filePath: String(path),
-                                 position: AbsolutePosition(line: line, column: -1, utf8Offset: -1))
+            return ExclusionPoint(mutationOperatorId: nil,  // TODO: Get the real mutation operator, if specified
+                filePath: String(path),
+                line: line)
         }
     }
 }
@@ -51,9 +57,9 @@ func shell(launchPath path: String, arguments args: [String]) -> String? {
 }
 
 extension MutationPoint {
-    func matchesByLine(_ other: MutationPoint) -> Bool {
-        return self.filePath == other.filePath
-//            && self.mutationOperatorId == other.mutationOperatorId    // Ignoring mutation operator for now
-            && self.position.line == other.position.line
+    func matchesByLine(_ exclusionPoint: ExclusionPoint) -> Bool {
+        return self.filePath == exclusionPoint.filePath
+            && (self.mutationOperatorId == exclusionPoint.mutationOperatorId || exclusionPoint.mutationOperatorId == nil)
+            && self.position.line == exclusionPoint.line
     }
 }
