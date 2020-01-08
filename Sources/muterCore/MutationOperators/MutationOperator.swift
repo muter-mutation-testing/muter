@@ -3,7 +3,7 @@ import Foundation
 
 typealias SourceCodeTransformation = (Syntax) -> (mutatedSource: Syntax, description: String)
 typealias RewriterInitializer = (AbsolutePosition) -> PositionSpecificRewriter
-typealias VisitorInitializer = () -> PositionDiscoveringVisitor
+typealias VisitorInitializer = (MuterConfiguration) -> PositionDiscoveringVisitor
 
 public struct MutationPoint: Equatable, Codable {
     let mutationOperatorId: MutationOperator.Id

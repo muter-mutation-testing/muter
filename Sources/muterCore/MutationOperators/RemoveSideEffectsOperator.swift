@@ -12,6 +12,12 @@ enum RemoveSideEffectsOperator {
             "NSConditionLock"
         ]
 
+        let untestedFunctionNames: [String]
+
+        init(configuration: MuterConfiguration) {
+            untestedFunctionNames = ["print", "fatalError", "exit", "abort"] + configuration.excludeCallList
+        }
+
         override func visit(_ node: PatternBindingListSyntax) {
             for statement in node where statementsContainsConcurrencyTypes(statement) {
                 let property = propertyName(from: statement)
@@ -36,7 +42,7 @@ enum RemoveSideEffectsOperator {
 
             let containsFunctionCall = statement.children
                 .include(functionCallStatements)
-                .exclude(specialFunctionCallStatements)
+                .exclude(untestedFunctionCallStatements)
                 .count >= 1
 
             let doesntContainPossibleDeadlock = !statement.children
@@ -65,11 +71,8 @@ enum RemoveSideEffectsOperator {
             return concurencyPropertiesInFiles.contains(variable)
         }
 
-        private func specialFunctionCallStatements(_ node: Syntax) -> Bool {
-            return node.description.contains("print") ||
-                node.description.contains("fatalError") ||
-                node.description.contains("exit") ||
-                node.description.contains("abort")
+        private func untestedFunctionCallStatements(_ node: Syntax) -> Bool {
+            return untestedFunctionNames.contains { name in node.description.contains(name) }
         }
 
         private func statementsContainsConcurrencyTypes(_ statement: PatternBindingSyntax) -> Bool {
