@@ -77,8 +77,8 @@ public struct RunCommandOptions: OptionsProtocol {
                 key: "files-to-mutate",
                 defaultValue: [],
                 usage: """
-                An exlusive list of files for Muter to work on.
-                Please note that all subpaths are evalutated from the root of the project.
+                An exclusive list of files for Muter to work on.
+                Please note that all subpaths are evaluated from the root of the project.
                 """)
     }
 }
