@@ -9,6 +9,7 @@ protocol AnyRunCommandState {
     var mutationPoints: [MutationPoint] { get }
     var sourceCodeByFilePath: [FilePath: SourceFileSyntax] { get }
     var filesToMutate: [String] { get }
+    var dryRun: Bool { get }
     var swapFilePathsByOriginalPath: [FilePath: FilePath] { get }
     var mutationTestOutcomes: [MutationTestOutcome] { get }
     
@@ -23,6 +24,7 @@ class RunCommandState: AnyRunCommandState {
     var mutationPoints: [MutationPoint] = []
     var sourceCodeByFilePath: [FilePath: SourceFileSyntax] = [:]
     var filesToMutate: [String] = []
+    var dryRun: Bool = false
     var swapFilePathsByOriginalPath: [FilePath: FilePath] = [:]
     var mutationTestOutcomes: [MutationTestOutcome] = []
 
@@ -30,6 +32,7 @@ class RunCommandState: AnyRunCommandState {
 
     init(from options: RunCommandOptions) {
         self.filesToMutate = options.filesToMutate
+        self.dryRun = options.dryRun
     }
 }
 

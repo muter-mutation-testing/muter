@@ -9,9 +9,8 @@ class RunCommandHandler {
         self.state = state
     }
     
-    init(options: RunCommandOptions,
-         steps: [RunCommandStep] = RunCommandHandler.defaultSteps) {
-        self.steps = steps
+    init(options: RunCommandOptions) {
+        self.steps = options.dryRun ? RunCommandHandler.dryRunSteps : RunCommandHandler.defaultSteps
         self.state = RunCommandState(from: options)
     }
     
@@ -38,4 +37,7 @@ private extension RunCommandHandler {
                                                          DiscoverMutationPoints(),
                                                          GenerateSwapFilePaths(),
                                                          PerformMutationTesting()]
+    private static let dryRunSteps: [RunCommandStep] = [LoadConfiguration(),
+                                                        DiscoverSourceFiles(),
+                                                        DiscoverMutationPoints()]
 }

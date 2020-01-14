@@ -17,6 +17,7 @@ public struct RunCommand: CommandProtocol {
     Available flags:
 
        --files-to-mutate    Only mutate a given list of source code files
+       --dry-run            Only list source files to be mutated, without actually runnning tests
        --output-json        Output test results to a json file
        --output-xcode       Output test results in a format consumable by an Xcode run script step
 
@@ -51,9 +52,10 @@ public struct RunCommand: CommandProtocol {
 public struct RunCommandOptions: OptionsProtocol {
     public typealias ClientError = MuterError
     let reporter: Reporter
+    let dryRun: Bool
     let filesToMutate: [String]
     
-    public init(shouldOutputJSON: Bool, shouldOutputXcode: Bool, filesToMutate list: [String]) {
+    public init(shouldOutputJSON: Bool, shouldOutputXcode: Bool, dryRun: Bool, filesToMutate list: [String]) {
         if shouldOutputJSON {
             reporter = .json
         } else if shouldOutputXcode {
@@ -61,7 +63,8 @@ public struct RunCommandOptions: OptionsProtocol {
         } else {
             reporter = .plainText
         }
-        
+
+        self.dryRun = dryRun
         filesToMutate = list
     }
 
@@ -69,6 +72,7 @@ public struct RunCommandOptions: OptionsProtocol {
         return curry(self.init)
             <*> mode <| Option(key: "output-json", defaultValue: false, usage: "Whether or not Muter should output a json report after it's finished running.")
             <*> mode <| Option(key: "output-xcode", defaultValue: false, usage: "Whether or not Muter should output to Xcode after it's finished running.")
+            <*> mode <| Option(key: "dry-run", defaultValue: false, usage: "Whether or not Muter should just list files to mutate.")
             <*> mode <| Option(
                 key: "files-to-mutate",
                 defaultValue: [],
