@@ -34,6 +34,7 @@ public struct RunCommand: CommandProtocol {
 
     public func run(_ options: Options) -> Result<(), ClientError> {
         let _ = RunCommandObserver(reporter: options.reporter,
+                                   dryRun: options.dryRun,
                                    fileManager: fileManager,
                                    flushHandler: flushStdOut)
         

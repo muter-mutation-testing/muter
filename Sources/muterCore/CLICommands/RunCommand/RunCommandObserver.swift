@@ -33,6 +33,7 @@ func flushStdOut() {
 @available(OSX 10.12, *)
 class RunCommandObserver {
     private let reporter: Reporter
+    private let dryRun: Bool
     private let fileManager: FileSystemManager
     private let loggingDirectory: String
     private let flushStdOut: () -> Void
@@ -61,8 +62,9 @@ class RunCommandObserver {
        ]
     }
     
-    init(reporter: Reporter, fileManager: FileSystemManager, flushHandler: @escaping () -> Void) {
+    init(reporter: Reporter, dryRun: Bool = false, fileManager: FileSystemManager, flushHandler: @escaping () -> Void) {
         self.reporter = reporter
+        self.dryRun = dryRun
         self.fileManager = fileManager
         self.flushStdOut = flushHandler
         self.loggingDirectory = createLoggingDirectory(in: fileManager.currentDirectoryPath, fileManager: fileManager)
@@ -123,11 +125,18 @@ extension RunCommandObserver {
         if reporter == .plainText {
             let discoveredMutationPoints = notification.object as! [MutationPoint]
             numberOfMutationPoints = discoveredMutationPoints.count
-            let numberOfFiles = discoveredMutationPoints.map { $0.fileName }.deduplicated().count
-            
-            print("In total, Muter discovered \(discoveredMutationPoints.count) mutants in \(numberOfFiles) files\n")
-            for (fileName, mutantCount) in mutationPointsByFileName(from: discoveredMutationPoints) {
-                print("\(fileName) (\(mutantCount) mutants)".bold)
+            if dryRun {
+                print("In total, Muter discovered \(discoveredMutationPoints.count) mutants\n")
+                for mutation in discoveredMutationPoints {
+                    print("\(mutation.fileName):\(mutation.position.line): \(mutation.mutationOperatorId.rawValue)")
+                }
+            } else {
+                let numberOfFiles = discoveredMutationPoints.map { $0.fileName }.deduplicated().count
+                
+                print("In total, Muter discovered \(discoveredMutationPoints.count) mutants in \(numberOfFiles) files\n")
+                for (fileName, mutantCount) in mutationPointsByFileName(from: discoveredMutationPoints) {
+                    print("\(fileName) (\(mutantCount) mutants)".bold)
+                }
             }
         }
     }
