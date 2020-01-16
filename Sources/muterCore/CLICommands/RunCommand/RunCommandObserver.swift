@@ -136,6 +136,10 @@ extension RunCommandObserver {
                     print("\(fileName) (\(mutantCount) mutants)".bold)
                 }
             }
+        } else if reporter == .xcode && dryRun {
+            let discoveredMutationPoints = notification.object as! [MutationPoint]
+            let mutationPointDescriptions = discoveredMutationPoints.map { "\($0.filePath):\($0.position.line):\($0.position.column): warning: \($0.mutationOperatorId.rawValue) will be applied here" }
+            print(mutationPointDescriptions.joined(separator: "\n"))
         }
     }
     
