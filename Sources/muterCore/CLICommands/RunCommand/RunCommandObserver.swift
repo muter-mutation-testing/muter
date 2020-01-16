@@ -127,9 +127,7 @@ extension RunCommandObserver {
             numberOfMutationPoints = discoveredMutationPoints.count
             if dryRun {
                 print("In total, Muter discovered \(discoveredMutationPoints.count) mutants\n")
-                for mutation in discoveredMutationPoints {
-                    print("\(mutation.fileName):\(mutation.position.line): \(mutation.mutationOperatorId.rawValue)")
-                }
+                print(generateDiscoveredMutationOperatorsCLITable(from: discoveredMutationPoints).description)
             } else {
                 let numberOfFiles = discoveredMutationPoints.map { $0.fileName }.deduplicated().count
                 

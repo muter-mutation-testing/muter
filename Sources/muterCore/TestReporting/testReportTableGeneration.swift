@@ -50,7 +50,7 @@ func generateMutationScoresCLITable(from fileReports: [MuterTestReport.FileRepor
     ])
 }
 
-// MARK - Coloring Functions
+// MARK: Coloring Functions
 func applyMutationTestResultsColor(to rows: [CLITable.Row]) -> [CLITable.Row] {
     return rows.map {
         let coloredValue = $0.value == TestSuiteOutcome.failed.asMutationTestOutcome ?
@@ -79,4 +79,17 @@ func coloredMutationScore(for score: Int, appliedTo text: String) -> String {
     default:
         return text.green
     }
+}
+
+// MARK: -
+
+/// Similar to `generateAppliedMutationOperatorsCLITable` but much simplified, intended for displaying dry-run results.
+func generateDiscoveredMutationOperatorsCLITable(from mutationPoints: [MutationPoint]) -> CLITable {
+    let discoveredMutations = mutationPoints.map { CLITable.Row(value: $0.mutationOperatorId.rawValue) }
+    let fileNames = mutationPoints.map { CLITable.Row(value: "\($0.fileName):\($0.position.line)") }
+
+    return CLITable(padding: 3, columns: [
+        CLITable.Column(title: "File", rows: fileNames),
+        CLITable.Column(title: "Discovered Mutation Operator", rows: discoveredMutations)
+        ])
 }
