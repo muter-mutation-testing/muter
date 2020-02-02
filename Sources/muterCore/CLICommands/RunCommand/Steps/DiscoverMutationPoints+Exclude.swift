@@ -10,13 +10,13 @@
 import Foundation
 import SwiftSyntax
 
-let muterSkipMarker = "muter:skip"
-
 // Currently supports only line comments (in block comments, would need to detect in which actual line the skip marker appears - and if it isn't the first or last line, it won't contain code anyway)
-class ExcludedMutationPointsDetector: SyntaxVisitor {
+final class ExcludedMutationPointsDetector: SyntaxVisitor {
 
     private(set) var excludedLines: [Int] = []
     
+    private let muterSkipMarker = "muter:skip"
+
     override func visitPre(_ node: Syntax) {
         let markedForExclusion = node.leadingTrivia?.contains {
             if case .lineComment(let commentText) = $0 {
