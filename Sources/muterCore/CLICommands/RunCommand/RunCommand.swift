@@ -65,8 +65,12 @@ public struct RunCommandOptions: OptionsProtocol {
         filesToMutate = list
     }
 
+    private static func create(_ shouldOutputJSON: Bool) -> (Bool) -> ([String]) -> RunCommandOptions {
+        return { shouldOutputXcode in { filesToMutate in RunCommandOptions(shouldOutputJSON: shouldOutputJSON, shouldOutputXcode: shouldOutputXcode, filesToMutate: filesToMutate) } }
+    }
+
     public static func evaluate(_ mode: CommandMode) -> Result<RunCommandOptions, CommandantError<ClientError>>  {
-        return curry(self.init)
+        return create
             <*> mode <| Option(key: "output-json", defaultValue: false, usage: "Whether or not Muter should output a json report after it's finished running.")
             <*> mode <| Option(key: "output-xcode", defaultValue: false, usage: "Whether or not Muter should output to Xcode after it's finished running.")
             <*> mode <| Option(
