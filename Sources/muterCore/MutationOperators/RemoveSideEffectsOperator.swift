@@ -12,7 +12,7 @@ enum RemoveSideEffectsOperator {
             "NSConditionLock"
         ]
 
-        let untestedFunctionNames: [String]
+        private let untestedFunctionNames: [String]
 
         init(configuration: MuterConfiguration) {
             untestedFunctionNames = ["print", "fatalError", "exit", "abort"] + configuration.excludeCallList
