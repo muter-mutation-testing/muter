@@ -118,7 +118,11 @@ Should you need to modify any of the options, you can use the list below to unde
 
     The `exclude` option is optional.
 
-**NOTE**: Muter uses a substring match to determine if a file should be excluded from mutation testing. You should not use glob expressions (like `**/*Model.swift`) or regex.
+    **NOTE**: Muter uses a substring match to determine if a file should be excluded from mutation testing. You should not use glob expressions (like `**/*Model.swift`) or regex.
+
+- `excludeCalls` - a list of function names you want Muter to ignore in the [Remove Side Effects](https://github.com/muter-mutation-testing/muter/blob/master/Docs/mutation_operators.md) mutation operator, such as custom logging functions. Mutants in which these functions aren't called will not be created (note that mutations within the functions themselves are *not* skipped, only calls to those functions).
+
+    **NOTE**: Doesn't support overloading currently - all function calls with a matching name will be skipped. 
 
 Below is an example pulled directly from the `ExampleApp` project.
 The configuration file will end up looking something like this:

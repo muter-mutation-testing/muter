@@ -64,7 +64,7 @@ The Remove Side Effects operator will remove code it determines is causing a sid
 
 * A line contains a function call which is explicitly discarding a return result
 * A line contains a function call and doesn't save the result of the function call into a named variable or constant (i.e. a line implicitly discards a return result or doesn't produce one)
-* A line does not contain a call to `print`, `exit`, `fatalError`, or `abort`
+* A line does not contain a call to `print`, `exit`, `fatalError`, `abort`, or any function listed in `muter.conf.json` under the `excludeCalls` key.
 
 The purpose of this operator is to highlight how your tests respond to the absence of expected side effects.
 
