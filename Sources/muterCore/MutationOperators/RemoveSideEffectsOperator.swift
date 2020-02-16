@@ -14,8 +14,8 @@ enum RemoveSideEffectsOperator {
 
         private let untestedFunctionNames: [String]
 
-        init(configuration: MuterConfiguration) {
-            untestedFunctionNames = ["print", "fatalError", "exit", "abort"] + configuration.excludeCallList
+        init(configuration: MuterConfiguration? = nil) {
+            untestedFunctionNames = ["print", "fatalError", "exit", "abort"] + (configuration?.excludeCallList ?? [])
         }
 
         override func visit(_ node: PatternBindingListSyntax) {
