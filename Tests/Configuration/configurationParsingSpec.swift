@@ -9,7 +9,7 @@ class ConfigurationParsingSpec: QuickSpec {
             it("parses the minimum necessary configuration") {
                 let configuration = MuterConfiguration.fromFixture(at: "\(self.fixturesDirectory)/muter.conf.withoutExcludeList.json")
 
-                expect(configuration?.excludeList).to(equal([]))
+                expect(configuration?.excludeFileList).to(equal([]))
                 expect(configuration?.testCommandExecutable).to(equal("/usr/bin/xcodebuild"))
                 expect(configuration?.testCommandArguments).to(equal([
                     "-project",
@@ -27,7 +27,7 @@ class ConfigurationParsingSpec: QuickSpec {
             it("parses the excludeList when it's present") {
                 let configuration = MuterConfiguration.fromFixture(at: "\(self.fixturesDirectory)/muter.conf.withExcludeList.json")
 
-                expect(configuration?.excludeList).to(equal(["ExampleApp"]))
+                expect(configuration?.excludeFileList).to(equal(["ExampleApp"]))
             }
         }
     }
