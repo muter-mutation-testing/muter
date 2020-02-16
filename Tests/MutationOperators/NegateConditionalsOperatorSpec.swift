@@ -17,7 +17,7 @@ class NegateConditionalsOperatorSpec: QuickSpec {
 
             describe("NegateConditionalsOperator.Visitor") {
                 it("records the positions of code that contains a conditional operator") {
-                    let visitor = ROROperator.Visitor(MuterConfiguration())
+                    let visitor = ROROperator.Visitor()
 
                     visitor.visit(sourceWithConditionalLogic)
 
@@ -37,14 +37,14 @@ class NegateConditionalsOperatorSpec: QuickSpec {
                 }
 
                 it("records no positions when a file doesn't contain a conditional operator") {
-                    let visitor = ROROperator.Visitor(MuterConfiguration())
+                    let visitor = ROROperator.Visitor()
                     visitor.visit(sourceWithoutMuteableCode)
                     expect(visitor.positionsOfToken).to(haveCount(0))
                 }
 
                 it("doesn't discover any mutable positions in function declarations") {
 
-                    let visitor = ROROperator.Visitor(MuterConfiguration())
+                    let visitor = ROROperator.Visitor()
                     visitor.visit(sourceWithConditionalLogic)
 
                     let functionOperator = visitor.positionsOfToken.first { $0.line == 18 && $0.column == 6 }
@@ -53,7 +53,7 @@ class NegateConditionalsOperatorSpec: QuickSpec {
 
                 it("doesn't discover any mutable positions in conditional conformance constraints") {
 
-                    let visitor = ROROperator.Visitor(MuterConfiguration())
+                    let visitor = ROROperator.Visitor()
                     visitor.visit(
                         sourceCode(fromFileAt: "\(self.mutationExamplesDirectory)/NegateConditionals/conditionalConformanceConstraints.swift")!
                     )

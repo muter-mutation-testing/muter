@@ -23,7 +23,7 @@ class RemoveSideEffectsOperatorSpec: QuickSpec {
             it("records the positions of code that causes a side effect") {
                 let sourceWithSideEffects = sourceCode(fromFileAt: "\(self.fixturesDirectory)/MutationExamples/SideEffect/sampleWithSideEffects.swift")!
 
-                let visitor = RemoveSideEffectsOperator.Visitor(configuration: MuterConfiguration())
+                let visitor = RemoveSideEffectsOperator.Visitor()
                 visitor.visit(sourceWithSideEffects)
 
                 guard visitor.positionsOfToken.count == 4 else {
@@ -40,7 +40,7 @@ class RemoveSideEffectsOperatorSpec: QuickSpec {
             it("records no positions when a file doesn't contain code that causes a side effect") {
                 let sourceWithoutSideEffects = sourceCode(fromFileAt: "\(self.mutationExamplesDirectory)/NegateConditionals/sampleWithConditionalOperators.swift")!
 
-                let visitor = RemoveSideEffectsOperator.Visitor(configuration: MuterConfiguration())
+                let visitor = RemoveSideEffectsOperator.Visitor()
                 visitor.visit(sourceWithoutSideEffects)
 
                 expect(visitor.positionsOfToken).to(haveCount(0))
@@ -49,7 +49,7 @@ class RemoveSideEffectsOperatorSpec: QuickSpec {
             it("ignores side effect code that may lead to deadlock") {
                 let sourceWithConcurrency = sourceCode(fromFileAt: "\(self.fixturesDirectory)/MutationExamples/SideEffect/sampleWithConcurrency.swift")!
 
-                let visitor = RemoveSideEffectsOperator.Visitor(configuration: MuterConfiguration())
+                let visitor = RemoveSideEffectsOperator.Visitor()
                 visitor.visit(sourceWithConcurrency)
 
                 guard visitor.positionsOfToken.count == 4 else {
