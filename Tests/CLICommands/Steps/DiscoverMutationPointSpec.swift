@@ -80,6 +80,37 @@ class DiscoverMutationPointSpec: QuickSpec {
                         result = DiscoverMutationPoints().run(with: state)
                     }
                 }
+
+                context("if there are lines marked for skipping") {
+                    let samplePath = "\(self.fixturesDirectory)/sample with mutations marked for skipping.swift"
+                    beforeEach {
+                        state = RunCommandState()
+                        state.sourceFileCandidates = [samplePath]
+
+                        result = DiscoverMutationPoints().run(with: state)
+                    }
+
+                    it("skips candidate mutations on these lines") {
+                        guard case .success(let stateChanges) = result! else {
+                            fail("expected success but got \(String(describing: result!))")
+                            return
+                        }
+
+                        let stateChangesIncludesOnlyUnskippedMutationPoints = stateChanges.contains {
+                            if case .mutationPointsDiscovered(let actualMutationPoints) = $0 {
+                                return actualMutationPoints == [
+                                    MutationPoint(mutationOperatorId: .removeSideEffects,
+                                                  filePath: samplePath,
+                                                  position: AbsolutePosition(line: 3, column: 42, utf8Offset: 53))
+                                ]
+                            }
+                            return false
+                        }
+
+                        expect(stateChangesIncludesOnlyUnskippedMutationPoints) == true
+                    }
+                }
+
             }
             
             context("when it doesn't discover any mutants that can be inserted into a Swift file") {

@@ -49,15 +49,21 @@ private extension DiscoverMutationPoints {
     }
     
     func discoverNewMutationPoints(inFileAt path: String, containing source: SourceFileSyntax, configuration: MuterConfiguration) -> [MutationPoint] {
+
+        let excludedMutationPointsDetector = ExcludedMutationPointsDetector()
+        excludedMutationPointsDetector.visit(source)
+
         return MutationOperator.Id.allCases.accumulate(into: []) { newMutationPoints, mutationOperatorId in
             
             let visitor = mutationOperatorId.rewriterVisitorPair.visitor(configuration)
             visitor.visit(source)
             
-            return newMutationPoints + visitor.positionsOfToken.map { position in
-                return MutationPoint(mutationOperatorId: mutationOperatorId,
-                                     filePath: path,
-                                     position: position)
+            return newMutationPoints + visitor.positionsOfToken
+                .filter { !excludedMutationPointsDetector.excludedLines.contains($0.line) }
+                .map { position in
+                    return MutationPoint(mutationOperatorId: mutationOperatorId,
+                                         filePath: path,
+                                         position: position)
             }
         }
     }
