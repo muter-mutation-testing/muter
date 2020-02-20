@@ -4,7 +4,9 @@ class TokenAwareVisitor: SyntaxVisitor, PositionDiscoveringVisitor {
     
     fileprivate(set) var tokensToDiscover = [TokenKind]()
     private(set) var positionsOfToken = [AbsolutePosition]()
-    
+
+    init(configuration: MuterConfiguration? = nil) { }
+
     override func visit(_ token: TokenSyntax) {
         if canMutateToken(token) {
             positionsOfToken.append(token.position)
@@ -19,8 +21,8 @@ class TokenAwareVisitor: SyntaxVisitor, PositionDiscoveringVisitor {
 
 enum ROROperator {
     class Visitor: TokenAwareVisitor {
-        override init() {
-            super.init()
+        override init(configuration: MuterConfiguration? = nil) {
+            super.init(configuration: configuration)
             tokensToDiscover = [
                 .spacedBinaryOperator("=="),
                 .spacedBinaryOperator("!="),
@@ -37,8 +39,8 @@ enum ROROperator {
 
 enum ChangeLogicalConnectorOperator {
     class Visitor: TokenAwareVisitor {
-        override init() {
-            super.init()
+        override init(configuration: MuterConfiguration? = nil) {
+            super.init(configuration: configuration)
             tokensToDiscover = [
                 .spacedBinaryOperator("||"),
                 .spacedBinaryOperator("&&"),

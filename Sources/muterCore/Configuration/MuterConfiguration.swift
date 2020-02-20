@@ -3,18 +3,23 @@ import Foundation
 public struct MuterConfiguration: Equatable, Codable {
     let testCommandArguments: [String]
     let testCommandExecutable: String
-    let excludeList: [String]
+    /// File exclusion list.
+    let excludeFileList: [String]
+    /// Exclusion list of functions for Remove Side Effects.
+    let excludeCallList: [String]
 
     enum CodingKeys: String, CodingKey {
         case testCommandArguments = "arguments"
         case testCommandExecutable = "executable"
-        case excludeList = "exclude"
+        case excludeFileList = "exclude"
+        case excludeCallList = "excludeCalls"
     }
 
-    public init(executable: String = "", arguments: [String] = [], excludeList: [String] = []) {
+    public init(executable: String = "", arguments: [String] = [], excludeList: [String] = [], excludeCallList: [String] = []) {
         self.testCommandExecutable = executable
         self.testCommandArguments = arguments
-        self.excludeList = excludeList
+        self.excludeFileList = excludeList
+        self.excludeCallList = excludeCallList
     }
 
     public init(from decoder: Decoder) throws {
@@ -23,8 +28,11 @@ public struct MuterConfiguration: Equatable, Codable {
         testCommandExecutable = try container.decode(String.self, forKey: .testCommandExecutable)
         testCommandArguments = try container.decode([String].self, forKey: .testCommandArguments)
 
-        let excludeList = try? container.decode([String].self, forKey: .excludeList)
-        self.excludeList = excludeList ?? []
+        let excludeList = try? container.decode([String].self, forKey: .excludeFileList)
+        self.excludeFileList = excludeList ?? []
+
+        let excludeCallList = try? container.decode([String].self, forKey: .excludeCallList)
+        self.excludeCallList = excludeCallList ?? []
     }
 }
 

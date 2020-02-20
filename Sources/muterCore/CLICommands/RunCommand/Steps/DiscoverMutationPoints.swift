@@ -8,7 +8,7 @@ struct DiscoverMutationPoints: RunCommandStep {
         
         notificationCenter.post(name: .mutationPointDiscoveryStarted, object: nil)
         
-        let (mutationPoints, sourceCodeByFilePath) = discoverMutationPoints(inFilesAt: state.sourceFileCandidates)
+        let (mutationPoints, sourceCodeByFilePath) = discoverMutationPoints(inFilesAt: state.sourceFileCandidates, configuration: state.muterConfiguration)
         
         notificationCenter.post(name: .mutationPointDiscoveryFinished, object: mutationPoints)
         
@@ -23,7 +23,7 @@ struct DiscoverMutationPoints: RunCommandStep {
 
 private extension DiscoverMutationPoints {
     
-    func discoverMutationPoints(inFilesAt filePaths: [String]) -> (mutationPoints: [MutationPoint], sourceCodeByFilePath: [FilePath: SourceFileSyntax]) {
+    func discoverMutationPoints(inFilesAt filePaths: [String], configuration: MuterConfiguration) -> (mutationPoints: [MutationPoint], sourceCodeByFilePath: [FilePath: SourceFileSyntax]) {
         
         var sourceCodeByFilePath: [FilePath: SourceFileSyntax] = [:]
         let mutationPoints: [MutationPoint] = filePaths.accumulate(into: []) { alreadyDiscoveredMutationPoints, path in
@@ -33,7 +33,7 @@ private extension DiscoverMutationPoints {
                     return alreadyDiscoveredMutationPoints
             }
             
-            let newMutationPoints = discoverNewMutationPoints(inFileAt: path, containing: source).sorted(by: filePositionOrder)
+            let newMutationPoints = discoverNewMutationPoints(inFileAt: path, containing: source, configuration: configuration).sorted(by: filePositionOrder)
             
             if !newMutationPoints.isEmpty {
                 sourceCodeByFilePath[path] = source
@@ -48,14 +48,14 @@ private extension DiscoverMutationPoints {
         )
     }
     
-    func discoverNewMutationPoints(inFileAt path: String, containing source: SourceFileSyntax) -> [MutationPoint] {
+    func discoverNewMutationPoints(inFileAt path: String, containing source: SourceFileSyntax, configuration: MuterConfiguration) -> [MutationPoint] {
 
         let excludedMutationPointsDetector = ExcludedMutationPointsDetector()
         excludedMutationPointsDetector.visit(source)
 
         return MutationOperator.Id.allCases.accumulate(into: []) { newMutationPoints, mutationOperatorId in
             
-            let visitor = mutationOperatorId.rewriterVisitorPair.visitor()
+            let visitor = mutationOperatorId.rewriterVisitorPair.visitor(configuration)
             visitor.visit(source)
             
             return newMutationPoints + visitor.positionsOfToken

@@ -18,7 +18,7 @@ struct DiscoverSourceFiles: RunCommandStep {
         
         let sourceFileCandidates = state.filesToMutate.isEmpty ?
             discoverSourceFiles(inDirectoryAt: state.tempDirectoryURL.path,
-                                excludingPathsIn: state.muterConfiguration.excludeList) :
+                                excludingPathsIn: state.muterConfiguration.excludeFileList) :
             findFilesToMutate(files: state.filesToMutate,
                               inDirectoryAt: state.tempDirectoryURL.path)
         

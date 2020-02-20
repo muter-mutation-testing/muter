@@ -62,6 +62,19 @@ class RemoveSideEffectsOperatorSpec: QuickSpec {
                 expect(visitor.positionsOfToken[2].line).to(equal(22))
                 expect(visitor.positionsOfToken[3].line).to(equal(28))
             }
+
+            it("ignores calls to excluded function (but not calls to other functions in it)") {
+                let sourceWithExcludedFunction = sourceCode(fromFileAt: "\(self.mutationExamplesDirectory)/SideEffect/sampleWithExcludedFunctionCall.swift")!
+                let visitor = RemoveSideEffectsOperator.Visitor(configuration: MuterConfiguration(excludeCallList: ["callExcluded"]))
+                visitor.visit(sourceWithExcludedFunction)
+
+                guard visitor.positionsOfToken.count == 1 else {
+                    fail("Expected 1 token to be discovered, got \(visitor.positionsOfToken.count) instead")
+                    return
+                }
+
+                expect(visitor.positionsOfToken.first?.line).to(equal(3))
+            }
         }
 
         describe("RemoveSideEffectsOperator.Rewriter") {
