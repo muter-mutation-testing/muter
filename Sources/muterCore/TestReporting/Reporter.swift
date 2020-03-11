@@ -15,6 +15,17 @@ enum Reporter {
             return xcodeReport(from: outcomes)
         }
     }
+    
+    func generateStep(from outcome: MutationTestOutcome) -> String? {
+        switch self {
+        case .plainText:
+            return nil
+        case .json:
+            return nil
+        case .xcode:
+            return xcodeStep(from: outcome)
+        }
+    }
 }
 
 private extension Reporter {
@@ -69,9 +80,20 @@ private extension Reporter {
         
         return json
     }
-    
+
     func xcodeReport(from outcomes: [MutationTestOutcome]) -> String {
-        return outcomes
+        let report = MuterTestReport(from: outcomes)
+        return """
+        
+        globalMutationScore=\(report.globalMutationScore)
+        totalAppliedMutationOperators=\(report.totalAppliedMutationOperators)
+        numberOfKilledMutants=\(report.numberOfKilledMutants)
+        
+        """
+    }
+    
+    func xcodeStep(from outcome: MutationTestOutcome) -> String {
+        return [outcome]
             .include { $0.testSuiteOutcome == .passed }
             .map(outcomeIntoXcodeString)
             .joined(separator: "\n")
