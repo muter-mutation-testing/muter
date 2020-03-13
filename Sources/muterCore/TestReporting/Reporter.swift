@@ -5,25 +5,14 @@ enum Reporter {
     case json
     case xcode
     
-    func generateReport(from outcomes: [MutationTestOutcome]) -> String {
+    func generateReport(from outcomes: [MutationTestOutcome], footerOnly: Bool = false) -> String {
         switch self {
         case .plainText:
             return textReport(from: outcomes)
         case .json:
             return jsonReport(from: outcomes)
         case .xcode:
-            return xcodeReport(from: outcomes)
-        }
-    }
-    
-    func generateStep(from outcome: MutationTestOutcome) -> String? {
-        switch self {
-        case .plainText:
-            return nil
-        case .json:
-            return nil
-        case .xcode:
-            return xcodeStep(from: outcome)
+            return xcodeReport(from: outcomes,footerOnly: footerOnly)
         }
     }
 }
@@ -81,22 +70,20 @@ private extension Reporter {
         return json
     }
 
-    func xcodeReport(from outcomes: [MutationTestOutcome]) -> String {
-        let report = MuterTestReport(from: outcomes)
-        return """
-        
-        globalMutationScore=\(report.globalMutationScore)
-        totalAppliedMutationOperators=\(report.totalAppliedMutationOperators)
-        numberOfKilledMutants=\(report.numberOfKilledMutants)
-        
-        """
-    }
-    
-    func xcodeStep(from outcome: MutationTestOutcome) -> String {
-        return [outcome]
-            .include { $0.testSuiteOutcome == .passed }
-            .map(outcomeIntoXcodeString)
-            .joined(separator: "\n")
+    func xcodeReport(from outcomes: [MutationTestOutcome], footerOnly: Bool = false) -> String {
+        if (footerOnly) {
+            let report = MuterTestReport(from: outcomes)
+            return """
+            globalMutationScore=\(report.globalMutationScore)
+            totalAppliedMutationOperators=\(report.totalAppliedMutationOperators)
+            numberOfKilledMutants=\(report.numberOfKilledMutants)
+            """
+        } else {
+            return outcomes
+                .include { $0.testSuiteOutcome == .passed }
+                .map(outcomeIntoXcodeString)
+                .joined(separator: "\n")
+        }
     }
     
     private func outcomeIntoXcodeString(outcome: MutationTestOutcome)  -> String  {
