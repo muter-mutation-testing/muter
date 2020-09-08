@@ -1,34 +1,59 @@
 import SwiftSyntax
 
-extension AbsolutePosition: Equatable {
-    public static func == (lhs: AbsolutePosition, rhs: AbsolutePosition) -> Bool {
-        return (lhs.column, lhs.line, lhs.utf8Offset) == (rhs.column, rhs.line, rhs.utf8Offset)
+struct MutationPosition: Codable, Equatable {
+    let utf8Offset: Int
+    let line: Int
+    let column: Int
+    
+    init(utf8Offset: Int, line: Int? = nil, column: Int? = nil) {
+        self.utf8Offset = utf8Offset
+        self.line = line ?? 0
+        self.column = column ?? 0
     }
 }
 
-extension AbsolutePosition: Codable {
+func == (lhs: MutationPosition, rhs: AbsolutePosition) -> Bool {
+    lhs.utf8Offset == rhs.utf8Offset
+}
 
+func == (lhs: AbsolutePosition, rhs: MutationPosition) -> Bool {
+    lhs.utf8Offset == rhs.utf8Offset
+}
+
+extension AbsolutePosition: Codable {
     enum Keys: CodingKey {
-        case line
-        case column
         case utf8Offset
     }
 
     public init(from decoder: Decoder) throws {
         let container = try decoder.container(keyedBy: Keys.self)
 
-        let line = try container.decode(Int.self, forKey: .line)
-        let column = try container.decode(Int.self, forKey: .column)
         let utf8Offset = try container.decode(Int.self, forKey: .utf8Offset)
 
-        self.init(line: line, column: column, utf8Offset: utf8Offset)
+        self.init(utf8Offset: utf8Offset)
     }
 
     public func encode(to encoder: Encoder) throws {
         var container = encoder.container(keyedBy: Keys.self)
 
-        try container.encode(line, forKey: .line)
-        try container.encode(column, forKey: .column)
         try container.encode(utf8Offset, forKey: .utf8Offset)
+    }
+}
+
+extension SyntaxProtocol {
+    func mutationPosition(inFile file: String, withSource source: String) -> MutationPosition {
+        let converter = SourceLocationConverter(
+            file: file,
+            source: source
+        )
+        let location = SourceLocation(
+            offset: position.utf8Offset,
+            converter: converter
+        )
+        return MutationPosition(
+            utf8Offset: location.offset,
+            line: location.line ?? 0,
+            column: location.column ?? 0
+        )
     }
 }

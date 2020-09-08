@@ -11,23 +11,23 @@ class ChangeLogicalConnectorOperatorSpec: QuickSpec {
             describe("LogicalOperator.Rewriter") {
                 
                 it("converts a && operator to a || operator") {
-                    let line2Column18 = AbsolutePosition(line: 2, column: 18, utf8Offset: 43)
+                    let line2Column18 = MutationPosition(utf8Offset: 43, line: 2, column: 18)
                     let expectedSource = sourceCode(fromFileAt: "\(self.fixturesDirectory)/MutationExamples/LogicalOperator/changedANDOperator.swift")!
                     
                     let rewriter = ChangeLogicalConnectorOperator.Rewriter(positionToMutate: line2Column18)
-                    let mutatedSource = rewriter.visit(sourceWithLogicalOperators)
+                    let mutatedSource = rewriter.visit(sourceWithLogicalOperators.code)
                     
-                    expect(mutatedSource.description) == expectedSource.description
+                    expect(mutatedSource.description) == expectedSource.code.description
                 }
                 
                 it("converts a || operator to a && operator") {
-                    let line6Column17 = AbsolutePosition(line: 6, column: 17, utf8Offset: 102)
+                    let line6Column17 = MutationPosition(utf8Offset: 102, line: 6, column: 17)
                     let expectedSource = sourceCode(fromFileAt: "\(self.fixturesDirectory)/MutationExamples/LogicalOperator/changedOROperator.swift")!
                     
                     let rewriter = ChangeLogicalConnectorOperator.Rewriter(positionToMutate: line6Column17)
-                    let mutatedSource = rewriter.visit(sourceWithLogicalOperators)
+                    let mutatedSource = rewriter.visit(sourceWithLogicalOperators.code)
                     
-                    expect(mutatedSource.description) == expectedSource.description
+                    expect(mutatedSource.description) == expectedSource.code.description
                 }
 
             }
@@ -35,8 +35,8 @@ class ChangeLogicalConnectorOperatorSpec: QuickSpec {
             describe("LogicalOperator.Visitor") {
                 it("records the positions of code that contains a logical operator") {
                     
-                    let visitor = ChangeLogicalConnectorOperator.Visitor()
-                    visitor.visit(sourceWithLogicalOperators)
+                    let visitor = ChangeLogicalConnectorOperator.Visitor(file: sourceWithLogicalOperators.path, source: sourceWithLogicalOperators.code.description)
+                    visitor.walk(sourceWithLogicalOperators.code)
                     
                     guard visitor.positionsOfToken.count == 2 else {
                         fail("Expected 2 tokens to be discovered, got \(visitor.positionsOfToken.count) instead")

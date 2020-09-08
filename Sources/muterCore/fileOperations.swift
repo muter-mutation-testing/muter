@@ -2,9 +2,9 @@ import SwiftSyntax
 import Foundation
 
 // MARK - Source Code
-func sourceCode(fromFileAt path: String) -> SourceFileSyntax? {
+func sourceCode(fromFileAt path: String) -> (code: SourceFileSyntax, path: String)? {
     let url = URL(fileURLWithPath: path)
-    return try? SyntaxTreeParser.parse(url)
+    return (try? SyntaxParser.parse(url)).map { (code: $0, path: url.absoluteString) }
 }
 
 // MARK - Logging Directory

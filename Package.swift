@@ -1,9 +1,12 @@
-// swift-tools-version:4.2
+// swift-tools-version:5.0
 
 import PackageDescription
 
 let package = Package(
     name: "muter",
+    platforms: [
+        .macOS(.v10_14),
+    ],
     products: [
         .executable(name: "muter", targets: ["muter", "muterCore"]),
     ],
@@ -17,7 +20,7 @@ let package = Package(
         .package(url: "https://github.com/thoughtbot/Curry.git", from: "4.0.2"),
         .package(url: "https://github.com/jkandzi/Progress.swift", from: "0.4.0"),
         .package(url: "https://github.com/dduan/Pathos", from: "0.2.0")
-
+        
     ],
     targets: [
         .target(

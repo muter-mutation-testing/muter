@@ -29,7 +29,7 @@ private extension DiscoverMutationPoints {
         let mutationPoints: [MutationPoint] = filePaths.accumulate(into: []) { alreadyDiscoveredMutationPoints, path in
             
             guard pathContainsDotSwift(path),
-                let source = sourceCode(fromFileAt: path) else {
+                  let source = sourceCode(fromFileAt: path)?.code else {
                     return alreadyDiscoveredMutationPoints
             }
             
@@ -51,15 +51,18 @@ private extension DiscoverMutationPoints {
     func discoverNewMutationPoints(inFileAt path: String, containing source: SourceFileSyntax, configuration: MuterConfiguration) -> [MutationPoint] {
 
         let excludedMutationPointsDetector = ExcludedMutationPointsDetector()
-        excludedMutationPointsDetector.visit(source)
+        _ = excludedMutationPointsDetector.visit(source)
 
         return MutationOperator.Id.allCases.accumulate(into: []) { newMutationPoints, mutationOperatorId in
             
-            let visitor = mutationOperatorId.rewriterVisitorPair.visitor(configuration)
-            visitor.visit(source)
+            var visitor = mutationOperatorId.rewriterVisitorPair.visitor(configuration, path, source.description)
+            visitor.file = path
+            visitor.source = source.description
+
+            visitor.walk(source)
             
             return newMutationPoints + visitor.positionsOfToken
-                .filter { !excludedMutationPointsDetector.excludedLines.contains($0.line) }
+                .filter { !excludedMutationPointsDetector.excludedUTF8Offsets.contains($0.line) }
                 .map { position in
                     return MutationPoint(mutationOperatorId: mutationOperatorId,
                                          filePath: path,

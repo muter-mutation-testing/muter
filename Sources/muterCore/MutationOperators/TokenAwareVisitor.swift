@@ -1,29 +1,38 @@
 import SwiftSyntax
 
-class TokenAwareVisitor: SyntaxVisitor, PositionDiscoveringVisitor {
-    
+class TokenAwareVisitor: SyntaxAnyVisitor, PositionDiscoveringVisitor {
+    var file: String
+    var source: String
+
     fileprivate(set) var tokensToDiscover = [TokenKind]()
-    private(set) var positionsOfToken = [AbsolutePosition]()
+    private(set) var positionsOfToken = [MutationPosition]()
 
-    init(configuration: MuterConfiguration? = nil) { }
-
-    override func visit(_ token: TokenSyntax) {
-        if canMutateToken(token) {
-            positionsOfToken.append(token.position)
+    required init(configuration: MuterConfiguration? = nil, file: String, source: String) {
+        self.file = file
+        self.source = source
+    }
+    
+    override func visitAny(_ node: Syntax) -> SyntaxVisitorContinueKind {
+        node.as(TokenSyntax.self).map { node in
+            if canMutateToken(node) {
+                positionsOfToken.append(node.mutationPosition(inFile: file, withSource: source))
+            }
         }
+        
+        return .visitChildren
     }
 
     private func canMutateToken(_ token: TokenSyntax) -> Bool {
-        return tokensToDiscover.contains(token.tokenKind)
-            && token.parent?.isDecl == false
+        tokensToDiscover.contains(token.tokenKind) &&
+        token.parent?.is(SameTypeRequirementSyntax.self) == false
     }
 }
 
 /// Relational Operator Replacement
 enum ROROperator {
     class Visitor: TokenAwareVisitor {
-        override init(configuration: MuterConfiguration? = nil) {
-            super.init(configuration: configuration)
+        required init(configuration: MuterConfiguration? = nil, file: String, source: String) {
+            super.init(configuration: configuration, file: file, source: source)
             tokensToDiscover = [
                 .spacedBinaryOperator("=="),
                 .spacedBinaryOperator("!="),
@@ -34,14 +43,16 @@ enum ROROperator {
             ]
         }
         
-        override func visit(_ node: GenericWhereClauseSyntax) {}
+        override func visit(_ node: GenericWhereClauseSyntax) -> SyntaxVisitorContinueKind {
+            super.visit(node)
+        }
     }
 }
 
 enum ChangeLogicalConnectorOperator {
     class Visitor: TokenAwareVisitor {
-        override init(configuration: MuterConfiguration? = nil) {
-            super.init(configuration: configuration)
+        required init(configuration: MuterConfiguration? = nil, file: String, source: String) {
+            super.init(configuration: configuration, file: file, source: source)
             tokensToDiscover = [
                 .spacedBinaryOperator("||"),
                 .spacedBinaryOperator("&&"),
