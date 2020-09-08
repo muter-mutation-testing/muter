@@ -19,6 +19,7 @@ class TokenAwareVisitor: SyntaxVisitor, PositionDiscoveringVisitor {
     }
 }
 
+/// Relational Operator Replacement
 enum ROROperator {
     class Visitor: TokenAwareVisitor {
         override init(configuration: MuterConfiguration? = nil) {
