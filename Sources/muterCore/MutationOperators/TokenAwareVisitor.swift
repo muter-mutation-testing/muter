@@ -1,21 +1,24 @@
 import SwiftSyntax
 
 class TokenAwareVisitor: SyntaxAnyVisitor, PositionDiscoveringVisitor {
-    var file: String
-    var source: String
-
     fileprivate(set) var tokensToDiscover = [TokenKind]()
     private(set) var positionsOfToken = [MutationPosition]()
+    
+    private let sourceFileInfo: SourceFileInfo
 
-    required init(configuration: MuterConfiguration? = nil, file: String, source: String) {
-        self.file = file
-        self.source = source
+    required init(configuration: MuterConfiguration?, sourceFileInfo: SourceFileInfo) {
+        self.sourceFileInfo = sourceFileInfo
     }
     
     override func visitAny(_ node: Syntax) -> SyntaxVisitorContinueKind {
         node.as(TokenSyntax.self).map { node in
             if canMutateToken(node) {
-                positionsOfToken.append(node.mutationPosition(inFile: file, withSource: source))
+                positionsOfToken.append(
+                    node.mutationPosition(
+                        inFile: sourceFileInfo.file,
+                        withSource: sourceFileInfo.source
+                    )
+                )
             }
         }
         
@@ -31,8 +34,8 @@ class TokenAwareVisitor: SyntaxAnyVisitor, PositionDiscoveringVisitor {
 /// Relational Operator Replacement
 enum ROROperator {
     class Visitor: TokenAwareVisitor {
-        required init(configuration: MuterConfiguration? = nil, file: String, source: String) {
-            super.init(configuration: configuration, file: file, source: source)
+        required init(configuration: MuterConfiguration? = nil, sourceFileInfo: SourceFileInfo) {
+            super.init(configuration: configuration, sourceFileInfo: sourceFileInfo)
             tokensToDiscover = [
                 .spacedBinaryOperator("=="),
                 .spacedBinaryOperator("!="),
@@ -51,8 +54,8 @@ enum ROROperator {
 
 enum ChangeLogicalConnectorOperator {
     class Visitor: TokenAwareVisitor {
-        required init(configuration: MuterConfiguration? = nil, file: String, source: String) {
-            super.init(configuration: configuration, file: file, source: source)
+        required init(configuration: MuterConfiguration? = nil, sourceFileInfo: SourceFileInfo) {
+            super.init(configuration: configuration, sourceFileInfo: sourceFileInfo)
             tokensToDiscover = [
                 .spacedBinaryOperator("||"),
                 .spacedBinaryOperator("&&"),

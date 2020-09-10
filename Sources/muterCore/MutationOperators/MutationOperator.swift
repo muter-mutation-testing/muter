@@ -3,7 +3,7 @@ import Foundation
 
 typealias SourceCodeTransformation = (SourceFileSyntax) -> (mutatedSource: SyntaxProtocol, description: String)
 typealias RewriterInitializer = (MutationPosition) -> PositionSpecificRewriter
-typealias VisitorInitializer = (MuterConfiguration, _ file: String, _ source: String) -> PositionDiscoveringVisitor
+typealias VisitorInitializer = (MuterConfiguration, SourceFileInfo) -> PositionDiscoveringVisitor
 
 public struct MutationPoint: Equatable, Codable {
     let mutationOperatorId: MutationOperator.Id
@@ -62,7 +62,7 @@ protocol PositionSpecificRewriter: CustomStringConvertible {
 
 protocol PositionDiscoveringVisitor {
     var positionsOfToken: [MutationPosition] { get }
-    init(configuration: MuterConfiguration?, file: String, source: String)
+    init(configuration: MuterConfiguration?, sourceFileInfo: SourceFileInfo)
 
     func walk<SyntaxType: SyntaxProtocol>(_ node: SyntaxType)
 }

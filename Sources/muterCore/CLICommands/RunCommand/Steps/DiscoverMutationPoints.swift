@@ -53,11 +53,11 @@ private extension DiscoverMutationPoints {
         containing source: SourceFileSyntax,
         configuration: MuterConfiguration
     ) -> [MutationPoint] {
+        let sourceFileInfo = SourceFileInfo(file: path, source: source.description)
 
         let excludedMutationPointsDetector = ExcludedMutationPointsDetector(
             configuration: configuration,
-            file: path,
-            source: source.description
+            sourceFileInfo: sourceFileInfo
         )
 
         excludedMutationPointsDetector.walk(source)
@@ -66,8 +66,7 @@ private extension DiscoverMutationPoints {
             
             let visitor = mutationOperatorId.rewriterVisitorPair.visitor(
                 configuration,
-                path,
-                source.description
+                sourceFileInfo
             )
 
             visitor.walk(source)

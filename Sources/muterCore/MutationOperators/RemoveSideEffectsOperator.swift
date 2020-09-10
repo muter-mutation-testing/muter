@@ -3,9 +3,6 @@ import Foundation
 
 enum RemoveSideEffectsOperator {
     final class Visitor: SyntaxAnyVisitor, PositionDiscoveringVisitor {
-        var file: String
-        var source: String
-        
         var positionsOfToken = [MutationPosition]()
         private var concurencyPropertiesInFile = [String]()
         private let concurrencyTypes = [
@@ -16,11 +13,11 @@ enum RemoveSideEffectsOperator {
         ]
         
         private let untestedFunctionNames: [String]
+        private let sourceFileInfo: SourceFileInfo
         
-        init(configuration: MuterConfiguration? = nil, file: String, source: String) {
+        init(configuration: MuterConfiguration? = nil, sourceFileInfo: SourceFileInfo) {
             untestedFunctionNames = ["print", "fatalError", "exit", "abort"] + (configuration?.excludeCallList ?? [])
-            self.file = file
-            self.source = source
+            self.sourceFileInfo = sourceFileInfo
         }
         
         override func visit(_ node: PatternBindingListSyntax) -> SyntaxVisitorContinueKind {
@@ -38,7 +35,13 @@ enum RemoveSideEffectsOperator {
             }
 
             for statement in body.statements where statementContainsMutableToken(statement) {
-                let sourceLocation = statement.endLocation(converter: SourceLocationConverter(file: file, source: source), afterTrailingTrivia: true)
+                let sourceLocation = statement.endLocation(
+                    converter: SourceLocationConverter(
+                        file: sourceFileInfo.file,
+                        source: sourceFileInfo.source
+                    ),
+                    afterTrailingTrivia: true
+                )
 
                     positionsOfToken.append(
                         MutationPosition(

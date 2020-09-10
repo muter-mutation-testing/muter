@@ -23,7 +23,7 @@ class RemoveSideEffectsOperatorSpec: QuickSpec {
             it("records the positions of code that causes a side effect") {
                 let sourceWithSideEffects = sourceCode(fromFileAt: "\(self.fixturesDirectory)/MutationExamples/SideEffect/sampleWithSideEffects.swift")!
 
-                let visitor = RemoveSideEffectsOperator.Visitor(file: sourceWithSideEffects.path, source: sourceWithSideEffects.code.description)
+                let visitor = RemoveSideEffectsOperator.Visitor(sourceFileInfo: sourceWithSideEffects.asSourceFileInfo)
                 visitor.walk(sourceWithSideEffects.code)
 
                 guard visitor.positionsOfToken.count == 4 else {
@@ -40,7 +40,7 @@ class RemoveSideEffectsOperatorSpec: QuickSpec {
             it("records no positions when a file doesn't contain code that causes a side effect") {
                 let sourceWithoutSideEffects = sourceCode(fromFileAt: "\(self.mutationExamplesDirectory)/NegateConditionals/sampleWithConditionalOperators.swift")!
 
-                let visitor = RemoveSideEffectsOperator.Visitor(file: sourceWithoutSideEffects.path, source: sourceWithoutSideEffects.code.description)
+                let visitor = RemoveSideEffectsOperator.Visitor(sourceFileInfo: sourceWithoutSideEffects.asSourceFileInfo)
                 visitor.walk(sourceWithoutSideEffects.code)
 
                 expect(visitor.positionsOfToken).to(haveCount(0))
@@ -49,7 +49,7 @@ class RemoveSideEffectsOperatorSpec: QuickSpec {
             it("ignores side effect code that may lead to deadlock") {
                 let sourceWithConcurrency = sourceCode(fromFileAt: "\(self.fixturesDirectory)/MutationExamples/SideEffect/sampleWithConcurrency.swift")!
 
-                let visitor = RemoveSideEffectsOperator.Visitor(file: sourceWithConcurrency.path, source: sourceWithConcurrency.code.description)
+                let visitor = RemoveSideEffectsOperator.Visitor(sourceFileInfo: sourceWithConcurrency.asSourceFileInfo)
                 visitor.walk(sourceWithConcurrency.code)
 
                 guard visitor.positionsOfToken.count == 4 else {
@@ -65,7 +65,7 @@ class RemoveSideEffectsOperatorSpec: QuickSpec {
 
             it("ignores calls to excluded function (but not calls to other functions in it)") {
                 let sourceWithExcludedFunction = sourceCode(fromFileAt: "\(self.mutationExamplesDirectory)/SideEffect/sampleWithExcludedFunctionCall.swift")!
-                let visitor = RemoveSideEffectsOperator.Visitor(configuration: MuterConfiguration(excludeCallList: ["callExcluded"]), file: sourceWithExcludedFunction.path, source: sourceWithExcludedFunction.code.description)
+                let visitor = RemoveSideEffectsOperator.Visitor(configuration: MuterConfiguration(excludeCallList: ["callExcluded"]), sourceFileInfo: sourceWithExcludedFunction.asSourceFileInfo)
                 visitor.walk(sourceWithExcludedFunction.code)
 
                 guard visitor.positionsOfToken.count == 1 else {

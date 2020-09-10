@@ -7,9 +7,9 @@ class NegateConditionalsOperatorSpec: QuickSpec {
     override func spec() {
         describe("") {
 
-            var sourceWithConditionalLogic: (code: SourceFileSyntax, path: String)!
-            var sourceWithoutMuteableCode: (code: SourceFileSyntax, path: String)!
-            var conditionalConformanceConstraints: (code: SourceFileSyntax, path: String)!
+            var sourceWithConditionalLogic: SourceCodeInfo!
+            var sourceWithoutMuteableCode: SourceCodeInfo!
+            var conditionalConformanceConstraints: SourceCodeInfo!
 
             beforeEach {
                 sourceWithConditionalLogic = sourceCode(fromFileAt: "\(self.mutationExamplesDirectory)/NegateConditionals/sampleWithConditionalOperators.swift")!
@@ -19,7 +19,7 @@ class NegateConditionalsOperatorSpec: QuickSpec {
 
             describe("NegateConditionalsOperator.Visitor") {
                 it("records the positions of code that contains a conditional operator") {
-                    let visitor = ROROperator.Visitor(file: sourceWithConditionalLogic.path, source: sourceWithConditionalLogic.code.description)
+                    let visitor = ROROperator.Visitor(sourceFileInfo: sourceWithConditionalLogic.asSourceFileInfo)
 
                     visitor.walk(sourceWithConditionalLogic.code)
 
@@ -39,14 +39,14 @@ class NegateConditionalsOperatorSpec: QuickSpec {
                 }
 
                 it("records no positions when a file doesn't contain a conditional operator") {
-                    let visitor = ROROperator.Visitor(file: sourceWithoutMuteableCode.path, source: sourceWithoutMuteableCode.code.description)
+                    let visitor = ROROperator.Visitor(sourceFileInfo: sourceWithoutMuteableCode.asSourceFileInfo)
                     visitor.walk(sourceWithoutMuteableCode.code)
                     expect(visitor.positionsOfToken).to(haveCount(0))
                 }
 
                 it("doesn't discover any mutable positions in function declarations") {
 
-                    let visitor = ROROperator.Visitor(file: sourceWithConditionalLogic.path, source: sourceWithConditionalLogic.code.description)
+                    let visitor = ROROperator.Visitor(sourceFileInfo: sourceWithConditionalLogic.asSourceFileInfo)
                     visitor.walk(sourceWithConditionalLogic.code)
 
                     let functionOperator = visitor.positionsOfToken.first { $0.line == 18 && $0.column == 6 }
@@ -55,7 +55,7 @@ class NegateConditionalsOperatorSpec: QuickSpec {
 
                 it("doesn't discover any mutable positions in conditional conformance constraints") {
 
-                    let visitor = ROROperator.Visitor(file: conditionalConformanceConstraints.path, source: conditionalConformanceConstraints.code.description)
+                    let visitor = ROROperator.Visitor(sourceFileInfo: conditionalConformanceConstraints.asSourceFileInfo)
                     visitor.walk(conditionalConformanceConstraints.code)
 
                     expect(visitor.positionsOfToken).to(beEmpty())

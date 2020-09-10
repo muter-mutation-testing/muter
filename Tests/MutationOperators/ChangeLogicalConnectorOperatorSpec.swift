@@ -35,7 +35,7 @@ class ChangeLogicalConnectorOperatorSpec: QuickSpec {
             describe("LogicalOperator.Visitor") {
                 it("records the positions of code that contains a logical operator") {
                     
-                    let visitor = ChangeLogicalConnectorOperator.Visitor(file: sourceWithLogicalOperators.path, source: sourceWithLogicalOperators.code.description)
+                    let visitor = ChangeLogicalConnectorOperator.Visitor(sourceFileInfo: sourceWithLogicalOperators.asSourceFileInfo)
                     visitor.walk(sourceWithLogicalOperators.code)
                     
                     guard visitor.positionsOfToken.count == 2 else {

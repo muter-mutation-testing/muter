@@ -28,26 +28,6 @@ func == (lhs: AbsolutePosition, rhs: MutationPosition) -> Bool {
     lhs.utf8Offset == rhs.utf8Offset
 }
 
-extension AbsolutePosition: Codable {
-    enum Keys: CodingKey {
-        case utf8Offset
-    }
-
-    public init(from decoder: Decoder) throws {
-        let container = try decoder.container(keyedBy: Keys.self)
-
-        let utf8Offset = try container.decode(Int.self, forKey: .utf8Offset)
-
-        self.init(utf8Offset: utf8Offset)
-    }
-
-    public func encode(to encoder: Encoder) throws {
-        var container = encoder.container(keyedBy: Keys.self)
-
-        try container.encode(utf8Offset, forKey: .utf8Offset)
-    }
-}
-
 extension SyntaxProtocol {
     func mutationPosition(inFile file: String, withSource source: String) -> MutationPosition {
         let converter = SourceLocationConverter(

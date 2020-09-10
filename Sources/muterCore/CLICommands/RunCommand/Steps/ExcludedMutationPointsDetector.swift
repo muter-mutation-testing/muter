@@ -7,19 +7,20 @@ final class ExcludedMutationPointsDetector: SyntaxAnyVisitor, PositionDiscoverin
     
     private let muterSkipMarker = "muter:skip"
     
-    private let file: String
-    private let source: String
+    private let sourceFileInfo: SourceFileInfo
     
-    init(configuration: MuterConfiguration?, file: String, source: String) {
-        self.file = file
-        self.source = source
+    init(configuration: MuterConfiguration?, sourceFileInfo: SourceFileInfo) {
+        self.sourceFileInfo = sourceFileInfo
     }
     
     override func visitAnyPost(_ node: Syntax) {
         node.leadingTrivia.map { leadingTrivia in
             if leadingTrivia.containsLineComment(muterSkipMarker) {
                 positionsOfToken.append(
-                    node.mutationPosition(inFile: file, withSource: source)
+                    node.mutationPosition(
+                        inFile: sourceFileInfo.file,
+                        withSource: sourceFileInfo.source
+                    )
                 )
             }
         }
