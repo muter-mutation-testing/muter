@@ -14,10 +14,7 @@ class TokenAwareVisitor: SyntaxAnyVisitor, PositionDiscoveringVisitor {
         node.as(TokenSyntax.self).map { node in
             if canMutateToken(node) {
                 positionsOfToken.append(
-                    node.mutationPosition(
-                        inFile: sourceFileInfo.file,
-                        withSource: sourceFileInfo.source
-                    )
+                    node.mutationPosition(with: sourceFileInfo)
                 )
             }
         }

@@ -17,10 +17,7 @@ final class ExcludedMutationPointsDetector: SyntaxAnyVisitor, PositionDiscoverin
         node.leadingTrivia.map { leadingTrivia in
             if leadingTrivia.containsLineComment(muterSkipMarker) {
                 positionsOfToken.append(
-                    node.mutationPosition(
-                        inFile: sourceFileInfo.file,
-                        withSource: sourceFileInfo.source
-                    )
+                    node.mutationPosition(with: sourceFileInfo)
                 )
             }
         }

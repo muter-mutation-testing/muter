@@ -29,10 +29,10 @@ func == (lhs: AbsolutePosition, rhs: MutationPosition) -> Bool {
 }
 
 extension SyntaxProtocol {
-    func mutationPosition(inFile file: String, withSource source: String) -> MutationPosition {
+    func mutationPosition(with sourceFileInfo: SourceFileInfo) -> MutationPosition {
         let converter = SourceLocationConverter(
-            file: file,
-            source: source
+            file: sourceFileInfo.file,
+            source: sourceFileInfo.source
         )
 
         let sourceLocation = SourceLocation(
