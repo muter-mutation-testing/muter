@@ -45,9 +45,7 @@ enum RemoveSideEffectsOperator {
 
                     positionsOfToken.append(
                         MutationPosition(
-                            utf8Offset: sourceLocation.offset,
-                            line: sourceLocation.line,
-                            column: sourceLocation.column
+                            sourceLocation: sourceLocation
                         )
                     )
             }

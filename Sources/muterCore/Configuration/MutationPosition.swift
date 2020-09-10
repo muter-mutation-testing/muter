@@ -5,17 +5,17 @@ struct MutationPosition: Codable, Equatable {
     let line: Int
     let column: Int
 
-    init(utf8Offset: Int, line: Int? = nil, column: Int? = nil) {
+    init(utf8Offset: Int, line: Int = 0, column: Int = 0) {
         self.utf8Offset = utf8Offset
-        self.line = line ?? 0
-        self.column = column ?? 0
+        self.line = line
+        self.column = column
     }
     
     init(sourceLocation: SourceLocation) {
         self.init(
             utf8Offset: sourceLocation.offset,
-            line: sourceLocation.line,
-            column: sourceLocation.column
+            line: sourceLocation.line ?? 0,
+            column: sourceLocation.column ?? 0
         )
     }
 }
