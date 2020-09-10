@@ -62,8 +62,6 @@ protocol PositionSpecificRewriter: CustomStringConvertible {
 
 protocol PositionDiscoveringVisitor {
     var positionsOfToken: [MutationPosition] { get }
-    var file: String { get set }
-    var source: String { get set }
     init(configuration: MuterConfiguration?, file: String, source: String)
 
     func walk<SyntaxType: SyntaxProtocol>(_ node: SyntaxType)

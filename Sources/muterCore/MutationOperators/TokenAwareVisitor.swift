@@ -24,7 +24,7 @@ class TokenAwareVisitor: SyntaxAnyVisitor, PositionDiscoveringVisitor {
 
     private func canMutateToken(_ token: TokenSyntax) -> Bool {
         tokensToDiscover.contains(token.tokenKind) &&
-        token.parent?.is(SameTypeRequirementSyntax.self) == false
+        token.parent?.is(BinaryOperatorExprSyntax.self) == true
     }
 }
 

@@ -4,11 +4,19 @@ struct MutationPosition: Codable, Equatable {
     let utf8Offset: Int
     let line: Int
     let column: Int
-    
+
     init(utf8Offset: Int, line: Int? = nil, column: Int? = nil) {
         self.utf8Offset = utf8Offset
         self.line = line ?? 0
         self.column = column ?? 0
+    }
+    
+    init(sourceLocation: SourceLocation) {
+        self.init(
+            utf8Offset: sourceLocation.offset,
+            line: sourceLocation.line,
+            column: sourceLocation.column
+        )
     }
 }
 
@@ -46,14 +54,12 @@ extension SyntaxProtocol {
             file: file,
             source: source
         )
-        let location = SourceLocation(
+
+        let sourceLocation = SourceLocation(
             offset: position.utf8Offset,
             converter: converter
         )
-        return MutationPosition(
-            utf8Offset: location.offset,
-            line: location.line ?? 0,
-            column: location.column ?? 0
-        )
+
+        return MutationPosition(sourceLocation: sourceLocation)
     }
 }
