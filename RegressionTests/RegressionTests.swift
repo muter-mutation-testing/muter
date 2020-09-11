@@ -12,7 +12,7 @@ class RegressionTests: QuickSpec {
 
     override func spec() {
         
-        func runRegressionTest(forFixtureNamed fixtureName: String, withResultAt path: FilePath) -> Result<(), String> {
+        func runRegressionTest(forFixtureNamed fixtureName: String, withResultAt path: FilePath, file: StaticString = #file, testName: String = #function, line: UInt = #line) -> Result<(), String> {
             guard let data = FileManager.default.contents(atPath: path) else {
                 return .failure("Unable to load a valid Muter test report from \(path)")
             }
@@ -21,7 +21,10 @@ class RegressionTests: QuickSpec {
                 let testReport = try JSONDecoder().decode(MuterTestReport.self, from: data)
                 assertSnapshot(matching: testReport,
                                as: .json(excludingKeysMatching: { $0 == "filePath" }),
-                               named: fixtureName)
+                               named: fixtureName,
+                               file: file,
+                               testName: testName,
+                               line: line)
                 return .success(())
             } catch let deserializationError {
                 return .failure("""
@@ -33,7 +36,7 @@ class RegressionTests: QuickSpec {
             
         }
         
-        describe("muter test report output for bon mot") {
+        describe("muter test report output for BonMot") {
             it("does not contain any changes") {
                 let path = "\(self.rootTestDirectory)/bonmot_regression_test_output.json"
                 if case .failure(let description) = runRegressionTest(forFixtureNamed: "bonmot", withResultAt: path) {

@@ -3,7 +3,7 @@
 //  BonMot
 //
 //  Created by Zev Eisenberg on 11/5/16.
-//  Copyright © 2016 Raizlabs. All rights reserved.
+//  Copyright © 2016 Rightpoint. All rights reserved.
 //
 
 #if os(OSX)
@@ -86,7 +86,9 @@
 
     }
 
-    public func + (lhs: ContextualAlternates, rhs: ContextualAlternates) -> ContextualAlternates {
-        return lhs.byAdding(other: rhs)
+    extension ContextualAlternates {
+        public static func + (lhs: ContextualAlternates, rhs: ContextualAlternates) -> ContextualAlternates {
+            return lhs.byAdding(other: rhs)
+        }
     }
 #endif

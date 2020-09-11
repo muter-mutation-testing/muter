@@ -3,11 +3,11 @@
 //  BonMot
 //
 //  Created by Zev Eisenberg on 2/12/18.
-//  Copyright © 2018 Raizlabs. All rights reserved.
+//  Copyright © 2018 Rightpoint. All rights reserved.
 //
 
-import XCTest
 @testable import BonMot
+import XCTest
 
 class EmphasisTests: XCTestCase {
 

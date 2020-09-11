@@ -1,0 +1,459 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <title>BasicParser Structure Reference</title>
+    <link rel="stylesheet" type="text/css" href="../css/jazzy.css" />
+    <link rel="stylesheet" type="text/css" href="../css/highlight.css" />
+    <meta charset="utf-8">
+    <script src="../js/jquery.min.js" defer></script>
+    <script src="../js/jazzy.js" defer></script>
+    
+    <script src="../js/lunr.min.js" defer></script>
+    <script src="../js/typeahead.jquery.js" defer></script>
+    <script src="../js/jazzy.search.js" defer></script>
+  </head>
+  <body>
+
+    <a name="//apple_ref/swift/Struct/BasicParser" class="dashAnchor"></a>
+
+    <a title="BasicParser Structure Reference"></a>
+
+    <header class="header">
+      <p class="header-col header-col--primary">
+        <a class="header-link" href="../index.html">
+          FFCParserCombinator Docs
+        </a>
+         (94% documented)
+      </p>
+    
+      <p class="header-col--secondary">
+        <form role="search" action="../search.json">
+          <input type="text" placeholder="Search documentation" data-typeahead>
+        </form>
+      </p>
+    
+        <p class="header-col header-col--secondary">
+          <a class="header-link" href="https://github.com/fcanas/FFCParserCombinator">
+            <img class="header-icon" src="../img/gh.png"/>
+            View on GitHub
+          </a>
+        </p>
+    
+    </header>
+
+    <p class="breadcrumbs">
+      <a class="breadcrumb" href="../index.html">FFCParserCombinator Reference</a>
+      <img class="carat" src="../img/carat.png" />
+      BasicParser Structure Reference
+    </p>
+
+    <div class="content-wrapper">
+      <nav class="navigation">
+        <ul class="nav-groups">
+          <li class="nav-group-name">
+            <a class="nav-group-name-link" href="../Extensions.html">Extensions</a>
+            <ul class="nav-group-tasks">
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Extensions/Character.html">Character</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Extensions/CharacterSet.html">CharacterSet</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Extensions/Double.html">Double</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Extensions/Int.html">Int</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Extensions/UInt.html">UInt</a>
+              </li>
+            </ul>
+          </li>
+          <li class="nav-group-name">
+            <a class="nav-group-name-link" href="../Functions.html">Functions</a>
+            <ul class="nav-group-tasks">
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Functions.html#/s:19FFCParserCombinator2mgoiyAA6ParserVyxq0_GADyxq_G_AEtr1_lF">*&gt;(_:_:)</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Functions.html#/s:19FFCParserCombinator3lagoiyAA6ParserVyxq__q0_tGADyxq_G_ADyxq0_Gtr1_lF">&lt;&amp;&gt;(_:_:)</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Functions.html#/s:19FFCParserCombinator2lmoiyAA6ParserVyxq_GAE_ADyxq0_Gtr1_lF">&lt;*(_:_:)</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Functions.html#/s:19FFCParserCombinator3lmgoiyAA6ParserVyxq0_GADyxq0_q_cG_ADyxq_Gtr1_lF">&lt;*&gt;(_:_:)</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Functions.html#/s:19FFCParserCombinator3llaoiyAA6ParserVyxq__q0_q1_q2_tGADyxq__q0_q1_tG_ADyxq2_Gtr3_lF">&lt;&lt;&amp;(_:_:)</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Functions.html#/s:19FFCParserCombinator3llaoiyAA6ParserVyxq__q0_q1_tGADyxq__q0_tG_ADyxq1_Gtr2_lF">&lt;&lt;&amp;(_:_:)</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Functions.html#/s:19FFCParserCombinator4lxngoiyAA6ParserVyxq0_Gq0_Sgq_c_ADyxq_Gtr1_lF">&lt;^!&gt;(_:_:)</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Functions.html#/s:19FFCParserCombinator3lxgoiyAA6ParserVyxq0_Gq0_q_c_ADyxq_Gtr1_lF">&lt;^&gt;(_:_:)</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Functions.html#/s:19FFCParserCombinator3lxgoiyAA6ParserVyxq1_q0_cGq1_q__q0_tc_ADyxq_Gtr2_lF">&lt;^&gt;(_:_:)</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Functions.html#/s:19FFCParserCombinator3logoiyAA6ParserVyxq_GAE_AEtr0_lF">&lt;|&gt;(_:_:)</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Functions.html#/s:19FFCParserCombinator9character9conditionAA6ParserVySsSJGSbSJc_tF">character(condition:)</a>
+              </li>
+            </ul>
+          </li>
+          <li class="nav-group-name">
+            <a class="nav-group-name-link" href="../Protocols.html">Protocols</a>
+            <ul class="nav-group-tasks">
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Protocols/ParsableType.html">ParsableType</a>
+              </li>
+            </ul>
+          </li>
+          <li class="nav-group-name">
+            <a class="nav-group-name-link" href="../Structs.html">Structures</a>
+            <ul class="nav-group-tasks">
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Structs/BasicParser.html">BasicParser</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Structs/Parser.html">Parser</a>
+              </li>
+            </ul>
+          </li>
+        </ul>
+      </nav>
+      <article class="main-content">
+
+        <section class="section">
+          <div class="section-content">
+            <h1>BasicParser</h1>
+              <div class="declaration">
+                <div class="language">
+                  <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">struct</span> <span class="kt">BasicParser</span></code></pre>
+
+                </div>
+              </div>
+            <p>A namespace containing static parsers for common basic types for
+parsing out of a <code>Substring</code> stream.</p>
+
+          </div>
+        </section>
+
+        <section class="section">
+          <div class="section-content">
+            <div class="task-group">
+              <ul class="item-container">
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:19FFCParserCombinator11BasicParserV5digitAA0D0VySsSJGvpZ"></a>
+                    <a name="//apple_ref/swift/Variable/digit" class="dashAnchor"></a>
+                    <a class="token" href="#/s:19FFCParserCombinator11BasicParserV5digitAA0D0VySsSJGvpZ">digit</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>A <code><a href="../Structs/Parser.html">Parser</a></code> that matches and returns single decimal digit, <code>[0-9]</code> as
+a <code>Character</code> from a <code>Substring</code>.</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">static</span> <span class="k">let</span> <span class="nv">digit</span><span class="p">:</span> <span class="kt"><a href="../Structs/Parser.html">Parser</a></span><span class="o">&lt;</span><span class="kt">Substring</span><span class="p">,</span> <span class="kt">Character</span><span class="o">&gt;</span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:19FFCParserCombinator11BasicParserV8hexDigitAA0D0VySsSJGvpZ"></a>
+                    <a name="//apple_ref/swift/Variable/hexDigit" class="dashAnchor"></a>
+                    <a class="token" href="#/s:19FFCParserCombinator11BasicParserV8hexDigitAA0D0VySsSJGvpZ">hexDigit</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>A <code><a href="../Structs/Parser.html">Parser</a></code> that matches and returns single decimal digit, <code>[0-9][A-F]</code> as
+a <code>Character</code> from a <code>Substring</code>.</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">static</span> <span class="k">let</span> <span class="nv">hexDigit</span><span class="p">:</span> <span class="kt"><a href="../Structs/Parser.html">Parser</a></span><span class="o">&lt;</span><span class="kt">Substring</span><span class="p">,</span> <span class="kt">Character</span><span class="o">&gt;</span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:19FFCParserCombinator11BasicParserV9hexPrefixAA0D0VySsSSGvpZ"></a>
+                    <a name="//apple_ref/swift/Variable/hexPrefix" class="dashAnchor"></a>
+                    <a class="token" href="#/s:19FFCParserCombinator11BasicParserV9hexPrefixAA0D0VySsSSGvpZ">hexPrefix</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>A <code><a href="../Structs/Parser.html">Parser</a></code> that matches and returns <q>0x</q> or <q>0X</q> as a <code>String</code> from a
+&lsquo;Substring&rsquo;.</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">static</span> <span class="k">let</span> <span class="nv">hexPrefix</span><span class="p">:</span> <span class="kt"><a href="../Structs/Parser.html">Parser</a></span><span class="o">&lt;</span><span class="kt">Substring</span><span class="p">,</span> <span class="kt">String</span><span class="o">&gt;</span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:19FFCParserCombinator11BasicParserV12decimalPointAA0D0VySsSSGvpZ"></a>
+                    <a name="//apple_ref/swift/Variable/decimalPoint" class="dashAnchor"></a>
+                    <a class="token" href="#/s:19FFCParserCombinator11BasicParserV12decimalPointAA0D0VySsSSGvpZ">decimalPoint</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>A <code><a href="../Structs/Parser.html">Parser</a></code> that matches and returns single decimal dot, <code>.</code>, as
+a <code>String</code> from a <code>Substring</code>.</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">static</span> <span class="k">let</span> <span class="nv">decimalPoint</span><span class="p">:</span> <span class="kt"><a href="../Structs/Parser.html">Parser</a></span><span class="o">&lt;</span><span class="kt">Substring</span><span class="p">,</span> <span class="kt">String</span><span class="o">&gt;</span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:19FFCParserCombinator11BasicParserV8negationAA0D0VySsSSGvpZ"></a>
+                    <a name="//apple_ref/swift/Variable/negation" class="dashAnchor"></a>
+                    <a class="token" href="#/s:19FFCParserCombinator11BasicParserV8negationAA0D0VySsSSGvpZ">negation</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>A <code><a href="../Structs/Parser.html">Parser</a></code> that matches and returns single decimal hyphen, <code>-</code>, as
+a <code>String</code> from a <code>Substring</code>.</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">static</span> <span class="k">let</span> <span class="nv">negation</span><span class="p">:</span> <span class="kt"><a href="../Structs/Parser.html">Parser</a></span><span class="o">&lt;</span><span class="kt">Substring</span><span class="p">,</span> <span class="kt">String</span><span class="o">&gt;</span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:19FFCParserCombinator11BasicParserV5quoteAA0D0VySsSSGvpZ"></a>
+                    <a name="//apple_ref/swift/Variable/quote" class="dashAnchor"></a>
+                    <a class="token" href="#/s:19FFCParserCombinator11BasicParserV5quoteAA0D0VySsSSGvpZ">quote</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>A <code><a href="../Structs/Parser.html">Parser</a></code> that matches and returns a double-quote, <code>&quot;</code>, as
+a <code>String</code> from a <code>Substring</code>.</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">static</span> <span class="k">let</span> <span class="nv">quote</span><span class="p">:</span> <span class="kt"><a href="../Structs/Parser.html">Parser</a></span><span class="o">&lt;</span><span class="kt">Substring</span><span class="p">,</span> <span class="kt">String</span><span class="o">&gt;</span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:19FFCParserCombinator11BasicParserV1xAA0D0VySsSJGvpZ"></a>
+                    <a name="//apple_ref/swift/Variable/x" class="dashAnchor"></a>
+                    <a class="token" href="#/s:19FFCParserCombinator11BasicParserV1xAA0D0VySsSJGvpZ">x</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>A <code><a href="../Structs/Parser.html">Parser</a></code> that matches and returns a single x, <code>x</code>, as
+a <code>String</code> from a <code>Substring</code>.</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">static</span> <span class="k">let</span> <span class="nv">x</span><span class="p">:</span> <span class="kt"><a href="../Structs/Parser.html">Parser</a></span><span class="o">&lt;</span><span class="kt">Substring</span><span class="p">,</span> <span class="kt">Character</span><span class="o">&gt;</span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:19FFCParserCombinator11BasicParserV13numericStringAA0D0VySsSSGvpZ"></a>
+                    <a name="//apple_ref/swift/Variable/numericString" class="dashAnchor"></a>
+                    <a class="token" href="#/s:19FFCParserCombinator11BasicParserV13numericStringAA0D0VySsSSGvpZ">numericString</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>A <code><a href="../Structs/Parser.html">Parser</a></code> that matches an abribrarily long sequence of decimal
+digits in <code>[0-9]</code> as a <code>String</code> in a <code>Substring</code></p>
+
+<p>It is defined as</p>
+<pre class="highlight swift"><code><span class="p">{</span> <span class="kt">String</span><span class="p">(</span><span class="nv">$0</span><span class="p">)</span> <span class="p">}</span> <span class="o">&lt;^&gt;</span> <span class="n">digit</span><span class="o">.</span><span class="n">many1</span>
+</code></pre>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">static</span> <span class="k">let</span> <span class="nv">numericString</span><span class="p">:</span> <span class="kt"><a href="../Structs/Parser.html">Parser</a></span><span class="o">&lt;</span><span class="kt">Substring</span><span class="p">,</span> <span class="kt">String</span><span class="o">&gt;</span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:19FFCParserCombinator11BasicParserV19floatingPointStringAA0D0VySsSSGvpZ"></a>
+                    <a name="//apple_ref/swift/Variable/floatingPointString" class="dashAnchor"></a>
+                    <a class="token" href="#/s:19FFCParserCombinator11BasicParserV19floatingPointStringAA0D0VySsSSGvpZ">floatingPointString</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>A <code><a href="../Structs/Parser.html">Parser</a></code> that matches an abribrarily long sequence of decimal
+digits in <code>[0-9]</code> with a single decimal point <code>.</code> as a <code>String</code>
+in a <code>Substring</code></p>
+
+<p>It is defined as</p>
+<pre class="highlight swift"><code><span class="n">numericString</span><span class="o">.</span><span class="nf">followed</span><span class="p">(</span><span class="nv">by</span><span class="p">:</span> <span class="n">decimalPoint</span><span class="p">,</span> <span class="nv">combine</span><span class="p">:</span> <span class="o">+</span><span class="p">)</span><span class="o">.</span><span class="nf">followed</span><span class="p">(</span><span class="nv">by</span><span class="p">:</span> <span class="n">numericString</span><span class="p">,</span> <span class="nv">combine</span><span class="p">:</span> <span class="o">+</span><span class="p">)</span>
+</code></pre>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">static</span> <span class="k">let</span> <span class="nv">floatingPointString</span><span class="p">:</span> <span class="kt"><a href="../Structs/Parser.html">Parser</a></span><span class="o">&lt;</span><span class="kt">Substring</span><span class="p">,</span> <span class="kt">String</span><span class="o">&gt;</span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:19FFCParserCombinator11BasicParserV7newlineAA0D0VySsSJGvpZ"></a>
+                    <a name="//apple_ref/swift/Variable/newline" class="dashAnchor"></a>
+                    <a class="token" href="#/s:19FFCParserCombinator11BasicParserV7newlineAA0D0VySsSJGvpZ">newline</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>A <code><a href="../Structs/Parser.html">Parser</a></code> matching either a line feed carriage return, <code>\n\r</code>,
+or a single line feed <code>\n</code> as a <code>Character</code> in a <code>Substring</code></p>
+
+<p>It is defined as</p>
+<pre class="highlight swift"><code><span class="n">character</span> <span class="p">{</span> <span class="nv">$0</span> <span class="o">==</span> <span class="s">"</span><span class="se">\n</span><span class="s">"</span> <span class="p">}</span> <span class="o">&lt;*</span> <span class="n">character</span> <span class="p">{</span> <span class="nv">$0</span> <span class="o">==</span> <span class="s">"</span><span class="se">\r</span><span class="s">"</span> <span class="p">}</span> <span class="o">&lt;|&gt;</span> <span class="p">(</span><span class="n">character</span> <span class="p">{</span> <span class="nv">$0</span> <span class="o">==</span> <span class="s">"</span><span class="se">\n</span><span class="s">"</span> <span class="p">}</span> <span class="p">)</span>
+</code></pre>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">static</span> <span class="k">let</span> <span class="nv">newline</span><span class="p">:</span> <span class="kt"><a href="../Structs/Parser.html">Parser</a></span><span class="o">&lt;</span><span class="kt">Substring</span><span class="p">,</span> <span class="kt">Character</span><span class="o">&gt;</span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+              </ul>
+            </div>
+          </div>
+        </section>
+
+      </article>
+    </div>
+    <section class="footer">
+      <p>&copy; 2019 <a class="link" href="https://github.com/fcanas/" target="_blank" rel="external">Fabián Cañas</a>. All rights reserved. (Last updated: 2019-03-18)</p>
+      <p>Generated by <a class="link" href="https://github.com/realm/jazzy" target="_blank" rel="external">jazzy ♪♫ v0.9.5</a>, a <a class="link" href="https://realm.io" target="_blank" rel="external">Realm</a> project.</p>
+    </section>
+  </body>
+</div>
+</html>
