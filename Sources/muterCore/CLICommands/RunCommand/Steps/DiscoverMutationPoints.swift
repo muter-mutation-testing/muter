@@ -28,10 +28,10 @@ private extension DiscoverMutationPoints {
         var sourceCodeByFilePath: [FilePath: SourceFileSyntax] = [:]
         let mutationPoints: [MutationPoint] = filePaths.accumulate(into: []) { alreadyDiscoveredMutationPoints, path in
             
-            guard pathContainsDotSwift(path),
-                  let source = sourceCode(fromFileAt: path)?.code else {
-                    return alreadyDiscoveredMutationPoints
-            }
+            guard
+                pathContainsDotSwift(path),
+                let source = sourceCode(fromFileAt: path)?.code
+            else { return alreadyDiscoveredMutationPoints }
             
             let newMutationPoints = discoverNewMutationPoints(inFileAt: path, containing: source, configuration: configuration).sorted(by: filePositionOrder)
             
