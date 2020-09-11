@@ -70,7 +70,6 @@ private extension PerformMutationTesting {
 
             ioDelegate.restoreFile(at: mutationPoint.filePath, using: state.swapFilePathsByOriginalPath)
 
-            
             let outcome = MutationTestOutcome(testSuiteOutcome: testSuiteOutcome,
                                               mutationPoint: mutationPoint,
                                               operatorDescription: mutantDescription,

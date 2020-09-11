@@ -70,8 +70,7 @@ class PerformMutationTestingSpec: QuickSpec {
                                             mutationPoint: expectedMutationPoint,
                                             operatorDescription: "",
                                             originalProjectDirectoryUrl: URL(fileURLWithPath: "/project")),
-
-                        ]
+                    ]
                     
                     guard case .success(let stateChanges) = result! else {
                         fail("expected sccess but got \(String(describing: result!))")
