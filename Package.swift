@@ -1,14 +1,17 @@
-// swift-tools-version:4.2
+// swift-tools-version:5.0
 
 import PackageDescription
 
 let package = Package(
     name: "muter",
+    platforms: [
+        .macOS(.v10_14),
+    ],
     products: [
         .executable(name: "muter", targets: ["muter", "muterCore"]),
     ],
     dependencies: [
-        .package(url: "https://github.com/apple/swift-syntax.git", .branch("0.40200.0")),
+        .package(url: "https://github.com/apple/swift-syntax.git", .revision("swift-5.3-DEVELOPMENT-SNAPSHOT-2020-09-07-a")),
         .package(url: "https://github.com/onevcat/Rainbow", from: "3.0.0"),
         .package(url: "https://github.com/Quick/Quick", from: "1.3.2"),
         .package(url: "https://github.com/Quick/Nimble", from: "7.3.1"),
@@ -17,7 +20,7 @@ let package = Package(
         .package(url: "https://github.com/thoughtbot/Curry.git", from: "4.0.2"),
         .package(url: "https://github.com/jkandzi/Progress.swift", from: "0.4.0"),
         .package(url: "https://github.com/dduan/Pathos", from: "0.2.0")
-
+        
     ],
     targets: [
         .target(

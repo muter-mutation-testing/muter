@@ -1,28 +1,38 @@
 import SwiftSyntax
 
-class TokenAwareVisitor: SyntaxVisitor, PositionDiscoveringVisitor {
-    
+class TokenAwareVisitor: SyntaxAnyVisitor, PositionDiscoveringVisitor {
     fileprivate(set) var tokensToDiscover = [TokenKind]()
-    private(set) var positionsOfToken = [AbsolutePosition]()
+    private(set) var positionsOfToken = [MutationPosition]()
+    
+    private let sourceFileInfo: SourceFileInfo
 
-    init(configuration: MuterConfiguration? = nil) { }
-
-    override func visit(_ token: TokenSyntax) {
-        if canMutateToken(token) {
-            positionsOfToken.append(token.position)
+    required init(configuration: MuterConfiguration?, sourceFileInfo: SourceFileInfo) {
+        self.sourceFileInfo = sourceFileInfo
+    }
+    
+    override func visitAny(_ node: Syntax) -> SyntaxVisitorContinueKind {
+        node.as(TokenSyntax.self).map { node in
+            if canMutateToken(node) {
+                positionsOfToken.append(
+                    node.mutationPosition(with: sourceFileInfo)
+                )
+            }
         }
+        
+        return .visitChildren
     }
 
     private func canMutateToken(_ token: TokenSyntax) -> Bool {
-        return tokensToDiscover.contains(token.tokenKind)
-            && token.parent?.isDecl == false
+        tokensToDiscover.contains(token.tokenKind) &&
+        token.parent?.is(BinaryOperatorExprSyntax.self) == true
     }
 }
 
+/// Relational Operator Replacement
 enum ROROperator {
     class Visitor: TokenAwareVisitor {
-        override init(configuration: MuterConfiguration? = nil) {
-            super.init(configuration: configuration)
+        required init(configuration: MuterConfiguration? = nil, sourceFileInfo: SourceFileInfo) {
+            super.init(configuration: configuration, sourceFileInfo: sourceFileInfo)
             tokensToDiscover = [
                 .spacedBinaryOperator("=="),
                 .spacedBinaryOperator("!="),
@@ -32,15 +42,14 @@ enum ROROperator {
                 .spacedBinaryOperator(">"),
             ]
         }
-        
-        override func visit(_ node: GenericWhereClauseSyntax) {}
+
     }
 }
 
 enum ChangeLogicalConnectorOperator {
     class Visitor: TokenAwareVisitor {
-        override init(configuration: MuterConfiguration? = nil) {
-            super.init(configuration: configuration)
+        required init(configuration: MuterConfiguration? = nil, sourceFileInfo: SourceFileInfo) {
+            super.init(configuration: configuration, sourceFileInfo: sourceFileInfo)
             tokensToDiscover = [
                 .spacedBinaryOperator("||"),
                 .spacedBinaryOperator("&&"),

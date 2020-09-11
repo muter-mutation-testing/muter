@@ -53,7 +53,7 @@ private extension MutationTestingDelegate {
 
     func copySourceCode(fromFileAt sourcePath: String, to destinationPath: String) {
         let source = sourceCode(fromFileAt: sourcePath)
-        try? source?.description.write(toFile: destinationPath, atomically: true, encoding: .utf8)
+        try? source?.code.description.write(toFile: destinationPath, atomically: true, encoding: .utf8)
     }
     
     func fileHandle(for logFileName: String) throws -> (handle: FileHandle, logFileUrl: URL) {

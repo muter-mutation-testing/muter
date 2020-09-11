@@ -21,7 +21,7 @@ class FileManagerSpy: Spy, FileSystemManager {
         return currentDirectoryPathToReturn 
     }
 
-    func createDirectory(atPath path: String, withIntermediateDirectories createIntermediates: Bool, attributes: [FileAttributeKey : Any]? = nil) throws {
+    func createDirectory(atPath path: String, withIntermediateDirectories createIntermediates: Bool, attributes: [FileAttributeKey: Any]? = nil) throws {
         methodCalls.append(#function)
         paths.append(path)
         createsIntermediates.append(createIntermediates)
@@ -30,7 +30,7 @@ class FileManagerSpy: Spy, FileSystemManager {
         }
     }
 
-    func createFile(atPath path: String, contents data: Data?, attributes attr: [FileAttributeKey : Any]?) -> Bool {
+    func createFile(atPath path: String, contents data: Data?, attributes attr: [FileAttributeKey: Any]?) -> Bool {
         methodCalls.append(#function)
         paths.append(path)
 

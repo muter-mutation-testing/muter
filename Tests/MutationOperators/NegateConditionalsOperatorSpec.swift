@@ -7,19 +7,21 @@ class NegateConditionalsOperatorSpec: QuickSpec {
     override func spec() {
         describe("") {
 
-            var sourceWithConditionalLogic: SourceFileSyntax!
-            var sourceWithoutMuteableCode: SourceFileSyntax!
+            var sourceWithConditionalLogic: SourceCodeInfo!
+            var sourceWithoutMuteableCode: SourceCodeInfo!
+            var conditionalConformanceConstraints: SourceCodeInfo!
 
             beforeEach {
                 sourceWithConditionalLogic = sourceCode(fromFileAt: "\(self.mutationExamplesDirectory)/NegateConditionals/sampleWithConditionalOperators.swift")!
                 sourceWithoutMuteableCode = sourceCode(fromFileAt: "\(self.fixturesDirectory)/sourceWithoutMuteableCode.swift")!
+                conditionalConformanceConstraints = sourceCode(fromFileAt: "\(self.mutationExamplesDirectory)/NegateConditionals/conditionalConformanceConstraints.swift")!
             }
 
             describe("NegateConditionalsOperator.Visitor") {
                 it("records the positions of code that contains a conditional operator") {
-                    let visitor = ROROperator.Visitor()
+                    let visitor = ROROperator.Visitor(sourceFileInfo: sourceWithConditionalLogic.asSourceFileInfo)
 
-                    visitor.visit(sourceWithConditionalLogic)
+                    visitor.walk(sourceWithConditionalLogic.code)
 
                     guard visitor.positionsOfToken.count == 8 else {
                         fail("Expected 8 tokens to be discovered, got \(visitor.positionsOfToken.count) instead")
@@ -37,15 +39,15 @@ class NegateConditionalsOperatorSpec: QuickSpec {
                 }
 
                 it("records no positions when a file doesn't contain a conditional operator") {
-                    let visitor = ROROperator.Visitor()
-                    visitor.visit(sourceWithoutMuteableCode)
+                    let visitor = ROROperator.Visitor(sourceFileInfo: sourceWithoutMuteableCode.asSourceFileInfo)
+                    visitor.walk(sourceWithoutMuteableCode.code)
                     expect(visitor.positionsOfToken).to(haveCount(0))
                 }
 
                 it("doesn't discover any mutable positions in function declarations") {
 
-                    let visitor = ROROperator.Visitor()
-                    visitor.visit(sourceWithConditionalLogic)
+                    let visitor = ROROperator.Visitor(sourceFileInfo: sourceWithConditionalLogic.asSourceFileInfo)
+                    visitor.walk(sourceWithConditionalLogic.code)
 
                     let functionOperator = visitor.positionsOfToken.first { $0.line == 18 && $0.column == 6 }
                     expect(functionOperator).to(beNil())
@@ -53,10 +55,8 @@ class NegateConditionalsOperatorSpec: QuickSpec {
 
                 it("doesn't discover any mutable positions in conditional conformance constraints") {
 
-                    let visitor = ROROperator.Visitor()
-                    visitor.visit(
-                        sourceCode(fromFileAt: "\(self.mutationExamplesDirectory)/NegateConditionals/conditionalConformanceConstraints.swift")!
-                    )
+                    let visitor = ROROperator.Visitor(sourceFileInfo: conditionalConformanceConstraints.asSourceFileInfo)
+                    visitor.walk(conditionalConformanceConstraints.code)
 
                     expect(visitor.positionsOfToken).to(beEmpty())
                 }
@@ -64,78 +64,78 @@ class NegateConditionalsOperatorSpec: QuickSpec {
 
             describe("NegateConditionalsOperator.Rewriter") {
                 it("replaces an equality operator with an inequality operator") {
-                    let line3Column19 = AbsolutePosition(line: 3, column: 19, utf8Offset: 76)
+                    let line3Column19 = MutationPosition(utf8Offset: 76, line: 3, column: 19)
                     let rewriter = ROROperator.Rewriter(positionToMutate: line3Column19)
                     let expectedSource = sourceCode(fromFileAt: "\(self.mutationExamplesDirectory)/NegateConditionals/equalityOperator.swift")!
 
-                    let mutatedSource = rewriter.visit(sourceWithConditionalLogic)
-                    expect(mutatedSource.description).to(equal(expectedSource.description))
+                    let mutatedSource = rewriter.visit(sourceWithConditionalLogic.code)
+                    expect(mutatedSource.description).to(equal(expectedSource.code.description))
                     expect(rewriter.description).to(equal("changed == to !="))
                 }
 
                 it("replaces an inequality operator with an equality operator") {
-                    let line4Column19 = AbsolutePosition(line: 4, column: 19, utf8Offset: 99)
+                    let line4Column19 = MutationPosition(utf8Offset: 99, line: 4, column: 19)
                     let rewriter = ROROperator.Rewriter(positionToMutate: line4Column19)
                     let expectedSource = sourceCode(fromFileAt: "\(self.mutationExamplesDirectory)/NegateConditionals/inequalityOperator.swift")!
 
-                    let mutatedSource = rewriter.visit(sourceWithConditionalLogic)
-                    expect(mutatedSource.description).to(equal(expectedSource.description))
+                    let mutatedSource = rewriter.visit(sourceWithConditionalLogic.code)
+                    expect(mutatedSource.description).to(equal(expectedSource.code.description))
                     expect(rewriter.description).to(equal("changed != to =="))
                 }
 
                 it("replaces a greater than or equal to operator with a less than or equal to operator") {
-                    let line5Column19 = AbsolutePosition(line: 5, column: 19, utf8Offset: 122)
+                    let line5Column19 = MutationPosition(utf8Offset: 122, line: 5, column: 19)
                     let rewriter = ROROperator.Rewriter(positionToMutate: line5Column19)
                     let expectedSource = sourceCode(fromFileAt: "\(self.mutationExamplesDirectory)/NegateConditionals/greaterThanOrEqualOperator.swift")!
 
-                    let mutatedSource = rewriter.visit(sourceWithConditionalLogic)
-                    expect(mutatedSource.description).to(equal(expectedSource.description))
+                    let mutatedSource = rewriter.visit(sourceWithConditionalLogic.code)
+                    expect(mutatedSource.description).to(equal(expectedSource.code.description))
                     expect(rewriter.description).to(equal("changed >= to <="))
                 }
 
                 it("replaces a less than or equal to operator with a greater than or equal to operator") {
-                    let line6Column19 = AbsolutePosition(line: 6, column: 19, utf8Offset: 145)
+                    let line6Column19 = MutationPosition(utf8Offset: 145, line: 6, column: 19)
                     let rewriter = ROROperator.Rewriter(positionToMutate: line6Column19)
                     let expectedSource = sourceCode(fromFileAt: "\(self.mutationExamplesDirectory)/NegateConditionals/lessThanOrEqualOperator.swift")!
 
-                    let mutatedSource = rewriter.visit(sourceWithConditionalLogic)
-                    expect(mutatedSource.description).to(equal(expectedSource.description))
+                    let mutatedSource = rewriter.visit(sourceWithConditionalLogic.code)
+                    expect(mutatedSource.description).to(equal(expectedSource.code.description))
                     expect(rewriter.description).to(equal("changed <= to >="))
                 }
 
                 it("replaces a less than operator with a greater than operator") {
-                    let line7Column19 = AbsolutePosition(line: 7, column: 19, utf8Offset: 169)
+                    let line7Column19 = MutationPosition(utf8Offset: 169, line: 7, column: 19)
                     let rewriter = ROROperator.Rewriter(positionToMutate: line7Column19)
                     let expectedSource = sourceCode(fromFileAt: "\(self.mutationExamplesDirectory)/NegateConditionals/lessThanOperator.swift")!
 
-                    let mutatedSource = rewriter.visit(sourceWithConditionalLogic)
-                    expect(mutatedSource.description).to(equal(expectedSource.description))
+                    let mutatedSource = rewriter.visit(sourceWithConditionalLogic.code)
+                    expect(mutatedSource.description).to(equal(expectedSource.code.description))
                     expect(rewriter.description).to(equal("changed < to >"))
                 }
 
                 it("replaces a greater than operator with a less than operator") {
-                    let line8Column19 = AbsolutePosition(line: 8, column: 19, utf8Offset: 191)
+                    let line8Column19 = MutationPosition(utf8Offset: 191, line: 8, column: 19)
                     let rewriter = ROROperator.Rewriter(positionToMutate: line8Column19)
                     let expectedSource = sourceCode(fromFileAt: "\(self.mutationExamplesDirectory)/NegateConditionals/greaterThanOperator.swift")!
 
-                    let mutatedSource = rewriter.visit(sourceWithConditionalLogic)
-                    expect(mutatedSource.description).to(equal(expectedSource.description))
+                    let mutatedSource = rewriter.visit(sourceWithConditionalLogic.code)
+                    expect(mutatedSource.description).to(equal(expectedSource.code.description))
                     expect(rewriter.description).to(equal("changed > to <"))
                 }
             }
-            
+
             describe("MutationOperator.Id.ror.transformation") {
-                let line3Column19 = AbsolutePosition(line: 3, column: 19, utf8Offset: 76)
+                let line3Column19 = MutationPosition(utf8Offset: 76, line: 3, column: 19)
                 sourceWithConditionalLogic = sourceCode(fromFileAt: "\(self.mutationExamplesDirectory)/NegateConditionals/sampleWithConditionalOperators.swift")!
                 let expectedSource = sourceCode(fromFileAt: "\(self.mutationExamplesDirectory)/NegateConditionals/equalityOperator.swift")!
                 let transformation = MutationOperator.Id.ror.mutationOperator(for: line3Column19)
-                
-                let (actualMutatedSource, actualDescription) = transformation(sourceWithConditionalLogic)
-                
+
+                let (actualMutatedSource, actualDescription) = transformation(sourceWithConditionalLogic.code)
+
                 it("behaves like a NegateConditionalsOperator.Rewriter") {
-                    expect(actualMutatedSource.description).to(equal(expectedSource.description))
+                    expect(actualMutatedSource.description).to(equal(expectedSource.code.description))
                 }
-                
+
                 it("provides a description of the operator that was applied") {
                     expect(actualDescription).to(equal("changed == to !="))
                 }

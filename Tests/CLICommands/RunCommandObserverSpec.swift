@@ -69,7 +69,7 @@ class RunCommandObserverSpec: QuickSpec {
                                                               position: .firstPosition)
                     let mutationPoint2 = MutationPoint(mutationOperatorId: .removeSideEffects,
                                                        filePath: "~/user/file2.swift",
-                                                       position: AbsolutePosition(line: 5, column: 6, utf8Offset: 2))
+                                                       position: MutationPosition(utf8Offset: 2, line: 5, column: 6))
                     
                     let subject = RunCommandObserver(reporter: .plainText, fileManager: fileManagerSpy, flushHandler: {})
                     

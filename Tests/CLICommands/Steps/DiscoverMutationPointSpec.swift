@@ -17,7 +17,7 @@ class DiscoverMutationPointSpec: QuickSpec {
                         "\(self.fixturesDirectory)/sampleForDiscoveringMutations.swift",
                         "\(self.fixturesDirectory)/sample With Spaces For Discovering Mutations.swift"
                     ]
-                    
+
                     result = DiscoverMutationPoints().run(with: state)
                 }
                 
@@ -29,14 +29,14 @@ class DiscoverMutationPointSpec: QuickSpec {
                         fail("expected success but got \(String(describing: result!))")
                         return
                     }
-                    
+
                     let stateChangesIncludesParsedSourceCode = stateChanges.contains {
                         let expectedFilePaths = Set([filePath2, filePath1])
                         let expectedSourceCode = Set([
-                            sourceCode(fromFileAt: filePath1)!.description,
-                            sourceCode(fromFileAt: filePath2)!.description
+                            sourceCode(fromFileAt: filePath1)!.code.description,
+                            sourceCode(fromFileAt: filePath2)!.code.description
                         ])
-                        
+
                         if case .sourceCodeParsed(let parsedSourceCode) = $0 {
                             let actualFilePaths = Set(parsedSourceCode.map { $0.key })
                             let actualSourceCode = Set(parsedSourceCode.map { $0.value.description })
@@ -44,31 +44,31 @@ class DiscoverMutationPointSpec: QuickSpec {
                         }
                         return false
                     }
-                    
+
                     let stateChangesIncludesMutationPoints = stateChanges.contains {
                         if case .mutationPointsDiscovered(let actualMutationPoints) = $0 {
                             return actualMutationPoints == [
                                 MutationPoint(mutationOperatorId: .ror,
                                               filePath: filePath1,
-                                              position: AbsolutePosition(line: 3, column: 19, utf8Offset: 84)),
+                                              position: MutationPosition(utf8Offset: 84, line: 3, column: 19)),
                                 MutationPoint(mutationOperatorId: .ror,
                                               filePath: filePath1,
-                                              position: AbsolutePosition(line: 4, column: 18, utf8Offset: 106)),
+                                              position: MutationPosition(utf8Offset: 106, line: 4, column: 18)),
                                 MutationPoint(mutationOperatorId: .removeSideEffects,
                                               filePath: filePath2,
-                                              position: AbsolutePosition(line: 6, column: 42, utf8Offset: 154)),
+                                              position: MutationPosition(utf8Offset: 154, line: 6, column: 42)),
                                 MutationPoint(mutationOperatorId: .removeSideEffects,
                                               filePath: filePath2,
-                                              position: AbsolutePosition(line: 7, column: 23, utf8Offset: 177))
+                                              position: MutationPosition(utf8Offset: 177, line: 7, column: 23))
                             ]
                         }
                         return false
                     }
-                    
+
                     expect(stateChangesIncludesParsedSourceCode) == true
                     expect(stateChangesIncludesMutationPoints) == true
                 }
-                
+
                 context("if there are files which do not contain valid swift code") {
                     beforeEach {
                         state = RunCommandState()
@@ -76,7 +76,7 @@ class DiscoverMutationPointSpec: QuickSpec {
                             "\(self.fixturesDirectory)/sampleForDiscoveringMutations.swift",
                             "\(self.fixturesDirectory)/muter.conf.json",
                         ]
-                        
+
                         result = DiscoverMutationPoints().run(with: state)
                     }
                 }
@@ -101,7 +101,7 @@ class DiscoverMutationPointSpec: QuickSpec {
                                 return actualMutationPoints == [
                                     MutationPoint(mutationOperatorId: .removeSideEffects,
                                                   filePath: samplePath,
-                                                  position: AbsolutePosition(line: 3, column: 42, utf8Offset: 53))
+                                                  position: MutationPosition(utf8Offset: 53, line: 3, column: 42))
                                 ]
                             }
                             return false
@@ -114,10 +114,10 @@ class DiscoverMutationPointSpec: QuickSpec {
             }
             
             context("when it doesn't discover any mutants that can be inserted into a Swift file") {
-                
+
                 var result: Result<[RunCommandState.Change], MuterError>!
                 var state: RunCommandState!
-                
+
                 context("because the code isn't mutable by the operators Muter implements") {
                     beforeEach {
                         state = RunCommandState()
@@ -127,7 +127,7 @@ class DiscoverMutationPointSpec: QuickSpec {
 
                         result = DiscoverMutationPoints().run(with: state)
                     }
-                    
+
                     it("cascades a failure up with a reason which explains why it couldn't discover any mutation points") {
                         guard case .failure(.noMutationPointsDiscovered) = result! else {
                             fail("expected a noMutationPointsDiscovered error but got \(String(describing: result!))")

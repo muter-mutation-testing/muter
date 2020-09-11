@@ -28,12 +28,12 @@ private extension DiscoverMutationPoints {
         var sourceCodeByFilePath: [FilePath: SourceFileSyntax] = [:]
         let mutationPoints: [MutationPoint] = filePaths.accumulate(into: []) { alreadyDiscoveredMutationPoints, path in
             
-            guard pathContainsDotSwift(path),
-                let source = sourceCode(fromFileAt: path) else {
-                    return alreadyDiscoveredMutationPoints
-            }
+            guard
+                pathContainsDotSwift(path),
+                let source = sourceCode(fromFileAt: path)?.code
+            else { return alreadyDiscoveredMutationPoints }
             
-            let newMutationPoints = discoverNewMutationPoints(inFileAt: path, containing: source, configuration: configuration).sorted(by: filePositionOrder)
+            let newMutationPoints = discoverNewMutationPoints(inFile: SourceCodeInfo(path: path, code: source), configuration: configuration).sorted(by: filePositionOrder)
             
             if !newMutationPoints.isEmpty {
                 sourceCodeByFilePath[path] = source
@@ -48,21 +48,31 @@ private extension DiscoverMutationPoints {
         )
     }
     
-    func discoverNewMutationPoints(inFileAt path: String, containing source: SourceFileSyntax, configuration: MuterConfiguration) -> [MutationPoint] {
+    func discoverNewMutationPoints(
+        inFile sourceCodeInfo: SourceCodeInfo,
+        configuration: MuterConfiguration
+    ) -> [MutationPoint] {
+        let excludedMutationPointsDetector = ExcludedMutationPointsDetector(
+            configuration: configuration,
+            sourceFileInfo: sourceCodeInfo.asSourceFileInfo
+        )
 
-        let excludedMutationPointsDetector = ExcludedMutationPointsDetector()
-        excludedMutationPointsDetector.visit(source)
+        excludedMutationPointsDetector.walk(sourceCodeInfo.code)
 
         return MutationOperator.Id.allCases.accumulate(into: []) { newMutationPoints, mutationOperatorId in
             
-            let visitor = mutationOperatorId.rewriterVisitorPair.visitor(configuration)
-            visitor.visit(source)
+            let visitor = mutationOperatorId.rewriterVisitorPair.visitor(
+                configuration,
+                sourceCodeInfo.asSourceFileInfo
+            )
+
+            visitor.walk(sourceCodeInfo.code)
             
             return newMutationPoints + visitor.positionsOfToken
-                .filter { !excludedMutationPointsDetector.excludedLines.contains($0.line) }
+                .filter { !excludedMutationPointsDetector.positionsOfToken.contains($0) }
                 .map { position in
                     return MutationPoint(mutationOperatorId: mutationOperatorId,
-                                         filePath: path,
+                                         filePath: sourceCodeInfo.path,
                                          position: position)
             }
         }

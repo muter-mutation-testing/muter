@@ -5,10 +5,10 @@
    objects = {
       "FFCParserCombinator::FFCParserCombinator" = {
          isa = "PBXNativeTarget";
-         buildConfigurationList = "OBJ_23";
+         buildConfigurationList = "OBJ_25";
          buildPhases = (
-            "OBJ_26",
-            "OBJ_29"
+            "OBJ_28",
+            "OBJ_31"
          );
          dependencies = (
          );
@@ -24,24 +24,24 @@
       };
       "FFCParserCombinator::FFCParserCombinatorPackageTests::ProductTarget" = {
          isa = "PBXAggregateTarget";
-         buildConfigurationList = "OBJ_37";
+         buildConfigurationList = "OBJ_39";
          buildPhases = (
          );
          dependencies = (
-            "OBJ_40"
+            "OBJ_42"
          );
          name = "FFCParserCombinatorPackageTests";
          productName = "FFCParserCombinatorPackageTests";
       };
       "FFCParserCombinator::FFCParserCombinatorTests" = {
          isa = "PBXNativeTarget";
-         buildConfigurationList = "OBJ_42";
+         buildConfigurationList = "OBJ_44";
          buildPhases = (
-            "OBJ_45",
-            "OBJ_48"
+            "OBJ_47",
+            "OBJ_50"
          );
          dependencies = (
-            "OBJ_50"
+            "OBJ_52"
          );
          name = "FFCParserCombinatorTests";
          productName = "FFCParserCombinatorTests";
@@ -55,9 +55,9 @@
       };
       "FFCParserCombinator::SwiftPMPackageDescription" = {
          isa = "PBXNativeTarget";
-         buildConfigurationList = "OBJ_31";
+         buildConfigurationList = "OBJ_33";
          buildPhases = (
-            "OBJ_34"
+            "OBJ_36"
          );
          dependencies = (
          );
@@ -73,7 +73,7 @@
          };
          buildConfigurationList = "OBJ_2";
          compatibilityVersion = "Xcode 3.2";
-         developmentRegion = "English";
+         developmentRegion = "en";
          hasScannedForEncodings = "0";
          knownRegions = (
             "en"
@@ -125,8 +125,8 @@
       "OBJ_15" = {
          isa = "PBXGroup";
          children = (
-            "FFCParserCombinator::FFCParserCombinator::Product",
-            "FFCParserCombinator::FFCParserCombinatorTests::Product"
+            "FFCParserCombinator::FFCParserCombinatorTests::Product",
+            "FFCParserCombinator::FFCParserCombinator::Product"
          );
          name = "Products";
          path = "";
@@ -134,13 +134,13 @@
       };
       "OBJ_18" = {
          isa = "PBXFileReference";
-         path = "muter_logs";
+         path = "28-05-08-13";
          sourceTree = "SOURCE_ROOT";
       };
       "OBJ_19" = {
          isa = "PBXFileReference";
-         path = "muter.conf.json";
-         sourceTree = "<group>";
+         path = "build";
+         sourceTree = "SOURCE_ROOT";
       };
       "OBJ_2" = {
          isa = "XCConfigurationList";
@@ -153,24 +153,34 @@
       };
       "OBJ_20" = {
          isa = "PBXFileReference";
+         path = "muter_logs";
+         sourceTree = "SOURCE_ROOT";
+      };
+      "OBJ_21" = {
+         isa = "PBXFileReference";
+         path = "muter.conf.json";
+         sourceTree = "<group>";
+      };
+      "OBJ_22" = {
+         isa = "PBXFileReference";
          path = "LICENSE";
          sourceTree = "<group>";
       };
-      "OBJ_21" = {
+      "OBJ_23" = {
          isa = "PBXFileReference";
          path = "README.md";
          sourceTree = "<group>";
       };
-      "OBJ_23" = {
+      "OBJ_25" = {
          isa = "XCConfigurationList";
          buildConfigurations = (
-            "OBJ_24",
-            "OBJ_25"
+            "OBJ_26",
+            "OBJ_27"
          );
          defaultConfigurationIsVisible = "0";
          defaultConfigurationName = "Release";
       };
-      "OBJ_24" = {
+      "OBJ_26" = {
          isa = "XCBuildConfiguration";
          buildSettings = {
             ENABLE_TESTABILITY = "YES";
@@ -207,7 +217,7 @@
          };
          name = "Debug";
       };
-      "OBJ_25" = {
+      "OBJ_27" = {
          isa = "XCBuildConfiguration";
          buildSettings = {
             ENABLE_TESTABILITY = "YES";
@@ -244,25 +254,16 @@
          };
          name = "Release";
       };
-      "OBJ_26" = {
+      "OBJ_28" = {
          isa = "PBXSourcesBuildPhase";
          files = (
-            "OBJ_27",
-            "OBJ_28"
+            "OBJ_29",
+            "OBJ_30"
          );
-      };
-      "OBJ_27" = {
-         isa = "PBXBuildFile";
-         fileRef = "OBJ_9";
-      };
-      "OBJ_28" = {
-         isa = "PBXBuildFile";
-         fileRef = "OBJ_10";
       };
       "OBJ_29" = {
-         isa = "PBXFrameworksBuildPhase";
-         files = (
-         );
+         isa = "PBXBuildFile";
+         fileRef = "OBJ_9";
       };
       "OBJ_3" = {
          isa = "XCBuildConfiguration";
@@ -282,6 +283,7 @@
             MACOSX_DEPLOYMENT_TARGET = "10.10";
             ONLY_ACTIVE_ARCH = "YES";
             OTHER_SWIFT_FLAGS = (
+               "$(inherited)",
                "-DXcode"
             );
             PRODUCT_NAME = "$(TARGET_NAME)";
@@ -305,16 +307,25 @@
          };
          name = "Debug";
       };
+      "OBJ_30" = {
+         isa = "PBXBuildFile";
+         fileRef = "OBJ_10";
+      };
       "OBJ_31" = {
+         isa = "PBXFrameworksBuildPhase";
+         files = (
+         );
+      };
+      "OBJ_33" = {
          isa = "XCConfigurationList";
          buildConfigurations = (
-            "OBJ_32",
-            "OBJ_33"
+            "OBJ_34",
+            "OBJ_35"
          );
          defaultConfigurationIsVisible = "0";
          defaultConfigurationName = "Release";
       };
-      "OBJ_32" = {
+      "OBJ_34" = {
          isa = "XCBuildConfiguration";
          buildSettings = {
             LD = "/usr/bin/true";
@@ -323,16 +334,16 @@
                "4",
                "-I",
                "$(TOOLCHAIN_DIR)/usr/lib/swift/pm/4",
-               "-target",
-               "x86_64-apple-macosx10.10",
                "-sdk",
-               "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.14.sdk"
+               "/Applications/Xcode-beta.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX11.0.sdk",
+               "-package-description-version",
+               "4.0.0"
             );
             SWIFT_VERSION = "4.0";
          };
          name = "Debug";
       };
-      "OBJ_33" = {
+      "OBJ_35" = {
          isa = "XCBuildConfiguration";
          buildSettings = {
             LD = "/usr/bin/true";
@@ -341,45 +352,33 @@
                "4",
                "-I",
                "$(TOOLCHAIN_DIR)/usr/lib/swift/pm/4",
-               "-target",
-               "x86_64-apple-macosx10.10",
                "-sdk",
-               "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.14.sdk"
+               "/Applications/Xcode-beta.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX11.0.sdk",
+               "-package-description-version",
+               "4.0.0"
             );
             SWIFT_VERSION = "4.0";
          };
          name = "Release";
       };
-      "OBJ_34" = {
+      "OBJ_36" = {
          isa = "PBXSourcesBuildPhase";
          files = (
-            "OBJ_35"
+            "OBJ_37"
          );
       };
-      "OBJ_35" = {
+      "OBJ_37" = {
          isa = "PBXBuildFile";
          fileRef = "OBJ_6";
       };
-      "OBJ_37" = {
+      "OBJ_39" = {
          isa = "XCConfigurationList";
          buildConfigurations = (
-            "OBJ_38",
-            "OBJ_39"
+            "OBJ_40",
+            "OBJ_41"
          );
          defaultConfigurationIsVisible = "0";
          defaultConfigurationName = "Release";
-      };
-      "OBJ_38" = {
-         isa = "XCBuildConfiguration";
-         buildSettings = {
-         };
-         name = "Debug";
-      };
-      "OBJ_39" = {
-         isa = "XCBuildConfiguration";
-         buildSettings = {
-         };
-         name = "Release";
       };
       "OBJ_4" = {
          isa = "XCBuildConfiguration";
@@ -396,6 +395,7 @@
             );
             MACOSX_DEPLOYMENT_TARGET = "10.10";
             OTHER_SWIFT_FLAGS = (
+               "$(inherited)",
                "-DXcode"
             );
             PRODUCT_NAME = "$(TARGET_NAME)";
@@ -419,19 +419,31 @@
          name = "Release";
       };
       "OBJ_40" = {
+         isa = "XCBuildConfiguration";
+         buildSettings = {
+         };
+         name = "Debug";
+      };
+      "OBJ_41" = {
+         isa = "XCBuildConfiguration";
+         buildSettings = {
+         };
+         name = "Release";
+      };
+      "OBJ_42" = {
          isa = "PBXTargetDependency";
          target = "FFCParserCombinator::FFCParserCombinatorTests";
       };
-      "OBJ_42" = {
+      "OBJ_44" = {
          isa = "XCConfigurationList";
          buildConfigurations = (
-            "OBJ_43",
-            "OBJ_44"
+            "OBJ_45",
+            "OBJ_46"
          );
          defaultConfigurationIsVisible = "0";
          defaultConfigurationName = "Release";
       };
-      "OBJ_43" = {
+      "OBJ_45" = {
          isa = "XCBuildConfiguration";
          buildSettings = {
             CLANG_ENABLE_MODULES = "YES";
@@ -466,7 +478,7 @@
          };
          name = "Debug";
       };
-      "OBJ_44" = {
+      "OBJ_46" = {
          isa = "XCBuildConfiguration";
          buildSettings = {
             CLANG_ENABLE_MODULES = "YES";
@@ -501,30 +513,20 @@
          };
          name = "Release";
       };
-      "OBJ_45" = {
+      "OBJ_47" = {
          isa = "PBXSourcesBuildPhase";
          files = (
-            "OBJ_46",
-            "OBJ_47"
-         );
-      };
-      "OBJ_46" = {
-         isa = "PBXBuildFile";
-         fileRef = "OBJ_13";
-      };
-      "OBJ_47" = {
-         isa = "PBXBuildFile";
-         fileRef = "OBJ_14";
-      };
-      "OBJ_48" = {
-         isa = "PBXFrameworksBuildPhase";
-         files = (
+            "OBJ_48",
             "OBJ_49"
          );
       };
+      "OBJ_48" = {
+         isa = "PBXBuildFile";
+         fileRef = "OBJ_13";
+      };
       "OBJ_49" = {
          isa = "PBXBuildFile";
-         fileRef = "FFCParserCombinator::FFCParserCombinator::Product";
+         fileRef = "OBJ_14";
       };
       "OBJ_5" = {
          isa = "PBXGroup";
@@ -536,12 +538,24 @@
             "OBJ_18",
             "OBJ_19",
             "OBJ_20",
-            "OBJ_21"
+            "OBJ_21",
+            "OBJ_22",
+            "OBJ_23"
          );
          path = "";
          sourceTree = "<group>";
       };
       "OBJ_50" = {
+         isa = "PBXFrameworksBuildPhase";
+         files = (
+            "OBJ_51"
+         );
+      };
+      "OBJ_51" = {
+         isa = "PBXBuildFile";
+         fileRef = "FFCParserCombinator::FFCParserCombinator::Product";
+      };
+      "OBJ_52" = {
          isa = "PBXTargetDependency";
          target = "FFCParserCombinator::FFCParserCombinator";
       };
