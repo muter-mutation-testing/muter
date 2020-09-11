@@ -3,7 +3,7 @@
 //  BonMot
 //
 //  Created by Brian King on 8/31/16.
-//  Copyright © 2016 Raizlabs. All rights reserved.
+//  Copyright © 2016 Rightpoint. All rights reserved.
 //
 
 #if os(OSX)
@@ -22,7 +22,7 @@
         func featureSettings() -> [(type: Int, selector: Int)]
     }
 
-    public extension BONFont {
+    extension BONFont {
 
         /// Create a new font and attempt to enable the specified font features.
         /// The returned font will have all features enabled that it supports.
@@ -208,7 +208,7 @@
         func featureAttributes() -> [[BONFontDescriptor.FeatureKey: Any]] {
             let featureSettings = self.featureSettings()
             return featureSettings.map {
-                return [
+                [
                     BONFontFeatureTypeIdentifierKey: $0.type,
                     BONFontFeatureSelectorIdentifierKey: $0.selector,
                     ]

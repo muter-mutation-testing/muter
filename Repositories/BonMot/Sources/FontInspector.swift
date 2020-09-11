@@ -3,17 +3,17 @@
 //  BonMot
 //
 //  Created by Zev Eisenberg on 11/2/16.
-//  Copyright © 2016 Raizlabs. All rights reserved.
+//  Copyright © 2016 Rightpoint. All rights reserved.
 //
 
 // This is not supported on watchOS
 #if os(iOS) || os(tvOS) || os(OSX)
-    import Foundation
     import CoreText
+    import Foundation
 
     typealias FontFeatureDictionary = [String: Any]
 
-    public extension BONFont {
+    extension BONFont {
 
         public func has(feature theFeature: MappableFeature) -> Bool {
             let matchingFeatures = availableFeaturesDictionaries.filter { featureDict in

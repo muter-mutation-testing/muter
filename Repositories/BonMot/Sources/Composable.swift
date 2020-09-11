@@ -3,7 +3,7 @@
 //  BonMot
 //
 //  Created by Brian King on 9/28/16.
-//  Copyright © 2016 Raizlabs. All rights reserved.
+//  Copyright © 2016 Rightpoint. All rights reserved.
 //
 
 #if os(OSX)
@@ -49,9 +49,9 @@ public protocol Composable {
 
 }
 
-public extension Composable {
+extension Composable {
 
-    func append(to attributedString: NSMutableAttributedString, baseStyle: StringStyle) {
+    public func append(to attributedString: NSMutableAttributedString, baseStyle: StringStyle) {
         append(to: attributedString, baseStyle: baseStyle, isLastElement: false)
     }
 
@@ -93,7 +93,7 @@ public extension Composable {
 
 }
 
-public extension NSAttributedString {
+extension NSAttributedString {
 
     /// Compose an `NSAttributedString` by concatenating every item in
     /// `composables` with `baseStyle` applied. The `separator` is inserted
@@ -275,7 +275,8 @@ extension NSMutableAttributedString {
             return
         }
 
-        let lastCharacterRange = NSRange(location: length - 1, length: 1)
+        let lastCharacterLength = string.suffix(1).utf16.count
+        let lastCharacterRange = NSRange(location: length - lastCharacterLength, length: lastCharacterLength)
 
         guard let currentKernValue = attribute(.kern, at: lastCharacterRange.location, effectiveRange: nil) else {
             return
@@ -290,7 +291,8 @@ extension NSMutableAttributedString {
             return
         }
 
-        let lastCharacterRange = NSRange(location: length - 1, length: 1)
+        let lastCharacterLength = string.suffix(1).utf16.count
+        let lastCharacterRange = NSRange(location: length - lastCharacterLength, length: lastCharacterLength)
 
         guard let currentKernValue = attribute(.bonMotRemovedKernAttribute, at: lastCharacterRange.location, effectiveRange: nil) else {
             return

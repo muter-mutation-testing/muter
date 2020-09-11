@@ -3,11 +3,11 @@
 //  BonMot
 //
 //  Created by Brian King on 8/26/16.
-//  Copyright © 2016 Raizlabs. All rights reserved.
+//  Copyright © 2016 Rightpoint. All rights reserved.
 //
 
-import UIKit
 import BonMot
+import UIKit
 
 /// UITableViewCell's built in labels are re-created when the content size
 /// category changes, so we use a cell subclass with a custom label to avoid this.
@@ -42,7 +42,11 @@ class StyleViewController: UITableViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        tableView.rowHeight = UITableView.automaticDimension
+        #if swift(>=4.2)
+            tableView.rowHeight = UITableView.automaticDimension
+        #else
+            tableView.rowHeight = UITableViewAutomaticDimension
+        #endif
         tableView.estimatedRowHeight = 50
     }
 

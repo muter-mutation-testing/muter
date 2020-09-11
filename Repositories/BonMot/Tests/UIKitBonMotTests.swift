@@ -3,11 +3,11 @@
 //  BonMot
 //
 //  Created by Brian King on 9/3/16.
-//  Copyright © 2016 Raizlabs. All rights reserved.
+//  Copyright © 2016 Rightpoint. All rights reserved.
 //
 
-import XCTest
 import BonMot
+import XCTest
 
 #if swift(>=2.3)
 
