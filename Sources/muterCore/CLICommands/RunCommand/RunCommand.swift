@@ -1,27 +1,23 @@
-import Commandant
-import Result
-import Curry
 import Foundation
+import ArgumentParser
 
-@available(OSX 10.13, *)
-public struct RunCommand: CommandProtocol {
+@available(macOS 10.13, *)
+public struct Run: ParsableCommand {
+    public static let configuration = CommandConfiguration(
+        commandName: "run",
+        abstract: "Performs mutation testing for the Swift project contained within the current directory",
+        discussion: "Muter defaults to run when you don't specify any subcommands"
+    )
 
-    public typealias Options = RunCommandOptions
-    public typealias ClientError = MuterError
-    public let verb: String = "run"
-    public let function: String = """
-    Performs mutation testing for the Swift project contained within the current directory
+    @Argument(help: "Only mutate a given list of source code files")
+    var filesToMutate: [String] = []
 
-    Muter defaults to run when you don't specify any subcommands
+    @Flag(name: [.customLong("output-json")], help: "Output test results to a json file")
+    var shouldOutputJson: Bool = false
 
-    Available flags:
+    @Flag(name: [.customLong("output-xcode")], help: "Output test results in a format consumable by an Xcode run script step")
+    var shouldOutputXcode: Bool = false
 
-       --files-to-mutate    Only mutate a given list of source code files
-       --output-json        Output test results to a json file
-       --output-xcode       Output test results in a format consumable by an Xcode run script step
-
-    """
-    
     private let fileManager: FileSystemManager
     private let notificationCenter: NotificationCenter
 
@@ -31,54 +27,15 @@ public struct RunCommand: CommandProtocol {
         self.notificationCenter = notificationCenter
     }
 
-    public func run(_ options: Options) -> Result<(), ClientError> {
-        let _ = RunCommandObserver(reporter: options.reporter,
-                                   fileManager: fileManager,
-                                   flushHandler: flushStdOut)
-        
-        notificationCenter.post(name: .muterLaunched, object: nil)
-
-        let result = RunCommandHandler(options: options).handle()
-        switch result {
-        case .success(_):
-            return .success(())
-        case .failure(let error):
-            return .failure(error)
-        }
-    }
-}
-
-public struct RunCommandOptions: OptionsProtocol {
-    public typealias ClientError = MuterError
-    let reporter: Reporter
-    let filesToMutate: [String]
-    
-    public init(shouldOutputJSON: Bool, shouldOutputXcode: Bool, filesToMutate list: [String]) {
-        if shouldOutputJSON {
-            reporter = .json
-        } else if shouldOutputXcode {
-            reporter = .xcode
-        } else {
-            reporter = .plainText
-        }
-        
-        filesToMutate = list
+    public init(from decoder: Decoder) throws {
+        self.init(fileManager: FileManager.default, notificationCenter: .default)
     }
 
-    private static func create(_ shouldOutputJSON: Bool) -> (Bool) -> ([String]) -> RunCommandOptions {
-        return { shouldOutputXcode in { filesToMutate in RunCommandOptions(shouldOutputJSON: shouldOutputJSON, shouldOutputXcode: shouldOutputXcode, filesToMutate: filesToMutate) } }
+    public init() {
+        self.init(fileManager: FileManager.default, notificationCenter: .default)
     }
 
-    public static func evaluate(_ mode: CommandMode) -> Result<RunCommandOptions, CommandantError<ClientError>>  {
-        return create
-            <*> mode <| Option(key: "output-json", defaultValue: false, usage: "Whether or not Muter should output a json report after it's finished running.")
-            <*> mode <| Option(key: "output-xcode", defaultValue: false, usage: "Whether or not Muter should output to Xcode after it's finished running.")
-            <*> mode <| Option(
-                key: "files-to-mutate",
-                defaultValue: [],
-                usage: """
-                An exlusive list of files for Muter to work on.
-                Please note that all subpaths are evalutated from the root of the project.
-                """)
+    public func run() throws {
+        try RunCommandHandler(command: self).handle()
     }
 }

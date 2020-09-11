@@ -28,8 +28,8 @@ class RunCommandState: AnyRunCommandState {
 
     init() { }
 
-    init(from options: RunCommandOptions) {
-        self.filesToMutate = options.filesToMutate
+    init(from command: Run) {
+        self.filesToMutate = command.filesToMutate
     }
 }
 

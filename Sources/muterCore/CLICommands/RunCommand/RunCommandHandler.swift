@@ -9,24 +9,16 @@ class RunCommandHandler {
         self.state = state
     }
     
-    init(options: RunCommandOptions,
+    init(command: Run,
          steps: [RunCommandStep] = RunCommandHandler.defaultSteps) {
         self.steps = steps
-        self.state = RunCommandState(from: options)
+        self.state = RunCommandState(from: command)
     }
     
-    func handle() -> Result<(), MuterError> {
+    func handle() throws {
         for step in steps {
-            let result = step.run(with: state)
-
-            switch result {
-            case .failure(let error):
-                return .failure(error)
-            case .success(let stateChanges):
-                state.apply(stateChanges)
-            }
+            try step.run(with: state).map(state.apply(_:)).get()
         }
-        return .success(())
     }
 }
 
