@@ -75,6 +75,20 @@ class RemoveSideEffectsOperatorSpec: QuickSpec {
 
                 expect(visitor.positionsOfToken.first?.line).to(equal(3))
             }
+            
+            it("ignores functions that are used as implicit return") {
+                let sampleWithImplicitReturn = sourceCode(fromFileAt: "\(self.mutationExamplesDirectory)/SideEffect/sampleWithImplicitReturn.swift")!
+                let visitor = RemoveSideEffectsOperator.Visitor(sourceFileInfo: sampleWithImplicitReturn.asSourceFileInfo)
+                visitor.walk(sampleWithImplicitReturn.code)
+
+                guard visitor.positionsOfToken.count == 2 else {
+                    fail("Expected 1 token to be discovered, got \(visitor.positionsOfToken.count) instead")
+                    return
+                }
+
+                expect(visitor.positionsOfToken.first?.line).to(equal(2))
+                expect(visitor.positionsOfToken.last?.line).to(equal(6))
+            }
         }
 
         describe("RemoveSideEffectsOperator.Rewriter") {
@@ -122,7 +136,7 @@ class RemoveSideEffectsOperatorSpec: QuickSpec {
                 expect(results.rewriter.description.trimmed) == "removed line"
             }
         }
-        
+
         describe("MutationOperator.Id.removeSideEffects.transformation") {
             let sourceWithSideEffects = sourceCode(fromFileAt: "\(self.fixturesDirectory)/MutationExamples/SideEffect/sampleWithSideEffects.swift")!
             let expectedSource = sourceCode(fromFileAt: "\(self.fixturesDirectory)/MutationExamples/SideEffect/removedVoidFunctionCall_line21.swift")!
