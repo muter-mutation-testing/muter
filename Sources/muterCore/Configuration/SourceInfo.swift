@@ -19,3 +19,12 @@ struct SourceCodeInfo {
     /// The full contents of the file as a syntax tree.
     let code: SourceFileSyntax
 }
+
+extension SourceCodeInfo {
+    var asSourceFileInfo: SourceFileInfo {
+        .init(
+            path: path,
+            source: code.description
+        )
+    }
+}

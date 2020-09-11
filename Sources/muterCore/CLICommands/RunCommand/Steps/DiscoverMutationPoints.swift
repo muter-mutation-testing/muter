@@ -33,7 +33,7 @@ private extension DiscoverMutationPoints {
                 let source = sourceCode(fromFileAt: path)?.code
             else { return alreadyDiscoveredMutationPoints }
             
-            let newMutationPoints = discoverNewMutationPoints(inFileAt: path, containing: source, configuration: configuration).sorted(by: filePositionOrder)
+            let newMutationPoints = discoverNewMutationPoints(inFile: SourceCodeInfo(path: path, code: source), configuration: configuration).sorted(by: filePositionOrder)
             
             if !newMutationPoints.isEmpty {
                 sourceCodeByFilePath[path] = source
@@ -49,33 +49,30 @@ private extension DiscoverMutationPoints {
     }
     
     func discoverNewMutationPoints(
-        inFileAt path: String,
-        containing source: SourceFileSyntax,
+        inFile sourceCodeInfo: SourceCodeInfo,
         configuration: MuterConfiguration
     ) -> [MutationPoint] {
-        let sourceFileInfo = SourceFileInfo(path: path, source: source.description)
-
         let excludedMutationPointsDetector = ExcludedMutationPointsDetector(
             configuration: configuration,
-            sourceFileInfo: sourceFileInfo
+            sourceFileInfo: sourceCodeInfo.asSourceFileInfo
         )
 
-        excludedMutationPointsDetector.walk(source)
+        excludedMutationPointsDetector.walk(sourceCodeInfo.code)
 
         return MutationOperator.Id.allCases.accumulate(into: []) { newMutationPoints, mutationOperatorId in
             
             let visitor = mutationOperatorId.rewriterVisitorPair.visitor(
                 configuration,
-                sourceFileInfo
+                sourceCodeInfo.asSourceFileInfo
             )
 
-            visitor.walk(source)
+            visitor.walk(sourceCodeInfo.code)
             
             return newMutationPoints + visitor.positionsOfToken
                 .filter { !excludedMutationPointsDetector.positionsOfToken.contains($0) }
                 .map { position in
                     return MutationPoint(mutationOperatorId: mutationOperatorId,
-                                         filePath: path,
+                                         filePath: sourceCodeInfo.path,
                                          position: position)
             }
         }
