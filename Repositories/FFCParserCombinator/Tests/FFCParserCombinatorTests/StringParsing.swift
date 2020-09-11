@@ -139,12 +139,13 @@ class StringParsingTests: XCTestCase {
     }
 
     static var allTests = [
-        ("testFloatingPoint",testFloatingPoint),
+        ("testFloatingPoint", testFloatingPoint),
         ("testSignedFloatingPoint", testSignedFloatingPoint),
         ("testInt", testInt),
         ("testUInt", testUInt),
         ("testDouble", testDouble),
         ("testNewlines", testNewlines),
+        ("testComposition", testComposition)
         ]
 
 }

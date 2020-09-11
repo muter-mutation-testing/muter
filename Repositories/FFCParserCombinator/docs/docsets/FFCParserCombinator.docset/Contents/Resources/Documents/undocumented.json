@@ -1,0 +1,26 @@
+{
+  "warnings": [
+    {
+      "file": "/Users/fcanas/workspace/FFCParserCombinator/Sources/FFCParserCombinator/FFCParserCombinator.swift",
+      "line": 249,
+      "symbol": "<^>(_:_:)",
+      "symbol_kind": "source.lang.swift.decl.function.free",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/fcanas/workspace/FFCParserCombinator/Sources/FFCParserCombinator/FFCParserCombinator.swift",
+      "line": 253,
+      "symbol": "<*>(_:_:)",
+      "symbol_kind": "source.lang.swift.decl.function.free",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/fcanas/workspace/FFCParserCombinator/Sources/FFCParserCombinator/StringParsing.swift",
+      "line": 120,
+      "symbol": "ParsableType.parser",
+      "symbol_kind": "source.lang.swift.decl.var.static",
+      "warning": "undocumented"
+    }
+  ],
+  "source_directory": "/Users/fcanas/workspace/FFCParserCombinator"
+}
