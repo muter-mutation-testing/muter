@@ -3,11 +3,11 @@ import Foundation
 public protocol FileSystemManager {
     func createDirectory(atPath path: String,
                          withIntermediateDirectories createIntermediates: Bool,
-                         attributes: [FileAttributeKey : Any]?) throws
+                         attributes: [FileAttributeKey: Any]?) throws
 
     func createFile(atPath path: String,
                     contents data: Data?,
-                    attributes attr: [FileAttributeKey : Any]?) -> Bool
+                    attributes attr: [FileAttributeKey: Any]?) -> Bool
 
     func url(for directory: FileManager.SearchPathDirectory,
              in domain: FileManager.SearchPathDomainMask,

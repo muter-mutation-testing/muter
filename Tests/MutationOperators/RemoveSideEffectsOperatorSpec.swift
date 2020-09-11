@@ -125,7 +125,7 @@ class RemoveSideEffectsOperatorSpec: QuickSpec {
         
         describe("MutationOperator.Id.removeSideEffects.transformation") {
             let sourceWithSideEffects = sourceCode(fromFileAt: "\(self.fixturesDirectory)/MutationExamples/SideEffect/sampleWithSideEffects.swift")!
-            let expectedSource = sourceCode(fromFileAt:  "\(self.fixturesDirectory)/MutationExamples/SideEffect/removedVoidFunctionCall_line21.swift")!
+            let expectedSource = sourceCode(fromFileAt: "\(self.fixturesDirectory)/MutationExamples/SideEffect/removedVoidFunctionCall_line21.swift")!
             let line21 = MutationPosition(utf8Offset: 480, line: 21, column: -1)
             let transformation = MutationOperator.Id.removeSideEffects.mutationOperator(for: line21)
 
