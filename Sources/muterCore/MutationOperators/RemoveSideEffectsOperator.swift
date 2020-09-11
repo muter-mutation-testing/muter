@@ -117,10 +117,10 @@ extension RemoveSideEffectsOperator {
         }
 
         override func visit(_ node: FunctionDeclSyntax) -> DeclSyntax {
-            guard let statements = node.body?.statements,
-                  let statementToExclude = statements.first(where: currentLineIsPositionToMutate) else {
-                return DeclSyntax(node)
-            }
+            guard
+                let statements = node.body?.statements,
+                let statementToExclude = statements.first(where: currentLineIsPositionToMutate)
+            else { return DeclSyntax(node) }
 
             let mutatedFunctionStatements = statements.exclude { $0.description == statementToExclude.description }
 
