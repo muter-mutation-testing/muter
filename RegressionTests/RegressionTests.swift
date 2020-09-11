@@ -36,7 +36,7 @@ class RegressionTests: QuickSpec {
             
         }
         
-        describe("muter test report output for bon mot") {
+        describe("muter test report output for BonMot") {
             it("does not contain any changes") {
                 let path = "\(self.rootTestDirectory)/bonmot_regression_test_output.json"
                 if case .failure(let description) = runRegressionTest(forFixtureNamed: "bonmot", withResultAt: path) {

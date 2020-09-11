@@ -2,7 +2,7 @@
 
 echo "🦕🦕🦕🦕🦕🦕🦕🦕 Regression Testing has started 🦕🦕🦕🦕🦕🦕🦕🦕"
 
-echo "Running Regression Test on Bon Mot..."
+echo "Running Regression Test on BonMot..."
 cd ./Repositories/BonMot
 ../../.build/x86_64-apple-macosx/debug/muter --output-json > muterReport.json
 cp ./muterReport.json ../../RegressionTests/bonmot_regression_test_output.json
