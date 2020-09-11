@@ -57,8 +57,18 @@ class FFCParserCombinatorTests: XCTestCase {
         XCTAssertEqual(smallParser.run("😎")?.0, nil)
     }
 
+    func testBacktrack() {
+        let parser: Parser<Substring, String> = "token"
+        
+        let r = parser.backtrack().run("token 1")
+        XCTAssertEqual(r?.0, "token")
+        XCTAssertEqual(r?.1, Substring("token 1"))
+    }
+    
     static var allTests = [
         ("testMultiMatching", testMultiMatching),
         ("testOr", testOr),
+        ("testFlatMap", testFlatMap),
+        ("testBacktrack", testBacktrack)
     ]
 }

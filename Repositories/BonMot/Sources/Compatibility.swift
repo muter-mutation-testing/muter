@@ -1,9 +1,9 @@
 //
-//  _Compatibility.swift
+//  Compatibility.swift
 //  BonMot
 //
 //  Created by Brian King on 8/24/16.
-//  Copyright © 2016 Raizlabs. All rights reserved.
+//  Copyright © 2016 Rightpoint. All rights reserved.
 //
 
 #if os(OSX)
@@ -12,8 +12,8 @@
     import UIKit
 #endif
 
-/// This file declares extensions to system types to provide a compatible API
-/// between Swift iOS, macOS, watchOS, and tvOS.
+// This file declares extensions to system types to provide a compatible API
+// between Swift iOS, macOS, watchOS, and tvOS.
 
 #if swift(>=4.2)
 #else
@@ -99,12 +99,6 @@
             extension UIApplication {
 
                 public typealias LaunchOptionsKey = UIApplicationLaunchOptionsKey
-
-            }
-
-            extension UITableView {
-
-                public static let automaticDimension = UITableViewAutomaticDimension
 
             }
 

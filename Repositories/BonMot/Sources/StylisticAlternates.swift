@@ -3,7 +3,7 @@
 //  BonMot
 //
 //  Created by Zev Eisenberg on 11/4/16.
-//  Copyright © 2016 Raizlabs. All rights reserved.
+//  Copyright © 2016 Rightpoint. All rights reserved.
 //
 
 #if os(OSX)
@@ -279,7 +279,11 @@
 
     }
 
-    public func + (lhs: StylisticAlternates, rhs: StylisticAlternates) -> StylisticAlternates {
-        return lhs.byAdding(other: rhs)
+    extension StylisticAlternates {
+
+        public static func + (lhs: StylisticAlternates, rhs: StylisticAlternates) -> StylisticAlternates {
+            return lhs.byAdding(other: rhs)
+        }
+
     }
 #endif

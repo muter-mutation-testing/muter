@@ -3,4 +3,5 @@ import XCTest
 
 XCTMain([
     testCase(FFCParserCombinatorTests.allTests),
+    testCase(StringParsingTests.allTests)
 ])

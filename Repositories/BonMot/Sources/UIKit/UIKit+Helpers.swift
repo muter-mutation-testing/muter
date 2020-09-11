@@ -6,6 +6,7 @@
 //
 //
 
+#if canImport(UIKit) && !os(watchOS)
 import UIKit
 
 // UIKit helpers for iOS and tvOS
@@ -73,3 +74,4 @@ extension UIFont {
     }
 
 }
+#endif

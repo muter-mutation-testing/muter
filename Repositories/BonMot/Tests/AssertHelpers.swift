@@ -3,11 +3,11 @@
 //  BonMot
 //
 //  Created by Brian King on 9/1/16.
-//  Copyright © 2016 Raizlabs. All rights reserved.
+//  Copyright © 2016 Rightpoint. All rights reserved.
 //
 
-import XCTest
 import BonMot
+import XCTest
 
 func dataFromImage(image theImage: BONImage) -> Data {
     assert(theImage.size != .zero)
@@ -108,5 +108,5 @@ func BONAssertEqualFonts(_ font1: BONFont, _ font2: BONFont, _ message: @autoclo
     let descriptor1 = font1.fontDescriptor
     let descriptor2 = font2.fontDescriptor
 
-    XCTAssertEqual(descriptor1, descriptor2, message, file: file, line: line)
+    XCTAssertEqual(descriptor1, descriptor2, message(), file: file, line: line)
 }

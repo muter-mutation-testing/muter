@@ -3,11 +3,11 @@
 //  BonMot
 //
 //  Created by Zev Eisenberg on 3/24/17.
-//  Copyright © 2017 Raizlabs. All rights reserved.
+//  Copyright © 2017 Rightpoint. All rights reserved.
 //
 
-import XCTest
 @testable import BonMot
+import XCTest
 
 private extension Locale {
 

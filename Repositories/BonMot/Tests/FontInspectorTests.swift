@@ -3,11 +3,11 @@
 //  BonMot
 //
 //  Created by Zev Eisenberg on 11/2/16.
-//  Copyright © 2016 Raizlabs. All rights reserved.
+//  Copyright © 2016 Rightpoint. All rights reserved.
 //
 
-import XCTest
 @testable import BonMot
+import XCTest
 
 class FontInspectorTests: XCTestCase {
 

@@ -3,11 +3,11 @@
 //  BonMot
 //
 //  Created by Brian King on 7/20/16.
-//  Copyright © 2016 Raizlabs. All rights reserved.
+//  Copyright © 2016 Rightpoint. All rights reserved.
 //
 
-import XCTest
 import BonMot
+import XCTest
 
 #if os(iOS) || os(tvOS) || os(watchOS)
     let testTextStyle = UIFont.TextStyle.title3
