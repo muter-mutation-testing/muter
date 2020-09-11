@@ -1,8 +1,15 @@
 import SwiftSyntax
 
+/// The position in a source file of a mutation.
 struct MutationPosition: Codable, Equatable {
+    /// The UTF-8 byte offset of the mutation. Used so we don't have to evaluate line wraps in order to interpret
+    /// line/column pairs.
     let utf8Offset: Int
+
+    /// The line where the mutation occurs.
     let line: Int
+
+    /// The column where the mutation occurs.s
     let column: Int
 
     init(utf8Offset: Int, line: Int = 0, column: Int = 0) {
