@@ -42,10 +42,7 @@ enum ROROperator {
                 .spacedBinaryOperator(">"),
             ]
         }
-        
-        override func visit(_ node: GenericWhereClauseSyntax) -> SyntaxVisitorContinueKind {
-            super.visit(node)
-        }
+
     }
 }
 
