@@ -26,7 +26,7 @@ func createLoggingDirectory(in directory: String,
     return loggingDirectory
 }
 
-public struct SourceCodeInfo {
+struct SourceCodeInfo {
     let code: SourceFileSyntax
     let path: String
 }
