@@ -53,7 +53,7 @@ private extension DiscoverMutationPoints {
         containing source: SourceFileSyntax,
         configuration: MuterConfiguration
     ) -> [MutationPoint] {
-        let sourceFileInfo = SourceFileInfo(file: path, source: source.description)
+        let sourceFileInfo = SourceFileInfo(path: path, source: source.description)
 
         let excludedMutationPointsDetector = ExcludedMutationPointsDetector(
             configuration: configuration,

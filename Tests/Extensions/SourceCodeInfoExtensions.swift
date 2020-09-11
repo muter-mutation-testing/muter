@@ -3,7 +3,7 @@
 extension SourceCodeInfo {
     public var asSourceFileInfo: SourceFileInfo {
         .init(
-            file: path,
+            path: path,
             source: code.description
         )
     }

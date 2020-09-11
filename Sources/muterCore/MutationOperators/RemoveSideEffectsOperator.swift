@@ -37,7 +37,7 @@ enum RemoveSideEffectsOperator {
             for statement in body.statements where statementContainsMutableToken(statement) {
                 let sourceLocation = statement.endLocation(
                     converter: SourceLocationConverter(
-                        file: sourceFileInfo.file,
+                        file: sourceFileInfo.path,
                         source: sourceFileInfo.source
                     ),
                     afterTrailingTrivia: true

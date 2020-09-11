@@ -6,7 +6,7 @@ import Foundation
 func sourceCode(fromFileAt path: String) -> SourceCodeInfo? {
     let url = URL(fileURLWithPath: path)
     return (try? SyntaxParser.parse(url))
-        .map { (code: $0, path: url.absoluteString) }
+        .map { (path: url.absoluteString, code: $0) }
         .map (SourceCodeInfo.init)
 }
 
@@ -24,9 +24,4 @@ func createLoggingDirectory(in directory: String,
     let loggingDirectory = "\(directory)/muter_logs/\(formatter.string(from: timestamp()))"
     try! fileManager.createDirectory(atPath: loggingDirectory, withIntermediateDirectories: true, attributes: nil)
     return loggingDirectory
-}
-
-struct SourceCodeInfo {
-    let code: SourceFileSyntax
-    let path: String
 }
