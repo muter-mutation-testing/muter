@@ -83,15 +83,15 @@ class RemoveSideEffectsOperatorSpec: QuickSpec {
 
                 let firstExpectedSource = "\(self.mutationExamplesDirectory)/SideEffect/removedUnusedReturnResult_line3.swift"
                 let secondExpectedSource = "\(self.mutationExamplesDirectory)/SideEffect/removedUnusedReturnResult_line10.swift"
-                let line3 = MutationPosition(utf8Offset: 86, line: -1, column: -1)
-                let line10 = MutationPosition(utf8Offset: 208, line: -1, column: -1)
+                let offset86 = MutationPosition(utf8Offset: 86, line: -1, column: -1)
+                let offset208 = MutationPosition(utf8Offset: 208, line: -1, column: -1)
 
                 let firstResults = applyMutation(toFileAt: path,
-                                                 atPosition: line3,
+                                                 atPosition: offset86,
                                                  expectedOutcome: firstExpectedSource)
 
                 let secondResults = applyMutation(toFileAt: path,
-                                                  atPosition: line10,
+                                                  atPosition: offset208,
                                                   expectedOutcome: secondExpectedSource)
 
                 expect(firstResults.mutatedSource.description).to(equal(firstResults.expectedSource.description))
