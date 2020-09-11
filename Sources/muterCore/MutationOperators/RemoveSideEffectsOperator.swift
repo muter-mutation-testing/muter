@@ -70,7 +70,7 @@ enum RemoveSideEffectsOperator {
         }
 
         private func variableAssignmentStatements(_ node: Syntax) -> Bool {
-            return  node.is(VariableDeclSyntax.self)
+            return node.is(VariableDeclSyntax.self)
         }
 
         private func functionCallStatements(_ node: Syntax) -> Bool {
