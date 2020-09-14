@@ -6,7 +6,7 @@ func mutateMe2() -> Void {
     bar()
 }
 
-func mutateMe3() -> () {
+func mutateMe3() ->  () {
     bar()
 }
 

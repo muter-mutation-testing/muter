@@ -121,7 +121,14 @@ private extension FunctionDeclSyntax {
 
 private extension ReturnClauseSyntax {
     var isReturningVoid: Bool {
-        description.trimmed == "-> Void" || description.trimmed == "-> ()"
+        returnType.withoutTrivia().description.trimmed == "Void" ||
+        returnType.withoutTrivia().description.trimmed == "()"
+    }
+}
+
+private extension SyntaxProtocol {
+    func withoutTrivia() -> Self {
+        withoutLeadingTrivia().withoutTrailingTrivia()
     }
 }
 
