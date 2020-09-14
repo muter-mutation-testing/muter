@@ -30,7 +30,7 @@ enum RemoveSideEffectsOperator {
         }
 
         override func visit(_ node: FunctionDeclSyntax) -> SyntaxVisitorContinueKind {
-            guard let body = node.body, !hasImplicitReturn(node) else {
+            guard let body = node.body, !node.hasImplicitReturn() else {
                 return super.visit(node)
             }
 
@@ -60,7 +60,7 @@ enum RemoveSideEffectsOperator {
             
             return body.statements.count == 1 &&
                 node.signature.output != nil &&
-                node.signature.output?.description.contains("Void") == false
+                node.signature.output?.isReturningVoid == false
         }
 
         private func statementContainsMutableToken(_ statement: CodeBlockItemListSyntax.Element) -> Bool {
@@ -114,6 +114,24 @@ enum RemoveSideEffectsOperator {
         private func propertyName(from patternSyntax: PatternBindingSyntax) -> String {
             patternSyntax.pattern.description.trimmed
         }
+    }
+}
+
+private extension FunctionDeclSyntax {
+    func hasImplicitReturn() -> Bool {
+        guard let body = body else {
+            return false
+        }
+        
+        return body.statements.count == 1 &&
+            signature.output != nil &&
+            signature.output?.isReturningVoid == false
+    }
+}
+
+private extension ReturnClauseSyntax {
+    var isReturningVoid: Bool {
+        description.trimmed == "-> Void" || description.trimmed == "-> ()"
     }
 }
 

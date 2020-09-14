@@ -81,13 +81,14 @@ class RemoveSideEffectsOperatorSpec: QuickSpec {
                 let visitor = RemoveSideEffectsOperator.Visitor(sourceFileInfo: sampleWithImplicitReturn.asSourceFileInfo)
                 visitor.walk(sampleWithImplicitReturn.code)
 
-                guard visitor.positionsOfToken.count == 2 else {
-                    fail("Expected 1 token to be discovered, got \(visitor.positionsOfToken.count) instead")
+                guard visitor.positionsOfToken.count == 3 else {
+                    fail("Expected 3 token to be discovered, got \(visitor.positionsOfToken.count) instead")
                     return
                 }
 
-                expect(visitor.positionsOfToken.first?.line).to(equal(2))
-                expect(visitor.positionsOfToken.last?.line).to(equal(6))
+                expect(visitor.positionsOfToken[0].line).to(equal(2))
+                expect(visitor.positionsOfToken[1].line).to(equal(6))
+                expect(visitor.positionsOfToken[2].line).to(equal(10))
             }
         }
 

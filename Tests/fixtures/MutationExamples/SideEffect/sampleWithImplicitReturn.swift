@@ -6,6 +6,10 @@ func mutateMe2() -> Void {
     bar()
 }
 
+func mutateMe3() -> () {
+    bar()
+}
+
 func bar() { }
 
 func ignoreMe() -> Int {
