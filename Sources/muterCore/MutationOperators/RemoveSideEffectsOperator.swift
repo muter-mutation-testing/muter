@@ -53,16 +53,6 @@ enum RemoveSideEffectsOperator {
             return super.visit(node)
         }
 
-        private func hasImplicitReturn(_ node: FunctionDeclSyntax) -> Bool {
-            guard let body = node.body else {
-                return false
-            }
-            
-            return body.statements.count == 1 &&
-                node.signature.output != nil &&
-                node.signature.output?.isReturningVoid == false
-        }
-
         private func statementContainsMutableToken(_ statement: CodeBlockItemListSyntax.Element) -> Bool {
             let doesntContainVariableAssignment = statement.children.count(variableAssignmentStatements) == 0
             let containsDiscardedResult = statement.description.contains("_ = ")
