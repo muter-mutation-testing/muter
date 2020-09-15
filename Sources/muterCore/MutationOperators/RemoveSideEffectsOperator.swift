@@ -30,7 +30,7 @@ enum RemoveSideEffectsOperator {
         }
 
         override func visit(_ node: FunctionDeclSyntax) -> SyntaxVisitorContinueKind {
-            guard let body = node.body else {
+            guard let body = node.body, !node.hasImplicitReturn() else {
                 return super.visit(node)
             }
 
@@ -104,6 +104,30 @@ enum RemoveSideEffectsOperator {
         private func propertyName(from patternSyntax: PatternBindingSyntax) -> String {
             patternSyntax.pattern.description.trimmed
         }
+    }
+}
+
+private extension FunctionDeclSyntax {
+    func hasImplicitReturn() -> Bool {
+        guard let body = body else {
+            return false
+        }
+        
+        return body.statements.count == 1 &&
+            signature.output != nil &&
+            signature.output?.isReturningVoid == false
+    }
+}
+
+private extension ReturnClauseSyntax {
+    var isReturningVoid: Bool {
+        ["Void", "()"].contains(returnType.withoutTrivia().description.trimmed)
+    }
+}
+
+private extension SyntaxProtocol {
+    func withoutTrivia() -> Self {
+        withoutLeadingTrivia().withoutTrailingTrivia()
     }
 }
 
