@@ -121,8 +121,7 @@ private extension FunctionDeclSyntax {
 
 private extension ReturnClauseSyntax {
     var isReturningVoid: Bool {
-        returnType.withoutTrivia().description.trimmed == "Void" ||
-        returnType.withoutTrivia().description.trimmed == "()"
+        ["Void", "()"].contains(returnType.withoutTrivia().description.trimmed)
     }
 }
 
