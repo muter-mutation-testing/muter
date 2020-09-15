@@ -82,7 +82,7 @@ class RemoveSideEffectsOperatorSpec: QuickSpec {
                 visitor.walk(sampleWithImplicitReturn.code)
 
                 guard visitor.positionsOfToken.count == 3 else {
-                    fail("Expected 3 token to be discovered, got \(visitor.positionsOfToken.count) instead")
+                    fail("Expected 3 tokens to be discovered, got \(visitor.positionsOfToken.count) instead")
                     return
                 }
 
