@@ -1,0 +1,16 @@
+{
+  "arguments" : [
+    "-project",
+    "ExampleMacOSApp.xcodeproj",
+    "-scheme",
+    "ExampleMacOSApp",
+    "test"
+  ],
+  "exclude" : [
+
+  ],
+  "excludeCalls" : [
+
+  ],
+  "executable" : "\/usr\/bin\/xcodebuild"
+}

@@ -1,0 +1,14 @@
+Available commands:
+
+   help   Display general or command-specific help
+   init   Creates the configuration file that Muter uses
+   run    Performs mutation testing for the Swift project contained within the current directory
+
+Muter defaults to run when you don't specify any subcommands
+
+Available flags:
+
+   --files-to-mutate    Only mutate a given list of source code files
+   --output-json        Output test results to a json file
+   --output-xcode       Output test results in a format consumable by an Xcode run script step
+
