@@ -4,7 +4,6 @@ import SwiftSyntax
 import Quick
 import Nimble
 
-@available(OSX 10.13, *)
 class PerformMutationTestingSpec: QuickSpec {
     override func spec() {
         

@@ -1,7 +1,6 @@
 import Foundation
 import SwiftSyntax
 
-@available(OSX 10.13, *)
 struct PerformMutationTesting: RunCommandStep {
     private let ioDelegate: MutationTestingIODelegate
     private let notificationCenter: NotificationCenter
@@ -28,7 +27,6 @@ struct PerformMutationTesting: RunCommandStep {
     }
 }
 
-@available(OSX 10.13, *)
 private extension PerformMutationTesting {
     func performMutationTesting(using state: AnyRunCommandState) -> Result<[MutationTestOutcome], MuterError> {
         notificationCenter.post(name: .mutationTestingStarted, object: nil)

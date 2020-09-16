@@ -30,7 +30,6 @@ func flushStdOut() {
     fflush(stdout)
 }
 
-@available(OSX 10.12, *)
 class RunCommandObserver {
     private let reporter: Reporter
     private let fileManager: FileSystemManager
@@ -77,7 +76,6 @@ class RunCommandObserver {
     }
 }
 
-@available(OSX 10.12, *)
 extension RunCommandObserver {
     func handleMuterLaunched(notification: Notification) {
         if reporter == .plainText {

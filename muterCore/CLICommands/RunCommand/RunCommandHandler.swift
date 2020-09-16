@@ -1,4 +1,3 @@
-@available(OSX 10.13, *)
 class RunCommandHandler {
     let steps: [RunCommandStep]
     var state: AnyRunCommandState
@@ -30,7 +29,6 @@ class RunCommandHandler {
     }
 }
 
-@available(OSX 10.13, *)
 private extension RunCommandHandler {
     private static let defaultSteps: [RunCommandStep] = [LoadConfiguration(),
                                                          CopyProjectToTempDirectory(),

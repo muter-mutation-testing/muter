@@ -3,7 +3,6 @@ import Nimble
 import Foundation
 @testable import muterCore
 
-@available(OSX 10.13, *)
 class RunCommandHandlerSpec: QuickSpec {
     override func spec() {
         

@@ -36,7 +36,6 @@ public struct MuterConfiguration: Equatable, Codable {
     }
 }
 
-@available(OSX 10.13, *)
 extension MuterConfiguration {
     var asJSONData: Data {
         let encoder = JSONEncoder()

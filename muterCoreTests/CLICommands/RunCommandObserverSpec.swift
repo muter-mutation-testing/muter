@@ -4,7 +4,6 @@ import Foundation
 import SwiftSyntax
 @testable import muterCore
 
-@available(OSX 10.12, *)
 class RunCommandObserverSpec: QuickSpec {
     override func spec() {
         describe("RunCommandObserver") {

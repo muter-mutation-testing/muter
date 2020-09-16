@@ -7,7 +7,6 @@ protocol MutationTestingIODelegate {
     func restoreFile(at path: String, using swapFilePaths: [FilePath: FilePath])
 }
 
-@available(OSX 10.13, *)
 struct MutationTestingDelegate: MutationTestingIODelegate {
     private let notificationCenter: NotificationCenter = .default
 
@@ -48,7 +47,6 @@ struct MutationTestingDelegate: MutationTestingIODelegate {
     }
 }
 
-@available(OSX 10.13, *)
 private extension MutationTestingDelegate {
 
     func copySourceCode(fromFileAt sourcePath: String, to destinationPath: String) {

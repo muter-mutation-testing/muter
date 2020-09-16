@@ -3,7 +3,6 @@ import Result
 import Curry
 import Foundation
 
-@available(OSX 10.13, *)
 public struct RunCommand: CommandProtocol {
 
     public typealias Options = RunCommandOptions

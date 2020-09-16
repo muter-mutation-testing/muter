@@ -2,7 +2,6 @@ import Progress
 import Foundation
 import Rainbow
 
-@available(OSX 10.12, *)
 public class SimpleTimeEstimate: ProgressElementType {
     private let initialEstimate: TimeInterval
     private var lastTime: Date = Date()

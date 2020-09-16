@@ -2,7 +2,6 @@ import Commandant
 import Result
 import Foundation
 
-@available(OSX 10.13, *)
 public struct InitCommand: CommandProtocol {
     public typealias Options = NoOptions<MuterError>
     public typealias ClientError = MuterError

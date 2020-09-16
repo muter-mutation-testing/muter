@@ -6,7 +6,6 @@ import TestingExtensions
 
 @testable import muterCore
 
-@available(OSX 10.13, *)
 class AcceptanceTests: QuickSpec {
     
     override func spec() {
@@ -195,7 +194,6 @@ class AcceptanceTests: QuickSpec {
     }
 }
 
-@available(OSX 10.13, *)
 extension AcceptanceTests {
     
     var rootTestDirectory: String {
@@ -254,7 +252,6 @@ extension AcceptanceTests {
     }
 }
 
-@available(OSX 10.13, *)
 extension AcceptanceTests {
     
     func contentsOfLogFile(named fileName: String) -> String {
@@ -287,7 +284,6 @@ extension AcceptanceTests {
     }
 }
 
-@available(OSX 10.13, *)
 extension AcceptanceTests {
     func numberOfDiscoveredFileLists(in output: String) -> Int {
         return applyRegex("[a-zA-Z]+.swift \\([0-9]+ mutants\\)", to: output)

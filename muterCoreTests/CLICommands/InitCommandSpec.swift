@@ -4,7 +4,6 @@ import Foundation
 import Commandant
 import muterCore
 
-@available(OSX 10.13, *)
 class InitCommandSpec: QuickSpec {
     override func spec() {
         describe("InitCommand") {

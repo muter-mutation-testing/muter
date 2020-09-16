@@ -1,7 +1,6 @@
 import SnapshotTesting
 import Foundation
 
-@available(OSX 10.13, *)
 extension Snapshotting where Value: Encodable, Format == String {
     static func json(excludingKeysMatching predicate: @escaping (String) -> Bool) -> Snapshotting {
         
