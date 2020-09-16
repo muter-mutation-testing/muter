@@ -43,8 +43,8 @@
             <BuildableReference
                BuildableIdentifier = "primary"
                BlueprintIdentifier = "D30B069725102C2D000CF0C2"
-               BuildableName = "muterAcceptanceTests.xctest"
-               BlueprintName = "muterAcceptanceTests"
+               BuildableName = "AcceptanceTests.xctest"
+               BlueprintName = "AcceptanceTests"
                ReferencedContainer = "container:muter.xcodeproj">
             </BuildableReference>
          </TestableReference>
@@ -53,8 +53,8 @@
             <BuildableReference
                BuildableIdentifier = "primary"
                BlueprintIdentifier = "D30B06A625102C39000CF0C2"
-               BuildableName = "muterRegressionTests.xctest"
-               BlueprintName = "muterRegressionTests"
+               BuildableName = "RegressionTests.xctest"
+               BlueprintName = "RegressionTests"
                ReferencedContainer = "container:muter.xcodeproj">
             </BuildableReference>
          </TestableReference>

@@ -8,7 +8,6 @@
 
 /* Begin PBXBuildFile section */
 		D30B066525102B6C000CF0C2 /* main.swift in Sources */ = {isa = PBXBuildFile; fileRef = D30B066425102B6C000CF0C2 /* main.swift */; };
-		D30B067F25102BF8000CF0C2 /* muterCoreTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D30B067E25102BF8000CF0C2 /* muterCoreTests.swift */; };
 		D30B068125102BF8000CF0C2 /* muterCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D30B067025102BE2000CF0C2 /* muterCore.framework */; };
 		D30B069D25102C2D000CF0C2 /* muterCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D30B067025102BE2000CF0C2 /* muterCore.framework */; };
 		D30B06AC25102C39000CF0C2 /* muterCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D30B067025102BE2000CF0C2 /* muterCore.framework */; };
@@ -199,11 +198,10 @@
 		D30B067025102BE2000CF0C2 /* muterCore.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = muterCore.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		D30B067325102BE2000CF0C2 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		D30B067C25102BF8000CF0C2 /* muterCoreTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = muterCoreTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
-		D30B067E25102BF8000CF0C2 /* muterCoreTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = muterCoreTests.swift; sourceTree = "<group>"; };
 		D30B068025102BF8000CF0C2 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		D30B069825102C2D000CF0C2 /* muterAcceptanceTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = muterAcceptanceTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		D30B069825102C2D000CF0C2 /* AcceptanceTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = AcceptanceTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		D30B069C25102C2D000CF0C2 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		D30B06A725102C39000CF0C2 /* muterRegressionTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = muterRegressionTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		D30B06A725102C39000CF0C2 /* RegressionTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = RegressionTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		D30B06AB25102C39000CF0C2 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		D372B4F725103085006E2D12 /* version.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = version.swift; sourceTree = "<group>"; };
 		D372B50025103085006E2D12 /* MuterConfiguration.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MuterConfiguration.swift; sourceTree = "<group>"; };
@@ -380,8 +378,8 @@
 				D30B066325102B6C000CF0C2 /* muter */,
 				D30B067125102BE2000CF0C2 /* muterCore */,
 				D30B067D25102BF8000CF0C2 /* muterCoreTests */,
-				D30B069925102C2D000CF0C2 /* muterAcceptanceTests */,
-				D30B06A825102C39000CF0C2 /* muterRegressionTests */,
+				D30B069925102C2D000CF0C2 /* AcceptanceTests */,
+				D30B06A825102C39000CF0C2 /* RegressionTests */,
 				D37C2DC82510EEBC002E0FDC /* TestingExtensions */,
 				D30B066225102B6C000CF0C2 /* Products */,
 				D39748D52510365600F83627 /* Frameworks */,
@@ -394,8 +392,8 @@
 				D30B066125102B6C000CF0C2 /* muter */,
 				D30B067025102BE2000CF0C2 /* muterCore.framework */,
 				D30B067C25102BF8000CF0C2 /* muterCoreTests.xctest */,
-				D30B069825102C2D000CF0C2 /* muterAcceptanceTests.xctest */,
-				D30B06A725102C39000CF0C2 /* muterRegressionTests.xctest */,
+				D30B069825102C2D000CF0C2 /* AcceptanceTests.xctest */,
+				D30B06A725102C39000CF0C2 /* RegressionTests.xctest */,
 				D37C2DC72510EEBC002E0FDC /* TestingExtensions.framework */,
 			);
 			name = Products;
@@ -439,13 +437,12 @@
 				D39749B325103DDD00F83627 /* TestDoubles */,
 				D39749A825103DDD00F83627 /* TestReporting */,
 				D39749B025103DDD00F83627 /* XCTestExtensions.swift */,
-				D30B067E25102BF8000CF0C2 /* muterCoreTests.swift */,
 				D30B068025102BF8000CF0C2 /* Info.plist */,
 			);
 			path = muterCoreTests;
 			sourceTree = "<group>";
 		};
-		D30B069925102C2D000CF0C2 /* muterAcceptanceTests */ = {
+		D30B069925102C2D000CF0C2 /* AcceptanceTests */ = {
 			isa = PBXGroup;
 			children = (
 				D3974A9D25103E4000F83627 /* AcceptanceTests.swift */,
@@ -461,10 +458,10 @@
 				D3974AA325103E4000F83627 /* runAcceptanceTests.sh */,
 				D30B069C25102C2D000CF0C2 /* Info.plist */,
 			);
-			path = muterAcceptanceTests;
+			path = AcceptanceTests;
 			sourceTree = "<group>";
 		};
-		D30B06A825102C39000CF0C2 /* muterRegressionTests */ = {
+		D30B06A825102C39000CF0C2 /* RegressionTests */ = {
 			isa = PBXGroup;
 			children = (
 				D3974AB825103E5300F83627 /* bonmot_regression_test_output.json */,
@@ -476,7 +473,7 @@
 				D3974AB625103E5300F83627 /* SnapshottingExtensions.swift */,
 				D30B06AB25102C39000CF0C2 /* Info.plist */,
 			);
-			path = muterRegressionTests;
+			path = RegressionTests;
 			sourceTree = "<group>";
 		};
 		D372B4FF25103085006E2D12 /* Configuration */ = {
@@ -763,9 +760,9 @@
 			productReference = D30B067C25102BF8000CF0C2 /* muterCoreTests.xctest */;
 			productType = "com.apple.product-type.bundle.unit-test";
 		};
-		D30B069725102C2D000CF0C2 /* muterAcceptanceTests */ = {
+		D30B069725102C2D000CF0C2 /* AcceptanceTests */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = D30B06A025102C2D000CF0C2 /* Build configuration list for PBXNativeTarget "muterAcceptanceTests" */;
+			buildConfigurationList = D30B06A025102C2D000CF0C2 /* Build configuration list for PBXNativeTarget "AcceptanceTests" */;
 			buildPhases = (
 				D30B069425102C2D000CF0C2 /* Sources */,
 				D30B069525102C2D000CF0C2 /* Frameworks */,
@@ -776,18 +773,18 @@
 			dependencies = (
 				D30B069F25102C2D000CF0C2 /* PBXTargetDependency */,
 			);
-			name = muterAcceptanceTests;
+			name = AcceptanceTests;
 			packageProductDependencies = (
 				D3974ACC25103FA500F83627 /* Quick */,
 				D3974ACE25103FA500F83627 /* Nimble */,
 			);
-			productName = muterAcceptanceTests;
-			productReference = D30B069825102C2D000CF0C2 /* muterAcceptanceTests.xctest */;
+			productName = AcceptanceTests;
+			productReference = D30B069825102C2D000CF0C2 /* AcceptanceTests.xctest */;
 			productType = "com.apple.product-type.bundle.unit-test";
 		};
-		D30B06A625102C39000CF0C2 /* muterRegressionTests */ = {
+		D30B06A625102C39000CF0C2 /* RegressionTests */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = D30B06AF25102C39000CF0C2 /* Build configuration list for PBXNativeTarget "muterRegressionTests" */;
+			buildConfigurationList = D30B06AF25102C39000CF0C2 /* Build configuration list for PBXNativeTarget "RegressionTests" */;
 			buildPhases = (
 				D30B06A325102C39000CF0C2 /* Sources */,
 				D30B06A425102C39000CF0C2 /* Frameworks */,
@@ -798,14 +795,14 @@
 			dependencies = (
 				D30B06AE25102C39000CF0C2 /* PBXTargetDependency */,
 			);
-			name = muterRegressionTests;
+			name = RegressionTests;
 			packageProductDependencies = (
 				D30B06C125102D4A000CF0C2 /* SnapshotTesting */,
 				D3974AD225103FBB00F83627 /* Quick */,
 				D3974AD425103FBB00F83627 /* Nimble */,
 			);
-			productName = muterRegressionTests;
-			productReference = D30B06A725102C39000CF0C2 /* muterRegressionTests.xctest */;
+			productName = RegressionTests;
+			productReference = D30B06A725102C39000CF0C2 /* RegressionTests.xctest */;
 			productType = "com.apple.product-type.bundle.unit-test";
 		};
 		D37C2DC62510EEBC002E0FDC /* TestingExtensions */ = {
@@ -885,8 +882,8 @@
 				D30B066F25102BE2000CF0C2 /* muterCore */,
 				D37C2DC62510EEBC002E0FDC /* TestingExtensions */,
 				D30B067B25102BF8000CF0C2 /* muterCoreTests */,
-				D30B069725102C2D000CF0C2 /* muterAcceptanceTests */,
-				D30B06A625102C39000CF0C2 /* muterRegressionTests */,
+				D30B069725102C2D000CF0C2 /* AcceptanceTests */,
+				D30B06A625102C39000CF0C2 /* RegressionTests */,
 			);
 		};
 /* End PBXProject section */
@@ -1033,7 +1030,6 @@
 				D39749CA25103DDE00F83627 /* RemoveSideEffectsOperatorSpec.swift in Sources */,
 				D39749E025103DDE00F83627 /* LoadConfigurationSpec.swift in Sources */,
 				D39749DE25103DDE00F83627 /* GenerateSwapFilePathsSpec.swift in Sources */,
-				D30B067F25102BF8000CF0C2 /* muterCoreTests.swift in Sources */,
 				D39749CD25103DDE00F83627 /* CLITableSpec.swift in Sources */,
 				D39749D325103DDE00F83627 /* ProgressExtensionsSpec.swift in Sources */,
 				D39749D225103DDE00F83627 /* XCTestExtensions.swift in Sources */,
@@ -1243,7 +1239,11 @@
 			buildSettings = {
 				CODE_SIGN_STYLE = Manual;
 				DEVELOPMENT_TEAM = "";
-				OTHER_LDFLAGS = "";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@rpath/",
+					"@executable_path/",
+				);
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
 				SWIFT_VERSION = 5.0;
@@ -1255,7 +1255,11 @@
 			buildSettings = {
 				CODE_SIGN_STYLE = Manual;
 				DEVELOPMENT_TEAM = "";
-				OTHER_LDFLAGS = "";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@rpath/",
+					"@executable_path/",
+				);
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
 				SWIFT_VERSION = 5.0;
@@ -1372,13 +1376,13 @@
 				CODE_SIGN_STYLE = Manual;
 				COMBINE_HIDPI_IMAGES = YES;
 				DEVELOPMENT_TEAM = "";
-				INFOPLIST_FILE = muterAcceptanceTests/Info.plist;
+				INFOPLIST_FILE = AcceptanceTests/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/../Frameworks",
 					"@loader_path/../Frameworks",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = muter.muterAcceptanceTests;
+				PRODUCT_BUNDLE_IDENTIFIER = muter.AcceptanceTests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
 				SWIFT_VERSION = 5.0;
@@ -1392,13 +1396,13 @@
 				CODE_SIGN_STYLE = Manual;
 				COMBINE_HIDPI_IMAGES = YES;
 				DEVELOPMENT_TEAM = "";
-				INFOPLIST_FILE = muterAcceptanceTests/Info.plist;
+				INFOPLIST_FILE = AcceptanceTests/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/../Frameworks",
 					"@loader_path/../Frameworks",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = muter.muterAcceptanceTests;
+				PRODUCT_BUNDLE_IDENTIFIER = muter.AcceptanceTests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
 				SWIFT_VERSION = 5.0;
@@ -1412,13 +1416,13 @@
 				CODE_SIGN_STYLE = Manual;
 				COMBINE_HIDPI_IMAGES = YES;
 				DEVELOPMENT_TEAM = "";
-				INFOPLIST_FILE = muterRegressionTests/Info.plist;
+				INFOPLIST_FILE = RegressionTests/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/../Frameworks",
 					"@loader_path/../Frameworks",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = muter.muterRegressionTests;
+				PRODUCT_BUNDLE_IDENTIFIER = muter.RegressionTests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
 				SWIFT_VERSION = 5.0;
@@ -1432,13 +1436,13 @@
 				CODE_SIGN_STYLE = Manual;
 				COMBINE_HIDPI_IMAGES = YES;
 				DEVELOPMENT_TEAM = "";
-				INFOPLIST_FILE = muterRegressionTests/Info.plist;
+				INFOPLIST_FILE = RegressionTests/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/../Frameworks",
 					"@loader_path/../Frameworks",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = muter.muterRegressionTests;
+				PRODUCT_BUNDLE_IDENTIFIER = muter.RegressionTests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
 				SWIFT_VERSION = 5.0;
@@ -1545,7 +1549,7 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		D30B06A025102C2D000CF0C2 /* Build configuration list for PBXNativeTarget "muterAcceptanceTests" */ = {
+		D30B06A025102C2D000CF0C2 /* Build configuration list for PBXNativeTarget "AcceptanceTests" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				D30B06A125102C2D000CF0C2 /* Debug */,
@@ -1554,7 +1558,7 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		D30B06AF25102C39000CF0C2 /* Build configuration list for PBXNativeTarget "muterRegressionTests" */ = {
+		D30B06AF25102C39000CF0C2 /* Build configuration list for PBXNativeTarget "RegressionTests" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				D30B06B025102C39000CF0C2 /* Debug */,

@@ -4,11 +4,11 @@ libdir = $(prefix)/lib
 
 BUILDDIR = $(xcodebuild -showBuildSettings | grep CONFIGURATION_BUILD_DIR)
 
-build: 
+build:
 	xcodebuild -scheme muter -configuration Debug > /dev/null 2>&1
 
-build-release: 
-	xcodebuild -scheme muter -configuration Release
+build-release:
+	xcodebuild -scheme muter -configuration Release > /dev/null 2>&1
 
 resolve:
 	swift package resolve
@@ -39,10 +39,10 @@ test: resolve
 	xcodebuild -scheme muter -only-testing:muterCoreTests test
 	
 acceptance-test: build
-	./muterAcceptanceTests/runAcceptanceTests.sh
+	./AcceptanceTests/runAcceptanceTests.sh
 
 regression-test: build
-	./muterRegressionTests/runRegressionTests.sh
+	./RegressionTests/runRegressionTests.sh
 
 mutation-test: clean
 	muter

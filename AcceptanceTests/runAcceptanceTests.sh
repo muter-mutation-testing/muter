@@ -66,6 +66,6 @@ cd ../..
 
 echo "Running tests..."
 swift package generate-xcodeproj
-xcodebuild -scheme muter -only-testing:muterAcceptanceTests test
+xcodebuild -scheme muter -only-testing:AcceptanceTests test
 
 echo "📳📳📳📳📳📳📳 Acceptance Testing has finished 📳📳📳📳📳📳📳"
