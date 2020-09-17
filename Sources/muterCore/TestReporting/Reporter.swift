@@ -12,7 +12,7 @@ enum Reporter {
         case .json:
             return jsonReport(from: outcomes)
         case .xcode:
-            return xcodeReport(from: outcomes,footerOnly: footerOnly)
+            return xcodeReport(from: outcomes, footerOnly: footerOnly)
         }
     }
 }

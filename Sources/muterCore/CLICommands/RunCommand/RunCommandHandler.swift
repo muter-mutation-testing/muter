@@ -1,3 +1,5 @@
+import Foundation
+
 @available(OSX 10.13, *)
 class RunCommandHandler {
     let steps: [RunCommandStep]
@@ -16,8 +18,8 @@ class RunCommandHandler {
     }
     
     func handle() throws {
-        for step in steps {
-            try step.run(with: state).map(state.apply(_:)).get()
+        try steps.forEach {
+            try $0.run(with: state).map(state.apply(_:)).get()
         }
     }
 }

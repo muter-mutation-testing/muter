@@ -87,7 +87,7 @@ class AcceptanceTests: QuickSpec {
                     }
                 }
                 
-                context("with --output-xcode as an argument") {
+                context("with '--output-xcode' as an argument") {
                     var output: String!
                     
                     beforeEach {
@@ -106,7 +106,7 @@ class AcceptanceTests: QuickSpec {
                     }
                 }
                 
-                context("with --files-to-mutate as an argument") {
+                context("with '--files-to-mutate` as an argument") {
                     var output: String!
                     
                     beforeEach {
@@ -183,11 +183,32 @@ class AcceptanceTests: QuickSpec {
             
             context("with the 'help' command") {
                 they("have the list of available commands displayed to them") {
+                    expect(self.muterHelpOutput).to(contain("🔎 Automated mutation testing for Swift 🕳️"))
                     expect(self.muterHelpOutput).to(contain("init"))
+                    expect(self.muterHelpOutput).to(contain("run (default)"))
                     expect(self.muterHelpOutput).to(contain("help"))
-                    expect(self.muterHelpOutput).to(contain("--output-json"))
-                    expect(self.muterHelpOutput).to(contain("--output-xcode"))
-                    expect(self.muterHelpOutput).to(contain("--files-to-mutate"))
+                    expect(self.muterHelpOutput).to(contain("muter help <subcommand>"))
+                }
+                
+                when("'init' is the subcommand") {
+                    they("have the description displayed to them") {
+                        expect(self.muterInitHelpOutput).to(contain("Creates the configuration file that Muter uses"))
+                        expect(self.muterInitHelpOutput).to(contain("muter init"))
+                        expect(self.muterInitHelpOutput).to(contain("help"))
+                    }
+                }
+                
+                when("'run' is the subcommand") {
+                    they("have the description displayed to them") {
+                        expect(self.muterRunHelpOutput).to(contain("""
+                                                            Performs mutation testing for the Swift project contained within the
+                                                            current directory
+                                                            """))
+                        expect(self.muterRunHelpOutput).to(contain("help"))
+                        expect(self.muterRunHelpOutput).to(contain("--files-to-mutate"))
+                        expect(self.muterRunHelpOutput).to(contain("--output-json"))
+                        expect(self.muterRunHelpOutput).to(contain("--output-xcode"))
+                    }
                 }
             }
         }
@@ -233,6 +254,16 @@ extension AcceptanceTests {
     var muterHelpOutputPath: String { return "\(AcceptanceTests().rootTestDirectory)/muters_help_output.txt" }
     var muterHelpOutput: String {
         return contentsOfFileAsString(at: muterHelpOutputPath)
+    }
+    
+    var muterInitHelpOutputPath: String { return "\(AcceptanceTests().rootTestDirectory)/muters_init_help_output.txt" }
+    var muterInitHelpOutput: String {
+        return contentsOfFileAsString(at: muterInitHelpOutputPath)
+    }
+    
+    var muterRunHelpOutputPath: String { return "\(AcceptanceTests().rootTestDirectory)/muters_run_help_output.txt" }
+    var muterRunHelpOutput: String {
+        return contentsOfFileAsString(at: muterRunHelpOutputPath)
     }
     
     var muterLogsRootPath: String { return "\(AcceptanceTests().rootTestDirectory)/muter_logs/" }
