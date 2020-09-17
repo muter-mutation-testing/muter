@@ -11,6 +11,15 @@
         }
       },
       {
+        "package": "Difference",
+        "repositoryURL": "https://github.com/krzysztofzablocki/Difference.git",
+        "state": {
+          "branch": "master",
+          "revision": "b67d4483312832b2eb3458a25374a353abd8fb21",
+          "version": null
+        }
+      },
+      {
         "package": "Nimble",
         "repositoryURL": "https://github.com/Quick/Nimble",
         "state": {

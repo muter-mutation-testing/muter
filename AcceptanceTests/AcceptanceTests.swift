@@ -183,31 +183,72 @@ class AcceptanceTests: QuickSpec {
             
             context("with the 'help' command") {
                 they("have the list of available commands displayed to them") {
-                    expect(self.muterHelpOutput).to(contain("🔎 Automated mutation testing for Swift 🕳️"))
-                    expect(self.muterHelpOutput).to(contain("init"))
-                    expect(self.muterHelpOutput).to(contain("run (default)"))
-                    expect(self.muterHelpOutput).to(contain("help"))
-                    expect(self.muterHelpOutput).to(contain("muter help <subcommand>"))
+                    expect(self.muterHelpOutput).to(
+                        equalDiff(
+                            """
+                            OVERVIEW: 🔎 Automated mutation testing for Swift 🕳️
+
+                            USAGE: muter <subcommand>
+
+                            OPTIONS:
+                              --version               Show the version.
+                              -h, --help              Show help information.
+
+                            SUBCOMMANDS:
+                              init                    Creates the configuration file that Muter uses
+                              run (default)           Performs mutation testing for the Swift project
+                                                      contained within the current directory
+
+                              See 'muter help <subcommand>' for detailed help.
+
+                            """
+                        )
+                    )
                 }
                 
                 when("'init' is the subcommand") {
                     they("have the description displayed to them") {
-                        expect(self.muterInitHelpOutput).to(contain("Creates the configuration file that Muter uses"))
-                        expect(self.muterInitHelpOutput).to(contain("muter init"))
-                        expect(self.muterInitHelpOutput).to(contain("help"))
+                        expect(self.muterInitHelpOutput).to(
+                            equalDiff(
+                                """
+                                OVERVIEW: Creates the configuration file that Muter uses
+
+                                USAGE: muter init
+
+                                OPTIONS:
+                                  --version               Show the version.
+                                  -h, --help              Show help information.
+
+
+                                """
+                            )
+                        )
                     }
                 }
                 
                 when("'run' is the subcommand") {
                     they("have the description displayed to them") {
-                        expect(self.muterRunHelpOutput).to(contain("""
-                                                            Performs mutation testing for the Swift project contained within the
-                                                            current directory
-                                                            """))
-                        expect(self.muterRunHelpOutput).to(contain("help"))
-                        expect(self.muterRunHelpOutput).to(contain("--files-to-mutate"))
-                        expect(self.muterRunHelpOutput).to(contain("--output-json"))
-                        expect(self.muterRunHelpOutput).to(contain("--output-xcode"))
+                        expect(self.muterRunHelpOutput).to(
+                            equalDiff(
+                                """
+                                OVERVIEW: Performs mutation testing for the Swift project contained within the
+                                current directory
+
+                                USAGE: muter run [--files-to-mutate <files-to-mutate> ...] [--output-json] [--output-xcode]
+
+                                OPTIONS:
+                                  --files-to-mutate <files-to-mutate>
+                                                          Only mutate a given list of source code files 
+                                  --output-json           Output test results to a json file. 
+                                  --output-xcode          Output test results in a format consumable by an
+                                                          Xcode run script step. 
+                                  --version               Show the version.
+                                  -h, --help              Show help information.
+
+
+                                """
+                            )
+                        )
                     }
                 }
             }
