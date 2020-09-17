@@ -106,7 +106,7 @@ class AcceptanceTests: QuickSpec {
                     }
                 }
                 
-                context("with '--files-to-mutate` as an argument") {
+                context("with '--files-to-mutate' as an argument") {
                     var output: String!
                     
                     beforeEach {
@@ -217,7 +217,6 @@ class AcceptanceTests: QuickSpec {
 
 @available(OSX 10.13, *)
 extension AcceptanceTests {
-    
     var rootTestDirectory: String {
         return String(
             URL(fileURLWithPath: #file)
@@ -225,83 +224,48 @@ extension AcceptanceTests {
                 .withoutScheme()
         )
     }
+
+    var muterOutput: String { contentsOfFileAsString("\(AcceptanceTests().rootTestDirectory)/muters_output.txt") }
+    var muterXcodeOutput: String { contentsOfFileAsString("\(AcceptanceTests().rootTestDirectory)/muters_xcode_output.txt") }
     
-    var muterOutputPath: String { return "\(AcceptanceTests().rootTestDirectory)/muters_output.txt" }
-    var muterOutput: String {
-        return contentsOfFileAsString(at: muterOutputPath)
-    }
+    var muterFilesToMutateOutput: String { contentsOfFileAsString("\(AcceptanceTests().rootTestDirectory)/muters_files_to_mutate_output.txt") }
     
-    var muterXcodeOutputPath: String { return "\(AcceptanceTests().rootTestDirectory)/muters_xcode_output.txt" }
-    var muterXcodeOutput: String {
-        return contentsOfFileAsString(at: muterXcodeOutputPath)
-    }
+    var muterEmptyStateOutput: String { contentsOfFileAsString("\(AcceptanceTests().rootTestDirectory)/muters_empty_state_output.txt") }
+    var muterAbortedTestingOutput: String { contentsOfFileAsString("\(AcceptanceTests().rootTestDirectory)/muters_aborted_testing_output.txt") }
     
-    var muterFilesToMutateOutputPath: String { return "\(AcceptanceTests().rootTestDirectory)/muters_files_to_mutate_output.txt" }
-    var muterFilesToMutateOutput: String {
-        return contentsOfFileAsString(at: muterFilesToMutateOutputPath)
-    }
-    
-    var muterEmptyStateOutputPath: String { return "\(AcceptanceTests().rootTestDirectory)/muters_empty_state_output.txt" }
-    var muterEmptyStateOutput: String {
-        return contentsOfFileAsString(at: muterEmptyStateOutputPath)
-    }
-    
-    var muterAbortedTestingOutputPath: String { return "\(AcceptanceTests().rootTestDirectory)/muters_aborted_testing_output.txt" }
-    var muterAbortedTestingOutput: String {
-        return contentsOfFileAsString(at: muterAbortedTestingOutputPath)
-    }
-    
-    var muterHelpOutputPath: String { return "\(AcceptanceTests().rootTestDirectory)/muters_help_output.txt" }
-    var muterHelpOutput: String {
-        return contentsOfFileAsString(at: muterHelpOutputPath)
-    }
-    
-    var muterInitHelpOutputPath: String { return "\(AcceptanceTests().rootTestDirectory)/muters_init_help_output.txt" }
-    var muterInitHelpOutput: String {
-        return contentsOfFileAsString(at: muterInitHelpOutputPath)
-    }
-    
-    var muterRunHelpOutputPath: String { return "\(AcceptanceTests().rootTestDirectory)/muters_run_help_output.txt" }
-    var muterRunHelpOutput: String {
-        return contentsOfFileAsString(at: muterRunHelpOutputPath)
-    }
-    
-    var muterLogsRootPath: String { return "\(AcceptanceTests().rootTestDirectory)/muter_logs/" }
+    var muterHelpOutput: String { contentsOfFileAsString("\(AcceptanceTests().rootTestDirectory)/muters_help_output.txt") }
+    var muterInitHelpOutput: String { contentsOfFileAsString("\(AcceptanceTests().rootTestDirectory)/muters_init_help_output.txt") }
+    var muterRunHelpOutput: String { contentsOfFileAsString("\(AcceptanceTests().rootTestDirectory)/muters_run_help_output.txt") }
+
     var muterLogFiles: [String] {
-        return contentsOfDirectory(at: muterLogsRootPath)
+        contentsOfDirectory(muterLogsRootPath)
             .map { muterLogsRootPath + "/" + $0 }
-            .flatMap(contentsOfDirectory(at:))
+            .flatMap(contentsOfDirectory)
     }
     
-    var createdIOSConfigurationPath: String { return "\(AcceptanceTests().rootTestDirectory)/created_iOS_config.json" }
-    var createdIOSConfiguration: Data {
-        return contentsOfFileAsData(at: createdIOSConfigurationPath)
-    }
+    var createdIOSConfiguration: Data { contentsOfFileAsData("\(AcceptanceTests().rootTestDirectory)/created_iOS_config.json") }
+    var createdMacOSConfiguration: Data { contentsOfFileAsData("\(AcceptanceTests().rootTestDirectory)/created_macOS_config.json") }
     
-    var createdMacOSConfigurationPath: String { return "\(AcceptanceTests().rootTestDirectory)/created_macOS_config.json" }
-    var createdMacOSConfiguration: Data {
-        return contentsOfFileAsData(at: createdMacOSConfigurationPath)
-    }
+    var muterLogsRootPath: String { "\(AcceptanceTests().rootTestDirectory)/muter_logs/" }
 }
 
 @available(OSX 10.13, *)
 extension AcceptanceTests {
-    
     func contentsOfLogFile(named fileName: String) -> String {
-        return contentsOfDirectory(at: muterLogsRootPath)
+        return contentsOfDirectory(muterLogsRootPath)
             .first
             .map { muterLogsRootPath + $0 + "/" + fileName }
-            .map (contentsOfFileAsString(at:))!
+            .map (contentsOfFileAsString)!
     }
     
-    func contentsOfDirectory(at path: String) -> [String] {
+    func contentsOfDirectory(_ path: String) -> [String] {
         return try! FileManager
             .default
             .contentsOfDirectory(atPath: path)
             .exclude { $0.starts(with: ".") } // this filters out hidden files/folders
     }
     
-    func contentsOfFileAsString(at path: String) -> String {
+    func contentsOfFileAsString(_ path: String) -> String {
         guard let data = FileManager.default.contents(atPath: path),
             let output = String(data: data, encoding: .utf8) else {
                 fatalError("File not found at \(path)")
@@ -309,7 +273,7 @@ extension AcceptanceTests {
         return output
     }
     
-    func contentsOfFileAsData(at path: String) -> Data {
+    func contentsOfFileAsData(_ path: String) -> Data {
         guard let data = FileManager.default.contents(atPath: path) else {
             fatalError("Unable to find a valid output file from a prior run of Muter at \(path)")
         }
