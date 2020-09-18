@@ -184,7 +184,7 @@ class AcceptanceTests: QuickSpec {
             context("with the 'help' command") {
                 they("have the list of available commands displayed to them") {
                     expect(self.muterHelpOutput).to(
-                        assertEqualWithDiff(
+                        equalWithDiff(
                             """
                             OVERVIEW: 🔎 Automated mutation testing for Swift 🕳️
 
@@ -209,7 +209,7 @@ class AcceptanceTests: QuickSpec {
                 when("'init' is the subcommand") {
                     they("have the description displayed to them") {
                         expect(self.muterInitHelpOutput).to(
-                            assertEqualWithDiff(
+                            equalWithDiff(
                                 """
                                 OVERVIEW: Creates the configuration file that Muter uses
 
@@ -229,7 +229,7 @@ class AcceptanceTests: QuickSpec {
                 when("'run' is the subcommand") {
                     they("have the description displayed to them") {
                         expect(self.muterRunHelpOutput).to(
-                            assertEqualWithDiff(
+                            equalWithDiff(
                                 """
                                 OVERVIEW: Performs mutation testing for the Swift project contained within the
                                 current directory

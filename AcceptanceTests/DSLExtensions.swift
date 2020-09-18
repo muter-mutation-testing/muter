@@ -14,7 +14,7 @@ func when(_ description: String, flags: FilterFlags = [:], closure: () -> Void) 
     context("when " + description, flags: flags, closure: closure)
 }
 
-func assertEqualWithDiff<T: Equatable>(_ expectedValue: T?) -> Predicate<T> {
+func equalWithDiff<T: Equatable>(_ expectedValue: T?) -> Predicate<T> {
     return Predicate.define { actualExpression in
         let receivedValue = try actualExpression.evaluate()
 
