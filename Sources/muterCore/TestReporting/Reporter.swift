@@ -1,6 +1,6 @@
 import Foundation
 
-enum Reporter {
+enum Reporter: Equatable {
     case plainText
     case json
     case xcode
@@ -17,8 +17,21 @@ enum Reporter {
     }
 }
 
+extension Reporter {
+    init(shouldOutputJson: Bool, shouldOutputXcode: Bool) {
+        if shouldOutputJson {
+            self = .json
+        }
+        else if shouldOutputXcode {
+            self = .xcode
+        }
+        else {
+            self = .plainText
+        }
+    }
+}
+
 private extension Reporter {
-    
     func textReport(from outcomes: [MutationTestOutcome]) -> String {
         let report = MuterTestReport(from: outcomes)
         
@@ -71,7 +84,7 @@ private extension Reporter {
     }
 
     func xcodeReport(from outcomes: [MutationTestOutcome], footerOnly: Bool = false) -> String {
-        if (footerOnly) {
+        if footerOnly {
             let report = MuterTestReport(from: outcomes)
             return """
             globalMutationScore=\(report.globalMutationScore)

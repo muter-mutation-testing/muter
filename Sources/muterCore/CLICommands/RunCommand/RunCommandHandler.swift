@@ -17,19 +17,21 @@ class RunCommandHandler {
         self.state = RunCommandState(from: command)
     }
     
-    func handle() throws {
-        try steps.forEach {
-            try $0.run(with: state).map(state.apply(_:)).get()
+    func run() throws {
+        try steps.forEach { step in
+            try step.run(with: state).map(state.apply(_:)).get()
         }
     }
 }
 
 @available(OSX 10.13, *)
 private extension RunCommandHandler {
-    private static let defaultSteps: [RunCommandStep] = [LoadConfiguration(),
-                                                         CopyProjectToTempDirectory(),
-                                                         DiscoverSourceFiles(),
-                                                         DiscoverMutationPoints(),
-                                                         GenerateSwapFilePaths(),
-                                                         PerformMutationTesting()]
+    private static let defaultSteps: [RunCommandStep] = [
+        LoadConfiguration(),
+        CopyProjectToTempDirectory(),
+        DiscoverSourceFiles(),
+        DiscoverMutationPoints(),
+        GenerateSwapFilePaths(),
+        PerformMutationTesting()
+    ]
 }

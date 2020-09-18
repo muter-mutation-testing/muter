@@ -32,34 +32,34 @@ public struct Run: ParsableCommand {
         NotificationCenter.default.post(name: .muterLaunched, object: nil)
         
         do {
-            try RunCommandHandler(command: self).handle()
+            try RunCommandHandler(command: self).run()
         } catch {
-            
-            throw CleanExit.message(
-                """
-                ⚠️ ⚠️ ⚠️ ⚠️ ⚠️  Muter has encountered an error  ⚠️ ⚠️ ⚠️ ⚠️ ⚠️
-                \(error)
-                
-                
-                ⚠️ ⚠️ ⚠️ ⚠️ ⚠️  See the Muter error log above this line  ⚠️ ⚠️ ⚠️ ⚠️ ⚠️
-                
-                If you feel like this is a bug, or want help figuring out what could be happening, please open an issue at
-                https://github.com/muter-mutation-testing/muter/issues
-                """)
+            Run.exit(
+                withError:
+                    RunError(
+                        """
+                        ⚠️ ⚠️ ⚠️ ⚠️ ⚠️  Muter has encountered an error  ⚠️ ⚠️ ⚠️ ⚠️ ⚠️
+                        \(error)
+                        
+                        
+                        ⚠️ ⚠️ ⚠️ ⚠️ ⚠️  See the Muter error log above this line  ⚠️ ⚠️ ⚠️ ⚠️ ⚠️
+                        
+                        If you feel like this is a bug, or want help figuring out what could be happening, please open an issue at
+                        https://github.com/muter-mutation-testing/muter/issues
+                        """
+                    )
+            )
         }
     }
 }
 
-private extension Reporter {
-    init(shouldOutputJson: Bool, shouldOutputXcode: Bool) {
-        if shouldOutputJson {
-            self = .json
-        }
-        else if shouldOutputXcode {
-            self = .xcode
-        }
-        else {
-            self = .plainText
-        }
+private struct RunError: LocalizedError, ExpressibleByStringLiteral {
+    let description: String
+    init(stringLiteral value: String) {
+        self.description = value
+    }
+    
+    init(_ value: String) {
+        self.description = value
     }
 }

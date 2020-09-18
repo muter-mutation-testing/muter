@@ -184,7 +184,7 @@ class AcceptanceTests: QuickSpec {
             context("with the 'help' command") {
                 they("have the list of available commands displayed to them") {
                     expect(self.muterHelpOutput).to(
-                        equalDiff(
+                        assertEqualWithDiff(
                             """
                             OVERVIEW: 🔎 Automated mutation testing for Swift 🕳️
 
@@ -209,7 +209,7 @@ class AcceptanceTests: QuickSpec {
                 when("'init' is the subcommand") {
                     they("have the description displayed to them") {
                         expect(self.muterInitHelpOutput).to(
-                            equalDiff(
+                            assertEqualWithDiff(
                                 """
                                 OVERVIEW: Creates the configuration file that Muter uses
 
@@ -229,7 +229,7 @@ class AcceptanceTests: QuickSpec {
                 when("'run' is the subcommand") {
                     they("have the description displayed to them") {
                         expect(self.muterRunHelpOutput).to(
-                            equalDiff(
+                            assertEqualWithDiff(
                                 """
                                 OVERVIEW: Performs mutation testing for the Swift project contained within the
                                 current directory
@@ -296,7 +296,7 @@ extension AcceptanceTests {
         return contentsOfDirectory(muterLogsRootPath)
             .first
             .map { muterLogsRootPath + $0 + "/" + fileName }
-            .map (contentsOfFileAsString)!
+            .map(contentsOfFileAsString)!
     }
     
     func contentsOfDirectory(_ path: String) -> [String] {

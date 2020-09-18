@@ -2,17 +2,39 @@ import Quick
 import Nimble
 import Foundation
 import TestingExtensions
+
 @testable import muterCore
 
 class ReporterSpec: QuickSpec {
     override func spec() {
         let outcomes = [
-            MutationTestOutcome(testSuiteOutcome: .passed,
-                                mutationPoint: MutationPoint(mutationOperatorId: .ror, filePath: "/tmp/project/file3.swift", position: .firstPosition),
-                                operatorDescription: "changed from != to ==",
-                                originalProjectDirectoryUrl: URL(string: "/user/project")!
-                                )
+            MutationTestOutcome(
+                testSuiteOutcome: .passed,
+                mutationPoint: MutationPoint(mutationOperatorId: .ror, filePath: "/tmp/project/file3.swift", position: .firstPosition),
+                operatorDescription: "changed from != to ==",
+                originalProjectDirectoryUrl: URL(string: "/user/project")!
+            )
         ]
+        
+        describe("reporter choice") {
+            context("when they want a json") {
+                it("then return it") {
+                    expect(Reporter(shouldOutputJson: true, shouldOutputXcode: false)).to(equal(.json))
+                }
+            }
+            
+            context("when they want xcode") {
+                it("then return it") {
+                    expect(Reporter(shouldOutputJson: false, shouldOutputXcode: true)).to(equal(.xcode))
+                }
+            }
+            
+            context("when they want plain text") {
+                it("then return it") {
+                    expect(Reporter(shouldOutputJson: false, shouldOutputXcode: false)).to(equal(.plainText))
+                }
+            }
+        }
 
         describe("text reporter") {
             it("returns the report in text format") {

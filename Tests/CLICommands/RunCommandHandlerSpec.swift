@@ -37,7 +37,7 @@ class RunCommandHandlerSpec: QuickSpec {
                                                           state: expectedState)
 
                     do {
-                        try runCommandHandler.handle()
+                        try runCommandHandler.run()
                     }
                     catch {
                         runCommandResult = error
@@ -89,7 +89,7 @@ class RunCommandHandlerSpec: QuickSpec {
                                                           state: expectedState)
 
                     do {
-                        try runCommandHandler.handle()
+                        try runCommandHandler.run()
                     }
                     catch {
                         runCommandResult = error

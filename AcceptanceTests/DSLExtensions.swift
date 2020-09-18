@@ -2,19 +2,19 @@ import Quick
 import Nimble
 import Difference
 
-func they(_ description: String, flags: FilterFlags = [:], closure: @escaping () -> Void) {
-    it("they " + description, flags: flags, closure: closure)
+func they(_ description: String, flags: FilterFlags = [:], file: String = #file, line: UInt = #line, closure: @escaping () -> Void) {
+    it("they " + description, flags: flags, file: file, line: line, closure: closure)
 }
 
-func fthey(_ description: String, flags: FilterFlags = [:], closure: @escaping () -> Void) {
-    fit(description, flags: flags, closure: closure)
+func fthey(_ description: String, flags: FilterFlags = [:], file: String = #file, line: UInt = #line, closure: @escaping () -> Void) {
+    fit(description, flags: flags, file: file, line: line, closure: closure)
 }
 
 func when(_ description: String, flags: FilterFlags = [:], closure: () -> Void) {
     context("when " + description, flags: flags, closure: closure)
 }
 
-func equalDiff<T: Equatable>(_ expectedValue: T?) -> Predicate<T> {
+func assertEqualWithDiff<T: Equatable>(_ expectedValue: T?) -> Predicate<T> {
     return Predicate.define { actualExpression in
         let receivedValue = try actualExpression.evaluate()
 
