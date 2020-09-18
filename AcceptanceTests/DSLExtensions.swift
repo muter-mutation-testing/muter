@@ -14,6 +14,7 @@ func when(_ description: String, flags: FilterFlags = [:], closure: () -> Void) 
     context("when " + description, flags: flags, closure: closure)
 }
 
+// via https://github.com/krzysztofzablocki/Difference#integrate-with-quick
 func equalWithDiff<T: Equatable>(_ expectedValue: T?) -> Predicate<T> {
     return Predicate.define { actualExpression in
         let receivedValue = try actualExpression.evaluate()
