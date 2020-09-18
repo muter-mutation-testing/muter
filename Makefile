@@ -10,9 +10,6 @@ build:
 build-release:
 	xcodebuild -scheme muter -configuration Release > /dev/null 2>&1
 
-resolve:
-	swift package resolve
-
 release:
 	./Scripts/shipIt.sh $(VERSION)
 
@@ -35,7 +32,7 @@ clean:
 run: build
 	$(BUILDDIR)/Bebug/muter
 
-test: resolve
+test: build
 	xcodebuild -scheme muter -only-testing:muterCoreTests test
 	
 acceptance-test: build
