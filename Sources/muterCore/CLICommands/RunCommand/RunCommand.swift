@@ -34,32 +34,20 @@ public struct Run: ParsableCommand {
         do {
             try RunCommandHandler(command: self).run()
         } catch {
-            Run.exit(
-                withError:
-                    RunError(
-                        """
-                        ⚠️ ⚠️ ⚠️ ⚠️ ⚠️  Muter has encountered an error  ⚠️ ⚠️ ⚠️ ⚠️ ⚠️
-                        \(error)
-                        
-                        
-                        ⚠️ ⚠️ ⚠️ ⚠️ ⚠️  See the Muter error log above this line  ⚠️ ⚠️ ⚠️ ⚠️ ⚠️
-                        
-                        If you feel like this is a bug, or want help figuring out what could be happening, please open an issue at
-                        https://github.com/muter-mutation-testing/muter/issues
-                        """
-                    )
+            print(
+                """
+                ⚠️ ⚠️ ⚠️ ⚠️ ⚠️  Muter has encountered an error  ⚠️ ⚠️ ⚠️ ⚠️ ⚠️
+                \(error)
+                
+                
+                ⚠️ ⚠️ ⚠️ ⚠️ ⚠️  See the Muter error log above this line  ⚠️ ⚠️ ⚠️ ⚠️ ⚠️
+                
+                If you feel like this is a bug, or want help figuring out what could be happening, please open an issue at
+                https://github.com/muter-mutation-testing/muter/issues
+                """
             )
+            
+            Foundation.exit(-1)
         }
-    }
-}
-
-private struct RunError: LocalizedError, ExpressibleByStringLiteral {
-    let description: String
-    init(stringLiteral value: String) {
-        self.description = value
-    }
-    
-    init(_ value: String) {
-        self.description = value
     }
 }
