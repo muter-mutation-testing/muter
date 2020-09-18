@@ -15,7 +15,7 @@ class RunCommandHandlerSpec: QuickSpec {
         var runCommandHandler: RunCommandHandler!
 
         describe("RunCommandHandler") {
-            var runCommandResult: Result<(), MuterError>!
+            var runCommandResult: Error?
             
             context("when there are no failures in any of it steps") {
                 beforeEach {
@@ -34,8 +34,13 @@ class RunCommandHandlerSpec: QuickSpec {
                                                                   stepSpy2,
                                                                   stepSpy3],
                                                           state: expectedState)
-                    
-                    runCommandResult = runCommandHandler.handle()
+
+                    do {
+                        try runCommandHandler.run()
+                    }
+                    catch {
+                        runCommandResult = error
+                    }
                 }
                 
                 it("runs all its steps") {
@@ -56,8 +61,8 @@ class RunCommandHandlerSpec: QuickSpec {
                 }
                 
                 it("returns success") {
-                    guard case .success(_) = runCommandResult! else {
-                        fail("expected success but got \(String(describing: runCommandResult!))")
+                    if let runCommandResult = runCommandResult {
+                        fail("expected success but got \(runCommandResult)")
                         return
                     }
                 }
@@ -81,8 +86,13 @@ class RunCommandHandlerSpec: QuickSpec {
                                                                   stepSpy2,
                                                                   stepSpy3],
                                                           state: expectedState)
-                    
-                    runCommandResult = runCommandHandler.handle()
+
+                    do {
+                        try runCommandHandler.run()
+                    }
+                    catch {
+                        runCommandResult = error
+                    }
                 }
                 
                 it("won't run any subsequent steps after the failing step") {
@@ -98,8 +108,8 @@ class RunCommandHandlerSpec: QuickSpec {
                 }
                 
                 it("cascades up the failure from the failing step") {
-                    guard case .failure(.configurationParsingError) = runCommandResult! else {
-                        fail("expected a configuration failure but got \(String(describing: runCommandResult!))")
+                    guard case .configurationParsingError = runCommandResult as? MuterError else {
+                        fail("expected a configuration failure but got \(String(describing: runCommandResult))")
                         return
                     }
                 }

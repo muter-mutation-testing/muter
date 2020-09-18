@@ -13,7 +13,10 @@
 		D30B06AC25102C39000CF0C2 /* muterCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D30B067025102BE2000CF0C2 /* muterCore.framework */; };
 		D30B06B925102CB0000CF0C2 /* Rainbow in Frameworks */ = {isa = PBXBuildFile; productRef = D30B06B825102CB0000CF0C2 /* Rainbow */; };
 		D30B06C225102D4A000CF0C2 /* SnapshotTesting in Frameworks */ = {isa = PBXBuildFile; productRef = D30B06C125102D4A000CF0C2 /* SnapshotTesting */; };
-		D372B4C925102D96006E2D12 /* Commandant in Frameworks */ = {isa = PBXBuildFile; productRef = D372B4C825102D95006E2D12 /* Commandant */; };
+		D3159EDC2515242900251A1D /* Difference in Frameworks */ = {isa = PBXBuildFile; productRef = D3159EDB2515242900251A1D /* Difference */; };
+		D3159EEB2515247300251A1D /* ArgumentParser in Frameworks */ = {isa = PBXBuildFile; productRef = D3159EEA2515247300251A1D /* ArgumentParser */; };
+		D3159F22251525B700251A1D /* RemoveSideEffectsOperator.swift in Sources */ = {isa = PBXBuildFile; fileRef = D3159F21251525B700251A1D /* RemoveSideEffectsOperator.swift */; };
+		D3159F2E25152B7800251A1D /* Init.swift in Sources */ = {isa = PBXBuildFile; fileRef = D3159F2D25152B7800251A1D /* Init.swift */; };
 		D372B4CC25102DBA006E2D12 /* Curry in Frameworks */ = {isa = PBXBuildFile; productRef = D372B4CB25102DBA006E2D12 /* Curry */; };
 		D372B4CF25102DDD006E2D12 /* Progress in Frameworks */ = {isa = PBXBuildFile; productRef = D372B4CE25102DDD006E2D12 /* Progress */; };
 		D372B4D225102E06006E2D12 /* Pathos in Frameworks */ = {isa = PBXBuildFile; productRef = D372B4D125102E06006E2D12 /* Pathos */; };
@@ -25,14 +28,12 @@
 		D372B53425103085006E2D12 /* logging.swift in Sources */ = {isa = PBXBuildFile; fileRef = D372B50425103085006E2D12 /* logging.swift */; };
 		D372B53525103085006E2D12 /* TokenAwareVisitor.swift in Sources */ = {isa = PBXBuildFile; fileRef = D372B50625103085006E2D12 /* TokenAwareVisitor.swift */; };
 		D372B53625103085006E2D12 /* OperatorAwareRewriter.swift in Sources */ = {isa = PBXBuildFile; fileRef = D372B50725103085006E2D12 /* OperatorAwareRewriter.swift */; };
-		D372B53725103085006E2D12 /* RemoveSideEffectsOperator.swift in Sources */ = {isa = PBXBuildFile; fileRef = D372B50825103085006E2D12 /* RemoveSideEffectsOperator.swift */; };
 		D372B53825103085006E2D12 /* MutationOperator.swift in Sources */ = {isa = PBXBuildFile; fileRef = D372B50925103085006E2D12 /* MutationOperator.swift */; };
 		D372B53925103085006E2D12 /* ChangeLogicalConnectorOperator.swift in Sources */ = {isa = PBXBuildFile; fileRef = D372B50A25103085006E2D12 /* ChangeLogicalConnectorOperator.swift */; };
 		D372B53A25103085006E2D12 /* ROROperator.swift in Sources */ = {isa = PBXBuildFile; fileRef = D372B50B25103085006E2D12 /* ROROperator.swift */; };
 		D372B53B25103085006E2D12 /* fileOperations.swift in Sources */ = {isa = PBXBuildFile; fileRef = D372B50C25103085006E2D12 /* fileOperations.swift */; };
-		D372B53C25103085006E2D12 /* InitCommand.swift in Sources */ = {isa = PBXBuildFile; fileRef = D372B50E25103085006E2D12 /* InitCommand.swift */; };
 		D372B53D25103085006E2D12 /* MuterError.swift in Sources */ = {isa = PBXBuildFile; fileRef = D372B50F25103085006E2D12 /* MuterError.swift */; };
-		D372B53E25103085006E2D12 /* RunCommand.swift in Sources */ = {isa = PBXBuildFile; fileRef = D372B51125103085006E2D12 /* RunCommand.swift */; };
+		D372B53E25103085006E2D12 /* Run.swift in Sources */ = {isa = PBXBuildFile; fileRef = D372B51125103085006E2D12 /* Run.swift */; };
 		D372B53F25103085006E2D12 /* RunCommandObserver.swift in Sources */ = {isa = PBXBuildFile; fileRef = D372B51225103085006E2D12 /* RunCommandObserver.swift */; };
 		D372B54025103085006E2D12 /* RunCommandHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = D372B51325103085006E2D12 /* RunCommandHandler.swift */; };
 		D372B54125103085006E2D12 /* ExcludedMutationPointsDetector.swift in Sources */ = {isa = PBXBuildFile; fileRef = D372B51525103085006E2D12 /* ExcludedMutationPointsDetector.swift */; };
@@ -153,14 +154,14 @@
 			remoteGlobalIDString = D30B066F25102BE2000CF0C2;
 			remoteInfo = muterCore;
 		};
-		D37C2DCF2510EECE002E0FDC /* PBXContainerItemProxy */ = {
+		D3159EF6251524A700251A1D /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = D30B065925102B6C000CF0C2 /* Project object */;
 			proxyType = 1;
 			remoteGlobalIDString = D30B066F25102BE2000CF0C2;
 			remoteInfo = muterCore;
 		};
-		D37DF984251115B800FD2606 /* PBXContainerItemProxy */ = {
+		D37C2DCF2510EECE002E0FDC /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = D30B065925102B6C000CF0C2 /* Project object */;
 			proxyType = 1;
@@ -203,6 +204,8 @@
 		D30B069C25102C2D000CF0C2 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		D30B06A725102C39000CF0C2 /* RegressionTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = RegressionTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		D30B06AB25102C39000CF0C2 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		D3159F21251525B700251A1D /* RemoveSideEffectsOperator.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RemoveSideEffectsOperator.swift; sourceTree = "<group>"; };
+		D3159F2D25152B7800251A1D /* Init.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Init.swift; sourceTree = "<group>"; };
 		D372B4F725103085006E2D12 /* version.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = version.swift; sourceTree = "<group>"; };
 		D372B50025103085006E2D12 /* MuterConfiguration.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MuterConfiguration.swift; sourceTree = "<group>"; };
 		D372B50125103085006E2D12 /* SourceInfo.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SourceInfo.swift; sourceTree = "<group>"; };
@@ -211,14 +214,12 @@
 		D372B50425103085006E2D12 /* logging.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = logging.swift; sourceTree = "<group>"; };
 		D372B50625103085006E2D12 /* TokenAwareVisitor.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TokenAwareVisitor.swift; sourceTree = "<group>"; };
 		D372B50725103085006E2D12 /* OperatorAwareRewriter.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = OperatorAwareRewriter.swift; sourceTree = "<group>"; };
-		D372B50825103085006E2D12 /* RemoveSideEffectsOperator.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RemoveSideEffectsOperator.swift; sourceTree = "<group>"; };
 		D372B50925103085006E2D12 /* MutationOperator.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MutationOperator.swift; sourceTree = "<group>"; };
 		D372B50A25103085006E2D12 /* ChangeLogicalConnectorOperator.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ChangeLogicalConnectorOperator.swift; sourceTree = "<group>"; };
 		D372B50B25103085006E2D12 /* ROROperator.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ROROperator.swift; sourceTree = "<group>"; };
 		D372B50C25103085006E2D12 /* fileOperations.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = fileOperations.swift; sourceTree = "<group>"; };
-		D372B50E25103085006E2D12 /* InitCommand.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = InitCommand.swift; sourceTree = "<group>"; };
 		D372B50F25103085006E2D12 /* MuterError.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MuterError.swift; sourceTree = "<group>"; };
-		D372B51125103085006E2D12 /* RunCommand.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RunCommand.swift; sourceTree = "<group>"; };
+		D372B51125103085006E2D12 /* Run.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Run.swift; sourceTree = "<group>"; };
 		D372B51225103085006E2D12 /* RunCommandObserver.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RunCommandObserver.swift; sourceTree = "<group>"; };
 		D372B51325103085006E2D12 /* RunCommandHandler.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RunCommandHandler.swift; sourceTree = "<group>"; };
 		D372B51525103085006E2D12 /* ExcludedMutationPointsDetector.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ExcludedMutationPointsDetector.swift; sourceTree = "<group>"; };
@@ -317,9 +318,9 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				D372B4C925102D96006E2D12 /* Commandant in Frameworks */,
 				D372B555251030AD006E2D12 /* SwiftSyntax in Frameworks */,
 				D30B06B925102CB0000CF0C2 /* Rainbow in Frameworks */,
+				D3159EEB2515247300251A1D /* ArgumentParser in Frameworks */,
 				D372B4D225102E06006E2D12 /* Pathos in Frameworks */,
 				D372B557251030AD006E2D12 /* SwiftSyntaxBuilder in Frameworks */,
 				D372B4CF25102DDD006E2D12 /* Progress in Frameworks */,
@@ -366,6 +367,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				D37C2DF52510F056002E0FDC /* muterCore.framework in Frameworks */,
+				D3159EDC2515242900251A1D /* Difference in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -492,7 +494,7 @@
 			children = (
 				D372B50625103085006E2D12 /* TokenAwareVisitor.swift */,
 				D372B50725103085006E2D12 /* OperatorAwareRewriter.swift */,
-				D372B50825103085006E2D12 /* RemoveSideEffectsOperator.swift */,
+				D3159F21251525B700251A1D /* RemoveSideEffectsOperator.swift */,
 				D372B50925103085006E2D12 /* MutationOperator.swift */,
 				D372B50A25103085006E2D12 /* ChangeLogicalConnectorOperator.swift */,
 				D372B50B25103085006E2D12 /* ROROperator.swift */,
@@ -503,8 +505,8 @@
 		D372B50D25103085006E2D12 /* CLICommands */ = {
 			isa = PBXGroup;
 			children = (
-				D372B50E25103085006E2D12 /* InitCommand.swift */,
 				D372B50F25103085006E2D12 /* MuterError.swift */,
+				D3159F2D25152B7800251A1D /* Init.swift */,
 				D372B51025103085006E2D12 /* RunCommand */,
 			);
 			path = CLICommands;
@@ -513,7 +515,7 @@
 		D372B51025103085006E2D12 /* RunCommand */ = {
 			isa = PBXGroup;
 			children = (
-				D372B51125103085006E2D12 /* RunCommand.swift */,
+				D372B51125103085006E2D12 /* Run.swift */,
 				D372B51225103085006E2D12 /* RunCommandObserver.swift */,
 				D372B51325103085006E2D12 /* RunCommandHandler.swift */,
 				D372B51425103085006E2D12 /* Steps */,
@@ -703,9 +705,12 @@
 			buildRules = (
 			);
 			dependencies = (
-				D37DF985251115B800FD2606 /* PBXTargetDependency */,
+				D3159F0A2515250600251A1D /* PBXTargetDependency */,
+				D3159EF7251524A700251A1D /* PBXTargetDependency */,
 			);
 			name = muter;
+			packageProductDependencies = (
+			);
 			productName = muter;
 			productReference = D30B066125102B6C000CF0C2 /* muter */;
 			productType = "com.apple.product-type.tool";
@@ -727,12 +732,12 @@
 			name = muterCore;
 			packageProductDependencies = (
 				D30B06B825102CB0000CF0C2 /* Rainbow */,
-				D372B4C825102D95006E2D12 /* Commandant */,
 				D372B4CB25102DBA006E2D12 /* Curry */,
 				D372B4CE25102DDD006E2D12 /* Progress */,
 				D372B4D125102E06006E2D12 /* Pathos */,
 				D372B554251030AD006E2D12 /* SwiftSyntax */,
 				D372B556251030AD006E2D12 /* SwiftSyntaxBuilder */,
+				D3159EEA2515247300251A1D /* ArgumentParser */,
 			);
 			productName = muterCore;
 			productReference = D30B067025102BE2000CF0C2 /* muterCore.framework */;
@@ -820,6 +825,9 @@
 				D37C2DD02510EECE002E0FDC /* PBXTargetDependency */,
 			);
 			name = TestingExtensions;
+			packageProductDependencies = (
+				D3159EDB2515242900251A1D /* Difference */,
+			);
 			productName = TestingExtensions;
 			productReference = D37C2DC72510EEBC002E0FDC /* TestingExtensions.framework */;
 			productType = "com.apple.product-type.framework";
@@ -869,10 +877,11 @@
 				D30B06BA25102D04000CF0C2 /* XCRemoteSwiftPackageReference "Quick" */,
 				D30B06BD25102D1C000CF0C2 /* XCRemoteSwiftPackageReference "Nimble" */,
 				D30B06C025102D4A000CF0C2 /* XCRemoteSwiftPackageReference "swift-snapshot-testing" */,
-				D372B4C725102D95006E2D12 /* XCRemoteSwiftPackageReference "Commandant" */,
 				D372B4CA25102DBA006E2D12 /* XCRemoteSwiftPackageReference "Curry" */,
 				D372B4CD25102DDD006E2D12 /* XCRemoteSwiftPackageReference "Progress" */,
 				D372B4D025102E06006E2D12 /* XCRemoteSwiftPackageReference "Pathos" */,
+				D3159EDA2515242900251A1D /* XCRemoteSwiftPackageReference "Difference" */,
+				D3159EE22515246200251A1D /* XCRemoteSwiftPackageReference "swift-argument-parser" */,
 			);
 			productRefGroup = D30B066225102B6C000CF0C2 /* Products */;
 			projectDirPath = "";
@@ -982,23 +991,23 @@
 				D372B54A25103085006E2D12 /* MutationTestingIODelegate.swift in Sources */,
 				D372B53925103085006E2D12 /* ChangeLogicalConnectorOperator.swift in Sources */,
 				D39748F325103D6D00F83627 /* SequenceExtensions.swift in Sources */,
+				D3159F22251525B700251A1D /* RemoveSideEffectsOperator.swift in Sources */,
 				D372B55225103085006E2D12 /* Reporter.swift in Sources */,
 				D372B53225103085006E2D12 /* configurationGeneration.swift in Sources */,
 				D372B53D25103085006E2D12 /* MuterError.swift in Sources */,
 				D372B53325103085006E2D12 /* MutationPosition.swift in Sources */,
+				D3159F2E25152B7800251A1D /* Init.swift in Sources */,
 				D372B54325103085006E2D12 /* PerformMutationTesting.swift in Sources */,
 				D372B53025103085006E2D12 /* MuterConfiguration.swift in Sources */,
 				D372B53B25103085006E2D12 /* fileOperations.swift in Sources */,
 				D372B54525103085006E2D12 /* RunCommandStep.swift in Sources */,
 				D372B53A25103085006E2D12 /* ROROperator.swift in Sources */,
 				D372B54E25103085006E2D12 /* mutationScoring.swift in Sources */,
-				D372B53E25103085006E2D12 /* RunCommand.swift in Sources */,
+				D372B53E25103085006E2D12 /* Run.swift in Sources */,
 				D372B54225103085006E2D12 /* CopyToTempDirectory.swift in Sources */,
 				D372B54125103085006E2D12 /* ExcludedMutationPointsDetector.swift in Sources */,
 				D372B54D25103085006E2D12 /* MuterTestReport.swift in Sources */,
-				D372B53C25103085006E2D12 /* InitCommand.swift in Sources */,
 				D39748F125103D6D00F83627 /* ProgressExtensions.swift in Sources */,
-				D372B53725103085006E2D12 /* RemoveSideEffectsOperator.swift in Sources */,
 				D39748F525103D6D00F83627 /* FileManagerExtensions.swift in Sources */,
 				D39748F225103D6D00F83627 /* ArrayExtensions.swift in Sources */,
 				D372B54625103085006E2D12 /* LoadConfiguration.swift in Sources */,
@@ -1107,15 +1116,19 @@
 			target = D30B066F25102BE2000CF0C2 /* muterCore */;
 			targetProxy = D30B06AD25102C39000CF0C2 /* PBXContainerItemProxy */;
 		};
+		D3159EF7251524A700251A1D /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = D30B066F25102BE2000CF0C2 /* muterCore */;
+			targetProxy = D3159EF6251524A700251A1D /* PBXContainerItemProxy */;
+		};
+		D3159F0A2515250600251A1D /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			productRef = D3159F092515250600251A1D /* ArgumentParser */;
+		};
 		D37C2DD02510EECE002E0FDC /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
 			target = D30B066F25102BE2000CF0C2 /* muterCore */;
 			targetProxy = D37C2DCF2510EECE002E0FDC /* PBXContainerItemProxy */;
-		};
-		D37DF985251115B800FD2606 /* PBXTargetDependency */ = {
-			isa = PBXTargetDependency;
-			target = D30B066F25102BE2000CF0C2 /* muterCore */;
-			targetProxy = D37DF984251115B800FD2606 /* PBXContainerItemProxy */;
 		};
 /* End PBXTargetDependency section */
 
@@ -1624,12 +1637,20 @@
 				minimumVersion = 1.1.0;
 			};
 		};
-		D372B4C725102D95006E2D12 /* XCRemoteSwiftPackageReference "Commandant" */ = {
+		D3159EDA2515242900251A1D /* XCRemoteSwiftPackageReference "Difference" */ = {
 			isa = XCRemoteSwiftPackageReference;
-			repositoryURL = "https://github.com/Carthage/Commandant.git";
+			repositoryURL = "https://github.com/krzysztofzablocki/Difference.git";
+			requirement = {
+				branch = master;
+				kind = branch;
+			};
+		};
+		D3159EE22515246200251A1D /* XCRemoteSwiftPackageReference "swift-argument-parser" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/apple/swift-argument-parser.git";
 			requirement = {
 				kind = upToNextMajorVersion;
-				minimumVersion = 0.15.0;
+				minimumVersion = 0.3.1;
 			};
 		};
 		D372B4CA25102DBA006E2D12 /* XCRemoteSwiftPackageReference "Curry" */ = {
@@ -1669,10 +1690,20 @@
 			package = D30B06C025102D4A000CF0C2 /* XCRemoteSwiftPackageReference "swift-snapshot-testing" */;
 			productName = SnapshotTesting;
 		};
-		D372B4C825102D95006E2D12 /* Commandant */ = {
+		D3159EDB2515242900251A1D /* Difference */ = {
 			isa = XCSwiftPackageProductDependency;
-			package = D372B4C725102D95006E2D12 /* XCRemoteSwiftPackageReference "Commandant" */;
-			productName = Commandant;
+			package = D3159EDA2515242900251A1D /* XCRemoteSwiftPackageReference "Difference" */;
+			productName = Difference;
+		};
+		D3159EEA2515247300251A1D /* ArgumentParser */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = D3159EE22515246200251A1D /* XCRemoteSwiftPackageReference "swift-argument-parser" */;
+			productName = ArgumentParser;
+		};
+		D3159F092515250600251A1D /* ArgumentParser */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = D3159EE22515246200251A1D /* XCRemoteSwiftPackageReference "swift-argument-parser" */;
+			productName = ArgumentParser;
 		};
 		D372B4CB25102DBA006E2D12 /* Curry */ = {
 			isa = XCSwiftPackageProductDependency;

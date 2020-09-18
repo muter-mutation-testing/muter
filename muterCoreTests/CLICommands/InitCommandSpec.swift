@@ -1,7 +1,6 @@
 import Quick
 import Nimble
 import Foundation
-import Commandant
 import muterCore
 
 class InitCommandSpec: QuickSpec {
@@ -14,18 +13,18 @@ class InitCommandSpec: QuickSpec {
 
             it("creates a configuration file named muter.conf.json with placeholder values in a specified directory") {
                 let workingDirectory = self.rootTestDirectory
-                let initCommand = InitCommand(directory: workingDirectory)
-                let noOptions = NoOptions<MuterError>()
+                let initCommand = Init(directory: workingDirectory)
 
-                guard case .success = initCommand.run(noOptions) else {
-                    fail("Expected a successful result")
-                    return
+                do {
+                    try initCommand.run()
+                    guard let contents = FileManager.default.contents(atPath: "\(workingDirectory)/muter.conf.json"),
+                        let _ = try? JSONDecoder().decode(MuterConfiguration.self, from: contents) else {
+                            fail("Expected a valid configuration file to be written")
+                            return
+                    }
                 }
-
-                guard let contents = FileManager.default.contents(atPath: "\(workingDirectory)/muter.conf.json"),
-                    let _ = try? JSONDecoder().decode(MuterConfiguration.self, from: contents) else {
-                        fail("Expected a valid configuration file to be written")
-                        return
+                catch {
+                    fail("Expected a successful result, but got \(error)")
                 }
             }
         }

@@ -1,12 +1,12 @@
-import Commandant
-import Result
 import Foundation
+import ArgumentParser
 
-public struct InitCommand: CommandProtocol {
-    public typealias Options = NoOptions<MuterError>
-    public typealias ClientError = MuterError
-    public let verb: String = "init"
-    public let function: String = "Creates the configuration file that Muter uses"
+public struct Init: ParsableCommand {
+
+    public static let configuration = CommandConfiguration(
+        commandName: "init",
+        abstract: "Creates the configuration file that Muter uses"
+    )
 
     private let directory: String
     private let fileManager: FileManager
@@ -20,16 +20,22 @@ public struct InitCommand: CommandProtocol {
         self.notificationCenter = notificationCenter
     }
 
-    public func run(_ options: Options) -> Result<(), ClientError> {
+    public init(from decoder: Decoder) throws {
+        self.init(directory: FileManager.default.currentDirectoryPath, fileManager: .default, notificationCenter: .default)
+    }
+
+    public init() {
+        self.init(directory: FileManager.default.currentDirectoryPath, fileManager: .default, notificationCenter: .default)
+    }
+
+    public func run() throws {
         notificationCenter.post(name: .muterLaunched, object: nil)
 
         let directoryContents = fileManager.subpaths(atPath: self.directory) ?? []
         fileManager.createFile(atPath: "\(self.directory)/muter.conf.json",
                                contents: MuterConfiguration(from: directoryContents).asJSONData,
                                attributes: nil)
-        
-        notificationCenter.post(name: .configurationFileCreated, object: "\(self.directory)/muter.conf.json")
 
-        return Result.success(())
+        notificationCenter.post(name: .configurationFileCreated, object: "\(self.directory)/muter.conf.json")
     }
 }

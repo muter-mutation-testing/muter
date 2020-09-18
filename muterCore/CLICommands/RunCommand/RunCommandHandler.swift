@@ -1,3 +1,5 @@
+import Foundation
+
 class RunCommandHandler {
     let steps: [RunCommandStep]
     var state: AnyRunCommandState
@@ -8,32 +10,26 @@ class RunCommandHandler {
         self.state = state
     }
     
-    init(options: RunCommandOptions,
+    init(command: Run,
          steps: [RunCommandStep] = RunCommandHandler.defaultSteps) {
         self.steps = steps
-        self.state = RunCommandState(from: options)
+        self.state = RunCommandState(from: command)
     }
     
-    func handle() -> Result<(), MuterError> {
-        for step in steps {
-            let result = step.run(with: state)
-
-            switch result {
-            case .failure(let error):
-                return .failure(error)
-            case .success(let stateChanges):
-                state.apply(stateChanges)
-            }
+    func run() throws {
+        try steps.forEach { step in
+            try step.run(with: state).map(state.apply(_:)).get()
         }
-        return .success(())
     }
 }
 
 private extension RunCommandHandler {
-    private static let defaultSteps: [RunCommandStep] = [LoadConfiguration(),
-                                                         CopyProjectToTempDirectory(),
-                                                         DiscoverSourceFiles(),
-                                                         DiscoverMutationPoints(),
-                                                         GenerateSwapFilePaths(),
-                                                         PerformMutationTesting()]
+    private static let defaultSteps: [RunCommandStep] = [
+        LoadConfiguration(),
+        CopyProjectToTempDirectory(),
+        DiscoverSourceFiles(),
+        DiscoverMutationPoints(),
+        GenerateSwapFilePaths(),
+        PerformMutationTesting()
+    ]
 }

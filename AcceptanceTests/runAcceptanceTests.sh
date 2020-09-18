@@ -62,8 +62,15 @@ cd ../..
 echo "Running Muter's help command..."
 cd ./Repositories/ExampleApp
 
-echo " > Running command..."
+echo " > Running help command..."
 "$BUILDDIR"/muter help > ../../AcceptanceTests/muters_help_output.txt
+
+echo " > Running init help command..."
+"$BUILDDIR"/muter help init > ../../AcceptanceTests/muters_init_help_output.txt
+
+echo " > Running run help command..."
+"$BUILDDIR"/muter help run > ../../AcceptanceTests/muters_run_help_output.txt
+
 cd ../..
 
 echo "Running tests..."

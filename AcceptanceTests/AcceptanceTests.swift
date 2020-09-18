@@ -87,7 +87,7 @@ class AcceptanceTests: QuickSpec {
                     }
                 }
                 
-                context("with --output-xcode as an argument") {
+                context("with '--output-xcode' as an argument") {
                     var output: String!
                     
                     beforeEach {
@@ -106,7 +106,7 @@ class AcceptanceTests: QuickSpec {
                     }
                 }
                 
-                context("with --files-to-mutate as an argument") {
+                context("with '--files-to-mutate' as an argument") {
                     var output: String!
                     
                     beforeEach {
@@ -183,11 +183,73 @@ class AcceptanceTests: QuickSpec {
             
             context("with the 'help' command") {
                 they("have the list of available commands displayed to them") {
-                    expect(self.muterHelpOutput).to(contain("init"))
-                    expect(self.muterHelpOutput).to(contain("help"))
-                    expect(self.muterHelpOutput).to(contain("--output-json"))
-                    expect(self.muterHelpOutput).to(contain("--output-xcode"))
-                    expect(self.muterHelpOutput).to(contain("--files-to-mutate"))
+                    expect(self.muterHelpOutput).to(
+                        equalWithDiff(
+                            """
+                            OVERVIEW: 🔎 Automated mutation testing for Swift 🕳️
+
+                            USAGE: muter <subcommand>
+
+                            OPTIONS:
+                              --version               Show the version.
+                              -h, --help              Show help information.
+
+                            SUBCOMMANDS:
+                              init                    Creates the configuration file that Muter uses
+                              run (default)           Performs mutation testing for the Swift project
+                                                      contained within the current directory
+
+                              See 'muter help <subcommand>' for detailed help.
+
+                            """
+                        )
+                    )
+                }
+                
+                when("'init' is the subcommand") {
+                    they("have the description displayed to them") {
+                        expect(self.muterInitHelpOutput).to(
+                            equalWithDiff(
+                                """
+                                OVERVIEW: Creates the configuration file that Muter uses
+
+                                USAGE: muter init
+
+                                OPTIONS:
+                                  --version               Show the version.
+                                  -h, --help              Show help information.
+
+
+                                """
+                            )
+                        )
+                    }
+                }
+                
+                when("'run' is the subcommand") {
+                    they("have the description displayed to them") {
+                        expect(self.muterRunHelpOutput).to(
+                            equalWithDiff(
+                                """
+                                OVERVIEW: Performs mutation testing for the Swift project contained within the
+                                current directory
+
+                                USAGE: muter run [--files-to-mutate <files-to-mutate> ...] [--output-json] [--output-xcode]
+
+                                OPTIONS:
+                                  --files-to-mutate <files-to-mutate>
+                                                          Only mutate a given list of source code files 
+                                  --output-json           Output test results to a json file. 
+                                  --output-xcode          Output test results in a format consumable by an
+                                                          Xcode run script step. 
+                                  --version               Show the version.
+                                  -h, --help              Show help information.
+
+
+                                """
+                            )
+                        )
+                    }
                 }
             }
         }
@@ -195,7 +257,6 @@ class AcceptanceTests: QuickSpec {
 }
 
 extension AcceptanceTests {
-    
     var rootTestDirectory: String {
         return String(
             URL(fileURLWithPath: #file)
@@ -203,72 +264,47 @@ extension AcceptanceTests {
                 .withoutScheme()
         )
     }
+
+    var muterOutput: String { contentsOfFileAsString("\(AcceptanceTests().rootTestDirectory)/muters_output.txt") }
+    var muterXcodeOutput: String { contentsOfFileAsString("\(AcceptanceTests().rootTestDirectory)/muters_xcode_output.txt") }
     
-    var muterOutputPath: String { return "\(AcceptanceTests().rootTestDirectory)/muters_output.txt" }
-    var muterOutput: String {
-        return contentsOfFileAsString(at: muterOutputPath)
-    }
+    var muterFilesToMutateOutput: String { contentsOfFileAsString("\(AcceptanceTests().rootTestDirectory)/muters_files_to_mutate_output.txt") }
     
-    var muterXcodeOutputPath: String { return "\(AcceptanceTests().rootTestDirectory)/muters_xcode_output.txt" }
-    var muterXcodeOutput: String {
-        return contentsOfFileAsString(at: muterXcodeOutputPath)
-    }
+    var muterEmptyStateOutput: String { contentsOfFileAsString("\(AcceptanceTests().rootTestDirectory)/muters_empty_state_output.txt") }
+    var muterAbortedTestingOutput: String { contentsOfFileAsString("\(AcceptanceTests().rootTestDirectory)/muters_aborted_testing_output.txt") }
     
-    var muterFilesToMutateOutputPath: String { return "\(AcceptanceTests().rootTestDirectory)/muters_files_to_mutate_output.txt" }
-    var muterFilesToMutateOutput: String {
-        return contentsOfFileAsString(at: muterFilesToMutateOutputPath)
-    }
-    
-    var muterEmptyStateOutputPath: String { return "\(AcceptanceTests().rootTestDirectory)/muters_empty_state_output.txt" }
-    var muterEmptyStateOutput: String {
-        return contentsOfFileAsString(at: muterEmptyStateOutputPath)
-    }
-    
-    var muterAbortedTestingOutputPath: String { return "\(AcceptanceTests().rootTestDirectory)/muters_aborted_testing_output.txt" }
-    var muterAbortedTestingOutput: String {
-        return contentsOfFileAsString(at: muterAbortedTestingOutputPath)
-    }
-    
-    var muterHelpOutputPath: String { return "\(AcceptanceTests().rootTestDirectory)/muters_help_output.txt" }
-    var muterHelpOutput: String {
-        return contentsOfFileAsString(at: muterHelpOutputPath)
-    }
-    
-    var muterLogsRootPath: String { return "\(AcceptanceTests().rootTestDirectory)/muter_logs/" }
+    var muterHelpOutput: String { contentsOfFileAsString("\(AcceptanceTests().rootTestDirectory)/muters_help_output.txt") }
+    var muterInitHelpOutput: String { contentsOfFileAsString("\(AcceptanceTests().rootTestDirectory)/muters_init_help_output.txt") }
+    var muterRunHelpOutput: String { contentsOfFileAsString("\(AcceptanceTests().rootTestDirectory)/muters_run_help_output.txt") }
+
     var muterLogFiles: [String] {
-        return contentsOfDirectory(at: muterLogsRootPath)
+        contentsOfDirectory(muterLogsRootPath)
             .map { muterLogsRootPath + "/" + $0 }
-            .flatMap(contentsOfDirectory(at:))
+            .flatMap(contentsOfDirectory)
     }
     
-    var createdIOSConfigurationPath: String { return "\(AcceptanceTests().rootTestDirectory)/created_iOS_config.json" }
-    var createdIOSConfiguration: Data {
-        return contentsOfFileAsData(at: createdIOSConfigurationPath)
-    }
+    var createdIOSConfiguration: Data { contentsOfFileAsData("\(AcceptanceTests().rootTestDirectory)/created_iOS_config.json") }
+    var createdMacOSConfiguration: Data { contentsOfFileAsData("\(AcceptanceTests().rootTestDirectory)/created_macOS_config.json") }
     
-    var createdMacOSConfigurationPath: String { return "\(AcceptanceTests().rootTestDirectory)/created_macOS_config.json" }
-    var createdMacOSConfiguration: Data {
-        return contentsOfFileAsData(at: createdMacOSConfigurationPath)
-    }
+    var muterLogsRootPath: String { "\(AcceptanceTests().rootTestDirectory)/muter_logs/" }
 }
 
 extension AcceptanceTests {
-    
     func contentsOfLogFile(named fileName: String) -> String {
-        return contentsOfDirectory(at: muterLogsRootPath)
+        return contentsOfDirectory(muterLogsRootPath)
             .first
             .map { muterLogsRootPath + $0 + "/" + fileName }
-            .map (contentsOfFileAsString(at:))!
+            .map(contentsOfFileAsString)!
     }
     
-    func contentsOfDirectory(at path: String) -> [String] {
+    func contentsOfDirectory(_ path: String) -> [String] {
         return try! FileManager
             .default
             .contentsOfDirectory(atPath: path)
             .exclude { $0.starts(with: ".") } // this filters out hidden files/folders
     }
     
-    func contentsOfFileAsString(at path: String) -> String {
+    func contentsOfFileAsString(_ path: String) -> String {
         guard let data = FileManager.default.contents(atPath: path),
             let output = String(data: data, encoding: .utf8) else {
                 fatalError("File not found at \(path)")
@@ -276,7 +312,7 @@ extension AcceptanceTests {
         return output
     }
     
-    func contentsOfFileAsData(at path: String) -> Data {
+    func contentsOfFileAsData(_ path: String) -> Data {
         guard let data = FileManager.default.contents(atPath: path) else {
             fatalError("Unable to find a valid output file from a prior run of Muter at \(path)")
         }
