@@ -163,7 +163,7 @@ Once you've created your configuration file, simply run `muter` in your terminal
 
 **Available Subcommands**
 ```
-   help   Display general or command-specific help
+   help   Display general or subcommand-specific help
    init   Creates the configuration file that Muter uses
    run    Performs mutation testing for the Swift project contained within the current directory
 ```

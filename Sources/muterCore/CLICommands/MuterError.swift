@@ -56,7 +56,7 @@ extension MuterError: CustomStringConvertible {
             """
         case .noSourceFilesOnExclusiveList:
             return """
-            Muter wasn't able to discover on list provided by the `--files-to-mutate` flag.
+            Muter wasn't able to discover on list provided by the `files-to-mutate` flag.
             
             Please check the list of files and try again.
             """

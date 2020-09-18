@@ -2,21 +2,21 @@
   "object": {
     "pins": [
       {
-        "package": "Commandant",
-        "repositoryURL": "https://github.com/Carthage/Commandant.git",
-        "state": {
-          "branch": null,
-          "revision": "07cad52573bad19d95844035bf0b25acddf6b0f6",
-          "version": "0.15.0"
-        }
-      },
-      {
         "package": "Curry",
         "repositoryURL": "https://github.com/thoughtbot/Curry.git",
         "state": {
           "branch": null,
           "revision": "4331dd50bc1db007db664a23f32e6f3df93d4e1a",
           "version": "4.0.2"
+        }
+      },
+      {
+        "package": "Difference",
+        "repositoryURL": "https://github.com/krzysztofzablocki/Difference.git",
+        "state": {
+          "branch": "master",
+          "revision": "b67d4483312832b2eb3458a25374a353abd8fb21",
+          "version": null
         }
       },
       {
@@ -65,12 +65,12 @@
         }
       },
       {
-        "package": "Result",
-        "repositoryURL": "https://github.com/antitypical/Result.git",
+        "package": "swift-argument-parser",
+        "repositoryURL": "https://github.com/apple/swift-argument-parser.git",
         "state": {
           "branch": null,
-          "revision": "2ca499ba456795616fbc471561ff1d963e6ae160",
-          "version": "4.1.0"
+          "revision": "92646c0cdbaca076c8d3d0207891785b3379cbff",
+          "version": "0.3.1"
         }
       },
       {

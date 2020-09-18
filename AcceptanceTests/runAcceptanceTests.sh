@@ -60,8 +60,15 @@ cd ../..
 echo "Running Muter's help command..."
 cd ./Repositories/ExampleApp
 
-echo " > Running command..."
+echo " > Running help command..."
 ../../.build/x86_64-apple-macosx/debug/muter help > ../../AcceptanceTests/muters_help_output.txt
+
+echo " > Running init help command..."
+../../.build/x86_64-apple-macosx/debug/muter help init > ../../AcceptanceTests/muters_init_help_output.txt
+
+echo " > Running run help command..."
+../../.build/x86_64-apple-macosx/debug/muter help run > ../../AcceptanceTests/muters_run_help_output.txt
+
 cd ../..
 
 echo "Running tests..."
