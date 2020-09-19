@@ -106,24 +106,13 @@
 		D39749E225103DDE00F83627 /* RunCommandHandlerSpec.swift in Sources */ = {isa = PBXBuildFile; fileRef = D39749C525103DDE00F83627 /* RunCommandHandlerSpec.swift */; };
 		D39749E325103DDE00F83627 /* InitCommandSpec.swift in Sources */ = {isa = PBXBuildFile; fileRef = D39749C625103DDE00F83627 /* InitCommandSpec.swift */; };
 		D39749E425103DDE00F83627 /* RunCommandObserverSpec.swift in Sources */ = {isa = PBXBuildFile; fileRef = D39749C725103DDE00F83627 /* RunCommandObserverSpec.swift */; };
-		D3974AA725103E4000F83627 /* muters_aborted_testing_output.txt in Resources */ = {isa = PBXBuildFile; fileRef = D3974A9C25103E4000F83627 /* muters_aborted_testing_output.txt */; };
 		D3974AA825103E4000F83627 /* AcceptanceTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D3974A9D25103E4000F83627 /* AcceptanceTests.swift */; };
-		D3974AA925103E4000F83627 /* muters_help_output.txt in Resources */ = {isa = PBXBuildFile; fileRef = D3974A9E25103E4000F83627 /* muters_help_output.txt */; };
 		D3974AAA25103E4000F83627 /* DSLExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = D3974A9F25103E4000F83627 /* DSLExtensions.swift */; };
-		D3974AAB25103E4000F83627 /* muters_files_to_mutate_output.txt in Resources */ = {isa = PBXBuildFile; fileRef = D3974AA025103E4000F83627 /* muters_files_to_mutate_output.txt */; };
-		D3974AAC25103E4000F83627 /* created_iOS_config.json in Resources */ = {isa = PBXBuildFile; fileRef = D3974AA125103E4000F83627 /* created_iOS_config.json */; };
-		D3974AAD25103E4000F83627 /* muters_empty_state_output.txt in Resources */ = {isa = PBXBuildFile; fileRef = D3974AA225103E4000F83627 /* muters_empty_state_output.txt */; };
 		D3974AAE25103E4000F83627 /* runAcceptanceTests.sh in Resources */ = {isa = PBXBuildFile; fileRef = D3974AA325103E4000F83627 /* runAcceptanceTests.sh */; };
-		D3974AAF25103E4000F83627 /* created_macOS_config.json in Resources */ = {isa = PBXBuildFile; fileRef = D3974AA425103E4000F83627 /* created_macOS_config.json */; };
-		D3974AB025103E4000F83627 /* muters_output.txt in Resources */ = {isa = PBXBuildFile; fileRef = D3974AA525103E4000F83627 /* muters_output.txt */; };
-		D3974AB125103E4000F83627 /* muters_xcode_output.txt in Resources */ = {isa = PBXBuildFile; fileRef = D3974AA625103E4000F83627 /* muters_xcode_output.txt */; };
-		D3974AB925103E5300F83627 /* projectwithconcurrency_test_output.json in Resources */ = {isa = PBXBuildFile; fileRef = D3974AB225103E5300F83627 /* projectwithconcurrency_test_output.json */; };
 		D3974ABA25103E5300F83627 /* RegressionTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D3974AB325103E5300F83627 /* RegressionTests.swift */; };
 		D3974ABB25103E5300F83627 /* DictionaryExtensionSpec.swift in Sources */ = {isa = PBXBuildFile; fileRef = D3974AB425103E5300F83627 /* DictionaryExtensionSpec.swift */; };
-		D3974ABC25103E5300F83627 /* parsercombinator_regression_test_output.json in Resources */ = {isa = PBXBuildFile; fileRef = D3974AB525103E5300F83627 /* parsercombinator_regression_test_output.json */; };
 		D3974ABD25103E5300F83627 /* SnapshottingExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = D3974AB625103E5300F83627 /* SnapshottingExtensions.swift */; };
 		D3974ABE25103E5300F83627 /* runRegressionTests.sh in Resources */ = {isa = PBXBuildFile; fileRef = D3974AB725103E5300F83627 /* runRegressionTests.sh */; };
-		D3974ABF25103E5300F83627 /* bonmot_regression_test_output.json in Resources */ = {isa = PBXBuildFile; fileRef = D3974AB825103E5300F83627 /* bonmot_regression_test_output.json */; };
 		D3974ACD25103FA500F83627 /* Quick in Frameworks */ = {isa = PBXBuildFile; productRef = D3974ACC25103FA500F83627 /* Quick */; };
 		D3974ACF25103FA500F83627 /* Nimble in Frameworks */ = {isa = PBXBuildFile; productRef = D3974ACE25103FA500F83627 /* Nimble */; };
 		D3974AD325103FBB00F83627 /* Quick in Frameworks */ = {isa = PBXBuildFile; productRef = D3974AD225103FBB00F83627 /* Quick */; };
@@ -285,24 +274,13 @@
 		D39749C525103DDE00F83627 /* RunCommandHandlerSpec.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RunCommandHandlerSpec.swift; sourceTree = "<group>"; };
 		D39749C625103DDE00F83627 /* InitCommandSpec.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = InitCommandSpec.swift; sourceTree = "<group>"; };
 		D39749C725103DDE00F83627 /* RunCommandObserverSpec.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RunCommandObserverSpec.swift; sourceTree = "<group>"; };
-		D3974A9C25103E4000F83627 /* muters_aborted_testing_output.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = muters_aborted_testing_output.txt; sourceTree = "<group>"; };
 		D3974A9D25103E4000F83627 /* AcceptanceTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AcceptanceTests.swift; sourceTree = "<group>"; };
-		D3974A9E25103E4000F83627 /* muters_help_output.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = muters_help_output.txt; sourceTree = "<group>"; };
 		D3974A9F25103E4000F83627 /* DSLExtensions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DSLExtensions.swift; sourceTree = "<group>"; };
-		D3974AA025103E4000F83627 /* muters_files_to_mutate_output.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = muters_files_to_mutate_output.txt; sourceTree = "<group>"; };
-		D3974AA125103E4000F83627 /* created_iOS_config.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = created_iOS_config.json; sourceTree = "<group>"; };
-		D3974AA225103E4000F83627 /* muters_empty_state_output.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = muters_empty_state_output.txt; sourceTree = "<group>"; };
 		D3974AA325103E4000F83627 /* runAcceptanceTests.sh */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.script.sh; path = runAcceptanceTests.sh; sourceTree = "<group>"; };
-		D3974AA425103E4000F83627 /* created_macOS_config.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = created_macOS_config.json; sourceTree = "<group>"; };
-		D3974AA525103E4000F83627 /* muters_output.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = muters_output.txt; sourceTree = "<group>"; };
-		D3974AA625103E4000F83627 /* muters_xcode_output.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = muters_xcode_output.txt; sourceTree = "<group>"; };
-		D3974AB225103E5300F83627 /* projectwithconcurrency_test_output.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = projectwithconcurrency_test_output.json; sourceTree = "<group>"; };
 		D3974AB325103E5300F83627 /* RegressionTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RegressionTests.swift; sourceTree = "<group>"; };
 		D3974AB425103E5300F83627 /* DictionaryExtensionSpec.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DictionaryExtensionSpec.swift; sourceTree = "<group>"; };
-		D3974AB525103E5300F83627 /* parsercombinator_regression_test_output.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = parsercombinator_regression_test_output.json; sourceTree = "<group>"; };
 		D3974AB625103E5300F83627 /* SnapshottingExtensions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SnapshottingExtensions.swift; sourceTree = "<group>"; };
 		D3974AB725103E5300F83627 /* runRegressionTests.sh */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.script.sh; path = runRegressionTests.sh; sourceTree = "<group>"; };
-		D3974AB825103E5300F83627 /* bonmot_regression_test_output.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = bonmot_regression_test_output.json; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -448,15 +426,7 @@
 			isa = PBXGroup;
 			children = (
 				D3974A9D25103E4000F83627 /* AcceptanceTests.swift */,
-				D3974AA125103E4000F83627 /* created_iOS_config.json */,
-				D3974AA425103E4000F83627 /* created_macOS_config.json */,
 				D3974A9F25103E4000F83627 /* DSLExtensions.swift */,
-				D3974A9C25103E4000F83627 /* muters_aborted_testing_output.txt */,
-				D3974AA225103E4000F83627 /* muters_empty_state_output.txt */,
-				D3974AA025103E4000F83627 /* muters_files_to_mutate_output.txt */,
-				D3974A9E25103E4000F83627 /* muters_help_output.txt */,
-				D3974AA525103E4000F83627 /* muters_output.txt */,
-				D3974AA625103E4000F83627 /* muters_xcode_output.txt */,
 				D3974AA325103E4000F83627 /* runAcceptanceTests.sh */,
 				D30B069C25102C2D000CF0C2 /* Info.plist */,
 			);
@@ -466,10 +436,7 @@
 		D30B06A825102C39000CF0C2 /* RegressionTests */ = {
 			isa = PBXGroup;
 			children = (
-				D3974AB825103E5300F83627 /* bonmot_regression_test_output.json */,
 				D3974AB425103E5300F83627 /* DictionaryExtensionSpec.swift */,
-				D3974AB525103E5300F83627 /* parsercombinator_regression_test_output.json */,
-				D3974AB225103E5300F83627 /* projectwithconcurrency_test_output.json */,
 				D3974AB325103E5300F83627 /* RegressionTests.swift */,
 				D3974AB725103E5300F83627 /* runRegressionTests.sh */,
 				D3974AB625103E5300F83627 /* SnapshottingExtensions.swift */,
@@ -918,15 +885,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				D37C2DF82510F0B6002E0FDC /* fixtures in Resources */,
-				D3974AA925103E4000F83627 /* muters_help_output.txt in Resources */,
-				D3974AAF25103E4000F83627 /* created_macOS_config.json in Resources */,
-				D3974AAD25103E4000F83627 /* muters_empty_state_output.txt in Resources */,
-				D3974AB125103E4000F83627 /* muters_xcode_output.txt in Resources */,
-				D3974AAB25103E4000F83627 /* muters_files_to_mutate_output.txt in Resources */,
 				D3974AAE25103E4000F83627 /* runAcceptanceTests.sh in Resources */,
-				D3974AAC25103E4000F83627 /* created_iOS_config.json in Resources */,
-				D3974AA725103E4000F83627 /* muters_aborted_testing_output.txt in Resources */,
-				D3974AB025103E4000F83627 /* muters_output.txt in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -935,10 +894,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				D37C2DF92510F0BD002E0FDC /* fixtures in Resources */,
-				D3974ABF25103E5300F83627 /* bonmot_regression_test_output.json in Resources */,
 				D3974ABE25103E5300F83627 /* runRegressionTests.sh in Resources */,
-				D3974ABC25103E5300F83627 /* parsercombinator_regression_test_output.json in Resources */,
-				D3974AB925103E5300F83627 /* projectwithconcurrency_test_output.json in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
