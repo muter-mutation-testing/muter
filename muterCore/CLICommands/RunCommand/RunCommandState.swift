@@ -15,7 +15,7 @@ protocol AnyRunCommandState {
     func apply(_ stateChanges: [RunCommandState.Change])
 }
 
-class RunCommandState: AnyRunCommandState {
+final class RunCommandState: AnyRunCommandState {
     var muterConfiguration: MuterConfiguration = .init()
     var projectDirectoryURL: URL = URL(string: "example.com")!
     var tempDirectoryURL: URL = URL(string: "example.com")!

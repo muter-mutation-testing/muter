@@ -30,7 +30,7 @@ func flushStdOut() {
     fflush(stdout)
 }
 
-class RunCommandObserver {
+final class RunCommandObserver {
     private let reporter: Reporter
     private let fileManager: FileSystemManager
     private let loggingDirectory: String

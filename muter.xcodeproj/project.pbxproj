@@ -482,10 +482,10 @@
 		D372B51025103085006E2D12 /* RunCommand */ = {
 			isa = PBXGroup;
 			children = (
+				D372B51425103085006E2D12 /* Steps */,
 				D372B51125103085006E2D12 /* Run.swift */,
 				D372B51225103085006E2D12 /* RunCommandObserver.swift */,
 				D372B51325103085006E2D12 /* RunCommandHandler.swift */,
-				D372B51425103085006E2D12 /* Steps */,
 				D372B51D25103085006E2D12 /* RunCommandState.swift */,
 			);
 			path = RunCommand;

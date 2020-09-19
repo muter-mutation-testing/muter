@@ -1,6 +1,6 @@
 import Foundation
 
-class RunCommandHandler {
+final class RunCommandHandler {
     let steps: [RunCommandStep]
     var state: AnyRunCommandState
 
