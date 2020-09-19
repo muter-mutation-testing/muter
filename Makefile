@@ -30,7 +30,7 @@ clean:
 	rm -rf .build
 
 run: build
-	$(BUILDDIR)/Bebug/muter
+	$(BUILDDIR)/Debug/muter
 
 test: build
 	xcodebuild -scheme muter -only-testing:muterCoreTests test
