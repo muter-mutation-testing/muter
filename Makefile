@@ -2,7 +2,7 @@ prefix ?= /usr/local
 bindir = $(prefix)/bin
 libdir = $(prefix)/lib
 
-buildDir = $(shell xcodebuild -configuration Release -showBuildSettings | grep "CONFIGURATION_BUILD_DIR" | grep -oEi "\/.*")
+builddir = $(shell xcodebuild -configuration Release -showBuildSettings | grep "CONFIGURATION_BUILD_DIR" | grep -oEi "\/.*")
 build:
 	xcodebuild -scheme muter -configuration Debug > /dev/null 2>&1
 
@@ -14,13 +14,13 @@ release:
 
 install: build-release
 	install -d "$(bindir)"
-	install "$(buildDir)/muter" "$(bindir)"
+	install "$(builddir)/muter" "$(bindir)"
 
 uninstall:
 	rm -f "$(bindir)/muter"
 
 run: build
-	$(buildDir)/muter
+	$(builddir)/muter
 
 test: build
 	xcodebuild -scheme muter -only-testing:muterCoreTests test
