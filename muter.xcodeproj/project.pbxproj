@@ -70,7 +70,6 @@
 		D37C2DF82510F0B6002E0FDC /* fixtures in Resources */ = {isa = PBXBuildFile; fileRef = D37C2DE42510EF25002E0FDC /* fixtures */; };
 		D37C2DF92510F0BD002E0FDC /* fixtures in Resources */ = {isa = PBXBuildFile; fileRef = D37C2DE42510EF25002E0FDC /* fixtures */; };
 		D37DF98B251115C600FD2606 /* muterCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D30B067025102BE2000CF0C2 /* muterCore.framework */; };
-		D37DF98C251115C600FD2606 /* muterCore.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = D30B067025102BE2000CF0C2 /* muterCore.framework */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
 		D39748F125103D6D00F83627 /* ProgressExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = D39748EB25103D6D00F83627 /* ProgressExtensions.swift */; };
 		D39748F225103D6D00F83627 /* ArrayExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = D39748EC25103D6D00F83627 /* ArrayExtensions.swift */; };
 		D39748F325103D6D00F83627 /* SequenceExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = D39748ED25103D6D00F83627 /* SequenceExtensions.swift */; };
@@ -119,6 +118,7 @@
 		D3974AD525103FBB00F83627 /* Nimble in Frameworks */ = {isa = PBXBuildFile; productRef = D3974AD425103FBB00F83627 /* Nimble */; };
 		D3974AD725103FC300F83627 /* Quick in Frameworks */ = {isa = PBXBuildFile; productRef = D3974AD625103FC300F83627 /* Quick */; };
 		D3974AD925103FC300F83627 /* Nimble in Frameworks */ = {isa = PBXBuildFile; productRef = D3974AD825103FC300F83627 /* Nimble */; };
+		D3B54A0725190511001C9424 /* muterCore.framework in CopyFiles */ = {isa = PBXBuildFile; fileRef = D30B067025102BE2000CF0C2 /* muterCore.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -164,21 +164,11 @@
 			isa = PBXCopyFilesBuildPhase;
 			buildActionMask = 8;
 			dstPath = "";
-			dstSubfolderSpec = 16;
-			files = (
-			);
-			runOnlyForDeploymentPostprocessing = 1;
-		};
-		D37DF98D251115C600FD2606 /* Embed Frameworks */ = {
-			isa = PBXCopyFilesBuildPhase;
-			buildActionMask = 12;
-			dstPath = "";
 			dstSubfolderSpec = 10;
 			files = (
-				D37DF98C251115C600FD2606 /* muterCore.framework in Embed Frameworks */,
+				D3B54A0725190511001C9424 /* muterCore.framework in CopyFiles */,
 			);
-			name = "Embed Frameworks";
-			runOnlyForDeploymentPostprocessing = 0;
+			runOnlyForDeploymentPostprocessing = 1;
 		};
 /* End PBXCopyFilesBuildPhase section */
 
@@ -667,7 +657,6 @@
 				D30B065D25102B6C000CF0C2 /* Sources */,
 				D30B065E25102B6C000CF0C2 /* Frameworks */,
 				D30B065F25102B6C000CF0C2 /* CopyFiles */,
-				D37DF98D251115C600FD2606 /* Embed Frameworks */,
 			);
 			buildRules = (
 			);
@@ -695,6 +684,13 @@
 			buildRules = (
 			);
 			dependencies = (
+				D3B549D62518F732001C9424 /* PBXTargetDependency */,
+				D3B549D82518F732001C9424 /* PBXTargetDependency */,
+				D3B549DA2518F732001C9424 /* PBXTargetDependency */,
+				D3B549DC2518F732001C9424 /* PBXTargetDependency */,
+				D3B549DE2518F732001C9424 /* PBXTargetDependency */,
+				D3B549E02518F732001C9424 /* PBXTargetDependency */,
+				D3B549E22518F732001C9424 /* PBXTargetDependency */,
 			);
 			name = muterCore;
 			packageProductDependencies = (
@@ -925,7 +921,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "\"$SRCROOT\"/Scripts/build_script.sh\n";
+			shellScript = "# \"$SRCROOT\"/Scripts/build_script.sh\n";
 		};
 /* End PBXShellScriptBuildPhase section */
 
@@ -1086,6 +1082,34 @@
 			target = D30B066F25102BE2000CF0C2 /* muterCore */;
 			targetProxy = D37C2DCF2510EECE002E0FDC /* PBXContainerItemProxy */;
 		};
+		D3B549D62518F732001C9424 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			productRef = D3B549D52518F732001C9424 /* SwiftSyntax */;
+		};
+		D3B549D82518F732001C9424 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			productRef = D3B549D72518F732001C9424 /* SwiftSyntaxBuilder */;
+		};
+		D3B549DA2518F732001C9424 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			productRef = D3B549D92518F732001C9424 /* Rainbow */;
+		};
+		D3B549DC2518F732001C9424 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			productRef = D3B549DB2518F732001C9424 /* Curry */;
+		};
+		D3B549DE2518F732001C9424 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			productRef = D3B549DD2518F732001C9424 /* Progress */;
+		};
+		D3B549E02518F732001C9424 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			productRef = D3B549DF2518F732001C9424 /* Pathos */;
+		};
+		D3B549E22518F732001C9424 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			productRef = D3B549E12518F732001C9424 /* ArgumentParser */;
+		};
 /* End PBXTargetDependency section */
 
 /* Begin XCBuildConfiguration section */
@@ -1209,10 +1233,15 @@
 			buildSettings = {
 				CODE_SIGN_STYLE = Manual;
 				DEVELOPMENT_TEAM = "";
+				DYLIB_INSTALL_NAME_BASE = "@rpath";
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PLATFORM_DIR)/Developer/Library/Frameworks",
+				);
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
-					"@rpath/",
-					"@executable_path/",
+					"$(TOOLCHAIN_DIR)/usr/lib/swift/macosx",
+					"@executable_path",
 				);
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
@@ -1225,10 +1254,15 @@
 			buildSettings = {
 				CODE_SIGN_STYLE = Manual;
 				DEVELOPMENT_TEAM = "";
+				DYLIB_INSTALL_NAME_BASE = "@rpath";
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PLATFORM_DIR)/Developer/Library/Frameworks",
+				);
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
-					"@rpath/",
-					"@executable_path/",
+					"$(TOOLCHAIN_DIR)/usr/lib/swift/macosx",
+					"@executable_path",
 				);
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
@@ -1240,21 +1274,25 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				CLANG_ENABLE_MODULES = YES;
-				CODE_SIGN_STYLE = Manual;
+				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
 				CURRENT_PROJECT_VERSION = 1;
-				DEFINES_MODULE = YES;
+				DEFINES_MODULE = NO;
 				DEVELOPMENT_TEAM = "";
 				DYLIB_COMPATIBILITY_VERSION = 1;
 				DYLIB_CURRENT_VERSION = 1;
 				DYLIB_INSTALL_NAME_BASE = "@rpath";
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PLATFORM_DIR)/Developer/Library/Frameworks",
+				);
 				INFOPLIST_FILE = muterCore/Info.plist;
-				INSTALL_PATH = /Library/Frameworks;
+				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
-					"@executable_path/../Frameworks",
-					"@loader_path/Frameworks",
+					"$(TOOLCHAIN_DIR)/usr/lib/swift/macosx",
 				);
+				MACH_O_TYPE = staticlib;
 				PRODUCT_BUNDLE_IDENTIFIER = muter.muterCore;
 				PRODUCT_NAME = "$(TARGET_NAME:c99extidentifier)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
@@ -1271,21 +1309,25 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				CLANG_ENABLE_MODULES = YES;
-				CODE_SIGN_STYLE = Manual;
+				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
 				CURRENT_PROJECT_VERSION = 1;
-				DEFINES_MODULE = YES;
+				DEFINES_MODULE = NO;
 				DEVELOPMENT_TEAM = "";
 				DYLIB_COMPATIBILITY_VERSION = 1;
 				DYLIB_CURRENT_VERSION = 1;
 				DYLIB_INSTALL_NAME_BASE = "@rpath";
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PLATFORM_DIR)/Developer/Library/Frameworks",
+				);
 				INFOPLIST_FILE = muterCore/Info.plist;
-				INSTALL_PATH = /Library/Frameworks;
+				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
-					"@executable_path/../Frameworks",
-					"@loader_path/Frameworks",
+					"$(TOOLCHAIN_DIR)/usr/lib/swift/macosx",
 				);
+				MACH_O_TYPE = staticlib;
 				PRODUCT_BUNDLE_IDENTIFIER = muter.muterCore;
 				PRODUCT_NAME = "$(TARGET_NAME:c99extidentifier)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
@@ -1715,6 +1757,41 @@
 			isa = XCSwiftPackageProductDependency;
 			package = D30B06BD25102D1C000CF0C2 /* XCRemoteSwiftPackageReference "Nimble" */;
 			productName = Nimble;
+		};
+		D3B549D52518F732001C9424 /* SwiftSyntax */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = D30B06B225102C63000CF0C2 /* XCRemoteSwiftPackageReference "swift-syntax" */;
+			productName = SwiftSyntax;
+		};
+		D3B549D72518F732001C9424 /* SwiftSyntaxBuilder */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = D30B06B225102C63000CF0C2 /* XCRemoteSwiftPackageReference "swift-syntax" */;
+			productName = SwiftSyntaxBuilder;
+		};
+		D3B549D92518F732001C9424 /* Rainbow */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = D30B06B725102CB0000CF0C2 /* XCRemoteSwiftPackageReference "Rainbow" */;
+			productName = Rainbow;
+		};
+		D3B549DB2518F732001C9424 /* Curry */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = D372B4CA25102DBA006E2D12 /* XCRemoteSwiftPackageReference "Curry" */;
+			productName = Curry;
+		};
+		D3B549DD2518F732001C9424 /* Progress */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = D372B4CD25102DDD006E2D12 /* XCRemoteSwiftPackageReference "Progress" */;
+			productName = Progress;
+		};
+		D3B549DF2518F732001C9424 /* Pathos */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = D372B4D025102E06006E2D12 /* XCRemoteSwiftPackageReference "Pathos" */;
+			productName = Pathos;
+		};
+		D3B549E12518F732001C9424 /* ArgumentParser */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = D3159EE22515246200251A1D /* XCRemoteSwiftPackageReference "swift-argument-parser" */;
+			productName = ArgumentParser;
 		};
 /* End XCSwiftPackageProductDependency section */
 	};
