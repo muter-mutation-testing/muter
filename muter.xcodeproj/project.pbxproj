@@ -13,6 +13,8 @@
 		D30B06AC25102C39000CF0C2 /* muterCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D30B067025102BE2000CF0C2 /* muterCore.framework */; };
 		D30B06B925102CB0000CF0C2 /* Rainbow in Frameworks */ = {isa = PBXBuildFile; productRef = D30B06B825102CB0000CF0C2 /* Rainbow */; };
 		D30B06C225102D4A000CF0C2 /* SnapshotTesting in Frameworks */ = {isa = PBXBuildFile; productRef = D30B06C125102D4A000CF0C2 /* SnapshotTesting */; };
+		D30CEBB42519128F009B161C /* muterCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D30B067025102BE2000CF0C2 /* muterCore.framework */; };
+		D30CEBB52519128F009B161C /* muterCore.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = D30B067025102BE2000CF0C2 /* muterCore.framework */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
 		D3159EDC2515242900251A1D /* Difference in Frameworks */ = {isa = PBXBuildFile; productRef = D3159EDB2515242900251A1D /* Difference */; };
 		D3159EEB2515247300251A1D /* ArgumentParser in Frameworks */ = {isa = PBXBuildFile; productRef = D3159EEA2515247300251A1D /* ArgumentParser */; };
 		D3159F22251525B700251A1D /* RemoveSideEffectsOperator.swift in Sources */ = {isa = PBXBuildFile; fileRef = D3159F21251525B700251A1D /* RemoveSideEffectsOperator.swift */; };
@@ -64,7 +66,6 @@
 		D37C2DEC2510EF25002E0FDC /* URLExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = D37C2DE52510EF25002E0FDC /* URLExtensions.swift */; };
 		D37C2DF32510F026002E0FDC /* TestingExtensions.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D37C2DC72510EEBC002E0FDC /* TestingExtensions.framework */; };
 		D37C2DF42510F03F002E0FDC /* TestingExtensions.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D37C2DC72510EEBC002E0FDC /* TestingExtensions.framework */; };
-		D37C2DF52510F056002E0FDC /* muterCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D30B067025102BE2000CF0C2 /* muterCore.framework */; };
 		D37C2DF62510F062002E0FDC /* TestingExtensions.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D37C2DC72510EEBC002E0FDC /* TestingExtensions.framework */; };
 		D37C2DF72510F0AD002E0FDC /* fixtures in Resources */ = {isa = PBXBuildFile; fileRef = D37C2DE42510EF25002E0FDC /* fixtures */; };
 		D37C2DF82510F0B6002E0FDC /* fixtures in Resources */ = {isa = PBXBuildFile; fileRef = D37C2DE42510EF25002E0FDC /* fixtures */; };
@@ -169,6 +170,17 @@
 				D3B54A0725190511001C9424 /* muterCore.framework in CopyFiles */,
 			);
 			runOnlyForDeploymentPostprocessing = 1;
+		};
+		D30CEBB62519128F009B161C /* Embed Frameworks */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "";
+			dstSubfolderSpec = 10;
+			files = (
+				D30CEBB52519128F009B161C /* muterCore.framework in Embed Frameworks */,
+			);
+			name = "Embed Frameworks";
+			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXCopyFilesBuildPhase section */
 
@@ -334,8 +346,8 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				D37C2DF52510F056002E0FDC /* muterCore.framework in Frameworks */,
 				D3159EDC2515242900251A1D /* Difference in Frameworks */,
+				D30CEBB42519128F009B161C /* muterCore.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -661,7 +673,6 @@
 			buildRules = (
 			);
 			dependencies = (
-				D3159F0A2515250600251A1D /* PBXTargetDependency */,
 				D3159EF7251524A700251A1D /* PBXTargetDependency */,
 			);
 			name = muter;
@@ -781,6 +792,7 @@
 				D37C2DC32510EEBC002E0FDC /* Sources */,
 				D37C2DC42510EEBC002E0FDC /* Frameworks */,
 				D37C2DC52510EEBC002E0FDC /* Resources */,
+				D30CEBB62519128F009B161C /* Embed Frameworks */,
 			);
 			buildRules = (
 			);
@@ -1072,10 +1084,6 @@
 			isa = PBXTargetDependency;
 			target = D30B066F25102BE2000CF0C2 /* muterCore */;
 			targetProxy = D3159EF6251524A700251A1D /* PBXContainerItemProxy */;
-		};
-		D3159F0A2515250600251A1D /* PBXTargetDependency */ = {
-			isa = PBXTargetDependency;
-			productRef = D3159F092515250600251A1D /* ArgumentParser */;
 		};
 		D37C2DD02510EECE002E0FDC /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
@@ -1484,6 +1492,7 @@
 					"@executable_path/../Frameworks",
 					"@loader_path/Frameworks",
 				);
+				MACH_O_TYPE = staticlib;
 				MACOSX_DEPLOYMENT_TARGET = 10.15;
 				PRODUCT_BUNDLE_IDENTIFIER = muter.TestingExtensions;
 				PRODUCT_NAME = "$(TARGET_NAME:c99extidentifier)";
@@ -1515,6 +1524,7 @@
 					"@executable_path/../Frameworks",
 					"@loader_path/Frameworks",
 				);
+				MACH_O_TYPE = staticlib;
 				MACOSX_DEPLOYMENT_TARGET = 10.15;
 				PRODUCT_BUNDLE_IDENTIFIER = muter.TestingExtensions;
 				PRODUCT_NAME = "$(TARGET_NAME:c99extidentifier)";
@@ -1694,11 +1704,6 @@
 			productName = Difference;
 		};
 		D3159EEA2515247300251A1D /* ArgumentParser */ = {
-			isa = XCSwiftPackageProductDependency;
-			package = D3159EE22515246200251A1D /* XCRemoteSwiftPackageReference "swift-argument-parser" */;
-			productName = ArgumentParser;
-		};
-		D3159F092515250600251A1D /* ArgumentParser */ = {
 			isa = XCSwiftPackageProductDependency;
 			package = D3159EE22515246200251A1D /* XCRemoteSwiftPackageReference "swift-argument-parser" */;
 			productName = ArgumentParser;
