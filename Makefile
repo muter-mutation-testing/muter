@@ -2,8 +2,7 @@ prefix ?= /usr/local
 bindir = $(prefix)/bin
 libdir = $(prefix)/lib
 
-BUILDDIR = $(xcodebuild -showBuildSettings | grep CONFIGURATION_BUILD_DIR)
-
+buildDir = $(shell xcodebuild -configuration Release -showBuildSettings | grep "CONFIGURATION_BUILD_DIR" | grep -oEi "\/.*")
 build:
 	xcodebuild -scheme muter -configuration Debug > /dev/null 2>&1
 
@@ -14,23 +13,14 @@ release:
 	./Scripts/shipIt.sh $(VERSION)
 
 install: build-release
-	install -d "$(bindir)" "$(libdir)"
-	install "$(BUILDDIR)/Release/muter" "$(bindir)"
-	install "$(BUILDDIR)/Release/libSwiftSyntax.dylib" "$(libdir)"
-	install_name_tool -change \
-	"$(BUILDDIR)/Release/libSwiftSyntax.dylib" \
-	"$(libdir)/libSwiftSyntax.dylib" \
-	"$(bindir)/muter"
+	install -d "$(bindir)"
+	install "$(buildDir)/muter" "$(bindir)"
 
 uninstall:
-	rm -rf "$(bindir)/muter"
-	rm -rf "$(libdir)/libSwiftSyntax.dylib"
-
-clean:
-	rm -rf .build
+	rm -f "$(bindir)/muter"
 
 run: build
-	$(BUILDDIR)/Debug/muter
+	$(buildDir)/muter
 
 test: build
 	xcodebuild -scheme muter -only-testing:muterCoreTests test
@@ -44,4 +34,4 @@ regression-test: build
 mutation-test: clean
 	muter
 
-.PHONY: build build-tests clean test run install uninstall release
+.PHONY: build test run install uninstall release
