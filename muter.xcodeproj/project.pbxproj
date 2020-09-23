@@ -690,7 +690,6 @@
 				D30B066C25102BE2000CF0C2 /* Sources */,
 				D30B066D25102BE2000CF0C2 /* Frameworks */,
 				D30B066E25102BE2000CF0C2 /* Resources */,
-				D39748DE251038E100F83627 /* Run Build Script */,
 			);
 			buildRules = (
 			);
@@ -915,27 +914,6 @@
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXResourcesBuildPhase section */
-
-/* Begin PBXShellScriptBuildPhase section */
-		D39748DE251038E100F83627 /* Run Build Script */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputFileListPaths = (
-			);
-			inputPaths = (
-			);
-			name = "Run Build Script";
-			outputFileListPaths = (
-			);
-			outputPaths = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "# \"$SRCROOT\"/Scripts/build_script.sh\n";
-		};
-/* End PBXShellScriptBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
 		D30B065D25102B6C000CF0C2 /* Sources */ = {
