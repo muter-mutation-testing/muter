@@ -2,46 +2,28 @@ prefix ?= /usr/local
 bindir = $(prefix)/bin
 libdir = $(prefix)/lib
 
-REPODIR = $(shell pwd)
-BUILDDIR = $(REPODIR)/.build
+builddir = $(shell ./Scripts/builddir.sh)
+build:
+	xcodebuild -scheme muter -configuration Debug > /dev/null 2>&1
 
-build: 
-	swift build -Xswiftc -suppress-warnings
+build-release:
+	xcodebuild -scheme muter -configuration Release > /dev/null 2>&1
 
-build-release: 
-	swift build -c release --product muter --disable-sandbox -Xswiftc -suppress-warnings
-
-build-tests: 
-	swift build --target muterTests -Xswiftc -suppress-warnings
-
-project:
-	swift package generate-xcodeproj
-
-release: 
+release:
 	./Scripts/shipIt.sh $(VERSION)
 
 install: build-release
-	install -d "$(bindir)" "$(libdir)"
-	install "$(BUILDDIR)/release/muter" "$(bindir)"
-	install "$(BUILDDIR)/release/libSwiftSyntax.dylib" "$(libdir)"
-	install_name_tool -change \
-	"$(BUILDDIR)/x86_64-apple-macosx10.10/release/libSwiftSyntax.dylib" \
-	"$(libdir)/libSwiftSyntax.dylib" \
-	"$(bindir)/muter"
+	install -d "$(bindir)"
+	install "$(builddir)/muter" "$(bindir)"
 
 uninstall:
-	rm -rf "$(bindir)/muter"
-	rm -rf "$(libdir)/libSwiftSyntax.dylib"
-
-clean:
-	rm -rf .build
+	rm -f "$(bindir)/muter"
 
 run: build
-	$(BUILDDIR)/debug/muter
+	$(builddir)/muter
 
-test: 
-	swift package generate-xcodeproj
-	xcodebuild -scheme muter -only-testing:muterTests test
+test: build
+	xcodebuild -scheme muter -only-testing:muterCoreTests test
 	
 acceptance-test: build
 	./AcceptanceTests/runAcceptanceTests.sh
@@ -52,4 +34,4 @@ regression-test: build
 mutation-test: clean
 	muter
 
-.PHONY: build build-tests clean test run install uninstall release
+.PHONY: build test run install uninstall release

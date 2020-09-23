@@ -7,7 +7,6 @@ import TestingExtensions
 
 extension String: Error {}
 
-@available(OSX 10.13, *)
 class RegressionTests: QuickSpec {
 
     override func spec() {
@@ -65,7 +64,6 @@ class RegressionTests: QuickSpec {
     }
 }
 
-@available(OSX 10.13, *)
 extension RegressionTests {
     var rootTestDirectory: String {
         return String(

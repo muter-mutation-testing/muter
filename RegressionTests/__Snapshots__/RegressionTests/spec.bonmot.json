@@ -1,0 +1,931 @@
+{
+  "fileReports" : [
+    {
+      "appliedOperators" : [
+        {
+          "mutationPoint" : {
+            "mutationOperatorId" : "ChangeLogicalConnector",
+            "position" : {
+              "column" : 17,
+              "line" : 39,
+              "utf8Offset" : 701
+            }
+          },
+          "testSuiteOutcome" : "passed"
+        },
+        {
+          "mutationPoint" : {
+            "mutationOperatorId" : "ChangeLogicalConnector",
+            "position" : {
+              "column" : 29,
+              "line" : 39,
+              "utf8Offset" : 713
+            }
+          },
+          "testSuiteOutcome" : "passed"
+        },
+        {
+          "mutationPoint" : {
+            "mutationOperatorId" : "ChangeLogicalConnector",
+            "position" : {
+              "column" : 17,
+              "line" : 68,
+              "utf8Offset" : 1999
+            }
+          },
+          "testSuiteOutcome" : "passed"
+        }
+      ],
+      "fileName" : "Compatibility.swift",
+      "mutationScore" : 0
+    },
+    {
+      "appliedOperators" : [
+        {
+          "mutationPoint" : {
+            "mutationOperatorId" : "ChangeLogicalConnector",
+            "position" : {
+              "column" : 13,
+              "line" : 16,
+              "utf8Offset" : 257
+            }
+          },
+          "testSuiteOutcome" : "passed"
+        },
+        {
+          "mutationPoint" : {
+            "mutationOperatorId" : "ChangeLogicalConnector",
+            "position" : {
+              "column" : 25,
+              "line" : 16,
+              "utf8Offset" : 269
+            }
+          },
+          "testSuiteOutcome" : "buildError"
+        },
+        {
+          "mutationPoint" : {
+            "mutationOperatorId" : "RemoveSideEffects",
+            "position" : {
+              "column" : 41,
+              "line" : 63,
+              "utf8Offset" : 1888
+            }
+          },
+          "testSuiteOutcome" : "passed"
+        }
+      ],
+      "fileName" : "ContextualAlternates.swift",
+      "mutationScore" : 0
+    },
+    {
+      "appliedOperators" : [
+        {
+          "mutationPoint" : {
+            "mutationOperatorId" : "ChangeLogicalConnector",
+            "position" : {
+              "column" : 13,
+              "line" : 16,
+              "utf8Offset" : 246
+            }
+          },
+          "testSuiteOutcome" : "passed"
+        },
+        {
+          "mutationPoint" : {
+            "mutationOperatorId" : "ChangeLogicalConnector",
+            "position" : {
+              "column" : 25,
+              "line" : 16,
+              "utf8Offset" : 258
+            }
+          },
+          "testSuiteOutcome" : "buildError"
+        },
+        {
+          "mutationPoint" : {
+            "mutationOperatorId" : "RelationalOperatorReplacement",
+            "position" : {
+              "column" : 42,
+              "line" : 34,
+              "utf8Offset" : 1100
+            }
+          },
+          "testSuiteOutcome" : "failed"
+        },
+        {
+          "mutationPoint" : {
+            "mutationOperatorId" : "RelationalOperatorReplacement",
+            "position" : {
+              "column" : 37,
+              "line" : 40,
+              "utf8Offset" : 1273
+            }
+          },
+          "testSuiteOutcome" : "failed"
+        },
+        {
+          "mutationPoint" : {
+            "mutationOperatorId" : "RemoveSideEffects",
+            "position" : {
+              "column" : 53,
+              "line" : 47,
+              "utf8Offset" : 1576
+            }
+          },
+          "testSuiteOutcome" : "failed"
+        }
+      ],
+      "fileName" : "FontFeatures.swift",
+      "mutationScore" : 75
+    },
+    {
+      "appliedOperators" : [
+        {
+          "mutationPoint" : {
+            "mutationOperatorId" : "ChangeLogicalConnector",
+            "position" : {
+              "column" : 13,
+              "line" : 10,
+              "utf8Offset" : 189
+            }
+          },
+          "testSuiteOutcome" : "passed"
+        },
+        {
+          "mutationPoint" : {
+            "mutationOperatorId" : "ChangeLogicalConnector",
+            "position" : {
+              "column" : 25,
+              "line" : 10,
+              "utf8Offset" : 201
+            }
+          },
+          "testSuiteOutcome" : "buildError"
+        }
+      ],
+      "fileName" : "FontInspector.swift",
+      "mutationScore" : 0
+    },
+    {
+      "appliedOperators" : [
+        {
+          "mutationPoint" : {
+            "mutationOperatorId" : "ChangeLogicalConnector",
+            "position" : {
+              "column" : 13,
+              "line" : 11,
+              "utf8Offset" : 173
+            }
+          },
+          "testSuiteOutcome" : "passed"
+        },
+        {
+          "mutationPoint" : {
+            "mutationOperatorId" : "ChangeLogicalConnector",
+            "position" : {
+              "column" : 28,
+              "line" : 11,
+              "utf8Offset" : 188
+            }
+          },
+          "testSuiteOutcome" : "passed"
+        }
+      ],
+      "fileName" : "MutableCopying.swift",
+      "mutationScore" : 0
+    },
+    {
+      "appliedOperators" : [
+        {
+          "mutationPoint" : {
+            "mutationOperatorId" : "ChangeLogicalConnector",
+            "position" : {
+              "column" : 29,
+              "line" : 37,
+              "utf8Offset" : 1213
+            }
+          },
+          "testSuiteOutcome" : "passed"
+        },
+        {
+          "mutationPoint" : {
+            "mutationOperatorId" : "ChangeLogicalConnector",
+            "position" : {
+              "column" : 41,
+              "line" : 37,
+              "utf8Offset" : 1225
+            }
+          },
+          "testSuiteOutcome" : "failed"
+        },
+        {
+          "mutationPoint" : {
+            "mutationOperatorId" : "ChangeLogicalConnector",
+            "position" : {
+              "column" : 60,
+              "line" : 72,
+              "utf8Offset" : 2917
+            }
+          },
+          "testSuiteOutcome" : "passed"
+        }
+      ],
+      "fileName" : "NSAttributedString+BonMot.swift",
+      "mutationScore" : 33
+    },
+    {
+      "appliedOperators" : [
+        {
+          "mutationPoint" : {
+            "mutationOperatorId" : "ChangeLogicalConnector",
+            "position" : {
+              "column" : 17,
+              "line" : 16,
+              "utf8Offset" : 357
+            }
+          },
+          "testSuiteOutcome" : "passed"
+        }
+      ],
+      "fileName" : "NamedStyles.swift",
+      "mutationScore" : 0
+    },
+    {
+      "appliedOperators" : [
+        {
+          "mutationPoint" : {
+            "mutationOperatorId" : "ChangeLogicalConnector",
+            "position" : {
+              "column" : 17,
+              "line" : 33,
+              "utf8Offset" : 1304
+            }
+          },
+          "testSuiteOutcome" : "passed"
+        },
+        {
+          "mutationPoint" : {
+            "mutationOperatorId" : "ChangeLogicalConnector",
+            "position" : {
+              "column" : 13,
+              "line" : 40,
+              "utf8Offset" : 1465
+            }
+          },
+          "testSuiteOutcome" : "passed"
+        },
+        {
+          "mutationPoint" : {
+            "mutationOperatorId" : "ChangeLogicalConnector",
+            "position" : {
+              "column" : 17,
+              "line" : 49,
+              "utf8Offset" : 1833
+            }
+          },
+          "testSuiteOutcome" : "passed"
+        },
+        {
+          "mutationPoint" : {
+            "mutationOperatorId" : "ChangeLogicalConnector",
+            "position" : {
+              "column" : 29,
+              "line" : 49,
+              "utf8Offset" : 1845
+            }
+          },
+          "testSuiteOutcome" : "passed"
+        }
+      ],
+      "fileName" : "Platform.swift",
+      "mutationScore" : 0
+    },
+    {
+      "appliedOperators" : [
+        {
+          "mutationPoint" : {
+            "mutationOperatorId" : "ChangeLogicalConnector",
+            "position" : {
+              "column" : 21,
+              "line" : 30,
+              "utf8Offset" : 715
+            }
+          },
+          "testSuiteOutcome" : "passed"
+        },
+        {
+          "mutationPoint" : {
+            "mutationOperatorId" : "ChangeLogicalConnector",
+            "position" : {
+              "column" : 33,
+              "line" : 30,
+              "utf8Offset" : 727
+            }
+          },
+          "testSuiteOutcome" : "passed"
+        },
+        {
+          "mutationPoint" : {
+            "mutationOperatorId" : "ChangeLogicalConnector",
+            "position" : {
+              "column" : 21,
+              "line" : 88,
+              "utf8Offset" : 3247
+            }
+          },
+          "testSuiteOutcome" : "passed"
+        },
+        {
+          "mutationPoint" : {
+            "mutationOperatorId" : "ChangeLogicalConnector",
+            "position" : {
+              "column" : 33,
+              "line" : 88,
+              "utf8Offset" : 3259
+            }
+          },
+          "testSuiteOutcome" : "buildError"
+        },
+        {
+          "mutationPoint" : {
+            "mutationOperatorId" : "ChangeLogicalConnector",
+            "position" : {
+              "column" : 21,
+              "line" : 105,
+              "utf8Offset" : 3740
+            }
+          },
+          "testSuiteOutcome" : "passed"
+        },
+        {
+          "mutationPoint" : {
+            "mutationOperatorId" : "ChangeLogicalConnector",
+            "position" : {
+              "column" : 21,
+              "line" : 108,
+              "utf8Offset" : 3827
+            }
+          },
+          "testSuiteOutcome" : "passed"
+        },
+        {
+          "mutationPoint" : {
+            "mutationOperatorId" : "ChangeLogicalConnector",
+            "position" : {
+              "column" : 29,
+              "line" : 230,
+              "utf8Offset" : 8521
+            }
+          },
+          "testSuiteOutcome" : "passed"
+        },
+        {
+          "mutationPoint" : {
+            "mutationOperatorId" : "ChangeLogicalConnector",
+            "position" : {
+              "column" : 41,
+              "line" : 230,
+              "utf8Offset" : 8533
+            }
+          },
+          "testSuiteOutcome" : "passed"
+        },
+        {
+          "mutationPoint" : {
+            "mutationOperatorId" : "ChangeLogicalConnector",
+            "position" : {
+              "column" : 29,
+              "line" : 255,
+              "utf8Offset" : 9740
+            }
+          },
+          "testSuiteOutcome" : "runtimeError"
+        },
+        {
+          "mutationPoint" : {
+            "mutationOperatorId" : "ChangeLogicalConnector",
+            "position" : {
+              "column" : 40,
+              "line" : 255,
+              "utf8Offset" : 9751
+            }
+          },
+          "testSuiteOutcome" : "passed"
+        },
+        {
+          "mutationPoint" : {
+            "mutationOperatorId" : "ChangeLogicalConnector",
+            "position" : {
+              "column" : 37,
+              "line" : 280,
+              "utf8Offset" : 11213
+            }
+          },
+          "testSuiteOutcome" : "passed"
+        }
+      ],
+      "fileName" : "StringStyle+Part.swift",
+      "mutationScore" : 10
+    },
+    {
+      "appliedOperators" : [
+        {
+          "mutationPoint" : {
+            "mutationOperatorId" : "ChangeLogicalConnector",
+            "position" : {
+              "column" : 13,
+              "line" : 16,
+              "utf8Offset" : 256
+            }
+          },
+          "testSuiteOutcome" : "passed"
+        },
+        {
+          "mutationPoint" : {
+            "mutationOperatorId" : "ChangeLogicalConnector",
+            "position" : {
+              "column" : 25,
+              "line" : 16,
+              "utf8Offset" : 268
+            }
+          },
+          "testSuiteOutcome" : "buildError"
+        },
+        {
+          "mutationPoint" : {
+            "mutationOperatorId" : "RemoveSideEffects",
+            "position" : {
+              "column" : 41,
+              "line" : 204,
+              "utf8Offset" : 6468
+            }
+          },
+          "testSuiteOutcome" : "passed"
+        }
+      ],
+      "fileName" : "StylisticAlternates.swift",
+      "mutationScore" : 0
+    },
+    {
+      "appliedOperators" : [
+        {
+          "mutationPoint" : {
+            "mutationOperatorId" : "RelationalOperatorReplacement",
+            "position" : {
+              "column" : 21,
+              "line" : 23,
+              "utf8Offset" : 546
+            }
+          },
+          "testSuiteOutcome" : "passed"
+        }
+      ],
+      "fileName" : "Tracking.swift",
+      "mutationScore" : 0
+    },
+    {
+      "appliedOperators" : [
+        {
+          "mutationPoint" : {
+            "mutationOperatorId" : "ChangeLogicalConnector",
+            "position" : {
+              "column" : 22,
+              "line" : 9,
+              "utf8Offset" : 168
+            }
+          },
+          "testSuiteOutcome" : "passed"
+        },
+        {
+          "mutationPoint" : {
+            "mutationOperatorId" : "RelationalOperatorReplacement",
+            "position" : {
+              "column" : 38,
+              "line" : 88,
+              "utf8Offset" : 3564
+            }
+          },
+          "testSuiteOutcome" : "passed"
+        },
+        {
+          "mutationPoint" : {
+            "mutationOperatorId" : "RemoveSideEffects",
+            "position" : {
+              "column" : 26,
+              "line" : 102,
+              "utf8Offset" : 4349
+            }
+          },
+          "testSuiteOutcome" : "passed"
+        },
+        {
+          "mutationPoint" : {
+            "mutationOperatorId" : "ChangeLogicalConnector",
+            "position" : {
+              "column" : 13,
+              "line" : 117,
+              "utf8Offset" : 5072
+            }
+          },
+          "testSuiteOutcome" : "passed"
+        }
+      ],
+      "fileName" : "AdaptableTextContainer.swift",
+      "mutationScore" : 0
+    },
+    {
+      "appliedOperators" : [
+        {
+          "mutationPoint" : {
+            "mutationOperatorId" : "ChangeLogicalConnector",
+            "position" : {
+              "column" : 22,
+              "line" : 9,
+              "utf8Offset" : 159
+            }
+          },
+          "testSuiteOutcome" : "passed"
+        },
+        {
+          "mutationPoint" : {
+            "mutationOperatorId" : "RelationalOperatorReplacement",
+            "position" : {
+              "column" : 30,
+              "line" : 96,
+              "utf8Offset" : 3919
+            }
+          },
+          "testSuiteOutcome" : "passed"
+        },
+        {
+          "mutationPoint" : {
+            "mutationOperatorId" : "RelationalOperatorReplacement",
+            "position" : {
+              "column" : 30,
+              "line" : 98,
+              "utf8Offset" : 4052
+            }
+          },
+          "testSuiteOutcome" : "passed"
+        }
+      ],
+      "fileName" : "AdaptiveStyle.swift",
+      "mutationScore" : 0
+    },
+    {
+      "appliedOperators" : [
+        {
+          "mutationPoint" : {
+            "mutationOperatorId" : "ChangeLogicalConnector",
+            "position" : {
+              "column" : 22,
+              "line" : 9,
+              "utf8Offset" : 121
+            }
+          },
+          "testSuiteOutcome" : "passed"
+        }
+      ],
+      "fileName" : "AdaptiveStyleTransformation.swift",
+      "mutationScore" : 0
+    },
+    {
+      "appliedOperators" : [
+        {
+          "mutationPoint" : {
+            "mutationOperatorId" : "ChangeLogicalConnector",
+            "position" : {
+              "column" : 22,
+              "line" : 9,
+              "utf8Offset" : 168
+            }
+          },
+          "testSuiteOutcome" : "passed"
+        },
+        {
+          "mutationPoint" : {
+            "mutationOperatorId" : "RelationalOperatorReplacement",
+            "position" : {
+              "column" : 76,
+              "line" : 50,
+              "utf8Offset" : 2068
+            }
+          },
+          "testSuiteOutcome" : "passed"
+        }
+      ],
+      "fileName" : "EmbeddedTransformation.swift",
+      "mutationScore" : 0
+    },
+    {
+      "appliedOperators" : [
+        {
+          "mutationPoint" : {
+            "mutationOperatorId" : "RemoveSideEffects",
+            "position" : {
+              "column" : 33,
+              "line" : 39,
+              "utf8Offset" : 1625
+            }
+          },
+          "testSuiteOutcome" : "passed"
+        },
+        {
+          "mutationPoint" : {
+            "mutationOperatorId" : "RemoveSideEffects",
+            "position" : {
+              "column" : 10,
+              "line" : 54,
+              "utf8Offset" : 2659
+            }
+          },
+          "testSuiteOutcome" : "passed"
+        },
+        {
+          "mutationPoint" : {
+            "mutationOperatorId" : "ChangeLogicalConnector",
+            "position" : {
+              "column" : 22,
+              "line" : 9,
+              "utf8Offset" : 118
+            }
+          },
+          "testSuiteOutcome" : "passed"
+        },
+        {
+          "mutationPoint" : {
+            "mutationOperatorId" : "RemoveSideEffects",
+            "position" : {
+              "column" : 31,
+              "line" : 55,
+              "utf8Offset" : 2690
+            }
+          },
+          "testSuiteOutcome" : "passed"
+        }
+      ],
+      "fileName" : "NSAttributedString+Adaptive.swift",
+      "mutationScore" : 0
+    },
+    {
+      "appliedOperators" : [
+        {
+          "mutationPoint" : {
+            "mutationOperatorId" : "RelationalOperatorReplacement",
+            "position" : {
+              "column" : 38,
+              "line" : 85,
+              "utf8Offset" : 3340
+            }
+          },
+          "testSuiteOutcome" : "passed"
+        },
+        {
+          "mutationPoint" : {
+            "mutationOperatorId" : "RemoveSideEffects",
+            "position" : {
+              "column" : 10,
+              "line" : 208,
+              "utf8Offset" : 8107
+            }
+          },
+          "testSuiteOutcome" : "passed"
+        },
+        {
+          "mutationPoint" : {
+            "mutationOperatorId" : "ChangeLogicalConnector",
+            "position" : {
+              "column" : 22,
+              "line" : 9,
+              "utf8Offset" : 164
+            }
+          },
+          "testSuiteOutcome" : "passed"
+        }
+      ],
+      "fileName" : "StyleableUIElement.swift",
+      "mutationScore" : 0
+    },
+    {
+      "appliedOperators" : [
+        {
+          "mutationPoint" : {
+            "mutationOperatorId" : "ChangeLogicalConnector",
+            "position" : {
+              "column" : 22,
+              "line" : 9,
+              "utf8Offset" : 158
+            }
+          },
+          "testSuiteOutcome" : "passed"
+        }
+      ],
+      "fileName" : "Tab+Adaptive.swift",
+      "mutationScore" : 0
+    },
+    {
+      "appliedOperators" : [
+        {
+          "mutationPoint" : {
+            "mutationOperatorId" : "RelationalOperatorReplacement",
+            "position" : {
+              "column" : 23,
+              "line" : 178,
+              "utf8Offset" : 6204
+            }
+          },
+          "testSuiteOutcome" : "passed"
+        },
+        {
+          "mutationPoint" : {
+            "mutationOperatorId" : "RemoveSideEffects",
+            "position" : {
+              "column" : 36,
+              "line" : 135,
+              "utf8Offset" : 4695
+            }
+          },
+          "testSuiteOutcome" : "failed"
+        },
+        {
+          "mutationPoint" : {
+            "mutationOperatorId" : "RemoveSideEffects",
+            "position" : {
+              "column" : 36,
+              "line" : 136,
+              "utf8Offset" : 4731
+            }
+          },
+          "testSuiteOutcome" : "failed"
+        },
+        {
+          "mutationPoint" : {
+            "mutationOperatorId" : "RemoveSideEffects",
+            "position" : {
+              "column" : 29,
+              "line" : 146,
+              "utf8Offset" : 4884
+            }
+          },
+          "testSuiteOutcome" : "passed"
+        },
+        {
+          "mutationPoint" : {
+            "mutationOperatorId" : "RemoveSideEffects",
+            "position" : {
+              "column" : 25,
+              "line" : 147,
+              "utf8Offset" : 4909
+            }
+          },
+          "testSuiteOutcome" : "passed"
+        },
+        {
+          "mutationPoint" : {
+            "mutationOperatorId" : "RemoveSideEffects",
+            "position" : {
+              "column" : 25,
+              "line" : 148,
+              "utf8Offset" : 4934
+            }
+          },
+          "testSuiteOutcome" : "passed"
+        },
+        {
+          "mutationPoint" : {
+            "mutationOperatorId" : "RemoveSideEffects",
+            "position" : {
+              "column" : 25,
+              "line" : 183,
+              "utf8Offset" : 6401
+            }
+          },
+          "testSuiteOutcome" : "passed"
+        }
+      ],
+      "fileName" : "TextAlignmentConstraint.swift",
+      "mutationScore" : 28
+    },
+    {
+      "appliedOperators" : [
+        {
+          "mutationPoint" : {
+            "mutationOperatorId" : "ChangeLogicalConnector",
+            "position" : {
+              "column" : 22,
+              "line" : 9,
+              "utf8Offset" : 163
+            }
+          },
+          "testSuiteOutcome" : "passed"
+        }
+      ],
+      "fileName" : "Tracking+Adaptive.swift",
+      "mutationScore" : 0
+    },
+    {
+      "appliedOperators" : [
+        {
+          "mutationPoint" : {
+            "mutationOperatorId" : "ChangeLogicalConnector",
+            "position" : {
+              "column" : 22,
+              "line" : 9,
+              "utf8Offset" : 181
+            }
+          },
+          "testSuiteOutcome" : "passed"
+        },
+        {
+          "mutationPoint" : {
+            "mutationOperatorId" : "RemoveSideEffects",
+            "position" : {
+              "column" : 25,
+              "line" : 29,
+              "utf8Offset" : 1256
+            }
+          },
+          "testSuiteOutcome" : "passed"
+        },
+        {
+          "mutationPoint" : {
+            "mutationOperatorId" : "RelationalOperatorReplacement",
+            "position" : {
+              "column" : 28,
+              "line" : 59,
+              "utf8Offset" : 2654
+            }
+          },
+          "testSuiteOutcome" : "passed"
+        },
+        {
+          "mutationPoint" : {
+            "mutationOperatorId" : "RemoveSideEffects",
+            "position" : {
+              "column" : 80,
+              "line" : 66,
+              "utf8Offset" : 2959
+            }
+          },
+          "testSuiteOutcome" : "passed"
+        },
+        {
+          "mutationPoint" : {
+            "mutationOperatorId" : "RemoveSideEffects",
+            "position" : {
+              "column" : 55,
+              "line" : 67,
+              "utf8Offset" : 3014
+            }
+          },
+          "testSuiteOutcome" : "passed"
+        }
+      ],
+      "fileName" : "UIKit+AdaptableTextContainerSupport.swift",
+      "mutationScore" : 0
+    },
+    {
+      "appliedOperators" : [
+        {
+          "mutationPoint" : {
+            "mutationOperatorId" : "ChangeLogicalConnector",
+            "position" : {
+              "column" : 22,
+              "line" : 9,
+              "utf8Offset" : 107
+            }
+          },
+          "testSuiteOutcome" : "passed"
+        },
+        {
+          "mutationPoint" : {
+            "mutationOperatorId" : "RelationalOperatorReplacement",
+            "position" : {
+              "column" : 45,
+              "line" : 44,
+              "utf8Offset" : 1442
+            }
+          },
+          "testSuiteOutcome" : "passed"
+        },
+        {
+          "mutationPoint" : {
+            "mutationOperatorId" : "RelationalOperatorReplacement",
+            "position" : {
+              "column" : 42,
+              "line" : 50,
+              "utf8Offset" : 1712
+            }
+          },
+          "testSuiteOutcome" : "passed"
+        }
+      ],
+      "fileName" : "UIKit+Helpers.swift",
+      "mutationScore" : 0
+    }
+  ],
+  "globalMutationScore" : 10,
+  "numberOfKilledMutants" : 7,
+  "totalAppliedMutationOperators" : 72
+}

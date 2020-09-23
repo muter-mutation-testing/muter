@@ -3,9 +3,9 @@ import Nimble
 
 import Foundation
 import TestingExtensions
+
 @testable import muterCore
 
-@available(OSX 10.13, *)
 class AcceptanceTests: QuickSpec {
     
     override func spec() {
@@ -256,7 +256,6 @@ class AcceptanceTests: QuickSpec {
     }
 }
 
-@available(OSX 10.13, *)
 extension AcceptanceTests {
     var rootTestDirectory: String {
         return String(
@@ -290,7 +289,6 @@ extension AcceptanceTests {
     var muterLogsRootPath: String { "\(AcceptanceTests().rootTestDirectory)/muter_logs/" }
 }
 
-@available(OSX 10.13, *)
 extension AcceptanceTests {
     func contentsOfLogFile(named fileName: String) -> String {
         return contentsOfDirectory(muterLogsRootPath)
@@ -322,7 +320,6 @@ extension AcceptanceTests {
     }
 }
 
-@available(OSX 10.13, *)
 extension AcceptanceTests {
     func numberOfDiscoveredFileLists(in output: String) -> Int {
         return applyRegex("[a-zA-Z]+.swift \\([0-9]+ mutants\\)", to: output)

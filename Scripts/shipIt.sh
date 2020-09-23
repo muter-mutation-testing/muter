@@ -5,11 +5,11 @@ if [ "$1" == "" ]; then
     exit
 else 
     echo "Bumping version number inside of version.swift..."
-    echo "let version = \"$1\"" > ./Sources/muterCore/version.swift
+    echo "let version = \"$1\"" > ./muterCore/version.swift
 
     echo "Committing new version..."
     git checkout -b $1
-    git add ./Sources/muterCore/version.swift
+    git add ./muterCore/version.swift
     git commit -m "Bump version to $1"
     git tag "$1"
     git push origin head
