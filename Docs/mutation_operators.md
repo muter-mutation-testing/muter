@@ -35,8 +35,8 @@ The change logical connector operator will change conditional operators in your 
 
 Original Operator | Changed Operator
 ------------------|-----------------
-`&&`|`||`
-`||`|`&&`
+`&&`|`\|\|`
+`\|\|`|`&&`
 
 The purpose of this operator is to highlight how your tests respond to changes in logic. A well-engineered test suite will be able to fail clearly in response to different logical constraints.
 
