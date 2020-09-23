@@ -1,7 +1,7 @@
 #!/bin/sh
 echo "📴📴📴📴📴📴📴 Acceptance Testing has started 📴📴📴📴📴📴📴"
 
-BUILDDIR=$(xcodebuild -configuration Debug -showBuildSettings | grep "CONFIGURATION_BUILD_DIR" | grep -oEi "\/.*")
+BUILDDIR=$(./Scripts/builddir.sh)
 
 echo "Cleaning up from prior acceptance test runs..."
 rm -rf ./AcceptanceTests/muter_logs
