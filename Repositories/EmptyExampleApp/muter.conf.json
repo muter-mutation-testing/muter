@@ -1,10 +1,16 @@
 {
   "arguments" : [
-    "an argument the test runner needs",
-    "another argument the test runner needs"
+    "-project",
+    "EmptyExampleApp.xcodeproj",
+    "-scheme",
+    "EmptyExampleApp",
+    "test"
   ],
-  "blacklist" : [
+  "exclude" : [
 
   ],
-  "executable" : "absolute path to the executable that runs your tests"
+  "excludeCalls" : [
+
+  ],
+  "executable" : "\/usr\/bin\/xcodebuild"
 }
