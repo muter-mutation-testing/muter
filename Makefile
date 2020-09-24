@@ -2,7 +2,7 @@ prefix ?= /usr/local
 bindir = $(prefix)/bin
 libdir = $(prefix)/lib
 
-builddir = $(shell ./Scripts/builddir.sh)
+builddir = $(shell ./Scripts/builddir.sh "Release")
 
 build:
 	xcodebuild -scheme muter -configuration Debug > /dev/null 2>&1
@@ -14,14 +14,13 @@ release:
 	./Scripts/shipIt.sh $(VERSION)
 
 install: build-release
-	builddir = $(shell ./Scripts/builddir.sh "Release")
 	install -d "$(bindir)"
 	install "$(builddir)/muter" "$(bindir)"
 
 uninstall:
 	rm -f "$(bindir)/muter"
 
-run: build
+run: build-release
 	$(builddir)/muter
 
 test: build
@@ -33,7 +32,7 @@ acceptance-test: build
 regression-test: build
 	./RegressionTests/runRegressionTests.sh
 
-mutation-test: clean
+mutation-test:
 	muter
 
 .PHONY: build test run install uninstall release
