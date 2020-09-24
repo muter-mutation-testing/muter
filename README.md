@@ -13,7 +13,7 @@ Use this mode to rapidly diagnose areas where you can begin improving your test 
 #### Muter can be run from the command line
 Use this mode to get detailed information about the health and quality of your entire test suite
 
-![Muter running from the commandline](Docs/muter-cli-output-v2.gif)
+![Muter running from the commandline](Docs/Images/muter-cli-output-v2.gif)
 
 
 #### Muter can be run in your CI
