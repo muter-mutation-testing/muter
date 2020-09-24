@@ -3,6 +3,7 @@ bindir = $(prefix)/bin
 libdir = $(prefix)/lib
 
 builddir = $(shell ./Scripts/builddir.sh)
+
 build:
 	xcodebuild -scheme muter -configuration Debug > /dev/null 2>&1
 
@@ -13,6 +14,7 @@ release:
 	./Scripts/shipIt.sh $(VERSION)
 
 install: build-release
+	builddir = $(shell ./Scripts/builddir.sh "Release")
 	install -d "$(bindir)"
 	install "$(builddir)/muter" "$(bindir)"
 

@@ -15,6 +15,7 @@
 		D30B06C225102D4A000CF0C2 /* SnapshotTesting in Frameworks */ = {isa = PBXBuildFile; productRef = D30B06C125102D4A000CF0C2 /* SnapshotTesting */; };
 		D30CEBB42519128F009B161C /* muterCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D30B067025102BE2000CF0C2 /* muterCore.framework */; };
 		D30CEBB52519128F009B161C /* muterCore.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = D30B067025102BE2000CF0C2 /* muterCore.framework */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
+		D30F875C251CCCCE00DE8E91 /* RegressionTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D30F875B251CCCCE00DE8E91 /* RegressionTests.swift */; };
 		D3159EDC2515242900251A1D /* Difference in Frameworks */ = {isa = PBXBuildFile; productRef = D3159EDB2515242900251A1D /* Difference */; };
 		D3159EEB2515247300251A1D /* ArgumentParser in Frameworks */ = {isa = PBXBuildFile; productRef = D3159EEA2515247300251A1D /* ArgumentParser */; };
 		D3159F22251525B700251A1D /* RemoveSideEffectsOperator.swift in Sources */ = {isa = PBXBuildFile; fileRef = D3159F21251525B700251A1D /* RemoveSideEffectsOperator.swift */; };
@@ -109,7 +110,6 @@
 		D3974AA825103E4000F83627 /* AcceptanceTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D3974A9D25103E4000F83627 /* AcceptanceTests.swift */; };
 		D3974AAA25103E4000F83627 /* DSLExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = D3974A9F25103E4000F83627 /* DSLExtensions.swift */; };
 		D3974AAE25103E4000F83627 /* runAcceptanceTests.sh in Resources */ = {isa = PBXBuildFile; fileRef = D3974AA325103E4000F83627 /* runAcceptanceTests.sh */; };
-		D3974ABA25103E5300F83627 /* RegressionTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D3974AB325103E5300F83627 /* RegressionTests.swift */; };
 		D3974ABB25103E5300F83627 /* DictionaryExtensionSpec.swift in Sources */ = {isa = PBXBuildFile; fileRef = D3974AB425103E5300F83627 /* DictionaryExtensionSpec.swift */; };
 		D3974ABD25103E5300F83627 /* SnapshottingExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = D3974AB625103E5300F83627 /* SnapshottingExtensions.swift */; };
 		D3974ABE25103E5300F83627 /* runRegressionTests.sh in Resources */ = {isa = PBXBuildFile; fileRef = D3974AB725103E5300F83627 /* runRegressionTests.sh */; };
@@ -195,6 +195,7 @@
 		D30B069C25102C2D000CF0C2 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		D30B06A725102C39000CF0C2 /* RegressionTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = RegressionTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		D30B06AB25102C39000CF0C2 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		D30F875B251CCCCE00DE8E91 /* RegressionTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RegressionTests.swift; sourceTree = "<group>"; };
 		D3159F21251525B700251A1D /* RemoveSideEffectsOperator.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RemoveSideEffectsOperator.swift; sourceTree = "<group>"; };
 		D3159F2D25152B7800251A1D /* Init.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Init.swift; sourceTree = "<group>"; };
 		D372B4F725103085006E2D12 /* version.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = version.swift; sourceTree = "<group>"; };
@@ -279,7 +280,6 @@
 		D3974A9D25103E4000F83627 /* AcceptanceTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AcceptanceTests.swift; sourceTree = "<group>"; };
 		D3974A9F25103E4000F83627 /* DSLExtensions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DSLExtensions.swift; sourceTree = "<group>"; };
 		D3974AA325103E4000F83627 /* runAcceptanceTests.sh */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.script.sh; path = runAcceptanceTests.sh; sourceTree = "<group>"; };
-		D3974AB325103E5300F83627 /* RegressionTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RegressionTests.swift; sourceTree = "<group>"; };
 		D3974AB425103E5300F83627 /* DictionaryExtensionSpec.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DictionaryExtensionSpec.swift; sourceTree = "<group>"; };
 		D3974AB625103E5300F83627 /* SnapshottingExtensions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SnapshottingExtensions.swift; sourceTree = "<group>"; };
 		D3974AB725103E5300F83627 /* runRegressionTests.sh */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.script.sh; path = runRegressionTests.sh; sourceTree = "<group>"; };
@@ -438,8 +438,8 @@
 		D30B06A825102C39000CF0C2 /* RegressionTests */ = {
 			isa = PBXGroup;
 			children = (
+				D30F875B251CCCCE00DE8E91 /* RegressionTests.swift */,
 				D3974AB425103E5300F83627 /* DictionaryExtensionSpec.swift */,
-				D3974AB325103E5300F83627 /* RegressionTests.swift */,
 				D3974AB725103E5300F83627 /* runRegressionTests.sh */,
 				D3974AB625103E5300F83627 /* SnapshottingExtensions.swift */,
 				D30B06AB25102C39000CF0C2 /* Info.plist */,
@@ -1024,7 +1024,7 @@
 			files = (
 				D3974ABB25103E5300F83627 /* DictionaryExtensionSpec.swift in Sources */,
 				D3974ABD25103E5300F83627 /* SnapshottingExtensions.swift in Sources */,
-				D3974ABA25103E5300F83627 /* RegressionTests.swift in Sources */,
+				D30F875C251CCCCE00DE8E91 /* RegressionTests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
