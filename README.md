@@ -1,4 +1,5 @@
-# Muter 
+![Muter logo](Docs/Images/Muter%20Logo.svg)
+
 [![Swift 5 support](https://img.shields.io/badge/swift-5-ED523F.svg?style=flat)](https://swift.org/download/) 
 [![Build Status](https://app.bitrise.io/app/84b65f2a76ed7616/status.svg?token=ZtVl3AxP2ybPB17Ug1wIJQ)](https://app.bitrise.io/app/84b65f2a76ed7616)
 ![Mutation score is 75](https://img.shields.io/badge/mutation%20score-75-blue?style=flat)
@@ -8,24 +9,27 @@
 #### Muter can be run within Xcode
 Use this mode to rapidly diagnose areas where you can begin improving your test code
  
-![Muter running inside Xcode](https://i.imgur.com/ApxFrFc.png) 
+![Muter running inside Xcode](Docs/Images/muter-in-xcode.png) 
 
 #### Muter can be run from the command line
 Use this mode to get detailed information about the health and quality of your entire test suite
 
-![Muter running from the commandline](Docs/muter-cli-output-v2.gif)
+![Muter running from the commandline](Docs/Images/muter-cli-output-v2.gif)
 
 
 #### Muter can be run in your CI
 Use this script to easily mutation test your projects incrementally, enabling you to have per-commit updates on how code changes impact the quality of your test suite. Seemlessly connect the output of this CI step into your dashboard or communication channel of choice, or use it as a starting point for thinking about how you want to incrementally test your code.
 
-```muter --files-to-mutate $(echo \"$(git diff --name-only HEAD HEAD~1 | tr '\n' ',')\")```  
+```sh
+muter --files-to-mutate $(echo \"$(git diff --name-only HEAD HEAD~1 | tr '\n' ',')\")
+```
 
 ## Table of Contents
 ### Introduction
 1. [What Is Muter?](#what-is-muter)
 1. [Why Should I Use This?](#why-should-i-use-this)
 1. [How Does It Work?](#how-does-it-work)
+
 ### Getting Started
 1. [Installation](#installation)
 1. [Setup](#setup)
@@ -71,12 +75,14 @@ If you're curious about how a mutation score is different than test code coverag
 ## Installation
 Muter is available through [Homebrew](https://brew.sh/). Run the following command to install Muter:
 
-`brew install muter-mutation-testing/formulae/muter`
+```sh
+brew install muter-mutation-testing/formulae/muter
+```
 
 ### Building From Source
 You can build Muter from source, and get the latest set of features/improvements, by running the following: 
 
-```
+```sh
 git clone https://github.com/muter-mutation-testing/muter.git
 cd muter
 make install
@@ -84,7 +90,7 @@ make install
 
 If you've already installed Muter via homebrew, this will install over it. If you've done this, and want to go back to the latest version you've downloaded through homebrew, run the following: 
 
-```
+```sh
 make uninstall
 brew link muter
 ```
@@ -153,7 +159,9 @@ Setting up Muter to run within Xcode is simple. After creating your configuation
 2) **Add a run script step** to the newly created aggregate build target.
 3) **Add the Muter Xcode command** to the build step:
 
-    ```muter --output-xcode```
+```sh
+muter --output-xcode
+```
 
 ## Running Muter
 
@@ -162,18 +170,20 @@ Setting up Muter to run within Xcode is simple. After creating your configuation
 Once you've created your configuration file, simply run `muter` in your terminal from any directory of the project you're mutation testing. Muter will take it from there. 
 
 **Available Subcommands**
+
 ```
-   help   Display general or subcommand-specific help
-   init   Creates the configuration file that Muter uses
-   run    Performs mutation testing for the Swift project contained within the current directory
+help   Display general or subcommand-specific help
+init   Creates the configuration file that Muter uses
+run    Performs mutation testing for the Swift project contained within the current directory
 ```
 Muter defaults to run when you don't specify any subcommands
 
 **Available Flags**
+
 ```
-   --files-to-mutate    Only mutate a given list of source code files (Supports glob expressions like Sources/**/*.swift)
-   --output-json        Output test results to a json file
-   --output-xcode       Output test results in a format consumable by an Xcode run script step
+--files-to-mutate    Only mutate a given list of source code files (Supports glob expressions like Sources/**/*.swift)
+--output-json        Output test results to a json file
+--output-xcode       Output test results in a format consumable by an Xcode run script step
 ```
 
 ### Within Xcode
