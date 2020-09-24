@@ -8,7 +8,7 @@
 #### Muter can be run within Xcode
 Use this mode to rapidly diagnose areas where you can begin improving your test code
  
-![Muter running inside Xcode](https://i.imgur.com/ApxFrFc.png) 
+![Muter running inside Xcode](Docs/Images/muter-in-xcode.png) 
 
 #### Muter can be run from the command line
 Use this mode to get detailed information about the health and quality of your entire test suite
