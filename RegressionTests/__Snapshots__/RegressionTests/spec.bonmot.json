@@ -902,20 +902,9 @@
           "mutationPoint" : {
             "mutationOperatorId" : "RelationalOperatorReplacement",
             "position" : {
-              "column" : 45,
-              "line" : 44,
-              "utf8Offset" : 1442
-            }
-          },
-          "testSuiteOutcome" : "passed"
-        },
-        {
-          "mutationPoint" : {
-            "mutationOperatorId" : "RelationalOperatorReplacement",
-            "position" : {
-              "column" : 42,
-              "line" : 50,
-              "utf8Offset" : 1712
+              "column" : 41,
+              "line" : 43,
+              "utf8Offset" : 1390
             }
           },
           "testSuiteOutcome" : "passed"
@@ -927,5 +916,5 @@
   ],
   "globalMutationScore" : 10,
   "numberOfKilledMutants" : 7,
-  "totalAppliedMutationOperators" : 72
+  "totalAppliedMutationOperators" : 71
 }
