@@ -2,27 +2,32 @@
 
 echo "🦕🦕🦕🦕🦕🦕🦕🦕 Regression Testing has started 🦕🦕🦕🦕🦕🦕🦕🦕"
 
-BUILDDIR=$(./Scripts/builddir.sh)
+muterdir="../../.build/debug"
+samplesdir="../../RegressionTests/samples"
+
+mkdir -p ./RegressionTests/samples
 
 echo "Running Regression Test on BonMot..."
 cd ./Repositories/BonMot
-"$BUILDDIR"/muter --output-json > muterReport.json
+"$muterdir"/muter --output-json > muterReport.json
 
-cp ./muterReport.json ../../RegressionTests/bonmot_regression_test_output.json
+cp ./muterReport.json "$samplesdir"/bonmot_regression_test_output.json
 cd ../..
 
 echo "Running Regression Test on Parser Combinator..."
 cd ./Repositories/FFCParserCombinator
-"$BUILDDIR"/muter --output-json > muterReport.json
-cp ./muterReport.json ../../RegressionTests/parsercombinator_regression_test_output.json
+"$muterdir"/muter --output-json > muterReport.json
+cp ./muterReport.json "$samplesdir"/parsercombinator_regression_test_output.json
 cd ../..
 
 echo "Running Regression Test on Project With Concurrency..."
 cd ./Repositories/ProjectWithConcurrency
-"$BUILDDIR"/muter --output-json > muterReport.json
-cp ./muterReport.json ../../RegressionTests/projectwithconcurrency_test_output.json
+"$muterdir"/muter --output-json > muterReport.json
+cp ./muterReport.json "$samplesdir"/projectwithconcurrency_test_output.json
 cd ../..
 
-xcodebuild -scheme muter -only-testing:RegressionTests test
+swift package generate-xcodeproj
+
+./Scripts/test_only.sh "muterRegressionTests"
 
 echo "🦖🦖🦖🦖🦖🦖🦖🦖 Regression Testing has finished 🦖🦖🦖🦖🦖🦖🦖🦖"

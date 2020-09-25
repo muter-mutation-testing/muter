@@ -2,29 +2,38 @@ prefix ?= /usr/local
 bindir = $(prefix)/bin
 libdir = $(prefix)/lib
 
-builddir = $(shell ./Scripts/builddir.sh "Release")
+repodir = $(shell pwd)
+builddir = $(repodir)/.build
+flags=-Xlinker -weak-l_InternalSwiftSyntaxParser -Xswiftc -suppress-warnings
 
-build:
-	xcodebuild -scheme muter -configuration Debug > /dev/null 2>&1
+build: 
+	swift build -c debug $(flags)
 
-build-release:
-	xcodebuild -scheme muter -configuration Release > /dev/null 2>&1
+build-release: 
+	swift build -c release --product muter --disable-sandbox $(flags)
 
-release:
-	./Scripts/shipIt.sh $(VERSION)
+project:
+	swift package generate-xcodeproj
+
+release: 
+	./Scripts/shipIt.sh $(version)
 
 install: build-release
-	install -d "$(bindir)"
-	install "$(builddir)/muter" "$(bindir)"
+	install -d "$(bindir)" "$(libdir)"
+	install "$(builddir)/release/muter" "$(bindir)"
 
 uninstall:
-	rm -f "$(bindir)/muter"
+	rm -rf "$(bindir)/muter"
 
-run: build-release
-	$(builddir)/muter
+clean:
+	rm -rf .build
 
-test: build
-	xcodebuild -scheme muter -only-testing:muterCoreTests test
+run: build
+	$(builddir)/debug/muter
+
+test: 
+	swift package generate-xcodeproj
+	@./Scripts/test_only.sh "muterTests"
 	
 acceptance-test: build
 	./AcceptanceTests/runAcceptanceTests.sh
@@ -32,7 +41,7 @@ acceptance-test: build
 regression-test: build
 	./RegressionTests/runRegressionTests.sh
 
-mutation-test:
+mutation-test: clean
 	muter
 
-.PHONY: build test run install uninstall release
+.PHONY: build clean test run install uninstall release

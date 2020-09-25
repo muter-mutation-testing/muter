@@ -16,7 +16,8 @@ public extension XCTestCase {
 
     var rootTestDirectory: String {
         return String(
-            Bundle(for: type(of: self)).resourceURL!
+            URL(fileURLWithPath: #file)
+                .deletingLastPathComponent()
                 .withoutScheme()
         )
     }

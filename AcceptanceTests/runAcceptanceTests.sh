@@ -1,32 +1,34 @@
 #!/bin/sh
 echo "📴📴📴📴📴📴📴 Acceptance Testing has started 📴📴📴📴📴📴📴"
 
-BUILDDIR=$(./Scripts/builddir.sh)
+muterdir="../../.build/debug"
+samplesdir="../../AcceptanceTests/samples"
 
 echo "Cleaning up from prior acceptance test runs..."
 rm -rf ./AcceptanceTests/muter_logs
-rm ./AcceptanceTests/*.txt
-rm ./AcceptanceTests/*.json
+rm -rf ./AcceptanceTests/samples
+
+mkdir -p ./AcceptanceTests/samples
 
 echo "Running Muter on an iOS codebase with a test suite..."
 cd ./Repositories/ExampleApp
 
 echo " > Creating a configuration file..."
-"$BUILDDIR"/muter init
-cp ./muter.conf.json ../../AcceptanceTests/created_iOS_config.json
+"$muterdir"/muter init
+cp ./muter.conf.json "$samplesdir"/created_iOS_config.json
 
 echo " > Running in CLI mode..."
-"$BUILDDIR"/muter > ../../AcceptanceTests/muters_output.txt
+"$muterdir"/muter > "$samplesdir"/muters_output.txt
 echo " > Copying logs..."
-cp -R ./muter_logs ../../AcceptanceTests/
+cp -R ./muter_logs "$samplesdir"/
 rm -rf ./muter_logs
 
 echo " > Running in Xcode mode..."
-"$BUILDDIR"/muter --output-xcode > ../../AcceptanceTests/muters_xcode_output.txt
+"$muterdir"/muter --output-xcode > "$samplesdir"/muters_xcode_output.txt
 rm -rf ./muter_logs # don't pollute the staging area
 
 echo " > Running with --filesToMutate flag"
-"$BUILDDIR"/muter --files-to-mutate "/ExampleApp/Module.swift" > ../../AcceptanceTests/muters_files_to_mutate_output.txt
+"$muterdir"/muter --files-to-mutate "/ExampleApp/Module.swift" > "$samplesdir"/muters_files_to_mutate_output.txt
 rm -rf ./muter_logs # don't pollute the staging area
 
 rm muter.conf.json # cleanup the created configuration file for the next test run
@@ -36,8 +38,8 @@ echo "Initializing Muter on an macOS codebase with a test suite..."
 cd ./Repositories/ExampleMacOSApp
 
 echo " > Creating a configuration file..."
-"$BUILDDIR"/muter init
-cp ./muter.conf.json ../../AcceptanceTests/created_macOS_config.json
+"$muterdir"/muter init
+cp ./muter.conf.json "$samplesdir"/created_macOS_config.json
 
 echo " > Cleaning up after test..."
 rm muter.conf.json # cleanup the created configuration file for the next test run
@@ -47,14 +49,14 @@ echo "Running Muter on an empty example codebase..."
 cd ./Repositories/EmptyExampleApp
 
 echo " > Running in CLI mode..."
-"$BUILDDIR"/muter > ../../AcceptanceTests/muters_empty_state_output.txt
+"$muterdir"/muter > "$samplesdir"/muters_empty_state_output.txt
 cd ../..
 
 echo "Running Muter on an example test suite that fails..."
 cd ./Repositories/ProjectWithFailures
 
 echo " > Running in CLI mode..."
-"$BUILDDIR"/muter > ../../AcceptanceTests/muters_aborted_testing_output.txt
+"$muterdir"/muter > "$samplesdir"/muters_aborted_testing_output.txt
 rm -rf ./muter_logs # don't pollute the staging area
 
 cd ../..
@@ -63,18 +65,20 @@ echo "Running Muter's help command..."
 cd ./Repositories/ExampleApp
 
 echo " > Running help command..."
-"$BUILDDIR"/muter help > ../../AcceptanceTests/muters_help_output.txt
+"$muterdir"/muter help > "$samplesdir"/muters_help_output.txt
 
 echo " > Running init help command..."
-"$BUILDDIR"/muter help init > ../../AcceptanceTests/muters_init_help_output.txt
+"$muterdir"/muter help init > "$samplesdir"/muters_init_help_output.txt
 
 echo " > Running run help command..."
-"$BUILDDIR"/muter help run > ../../AcceptanceTests/muters_run_help_output.txt
+"$muterdir"/muter help run > "$samplesdir"/muters_run_help_output.txt
 
 cd ../..
 
 echo "Running tests..."
 
-xcodebuild -scheme muter -only-testing:AcceptanceTests test
+swift package generate-xcodeproj
+
+./Scripts/test_only.sh "muterAcceptanceTests"
 
 echo "📳📳📳📳📳📳📳 Acceptance Testing has finished 📳📳📳📳📳📳📳"
