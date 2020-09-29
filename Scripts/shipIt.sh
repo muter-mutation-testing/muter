@@ -9,7 +9,7 @@ else
 
     echo "Committing new version..."
     git checkout -b $1
-    git add ./muterCore/version.swift
+    git add ./Sources/muterCore/version.swift
     git commit -m "Bump version to $1"
     git tag "$1"
     git push origin head
