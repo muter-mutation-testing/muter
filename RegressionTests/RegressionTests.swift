@@ -37,7 +37,7 @@ class RegressionTests: QuickSpec {
         
         describe("muter test report output for BonMot") {
             it("does not contain any changes") {
-                let path = "\(self.rootTestDirectory)/bonmot_regression_test_output.json"
+                let path = "\(self.rootTestDirectory)/samples/bonmot_regression_test_output.json"
                 if case .failure(let description) = runRegressionTest(forFixtureNamed: "bonmot", withResultAt: path) {
                     fail(description)
                 }
@@ -46,7 +46,7 @@ class RegressionTests: QuickSpec {
         
         describe("muter test report output for parser combinator") {
             it("does not contain any changes") {
-                let path = "\(self.rootTestDirectory)/parsercombinator_regression_test_output.json"
+                let path = "\(self.rootTestDirectory)/samples/parsercombinator_regression_test_output.json"
                 if case .failure(let description) = runRegressionTest(forFixtureNamed: "parsercombinator", withResultAt: path) {
                     fail(description)
                 }
@@ -55,7 +55,7 @@ class RegressionTests: QuickSpec {
         
         describe("muter test report output for a project with concurrency") {
             it("does not contain any changes") {
-                let path = "\(self.rootTestDirectory)/projectwithconcurrency_test_output.json"
+                let path = "\(self.rootTestDirectory)/samples/projectwithconcurrency_test_output.json"
                 if case .failure(let description) = runRegressionTest(forFixtureNamed: "projectwithconcurrency", withResultAt: path) {
                     fail(description)
                 }

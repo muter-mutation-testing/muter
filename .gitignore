@@ -1,4 +1,7 @@
 .DS_Store
+/.build
+/Packages
+Build/
 muter_tmp/
 xcuserdata/
 ExampleApp/muter
@@ -8,17 +11,18 @@ muters_output.txt
 muters_empty_state_output.txt
 .vscode
 sourcekite
+muter.xcodeproj
 /Tests/bonmot_regression_test_output.json
 muterReport.json
 muter_logs
-AcceptanceTests/*.json
-AcceptanceTests/*.txt
+AcceptanceTests/samples/*.*
+RegressionTests/samples/*.*
 Tests/muters_aborted_testing_output.txt
 ExampleApp/muterReport.json
 RegressionTests/bonmot_regression_test_output.json
 RegressionTests/parsercombinator_regression_test_output.json
 Repositories/UninitializedApp/muter.conf.json
-lib_InternalSwiftSyntaxParser.dylib
+.swiftpm
 
 ### macOS ###
 # General
@@ -79,9 +83,59 @@ xcuserdata/
 *.dSYM.zip
 *.dSYM
 
+## Playgrounds
+timeline.xctimeline
+playground.xcworkspace
+
+# Swift Package Manager
+#
+# Add this line if you want to avoid checking in source code from Swift Package Manager dependencies.
+# Packages/
+# Package.pins
+# Package.resolved
 .build/
 
+# CocoaPods
+#
+# We recommend against adding the Pods directory to your .gitignore. However
+# you should judge for yourself, the pros and cons are mentioned at:
+# https://guides.cocoapods.org/using/using-cocoapods.html#should-i-check-the-pods-directory-into-source-control
+#
+# Pods/
+#
+# Add this line if you want to avoid checking in source code from the Xcode workspace
+# *.xcworkspace
+
+# Carthage
+#
+# Add this line if you want to avoid checking in source code from Carthage dependencies.
+# Carthage/Checkouts
+
+Carthage/Build
+
+# fastlane
+#
+# It is recommended to not store the screenshots in the git repo. Instead, use fastlane to re-generate the
+# screenshots whenever they are needed.
+# For more information about the recommended setup visit:
+# https://docs.fastlane.tools/best-practices/source-control/#source-control
+
+fastlane/report.xml
+fastlane/Preview.html
+fastlane/screenshots/**/*.png
+fastlane/test_output
+
+# Code Injection
+#
+# After new code Injection tools there's a generated folder /iOSInjectionProject
+# https://github.com/johnno1962/injectionforxcode
+
+iOSInjectionProject/
+
+
 ### Xcode Patch ###
+*.xcodeproj/*
+!*.xcodeproj/project.pbxproj
 !*.xcodeproj/xcshareddata/
 !*.xcworkspace/contents.xcworkspacedata
 /*.gcno
