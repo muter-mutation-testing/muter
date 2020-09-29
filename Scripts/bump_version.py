@@ -25,4 +25,4 @@ if len(sys.argv) == 3:
             sys.argv[2])
 
 else:
-    print "usage: bump_version new_version sha256_hash_of_new_version"
+    print("usage: bump_version new_version sha256_hash_of_new_version")
