@@ -5,7 +5,7 @@ if [ "$1" == "" ]; then
     exit
 else 
     echo "Bumping version number inside of version.swift..."
-    echo "public let version = \"$1\"" > ./muterCore/version.swift
+    echo "public let version = \"$1\"" > ./Sources/muterCore/version.swift
 
     echo "Committing new version..."
     git checkout -b $1
