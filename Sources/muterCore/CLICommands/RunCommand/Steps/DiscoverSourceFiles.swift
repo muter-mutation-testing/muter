@@ -1,6 +1,5 @@
 import Foundation
 import Pathos
-import Curry
 
 struct DiscoverSourceFiles: RunCommandStep {
     private let notificationCenter: NotificationCenter
@@ -35,7 +34,7 @@ struct DiscoverSourceFiles: RunCommandStep {
 }
 
 private extension DiscoverSourceFiles {
-    var defaultExcludeList: [FilePath] {
+    private var defaultExcludeList: [FilePath] {
         return [
             ".build",
             "Build",
@@ -48,21 +47,31 @@ private extension DiscoverSourceFiles {
         ]
     }
     
-    func discoverSourceFiles(inDirectoryAt path: FilePath,
-                             excludingPathsIn providedExcludeList: [FilePath] = []) -> [FilePath] {
+    private func discoverSourceFiles(
+        inDirectoryAt rootPath: FilePath,
+        excludingPathsIn providedExcludeList: [FilePath] = []
+    ) -> [FilePath] {
         let excludeList = providedExcludeList + defaultExcludeList
-        let subpaths = fileManager.subpaths(atPath: path) ?? []
+        let subpaths = fileManager.subpaths(atPath: rootPath) ?? []
+        
         return includeSwiftFiles(
             from: subpaths
-                .exclude(pathsContainingItems(from: excludeList))
-                .map(curry(append)(path))
+                .exclude(pathsContainingItems(root: rootPath, from: excludeList))
+                .map { append(root: rootPath, to: $0) }
         )
     }
     
-    func pathsContainingItems(from excludeList: [FilePath]) -> (FilePath) -> Bool {
-        return { (path: FilePath) in
-            
-            for item in excludeList where path.contains(item) {
+    private func pathsContainingItems(root: FilePath, from excludeList: [FilePath]) -> (FilePath) -> Bool {
+        let excludeAlso: [FilePath] = excludeList.reduce(into: []) { result, path in
+            if path.contains("*") {
+                result.append(contentsOf: expandGlobExpressions(root: root, pattern: path))
+            } else {
+                result.append(path)
+            }
+        }
+
+        return { path in
+            for item in excludeAlso where path.contains(item) {
                 return true
             }
             
@@ -70,18 +79,22 @@ private extension DiscoverSourceFiles {
         }
     }
     
-    func findFilesToMutate(files: [FilePath],
-                           inDirectoryAt path: FilePath) -> [FilePath] {
+    private func findFilesToMutate(
+        files: [FilePath],
+        inDirectoryAt path: FilePath
+    ) -> [FilePath] {
         let glob = files
-            .map(curry(expandGlobExpressions)(path))
+            .map { expandGlobExpressions(root: path, pattern: $0) }
             .flatMap { $0 }
-        let list = files.map(curry(append)(path))
+        let list = files.map { append(root: path, to: $0) }
         let result = (glob + list).map(standardizing(path:))
         return includeSwiftFiles(from: result)
     }
     
-    func expandGlobExpressions(root: FilePath,
-                               pattern: FilePath) -> [FilePath] {
+    private func expandGlobExpressions(
+        root: FilePath,
+        pattern: FilePath
+    ) -> [FilePath] {
         let path = append(root: root, to: pattern)
         guard pattern.contains("*"),
             let paths = try? glob(path),
@@ -92,11 +105,11 @@ private extension DiscoverSourceFiles {
         return paths
     }
     
-    func append(root: FilePath, to path: FilePath) -> FilePath {
+    private func append(root: FilePath, to path: FilePath) -> FilePath {
         return normalize(path: root + "/" + path)
     }
     
-    func standardizing(path: String) -> String {
+    private func standardizing(path: String) -> String {
         let components = (path as NSString).pathComponents
         guard components.contains(".") || components.contains("..") else {
             return path
@@ -112,18 +125,18 @@ private extension DiscoverSourceFiles {
         return result
     }
     
-    func includeSwiftFiles(from paths: [FilePath]) -> [FilePath] {
+    private func includeSwiftFiles(from paths: [FilePath]) -> [FilePath] {
         return paths
             .include(swiftFiles)
             .include(fileManager.fileExists)
             .sorted()
     }
 
-    func swiftFiles(path: FilePath) -> Bool {
+    private func swiftFiles(path: FilePath) -> Bool {
         return path.hasSuffix(".swift")
     }
     
-    func dropScheme(from path: FilePath) -> FilePath {
+    private func dropScheme(from path: FilePath) -> FilePath {
         return URLComponents(string: path)
             .map(\.scheme)
             .flatMap { $0 }
