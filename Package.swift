@@ -26,8 +26,14 @@ private struct Executable {
 
 extension Pipe {
     func readStringToEndOfFile() -> String? {
-        try? fileHandleForReading.readToEnd()
-            .flatMap { String(data: $0, encoding: .utf8) }
+        let data: Data
+        if #available(OSX 10.15.4, *) {
+            data = (try? fileHandleForReading.readToEnd()) ?? Data()
+        } else {
+            data = fileHandleForReading.readDataToEndOfFile()
+        }
+        
+        return String(data: data, encoding: .utf8)
     }
 }
 
