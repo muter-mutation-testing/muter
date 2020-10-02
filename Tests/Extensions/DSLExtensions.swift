@@ -2,20 +2,20 @@ import Quick
 import Nimble
 import Difference
 
-func they(_ description: String, flags: FilterFlags = [:], file: String = #file, line: UInt = #line, closure: @escaping () -> Void) {
+public func they(_ description: String, flags: FilterFlags = [:], file: String = #file, line: UInt = #line, closure: @escaping () -> Void) {
     it("they " + description, flags: flags, file: file, line: line, closure: closure)
 }
 
-func fthey(_ description: String, flags: FilterFlags = [:], file: String = #file, line: UInt = #line, closure: @escaping () -> Void) {
+public func fthey(_ description: String, flags: FilterFlags = [:], file: String = #file, line: UInt = #line, closure: @escaping () -> Void) {
     fit(description, flags: flags, file: file, line: line, closure: closure)
 }
 
-func when(_ description: String, flags: FilterFlags = [:], closure: () -> Void) {
+public func when(_ description: String, flags: FilterFlags = [:], closure: () -> Void) {
     context("when " + description, flags: flags, closure: closure)
 }
 
 // via https://github.com/krzysztofzablocki/Difference#integrate-with-quick
-func equalWithDiff<T: Equatable>(_ expectedValue: T?) -> Predicate<T> {
+public func equalWithDiff<T: Equatable>(_ expectedValue: T?) -> Predicate<T> {
     return Predicate.define { actualExpression in
         let receivedValue = try actualExpression.evaluate()
 

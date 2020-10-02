@@ -90,7 +90,7 @@ let package = Package(
         ),        
         .target(
             name: "TestingExtensions",
-            dependencies: ["SwiftSyntax", "muterCore", "Quick", "Nimble"],
+            dependencies: ["SwiftSyntax", "muterCore", "Difference", "Quick", "Nimble"],
             path: "Tests/Extensions",
             linkerSettings: [rPathLinkerSetting]
         ),
@@ -103,7 +103,7 @@ let package = Package(
         ),
         .testTarget(
             name: "muterAcceptanceTests",
-            dependencies: ["muterCore", "TestingExtensions", "Difference"],
+            dependencies: ["muterCore", "TestingExtensions"],
             path: "AcceptanceTests",
             exclude: ["samples", "runAcceptanceTests.sh"],
             linkerSettings: [rPathLinkerSetting]
