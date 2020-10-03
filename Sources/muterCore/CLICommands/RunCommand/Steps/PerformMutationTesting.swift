@@ -41,12 +41,14 @@ private extension PerformMutationTesting {
             return .failure(.mutationTestingAborted(reason: .baselineTestFailed(log: testLog)))
         }
         
-        notificationCenter.post(name: .newTestLogAvailable, object: (
-            mutationPoint: MutationPoint?.none,
+        let mutationLog = MutationTestLog(
+            mutationPoint: .none,
             testLog: testLog,
             timePerBuildTestCycle: timePerBuildTestCycle,
-            remainingOperatorsCount: state.mutationPoints.count
-        ))
+            remainingMutationPointsCount: state.mutationPoints.count
+        )
+        
+        notificationCenter.post(name: .newTestLogAvailable, object: mutationLog)
         
         return insertMutants(using: state)
     }
@@ -74,14 +76,16 @@ private extension PerformMutationTesting {
                                               originalProjectDirectoryUrl: state.projectDirectoryURL)
             outcomes.append(outcome)
             
-            notificationCenter.post(name: .newMutationTestOutcomeAvailable,
-                                    object: outcome)
-            notificationCenter.post(name: .newTestLogAvailable, object: (
+            let mutationLog = MutationTestLog(
                 mutationPoint: mutationPoint,
                 testLog: testLog,
-                timePerBuildTestCycle: TimeInterval?.none,
-                remainingOperatorsCount: Int?.none
-            ))
+                timePerBuildTestCycle: .none,
+                remainingMutationPointsCount: .none
+            )
+            
+            notificationCenter.post(name: .newMutationTestOutcomeAvailable,
+                                    object: outcome)
+            notificationCenter.post(name: .newTestLogAvailable, object: mutationLog)
             
             buildErrors = testSuiteOutcome == .buildError ? (buildErrors + 1) : 0
             if buildErrors >= buildErrorsThreshold {
