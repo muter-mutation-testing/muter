@@ -1,17 +1,3 @@
-import muterCore
-import ArgumentParser
+import class muterCore.Muter
 
-struct MuterCommand: ParsableCommand {
-    static var configuration = CommandConfiguration(
-        commandName: "muter",
-        abstract: "🔎 Automated mutation testing for Swift 🕳️",
-        version: version,
-        subcommands: [
-            Init.self,
-            Run.self,
-        ],
-        defaultSubcommand: Run.self
-    )
-}
-
-MuterCommand.main()
+Muter.start()
