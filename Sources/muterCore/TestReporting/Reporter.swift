@@ -1,36 +1,43 @@
 import Foundation
 
-enum Reporter: Equatable {
-    case plainText
-    case json
-    case xcode
-    
-    func generateReport(from outcomes: [MutationTestOutcome], footerOnly: Bool = false) -> String {
-        switch self {
-        case .plainText:
-            return textReport(from: outcomes)
-        case .json:
-            return jsonReport(from: outcomes)
-        case .xcode:
-            return xcodeReport(from: outcomes, footerOnly: footerOnly)
-        }
+func makeReporter(shouldOutputJson: Bool, shouldOutputXcode: Bool) -> Reporter {
+    if shouldOutputJson {
+        return JsonReporter()
     }
+    else if shouldOutputXcode {
+        return XcodeReporter()
+    }
+    else {
+        return PlainTextReporter()
+    }
+}
+
+typealias MutationOutcomeWithFlush = (outcome: MutationTestOutcome, fflush: () -> Void)
+
+protocol Reporter {
+    func launched()
+    func projectCopyStarted()
+    func projectCopyFinished(destinationPath: String)
+    func sourceFileDiscoveryStarted()
+    func sourceFileDiscoveryFinished(sourceFileCandidates: [String])
+    func mutationPointDiscoveryStarted()
+    func mutationPointDiscoveryFinished(mutationPoints: [MutationPoint])
+    func mutationTestingStarted()
+    func newMutationTestOutcomeAvailable(outcomeWithFlush: MutationOutcomeWithFlush)
+    func newMutationTestLogAvailable(mutationTestLog: MutationTestLog)
+    func mutationTestingFinished(mutationTestOutcomes outcomes: [MutationTestOutcome])
 }
 
 extension Reporter {
-    init(shouldOutputJson: Bool, shouldOutputXcode: Bool) {
-        if shouldOutputJson {
-            self = .json
-        }
-        else if shouldOutputXcode {
-            self = .xcode
-        }
-        else {
-            self = .plainText
-        }
-    }
-}
-
-
-
+    func launched() { }
+    func projectCopyStarted() { }
+    func projectCopyFinished(destinationPath: String) { }
+    func sourceFileDiscoveryStarted() { }
+    func sourceFileDiscoveryFinished(sourceFileCandidates: [String]) { }
+    func mutationPointDiscoveryStarted() { }
+    func mutationPointDiscoveryFinished(mutationPoints: [MutationPoint]) { }
+    func mutationTestingStarted() { }
+    func newMutationTestOutcomeAvailable(outcomeWithFlush: MutationOutcomeWithFlush) { }
+    func newMutationTestLogAvailable(mutationTestLog: MutationTestLog) { }
+    func mutationTestingFinished(mutationTestOutcomes outcomes: [MutationTestOutcome]) { }
 }
