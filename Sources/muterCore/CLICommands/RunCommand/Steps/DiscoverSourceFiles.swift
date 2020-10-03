@@ -56,20 +56,18 @@ private extension DiscoverSourceFiles {
         
         return includeSwiftFiles(
             from: subpaths
-                .exclude(pathsContainingItems(root: rootPath, from: excludeList))
+                .exclude(pathsContainingItems(from: excludeList, root: rootPath))
                 .map { append(root: rootPath, to: $0) }
         )
     }
-    
-    private func pathsContainingItems(root: FilePath, from excludeList: [FilePath]) -> (FilePath) -> Bool {
-        let excludeAlso: [FilePath] = excludeList.reduce(into: []) { result, path in
-            if path.contains("*") {
-                result.append(contentsOf: expandGlobExpressions(root: root, pattern: path))
-            } else {
-                result.append(path)
-            }
-        }
 
+    private func pathsContainingItems(from excludeList: [FilePath], root: FilePath) -> (FilePath) -> Bool {
+        let excludeAlso: [FilePath] = excludeList.flatMap { path in
+            path.contains("*")
+                ? expandGlobExpressions(root: root, pattern: path)
+                : [path]
+        }
+        
         return { path in
             for item in excludeAlso where path.contains(item) {
                 return true
