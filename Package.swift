@@ -71,10 +71,7 @@ let package = Package(
     targets: [
         .target(
             name: "muter",
-            dependencies: [
-                "muterCore", 
-                .product(name: "ArgumentParser", package: "swift-argument-parser")
-            ]
+            dependencies: ["muterCore"]
         ),
         .target(
             name: "muterCore",
