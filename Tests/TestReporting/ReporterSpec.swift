@@ -19,31 +19,64 @@ class ReporterSpec: QuickSpec {
         describe("reporter choice") {
             context("when they want a json") {
                 it("then return it") {
-                    expect(Reporter(shouldOutputJson: true, shouldOutputXcode: false)).to(equal(.json))
+                    expect(makeReporter(shouldOutputJson: true, shouldOutputXcode: false)).to(beAKindOf(JsonReporter.self))
                 }
             }
             
             context("when they want xcode") {
                 it("then return it") {
-                    expect(Reporter(shouldOutputJson: false, shouldOutputXcode: true)).to(equal(.xcode))
+                    expect(makeReporter(shouldOutputJson: false, shouldOutputXcode: true)).to(beAKindOf(XcodeReporter.self))
                 }
             }
             
             context("when they want plain text") {
                 it("then return it") {
-                    expect(Reporter(shouldOutputJson: false, shouldOutputXcode: false)).to(equal(.plainText))
+                    expect(makeReporter(shouldOutputJson: false, shouldOutputXcode: false)).to(beAKindOf(PlainTextReporter.self))
                 }
             }
         }
 
         describe("text reporter") {
             it("returns the report in text format") {
-                let plainText = Reporter.plainText.generateReport(from: outcomes)
-                expect(plainText).toNot(beEmpty())
-                
-                // footerOnly doesn't have any effect when using Reporter.plainText thus both reports should be equal
-                let plainTextWithFooterOnly = Reporter.plainText.generateReport(from: outcomes, footerOnly: true)
-                expect(plainText).to(equal(plainTextWithFooterOnly))
+                let plainText = PlainTextReporter().report(from: outcomes)
+                expect(plainText).to(
+                    equalWithDiff(
+                        """
+                        Muter finished running!
+
+                        Here's your test report:
+                        
+                        --------------------------
+                        Applied Mutation Operators
+                        --------------------------
+                        
+                        These are all of the ways that Muter introduced changes into your code.
+                        
+                        In total, Muter introduced 1 mutants in 1 files.
+                        
+                        File            Applied Mutation Operator       Mutation Test Result
+                        ----            -------------------------       --------------------
+                        file3.swift:0   RelationalOperatorReplacement   mutant survived
+                        
+                        
+                        --------------------
+                        Mutation Test Scores
+                        --------------------
+                        
+                        These are the mutation scores for your test suite, as well as the files that had mutants introduced into them.
+                        
+                        Mutation scores ignore build errors.
+                        
+                        Of the 1 mutants introduced into your code, your test suite killed 0.
+                        Mutation Score of Test Suite: 0%
+                        
+                        File          # of Introduced Mutants   Mutation Score
+                        ----          -----------------------   --------------
+                        file3.swift   1                         0
+
+                        """
+                    )
+                )
             }
         }
 
@@ -59,24 +92,20 @@ class ReporterSpec: QuickSpec {
 
             context("with footer-only not requested") {
                 it("returns the report in xcode format") {
-                    expect(Reporter.xcode.generateReport(from: outcomes)) == """
-                    /user/project/file3.swift:0:0: warning: Your test suite did not kill this mutant: changed from != to ==
-                    /user/project/file5.swift:0:0: warning: Your test suite did not kill this mutant: changed from == to !=
-                    """
-                }
-            }
-
-            context("with footer-only requested") {
-                it("returns the report in xcode format") {
-                    let report = Reporter.xcode.generateReport(from: outcomes, footerOnly: true)
-                    expect(report) == "globalMutationScore=33\ntotalAppliedMutationOperators=3\nnumberOfKilledMutants=1"
+                    expect(XcodeReporter().report(from: outcomes)).to(equalWithDiff(
+                        """
+                        Mutation score: 33
+                        Mutants introduced into your code: 3
+                        Number of killed mutants: 1
+                        """
+                    ))
                 }
             }
         }
 
         describe("json reporter") {
             it("returns the report in json format") {
-                let json = Reporter.json.generateReport(from: outcomes)
+                let json = JsonReporter().report(from: outcomes)
 
                 guard let data = json.data(using: .utf8),
                     let actualReport = try? JSONDecoder().decode(MuterTestReport.self, from: data) else {
@@ -88,10 +117,6 @@ class ReporterSpec: QuickSpec {
                 // Basically, when we deserialize it, it's missing a field (`path`).
                 expect(actualReport.totalAppliedMutationOperators) == 1
                 expect(actualReport.fileReports.first?.fileName) == "file3.swift"
-                
-                // footerOnly doesn't have any effect when using Reporter.json thus both reports should be equal
-                let jsonWithFooterOnly = Reporter.json.generateReport(from: outcomes, footerOnly: true)
-                expect(json).to(equal(jsonWithFooterOnly))
             }
         }
     }
