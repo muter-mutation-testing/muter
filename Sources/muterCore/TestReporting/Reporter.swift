@@ -71,28 +71,5 @@ private extension Reporter {
     }
     
 
-    func xcodeReport(from outcomes: [MutationTestOutcome], footerOnly: Bool = false) -> String {
-        if footerOnly {
-            let report = MuterTestReport(from: outcomes)
-            return """
-            globalMutationScore=\(report.globalMutationScore)
-            totalAppliedMutationOperators=\(report.totalAppliedMutationOperators)
-            numberOfKilledMutants=\(report.numberOfKilledMutants)
-            """
-        } else {
-            return outcomes
-                .include { $0.testSuiteOutcome == .passed }
-                .map(outcomeIntoXcodeString)
-                .joined(separator: "\n")
-        }
-    }
-    
-    private func outcomeIntoXcodeString(outcome: MutationTestOutcome)  -> String  {
-        // {full_path_to_file}{:line}{:character}: {error,warning}: {content}
 
-        return "\(outcome.originalProjectPath):" +
-            "\(outcome.mutationPoint.position.line):\(outcome.mutationPoint.position.column): " +
-            "warning: " +
-        "Your test suite did not kill this mutant: \(outcome.operatorDescription)"
-    }
 }
