@@ -70,18 +70,6 @@ private extension Reporter {
         return finishedRunningMessage + appliedMutationsMessage + mutationScoresMessage
     }
     
-    func jsonReport(from outcomes: [MutationTestOutcome]) -> String {
-        let report = MuterTestReport(from: outcomes)
-        let encoder = JSONEncoder()
-        encoder.outputFormatting = .prettyPrinted
-        
-        guard let encoded = try? encoder.encode(report),
-            let json = String(data: encoded, encoding: .utf8) else {
-                return ""
-        }
-        
-        return json
-    }
 
     func xcodeReport(from outcomes: [MutationTestOutcome], footerOnly: Bool = false) -> String {
         if footerOnly {
