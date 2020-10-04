@@ -31,9 +31,8 @@ clean:
 run: build
 	$(builddir)/debug/muter
 
-test: 
-	swift package generate-xcodeproj
-	@./Scripts/test_only.sh "muterTests"
+test: build
+	./Scripts/test_only.sh "muterTests"
 	
 acceptance-test: build
 	./AcceptanceTests/runAcceptanceTests.sh
