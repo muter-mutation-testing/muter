@@ -29,6 +29,8 @@ class RegressionTests: QuickSpec {
                 return .failure("""
                     Unable to deserialize a valid Muter test report from \(path)
                     
+                    \(String(data: data, encoding: .utf8) ?? "no-content")
+
                     \(deserializationError)
                     """)
             }

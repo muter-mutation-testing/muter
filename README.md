@@ -1,8 +1,10 @@
 <img src="Docs/Images/Muter%20Logo.png" width="475" alt="Muter logo" />
 
-[![Swift 5 support](https://img.shields.io/badge/swift-5-ED523F.svg?style=flat)](https://swift.org/download/) 
-[![Build Status](https://app.bitrise.io/app/84b65f2a76ed7616/status.svg?token=ZtVl3AxP2ybPB17Ug1wIJQ)](https://app.bitrise.io/app/84b65f2a76ed7616)
-![Mutation score is 75](https://img.shields.io/badge/mutation%20score-75-blue?style=flat)
+[![Swift 5 support](https://img.shields.io/badge/swift-5.3-ED523F.svg?style=flat)](https://swift.org/download/) 
+[![Build](https://img.shields.io/bitrise/84b65f2a76ed7616/master?label=build&token=ZtVl3AxP2ybPB17Ug1wIJQ)](https://app.bitrise.io/app/84b65f2a76ed7616)
+![Regression Tests](https://img.shields.io/endpoint?url=https://api.jsonbin.io/b/5f77f02e7243cd7e8249528f/latest&style=flat)
+[![Code coverage](https://img.shields.io/endpoint?url=https://api.jsonbin.io/b/5f791c9e302a837e9573fa65/latest&style=falt)](https://codecov.io/gh/muter-mutation-testing/muter)
+![Mutation score](https://img.shields.io/badge/mutation%20score-75-blue?style=flat)
 
 ### Automated [mutation testing](https://en.wikipedia.org/wiki/Mutation_testing) for Swift inspired by [Stryker](https://github.com/stryker-mutator/stryker), [PITest](https://github.com/hcoles/pitest), and [Mull](https://github.com/mull-project/mull).
 
