@@ -21,10 +21,22 @@ class TokenAwareVisitor: SyntaxAnyVisitor, PositionDiscoveringVisitor {
         
         return .visitChildren
     }
+    
+    override func visit(_ node: SequenceExprSyntax) -> SyntaxVisitorContinueKind {
+        node.isInsideCompilerDirective
+            ? .skipChildren
+            : .visitChildren
+    }
 
     private func canMutateToken(_ token: TokenSyntax) -> Bool {
         tokensToDiscover.contains(token.tokenKind) &&
         token.parent?.is(BinaryOperatorExprSyntax.self) == true
+    }
+}
+
+private extension SequenceExprSyntax {
+    var isInsideCompilerDirective: Bool {
+        parent?.is(IfConfigClauseSyntax.self) == true
     }
 }
 

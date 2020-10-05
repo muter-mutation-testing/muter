@@ -1,11 +1,9 @@
 #if os(iOS) || os(tvOS)
-print("please ignore me")
+print("hello")
 #endif
 
+#if swift(>=4.2) && os(iOS) || os(tvOS)
 func someCode() -> Bool {
     return false && false
 }
-
-func someOtherCode() -> Bool {
-    return true && true
-}
+#endif
