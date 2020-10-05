@@ -62,6 +62,49 @@ class DiscoverSourceFilesSpec: QuickSpec {
                             "\(path)/file2.swift",
                         ])]
                     }
+
+                    context("and it contains a glob expression") {
+                        var result: Result<[RunCommandState.Change], MuterError>! // keep this as locally defined as possible to avoid test pollution
+                        let path = "\(self.fixturesDirectory)/FilesToMutate"
+                        let currentDirectoryPath = FileManager.default.currentDirectoryPath
+
+                        beforeEach {
+                            state.muterConfiguration = MuterConfiguration(
+                                executable: "",
+                                arguments: [],
+                                excludeList: [
+                                    "/Directory2/**/*.swift",
+                                    "file1.swift",
+                                    "/ProjectName/**/*.swift"]
+                            )
+                            state.tempDirectoryURL = URL(fileURLWithPath: path, isDirectory: true)
+
+                            discoverSourceFiles = DiscoverSourceFiles()
+
+                            result = discoverSourceFiles.run(with: state)
+                        }
+
+                        afterEach {
+                            FileManager.default.changeCurrentDirectoryPath(currentDirectoryPath)
+                        }
+
+                        it("evaluate the expression excluding the list of files") {
+                            guard case .success(let stateChanges) = result! else {
+                                fail("expected success but got \(String(describing: result!))")
+                                return
+                            }
+
+                            expect(stateChanges) == [.sourceFileCandidatesDiscovered([
+                                "\(path)/Directory2/Directory3/file6.swift",
+                                "\(path)/ExampleApp/ExampleAppCode.swift",
+                                "\(path)/ProjectName/AnotherFolder/Module.swift",
+                                "\(path)/ProjectName/ProjectName/AppDelegate.swift",
+                                "\(path)/ProjectName/ProjectName/Models/file 1.swift",
+                                "\(path)/ProjectName/ProjectName/Models/file 2.swift",
+                                "\(path)/ProjectName/ProjectName/Models/file 3.swift"
+                            ])]
+                        }
+                    }
                 }
             }
 
