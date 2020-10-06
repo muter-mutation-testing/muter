@@ -64,7 +64,6 @@ let package = Package(
         .package(url: "https://github.com/onevcat/Rainbow", from: "3.0.0"),
         .package(url: "https://github.com/Quick/Quick", from: "1.3.2"),
         .package(url: "https://github.com/Quick/Nimble", from: "7.3.1"),
-        .package(url: "https://github.com/thoughtbot/Curry.git", from: "4.0.2"),
         .package(url: "https://github.com/dduan/Pathos", from: "0.2.0"),
         .package(name: "Difference", url: "https://github.com/krzysztofzablocki/Difference.git", .branch("master"))
     ],
@@ -78,7 +77,6 @@ let package = Package(
             dependencies: [
                 "SwiftSyntax", 
                 "Rainbow", 
-                "Curry",
                 "Progress",
                 "Pathos",
                 .product(name: "ArgumentParser", package: "swift-argument-parser")
