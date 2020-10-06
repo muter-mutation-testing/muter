@@ -4,12 +4,11 @@
         "test"
     ],
     "exclude": [
-        "ExampleApp",
+        "AcceptanceTests",
+        "RegressionTests",
         "main.swift",
-        "sourcekite",
         "Package.swift",
         "Repositories",
-        "RunCommandIODelegate.swift",
         "RunCommandObserver.swift",
         "ProgressExtensions.swift"
     ]
