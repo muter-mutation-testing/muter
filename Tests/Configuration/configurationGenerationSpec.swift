@@ -23,7 +23,8 @@ class ConfigurationGenerationSpec: QuickSpec {
                         
                         let generatedConfiguration = MuterConfiguration(from: projectDirectoryContents)
                         expect(generatedConfiguration) == MuterConfiguration(executable: "/usr/bin/swift",
-                                                                             arguments: ["test"])
+                                                                             arguments: ["test"],
+                                                                             excludeList: ["Package.swift"])
                     }
                 }
                 context("when there is an Xcode project file in the project directory") {
