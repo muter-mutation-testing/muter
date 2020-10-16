@@ -1,4 +1,3 @@
-import SwiftSyntax
 import Foundation
 
 public struct MutationTestOutcome: Equatable {

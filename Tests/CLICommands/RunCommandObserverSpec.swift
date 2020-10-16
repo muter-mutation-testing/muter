@@ -23,7 +23,7 @@ class RunCommandObserverSpec: QuickSpec {
                     flushHandlerWasCalled = false
                     notification = Notification(
                         name: .newMutationTestOutcomeAvailable,
-                        object: MutationTestOutcome(testSuiteOutcome: .failed,
+                        object: MutationTestOutcome(testSuiteOutcome: .passed,
                                                     mutationPoint: MutationPoint(mutationOperatorId: .ror, filePath: "some/path", position: .firstPosition),
                                                     operatorDescription: "some description"),
                         userInfo: nil
@@ -31,7 +31,7 @@ class RunCommandObserverSpec: QuickSpec {
                 }
                 
                 it("flushes stdout when using an Xcode reporter") {
-                    let subject = RunCommandObserver(reporter: .xcode,
+                    let subject = RunCommandObserver(reporter: XcodeReporter(),
                                                      fileManager: fileManagerSpy,
                                                      flushHandler: flushHandlerSpy)
                     subject.handleNewMutationTestOutcomeAvailable(notification: notification)
@@ -39,7 +39,7 @@ class RunCommandObserverSpec: QuickSpec {
                 }
                 
                 it("doesn't flush stdout when using a JSON reporter") {
-                    let subject = RunCommandObserver(reporter: .json,
+                    let subject = RunCommandObserver(reporter: JsonReporter(),
                                                      fileManager: fileManagerSpy,
                                                      flushHandler: flushHandlerSpy)
                     subject.handleNewMutationTestOutcomeAvailable(notification: notification)
@@ -47,7 +47,7 @@ class RunCommandObserverSpec: QuickSpec {
                 }
                 
                 it("doesn't flush stdout when using a plain text reporter") {
-                    let subject = RunCommandObserver(reporter: .plainText,
+                    let subject = RunCommandObserver(reporter: PlainTextReporter(),
                                                      fileManager: fileManagerSpy,
                                                      flushHandler: flushHandlerSpy)
                     subject.handleNewMutationTestOutcomeAvailable(notification: notification)
@@ -57,7 +57,7 @@ class RunCommandObserverSpec: QuickSpec {
             
             describe("logFileName(from:)") {
                 it("names a log file as baseline run.log when there is no MutationPoint") {
-                    let subject = RunCommandObserver(reporter: .plainText, fileManager: fileManagerSpy, flushHandler: {})
+                    let subject = RunCommandObserver(reporter: PlainTextReporter(), fileManager: fileManagerSpy, flushHandler: {})
                     expect(subject.logFileName(from: nil)) == "baseline run.log"
                 }
                 
@@ -70,7 +70,7 @@ class RunCommandObserverSpec: QuickSpec {
                                                        filePath: "~/user/file2.swift",
                                                        position: MutationPosition(utf8Offset: 2, line: 5, column: 6))
                     
-                    let subject = RunCommandObserver(reporter: .plainText, fileManager: fileManagerSpy, flushHandler: {})
+                    let subject = RunCommandObserver(reporter: PlainTextReporter(), fileManager: fileManagerSpy, flushHandler: {})
                     
                     expect(subject.logFileName(from: mutationPoint1)) == "RelationalOperatorReplacement @ file.swift-0-0.log"
                     expect(subject.logFileName(from: mutationPoint2)) == "RemoveSideEffects @ file2.swift-5-6.log"

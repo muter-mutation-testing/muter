@@ -20,7 +20,7 @@ public struct Run: ParsableCommand {
 
     public func run() throws {
         _ = RunCommandObserver(
-            reporter: Reporter(
+            reporter: makeReporter(
                 shouldOutputJson: shouldOutputJson,
                 shouldOutputXcode: shouldOutputXcode
             ),

@@ -1,5 +1,4 @@
 import Foundation
-import SwiftSyntax
 
 typealias FileName = String
 public typealias FilePath = String
