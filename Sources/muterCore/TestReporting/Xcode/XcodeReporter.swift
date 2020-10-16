@@ -36,6 +36,6 @@ final class XcodeReporter: Reporter {
         return "\(outcome.originalProjectPath):" +
             "\(outcome.mutationPoint.position.line):\(outcome.mutationPoint.position.column): " +
             "warning: " +
-        "Your test suite did not kill this mutant: \(outcome.operatorDescription)"
+            "Your test suite did not kill this mutant: \(outcome.mutationSnapshot.description)"
     }
 }
