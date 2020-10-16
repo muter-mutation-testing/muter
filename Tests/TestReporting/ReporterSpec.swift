@@ -11,7 +11,7 @@ class ReporterSpec: QuickSpec {
             MutationTestOutcome(
                 testSuiteOutcome: .passed,
                 mutationPoint: MutationPoint(mutationOperatorId: .ror, filePath: "/tmp/project/file3.swift", position: .firstPosition),
-                operatorDescription: "changed from != to ==",
+                mutationSnapshot: MutationOperatorSnapshot(before: "!=", after: "==", description: "changed from != to =="),
                 originalProjectDirectoryUrl: URL(string: "/user/project")!
             )
         ]
@@ -83,11 +83,11 @@ class ReporterSpec: QuickSpec {
         describe("xcode reporter") {
             let outcomes = outcomes + [MutationTestOutcome(testSuiteOutcome: .failed,
                                              mutationPoint: MutationPoint(mutationOperatorId: .ror, filePath: "/tmp/project/file4.swift", position: .firstPosition),
-                                             operatorDescription: "changed from == to !=",
+                                             mutationSnapshot: MutationOperatorSnapshot(before: "==", after: "!=", description: "changed from == to !="),
                                              originalProjectDirectoryUrl: URL(string: "/user/project")!),
                          MutationTestOutcome(testSuiteOutcome: .passed,
                                              mutationPoint: MutationPoint(mutationOperatorId: .ror, filePath: "/tmp/project/file5.swift", position: .firstPosition),
-                                             operatorDescription: "changed from == to !=",
+                                             mutationSnapshot: MutationOperatorSnapshot(before: "==", after: "!=", description: "changed from == to !="),
                                              originalProjectDirectoryUrl: URL(string: "/user/project")!)]
 
             context("with footer-only not requested") {

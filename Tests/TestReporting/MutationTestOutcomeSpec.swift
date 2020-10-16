@@ -15,7 +15,7 @@ class MutationTestOutcomeSpec: QuickSpec {
                         
                         let outcome = MutationTestOutcome(testSuiteOutcome: .failed,
                                                           mutationPoint: mutationPoint,
-                                                          operatorDescription: "",
+                                                          mutationSnapshot: .null,
                                                           originalProjectDirectoryUrl: URL(fileURLWithPath: "/Users/user0/Code/ProjectDirectory"))
                         
                         expect(outcome.originalProjectPath) == "/Users/user0/Code/ProjectDirectory/Subdirectory/file.swift"
@@ -30,7 +30,7 @@ class MutationTestOutcomeSpec: QuickSpec {
                         
                         let outcome = MutationTestOutcome(testSuiteOutcome: .failed,
                                                           mutationPoint: mutationPoint,
-                                                          operatorDescription: "",
+                                                          mutationSnapshot: .null,
                                                           originalProjectDirectoryUrl: URL(fileURLWithPath: "/Users/user0/Code/ProjectDirectory"))
                         expect(outcome.originalProjectPath) == "/Users/user0/Code/ProjectDirectory/file.swift"
                         
@@ -45,7 +45,7 @@ class MutationTestOutcomeSpec: QuickSpec {
                         
                         let outcome = MutationTestOutcome(testSuiteOutcome: .failed,
                                                           mutationPoint: mutationPoint,
-                                                          operatorDescription: "",
+                                                          mutationSnapshot: .null,
                                                           originalProjectDirectoryUrl: URL(fileURLWithPath: "/Users/user0/Project Directory"))
                         expect(outcome.originalProjectPath) == "/Users/user0/Project Directory/file.swift"
                     }
