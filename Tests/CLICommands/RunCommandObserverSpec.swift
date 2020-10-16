@@ -25,7 +25,7 @@ class RunCommandObserverSpec: QuickSpec {
                         name: .newMutationTestOutcomeAvailable,
                         object: MutationTestOutcome(testSuiteOutcome: .passed,
                                                     mutationPoint: MutationPoint(mutationOperatorId: .ror, filePath: "some/path", position: .firstPosition),
-                                                    operatorDescription: "some description"),
+                                                    mutationSnapshot: .null),
                         userInfo: nil
                     )
                 }
