@@ -4,10 +4,10 @@ import Foundation
 public extension MutationTestOutcome {
     init(testSuiteOutcome: TestSuiteOutcome,
          mutationPoint: MutationPoint,
-         operatorDescription: String = "") {
+         mutationSnapshot: MutationOperatorSnapshot = .null) {
         self.init(testSuiteOutcome: testSuiteOutcome,
                   mutationPoint: mutationPoint,
-                  operatorDescription: operatorDescription,
+                  mutationSnapshot: mutationSnapshot,
                   originalProjectDirectoryUrl: URL(fileURLWithPath: ""))
         
     }
