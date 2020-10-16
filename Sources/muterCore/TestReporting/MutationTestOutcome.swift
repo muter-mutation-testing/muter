@@ -3,16 +3,16 @@ import Foundation
 public struct MutationTestOutcome: Equatable {
     let testSuiteOutcome: TestSuiteOutcome
     let mutationPoint: MutationPoint
-    let operatorDescription: String
+    let mutationSnapshot: MutationOperatorSnapshot
     let originalProjectPath: String
     
     public init(testSuiteOutcome: TestSuiteOutcome,
                 mutationPoint: MutationPoint,
-                operatorDescription: String,
+                mutationSnapshot: MutationOperatorSnapshot,
                 originalProjectDirectoryUrl: URL) {
         self.testSuiteOutcome = testSuiteOutcome
         self.mutationPoint = mutationPoint
-        self.operatorDescription = operatorDescription
+        self.mutationSnapshot = mutationSnapshot
         
         let splitTempFilePath = mutationPoint.filePath.split(separator: "/")
         let projectDirectoryName = originalProjectDirectoryUrl.lastPathComponent
