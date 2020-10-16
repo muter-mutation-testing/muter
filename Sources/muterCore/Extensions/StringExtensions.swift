@@ -1,9 +1,7 @@
 import Foundation
 
 extension String {
-    func repeated(_ times: Int) -> String {
-        return (0 ..< times).reduce("") { current, _ in current + "\(self)"}
-    }
+    func repeated(_ times: Int) -> String { (0 ..< times).reduce("") { current, _ in current + "\(self)"} }
     
     func removingSubrange(_ bounds: Range<String.Index>?) -> String {
         guard let bounds = bounds else { return self }
@@ -12,7 +10,11 @@ extension String {
         return result
     }
 
-    var trimmed: String {
-        return trimmingCharacters(in: CharacterSet.whitespacesAndNewlines)
+    var trimmed: String { trimmingCharacters(in: .whitespacesAndNewlines) }
+
+    var inlined: String {
+        components(separatedBy: .newlines)
+            .map { $0.trimmed }
+            .joined(separator: " ")
     }
 }
