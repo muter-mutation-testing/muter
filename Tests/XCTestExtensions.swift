@@ -28,18 +28,117 @@ public extension XCTestCase {
 
     var exampleMutationTestResults: [MutationTestOutcome] {
         return [
-            MutationTestOutcome(testSuiteOutcome: .failed, mutationPoint: MutationPoint(mutationOperatorId: .ror, filePath: "/tmp/file1.swift", position: .firstPosition), operatorDescription: "from == to !="),
-            MutationTestOutcome(testSuiteOutcome: .failed, mutationPoint: MutationPoint(mutationOperatorId: .ror, filePath: "/tmp/file1.swift", position: .firstPosition), operatorDescription: "from == to !="),
-            MutationTestOutcome(testSuiteOutcome: .passed, mutationPoint: MutationPoint(mutationOperatorId: .ror, filePath: "/tmp/file1.swift", position: .firstPosition), operatorDescription: "from == to !="),
+            MutationTestOutcome(
+                testSuiteOutcome: .failed,
+                mutationPoint: MutationPoint(
+                    mutationOperatorId: .ror,
+                    filePath: "/tmp/file1.swift",
+                    position: .firstPosition),
+                mutationSnapshot: MutationOperatorSnapshot(
+                    before: "==",
+                    after: "!=",
+                    description: "from == to !="
+                )
+            ),
+            MutationTestOutcome(
+                testSuiteOutcome: .failed,
+                mutationPoint: MutationPoint(
+                    mutationOperatorId: .ror,
+                    filePath: "/tmp/file1.swift",
+                    position: .firstPosition),
+                mutationSnapshot: MutationOperatorSnapshot(
+                    before: "==",
+                    after: "!=",
+                    description: "from == to !="
+                )
+            ),
+            MutationTestOutcome(
+                testSuiteOutcome: .passed,
+                mutationPoint: MutationPoint(
+                    mutationOperatorId: .ror,
+                    filePath: "/tmp/file1.swift",
+                    position: .firstPosition),
+                mutationSnapshot: MutationOperatorSnapshot(
+                    before: "==",
+                    after: "!=",
+                    description: "from == to !="
+                )
+            ),
             
-            MutationTestOutcome(testSuiteOutcome: .failed, mutationPoint: MutationPoint(mutationOperatorId: .removeSideEffects, filePath: "/tmp/file2.swift", position: .firstPosition), operatorDescription: "from == to !="),
-            MutationTestOutcome(testSuiteOutcome: .failed, mutationPoint: MutationPoint(mutationOperatorId: .removeSideEffects, filePath: "/tmp/file2.swift", position: .firstPosition), operatorDescription: "from == to !="),
+            MutationTestOutcome(
+                testSuiteOutcome: .failed,
+                mutationPoint: MutationPoint(
+                    mutationOperatorId: .removeSideEffects,
+                    filePath: "/tmp/file2.swift",
+                    position: .firstPosition),
+                mutationSnapshot: MutationOperatorSnapshot(
+                    before: "==",
+                    after: "!=",
+                    description: "from == to !="
+                )
+            ),
+            MutationTestOutcome(
+                testSuiteOutcome: .failed,
+                mutationPoint: MutationPoint(
+                    mutationOperatorId: .removeSideEffects,
+                    filePath: "/tmp/file2.swift",
+                    position: .firstPosition),
+                mutationSnapshot: MutationOperatorSnapshot(
+                    before: "==",
+                    after: "!=",
+                    description: "from == to !="
+                )
+            ),
             
-            MutationTestOutcome(testSuiteOutcome: .failed, mutationPoint: MutationPoint(mutationOperatorId: .ror, filePath: "/tmp/file3.swift", position: .firstPosition), operatorDescription: "from == to !="),
-            MutationTestOutcome(testSuiteOutcome: .passed, mutationPoint: MutationPoint(mutationOperatorId: .ror, filePath: "/tmp/file3.swift", position: .firstPosition), operatorDescription: "from == to !="),
-            MutationTestOutcome(testSuiteOutcome: .passed, mutationPoint: MutationPoint(mutationOperatorId: .ror, filePath: "/tmp/file3.swift", position: .firstPosition), operatorDescription: "from == to !="),
+            MutationTestOutcome(
+                testSuiteOutcome: .failed,
+                mutationPoint: MutationPoint(
+                    mutationOperatorId: .ror,
+                    filePath: "/tmp/file3.swift",
+                    position: .firstPosition),
+                mutationSnapshot: MutationOperatorSnapshot(
+                    before: "==",
+                    after: "!=",
+                    description: "from == to !="
+                )
+            ),
+            MutationTestOutcome(
+                testSuiteOutcome: .passed,
+                mutationPoint: MutationPoint(
+                    mutationOperatorId: .ror,
+                    filePath: "/tmp/file3.swift",
+                    position: .firstPosition),
+                mutationSnapshot: MutationOperatorSnapshot(
+                    before: "==",
+                    after: "!=",
+                    description: "from == to !="
+                )
+            ),
+            MutationTestOutcome(
+                testSuiteOutcome: .passed,
+                mutationPoint: MutationPoint(
+                    mutationOperatorId: .ror,
+                    filePath: "/tmp/file3.swift",
+                    position: .firstPosition),
+                mutationSnapshot: MutationOperatorSnapshot(
+                    before: "==",
+                    after: "!=",
+                    description: "from == to !="
+                )
+            ),
             
-            MutationTestOutcome(testSuiteOutcome: .passed, mutationPoint: MutationPoint(mutationOperatorId: .ror, filePath: "/tmp/file 4.swift", position: .firstPosition), operatorDescription: "from == to !=") // this file name intentionally has a space in it
+            MutationTestOutcome(
+                testSuiteOutcome: .passed,
+                mutationPoint: MutationPoint(
+                    mutationOperatorId: .ror,
+                    filePath: "/tmp/file 4.swift",
+                    position: .firstPosition),
+                mutationSnapshot: MutationOperatorSnapshot(
+                    before: "==",
+                    after: "!=",
+                    description: "from == to !="
+                )
+            ) // this file name intentionally has a space in it
         ]
     }
 }
