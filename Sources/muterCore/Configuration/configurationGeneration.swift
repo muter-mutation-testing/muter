@@ -75,7 +75,7 @@ private extension MuterConfiguration {
     
     static func generateSPMConfiguration(from directoryContents: [URL]) -> MuterConfiguration? {
         if directoryContents.contains(where: { $0.lastPathComponent == "Package.swift" }) {
-            return MuterConfiguration(executable: "/usr/bin/swift", arguments: ["test"], excludeList: [])
+            return MuterConfiguration(executable: "/usr/bin/swift", arguments: ["test"], excludeList: ["Package.swift"])
         }
         
         return nil
