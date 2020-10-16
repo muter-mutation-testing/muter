@@ -70,7 +70,9 @@ class NegateConditionalsOperatorSpec: QuickSpec {
 
                     let mutatedSource = rewriter.visit(sourceWithConditionalLogic.code)
                     expect(mutatedSource.description).to(equal(expectedSource.code.description))
-                    expect(rewriter.description).to(equal("changed == to !="))
+                    expect(rewriter.operatorSnapshot.before).to(equal("=="))
+                    expect(rewriter.operatorSnapshot.after).to(equal("!="))
+                    expect(rewriter.operatorSnapshot.description).to(equal("changed == to !="))
                 }
 
                 it("replaces an inequality operator with an equality operator") {
@@ -80,7 +82,9 @@ class NegateConditionalsOperatorSpec: QuickSpec {
 
                     let mutatedSource = rewriter.visit(sourceWithConditionalLogic.code)
                     expect(mutatedSource.description).to(equal(expectedSource.code.description))
-                    expect(rewriter.description).to(equal("changed != to =="))
+                    expect(rewriter.operatorSnapshot.before).to(equal("!="))
+                    expect(rewriter.operatorSnapshot.after).to(equal("=="))
+                    expect(rewriter.operatorSnapshot.description).to(equal("changed != to =="))
                 }
 
                 it("replaces a greater than or equal to operator with a less than or equal to operator") {
@@ -90,7 +94,9 @@ class NegateConditionalsOperatorSpec: QuickSpec {
 
                     let mutatedSource = rewriter.visit(sourceWithConditionalLogic.code)
                     expect(mutatedSource.description).to(equal(expectedSource.code.description))
-                    expect(rewriter.description).to(equal("changed >= to <="))
+                    expect(rewriter.operatorSnapshot.before).to(equal(">="))
+                    expect(rewriter.operatorSnapshot.after).to(equal("<="))
+                    expect(rewriter.operatorSnapshot.description).to(equal("changed >= to <="))
                 }
 
                 it("replaces a less than or equal to operator with a greater than or equal to operator") {
@@ -100,7 +106,9 @@ class NegateConditionalsOperatorSpec: QuickSpec {
 
                     let mutatedSource = rewriter.visit(sourceWithConditionalLogic.code)
                     expect(mutatedSource.description).to(equal(expectedSource.code.description))
-                    expect(rewriter.description).to(equal("changed <= to >="))
+                    expect(rewriter.operatorSnapshot.before).to(equal("<="))
+                    expect(rewriter.operatorSnapshot.after).to(equal(">="))
+                    expect(rewriter.operatorSnapshot.description).to(equal("changed <= to >="))
                 }
 
                 it("replaces a less than operator with a greater than operator") {
@@ -110,7 +118,9 @@ class NegateConditionalsOperatorSpec: QuickSpec {
 
                     let mutatedSource = rewriter.visit(sourceWithConditionalLogic.code)
                     expect(mutatedSource.description).to(equal(expectedSource.code.description))
-                    expect(rewriter.description).to(equal("changed < to >"))
+                    expect(rewriter.operatorSnapshot.before).to(equal("<"))
+                    expect(rewriter.operatorSnapshot.after).to(equal(">"))
+                    expect(rewriter.operatorSnapshot.description).to(equal("changed < to >"))
                 }
 
                 it("replaces a greater than operator with a less than operator") {
@@ -120,7 +130,9 @@ class NegateConditionalsOperatorSpec: QuickSpec {
 
                     let mutatedSource = rewriter.visit(sourceWithConditionalLogic.code)
                     expect(mutatedSource.description).to(equal(expectedSource.code.description))
-                    expect(rewriter.description).to(equal("changed > to <"))
+                    expect(rewriter.operatorSnapshot.before).to(equal(">"))
+                    expect(rewriter.operatorSnapshot.after).to(equal("<"))
+                    expect(rewriter.operatorSnapshot.description).to(equal("changed > to <"))
                 }
             }
 
@@ -130,14 +142,16 @@ class NegateConditionalsOperatorSpec: QuickSpec {
                 let expectedSource = sourceCode(fromFileAt: "\(self.mutationExamplesDirectory)/NegateConditionals/equalityOperator.swift")!
                 let transformation = MutationOperator.Id.ror.mutationOperator(for: line3Column19)
 
-                let (actualMutatedSource, actualDescription) = transformation(sourceWithConditionalLogic.code)
+                let (actualMutatedSource, actualSnapshot) = transformation(sourceWithConditionalLogic.code)
 
                 it("behaves like a NegateConditionalsOperator.Rewriter") {
                     expect(actualMutatedSource.description).to(equal(expectedSource.code.description))
                 }
 
-                it("provides a description of the operator that was applied") {
-                    expect(actualDescription).to(equal("changed == to !="))
+                it("provides a snapshot of the operator that was applied") {
+                    expect(actualSnapshot.before).to(equal("=="))
+                    expect(actualSnapshot.after).to(equal("!="))
+                    expect(actualSnapshot.description).to(equal("changed == to !="))
                 }
             }
         }
