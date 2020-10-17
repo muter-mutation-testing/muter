@@ -48,7 +48,7 @@ mutation-test: clean
 ci-regression-test: build
 	./Scripts/ci/regression/run_regression_tests.sh
 
-ci-test: build
+ci-test: project build
 	./Scripts/ci/pull\ request/run_unit_test.sh
 	./Scripts/ci/regression/extract_coverage.sh
 
