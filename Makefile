@@ -50,6 +50,6 @@ ci-regression-test: build
 
 ci-test: project build
 	./Scripts/ci/pull\ request/run_unit_test.sh
-	./Scripts/ci/regression/extract_coverage.sh
+	./Scripts/ci/pull\ request/extract_coverage.sh
 
 .PHONY: build clean test run install uninstall release
