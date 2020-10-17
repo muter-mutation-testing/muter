@@ -43,4 +43,13 @@ regression-test: build
 mutation-test: clean
 	muter
 
+# ci
+
+ci-regression-test: build
+	./Scripts/ci/regression/run_regression_tests.sh
+
+ci-test: build
+	./Scripts/ci/pull\ request/run_unit_test.sh
+	./Scripts/ci/regression/extract_coverage.sh
+
 .PHONY: build clean test run install uninstall release
