@@ -32,7 +32,7 @@ struct MutationTestingDelegate: MutationTestingIODelegate {
             let contents = try String(contentsOf: testLogUrl)
 
             return (
-                outcome: TestSuiteOutcome.from(testLog: contents),
+                outcome: TestSuiteOutcome.from(testLog: contents, terminationStatus: process.terminationStatus),
                 testLog: contents
             )
 
