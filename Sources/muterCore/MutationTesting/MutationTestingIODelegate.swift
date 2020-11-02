@@ -23,11 +23,11 @@ struct MutationTestingDelegate: MutationTestingIODelegate {
                       savingResultsIntoFileNamed fileName: String) -> (outcome: TestSuiteOutcome, testLog: String) {
         do {
             let (testProcessFileHandle, testLogUrl) = try fileHandle(for: fileName)
+            defer { testProcessFileHandle.closeFile() }
 
             let process = try testProcess(with: configuration, and: testProcessFileHandle)
             try process.run()
             process.waitUntilExit()
-            testProcessFileHandle.closeFile()
 
             let contents = try String(contentsOf: testLogUrl)
 
