@@ -21,9 +21,9 @@ public enum TestSuiteOutcome: String, Codable {
 }
 
 extension TestSuiteOutcome {
-    public static func from(testLog: String) -> TestSuiteOutcome {
+    public static func from(testLog: String, terminationStatus: Int32) -> TestSuiteOutcome {
 
-        if logContainsRuntimeError(testLog) {
+        if !terminationStatusIsSuccess(terminationStatus) {
             return .runtimeError
         } else if logContainsBuildError(testLog) {
             return .buildError
@@ -53,8 +53,8 @@ extension TestSuiteOutcome {
         return try! NSRegularExpression(pattern: "with ([1-9]{1}[0-9]{0,}) failure", options: [])
     }
 
-    static private func logContainsRuntimeError(_ testLog: String) -> Bool {
-        return testLog.contains("Fatal error")
+    static private func terminationStatusIsSuccess(_ terminationStatus: Int32) -> Bool {
+        return terminationStatus == 0
     }
 
     static private func logContainsBuildError(_ testLog: String) -> Bool {
