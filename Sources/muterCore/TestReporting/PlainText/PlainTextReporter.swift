@@ -112,8 +112,7 @@ final class PlainTextReporter: Reporter {
         }
     }
     
-    func mutationTestingFinished(notification: Notification) {
-        let outcomes = notification.object as! [MutationTestOutcome]
+    func mutationTestingFinished(mutationTestOutcomes outcomes: [MutationTestOutcome]) {
         printMessage(report(from: outcomes))
     }
     
