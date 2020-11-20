@@ -131,14 +131,14 @@ public extension XCTestCase {
                 testSuiteOutcome: .passed,
                 mutationPoint: MutationPoint(
                     mutationOperatorId: .ror,
-                    filePath: "/tmp/file 4.swift",
+                    filePath: "/tmp/file 4.swift", // this file name intentionally has a space in it
                     position: .firstPosition),
                 mutationSnapshot: MutationOperatorSnapshot(
                     before: "==",
                     after: "!=",
                     description: "from == to !="
                 )
-            ) // this file name intentionally has a space in it
+            )
         ]
     }
 }
