@@ -62,12 +62,12 @@ class PerformMutationTestingSpec: QuickSpec {
                     let expectedTestOutcomes = [
                         MutationTestOutcome(testSuiteOutcome: .failed,
                                             mutationPoint: expectedMutationPoint,
-                                            operatorDescription: "",
+                                            mutationSnapshot: .null,
                                             originalProjectDirectoryUrl: URL(fileURLWithPath: "/project")),
                         
                         MutationTestOutcome(testSuiteOutcome: .failed,
                                             mutationPoint: expectedMutationPoint,
-                                            operatorDescription: "",
+                                            mutationSnapshot: .null,
                                             originalProjectDirectoryUrl: URL(fileURLWithPath: "/project")),
                     ]
                     
@@ -253,12 +253,12 @@ class PerformMutationTestingSpec: QuickSpec {
                     
                     let expectedBuildErrorOutcome = MutationTestOutcome(testSuiteOutcome: .buildError,
                                                                         mutationPoint: MutationPoint(mutationOperatorId: .ror, filePath: "/tmp/project/file.swift", position: .firstPosition),
-                                                                        operatorDescription: "",
+                                                                        mutationSnapshot: .null,
                                                                         originalProjectDirectoryUrl: URL(fileURLWithPath: "/project"))
                     
                     let expectedFailingOutcome = MutationTestOutcome(testSuiteOutcome: .failed,
                                                                      mutationPoint: MutationPoint(mutationOperatorId: .ror, filePath: "/tmp/project/file.swift", position: .firstPosition),
-                                                                     operatorDescription: "",
+                                                                     mutationSnapshot: .null,
                                                                      originalProjectDirectoryUrl: URL(fileURLWithPath: "/project"))
                     
                     let expectedTestOutcomes = Array(repeating: expectedBuildErrorOutcome, count: 4) + [expectedFailingOutcome]

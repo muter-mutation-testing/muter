@@ -1,7 +1,7 @@
 import SwiftSyntax
 import Foundation
 
-typealias SourceCodeTransformation = (SourceFileSyntax) -> (mutatedSource: SyntaxProtocol, description: String)
+typealias SourceCodeTransformation = (SourceFileSyntax) -> (mutatedSource: SyntaxProtocol, mutationSnapshot: MutationOperatorSnapshot)
 typealias RewriterInitializer = (MutationPosition) -> PositionSpecificRewriter
 typealias VisitorInitializer = (MuterConfiguration, SourceFileInfo) -> PositionDiscoveringVisitor
 
@@ -43,18 +43,20 @@ struct MutationOperator {
             return { source in
                 let visitor = self.rewriterVisitorPair.rewriter(position)
                 let mutatedSource = visitor.visit(source)
+                let operatorSnapshot = visitor.operatorSnapshot
                 return (
                     mutatedSource: mutatedSource,
-                    description: visitor.description
+                    mutationSnapshot: operatorSnapshot
                 )
             }
         }
     }
 }
 
-protocol PositionSpecificRewriter: CustomStringConvertible {
+protocol PositionSpecificRewriter {
     var positionToMutate: MutationPosition { get }
-    
+    var operatorSnapshot: MutationOperatorSnapshot { get set }
+
     init(positionToMutate: MutationPosition)
     
     func visit(_ node: SourceFileSyntax) -> Syntax

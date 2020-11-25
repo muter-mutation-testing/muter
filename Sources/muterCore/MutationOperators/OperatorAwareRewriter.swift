@@ -2,7 +2,7 @@ import SwiftSyntax
 
 class OperatorAwareRewriter: SyntaxRewriter, PositionSpecificRewriter {
     let positionToMutate: MutationPosition
-    private(set) var description: String = ""
+    var operatorSnapshot: MutationOperatorSnapshot = .null
     
     var oppositeOperatorMapping: [String: String] = [:]
     
@@ -16,7 +16,11 @@ class OperatorAwareRewriter: SyntaxRewriter, PositionSpecificRewriter {
                 return Syntax(token)
         }
 
-        description = "changed \(token.description.trimmed) to \(oppositeOperator)"
+        operatorSnapshot = MutationOperatorSnapshot(
+            before: token.description.trimmed,
+            after: oppositeOperator,
+            description: "changed \(token.description.trimmed) to \(oppositeOperator)"
+        )
 
         return mutated(token, using: `oppositeOperator`)
     }

@@ -8,10 +8,17 @@ class MuterTestReportSpec: QuickSpec {
         describe("MuterTestReport") {
             context("when given a nonempty collection of MutationTestOutcomes") {
                 it("calculates all its fields as part of its initialization") {
-                    let outcomes = self.exampleMutationTestResults + [MutationTestOutcome(testSuiteOutcome: .failed,
-                                                                                          mutationPoint: MutationPoint(mutationOperatorId: .ror,
-                                                                                            filePath: "/tmp/a module.swift", position: .firstPosition),
-                                                                                          operatorDescription: "from == to !=")]
+                    let outcomes = self.exampleMutationTestResults + [MutationTestOutcome(
+                                                                        testSuiteOutcome: .failed,
+                                                                        mutationPoint: MutationPoint(mutationOperatorId: .ror,
+                                                                        filePath: "/tmp/a module.swift", position: .firstPosition),
+                                                                        mutationSnapshot: MutationOperatorSnapshot(
+                                                                            before: "==",
+                                                                            after: "!=",
+                                                                            description: "changed from == to !="
+                                                                        )
+                    )]
+
                     let report = MuterTestReport(from: outcomes)
                     expect(report.globalMutationScore).to(equal(60))
                     expect(report.totalAppliedMutationOperators).to(equal(10))

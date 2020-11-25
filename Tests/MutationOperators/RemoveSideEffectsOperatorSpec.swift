@@ -2,6 +2,7 @@
 import Quick
 import Nimble
 import SwiftSyntax
+import TestingExtensions
 
 class RemoveSideEffectsOperatorSpec: QuickSpec {
     override func spec() {
@@ -111,8 +112,12 @@ class RemoveSideEffectsOperatorSpec: QuickSpec {
 
                 expect(firstResults.mutatedSource.description).to(equal(firstResults.expectedSource.description))
                 expect(secondResults.mutatedSource.description).to(equal(secondResults.expectedSource.description))
-                expect(firstResults.rewriter.description).to(equal("removed line"))
-                expect(secondResults.rewriter.description).to(equal("removed line"))
+                expect(firstResults.rewriter.operatorSnapshot.before).to(equal("_ = causesSideEffect()"))
+                expect(firstResults.rewriter.operatorSnapshot.after).to(equal("removed line"))
+                expect(firstResults.rewriter.operatorSnapshot.description).to(equal("removed line"))
+                expect(secondResults.rewriter.operatorSnapshot.before).to(equal("_ = causesSideEffect()"))
+                expect(secondResults.rewriter.operatorSnapshot.after).to(equal("removed line"))
+                expect(secondResults.rewriter.operatorSnapshot.description).to(equal("removed line"))
             }
 
             it("deletes a void function call that spans 1 line") {
@@ -123,7 +128,8 @@ class RemoveSideEffectsOperatorSpec: QuickSpec {
                 let results = applyMutation(toFileAt: path, atPosition: line21, expectedOutcome: expectedSourcePath)
 
                 expect(results.mutatedSource.description).to(equal(results.expectedSource.description))
-                expect(results.rewriter.description).to(equal("removed line"))
+                expect(results.rewriter.operatorSnapshot.before).to(equal("someFunctionThatWritesToADatabase(key: key, value: value)"))
+                expect(results.rewriter.operatorSnapshot.after).to(equal("removed line"))
             }
 
             it("deletes a void function call that spans multiple lines") {
@@ -134,7 +140,9 @@ class RemoveSideEffectsOperatorSpec: QuickSpec {
                 let results = applyMutation(toFileAt: path, atPosition: line38, expectedOutcome: expectedSourcePath)
 
                 expect(results.mutatedSource.description) == results.expectedSource.description
-                expect(results.rewriter.description.trimmed) == "removed line"
+                expect(results.rewriter.operatorSnapshot.before).to(equal("functionCall(\"some argument\", anArgumentLabel: \"some argument that's different\", anotherArgumentLabel: 5)"))
+                expect(results.rewriter.operatorSnapshot.after).to(equal("removed line"))
+                expect(results.rewriter.operatorSnapshot.description).to(equal("removed line"))
             }
         }
 
@@ -144,14 +152,16 @@ class RemoveSideEffectsOperatorSpec: QuickSpec {
             let line21 = MutationPosition(utf8Offset: 480, line: 21, column: -1)
             let transformation = MutationOperator.Id.removeSideEffects.mutationOperator(for: line21)
 
-            let (actualMutatedSource, actualDescription) = transformation(sourceWithSideEffects.code)
+            let (actualMutatedSource, actualSnapshot) = transformation(sourceWithSideEffects.code)
 
             it("behaves like a RemoveSideEffectsOperator.Rewriter") {
                 expect(actualMutatedSource.description).to(equal(expectedSource.code.description))
             }
 
-            it("provides a description of the operator that was applied") {
-                expect(actualDescription).to(equal("removed line"))
+            it("provides a snapshot of the operator that was applied") {
+                expect(actualSnapshot.before).to(equal("someFunctionThatWritesToADatabase(key: key, value: value)"))
+                expect(actualSnapshot.after).to(equal("removed line"))
+                expect(actualSnapshot.description).to(equal("removed line"))
             }
         }
     }

@@ -134,7 +134,7 @@ private extension SyntaxProtocol {
 extension RemoveSideEffectsOperator {
     class Rewriter: SyntaxRewriter, PositionSpecificRewriter {
         let positionToMutate: MutationPosition
-        let description: String = "removed line"
+        var operatorSnapshot: MutationOperatorSnapshot = .null
 
         required init(positionToMutate: MutationPosition) {
             self.positionToMutate = positionToMutate
@@ -150,6 +150,12 @@ extension RemoveSideEffectsOperator {
 
             let newCodeBlockItemList = SyntaxFactory.makeCodeBlockItemList(mutatedFunctionStatements)
             let newFunctionBody = node.body!.withStatements(newCodeBlockItemList)
+
+            operatorSnapshot = MutationOperatorSnapshot(
+                before: statementToExclude.description.trimmed.inlined,
+                after: "removed line",
+                description: "removed line"
+            )
 
             return mutated(node, with: newFunctionBody)
         }

@@ -63,7 +63,7 @@ private extension PerformMutationTesting {
             ioDelegate.backupFile(at: mutationPoint.filePath, using: state.swapFilePathsByOriginalPath)
             
             let sourceCode = state.sourceCodeByFilePath[mutationPoint.filePath]!
-            let mutantDescription = insertMutant(at: mutationPoint, within: sourceCode)
+            let mutantSnapshot = insertMutant(at: mutationPoint, within: sourceCode)
             
             let (testSuiteOutcome, testLog) = ioDelegate.runTestSuite(using: state.muterConfiguration,
                                                                       savingResultsIntoFileNamed: logFileName(for: mutationPoint))
@@ -72,7 +72,7 @@ private extension PerformMutationTesting {
 
             let outcome = MutationTestOutcome(testSuiteOutcome: testSuiteOutcome,
                                               mutationPoint: mutationPoint,
-                                              operatorDescription: mutantDescription,
+                                              mutationSnapshot: mutantSnapshot,
                                               originalProjectDirectoryUrl: state.projectDirectoryURL)
             outcomes.append(outcome)
             
@@ -96,11 +96,11 @@ private extension PerformMutationTesting {
         return .success(outcomes)
     }
     
-    func insertMutant(at mutationPoint: MutationPoint, within sourceCode: SourceFileSyntax) -> String {
-        let (mutatedSource, description) = mutationPoint.mutationOperator(sourceCode)
+    func insertMutant(at mutationPoint: MutationPoint, within sourceCode: SourceFileSyntax) -> MutationOperatorSnapshot {
+        let (mutatedSource, snapshot) = mutationPoint.mutationOperator(sourceCode)
         try! ioDelegate.writeFile(to: mutationPoint.filePath, contents: mutatedSource.description)
         
-        return description
+        return snapshot
     }
     
     func logFileName(for mutationPoint: MutationPoint) -> String {
