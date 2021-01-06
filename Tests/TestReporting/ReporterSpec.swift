@@ -19,19 +19,41 @@ class ReporterSpec: QuickSpec {
         describe("reporter choice") {
             context("when they want a json") {
                 it("then return it") {
-                    expect(makeReporter(shouldOutputJson: true, shouldOutputXcode: false)).to(beAKindOf(JsonReporter.self))
+                    expect(makeReporter(
+                            shouldOutputJson: true,
+                            shouldOutputXcode: false,
+                            shouldOutputHtml: false)
+                    ).to(beAKindOf(JsonReporter.self))
                 }
             }
             
             context("when they want xcode") {
                 it("then return it") {
-                    expect(makeReporter(shouldOutputJson: false, shouldOutputXcode: true)).to(beAKindOf(XcodeReporter.self))
+                    expect(makeReporter(
+                            shouldOutputJson: false,
+                            shouldOutputXcode: true,
+                            shouldOutputHtml: false)
+                    ).to(beAKindOf(XcodeReporter.self))
                 }
             }
             
             context("when they want plain text") {
                 it("then return it") {
-                    expect(makeReporter(shouldOutputJson: false, shouldOutputXcode: false)).to(beAKindOf(PlainTextReporter.self))
+                    expect(makeReporter(
+                            shouldOutputJson: false,
+                            shouldOutputXcode: false,
+                            shouldOutputHtml: false)
+                    ).to(beAKindOf(PlainTextReporter.self))
+                }
+            }
+
+            context("when they want an html") {
+                it("then return it") {
+                    expect(makeReporter(
+                            shouldOutputJson: false,
+                            shouldOutputXcode: false,
+                            shouldOutputHtml: true)
+                    ).to(beAKindOf(HTMLReporter.self))
                 }
             }
         }

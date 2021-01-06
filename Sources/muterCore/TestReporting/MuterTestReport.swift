@@ -20,7 +20,7 @@ public struct MuterTestReport {
 }
 
 extension MuterTestReport {
-    struct FileReport: Codable, Equatable {
+    struct FileReport: Codable {
         let fileName: FileName
         let path: FilePath
         let mutationScore: Int
@@ -56,24 +56,38 @@ extension MuterTestReport {
     }
 }
 
+extension MuterTestReport.FileReport: Comparable {
+    static func < (lhs: MuterTestReport.FileReport, rhs: MuterTestReport.FileReport) -> Bool {
+        lhs.fileName.localizedStandardCompare(rhs.fileName) == .orderedAscending
+    }
+}
+
 public extension MuterTestReport {
     struct AppliedMutationOperator: Codable, Equatable {
         let mutationPoint: MutationPoint
+        let mutationSnapshot: MutationOperatorSnapshot
         let testSuiteOutcome: TestSuiteOutcome
         
         enum CodingKeys: String, CodingKey {
             case mutationPoint
+            case mutationSnapshot
             case testSuiteOutcome
         }
         
-        init(mutationPoint: MutationPoint, testSuiteOutcome: TestSuiteOutcome) {
+        init(
+            mutationPoint: MutationPoint,
+            mutationSnapshot: MutationOperatorSnapshot,
+            testSuiteOutcome: TestSuiteOutcome
+        ) {
             self.mutationPoint = mutationPoint
+            self.mutationSnapshot = mutationSnapshot
             self.testSuiteOutcome = testSuiteOutcome
         }
         
         public init(from decoder: Decoder) throws {
             let container = try decoder.container(keyedBy: CodingKeys.self)
             mutationPoint = try container.decode(MutationPoint.self, forKey: .mutationPoint)
+            mutationSnapshot = try container.decode(MutationOperatorSnapshot.self, forKey: .mutationSnapshot)
             testSuiteOutcome = try container.decode(TestSuiteOutcome.self, forKey: .testSuiteOutcome)
         }
     }
@@ -90,6 +104,7 @@ private extension MuterTestReport {
                 let appliedOperators = outcomes
                     .include { $0.mutationPoint.filePath == mutationScoreByFilePath.key }
                     .map { AppliedMutationOperator(mutationPoint: $0.mutationPoint,
+                                                   mutationSnapshot: $0.mutationSnapshot,
                                                    testSuiteOutcome: $0.testSuiteOutcome) }
 
                 return (fileName, filePath, mutationScore, appliedOperators)

@@ -1,15 +1,15 @@
 import Foundation
 
-func makeReporter(shouldOutputJson: Bool, shouldOutputXcode: Bool) -> Reporter {
-    if shouldOutputJson {
-        return JsonReporter()
-    }
-    else if shouldOutputXcode {
-        return XcodeReporter()
-    }
-    else {
-        return PlainTextReporter()
-    }
+func makeReporter(
+    shouldOutputJson: Bool,
+    shouldOutputXcode: Bool,
+    shouldOutputHtml: Bool
+) -> Reporter {
+    if shouldOutputJson { return JsonReporter() } else
+    if shouldOutputXcode { return XcodeReporter() } else
+    if shouldOutputHtml { return HTMLReporter() }
+
+    return PlainTextReporter()
 }
 
 typealias MutationOutcomeWithFlush = (outcome: MutationTestOutcome, fflush: () -> Void)

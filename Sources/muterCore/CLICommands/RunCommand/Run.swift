@@ -13,6 +13,9 @@ public struct Run: ParsableCommand {
     @Flag(name: [.customLong("output-json")], help: "Output test results to a json file.")
     var shouldOutputJson: Bool = false
 
+    @Flag(name: [.customLong("output-html")], help: "Output test results to an html file.")
+    var shouldOutputHtml: Bool = false
+
     @Flag(name: [.customLong("output-xcode")], help: "Output test results in a format consumable by an Xcode run script step.")
     var shouldOutputXcode: Bool = false
 
@@ -22,7 +25,8 @@ public struct Run: ParsableCommand {
         _ = RunCommandObserver(
             reporter: makeReporter(
                 shouldOutputJson: shouldOutputJson,
-                shouldOutputXcode: shouldOutputXcode
+                shouldOutputXcode: shouldOutputXcode,
+                shouldOutputHtml: shouldOutputHtml
             ),
             fileManager: FileManager.default,
             flushHandler: flushStdOut
