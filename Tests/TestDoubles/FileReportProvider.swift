@@ -10,6 +10,11 @@ class FileReportProvider {
                     filePath: "/tmp/a module.swift",
                     position: .firstPosition
                 ),
+                mutationSnapshot: .make(
+                    before: "==",
+                    after: "!=",
+                    description: "changed from == to !="
+                ),
                 testSuiteOutcome: .failed
             )
         ])
@@ -22,6 +27,11 @@ class FileReportProvider {
                     mutationOperatorId: .ror,
                     filePath: "/tmp/file 4.swift",
                     position: .firstPosition
+                ),
+                mutationSnapshot: .make(
+                    before: "==",
+                    after: "!=",
+                    description: "changed from == to !="
                 ),
                 testSuiteOutcome: .passed
             )
@@ -36,13 +46,10 @@ class FileReportProvider {
                     filePath: "/tmp/file1.swift",
                     position: .firstPosition
                 ),
-                testSuiteOutcome: .failed
-            ),
-            MuterTestReport.AppliedMutationOperator.make(
-                mutationPoint: MutationPoint.make(
-                    mutationOperatorId: .ror,
-                    filePath: "/tmp/file1.swift",
-                    position: .firstPosition
+                mutationSnapshot: .make(
+                    before: "==",
+                    after: "!=",
+                    description: "changed from == to !="
                 ),
                 testSuiteOutcome: .failed
             ),
@@ -51,6 +58,24 @@ class FileReportProvider {
                     mutationOperatorId: .ror,
                     filePath: "/tmp/file1.swift",
                     position: .firstPosition
+                ),
+                mutationSnapshot: .make(
+                    before: "==",
+                    after: "!=",
+                    description: "changed from == to !="
+                ),
+                testSuiteOutcome: .failed
+            ),
+            MuterTestReport.AppliedMutationOperator.make(
+                mutationPoint: MutationPoint.make(
+                    mutationOperatorId: .ror,
+                    filePath: "/tmp/file1.swift",
+                    position: .firstPosition
+                ),
+                mutationSnapshot: .make(
+                    before: "==",
+                    after: "!=",
+                    description: "changed from == to !="
                 ),
                 testSuiteOutcome: .passed
             )
@@ -65,6 +90,11 @@ class FileReportProvider {
                     filePath: "/tmp/file2.swift",
                     position: .firstPosition
                 ),
+                mutationSnapshot: .make(
+                    before: "==",
+                    after: "!=",
+                    description: "changed from == to !="
+                ),
                 testSuiteOutcome: .failed
             ),
             MuterTestReport.AppliedMutationOperator.make(
@@ -72,6 +102,11 @@ class FileReportProvider {
                     mutationOperatorId: .removeSideEffects,
                     filePath: "/tmp/file2.swift",
                     position: .firstPosition
+                ),
+                mutationSnapshot: .make(
+                    before: "==",
+                    after: "!=",
+                    description: "changed from == to !="
                 ),
                 testSuiteOutcome: .failed
             )
@@ -86,6 +121,11 @@ class FileReportProvider {
                     filePath: "/tmp/file3.swift",
                     position: .firstPosition
                 ),
+                mutationSnapshot: .make(
+                    before: "==",
+                    after: "!=",
+                    description: "changed from == to !="
+                ),
                 testSuiteOutcome: .failed
             ),
             MuterTestReport.AppliedMutationOperator.make(
@@ -94,6 +134,11 @@ class FileReportProvider {
                     filePath: "/tmp/file3.swift",
                     position: .firstPosition
                 ),
+                mutationSnapshot: .make(
+                    before: "==",
+                    after: "!=",
+                    description: "changed from == to !="
+                ),
                 testSuiteOutcome: .passed
             ),
             MuterTestReport.AppliedMutationOperator.make(
@@ -101,6 +146,11 @@ class FileReportProvider {
                     mutationOperatorId: .ror,
                     filePath: "/tmp/file3.swift",
                     position: .firstPosition
+                ),
+                mutationSnapshot: .make(
+                    before: "==",
+                    after: "!=",
+                    description: "changed from == to !="
                 ),
                 testSuiteOutcome: .passed
             )

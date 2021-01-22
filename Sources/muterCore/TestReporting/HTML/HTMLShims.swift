@@ -487,10 +487,6 @@ private let reportCSS =
             background-color: #ecf5e1;
         }
 
-        tr:nth-child(n + 10) {
-            display: none;
-        }
-
         th {
             padding-top: 12px;
             padding-bottom: 12px;
@@ -555,22 +551,29 @@ private let reportCSS =
 
 let javascript =
     """
-    function showHide(checkbox, tableId) {
-        var rows = Array.from(document.getElementById(tableId).rows);
-        var displayCount = checkbox.checked ? rows.length : 10;
+    window.onload = function() {
+        showHide(false, 'mutation-operators-per-file');
+        showHide(false, 'applied-operators');
+    };
+
+    function isSnapshotRow(row) {
+        return row && new RegExp("snapshot").test(row.className);
+    }
+
+    function showHide(shouldShow, tableId) {
+        var rows = Array.from(document.getElementById(tableId).rows)
+                        .filter(row => { return !isSnapshotRow(row); });
+
+        var displayCount = shouldShow ? rows.length : 10;
 
         showFirstRows(rows, displayCount);
     }
 
     function showFirstRows(rows, count) {
-        rows.slice(1, count).forEach(row => {
-            row.style.display = "table-row";
-        });
+        rows.slice(1, count).forEach(row => { row.style.display = "table-row"; });
 
         const remeaning = Math.max(rows.length - count - 1, 1);
-        rows.slice(-remeaning).forEach(row => {
-            row.style.display = "none";
-        });
+        rows.slice(-remeaning).forEach(row => { row.style.display = "none"; });
     }
 
     function showChange(button) {

@@ -2,6 +2,7 @@ import Quick
 import Nimble
 import Foundation
 import TestingExtensions
+import Rainbow
 
 @testable import muterCore
 
@@ -11,7 +12,7 @@ class ReporterSpec: QuickSpec {
             MutationTestOutcome(
                 testSuiteOutcome: .passed,
                 mutationPoint: MutationPoint(mutationOperatorId: .ror, filePath: "/tmp/project/file3.swift", position: .firstPosition),
-                mutationSnapshot: MutationOperatorSnapshot(before: "!=", after: "==", description: "changed from != to =="),
+                mutationSnapshot: MutationOperatorSnapshot(before: "!=", after: "==", description: "from != to =="),
                 originalProjectDirectoryUrl: URL(string: "/user/project")!
             )
         ]

@@ -1,19 +1,33 @@
 import Foundation
 
+typealias Now = () -> Date
+
 final class HTMLReporter: Reporter {
+    private let now: Now
+
+    init(now: @escaping Now = Date.init) {
+        self.now = now
+    }
+
     func mutationTestingFinished(mutationTestOutcomes outcomes: [MutationTestOutcome]) {
         print(report(from: outcomes))
     }
 
     func report(from outcomes: [MutationTestOutcome]) -> String {
         htmlReport(
+            now,
             MuterTestReport(from: outcomes)
         )
     }
 }
 
-private func htmlReport(_ testReport: MuterTestReport) -> String {
-    let head = """
+private func htmlReport(
+    _ now: Now,
+    _ testReport: MuterTestReport
+) -> String {
+    """
+    <!DOCTYPE html>
+    <html lang="en">
     <head>
         <meta charset="utf-8"/>
         <title>Muter Report</title>
@@ -24,196 +38,147 @@ private func htmlReport(_ testReport: MuterTestReport) -> String {
             \(javascript)
         </script>
     </head>
-    """
-
-    let body = """
-    <body>
-        <div class="report">
-            \(makeHeader(testReport))
-            \(makeMain(testReport))
-            \(makeFooter())
-        </div>
-    </body>
-    """
-
-    return """
-    <!DOCTYPE html>
-    <html lang="en">
-    \(head)
-    \(body)
+        <body>
+            <div class="report">
+                <header>
+                    <div class="logo">
+                        \(muterLogo)
+                    </div>
+                    <div class="header-item">
+                        <div class="box" style="background-color: \(testReport.scoreColor);">
+                            <p class="small">Mutation Score</p>
+                            <h1>\(testReport.globalMutationScore)%</h1>
+                        </div>
+                    </div>
+                    <div class="header-item">
+                        <div class="box" style="background-color: #3498db;">
+                            <p class="small">Operators Applied</p>
+                            <h1>\(testReport.totalAppliedMutationOperators)</h1>
+                        </div>
+                    </div>
+                </header>
+                <main>
+                    <div class="summary">
+                        <p>In total, Muter introduced
+                            <span class="strong">\(testReport.totalAppliedMutationOperators)</span> mutants in
+                            <span class="strong">\(testReport.fileReports.count)</span> files.
+                        </p>
+                    </div>
+                    <div class="divider">
+                        <span class="divider-content">Mutation Operators per File</span>
+                    </div>
+                    <div class="mutation-operators-per-file">
+                        <div class="toggle">
+                            <input id="show-more-mutation-operators-per-file" type="checkbox" onclick="showHide(this.checked, 'mutation-operators-per-file');" />
+                            <label for="show-more-mutation-operators-per-file">Show all</label>
+                        </div>
+                        \(testReport.fileReports.scoreHTMLTable())
+                    </div>
+                    <div class="divider">
+                        <span class="divider-content">Applied Mutation Operators</span>
+                    </div>
+                    <div class="applied-operators">
+                        <div class="toggle">
+                            <input id="show-more-applied-operators" type="checkbox" onclick="showHide(this.checked, 'applied-operators');" />
+                            <label for="show-more-applied-operators">Show all</label>
+                        </div>
+                        \(testReport.fileReports.operatorsHTMLTable())
+                    </div>
+                </main>
+                <footer>
+                    <div class="footer">\(now().string))</div>
+                </footer>
+            </div>
+        </body>
     </html>
     """
 }
 
-private func makeHeader(
-    _ testReport: MuterTestReport
-) -> String {
-    """
-    <header>
-        <div class="logo">
-            \(muterLogo)
-        </div>
-        <div class="header-item">
-            <div class="box" style="background-color: \(testReport.scoreColor);">
-                <p class="small">Mutation Score</p>
-                <h1>\(testReport.globalMutationScore)%</h1>
-            </div>
-        </div>
-        <div class="header-item">
-            <div class="box" style="background-color: #3498db;">
-                <p class="small">Operators Applied</p>
-                <h1>\(testReport.totalAppliedMutationOperators)</h1>
-            </div>
-        </div>
-    </header>
-    """
+private extension Date {
+    var string: String {
+        let formatter = DateFormatter()
+        formatter.dateFormat = "EEEE, MMMM d yyyy HH:mm:ss"
+
+        return formatter.string(from: self)
+    }
 }
 
-private func makeMain(
-    _ testReport: MuterTestReport
-) -> String {
-    return """
-    <main>
-        \(makeSummary(testReport))
-        \(makeMutationsPerFileSection(testReport))
-        \(makeAppliedMutationOperatorsSection(testReport))
-    </main>
-    """
-}
+private extension Array where Element == MuterTestReport.FileReport {
+    func scoreHTMLTable() -> String {
+        let thead =
+            """
+            <thead>
+                <tr>
+                    <th>File</th>
+                    <th># of Introduced Mutants</th>
+                    <th>Mutation Score</th>
+                </tr>
+            </thead>
+            """
 
-private func makeFooter() -> String {
-    let formatter = DateFormatter()
-    formatter.dateFormat = "EEEE, MMMM d yyyy HH:mm:ss"
-
-    return """
-    <footer>
-        <div class="footer">\(formatter.string(from: .init()))</div>
-    </footer>
-    """
-}
-
-private func makeSummary(
-    _ testReport: MuterTestReport
-) -> String {
-    """
-    <div class="summary">
-        <p>In total, Muter introduced <span class="strong">\(testReport.totalAppliedMutationOperators)</span> mutants in <span class="strong">\(testReport.fileReports.count)</span> files.</p>
-    </div>
-    """
-}
-
-private func makeMutationsPerFileSection(
-    _ testReport: MuterTestReport
-) -> String {
-    """
-    <div class="divider">
-        <span class="divider-content">Mutation Operators per File</span>
-    </div>
-    <div class="mutation-operators-per-file">
-        <div class="toggle">
-            <input id="show-more-mutation-operators-per-file" type="checkbox" onclick="showHide(this, 'mutation-operators-per-file');" />
-            <label for="show-more-mutation-operators-per-file">Show all</label>
-        </div>
-        \(makeMutationScoresTable(fileReports: testReport.fileReports))
-    </div>
-    """
-}
-
-private func makeAppliedMutationOperatorsSection(
-    _ testReport: MuterTestReport
-) -> String {
-    """
-    <div class="divider">
-        <span class="divider-content">Applied Mutation Operators</span>
-    </div>
-    <div class="applied-operators">
-        <div class="toggle">
-            <input id="show-more-applied-operators" type="checkbox" onclick="showHide(this, 'applied-operators');" />
-            <label for="show-more-applied-operators">Show all</label>
-        </div>
-        \(makeMutationOperatorsTable(fileReports: testReport.fileReports))
-    </div>
-    """
-}
-
-private func makeMutationOperatorsTable(
-    fileReports: [MuterTestReport.FileReport]
-) -> String {
-    let thead =
-        """
-        <thead>
-            <tr>
-                <th>File</th>
-                <th>Applied Mutation Operator</th>
-                <th>Code Changes</th>
-                <th>Mutation Test Result</th>
-            </tr>
-        </thead>
-        """
-
-    let tbody = fileReports.sorted().compactMap { report in
-        report.appliedOperators.compactMap { appliedOperator in
+        let tbody = sorted().compactMap { report in
             """
             <tr>
-                <td>\(report.fileName):\(appliedOperator.mutationPoint.position.line)</td>
-                <td>\(appliedOperator.mutationPoint.mutationOperatorId.rawValue)</td>
-                <td>
-                    <button onclick="showChange(this);">+</button>
-                </td>
-                <td>\(appliedOperator.testSuiteOutcome.asIcon)</td>
-            </tr>
-            <tr class="mutation-snapshot-before-row">
-                <td class="mutation-snapshot-before" colspan="4">-  \(appliedOperator.mutationSnapshot.before)</td>
-            </tr>
-            <tr class="mutation-snapshot-after-row">
-                <td class="mutation-snapshot-after" colspan="4">+  \(appliedOperator.mutationSnapshot.after)</td>
+              <td>\(report.fileName)</td>
+              <td>\(report.appliedOperators.count)</td>
+              <td style="color: \(report.scoreColor);">\(report.mutationScore)</td>
             </tr>
             """
         }.joined(separator: "\n")
-    }.joined(separator: "\n")
 
-    return """
-    <table id=\"applied-operators\">
-        \(thead)
-        <tbody>
-        \(tbody)
-        </tbody>
-    </table>
-    """
-}
+        return """
+        <table id=\"mutation-operators-per-file\">
+            \(thead)
+            <tbody>
+            \(tbody)
+            </tbody>
+        </table>
+        """
+    }
 
-private func makeMutationScoresTable(
-    fileReports: [MuterTestReport.FileReport]
-) -> String {
-    let thead =
-        """
-        <thead>
-            <tr>
-                <th>File</th>
-                <th># of Introduced Mutants</th>
-                <th>Mutation Score</th>
-            </tr>
-        </thead>
-        """
+    func operatorsHTMLTable() -> String {
+        let thead =
+            """
+            <thead>
+                <tr>
+                    <th>File</th>
+                    <th>Applied Mutation Operator</th>
+                    <th>Code Changes</th>
+                    <th>Mutation Test Result</th>
+                </tr>
+            </thead>
+            """
 
-    let tbody = fileReports.sorted().compactMap { report in
-        """
-        <tr>
-          <td>\(report.fileName)</td>
-          <td>\(report.appliedOperators.count)</td>
-          <td style="color: \(report.scoreColor);">\(report.mutationScore)</td>
-        </tr>
-        """
-    }.joined(separator: "\n")
+        let tbody = sorted().compactMap { report in
+            report.appliedOperators.compactMap { appliedOperator in
+                """
+                <tr>
+                    <td>\(report.fileName):\(appliedOperator.mutationPoint.position.line)</td>
+                    <td>\(appliedOperator.mutationPoint.mutationOperatorId.rawValue)</td>
+                    <td>
+                        <button onclick="showChange(this);">+</button>
+                    </td>
+                    <td>\(appliedOperator.testSuiteOutcome.asIcon)</td>
+                </tr>
+                <tr class="mutation-snapshot-before-row">
+                    <td class="mutation-snapshot-before" colspan="4">-  \(appliedOperator.mutationSnapshot.before)</td>
+                </tr>
+                <tr class="mutation-snapshot-after-row">
+                    <td class="mutation-snapshot-after" colspan="4">+  \(appliedOperator.mutationSnapshot.after)</td>
+                </tr>
+                """
+            }.joined(separator: "\n")
+        }.joined(separator: "\n")
 
-    return """
-    <table id=\"mutation-operators-per-file\">
-        \(thead)
-        <tbody>
-        \(tbody)
-        </tbody>
-    </table>
-    """
+        return """
+        <table id=\"applied-operators\">
+            \(thead)
+            <tbody>
+            \(tbody)
+            </tbody>
+        </table>
+        """
+    }
 }
 
 extension TestSuiteOutcome {
