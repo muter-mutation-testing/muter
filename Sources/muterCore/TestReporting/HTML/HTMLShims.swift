@@ -569,11 +569,23 @@ let javascript =
         showFirstRows(rows, displayCount);
     }
 
+    function showHide(shouldShow, tableId) {
+        var rows = Array.from(document.getElementById(tableId).tBodies[0].rows)
+        .filter(row => { return !isSnapshotRow(row); });
+        
+        var displayCount = shouldShow ? rows.length : 10;
+        
+        showFirstRows(rows, displayCount);
+    }
+    
     function showFirstRows(rows, count) {
-        rows.slice(1, count).forEach(row => { row.style.display = "table-row"; });
+        rows.slice(0, count).forEach(row => { row.style.display = "table-row"; });
+        
+        const remeaning = Math.max(rows.length - count - 1, 0);
 
-        const remeaning = Math.max(rows.length - count - 1, 1);
-        rows.slice(-remeaning).forEach(row => { row.style.display = "none"; });
+        if (remeaning != 0) {
+            rows.slice(-remeaning).forEach(row => { row.style.display = "none"; });
+        }
     }
 
     function showChange(button) {
