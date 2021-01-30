@@ -13,8 +13,7 @@ public struct MuterTestReport {
         globalMutationScore = mutationScore(from: outcomes.map { $0.testSuiteOutcome })
         totalAppliedMutationOperators = outcomes.count
         numberOfKilledMutants = outcomes
-            .map { $0.testSuiteOutcome }
-            .count { $0 == .failed || $0 == .runtimeError }
+            .count { $0.testSuiteOutcome == .failed || $0.testSuiteOutcome == .runtimeError }
         fileReports = MuterTestReport.fileReports(from: outcomes)
     }
 }
