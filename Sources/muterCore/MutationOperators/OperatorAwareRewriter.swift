@@ -3,6 +3,7 @@ import SwiftSyntax
 class OperatorAwareRewriter: SyntaxRewriter, PositionSpecificRewriter {
     let positionToMutate: MutationPosition
     var operatorSnapshot: MutationOperatorSnapshot = .null
+    var currentExpression: String = ""
     
     var oppositeOperatorMapping: [String: String] = [:]
     
@@ -12,7 +13,7 @@ class OperatorAwareRewriter: SyntaxRewriter, PositionSpecificRewriter {
 
     override func visit(_ token: TokenSyntax) -> Syntax {
         guard token.position == positionToMutate,
-            let `oppositeOperator` = oppositeOperator(for: token.tokenKind) else {
+            let oppositeOperator = oppositeOperator(for: token.tokenKind) else {
                 return Syntax(token)
         }
 
@@ -22,7 +23,7 @@ class OperatorAwareRewriter: SyntaxRewriter, PositionSpecificRewriter {
             description: "changed \(token.description.trimmed) to \(oppositeOperator)"
         )
 
-        return mutated(token, using: `oppositeOperator`)
+        return mutated(token, using: oppositeOperator)
     }
     
     private func oppositeOperator(for tokenKind: TokenKind) -> String? {
