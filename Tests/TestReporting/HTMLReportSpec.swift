@@ -45,7 +45,7 @@ class HTMLReportSpec: QuickSpec {
 }
 
 private func loadReport() -> String {
-    guard let data = FileManager.default.contents(atPath: "\(TestSuiteResultParsingSpec().fixturesDirectory)/TestReporting/testReport.html"),
+    guard let data = FileManager.default.contents(atPath: "\(HTMLReportSpec().fixturesDirectory)/TestReporting/testReport.html"),
         let string = String(data: data, encoding: .utf8) else {
             fatalError("Unable to load reportfor testing")
     }
