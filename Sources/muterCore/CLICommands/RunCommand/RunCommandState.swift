@@ -38,6 +38,7 @@ extension RunCommandState {
         case configurationParsed(MuterConfiguration)
         case projectDirectoryUrlDiscovered(URL)
         case tempDirectoryUrlCreated(URL)
+        case filesWithoutCoverage([FilePath])
         case sourceFileCandidatesDiscovered([FilePath])
         case mutationPointsDiscovered([MutationPoint])
         case sourceCodeParsed([FilePath: SourceFileSyntax])
@@ -56,6 +57,13 @@ extension RunCommandState {
                 self.projectDirectoryURL = projectDirectoryURL
             case .tempDirectoryUrlCreated(let tempDirectoryURL):
                 self.tempDirectoryURL = tempDirectoryURL
+            case .filesWithoutCoverage(let filesWithoutCoverage):
+                self.muterConfiguration = MuterConfiguration(
+                    executable: muterConfiguration.testCommandExecutable,
+                    arguments: muterConfiguration.testCommandArguments,
+                    excludeList: muterConfiguration.excludeFileList + filesWithoutCoverage,
+                    excludeCallList: muterConfiguration.excludeCallList
+                )
             case .sourceFileCandidatesDiscovered(let sourceFileCandidates):
                 self.sourceFileCandidates = sourceFileCandidates
             case .mutationPointsDiscovered(let mutationPoints):

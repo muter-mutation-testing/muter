@@ -65,7 +65,6 @@ private extension MutationTestingDelegate {
     }
 
     func testProcess(with configuration: MuterConfiguration, and fileHandle: FileHandle) throws -> Process {
-
         let process = Process()
         process.arguments = configuration.testCommandArguments
         process.executableURL = URL(fileURLWithPath: configuration.testCommandExecutable)

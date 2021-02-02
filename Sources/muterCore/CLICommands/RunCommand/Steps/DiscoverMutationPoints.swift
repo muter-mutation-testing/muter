@@ -97,7 +97,7 @@ private class ExcludedMutationPointsDetector: SyntaxAnyVisitor, PositionDiscover
     
     private let sourceFileInfo: SourceFileInfo
     
-    init(configuration: MuterConfiguration?, sourceFileInfo: SourceFileInfo) {
+    required init(configuration: MuterConfiguration?, sourceFileInfo: SourceFileInfo) {
         self.sourceFileInfo = sourceFileInfo
     }
     
