@@ -81,7 +81,16 @@ let package = Package(
                 "Pathos",
                 .product(name: "ArgumentParser", package: "swift-argument-parser")
             ],
-            path: "Sources/muterCore"
+            path: "Sources/muterCore",
+            resources: [
+                .copy("TestReporting/HTML/Resources/javascript.js"),
+                .copy("TestReporting/HTML/Resources/normalize.css"),
+                .copy("TestReporting/HTML/Resources/report.css"),
+                .copy("TestReporting/HTML/Resources/muterLogo.svg"),
+                .copy("TestReporting/HTML/Resources/testFailed.svg"),
+                .copy("TestReporting/HTML/Resources/testPassed.svg"),
+                .copy("TestReporting/HTML/Resources/testBuildError.svg"),
+            ]
         ),        
         .target(
             name: "TestingExtensions",

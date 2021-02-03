@@ -12,7 +12,7 @@ class MuterTestReportSpec: QuickSpec {
                                                                         testSuiteOutcome: .failed,
                                                                         mutationPoint: MutationPoint(mutationOperatorId: .ror,
                                                                         filePath: "/tmp/a module.swift", position: .firstPosition),
-                                                                        mutationSnapshot: MutationOperatorSnapshot(
+                                                                        mutationSnapshot: .make(
                                                                             before: "==",
                                                                             after: "!=",
                                                                             description: "changed from == to !="

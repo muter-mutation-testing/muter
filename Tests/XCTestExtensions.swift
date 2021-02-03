@@ -37,7 +37,7 @@ public extension XCTestCase {
                 mutationSnapshot: MutationOperatorSnapshot(
                     before: "==",
                     after: "!=",
-                    description: "from == to !="
+                    description: "changed from == to !="
                 )
             ),
             MutationTestOutcome(
@@ -49,7 +49,7 @@ public extension XCTestCase {
                 mutationSnapshot: MutationOperatorSnapshot(
                     before: "==",
                     after: "!=",
-                    description: "from == to !="
+                    description: "changed from == to !="
                 )
             ),
             MutationTestOutcome(
@@ -61,7 +61,7 @@ public extension XCTestCase {
                 mutationSnapshot: MutationOperatorSnapshot(
                     before: "==",
                     after: "!=",
-                    description: "from == to !="
+                    description: "changed from == to !="
                 )
             ),
             
@@ -74,7 +74,7 @@ public extension XCTestCase {
                 mutationSnapshot: MutationOperatorSnapshot(
                     before: "==",
                     after: "!=",
-                    description: "from == to !="
+                    description: "changed from == to !="
                 )
             ),
             MutationTestOutcome(
@@ -86,7 +86,7 @@ public extension XCTestCase {
                 mutationSnapshot: MutationOperatorSnapshot(
                     before: "==",
                     after: "!=",
-                    description: "from == to !="
+                    description: "changed from == to !="
                 )
             ),
             
@@ -99,7 +99,7 @@ public extension XCTestCase {
                 mutationSnapshot: MutationOperatorSnapshot(
                     before: "==",
                     after: "!=",
-                    description: "from == to !="
+                    description: "changed from == to !="
                 )
             ),
             MutationTestOutcome(
@@ -111,7 +111,7 @@ public extension XCTestCase {
                 mutationSnapshot: MutationOperatorSnapshot(
                     before: "==",
                     after: "!=",
-                    description: "from == to !="
+                    description: "changed from == to !="
                 )
             ),
             MutationTestOutcome(
@@ -123,7 +123,7 @@ public extension XCTestCase {
                 mutationSnapshot: MutationOperatorSnapshot(
                     before: "==",
                     after: "!=",
-                    description: "from == to !="
+                    description: "changed from == to !="
                 )
             ),
             
@@ -136,7 +136,7 @@ public extension XCTestCase {
                 mutationSnapshot: MutationOperatorSnapshot(
                     before: "==",
                     after: "!=",
-                    description: "from == to !="
+                    description: "changed from == to !="
                 )
             )
         ]
