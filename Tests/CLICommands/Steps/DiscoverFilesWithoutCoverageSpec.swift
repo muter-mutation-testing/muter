@@ -132,18 +132,21 @@ class DiscoverFilesWithoutCoverageSpec: QuickSpec {
 }
 
 private class LaunchableSpy: Launchable {
-    private let standardOutputStub = StandardOutputStub()
+    var executableURL: URL?
+    var arguments: [String]?
+    var standardOutput: Any?
+    
     var stdoutToBeReturned = "" {
         didSet {
-            standardOutputStub.dataToBeReturned = stdoutToBeReturned.data(using: .utf8)
+            stdoutToBeReturned
+                .data(using: .utf8)
+                .map(queue.enqueue)
         }
     }
 
-    var executableURL: URL?
-    var arguments: [String]?
-    var standardOutput: Any? {
-        get { standardOutputStub }
-        set { }
+    private let queue = Queue()
+    var availableData: Data? {
+        queue.dequeue()
     }
     
     var runCalled = false
@@ -155,16 +158,6 @@ private class LaunchableSpy: Launchable {
     func waitUntilExit() {
         waitUntilExitCalled = true
     }
-}
-
-private class StandardOutputStub: StandardOutput {
-    private let queue = Queue()
-    var dataToBeReturned: Data? {
-        didSet {
-            queue.enqueue(dataToBeReturned!)
-        }
-    }
-    func data() -> Data? { queue.dequeue() }
 }
 
 private class Queue {

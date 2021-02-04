@@ -4,36 +4,32 @@ protocol Launchable: AnyObject {
     var executableURL: URL? { get set }
     var arguments: [String]? { get set }
     var standardOutput: Any? { get set }
+    var availableData: Data? { get }
     
     func run() throws
     func waitUntilExit()
 }
 
 extension Process: Launchable {
-    var stdout: StandardOutput? { standardOutput as? StandardOutput }
-}
-
-protocol StandardOutput {
-    func data() -> Data?
-}
-
-extension Pipe: StandardOutput {
-    func data() -> Data? {
-        if #available(OSX 10.15.4, *) {
-            return try? fileHandleForReading.readToEnd()
-        } else {
-            return fileHandleForReading.readDataToEndOfFile()
+    var availableData: Data? {
+        var data = Data()
+        while isRunning {
+            (standardOutput as? Pipe).flatMap {
+                data += $0.fileHandleForReading.availableData
+            }
         }
+        
+        return data
     }
 }
 
-struct DiscoverFilesWithoutCoverage: RunCommandStep {
-    private let process: Launchable
+final class DiscoverFilesWithoutCoverage: RunCommandStep {
+    private var process: Launchable
+    private let makeProcess: () -> Launchable
     
-    init(process: Launchable = Process()) {
-        self.process = process
-
-        process.standardOutput = Pipe()
+    init(process: @autoclosure @escaping () -> Launchable = Process()) {
+        self.makeProcess = process
+        self.process = makeProcess()
     }
     
     func run(with state: AnyRunCommandState) -> Result<[RunCommandState.Change], MuterError> {
@@ -57,8 +53,9 @@ struct DiscoverFilesWithoutCoverage: RunCommandStep {
             url: configuration.testCommandExecutable,
             arguments: configuration.testCommandArguments + ["-enableCodeCoverage", "YES"],
             toString
-        ).flatMap { $0.firstMatch("^.*.xcresult$") }
+        ).flatMap { firstMatch(in: $0, "^.*.xcresult$") }
          .flatMap(notEmpty)
+         .map(\.trimmed)
     }
 
     private func runXcodeSelect() -> String? {
@@ -89,15 +86,18 @@ struct DiscoverFilesWithoutCoverage: RunCommandStep {
         arguments: [String],
         _ transform: (Data) -> A?
     ) -> A? {
+        process = makeProcess()
+        process.standardOutput = Pipe()
         process.executableURL = URL(fileURLWithPath: url)
         process.arguments = arguments
 
         try? process.run()
+
+        let output = process.availableData ?? Data()
+
         process.waitUntilExit()
 
-        let standardOutput = process.standardOutput as? StandardOutput
-
-        return standardOutput?.data().flatMap(transform)
+        return transform(output)
     }
     
     private func toString(_ data: Data) -> String? {
@@ -115,7 +115,7 @@ struct DiscoverFilesWithoutCoverage: RunCommandStep {
               let result = regex.firstMatch(
                 in: input,
                 options: [],
-                range: .init(location: 0, length: utf8.count)),
+                range: .init(location: 0, length: input.utf8.count)),
               let range = Range(result.range, in: input) else {
             return nil
         }

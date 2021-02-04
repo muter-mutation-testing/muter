@@ -1,6 +1,7 @@
 import Quick
 import Nimble
 import Foundation
+import ArgumentParser
 @testable import muterCore
 
 class RunCommandHandlerSpec: QuickSpec {
@@ -114,8 +115,6 @@ class RunCommandHandlerSpec: QuickSpec {
                     }
                 }
             }
-            
         }
     }
 }
-
