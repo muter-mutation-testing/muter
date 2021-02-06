@@ -1,4 +1,5 @@
 // swift-tools-version:5.3
+
 import PackageDescription
 import Foundation
 
@@ -37,16 +38,19 @@ extension Pipe {
     }
 }
 
-let rPathLinkerSetting: LinkerSetting = {
+// HACK: When developing, we need to set rPath to have tests running. On terminal, we must skip it.
+let needsToSetRPath = ProcessInfo.processInfo.environment.values.contains("/usr/bin/swift")
+
+var rPathLinkerSetting: LinkerSetting = .unsafeFlags([])
+if !needsToSetRPath {
     let xcodeSelectPath = Executable("/usr/bin/xcode-select")("-p") ?? ""
     let searchPath = xcodeSelectPath.trimmingCharacters(in: CharacterSet.whitespacesAndNewlines)
         + "/Toolchains/XcodeDefault.xctoolchain/usr/lib/swift/macosx"
     
-    return .unsafeFlags([
-        "-rpath",
-        searchPath
-    ])
-}()
+    let rpath = searchPath.isEmpty ? [] : [ "-rpath", searchPath]
+
+    rPathLinkerSetting = .unsafeFlags(rpath)
+}
 
 let package = Package(
     name: "muter",
@@ -83,13 +87,7 @@ let package = Package(
             ],
             path: "Sources/muterCore",
             resources: [
-                .copy("TestReporting/HTML/Resources/javascript.js"),
-                .copy("TestReporting/HTML/Resources/normalize.css"),
-                .copy("TestReporting/HTML/Resources/report.css"),
-                .copy("TestReporting/HTML/Resources/muterLogo.svg"),
-                .copy("TestReporting/HTML/Resources/testFailed.svg"),
-                .copy("TestReporting/HTML/Resources/testPassed.svg"),
-                .copy("TestReporting/HTML/Resources/testBuildError.svg"),
+                .copy("Resources")
             ]
         ),        
         .target(
