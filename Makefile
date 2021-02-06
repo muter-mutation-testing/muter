@@ -7,38 +7,38 @@ builddir = $(repodir)/.build
 flags=-Xlinker -weak-l_InternalSwiftSyntaxParser -Xswiftc -suppress-warnings
 
 build: 
-	swift build -c debug $(flags)
+	@swift build -c debug $(flags)
 
 build-release: 
-	swift build -c release --product muter --disable-sandbox $(flags)
+	@swift build -c release --product muter --disable-sandbox $(flags)
 
 project:
-	swift package generate-xcodeproj
+	@xed .
 
 release: 
-	./Scripts/shipIt.sh $(version)
+	@./Scripts/shipIt.sh $(version)
 
 install: build-release
-	install -d "$(bindir)" "$(libdir)"
-	install "$(builddir)/release/muter" "$(bindir)"
+	@install -d "$(bindir)" "$(libdir)"
+	@install "$(builddir)/release/muter" "$(bindir)"
 
 uninstall:
-	rm -rf "$(bindir)/muter"
+	@rm -rf "$(bindir)/muter"
 
 clean:
-	rm -rf .build
+	@rm -rf .build
 
 run: build
-	$(builddir)/debug/muter
+	@$(builddir)/debug/muter
 
-test: build
-	./Scripts/test_only.sh "muterTests"
+test:
+	@swift test --filter "muterTests.*"
 	
 acceptance-test: build
-	./AcceptanceTests/runAcceptanceTests.sh
+	@./AcceptanceTests/runAcceptanceTests.sh
 
 regression-test: build
-	./RegressionTests/runRegressionTests.sh
+	@./RegressionTests/runRegressionTests.sh
 
 mutation-test: clean
 	muter
@@ -46,10 +46,10 @@ mutation-test: clean
 # ci
 
 ci-regression-test: build
-	./Scripts/ci/regression/run_regression_tests.sh
+	@./Scripts/ci/regression/run_regression_tests.sh
 
-ci-test: project build
-	./Scripts/ci/pull\ request/run_unit_test.sh
-	./Scripts/ci/pull\ request/extract_coverage.sh
+ci-test: build
+	@./Scripts/ci/pull\ request/run_unit_test.sh
+	@./Scripts/ci/pull\ request/extract_coverage.sh
 
 .PHONY: build clean test run install uninstall release
