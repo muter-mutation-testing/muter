@@ -32,7 +32,7 @@ run: build
 	@$(builddir)/debug/muter
 
 test:
-	@swift test --filter "muterTests.*"
+	@swift test
 	
 acceptance-test: build
 	@./AcceptanceTests/runAcceptanceTests.sh
