@@ -11,7 +11,7 @@ function passed() {
 function failed() {
 	envman add --key BADGE_COLOR --value "red"
 	envman add --key BADGE_MESSAGE --value "failed"
-	exit -1;
+	exit 1;
 }
 
 make regression-test && passed || failed

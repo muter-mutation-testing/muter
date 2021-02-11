@@ -78,6 +78,8 @@ cd ../..
 
 echo "Running tests..."
 
-swift test --filter "muterAcceptanceTests.*"
+export acceptance_tests=true
+swift test
+unset acceptance_tests
 
 echo "📳📳📳📳📳📳📳 Acceptance Testing has finished 📳📳📳📳📳📳📳"
