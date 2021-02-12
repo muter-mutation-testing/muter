@@ -13,13 +13,13 @@ let package = Package(
     dependencies: [
         .package(name: "SwiftSyntax", url: "https://github.com/apple/swift-syntax.git", .revision("0.50300.0")),
         .package(name: "Progress", url: "https://github.com/jkandzi/Progress.swift", from: "0.4.0"),
-        .package(url: "https://github.com/apple/swift-argument-parser.git", from: "0.3.0"),
-        .package(url: "https://github.com/onevcat/Rainbow", from: "3.0.0"),
-        .package(url: "https://github.com/Quick/Quick", from: "1.3.2"),
-        .package(url: "https://github.com/Quick/Nimble", from: "7.3.1"),
-        .package(url: "https://github.com/dduan/Pathos", from: "0.2.0"),
-        .package(name: "Difference", url: "https://github.com/krzysztofzablocki/Difference.git", .branch("master")),
-        .package(name: "SnapshotTesting", url: "https://github.com/pointfreeco/swift-snapshot-testing.git", from: "1.1.0")
+        .package(url: "https://github.com/apple/swift-argument-parser.git", from: "0.3.2"),
+        .package(url: "https://github.com/onevcat/Rainbow", from: "3.2.0"),
+        .package(url: "https://github.com/Quick/Quick", from: "3.1.2"),
+        .package(url: "https://github.com/Quick/Nimble", from: "9.0.0"),
+        .package(url: "https://github.com/dduan/Pathos", from: "0.4.0"),
+        .package(name: "Difference", url: "https://github.com/krzysztofzablocki/Difference.git", from: "0.5.0"),
+        .package(name: "SnapshotTesting", url: "https://github.com/pointfreeco/swift-snapshot-testing.git", from: "1.8.2")
     ],
     targets: [
         .target(
