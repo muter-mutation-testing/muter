@@ -120,7 +120,7 @@ class ReporterSpec: QuickSpec {
 private func loadReport() -> String {
     guard let data = FileManager.default.contents(atPath: "\(ReporterSpec().fixturesDirectory)/TestReporting/testReport.txt"),
         let string = String(data: data, encoding: .utf8) else {
-            fatalError("Unable to load reportfor testing")
+            fatalError("Unable to load report for testing")
     }
 
     return string
