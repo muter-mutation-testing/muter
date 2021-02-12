@@ -1,6 +1,5 @@
 import Foundation
 import Rainbow
-import SwiftSyntax
 
 func generateAppliedMutationOperatorsCLITable(from fileReports: [MuterTestReport.FileReport], coloringFunction: ([CLITable.Row]) -> [CLITable.Row] = applyMutationTestResultsColor) -> CLITable {
     var appliedMutations = [CLITable.Row]()
