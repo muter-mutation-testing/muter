@@ -2,4 +2,4 @@
 
 set -o pipefail
 
-make acceptance-test
+make acceptance-test && exit ${PIPESTATUS[0]}
