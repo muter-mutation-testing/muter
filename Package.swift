@@ -117,9 +117,9 @@ extension PackageDescription.Target {
     
     private var linkerSetting: LinkerSetting {
         let xcodeFolder = Executable("/usr/bin/xcode-select")("-p") ?? ""
-        let tollchainFolder = "\(xcodeFolder.trim)/Toolchains/XcodeDefault.xctoolchain/usr/lib/swift/macosx"
+        let toolchainFolder = "\(xcodeFolder.trim)/Toolchains/XcodeDefault.xctoolchain/usr/lib/swift/macosx"
         
-        return .unsafeFlags(["-rpath", tollchainFolder])
+        return .unsafeFlags(["-rpath", toolchainFolder])
     }
 }
 
