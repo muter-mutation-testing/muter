@@ -6,7 +6,7 @@ extension ChangeLogicalConnectorOperator {
             super.init(positionToMutate: positionToMutate)
             oppositeOperatorMapping = [
                 "||": "&&",
-                "&&": "||",
+                "&&": "||"
             ]
         }
     }

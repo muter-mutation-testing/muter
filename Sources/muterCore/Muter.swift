@@ -7,7 +7,7 @@ struct MuterCommand: ParsableCommand {
         version: version,
         subcommands: [
             Init.self,
-            Run.self,
+            Run.self
         ],
         defaultSubcommand: Run.self
     )

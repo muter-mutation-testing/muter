@@ -76,9 +76,10 @@ struct ProgressBarMultilineTerminalPrinter: ProgressBarPrinter {
         print("")
     }
     
+
     mutating func display(_ progressBar: ProgressBar) {
         let currentTime = getTimeOfDay()
-        if (currentTime - lastPrintedTime > 0.1 || progressBar.index == progressBar.count) {
+        if currentTime - lastPrintedTime > 0.1 || progressBar.index == progressBar.count {
             let lines = "\u{1B}[1A\u{1B}".repeated(numberOfLines)
             print("\(lines)[K\(progressBar.value)")
             lastPrintedTime = currentTime

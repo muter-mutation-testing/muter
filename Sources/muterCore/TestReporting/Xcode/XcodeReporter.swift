@@ -29,8 +29,8 @@ final class XcodeReporter: Reporter {
             Number of killed mutants: \(report.numberOfKilledMutants)
             """
     }
-    
-    private func outcomeIntoXcodeString(outcome: MutationTestOutcome)  -> String  {
+
+    private func outcomeIntoXcodeString(outcome: MutationTestOutcome) -> String {
         // {full_path_to_file}{:line}{:character}: {error,warning}: {content}
 
         return "\(outcome.originalProjectPath):" +

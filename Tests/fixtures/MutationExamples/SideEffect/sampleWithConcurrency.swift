@@ -5,7 +5,7 @@ struct Async {
     private let condition = NSCondition()
     
     private func semaphoreLock(block: () -> Void) {
-        defer{ semaphore.signal() }
+        defer { semaphore.signal() }
         semaphore.wait()
         block()
     }

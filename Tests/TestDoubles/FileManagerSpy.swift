@@ -18,7 +18,7 @@ class FileManagerSpy: Spy, FileSystemManager {
     var fileExistsToReturn: Bool!
 
     var currentDirectoryPath: String {
-        return currentDirectoryPathToReturn 
+        return currentDirectoryPathToReturn
     }
 
     func createDirectory(atPath path: String, withIntermediateDirectories createIntermediates: Bool, attributes: [FileAttributeKey: Any]? = nil) throws {

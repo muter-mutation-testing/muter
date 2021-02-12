@@ -89,8 +89,7 @@ class RunCommandHandlerSpec: QuickSpec {
 
                     do {
                         try runCommandHandler.run()
-                    }
-                    catch {
+                    } catch {
                         runCommandResult = error
                     }
                 }
@@ -118,4 +117,3 @@ class RunCommandHandlerSpec: QuickSpec {
         }
     }
 }
-

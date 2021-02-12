@@ -1,4 +1,3 @@
-
 func callExcluded() {
     causeSideEffect()
 }

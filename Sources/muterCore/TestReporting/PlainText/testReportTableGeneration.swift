@@ -17,7 +17,7 @@ func generateAppliedMutationOperatorsCLITable(from fileReports: [MuterTestReport
     return CLITable(padding: 3, columns: [
         CLITable.Column(title: "File", rows: fileNames),
         CLITable.Column(title: "Applied Mutation Operator", rows: appliedMutations),
-        CLITable.Column(title: "Mutation Test Result", rows: mutationTestResults),
+        CLITable.Column(title: "Mutation Test Result", rows: mutationTestResults)
     ])
 }
 
@@ -34,7 +34,7 @@ func generateMutationScoresCLITable(from fileReports: [MuterTestReport.FileRepor
     var numberOfInsertedMutants = [CLITable.Row]()
     var mutationScores = [CLITable.Row]()
 
-    for fileReport in fileReports  {
+    for fileReport in fileReports {
         fileNames.append(CLITable.Row(value: fileReport.fileName))
         numberOfInsertedMutants.append(CLITable.Row(value: "\(fileReport.appliedOperators.count)"))
         mutationScores.append(CLITable.Row(value: "\(fileReport.mutationScore)"))
@@ -45,11 +45,11 @@ func generateMutationScoresCLITable(from fileReports: [MuterTestReport.FileRepor
     return CLITable(padding: 3, columns: [
         CLITable.Column(title: "File", rows: fileNames),
         CLITable.Column(title: "# of Introduced Mutants", rows: numberOfInsertedMutants),
-        CLITable.Column(title: "Mutation Score", rows: mutationScores),
+        CLITable.Column(title: "Mutation Score", rows: mutationScores)
     ])
 }
 
-// MARK - Coloring Functions
+// MARK: - Coloring Functions
 func applyMutationTestResultsColor(to rows: [CLITable.Row]) -> [CLITable.Row] {
     return rows.map {
         let coloredValue = $0.value == TestSuiteOutcome.failed.asMutationTestOutcome ?

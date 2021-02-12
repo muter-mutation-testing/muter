@@ -97,15 +97,13 @@ extension MutationPoint {
 
 func nextMutationOperator(
     _ index: Int
-) -> MutationOperator.Id
-{
+) -> MutationOperator.Id {
     MutationOperator.Id.allCases[circular: index]
 }
 
 func nextMutationTestOutcome(
     _ index: Int
-) -> TestSuiteOutcome
-{
+) -> TestSuiteOutcome {
     TestSuiteOutcome.allCases[circular: index]
 }
 

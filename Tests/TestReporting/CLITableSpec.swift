@@ -8,14 +8,14 @@ class CLITableSpec: QuickSpec {
             CLITable.Row(value: "file 1.swift"),
             CLITable.Row(value: "file2.swift"),
             CLITable.Row(value: "file 3.swift"),
-            CLITable.Row(value: "file4.swift"),
+            CLITable.Row(value: "file4.swift")
         ])
 
         let mutationScoreColumn = CLITable.Column(title: "Mutation Score", rows: [
             CLITable.Row(value: "60"),
             CLITable.Row(value: "0"),
             CLITable.Row(value: "100"),
-            CLITable.Row(value: "55"),
+            CLITable.Row(value: "55")
         ])
 
         let numberOfAppliedMutationsColumn = CLITable.Column(title: "# of Generated Mutants", rows: [
@@ -28,7 +28,7 @@ class CLITableSpec: QuickSpec {
         let columns = [
             fileColumn,
             numberOfAppliedMutationsColumn,
-            mutationScoreColumn,
+            mutationScoreColumn
         ]
 
         describe("CLITable") {
