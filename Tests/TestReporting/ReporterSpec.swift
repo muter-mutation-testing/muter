@@ -7,6 +7,13 @@ import Rainbow
 @testable import muterCore
 
 class ReporterSpec: QuickSpec {
+    override class func setUp() {
+        // Rainbow is smart, it knows if the stdout is Xcode or the console.
+        // We want it to be the console, otherwise the test results are going to differ when running from Xcode vs console
+        Rainbow.outputTarget = .console
+        super.setUp()
+    }
+
     override func spec() {
         let outcomes = [
             MutationTestOutcome(
