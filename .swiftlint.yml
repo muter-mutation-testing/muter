@@ -1,6 +1,11 @@
+excluded:
+  - .build
+
 included:
   - Sources
   - Tests
-whitelist_rules:
+
+
+only_rules:
  - vertical_whitespace
  - literal_expression_end_indentation
