@@ -12,7 +12,7 @@ In total, Muter introduced 1 mutants in 1 files.
 
 File            Applied Mutation Operator       Mutation Test Result
 ----            -------------------------       --------------------
-file3.swift:0   RelationalOperatorReplacement   [31mmutant survived[0m
+file3.swift:0   RelationalOperatorReplacement   mutant survived
 
 
 --------------------
@@ -24,8 +24,8 @@ These are the mutation scores for your test suite, as well as the files that had
 Mutation scores ignore build errors.
 
 Of the 1 mutants introduced into your code, your test suite killed 0.
-[1mMutation Score of Test Suite: [0m[31m0%[0m
+Mutation Score of Test Suite: 0%
 
 File          # of Introduced Mutants   Mutation Score
 ----          -----------------------   --------------
-file3.swift   1                         [31m0[0m
+file3.swift   1                         0

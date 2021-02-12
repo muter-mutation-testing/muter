@@ -11,6 +11,8 @@ class ReporterSpec: QuickSpec {
         // Rainbow is smart, it knows if the stdout is Xcode or the console.
         // We want it to be the console, otherwise the test results are going to differ when running from Xcode vs console
         Rainbow.outputTarget = .console
+        Rainbow.enabled = false
+
         super.setUp()
     }
 
@@ -69,9 +71,7 @@ class ReporterSpec: QuickSpec {
         describe("text reporter") {
             it("returns the report in text format") {
                 let plainText = PlainTextReporter().report(from: outcomes)
-                expect(plainText).to(
-                    equalWithDiff(loadReport())
-                )
+                expect(plainText).to(equalWithDiff(loadReport()))
             }
         }
 
