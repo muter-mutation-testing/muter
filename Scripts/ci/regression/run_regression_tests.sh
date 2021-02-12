@@ -14,4 +14,4 @@ function failed() {
 	exit 1
 }
 
-make regression-test && exit ${PIPESTATUS[0]}
+make regression-test && passed || failed
