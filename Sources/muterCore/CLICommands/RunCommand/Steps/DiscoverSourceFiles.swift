@@ -93,18 +93,17 @@ private extension DiscoverSourceFiles {
         root: FilePath,
         pattern: FilePath
     ) -> [FilePath] {
-        let path = append(root: root, to: pattern)
-        guard pattern.contains("*"),
-            let paths = try? glob(path),
-            !paths.isEmpty else {
-                return []
+        let path = Path(append(root: root, to: pattern))
+        guard pattern.contains("*"), let paths = try? path.glob(),
+              !paths.isEmpty else {
+            return []
         }
         
-        return paths
+        return paths.map(\.description)
     }
     
     private func append(root: FilePath, to path: FilePath) -> FilePath {
-        return normalize(path: root + "/" + path)
+        return Path(root + "/" + path).normal.description
     }
     
     private func standardizing(path: String) -> String {
