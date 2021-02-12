@@ -60,54 +60,65 @@ let package = Package(
     ]
 )
 
-// MARK: Acceptance Tests & Regression Tests
+resolveTestTargetFromEnviromentVarialbes()
+hookInternalSwiftSyntaxParser()
+isDebuggingMain(false)
 
-let shouldAddAcceptanceTests = ProcessInfo.processInfo.environment.keys.contains("acceptance_tests")
-let shouldAddRegressionTests = ProcessInfo.processInfo.environment.keys.contains("regression_tests")
+/// Make sure to select a single test target
+/// This is important because, as of today, we cannot pick a single test target from the command-line (and filtering also doesn't help)
+/// With that in mind, this (a hack, for sure) will look-up for an env var and pick the test target accodingly.
+func resolveTestTargetFromEnviromentVarialbes() {
+    let shouldAddAcceptanceTests = ProcessInfo.processInfo.environment.keys.contains("acceptance_tests")
+    let shouldAddRegressionTests = ProcessInfo.processInfo.environment.keys.contains("regression_tests")
 
-if shouldAddAcceptanceTests || shouldAddRegressionTests {
-    package.targets.removeAll(where: \.isTest)
-}
+    if shouldAddAcceptanceTests || shouldAddRegressionTests {
+        package.targets.removeAll(where: \.isTest)
+    }
 
-if shouldAddAcceptanceTests {
-    package.targets.append(
-        .testTarget(
-            name: "muterAcceptanceTests",
-            dependencies: ["muterCore", "TestingExtensions"],
-            path: "AcceptanceTests",
-            exclude: ["samples", "runAcceptanceTests.sh"]
+    if shouldAddAcceptanceTests {
+        package.targets.append(
+            .testTarget(
+                name: "muterAcceptanceTests",
+                dependencies: ["muterCore", "TestingExtensions"],
+                path: "AcceptanceTests",
+                exclude: ["samples", "runAcceptanceTests.sh"]
+            )
         )
-    )
-}
+    }
 
-if shouldAddRegressionTests {
-    package.targets.append(
-        .testTarget(
-            name: "muterRegressionTests",
-            dependencies: ["muterCore", "TestingExtensions", "SnapshotTesting"],
-            path: "RegressionTests",
-            exclude: ["samples", "__Snapshots__", "runRegressionTests.sh"]
+    if shouldAddRegressionTests {
+        package.targets.append(
+            .testTarget(
+                name: "muterRegressionTests",
+                dependencies: ["muterCore", "TestingExtensions", "SnapshotTesting"],
+                path: "RegressionTests",
+                exclude: ["samples", "__Snapshots__", "runRegressionTests.sh"]
+            )
         )
-    )
+    }
 }
 
-// MARK: Hacks for lib_InternalSwiftSyntaxParser.dylib
-let isFromTerminal = ProcessInfo.processInfo.environment.values.contains("/usr/bin/swift")
-if !isFromTerminal {
-    package
-        .targets
-        .filter(\.isTest)
-        .forEach { $0.installSwiftSyntaxParser() }
+/// We need to manually add an -rpath to the project so the tests can run via Xcode
+/// If we are running from console (swift build & friend) we don't need to do it
+func hookInternalSwiftSyntaxParser() {
+    let isFromTerminal = ProcessInfo.processInfo.environment.values.contains("/usr/bin/swift")
+    if !isFromTerminal {
+        package
+            .targets
+            .filter(\.isTest)
+            .forEach { $0.installSwiftSyntaxParser() }
+    }
 }
 
-// MARK: Running/Debugging Muter from Xcode
-let isDebug = false
-if isDebug {
-    package
-        .targets
-        .filter { $0.name == "muter" }
-        .first?
-        .installSwiftSyntaxParser()
+/// When debuging from Xcode (via command + R) we need to do the dylib dance
+func isDebuggingMain(_ isDebug: Bool) {
+    if isDebug {
+        package
+            .targets
+            .filter { $0.name == "muter" }
+            .first?
+            .installSwiftSyntaxParser()
+    }
 }
 
 extension PackageDescription.Target {
@@ -117,14 +128,14 @@ extension PackageDescription.Target {
     
     private var linkerSetting: LinkerSetting {
         let xcodeFolder = Executable("/usr/bin/xcode-select")("-p") ?? ""
-        let toolchainFolder = "\(xcodeFolder.trim)/Toolchains/XcodeDefault.xctoolchain/usr/lib/swift/macosx"
+        let toolchainFolder = "\(xcodeFolder.trimmed)/Toolchains/XcodeDefault.xctoolchain/usr/lib/swift/macosx"
         
         return .unsafeFlags(["-rpath", toolchainFolder])
     }
 }
 
 extension String {
-    var trim: String { trimmingCharacters(in: CharacterSet.whitespacesAndNewlines) }
+    var trimmed: String { trimmingCharacters(in: CharacterSet.whitespacesAndNewlines) }
 }
 
 private struct Executable {
