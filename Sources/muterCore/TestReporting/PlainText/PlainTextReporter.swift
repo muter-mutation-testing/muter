@@ -101,7 +101,7 @@ final class PlainTextReporter: Reporter {
                     ProgressPercent(),
                     ColoredProgressBarLine(barLength: 50),
                     SimpleTimeEstimate(
-                        initialEstimate: Double(mutationTestLog.remainingMutationPointsCount!) * mutationTestLog.timePerBuildTestCycle!)
+                        initialEstimate: Double(mutationTestLog.remainingMutationPointsCount!) * mutationTestLog.timePerBuildTestCycle!),
                 ],
                 printer: ProgressBarMultilineTerminalPrinter(numberOfLines: 2)
             )

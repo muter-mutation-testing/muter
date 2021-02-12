@@ -43,7 +43,7 @@ private extension DiscoverSourceFiles {
             "Pods",
             "Spec",
             "Test",
-            "fastlane"
+            "fastlane",
         ]
     }
     

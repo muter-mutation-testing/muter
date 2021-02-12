@@ -17,7 +17,7 @@ func generateAppliedMutationOperatorsCLITable(from fileReports: [MuterTestReport
     return CLITable(padding: 3, columns: [
         CLITable.Column(title: "File", rows: fileNames),
         CLITable.Column(title: "Applied Mutation Operator", rows: appliedMutations),
-        CLITable.Column(title: "Mutation Test Result", rows: mutationTestResults)
+        CLITable.Column(title: "Mutation Test Result", rows: mutationTestResults),
     ])
 }
 
@@ -45,7 +45,7 @@ func generateMutationScoresCLITable(from fileReports: [MuterTestReport.FileRepor
     return CLITable(padding: 3, columns: [
         CLITable.Column(title: "File", rows: fileNames),
         CLITable.Column(title: "# of Introduced Mutants", rows: numberOfInsertedMutants),
-        CLITable.Column(title: "Mutation Score", rows: mutationScores)
+        CLITable.Column(title: "Mutation Score", rows: mutationScores),
     ])
 }
 

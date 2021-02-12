@@ -11,7 +11,7 @@ class TestReportTableGenerationSpec: QuickSpec {
                 FileReportProvider.expectedFileReport3,
                 FileReportProvider.expectedFileReport4,
                 FileReportProvider.expectedFileReport5,
-                FileReportProvider.expectedFileReport2
+                FileReportProvider.expectedFileReport2,
             ]
 
             describe("the applied mutation operators table") {
@@ -26,7 +26,7 @@ class TestReportTableGenerationSpec: QuickSpec {
                             CLITable.Row(value: "file3.swift:0"),
                             CLITable.Row(value: "file3.swift:0"),
                             CLITable.Row(value: "file3.swift:0"),
-                            CLITable.Row(value: "file 4.swift:0")
+                            CLITable.Row(value: "file 4.swift:0"),
                         ]),
                         CLITable.Column(title: "Applied Mutation Operator", rows: [
                             CLITable.Row(value: "RelationalOperatorReplacement"),
@@ -37,7 +37,7 @@ class TestReportTableGenerationSpec: QuickSpec {
                             CLITable.Row(value: "RelationalOperatorReplacement"),
                             CLITable.Row(value: "RelationalOperatorReplacement"),
                             CLITable.Row(value: "RelationalOperatorReplacement"),
-                            CLITable.Row(value: "RelationalOperatorReplacement")
+                            CLITable.Row(value: "RelationalOperatorReplacement"),
                         ]),
                         CLITable.Column(title: "Mutation Test Result", rows: [
                             CLITable.Row(value: "mutant killed (test failure)"),
@@ -48,8 +48,8 @@ class TestReportTableGenerationSpec: QuickSpec {
                             CLITable.Row(value: "mutant killed (test failure)"),
                             CLITable.Row(value: "mutant survived"),
                             CLITable.Row(value: "mutant survived"),
-                            CLITable.Row(value: "mutant survived")
-                        ])
+                            CLITable.Row(value: "mutant survived"),
+                        ]),
                     ])
 
                     let generatedCLITable = generateAppliedMutationOperatorsCLITable(from: fileReports, coloringFunction: { $0 })
@@ -65,20 +65,20 @@ class TestReportTableGenerationSpec: QuickSpec {
                             CLITable.Row(value: "file1.swift"),
                             CLITable.Row(value: "file2.swift"),
                             CLITable.Row(value: "file3.swift"),
-                            CLITable.Row(value: "file 4.swift")
+                            CLITable.Row(value: "file 4.swift"),
                         ]),
                         CLITable.Column(title: "# of Introduced Mutants", rows: [
                             CLITable.Row(value: "3"),
                             CLITable.Row(value: "2"),
                             CLITable.Row(value: "3"),
-                            CLITable.Row(value: "1")
+                            CLITable.Row(value: "1"),
                         ]),
                         CLITable.Column(title: "Mutation Score", rows: [
                             CLITable.Row(value: "66"),
                             CLITable.Row(value: "100"),
                             CLITable.Row(value: "33"),
-                            CLITable.Row(value: "0")
-                        ])
+                            CLITable.Row(value: "0"),
+                        ]),
                     ])
 
                     let generatedCLITable = generateMutationScoresCLITable(from: fileReports, coloringFunction: { $0 })
@@ -91,7 +91,7 @@ class TestReportTableGenerationSpec: QuickSpec {
                 it("colors whether or not a test has failed") {
                     let rows = [
                         CLITable.Row(value: "passed"),
-                        CLITable.Row(value: "failed")
+                        CLITable.Row(value: "failed"),
                     ]
 
                     let coloredRows = applyMutationTestResultsColor(to: rows)
@@ -106,7 +106,7 @@ class TestReportTableGenerationSpec: QuickSpec {
                         CLITable.Row(value: "0"),
                         CLITable.Row(value: "26"),
                         CLITable.Row(value: "51"),
-                        CLITable.Row(value: "76")
+                        CLITable.Row(value: "76"),
                     ]
 
                     let coloredRows = applyMutationScoreColor(to: rows)

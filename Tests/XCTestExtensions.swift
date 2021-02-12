@@ -138,7 +138,7 @@ public extension XCTestCase {
                     after: "!=",
                     description: "changed from == to !="
                 )
-            )
+            ),
         ]
     }
 }

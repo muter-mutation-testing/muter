@@ -22,7 +22,7 @@ class GenerateSwapFilePathsSpec: QuickSpec {
                 beforeEach {
                     state = RunCommandState()
                     state.sourceCodeByFilePath = ["/folder/file1.swift": SyntaxFactory.makeBlankSourceFile(),
-                                                  "/folder/file2.swift": SyntaxFactory.makeBlankSourceFile()]
+                                                  "/folder/file2.swift": SyntaxFactory.makeBlankSourceFile(),]
                     state.tempDirectoryURL = URL(fileURLWithPath: "/workspace")
                     result = generateSwapFilePaths.run(with: state)
                 }
@@ -41,8 +41,8 @@ class GenerateSwapFilePathsSpec: QuickSpec {
                     expect(stateChanges) == [
                         .swapFilePathGenerated([
                             "/folder/file1.swift": "/workspace/muter_tmp/file1.swift",
-                            "/folder/file2.swift": "/workspace/muter_tmp/file2.swift"
-                        ])
+                            "/folder/file2.swift": "/workspace/muter_tmp/file2.swift",
+                        ]),
                     ]
                 }
             }
@@ -70,7 +70,7 @@ class GenerateSwapFilePathsSpec: QuickSpec {
                 let paths = ["some/path/to/aFile", "some/path/to/anotherFile"]
                 let swapFileDirectory = "~"
                 let expectedMapping = ["some/path/to/aFile": "~/aFile",
-                                       "some/path/to/anotherFile": "~/anotherFile"]
+                                       "some/path/to/anotherFile": "~/anotherFile",]
                 
                 expect(generateSwapFilePaths.swapFilePaths(forFilesAt: paths, using: swapFileDirectory)).to(equal(expectedMapping))
             }

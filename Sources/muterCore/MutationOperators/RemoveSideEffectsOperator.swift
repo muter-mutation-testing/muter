@@ -9,7 +9,7 @@ enum RemoveSideEffectsOperator {
             "DispatchSemaphore",
             "NSRecursiveLock",
             "NSCondition",
-            "NSConditionLock"
+            "NSConditionLock",
         ]
 
         private let untestedFunctionNames: [String]

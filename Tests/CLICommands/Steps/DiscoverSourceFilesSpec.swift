@@ -35,7 +35,7 @@ class DiscoverSourceFilesSpec: QuickSpec {
                         "\(path)/ExampleApp/ExampleAppCode.swift",
                         "\(path)/file1.swift",
                         "\(path)/file2.swift",
-                    ])]
+                    ]),]
                 }
 
                 context("when there is a user provided exclude list") {
@@ -60,7 +60,7 @@ class DiscoverSourceFilesSpec: QuickSpec {
                             "\(path)/Directory2/Directory3/file6.swift",
                             "\(path)/file1.swift",
                             "\(path)/file2.swift",
-                        ])]
+                        ]),]
                     }
 
                     context("and it contains a glob expression") {
@@ -75,7 +75,7 @@ class DiscoverSourceFilesSpec: QuickSpec {
                                 excludeList: [
                                     "/Directory2/**/*.swift",
                                     "file1.swift",
-                                    "/ProjectName/**/*.swift"]
+                                    "/ProjectName/**/*.swift",]
                             )
                             state.tempDirectoryURL = URL(fileURLWithPath: path, isDirectory: true)
 
@@ -101,8 +101,8 @@ class DiscoverSourceFilesSpec: QuickSpec {
                                 "\(path)/ProjectName/ProjectName/AppDelegate.swift",
                                 "\(path)/ProjectName/ProjectName/Models/file 1.swift",
                                 "\(path)/ProjectName/ProjectName/Models/file 2.swift",
-                                "\(path)/ProjectName/ProjectName/Models/file 3.swift"
-                            ])]
+                                "\(path)/ProjectName/ProjectName/Models/file 3.swift",
+                            ]),]
                         }
                     }
                 }
@@ -172,8 +172,8 @@ class DiscoverSourceFilesSpec: QuickSpec {
                         expect(stateChanges) == [.sourceFileCandidatesDiscovered([
                             "\(path)/Directory2/Directory3/file6.swift",
                             "\(path)/ExampleApp/ExampleAppCode.swift",
-                            "\(path)/file1.swift"
-                        ])]
+                            "\(path)/file1.swift",
+                        ]),]
                     }
                 }
 
@@ -189,7 +189,7 @@ class DiscoverSourceFilesSpec: QuickSpec {
                             "../ProjectName/AnotherFolder/Module.swift",
                             "./*.swift",
                             "./ProjectName/ProjectName/Models/*.swift",
-                            "./**/*.swift"
+                            "./**/*.swift",
                         ]
                         
                         state.tempDirectoryURL = URL(fileURLWithPath: path, isDirectory: true)
@@ -222,8 +222,8 @@ class DiscoverSourceFilesSpec: QuickSpec {
                             "\(path)/ProjectName/ProjectName/Models/file 2.swift",
                             "\(path)/ProjectName/ProjectName/Models/file 3.swift",
                             "\(path)/ProjectName/ProjectName/Models/file 3.swift",
-                            "\(path)/file1.swift"
-                        ])]
+                            "\(path)/file1.swift",
+                        ]),]
                     }
                 }
                 
@@ -252,13 +252,13 @@ class DiscoverSourceFilesSpec: QuickSpec {
                         expect(stateChanges) == [.sourceFileCandidatesDiscovered([
                             "\(path)/Directory2/Directory3/file6.swift",
                             "\(path)/file1.swift",
-                            "\(path)/file2.swift"
-                        ])]
+                            "\(path)/file2.swift",
+                        ]),]
                         
                         expect(fileManager.methodCalls).to(equal([
                             "fileExists(atPath:)",
                             "fileExists(atPath:)",
-                            "fileExists(atPath:)"
+                            "fileExists(atPath:)",
                         ]))
                     }
                 }

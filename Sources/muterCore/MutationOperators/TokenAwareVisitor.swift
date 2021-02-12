@@ -51,7 +51,7 @@ enum ROROperator {
                 .spacedBinaryOperator(">="),
                 .spacedBinaryOperator("<="),
                 .spacedBinaryOperator("<"),
-                .spacedBinaryOperator(">")
+                .spacedBinaryOperator(">"),
             ]
         }
 
@@ -64,7 +64,7 @@ enum ChangeLogicalConnectorOperator {
             super.init(configuration: configuration, sourceFileInfo: sourceFileInfo)
             tokensToDiscover = [
                 .spacedBinaryOperator("||"),
-                .spacedBinaryOperator("&&")
+                .spacedBinaryOperator("&&"),
             ]
         }
     }

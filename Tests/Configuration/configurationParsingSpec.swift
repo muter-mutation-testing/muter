@@ -20,7 +20,7 @@ class ConfigurationParsingSpec: QuickSpec {
                     "iphonesimulator",
                     "-destination",
                     "platform=iOS Simulator,name=iPhone 8",
-                    "test"
+                    "test",
                 ]))
             }
 

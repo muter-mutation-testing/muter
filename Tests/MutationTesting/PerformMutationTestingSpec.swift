@@ -47,7 +47,7 @@ class PerformMutationTestingSpec: QuickSpec {
                         "backupFile(at:using:)",
                         "writeFile(to:contents:)",
                         "runTestSuite(using:savingResultsIntoFileNamed:)",
-                        "restoreFile(at:using:)"
+                        "restoreFile(at:using:)",
                     ]))
                     
                     expect(delegateSpy.backedUpFilePaths.count) == 2
@@ -68,7 +68,7 @@ class PerformMutationTestingSpec: QuickSpec {
                         MutationTestOutcome(testSuiteOutcome: .failed,
                                             mutationPoint: expectedMutationPoint,
                                             mutationSnapshot: .null,
-                                            originalProjectDirectoryUrl: URL(fileURLWithPath: "/project"))
+                                            originalProjectDirectoryUrl: URL(fileURLWithPath: "/project")),
                     ]
                     
                     guard case .success(let stateChanges) = result! else {
@@ -89,7 +89,7 @@ class PerformMutationTestingSpec: QuickSpec {
                     
                     it("doesn't perform any mutation testing") {
                         expect(delegateSpy.methodCalls).to(equal([
-                            "runTestSuite(using:savingResultsIntoFileNamed:)"
+                            "runTestSuite(using:savingResultsIntoFileNamed:)",
                         ]))
                     }
                     
@@ -110,7 +110,7 @@ class PerformMutationTestingSpec: QuickSpec {
                     
                     it("doesn't perform any mutation testing") {
                         expect(delegateSpy.methodCalls).to(equal([
-                            "runTestSuite(using:savingResultsIntoFileNamed:)"
+                            "runTestSuite(using:savingResultsIntoFileNamed:)",
                         ]))
                     }
                     
@@ -131,7 +131,7 @@ class PerformMutationTestingSpec: QuickSpec {
                     
                     it("doesn't perform any mutation testing") {
                         expect(delegateSpy.methodCalls).to(equal([
-                            "runTestSuite(using:savingResultsIntoFileNamed:)"
+                            "runTestSuite(using:savingResultsIntoFileNamed:)",
                         ]))
                     }
                     
@@ -182,7 +182,7 @@ class PerformMutationTestingSpec: QuickSpec {
                         "backupFile(at:using:)",
                         "writeFile(to:contents:)",
                         "runTestSuite(using:savingResultsIntoFileNamed:)",
-                        "restoreFile(at:using:)"
+                        "restoreFile(at:using:)",
                     ]))
                     
                     expect(delegateSpy.backedUpFilePaths.count).to(equal(5))
