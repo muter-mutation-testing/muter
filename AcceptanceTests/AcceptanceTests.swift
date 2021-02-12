@@ -260,7 +260,7 @@ class AcceptanceTests: QuickSpec {
 extension AcceptanceTests {
     var rootTestDirectory: String {
         return String(
-            URL(fileURLWithPath: #file)
+            URL(fileURLWithPath: #filePath)
                 .deletingLastPathComponent()
                 .withoutScheme()
         )

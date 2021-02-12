@@ -5,7 +5,7 @@ import Difference
 public func they(
     _ description: String,
     flags: FilterFlags = [:],
-    file: StaticString = #file,
+    file: StaticString = #filePath,
     line: UInt = #line,
     closure: @escaping () -> Void
 ) {
@@ -15,7 +15,7 @@ public func they(
 public func fthey(
     _ description: String,
     flags: FilterFlags = [:],
-    file: StaticString = #file,
+    file: StaticString = #filePath,
     line: UInt = #line,
     closure: @escaping () -> Void
 ) {
