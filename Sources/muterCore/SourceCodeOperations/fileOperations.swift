@@ -1,7 +1,7 @@
 import SwiftSyntax
 import Foundation
 
-// MARK - Source Code
+// MARK: - Source Code
 
 func sourceCode(fromFileAt path: String) -> SourceCodeInfo? {
     let url = URL(fileURLWithPath: path)
@@ -10,7 +10,7 @@ func sourceCode(fromFileAt path: String) -> SourceCodeInfo? {
         .map(SourceCodeInfo.init)
 }
 
-// MARK - Logging Directory
+// MARK: - Logging Directory
 func createLoggingDirectory(in directory: String,
                             fileManager: FileSystemManager = FileManager.default,
                             locale: Locale = .autoupdatingCurrent,

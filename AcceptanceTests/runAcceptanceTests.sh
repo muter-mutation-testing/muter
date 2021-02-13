@@ -1,4 +1,5 @@
 #!/bin/sh
+
 echo "📴📴📴📴📴📴📴 Acceptance Testing has started 📴📴📴📴📴📴📴"
 
 muterdir="../../.build/debug"
@@ -77,8 +78,8 @@ cd ../..
 
 echo "Running tests..."
 
-swift package generate-xcodeproj
-
-./Scripts/test_only.sh "muterAcceptanceTests"
+export acceptance_tests=true
+swift test
+unset acceptance_tests
 
 echo "📳📳📳📳📳📳📳 Acceptance Testing has finished 📳📳📳📳📳📳📳"

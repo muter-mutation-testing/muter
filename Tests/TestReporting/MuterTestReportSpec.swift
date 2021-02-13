@@ -17,7 +17,7 @@ class MuterTestReportSpec: QuickSpec {
                                                                             after: "!=",
                                                                             description: "changed from == to !="
                                                                         )
-                    )]
+                    ),]
 
                     let report = MuterTestReport(from: outcomes)
                     expect(report.globalMutationScore).to(equal(60))
@@ -28,7 +28,7 @@ class MuterTestReportSpec: QuickSpec {
                         FileReportProvider.expectedFileReport2,
                         FileReportProvider.expectedFileReport3,
                         FileReportProvider.expectedFileReport4,
-                        FileReportProvider.expectedFileReport5
+                        FileReportProvider.expectedFileReport5,
                     ]
                 }
             }
@@ -70,7 +70,7 @@ class MuterTestReportSpec: QuickSpec {
                     "/tmp/file1.swift": 66,
                     "/tmp/file2.swift": 100,
                     "/tmp/file3.swift": 33,
-                    "/tmp/file 4.swift": 0
+                    "/tmp/file 4.swift": 0,
                 ]
 
                 expect(mutationScoresOfFiles(from: self.exampleMutationTestResults)).to(equal(expectedMutationScores))
@@ -78,4 +78,3 @@ class MuterTestReportSpec: QuickSpec {
         }
     }
 }
-

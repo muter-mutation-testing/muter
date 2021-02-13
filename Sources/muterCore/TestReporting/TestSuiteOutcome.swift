@@ -35,7 +35,7 @@ extension TestSuiteOutcome {
     }
 
     static private func logContainsTestFailure(_ testLog: String) -> Bool {
-        let entireTestLog = NSRange(testLog.startIndex... , in: testLog)
+        let entireTestLog = NSRange(testLog.startIndex..., in: testLog)
         let numberOfFailureMessages = testFailureRegEx.numberOfMatches(in: testLog, options: [], range: entireTestLog)
         return numberOfFailureMessages > 0 ||
             testLog.contains(testFailedMessage(from: .xcodebuild)) ||

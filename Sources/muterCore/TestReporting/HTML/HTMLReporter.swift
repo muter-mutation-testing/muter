@@ -217,7 +217,7 @@ private extension MuterTestReport.AppliedMutationOperator {
 private extension TestSuiteOutcome {
     var asIcon: String {
         let icon: String
-        switch (self) {
+        switch self {
         case .passed:
             icon = Bundle.resource(
                 named: "testPassed",

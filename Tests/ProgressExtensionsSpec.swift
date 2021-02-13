@@ -3,7 +3,7 @@ import Nimble
 import Progress
 @testable import muterCore
 
-//class ProgressExtensionsSpec: QuickSpec {
+// class ProgressExtensionsSpec: QuickSpec {
 //    override func spec() {
 //        describe("SimpleTimeEstimate") {
 //            it("estimates the time to completion based on an initial estimate and time per item") {
@@ -56,5 +56,5 @@ import Progress
 //            }
 //        }
 //    }
-//}
+// }
 //

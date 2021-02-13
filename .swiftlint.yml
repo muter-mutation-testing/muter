@@ -1,6 +1,14 @@
+excluded:
+  - .build
+
 included:
   - Sources
   - Tests
-whitelist_rules:
+
+only_rules:
+ - trailing_comma
  - vertical_whitespace
  - literal_expression_end_indentation
+
+trailing_comma:
+  mandatory_comma: true

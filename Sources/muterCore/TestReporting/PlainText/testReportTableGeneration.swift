@@ -1,6 +1,5 @@
 import Foundation
 import Rainbow
-import SwiftSyntax
 
 func generateAppliedMutationOperatorsCLITable(from fileReports: [MuterTestReport.FileReport], coloringFunction: ([CLITable.Row]) -> [CLITable.Row] = applyMutationTestResultsColor) -> CLITable {
     var appliedMutations = [CLITable.Row]()
@@ -35,7 +34,7 @@ func generateMutationScoresCLITable(from fileReports: [MuterTestReport.FileRepor
     var numberOfInsertedMutants = [CLITable.Row]()
     var mutationScores = [CLITable.Row]()
 
-    for fileReport in fileReports  {
+    for fileReport in fileReports {
         fileNames.append(CLITable.Row(value: fileReport.fileName))
         numberOfInsertedMutants.append(CLITable.Row(value: "\(fileReport.appliedOperators.count)"))
         mutationScores.append(CLITable.Row(value: "\(fileReport.mutationScore)"))
@@ -50,7 +49,7 @@ func generateMutationScoresCLITable(from fileReports: [MuterTestReport.FileRepor
     ])
 }
 
-// MARK - Coloring Functions
+// MARK: - Coloring Functions
 func applyMutationTestResultsColor(to rows: [CLITable.Row]) -> [CLITable.Row] {
     return rows.map {
         let coloredValue = $0.value == TestSuiteOutcome.failed.asMutationTestOutcome ?

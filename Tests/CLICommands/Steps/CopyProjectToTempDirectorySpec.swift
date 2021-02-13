@@ -52,7 +52,7 @@ class CopyProjectToTempDirectorySpec: QuickSpec {
                 
                 it("copies the project after creating the temp directory") {
                     expect(fileManagerSpy.methodCalls).to(equal(["url(for:in:appropriateFor:create:)",
-                                                                 "copyItem(atPath:toPath:)"]))
+                                                                 "copyItem(atPath:toPath:)",]))
                 }
             }
             

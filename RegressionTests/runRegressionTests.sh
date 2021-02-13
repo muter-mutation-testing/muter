@@ -28,8 +28,8 @@ swift package generate-xcodeproj
 cp ./muterReport.json "$samplesdir"/projectwithconcurrency_test_output.json
 cd ../..
 
-swift package generate-xcodeproj
-
-./Scripts/test_only.sh "muterRegressionTests"
+export regression_tests=true
+swift test
+unset regression_tests
 
 echo "🦖🦖🦖🦖🦖🦖🦖🦖 Regression Testing has finished 🦖🦖🦖🦖🦖🦖🦖🦖"

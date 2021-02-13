@@ -2,11 +2,11 @@ func mutateMe() {
     bar()
 }
 
-func mutateMe2() -> Void {
+func mutateMe2() {
     bar()
 }
 
-func mutateMe3() ->  () {
+func mutateMe3() {
     bar()
 }
 

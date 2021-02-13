@@ -31,6 +31,6 @@ private extension RunCommandHandler {
         DiscoverSourceFiles(),
         DiscoverMutationPoints(),
         GenerateSwapFilePaths(),
-        PerformMutationTesting()
+        PerformMutationTesting(),
     ]
 }

@@ -22,12 +22,10 @@ class InitCommandSpec: QuickSpec {
                             fail("Expected a valid configuration file to be written")
                             return
                     }
-                }
-                catch {
+                } catch {
                     fail("Expected a successful result, but got \(error)")
                 }
             }
         }
     }
 }
-

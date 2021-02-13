@@ -7,9 +7,7 @@ public extension Dictionary where Key == String, Value == Any {
                 filteredDictionary[key] = valueAsDictionary.recursivelyFiltered(includingKeysMatching: shouldInclude)
             } else if let valueAsArray = value as? [[String: Any]] {
                 filteredDictionary[key] = valueAsArray.map { $0.recursivelyFiltered(includingKeysMatching: shouldInclude) }
-            }
-            
-            else {
+            } else {
                 filteredDictionary[key] = value
             }
         }

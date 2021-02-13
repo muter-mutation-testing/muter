@@ -33,7 +33,7 @@ class RunCommandHandlerSpec: QuickSpec {
                     
                     runCommandHandler = RunCommandHandler(steps: [stepSpy1,
                                                                   stepSpy2,
-                                                                  stepSpy3],
+                                                                  stepSpy3,],
                                                           state: expectedState)
 
                     do {
@@ -85,13 +85,12 @@ class RunCommandHandlerSpec: QuickSpec {
                     
                     runCommandHandler = RunCommandHandler(steps: [stepSpy1,
                                                                   stepSpy2,
-                                                                  stepSpy3],
+                                                                  stepSpy3,],
                                                           state: expectedState)
 
                     do {
                         try runCommandHandler.run()
-                    }
-                    catch {
+                    } catch {
                         runCommandResult = error
                     }
                 }

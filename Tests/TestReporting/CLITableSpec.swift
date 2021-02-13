@@ -22,7 +22,7 @@ class CLITableSpec: QuickSpec {
             CLITable.Row(value: "1"),
             CLITable.Row(value: "2"),
             CLITable.Row(value: "3"),
-            CLITable.Row(value: "4")
+            CLITable.Row(value: "4"),
         ])
 
         let columns = [

@@ -7,6 +7,15 @@ import Rainbow
 @testable import muterCore
 
 class ReporterSpec: QuickSpec {
+    override class func setUp() {
+        // Rainbow is smart, it knows if the stdout is Xcode or the console.
+        // We want it to be the console, otherwise the test results are going to differ when running from Xcode vs console
+        Rainbow.outputTarget = .console
+        Rainbow.enabled = false
+
+        super.setUp()
+    }
+
     override func spec() {
         let outcomes = [
             MutationTestOutcome(
@@ -14,7 +23,7 @@ class ReporterSpec: QuickSpec {
                 mutationPoint: MutationPoint(mutationOperatorId: .ror, filePath: "/tmp/project/file3.swift", position: .firstPosition),
                 mutationSnapshot: MutationOperatorSnapshot(before: "!=", after: "==", description: "from != to =="),
                 originalProjectDirectoryUrl: URL(string: "/user/project")!
-            )
+            ),
         ]
         
         describe("reporter choice") {
@@ -62,44 +71,7 @@ class ReporterSpec: QuickSpec {
         describe("text reporter") {
             it("returns the report in text format") {
                 let plainText = PlainTextReporter().report(from: outcomes)
-                expect(plainText).to(
-                    equalWithDiff(
-                        """
-                        Muter finished running!
-
-                        Here's your test report:
-                        
-                        --------------------------
-                        Applied Mutation Operators
-                        --------------------------
-                        
-                        These are all of the ways that Muter introduced changes into your code.
-                        
-                        In total, Muter introduced 1 mutants in 1 files.
-                        
-                        File            Applied Mutation Operator       Mutation Test Result
-                        ----            -------------------------       --------------------
-                        file3.swift:0   RelationalOperatorReplacement   mutant survived
-                        
-                        
-                        --------------------
-                        Mutation Test Scores
-                        --------------------
-                        
-                        These are the mutation scores for your test suite, as well as the files that had mutants introduced into them.
-                        
-                        Mutation scores ignore build errors.
-                        
-                        Of the 1 mutants introduced into your code, your test suite killed 0.
-                        Mutation Score of Test Suite: 0%
-                        
-                        File          # of Introduced Mutants   Mutation Score
-                        ----          -----------------------   --------------
-                        file3.swift   1                         0
-
-                        """
-                    )
-                )
+                expect(plainText).to(equalWithDiff(loadReport()))
             }
         }
 
@@ -111,7 +83,7 @@ class ReporterSpec: QuickSpec {
                          MutationTestOutcome(testSuiteOutcome: .passed,
                                              mutationPoint: MutationPoint(mutationOperatorId: .ror, filePath: "/tmp/project/file5.swift", position: .firstPosition),
                                              mutationSnapshot: MutationOperatorSnapshot(before: "==", after: "!=", description: "changed from == to !="),
-                                             originalProjectDirectoryUrl: URL(string: "/user/project")!)]
+                                             originalProjectDirectoryUrl: URL(string: "/user/project")!),]
 
             context("with footer-only not requested") {
                 it("returns the report in xcode format") {
@@ -143,4 +115,13 @@ class ReporterSpec: QuickSpec {
             }
         }
     }
+}
+
+private func loadReport() -> String {
+    guard let data = FileManager.default.contents(atPath: "\(ReporterSpec().fixturesDirectory)/TestReporting/testReport.txt"),
+        let string = String(data: data, encoding: .utf8) else {
+            fatalError("Unable to load report for testing")
+    }
+
+    return string
 }

@@ -16,7 +16,7 @@ class FileReportProvider {
                     description: "changed from == to !="
                 ),
                 testSuiteOutcome: .failed
-            )
+            ),
         ])
     }
     
@@ -34,7 +34,7 @@ class FileReportProvider {
                     description: "changed from == to !="
                 ),
                 testSuiteOutcome: .passed
-            )
+            ),
         ])
     }
     
@@ -78,7 +78,7 @@ class FileReportProvider {
                     description: "changed from == to !="
                 ),
                 testSuiteOutcome: .passed
-            )
+            ),
         ])
     }
     
@@ -109,7 +109,7 @@ class FileReportProvider {
                     description: "changed from == to !="
                 ),
                 testSuiteOutcome: .failed
-            )
+            ),
         ])
     }
     
@@ -153,7 +153,7 @@ class FileReportProvider {
                     description: "changed from == to !="
                 ),
                 testSuiteOutcome: .passed
-            )
+            ),
         ])
     }
 }

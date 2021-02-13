@@ -47,7 +47,7 @@ class PerformMutationTestingSpec: QuickSpec {
                         "backupFile(at:using:)",
                         "writeFile(to:contents:)",
                         "runTestSuite(using:savingResultsIntoFileNamed:)",
-                        "restoreFile(at:using:)"
+                        "restoreFile(at:using:)",
                     ]))
                     
                     expect(delegateSpy.backedUpFilePaths.count) == 2
@@ -182,7 +182,7 @@ class PerformMutationTestingSpec: QuickSpec {
                         "backupFile(at:using:)",
                         "writeFile(to:contents:)",
                         "runTestSuite(using:savingResultsIntoFileNamed:)",
-                        "restoreFile(at:using:)"
+                        "restoreFile(at:using:)",
                     ]))
                     
                     expect(delegateSpy.backedUpFilePaths.count).to(equal(5))
