@@ -37,8 +37,9 @@ class HTMLReportSpec: QuickSpec {
         describe("HTMLReport") {
             it("should output an HTML file") {
                 let actual = sut.report(from: outcomes)
-                let exptected = loadReport()
-                expect(actual).to(equalWithDiff(exptected))
+                let expected = loadReport()
+                
+                expect(actual).to(equalWithDiff(expected))
             }
         }
     }

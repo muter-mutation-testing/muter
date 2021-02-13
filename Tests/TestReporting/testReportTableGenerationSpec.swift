@@ -11,7 +11,7 @@ class TestReportTableGenerationSpec: QuickSpec {
                 FileReportProvider.expectedFileReport3,
                 FileReportProvider.expectedFileReport4,
                 FileReportProvider.expectedFileReport5,
-                FileReportProvider.expectedFileReport2
+                FileReportProvider.expectedFileReport2,
             ]
 
             describe("the applied mutation operators table") {
@@ -78,7 +78,7 @@ class TestReportTableGenerationSpec: QuickSpec {
                             CLITable.Row(value: "100"),
                             CLITable.Row(value: "33"),
                             CLITable.Row(value: "0"),
-                        ])
+                        ]),
                     ])
 
                     let generatedCLITable = generateMutationScoresCLITable(from: fileReports, coloringFunction: { $0 })

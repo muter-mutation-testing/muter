@@ -2,11 +2,23 @@ import Quick
 import Nimble
 import Difference
 
-public func they(_ description: String, flags: FilterFlags = [:], file: String = #file, line: UInt = #line, closure: @escaping () -> Void) {
+public func they(
+    _ description: String,
+    flags: FilterFlags = [:],
+    file: StaticString = #filePath,
+    line: UInt = #line,
+    closure: @escaping () -> Void
+) {
     it("they " + description, flags: flags, file: file, line: line, closure: closure)
 }
 
-public func fthey(_ description: String, flags: FilterFlags = [:], file: String = #file, line: UInt = #line, closure: @escaping () -> Void) {
+public func fthey(
+    _ description: String,
+    flags: FilterFlags = [:],
+    file: StaticString = #filePath,
+    line: UInt = #line,
+    closure: @escaping () -> Void
+) {
     fit(description, flags: flags, file: file, line: line, closure: closure)
 }
 
@@ -22,7 +34,7 @@ public func equalWithDiff<T: Equatable>(_ expectedValue: T?) -> Predicate<T> {
         if receivedValue == nil {
             var message = ExpectationMessage.fail("")
             if let expectedValue = expectedValue {
-                message = ExpectationMessage.expectedCustomValueTo("equal <\(expectedValue)>", "nil")
+                message = ExpectationMessage.expectedCustomValueTo("equal <\(expectedValue)>", actual: "nil")
             }
             return PredicateResult(status: .fail, message: message)
         }

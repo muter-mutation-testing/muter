@@ -16,7 +16,7 @@ public extension XCTestCase {
 
     var rootTestDirectory: String {
         return String(
-            URL(fileURLWithPath: #file)
+            URL(fileURLWithPath: #filePath)
                 .deletingLastPathComponent()
                 .withoutScheme()
         )
@@ -138,7 +138,7 @@ public extension XCTestCase {
                     after: "!=",
                     description: "changed from == to !="
                 )
-            )
+            ),
         ]
     }
 }

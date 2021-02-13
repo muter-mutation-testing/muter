@@ -15,7 +15,7 @@ class DiscoverMutationPointSpec: QuickSpec {
                     state = RunCommandState()
                     state.sourceFileCandidates = [
                         "\(self.fixturesDirectory)/sampleForDiscoveringMutations.swift",
-                        "\(self.fixturesDirectory)/sample With Spaces For Discovering Mutations.swift"
+                        "\(self.fixturesDirectory)/sample With Spaces For Discovering Mutations.swift",
                     ]
 
                     result = DiscoverMutationPoints().run(with: state)
@@ -34,7 +34,7 @@ class DiscoverMutationPointSpec: QuickSpec {
                         let expectedFilePaths = Set([filePath2, filePath1])
                         let expectedSourceCode = Set([
                             sourceCode(fromFileAt: filePath1)!.code.description,
-                            sourceCode(fromFileAt: filePath2)!.code.description
+                            sourceCode(fromFileAt: filePath2)!.code.description,
                         ])
 
                         if case .sourceCodeParsed(let parsedSourceCode) = $0 {
@@ -59,7 +59,7 @@ class DiscoverMutationPointSpec: QuickSpec {
                                               position: MutationPosition(utf8Offset: 154, line: 6, column: 42)),
                                 MutationPoint(mutationOperatorId: .removeSideEffects,
                                               filePath: filePath2,
-                                              position: MutationPosition(utf8Offset: 177, line: 7, column: 23))
+                                              position: MutationPosition(utf8Offset: 177, line: 7, column: 23)),
                             ]
                         }
                         return false
@@ -101,7 +101,7 @@ class DiscoverMutationPointSpec: QuickSpec {
                                 return actualMutationPoints == [
                                     MutationPoint(mutationOperatorId: .removeSideEffects,
                                                   filePath: samplePath,
-                                                  position: MutationPosition(utf8Offset: 53, line: 3, column: 42))
+                                                  position: MutationPosition(utf8Offset: 53, line: 3, column: 42)),
                                 ]
                             }
                             return false
@@ -122,7 +122,7 @@ class DiscoverMutationPointSpec: QuickSpec {
                     beforeEach {
                         state = RunCommandState()
                         state.sourceFileCandidates = [
-                            "\(self.fixturesDirectory)/sourceWithoutMuteableCode.swift"
+                            "\(self.fixturesDirectory)/sourceWithoutMuteableCode.swift",
                         ]
 
                         result = DiscoverMutationPoints().run(with: state)

@@ -233,19 +233,20 @@ class AcceptanceTests: QuickSpec {
                                 """
                                 OVERVIEW: Performs mutation testing for the Swift project contained within the
                                 current directory
-
-                                USAGE: muter run [--files-to-mutate <files-to-mutate> ...] [--output-json] [--output-xcode]
-
+                                
+                                USAGE: muter run [--files-to-mutate <files-to-mutate> ...] [--output-json] [--output-html] [--output-xcode]
+                                
                                 OPTIONS:
                                   --files-to-mutate <files-to-mutate>
                                                           Only mutate a given list of source code files 
                                   --output-json           Output test results to a json file. 
+                                  --output-html           Output test results to an html file. 
                                   --output-xcode          Output test results in a format consumable by an
                                                           Xcode run script step. 
                                   --version               Show the version.
                                   -h, --help              Show help information.
-
-
+                                
+                                
                                 """
                             )
                         )
@@ -259,7 +260,7 @@ class AcceptanceTests: QuickSpec {
 extension AcceptanceTests {
     var rootTestDirectory: String {
         return String(
-            URL(fileURLWithPath: #file)
+            URL(fileURLWithPath: #filePath)
                 .deletingLastPathComponent()
                 .withoutScheme()
         )

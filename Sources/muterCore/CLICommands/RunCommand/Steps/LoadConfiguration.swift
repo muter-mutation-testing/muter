@@ -18,7 +18,7 @@ struct LoadConfiguration: RunCommandStep {
             
             return .success([
                 .projectDirectoryUrlDiscovered(URL(fileURLWithPath: currentDirectory)),
-                .configurationParsed(configuration)
+                .configurationParsed(configuration),
             ])
         } catch {
             return .failure(.configurationParsingError(reason: error.localizedDescription))

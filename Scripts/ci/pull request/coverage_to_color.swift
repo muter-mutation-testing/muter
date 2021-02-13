@@ -2,17 +2,8 @@ import Foundation
 
 let coverage = CommandLine.arguments[1]
 
-struct Target: Decodable {
-    let name: String
-    let lineCoverage: Double
-}
-
-let targets = try! JSONDecoder().decode([Target].self, from: coverage.data(using: .utf8)!)
-let muterCore = targets.first { $0.name == "muterCore.framework" }
-
-let lineCoverage = muterCore!.lineCoverage * 100.0
-
-let rounded = Int(lineCoverage)
+let value = (Double(coverage.replacingOccurrences(of: "%", with: "")) ?? 0).rounded(.toNearestOrAwayFromZero)
+let rounded = Int(value)
 var color = "red"
 switch rounded {
 case 91...Int.max: color = "brightgreen"
@@ -26,7 +17,7 @@ print("""
     {
       "color":"\(color)",
       "label":"coverage",
-      "message":"\(String(format: "%.2f", lineCoverage))%",
+      "message": \(coverage),
       "schemaVersion":1
     }
     """)

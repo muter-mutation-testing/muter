@@ -66,13 +66,13 @@ public extension MuterTestReport {
         let mutationPoint: MutationPoint
         let mutationSnapshot: MutationOperatorSnapshot
         let testSuiteOutcome: TestSuiteOutcome
-        
+
         enum CodingKeys: String, CodingKey {
             case mutationPoint
             case mutationSnapshot
             case testSuiteOutcome
         }
-        
+
         init(
             mutationPoint: MutationPoint,
             mutationSnapshot: MutationOperatorSnapshot,
@@ -82,7 +82,7 @@ public extension MuterTestReport {
             self.mutationSnapshot = mutationSnapshot
             self.testSuiteOutcome = testSuiteOutcome
         }
-        
+
         public init(from decoder: Decoder) throws {
             let container = try decoder.container(keyedBy: CodingKeys.self)
             mutationPoint = try container.decode(MutationPoint.self, forKey: .mutationPoint)

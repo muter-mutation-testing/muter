@@ -26,7 +26,7 @@ class LoadConfigurationSpec: QuickSpec {
                     }
                     
                     expect(stateChanges) == [.projectDirectoryUrlDiscovered(expectedUrl),
-                                             .configurationParsed(expectedConfiguration)]
+                                             .configurationParsed(expectedConfiguration),]
                 }
             }
             

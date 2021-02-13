@@ -23,4 +23,3 @@ class FileManagerCanarySpec: QuickSpec {
         }
     }
 }
-
