@@ -25,17 +25,18 @@ class DiscoverSourceFilesSpec: QuickSpec {
 
                 it("returns the discovered Swift files, sorted alphabetically") {
                     guard case .success(let stateChanges) = result! else {
-                        fail("expected success but got \(String(describing: result!))")
-                        return
+                        return fail("expected success but got \(String(describing: result!))")
                     }
 
-                    expect(stateChanges) == [.sourceFileCandidatesDiscovered([
-                        "\(path)/Directory1/file3.swift",
-                        "\(path)/Directory2/Directory3/file6.swift",
-                        "\(path)/ExampleApp/ExampleAppCode.swift",
-                        "\(path)/file1.swift",
-                        "\(path)/file2.swift",
-                    ]),]
+                    expect(stateChanges) == [
+                        .sourceFileCandidatesDiscovered([
+                            "\(path)/Directory1/file3.swift",
+                            "\(path)/Directory2/Directory3/file6.swift",
+                            "\(path)/ExampleApp/ExampleAppCode.swift",
+                            "\(path)/file1.swift",
+                            "\(path)/file2.swift",
+                        ]),
+                    ]
                 }
 
                 context("when there is a user provided exclude list") {
@@ -51,16 +52,17 @@ class DiscoverSourceFilesSpec: QuickSpec {
 
                     it("returns the discovered source files, sorted alphabetically, with the exclude list applied") {
                         guard case .success(let stateChanges) = result! else {
-                            fail("expected success but got \(String(describing: result!))")
-                            return
+                            return fail("expected success but got \(String(describing: result!))")
                         }
 
-                        expect(stateChanges) == [.sourceFileCandidatesDiscovered([
-                            "\(path)/Directory1/file3.swift",
-                            "\(path)/Directory2/Directory3/file6.swift",
-                            "\(path)/file1.swift",
-                            "\(path)/file2.swift",
-                        ]),]
+                        expect(stateChanges) == [
+                            .sourceFileCandidatesDiscovered([
+                                "\(path)/Directory1/file3.swift",
+                                "\(path)/Directory2/Directory3/file6.swift",
+                                "\(path)/file1.swift",
+                                "\(path)/file2.swift",
+                            ]),
+                        ]
                     }
 
                     context("and it contains a glob expression") {
@@ -90,20 +92,51 @@ class DiscoverSourceFilesSpec: QuickSpec {
 
                         it("evaluate the expression excluding the list of files") {
                             guard case .success(let stateChanges) = result! else {
-                                fail("expected success but got \(String(describing: result!))")
-                                return
+                                return fail("expected success but got \(String(describing: result!))")
                             }
 
-                            expect(stateChanges) == [.sourceFileCandidatesDiscovered([
-                                "\(path)/Directory2/Directory3/file6.swift",
-                                "\(path)/ExampleApp/ExampleAppCode.swift",
-                                "\(path)/ProjectName/AnotherFolder/Module.swift",
-                                "\(path)/ProjectName/ProjectName/AppDelegate.swift",
-                                "\(path)/ProjectName/ProjectName/Models/file 1.swift",
-                                "\(path)/ProjectName/ProjectName/Models/file 2.swift",
-                                "\(path)/ProjectName/ProjectName/Models/file 3.swift",
-                            ]),]
+                            expect(stateChanges) == [
+                                .sourceFileCandidatesDiscovered([
+                                    "\(path)/Directory2/Directory3/file6.swift",
+                                    "\(path)/ExampleApp/ExampleAppCode.swift",
+                                    "\(path)/ProjectName/AnotherFolder/Module.swift",
+                                    "\(path)/ProjectName/ProjectName/AppDelegate.swift",
+                                    "\(path)/ProjectName/ProjectName/Models/file 1.swift",
+                                    "\(path)/ProjectName/ProjectName/Models/file 2.swift",
+                                    "\(path)/ProjectName/ProjectName/Models/file 3.swift",
+                                ]),
+                            ]
                         }
+                    }
+                }
+                
+                context("when there are files without coverage list") {
+                    var result: Result<[RunCommandState.Change], MuterError>! // keep this as locally defined as possible to avoid test pollution
+                    let path = "\(self.fixturesDirectory)/FilesToDiscover"
+                    
+                    it("excludes files which match against the files without coverage list") {
+                        state.filesWithoutCoverage = [
+                            "\(path)/ExampleApp/ExampleAppCode.swift",
+                            "\(path)/Directory2/Directory3/file6.swift",
+                        ]
+                        state.muterConfiguration = MuterConfiguration(executable: "", arguments: [])
+                        state.tempDirectoryURL = URL(fileURLWithPath: path, isDirectory: true)
+                        
+                        result = discoverSourceFiles.run(with: state)
+                    }
+                    
+                    it("returns the discovered source files, sorted alphabetically, with the files without coverage list applied") {
+                        guard case .success(let stateChanges) = result! else {
+                            return fail("expected success but got \(String(describing: result!))")
+                        }
+                        
+                        expect(stateChanges) == [
+                            .sourceFileCandidatesDiscovered([
+                                "\(path)/Directory1/file3.swift",
+                                "\(path)/file1.swift",
+                                "\(path)/file2.swift",
+                            ]),
+                        ]
                     }
                 }
             }
@@ -120,8 +153,7 @@ class DiscoverSourceFilesSpec: QuickSpec {
 
                     it("cascades a failure") {
                         guard case .failure(.noSourceFilesDiscovered) = result! else {
-                            fail("expected noSourceFilesDiscovered but got \(String(describing: result!))")
-                            return
+                            return fail("expected noSourceFilesDiscovered but got \(String(describing: result!))")
                         }
                     }
                 }
@@ -136,9 +168,7 @@ class DiscoverSourceFilesSpec: QuickSpec {
 
                     it("cascades a failure") {
                         guard case .failure(.noSourceFilesDiscovered) = result! else {
-                            fail("expected noSourceFilesDiscovered but got \(String(describing: result!))")
-                            return
-
+                            return fail("expected noSourceFilesDiscovered but got \(String(describing: result!))")
                         }
                     }
                 }
@@ -165,15 +195,16 @@ class DiscoverSourceFilesSpec: QuickSpec {
 
                     it("evaluate the expression returning the list of files") {
                         guard case .success(let stateChanges) = result! else {
-                            fail("expected success but got \(String(describing: result!))")
-                            return
+                            return fail("expected success but got \(String(describing: result!))")
                         }
 
-                        expect(stateChanges) == [.sourceFileCandidatesDiscovered([
-                            "\(path)/Directory2/Directory3/file6.swift",
-                            "\(path)/ExampleApp/ExampleAppCode.swift",
-                            "\(path)/file1.swift",
-                        ]),]
+                        expect(stateChanges) == [
+                            .sourceFileCandidatesDiscovered([
+                                "\(path)/Directory2/Directory3/file6.swift",
+                                "\(path)/ExampleApp/ExampleAppCode.swift",
+                                "\(path)/file1.swift",
+                            ]),
+                        ]
                     }
                 }
 
@@ -205,8 +236,7 @@ class DiscoverSourceFilesSpec: QuickSpec {
                     
                     it("returns the Swift files, sorted alphabetically") {
                         guard case .success(let stateChanges) = result! else {
-                            fail("expected success but got \(String(describing: result!))")
-                            return
+                            return fail("expected success but got \(String(describing: result!))")
                         }
                         
                         expect(stateChanges) == [.sourceFileCandidatesDiscovered([
@@ -245,15 +275,16 @@ class DiscoverSourceFilesSpec: QuickSpec {
                     
                     it("returns the Swift files, sorted alphabetically") {
                         guard case .success(let stateChanges) = result! else {
-                            fail("expected success but got \(String(describing: result!))")
-                            return
+                            return fail("expected success but got \(String(describing: result!))")
                         }
                         
-                        expect(stateChanges) == [.sourceFileCandidatesDiscovered([
-                            "\(path)/Directory2/Directory3/file6.swift",
-                            "\(path)/file1.swift",
-                            "\(path)/file2.swift",
-                        ]),]
+                        expect(stateChanges) == [
+                            .sourceFileCandidatesDiscovered([
+                                "\(path)/Directory2/Directory3/file6.swift",
+                                "\(path)/file1.swift",
+                                "\(path)/file2.swift",
+                            ]),
+                        ]
                         
                         expect(fileManager.methodCalls).to(equal([
                             "fileExists(atPath:)",
@@ -280,8 +311,7 @@ class DiscoverSourceFilesSpec: QuickSpec {
                     
                     it("cascades a failure") {
                         guard case .failure(.noSourceFilesOnExclusiveList) = result! else {
-                            fail("expected noSourceFilesDiscovered but got \(String(describing: result!))")
-                            return
+                            return fail("expected noSourceFilesDiscovered but got \(String(describing: result!))")
                         }
                     }
                 }
@@ -301,8 +331,7 @@ class DiscoverSourceFilesSpec: QuickSpec {
                     
                     it("cascades a failure") {
                         guard case .failure(.noSourceFilesOnExclusiveList) = result! else {
-                            fail("expected noSourceFilesDiscovered but got \(String(describing: result!))")
-                            return
+                            return fail("expected noSourceFilesDiscovered but got \(String(describing: result!))")
                         }
                     }
                 }

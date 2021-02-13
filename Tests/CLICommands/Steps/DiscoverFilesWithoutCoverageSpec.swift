@@ -117,7 +117,7 @@ class DiscoverFilesWithoutCoverageSpec: QuickSpec {
                     let result = try! discoverFilesWithoutCoverage.run(with: state).get()
                     
                     expect(result).to(haveCount(1))
-                    expect(result.first).to(equal(.filesWithoutCoverage([])))
+                    expect(result).to(equal([.filesWithoutCoverage([])]))
                 }
                 
                 it("should not run build command") {
