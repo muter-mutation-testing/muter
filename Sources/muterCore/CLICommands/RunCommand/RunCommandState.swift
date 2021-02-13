@@ -5,6 +5,7 @@ protocol AnyRunCommandState {
     var muterConfiguration: MuterConfiguration { get }
     var projectDirectoryURL: URL { get }
     var tempDirectoryURL: URL { get }
+    var filesWithoutCoverage: [FilePath] { get }
     var sourceFileCandidates: [FilePath] { get }
     var mutationPoints: [MutationPoint] { get }
     var sourceCodeByFilePath: [FilePath: SourceFileSyntax] { get }
@@ -19,6 +20,7 @@ final class RunCommandState: AnyRunCommandState {
     var muterConfiguration: MuterConfiguration = .init()
     var projectDirectoryURL: URL = URL(string: "example.com")!
     var tempDirectoryURL: URL = URL(string: "example.com")!
+    var filesWithoutCoverage: [FilePath] = []
     var sourceFileCandidates: [FilePath] = []
     var mutationPoints: [MutationPoint] = []
     var sourceCodeByFilePath: [FilePath: SourceFileSyntax] = [:]
@@ -58,12 +60,7 @@ extension RunCommandState {
             case .tempDirectoryUrlCreated(let tempDirectoryURL):
                 self.tempDirectoryURL = tempDirectoryURL
             case .filesWithoutCoverage(let filesWithoutCoverage):
-                self.muterConfiguration = MuterConfiguration(
-                    executable: muterConfiguration.testCommandExecutable,
-                    arguments: muterConfiguration.testCommandArguments,
-                    excludeList: muterConfiguration.excludeFileList + filesWithoutCoverage,
-                    excludeCallList: muterConfiguration.excludeCallList
-                )
+                self.filesWithoutCoverage = filesWithoutCoverage
             case .sourceFileCandidatesDiscovered(let sourceFileCandidates):
                 self.sourceFileCandidates = sourceFileCandidates
             case .mutationPointsDiscovered(let mutationPoints):
