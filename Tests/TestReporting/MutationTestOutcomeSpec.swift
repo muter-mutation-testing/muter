@@ -9,14 +9,19 @@ class MutationTestOutcomeSpec: QuickSpec {
             describe("how it converts paths") {
                 context("when the path of a file with a mutation point is deeply nested") {
                     it("maps the paths") {
-                        let mutationPoint = MutationPoint(mutationOperatorId: .logicalOperator,
-                                                          filePath: "/var/tmp/nonsense/ProjectDirectory/Subdirectory/file.swift",
-                                                          position: .firstPosition)
+                        let mutationPoint = MutationPoint(
+                            mutationOperatorId: .logicalOperator,
+                            filePath: "/var/tmp/nonsense/ProjectDirectory/Subdirectory/file.swift",
+                            position: .firstPosition
+                        )
                         
-                        let outcome = MutationTestOutcome(testSuiteOutcome: .failed,
-                                                          mutationPoint: mutationPoint,
-                                                          mutationSnapshot: .null,
-                                                          originalProjectDirectoryUrl: URL(fileURLWithPath: "/Users/user0/Code/ProjectDirectory"))
+                        let outcome = MutationTestOutcome.Mutation.make(
+                            testSuiteOutcome: .failed,
+                            point: mutationPoint,
+                            snapshot: .null,
+                            originalProjectDirectoryUrl: URL(fileURLWithPath: "/Users/user0/Code/ProjectDirectory")
+                        )
+
                         
                         expect(outcome.originalProjectPath) == "/Users/user0/Code/ProjectDirectory/Subdirectory/file.swift"
                     }
@@ -24,14 +29,19 @@ class MutationTestOutcomeSpec: QuickSpec {
                 
                 context("when the path of a file with a mutation point is shallowly nested") {
                     it("maps the paths") {
-                        let mutationPoint = MutationPoint(mutationOperatorId: .logicalOperator,
-                                                          filePath: "/tmp/ProjectDirectory/file.swift",
-                                                          position: .firstPosition)
+                        let mutationPoint = MutationPoint(
+                            mutationOperatorId: .logicalOperator,
+                            filePath: "/tmp/ProjectDirectory/file.swift",
+                            position: .firstPosition
+                        )
                         
-                        let outcome = MutationTestOutcome(testSuiteOutcome: .failed,
-                                                          mutationPoint: mutationPoint,
-                                                          mutationSnapshot: .null,
-                                                          originalProjectDirectoryUrl: URL(fileURLWithPath: "/Users/user0/Code/ProjectDirectory"))
+                        let outcome = MutationTestOutcome.Mutation.make(
+                            testSuiteOutcome: .failed,
+                            point: mutationPoint,
+                            snapshot: .null,
+                            originalProjectDirectoryUrl: URL(fileURLWithPath: "/Users/user0/Code/ProjectDirectory")
+                        )
+
                         expect(outcome.originalProjectPath) == "/Users/user0/Code/ProjectDirectory/file.swift"
                         
                     }
@@ -39,14 +49,19 @@ class MutationTestOutcomeSpec: QuickSpec {
                 
                 context("when the path of a file with a mutation point has spaces") {
                     it("maps the paths") {
-                        let mutationPoint = MutationPoint(mutationOperatorId: .logicalOperator,
-                                                          filePath: "/tmp/Project Directory/file.swift",
-                                                          position: .firstPosition)
+                        let mutationPoint = MutationPoint(
+                            mutationOperatorId: .logicalOperator,
+                            filePath: "/tmp/Project Directory/file.swift",
+                            position: .firstPosition
+                        )
                         
-                        let outcome = MutationTestOutcome(testSuiteOutcome: .failed,
-                                                          mutationPoint: mutationPoint,
-                                                          mutationSnapshot: .null,
-                                                          originalProjectDirectoryUrl: URL(fileURLWithPath: "/Users/user0/Project Directory"))
+                        let outcome = MutationTestOutcome.Mutation.make(
+                            testSuiteOutcome: .failed,
+                            point: mutationPoint,
+                            snapshot: .null,
+                            originalProjectDirectoryUrl: URL(fileURLWithPath: "/Users/user0/Project Directory")
+                        )
+
                         expect(outcome.originalProjectPath) == "/Users/user0/Project Directory/file.swift"
                     }
                 }

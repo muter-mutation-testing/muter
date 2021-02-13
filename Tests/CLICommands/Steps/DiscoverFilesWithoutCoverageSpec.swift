@@ -3,17 +3,17 @@ import Nimble
 import Foundation
 @testable import muterCore
 
-class DiscoverFilesWithoutCoverageSpec: QuickSpec {
+class DiscoverProjectCoverageSpec: QuickSpec {
     override func spec() {
-        describe("the DiscoverFilesWithoutCoverage step") {
-            var discoverFilesWithoutCoverage: DiscoverFilesWithoutCoverage!
+        describe("the DiscoverProjectCoverage step") {
+            var discoverFilesWithoutCoverage: DiscoverProjectCoverage!
             var state: RunCommandState!
             var process: LaunchableSpy!
             
             beforeEach {
                 state = RunCommandState()
                 process = LaunchableSpy()
-                discoverFilesWithoutCoverage = DiscoverFilesWithoutCoverage(
+                discoverFilesWithoutCoverage = DiscoverProjectCoverage(
                     process: process
                 )
             }
@@ -73,7 +73,13 @@ class DiscoverFilesWithoutCoverageSpec: QuickSpec {
                                 let files = try! discoverFilesWithoutCoverage.run(with: state).get()
                                 
                                 expect(files).to(equal([
-                                    .filesWithoutCoverage(["/path/to/file1.swift"])
+                                    .projectCoverage(
+                                        Coverage.make(
+                                            filesWithoutCoverage: [
+                                                "/path/to/file1.swift"
+                                            ]
+                                        )
+                                    )
                                 ]))
                             }
                         }
@@ -117,7 +123,7 @@ class DiscoverFilesWithoutCoverageSpec: QuickSpec {
                     let result = try! discoverFilesWithoutCoverage.run(with: state).get()
                     
                     expect(result).to(haveCount(1))
-                    expect(result).to(equal([.filesWithoutCoverage([])]))
+                    expect(result).to(equal([.projectCoverage(.null)]))
                 }
                 
                 it("should not run build command") {

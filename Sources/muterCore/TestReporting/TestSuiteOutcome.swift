@@ -1,7 +1,9 @@
 import Foundation
 
 public enum TestSuiteOutcome: String, Codable, CaseIterable {
+    /// Mutant survived
     case passed
+    /// Mutant killed
     case failed
     case buildError
     case runtimeError
@@ -22,7 +24,6 @@ public enum TestSuiteOutcome: String, Codable, CaseIterable {
 
 extension TestSuiteOutcome {
     public static func from(testLog: String, terminationStatus: Int32) -> TestSuiteOutcome {
-
         if !terminationStatusIsSuccess(terminationStatus) {
             return .runtimeError
         } else if logContainsBuildError(testLog) {

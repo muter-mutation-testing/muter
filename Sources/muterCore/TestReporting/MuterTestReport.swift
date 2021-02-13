@@ -3,13 +3,13 @@ import Foundation
 typealias FileName = String
 public typealias FilePath = String
 
-public struct MuterTestReport {
+struct MuterTestReport {
     let globalMutationScore: Int
     let totalAppliedMutationOperators: Int
     let numberOfKilledMutants: Int
     let fileReports: [FileReport]
 
-    public init(from outcomes: [MutationTestOutcome] = []) {
+    init(from outcomes: [MutationTestOutcome.Mutation] = []) {
         globalMutationScore = mutationScore(from: outcomes.map { $0.testSuiteOutcome })
         totalAppliedMutationOperators = outcomes.count
         numberOfKilledMutants = outcomes
@@ -61,7 +61,7 @@ extension MuterTestReport.FileReport: Comparable {
     }
 }
 
-public extension MuterTestReport {
+extension MuterTestReport {
     struct AppliedMutationOperator: Codable, Equatable {
         let mutationPoint: MutationPoint
         let mutationSnapshot: MutationOperatorSnapshot
@@ -93,7 +93,7 @@ public extension MuterTestReport {
 }
 
 private extension MuterTestReport {
-    static func fileReports(from outcomes: [MutationTestOutcome]) -> [FileReport] {
+    static func fileReports(from outcomes: [MutationTestOutcome.Mutation]) -> [FileReport] {
         return mutationScoresOfFiles(from: outcomes)
             .sorted(by: ascendingFilenameOrder)
             .map { mutationScoreByFilePath in
@@ -101,9 +101,9 @@ private extension MuterTestReport {
                 let fileName = URL(fileURLWithPath: filePath).lastPathComponent
                 let mutationScore = mutationScoreByFilePath.value
                 let appliedOperators = outcomes
-                    .include { $0.mutationPoint.filePath == mutationScoreByFilePath.key }
-                    .map { AppliedMutationOperator(mutationPoint: $0.mutationPoint,
-                                                   mutationSnapshot: $0.mutationSnapshot,
+                    .include { $0.point.filePath == mutationScoreByFilePath.key }
+                    .map { AppliedMutationOperator(mutationPoint: $0.point,
+                                                   mutationSnapshot: $0.snapshot,
                                                    testSuiteOutcome: $0.testSuiteOutcome) }
 
                 return (fileName, filePath, mutationScore, appliedOperators)

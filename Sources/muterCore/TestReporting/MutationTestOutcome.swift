@@ -1,27 +1,75 @@
 import Foundation
 
-public struct MutationTestOutcome: Equatable {
-    let testSuiteOutcome: TestSuiteOutcome
-    let mutationPoint: MutationPoint
-    let mutationSnapshot: MutationOperatorSnapshot
-    let originalProjectPath: String
+final class MutationTestOutcome {
+    var mutations: [Mutation]
+    var coverage: Coverage
     
-    public init(testSuiteOutcome: TestSuiteOutcome,
-                mutationPoint: MutationPoint,
-                mutationSnapshot: MutationOperatorSnapshot,
-                originalProjectDirectoryUrl: URL) {
-        self.testSuiteOutcome = testSuiteOutcome
-        self.mutationPoint = mutationPoint
-        self.mutationSnapshot = mutationSnapshot
+    init(
+        mutations: [Mutation] = [],
+        coverage: Coverage = .null
+    ) {
+        self.mutations = mutations
+        self.coverage = coverage
+    }
+}
+
+extension MutationTestOutcome: Equatable {
+    static func == (
+        lhs: MutationTestOutcome,
+        rhs: MutationTestOutcome
+    ) -> Bool {
+        lhs === rhs || (lhs.coverage == rhs.coverage && lhs.mutations == rhs.mutations)
+    }
+}
+
+extension MutationTestOutcome {
+    struct Mutation: Equatable {
+        let testSuiteOutcome: TestSuiteOutcome
+        let point: MutationPoint
+        let snapshot: MutationOperatorSnapshot
+        let originalProjectPath: String
         
-        let splitTempFilePath = mutationPoint.filePath.split(separator: "/")
-        let projectDirectoryName = originalProjectDirectoryUrl.lastPathComponent
-        let numberOfDirectoriesToDrop = splitTempFilePath.map(String.init).firstIndex(of: projectDirectoryName) ?? 0
-        let pathSuffix = splitTempFilePath.dropFirst(numberOfDirectoriesToDrop).joined(separator: "/")
-        
-        self.originalProjectPath = originalProjectDirectoryUrl
-            .deletingLastPathComponent()
-            .appendingPathComponent(pathSuffix, isDirectory: true)
-            .path
+        init(
+            testSuiteOutcome: TestSuiteOutcome,
+            mutationPoint: MutationPoint,
+            mutationSnapshot: MutationOperatorSnapshot,
+            originalProjectDirectoryUrl: URL
+        ) {
+            self.testSuiteOutcome = testSuiteOutcome
+            self.point = mutationPoint
+            self.snapshot = mutationSnapshot
+            
+            let splitTempFilePath = mutationPoint.filePath.split(separator: "/")
+            let projectDirectoryName = originalProjectDirectoryUrl.lastPathComponent
+            let numberOfDirectoriesToDrop = splitTempFilePath.map(String.init).firstIndex(of: projectDirectoryName) ?? 0
+            let pathSuffix = splitTempFilePath.dropFirst(numberOfDirectoriesToDrop).joined(separator: "/")
+            
+            self.originalProjectPath = originalProjectDirectoryUrl
+                .deletingLastPathComponent()
+                .appendingPathComponent(pathSuffix, isDirectory: true)
+                .path
+        }
+    }
+}
+
+struct Coverage: Equatable {
+    let percent: Double
+    let filesWithoutCoverage: [FilePath]
+    
+    init(
+        percent: Double,
+        filesWithoutCoverage: [FilePath]
+    ) {
+        self.percent = percent
+        self.filesWithoutCoverage = filesWithoutCoverage
+    }
+}
+
+extension Coverage {
+    static var null: Coverage {
+        Coverage(
+            percent:0,
+            filesWithoutCoverage: []
+        )
     }
 }

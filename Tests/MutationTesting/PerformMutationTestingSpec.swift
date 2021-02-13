@@ -60,15 +60,19 @@ class PerformMutationTestingSpec: QuickSpec {
                 
                 it("returns the mutation test outcomes ") {
                     let expectedTestOutcomes = [
-                        MutationTestOutcome(testSuiteOutcome: .failed,
-                                            mutationPoint: expectedMutationPoint,
-                                            mutationSnapshot: .null,
-                                            originalProjectDirectoryUrl: URL(fileURLWithPath: "/project")),
+                        MutationTestOutcome.Mutation.make(
+                            testSuiteOutcome: .failed,
+                            point: expectedMutationPoint,
+                            snapshot: .null,
+                            originalProjectDirectoryUrl: URL(fileURLWithPath: "/project")
+                        ),
                         
-                        MutationTestOutcome(testSuiteOutcome: .failed,
-                                            mutationPoint: expectedMutationPoint,
-                                            mutationSnapshot: .null,
-                                            originalProjectDirectoryUrl: URL(fileURLWithPath: "/project")),
+                        MutationTestOutcome.Mutation.make(
+                            testSuiteOutcome: .failed,
+                            point: expectedMutationPoint,
+                            snapshot: .null,
+                            originalProjectDirectoryUrl: URL(fileURLWithPath: "/project")
+                        ),
                     ]
                     
                     guard case .success(let stateChanges) = result! else {
@@ -76,7 +80,11 @@ class PerformMutationTestingSpec: QuickSpec {
                         return
                     }
 
-                    expect(stateChanges) == [.mutationTestOutcomesGenerated(expectedTestOutcomes)]
+                    expect(stateChanges) == [
+                        .mutationTestOutcomeGenerated(
+                            MutationTestOutcome(mutations: expectedTestOutcomes)
+                        )
+                    ]
                 }
             }
             
@@ -251,15 +259,27 @@ class PerformMutationTestingSpec: QuickSpec {
 
                 it("returns the mutation test outcomes") {
                     
-                    let expectedBuildErrorOutcome = MutationTestOutcome(testSuiteOutcome: .buildError,
-                                                                        mutationPoint: MutationPoint(mutationOperatorId: .ror, filePath: "/tmp/project/file.swift", position: .firstPosition),
-                                                                        mutationSnapshot: .null,
-                                                                        originalProjectDirectoryUrl: URL(fileURLWithPath: "/project"))
+                    let expectedBuildErrorOutcome = MutationTestOutcome.Mutation.make(
+                        testSuiteOutcome: .buildError,
+                        point: MutationPoint(
+                            mutationOperatorId: .ror,
+                            filePath: "/tmp/project/file.swift",
+                            position: .firstPosition
+                        ),
+                        snapshot: .null,
+                        originalProjectDirectoryUrl: URL(fileURLWithPath: "/project")
+                    )
                     
-                    let expectedFailingOutcome = MutationTestOutcome(testSuiteOutcome: .failed,
-                                                                     mutationPoint: MutationPoint(mutationOperatorId: .ror, filePath: "/tmp/project/file.swift", position: .firstPosition),
-                                                                     mutationSnapshot: .null,
-                                                                     originalProjectDirectoryUrl: URL(fileURLWithPath: "/project"))
+                    let expectedFailingOutcome = MutationTestOutcome.Mutation.make(
+                        testSuiteOutcome: .failed,
+                        point: MutationPoint(
+                            mutationOperatorId: .ror,
+                            filePath: "/tmp/project/file.swift",
+                            position: .firstPosition
+                        ),
+                        snapshot: .null,
+                        originalProjectDirectoryUrl: URL(fileURLWithPath: "/project")
+                    )
                     
                     let expectedTestOutcomes = Array(repeating: expectedBuildErrorOutcome, count: 4) + [expectedFailingOutcome]
                     
@@ -268,7 +288,11 @@ class PerformMutationTestingSpec: QuickSpec {
                         return
                     }
                     
-                    expect(stateChanges) == [.mutationTestOutcomesGenerated(expectedTestOutcomes)]
+                    expect(stateChanges) == [
+                        .mutationTestOutcomeGenerated(
+                            MutationTestOutcome(mutations: expectedTestOutcomes)
+                        )
+                    ]
                 }
             }
         }

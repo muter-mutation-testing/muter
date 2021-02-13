@@ -18,10 +18,14 @@ class ReporterSpec: QuickSpec {
 
     override func spec() {
         let outcomes = [
-            MutationTestOutcome(
+            MutationTestOutcome.Mutation.make(
                 testSuiteOutcome: .passed,
-                mutationPoint: MutationPoint(mutationOperatorId: .ror, filePath: "/tmp/project/file3.swift", position: .firstPosition),
-                mutationSnapshot: MutationOperatorSnapshot(before: "!=", after: "==", description: "from != to =="),
+                point: MutationPoint(
+                    mutationOperatorId: .ror,
+                    filePath: "/tmp/project/file3.swift",
+                    position: .firstPosition
+                ),
+                snapshot: MutationOperatorSnapshot(before: "!=", after: "==", description: "from != to =="),
                 originalProjectDirectoryUrl: URL(string: "/user/project")!
             ),
         ]
@@ -76,14 +80,36 @@ class ReporterSpec: QuickSpec {
         }
 
         describe("xcode reporter") {
-            let outcomes = outcomes + [MutationTestOutcome(testSuiteOutcome: .failed,
-                                             mutationPoint: MutationPoint(mutationOperatorId: .ror, filePath: "/tmp/project/file4.swift", position: .firstPosition),
-                                             mutationSnapshot: MutationOperatorSnapshot(before: "==", after: "!=", description: "changed from == to !="),
-                                             originalProjectDirectoryUrl: URL(string: "/user/project")!),
-                         MutationTestOutcome(testSuiteOutcome: .passed,
-                                             mutationPoint: MutationPoint(mutationOperatorId: .ror, filePath: "/tmp/project/file5.swift", position: .firstPosition),
-                                             mutationSnapshot: MutationOperatorSnapshot(before: "==", after: "!=", description: "changed from == to !="),
-                                             originalProjectDirectoryUrl: URL(string: "/user/project")!),]
+            let outcomes = outcomes + [
+                MutationTestOutcome.Mutation.make(
+                    testSuiteOutcome: .failed,
+                    point: MutationPoint(
+                        mutationOperatorId: .ror,
+                        filePath: "/tmp/project/file4.swift",
+                        position: .firstPosition
+                    ),
+                    snapshot: MutationOperatorSnapshot(
+                        before: "==",
+                        after: "!=",
+                        description: "changed from == to !="
+                    ),
+                    originalProjectDirectoryUrl: URL(string: "/user/project")!
+                ),
+                MutationTestOutcome.Mutation.make(
+                    testSuiteOutcome: .passed,
+                    point: MutationPoint(
+                        mutationOperatorId: .ror,
+                        filePath: "/tmp/project/file5.swift",
+                        position: .firstPosition
+                    ),
+                    snapshot: MutationOperatorSnapshot(
+                        before: "==",
+                        after: "!=",
+                        description: "changed from == to !="
+                    ),
+                    originalProjectDirectoryUrl: URL(string: "/user/project")!
+                ),
+            ]
 
             context("with footer-only not requested") {
                 it("returns the report in xcode format") {

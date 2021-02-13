@@ -27,7 +27,7 @@ private extension RunCommandHandler {
     private static let defaultSteps: [RunCommandStep] = [
         LoadConfiguration(),
         CopyProjectToTempDirectory(),
-        DiscoverFilesWithoutCoverage(),
+        DiscoverProjectCoverage(),
         DiscoverSourceFiles(),
         DiscoverMutationPoints(),
         GenerateSwapFilePaths(),

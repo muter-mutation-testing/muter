@@ -12,7 +12,7 @@ func makeReporter(
     return PlainTextReporter()
 }
 
-typealias MutationOutcomeWithFlush = (outcome: MutationTestOutcome, fflush: () -> Void)
+typealias MutationOutcomeWithFlush = (mutation: MutationTestOutcome.Mutation, fflush: () -> Void)
 
 protocol Reporter {
     func launched()
@@ -25,7 +25,7 @@ protocol Reporter {
     func mutationTestingStarted()
     func newMutationTestOutcomeAvailable(outcomeWithFlush: MutationOutcomeWithFlush)
     func newMutationTestLogAvailable(mutationTestLog: MutationTestLog)
-    func mutationTestingFinished(mutationTestOutcomes outcomes: [MutationTestOutcome])
+    func mutationTestingFinished(mutationTestOutcome outcome: MutationTestOutcome)
 }
 
 extension Reporter {
@@ -39,5 +39,5 @@ extension Reporter {
     func mutationTestingStarted() { }
     func newMutationTestOutcomeAvailable(outcomeWithFlush: MutationOutcomeWithFlush) { }
     func newMutationTestLogAvailable(mutationTestLog: MutationTestLog) { }
-    func mutationTestingFinished(mutationTestOutcomes outcomes: [MutationTestOutcome]) { }
+    func mutationTestingFinished(mutationTestOutcome outcome: MutationTestOutcome) { }
 }

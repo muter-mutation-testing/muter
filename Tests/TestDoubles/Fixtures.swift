@@ -1,5 +1,6 @@
 @testable import muterCore
 
+import TestingExtensions
 import Foundation
 import SwiftSyntax
 
@@ -31,17 +32,17 @@ extension MutationOperatorSnapshot {
     }
 }
 
-extension MutationTestOutcome {
+extension MutationTestOutcome.Mutation {
     static func make(
         testSuiteOutcome: TestSuiteOutcome = .passed,
-        mutationPoint: MutationPoint = .make(),
-        mutationSnapshot: MutationOperatorSnapshot = .null,
+        point: MutationPoint = .make(),
+        snapshot: MutationOperatorSnapshot = .null,
         originalProjectDirectoryUrl: URL = URL(fileURLWithPath: "")
     ) -> Self {
         Self(
             testSuiteOutcome: testSuiteOutcome,
-            mutationPoint: mutationPoint,
-            mutationSnapshot: mutationSnapshot,
+            mutationPoint: point,
+            mutationSnapshot: snapshot,
             originalProjectDirectoryUrl: originalProjectDirectoryUrl
         )
     }
@@ -124,5 +125,17 @@ extension SwiftSyntax.SourceLocation: ExpressibleByIntegerLiteral {
 extension Array {
     subscript(circular index: Int) -> Element {
         self[Swift.max(index, 1) % count]
+    }
+}
+
+extension Coverage {
+    static func make(
+        percent: Double = 0,
+        filesWithoutCoverage: [FilePath] = []
+    ) -> Coverage {
+        Coverage(
+            percent: percent,
+            filesWithoutCoverage: filesWithoutCoverage
+        )
     }
 }

@@ -115,10 +115,12 @@ class DiscoverSourceFilesSpec: QuickSpec {
                     let path = "\(self.fixturesDirectory)/FilesToDiscover"
                     
                     it("excludes files which match against the files without coverage list") {
-                        state.filesWithoutCoverage = [
-                            "\(path)/ExampleApp/ExampleAppCode.swift",
-                            "\(path)/Directory2/Directory3/file6.swift",
-                        ]
+                        state.projectCoverage = Coverage.make(
+                            filesWithoutCoverage: [
+                                "\(path)/ExampleApp/ExampleAppCode.swift",
+                                "\(path)/Directory2/Directory3/file6.swift",
+                            ]
+                        )
                         state.muterConfiguration = MuterConfiguration(executable: "", arguments: [])
                         state.tempDirectoryURL = URL(fileURLWithPath: path, isDirectory: true)
                         

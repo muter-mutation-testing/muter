@@ -8,16 +8,21 @@ class MuterTestReportSpec: QuickSpec {
         describe("MuterTestReport") {
             context("when given a nonempty collection of MutationTestOutcomes") {
                 it("calculates all its fields as part of its initialization") {
-                    let outcomes = self.exampleMutationTestResults + [MutationTestOutcome(
-                                                                        testSuiteOutcome: .failed,
-                                                                        mutationPoint: MutationPoint(mutationOperatorId: .ror,
-                                                                        filePath: "/tmp/a module.swift", position: .firstPosition),
-                                                                        mutationSnapshot: .make(
-                                                                            before: "==",
-                                                                            after: "!=",
-                                                                            description: "changed from == to !="
-                                                                        )
-                    ),]
+                    let outcomes = self.exampleMutationTestResults + [
+                        MutationTestOutcome.Mutation.make(
+                            testSuiteOutcome: .failed,
+                            point: MutationPoint(
+                                mutationOperatorId: .ror,
+                                filePath: "/tmp/a module.swift",
+                                position: .firstPosition
+                            ),
+                            snapshot: .make(
+                                before: "==",
+                                after: "!=",
+                                description: "changed from == to !="
+                            )
+                        ),
+                    ]
 
                     let report = MuterTestReport(from: outcomes)
                     expect(report.globalMutationScore).to(equal(60))

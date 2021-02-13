@@ -23,7 +23,7 @@ extension Process: Launchable {
     }
 }
 
-final class DiscoverFilesWithoutCoverage: RunCommandStep {
+final class DiscoverProjectCoverage: RunCommandStep {
     private var process: Launchable
     private let makeProcess: () -> Launchable
     
@@ -37,14 +37,18 @@ final class DiscoverFilesWithoutCoverage: RunCommandStep {
               let xccovPath = runXcodeSelect(),
               let coverage = runXccov(path: xccovPath, with: resultPath) else {
             return .success([
-                .filesWithoutCoverage([])
+                .projectCoverage(.null)
             ])
         }
 
         let untested = extractUntested(from: coverage)
+        let projectCoverage = Coverage(
+            percent: 0, // TODO
+            filesWithoutCoverage: untested
+        )
 
         return .success([
-            .filesWithoutCoverage(untested)
+            .projectCoverage(projectCoverage)
         ])
     }
     

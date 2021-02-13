@@ -19,6 +19,16 @@ public struct MutationPoint: Equatable, Codable {
     }
 }
 
+extension MutationPoint: Nullable {
+    static var null: MutationPoint {
+        MutationPoint(
+            mutationOperatorId: .removeSideEffects,
+            filePath: "",
+            position: .null
+        )
+    }
+}
+
 struct MutationOperator {
     public enum Id: String, Codable, CaseIterable {
         case ror = "RelationalOperatorReplacement"

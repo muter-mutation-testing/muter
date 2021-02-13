@@ -111,7 +111,7 @@ extension RunCommandObserver {
     func handleNewMutationTestOutcomeAvailable(notification: Notification) {
         reporter.newMutationTestOutcomeAvailable(
             outcomeWithFlush: MutationOutcomeWithFlush(
-                outcome: notification.object as! MutationTestOutcome,
+                mutation: notification.object as! MutationTestOutcome.Mutation,
                 fflush: flushStdOut
             )
         )
@@ -139,7 +139,7 @@ extension RunCommandObserver {
 
     func handleMutationTestingFinished(notification: Notification) {
         reporter.mutationTestingFinished(
-            mutationTestOutcomes: notification.object as! [MutationTestOutcome]
+            mutationTestOutcome: notification.object as! MutationTestOutcome
         )
     }
 }

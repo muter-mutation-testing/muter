@@ -22,14 +22,14 @@ class HTMLReportSpec: QuickSpec {
 
         let sut = HTMLReporter(now: { now })
         let outcomes = (0...50).map {
-            MutationTestOutcome.make(
+            MutationTestOutcome.Mutation.make(
                 testSuiteOutcome: nextMutationTestOutcome($0),
-                mutationPoint: .make(
+                point: .make(
                     mutationOperatorId: nextMutationOperator($0),
                     filePath: "/root/file\($0).swift",
                     position: .init(integerLiteral: $0)
                 ),
-                mutationSnapshot: .make(before: "before", after: "after"),
+                snapshot: .make(before: "before", after: "after"),
                 originalProjectDirectoryUrl: URL(fileURLWithPath: "/root/")
             )
         }

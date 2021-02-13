@@ -6,7 +6,7 @@ final class XcodeReporter: Reporter {
     }
     
     func newMutationTestOutcomeAvailable(outcomeWithFlush: MutationOutcomeWithFlush) {
-        let outcome = outcomeWithFlush.outcome
+        let outcome = outcomeWithFlush.mutation
         
         guard outcome.testSuiteOutcome == .passed else {
             return
@@ -17,11 +17,11 @@ final class XcodeReporter: Reporter {
         outcomeWithFlush.fflush()
     }
     
-    func mutationTestingFinished(mutationTestOutcomes outcomes: [MutationTestOutcome]) {
+    func mutationTestingFinished(mutationTestOutcomes outcomes: [MutationTestOutcome.Mutation]) {
         print(report(from: outcomes))
     }
     
-    func report(from outcomes: [MutationTestOutcome]) -> String {
+    func report(from outcomes: [MutationTestOutcome.Mutation]) -> String {
         let report = MuterTestReport(from: outcomes)
         return """
             Mutation score: \(report.globalMutationScore)
@@ -30,12 +30,12 @@ final class XcodeReporter: Reporter {
             """
     }
 
-    private func outcomeIntoXcodeString(outcome: MutationTestOutcome) -> String {
+    private func outcomeIntoXcodeString(outcome: MutationTestOutcome.Mutation) -> String {
         // {full_path_to_file}{:line}{:character}: {error,warning}: {content}
 
         return "\(outcome.originalProjectPath):" +
-            "\(outcome.mutationPoint.position.line):\(outcome.mutationPoint.position.column): " +
+            "\(outcome.point.position.line):\(outcome.point.position.column): " +
             "warning: " +
-            "Your test suite did not kill this mutant: \(outcome.mutationSnapshot.description)"
+            "Your test suite did not kill this mutant: \(outcome.snapshot.description)"
     }
 }
