@@ -112,12 +112,12 @@ final class PlainTextReporter: Reporter {
         }
     }
     
-    func mutationTestingFinished(mutationTestOutcomes outcomes: [MutationTestOutcome.Mutation]) {
-        printMessage(report(from: outcomes))
+    func mutationTestingFinished(mutationTestOutcomes outcome: MutationTestOutcome) {
+        printMessage(report(from: outcome))
     }
     
-    func report(from outcomes: [MutationTestOutcome.Mutation]) -> String {
-        let report = MuterTestReport(from: outcomes)
+    func report(from outcome: MutationTestOutcome) -> String {
+        let report = MuterTestReport(from: outcome)
         
         let finishedRunningMessage = "Muter finished running!\n\nHere's your test report:\n\n"
         let appliedMutationsMessage = """

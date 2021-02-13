@@ -33,7 +33,7 @@ final class DiscoverProjectCoverage: RunCommandStep {
     }
     
     func run(with state: AnyRunCommandState) -> Result<[RunCommandState.Change], MuterError> {
-        guard let resultPath = runWithCoverage(using: state.muterConfiguration),
+        guard let resultPath = runTestsWithCoverageEnabled(using: state.muterConfiguration),
               let xccovPath = runXcodeSelect(),
               let coverage = runXccov(path: xccovPath, with: resultPath) else {
             return .success([
@@ -52,7 +52,9 @@ final class DiscoverProjectCoverage: RunCommandStep {
         ])
     }
     
-    private func runWithCoverage(using configuration: MuterConfiguration) -> String? {
+    private func runTestsWithCoverageEnabled(
+        using configuration: MuterConfiguration
+    ) -> String? {
         run(
             url: configuration.testCommandExecutable,
             arguments: configuration.testCommandArguments + ["-enableCodeCoverage", "YES"],

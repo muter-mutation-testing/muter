@@ -32,6 +32,18 @@ extension MutationOperatorSnapshot {
     }
 }
 
+extension MutationTestOutcome {
+    static func make(
+        mutations: [Mutation] = [],
+        coverage: Coverage = .null
+    ) -> MutationTestOutcome {
+        MutationTestOutcome(
+            mutations: mutations,
+            coverage: coverage
+        )
+    }
+}
+
 extension MutationTestOutcome.Mutation {
     static func make(
         testSuiteOutcome: TestSuiteOutcome = .passed,

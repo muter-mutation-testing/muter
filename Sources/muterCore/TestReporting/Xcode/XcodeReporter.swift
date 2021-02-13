@@ -17,12 +17,12 @@ final class XcodeReporter: Reporter {
         outcomeWithFlush.fflush()
     }
     
-    func mutationTestingFinished(mutationTestOutcomes outcomes: [MutationTestOutcome.Mutation]) {
-        print(report(from: outcomes))
+    func mutationTestingFinished(mutationTestOutcome outcome: MutationTestOutcome) {
+        print(report(from: outcome))
     }
     
-    func report(from outcomes: [MutationTestOutcome.Mutation]) -> String {
-        let report = MuterTestReport(from: outcomes)
+    func report(from outcome: MutationTestOutcome) -> String {
+        let report = MuterTestReport(from: outcome)
         return """
             Mutation score: \(report.globalMutationScore)
             Mutants introduced into your code: \(report.totalAppliedMutationOperators)

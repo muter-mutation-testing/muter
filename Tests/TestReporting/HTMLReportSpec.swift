@@ -19,24 +19,28 @@ class HTMLReportSpec: QuickSpec {
                 minute: 42
             ).date!
         }()
-
+        
         let sut = HTMLReporter(now: { now })
-        let outcomes = (0...50).map {
-            MutationTestOutcome.Mutation.make(
-                testSuiteOutcome: nextMutationTestOutcome($0),
-                point: .make(
-                    mutationOperatorId: nextMutationOperator($0),
-                    filePath: "/root/file\($0).swift",
-                    position: .init(integerLiteral: $0)
-                ),
-                snapshot: .make(before: "before", after: "after"),
-                originalProjectDirectoryUrl: URL(fileURLWithPath: "/root/")
+        let outcome =
+            MutationTestOutcome.make(
+                mutations:
+                    (0...50).map {
+                        MutationTestOutcome.Mutation.make(
+                            testSuiteOutcome: nextMutationTestOutcome($0),
+                            point: .make(
+                                mutationOperatorId: nextMutationOperator($0),
+                                filePath: "/root/file\($0).swift",
+                                position: .init(integerLiteral: $0)
+                            ),
+                            snapshot: .make(before: "before", after: "after"),
+                            originalProjectDirectoryUrl: URL(fileURLWithPath: "/root/")
+                        )
+                    }
             )
-        }
 
         describe("HTMLReport") {
             it("should output an HTML file") {
-                let actual = sut.report(from: outcomes)
+                let actual = sut.report(from: outcome)
                 let expected = loadReport()
                 
                 expect(actual).to(equalWithDiff(expected))
@@ -47,9 +51,9 @@ class HTMLReportSpec: QuickSpec {
 
 private func loadReport() -> String {
     guard let data = FileManager.default.contents(atPath: "\(HTMLReportSpec().fixturesDirectory)/TestReporting/testReport.html"),
-        let string = String(data: data, encoding: .utf8) else {
-            fatalError("Unable to load reportfor testing")
+          let string = String(data: data, encoding: .utf8) else {
+        fatalError("Unable to load reportfor testing")
     }
-
+    
     return string
 }

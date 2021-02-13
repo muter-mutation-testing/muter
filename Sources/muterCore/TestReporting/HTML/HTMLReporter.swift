@@ -9,14 +9,14 @@ final class HTMLReporter: Reporter {
         self.now = now
     }
 
-    func mutationTestingFinished(mutationTestOutcomes outcomes: [MutationTestOutcome.Mutation]) {
-        print(report(from: outcomes))
+    func mutationTestingFinished(mutationTestOutcome outcome: MutationTestOutcome) {
+        print(report(from: outcome))
     }
 
-    func report(from outcomes: [MutationTestOutcome.Mutation]) -> String {
+    func report(from outcome: MutationTestOutcome) -> String {
         htmlReport(
             now,
-            MuterTestReport(from: outcomes)
+            MuterTestReport(from: outcome)
         )
     }
 }

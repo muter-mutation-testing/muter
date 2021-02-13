@@ -74,7 +74,10 @@ class ReporterSpec: QuickSpec {
 
         describe("text reporter") {
             it("returns the report in text format") {
-                let plainText = PlainTextReporter().report(from: outcomes)
+                let plainText = PlainTextReporter()
+                    .report(
+                        from: .make(mutations:outcomes)
+                    )
                 expect(plainText).to(equalWithDiff(loadReport()))
             }
         }
@@ -113,7 +116,11 @@ class ReporterSpec: QuickSpec {
 
             context("with footer-only not requested") {
                 it("returns the report in xcode format") {
-                    expect(XcodeReporter().report(from: outcomes)).to(equalWithDiff(
+                    expect(XcodeReporter()
+                            .report(
+                                from: .make(mutations: outcomes)
+                            )
+                    ).to(equalWithDiff(
                         """
                         Mutation score: 33
                         Mutants introduced into your code: 3
@@ -126,7 +133,10 @@ class ReporterSpec: QuickSpec {
 
         describe("json reporter") {
             it("returns the report in json format") {
-                let json = JsonReporter().report(from: outcomes)
+                let json = JsonReporter()
+                    .report(
+                        from: .make(mutations: outcomes)
+                    )
 
                 guard let data = json.data(using: .utf8),
                     let actualReport = try? JSONDecoder().decode(MuterTestReport.self, from: data) else {
