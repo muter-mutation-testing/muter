@@ -1,5 +1,5 @@
 {
-    "executable": "/usr/bin/make",
+    "executable": "/usr/bin/swift",
     "arguments": [
         "test"
     ],
@@ -10,6 +10,7 @@
         "Package.swift",
         "Repositories",
         "RunCommandObserver.swift",
-        "ProgressExtensions.swift"
+        "ProgressExtensions.swift",
+        "BundleResource.swift"
     ]
 }
