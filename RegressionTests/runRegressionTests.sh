@@ -30,6 +30,11 @@ cd ../..
 
 export regression_tests=true
 swift test
+
+exitCode=$?
+
 unset regression_tests
+
+exit $exitCode
 
 echo "🦖🦖🦖🦖🦖🦖🦖🦖 Regression Testing has finished 🦖🦖🦖🦖🦖🦖🦖🦖"
