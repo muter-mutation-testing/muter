@@ -22,7 +22,7 @@
               "utf8Offset" : 3474
             }
           },
-          "testSuiteOutcome" : "failed"
+          "testSuiteOutcome" : "runtimeError"
         },
         {
           "mutationPoint" : {
@@ -105,7 +105,7 @@
               "utf8Offset" : 10412
             }
           },
-          "testSuiteOutcome" : "failed"
+          "testSuiteOutcome" : "runtimeError"
         },
         {
           "mutationPoint" : {
@@ -116,7 +116,7 @@
               "utf8Offset" : 10440
             }
           },
-          "testSuiteOutcome" : "failed"
+          "testSuiteOutcome" : "runtimeError"
         },
         {
           "mutationPoint" : {
@@ -127,7 +127,7 @@
               "utf8Offset" : 10470
             }
           },
-          "testSuiteOutcome" : "failed"
+          "testSuiteOutcome" : "runtimeError"
         }
       ],
       "fileName" : "StringParsing.swift",

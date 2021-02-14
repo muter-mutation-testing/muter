@@ -80,6 +80,11 @@ echo "Running tests..."
 
 export acceptance_tests=true
 swift test
+
+exitCode=$?
+
 unset acceptance_tests
+
+exit $exitCode
 
 echo "📳📳📳📳📳📳📳 Acceptance Testing has finished 📳📳📳📳📳📳📳"

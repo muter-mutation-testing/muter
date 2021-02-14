@@ -71,7 +71,6 @@ extension MuterTestReport {
 
         enum CodingKeys: String, CodingKey {
             case mutationPoint
-            case mutationSnapshot
             case testSuiteOutcome
         }
 
@@ -88,8 +87,8 @@ extension MuterTestReport {
         public init(from decoder: Decoder) throws {
             let container = try decoder.container(keyedBy: CodingKeys.self)
             mutationPoint = try container.decode(MutationPoint.self, forKey: .mutationPoint)
-            mutationSnapshot = try container.decode(MutationOperatorSnapshot.self, forKey: .mutationSnapshot)
             testSuiteOutcome = try container.decode(TestSuiteOutcome.self, forKey: .testSuiteOutcome)
+            mutationSnapshot = .null
         }
     }
 }
