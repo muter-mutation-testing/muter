@@ -28,7 +28,7 @@
               "utf8Offset" : 1100
             }
           },
-          "testSuiteOutcome" : "failed"
+          "testSuiteOutcome" : "runtimeError"
         },
         {
           "mutationPoint" : {
@@ -39,7 +39,7 @@
               "utf8Offset" : 1273
             }
           },
-          "testSuiteOutcome" : "failed"
+          "testSuiteOutcome" : "runtimeError"
         },
         {
           "mutationPoint" : {
@@ -50,7 +50,7 @@
               "utf8Offset" : 1576
             }
           },
-          "testSuiteOutcome" : "failed"
+          "testSuiteOutcome" : "runtimeError"
         }
       ],
       "fileName" : "FontFeatures.swift",
@@ -269,7 +269,7 @@
               "utf8Offset" : 4695
             }
           },
-          "testSuiteOutcome" : "failed"
+          "testSuiteOutcome" : "runtimeError"
         },
         {
           "mutationPoint" : {
@@ -280,7 +280,7 @@
               "utf8Offset" : 4731
             }
           },
-          "testSuiteOutcome" : "failed"
+          "testSuiteOutcome" : "runtimeError"
         },
         {
           "mutationPoint" : {
