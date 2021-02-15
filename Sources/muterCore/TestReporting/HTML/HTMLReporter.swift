@@ -14,17 +14,15 @@ final class HTMLReporter: Reporter {
     }
 
     func report(from outcome: MutationTestOutcome) -> String {
-        htmlReport(
-            now,
-            MuterTestReport(from: outcome)
-        )
+        htmlReport(now, outcome)
     }
 }
 
 private func htmlReport(
     _ now: Now,
-    _ testReport: MuterTestReport
+    _ outcome: MutationTestOutcome
 ) -> String {
+    let testReport = MuterTestReport(from: outcome)
     let normalizeCSS = Bundle.resource(named: "normalize", ofType: "css")
     let reportCSS = Bundle.resource(named: "report", ofType: "css")
     let css = normalizeCSS + reportCSS
@@ -58,6 +56,7 @@ private func htmlReport(
                             <h1>\(testReport.globalMutationScore)%</h1>
                         </div>
                     </div>
+                    \(outcome.coverageDiv)
                     <div class="header-item">
                         <div class="box" style="background-color: #3498db;">
                             <p class="small">Operators Applied</p>
@@ -108,6 +107,21 @@ private extension Date {
         formatter.dateFormat = "EEEE, MMMM d yyyy HH:mm:ss"
 
         return formatter.string(from: self)
+    }
+}
+
+private extension MutationTestOutcome {
+    var coverageDiv: String {
+        coverage == .null
+            ? ""
+            : """
+              <div class="header-item">
+                  <div class="box" style="background-color: \(coloredMutationScore(for: coverage.percent));">
+                      <p class="small">Code Coverage</p>
+                      <h1>\(coverage.percent)%</h1>
+                  </div>
+              </div>
+              """
     }
 }
 

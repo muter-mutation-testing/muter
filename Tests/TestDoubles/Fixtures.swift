@@ -142,7 +142,7 @@ extension Array {
 
 extension Coverage {
     static func make(
-        percent: Double = 0,
+        percent: Int = 0,
         filesWithoutCoverage: [FilePath] = []
     ) -> Coverage {
         Coverage(

@@ -25,6 +25,7 @@ Mutation scores ignore build errors.
 
 Of the 1 mutants introduced into your code, your test suite killed 0.
 Mutation Score of Test Suite: 0%
+Code Coverage of your project: 1%
 
 File          # of Introduced Mutants   Mutation Score
 ----          -----------------------   --------------

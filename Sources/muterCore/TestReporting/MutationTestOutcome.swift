@@ -53,11 +53,11 @@ extension MutationTestOutcome {
 }
 
 struct Coverage: Equatable {
-    let percent: Double
+    let percent: Int
     let filesWithoutCoverage: [FilePath]
     
     init(
-        percent: Double,
+        percent: Int,
         filesWithoutCoverage: [FilePath]
     ) {
         self.percent = percent
@@ -68,7 +68,7 @@ struct Coverage: Equatable {
 extension Coverage {
     static var null: Coverage {
         Coverage(
-            percent:0,
+            percent: -1,
             filesWithoutCoverage: []
         )
     }

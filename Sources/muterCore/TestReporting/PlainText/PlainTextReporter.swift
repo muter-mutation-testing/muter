@@ -135,6 +135,7 @@ final class PlainTextReporter: Reporter {
         """
         
         let coloredGlobalScore = coloredMutationScore(for: report.globalMutationScore, appliedTo: "\(report.globalMutationScore)%")
+        let projectCoverageMessage = coverageMessage(from: outcome.coverage)
         let mutationScoreMessage = "Mutation Score of Test Suite: ".bold + "\(coloredGlobalScore)"
         let mutationScoresMessage = """
         --------------------
@@ -147,6 +148,7 @@ final class PlainTextReporter: Reporter {
         
         Of the \(report.totalAppliedMutationOperators) mutants introduced into your code, your test suite killed \(report.numberOfKilledMutants).
         \(mutationScoreMessage)
+        \(projectCoverageMessage)
         
         \(generateMutationScoresCLITable(from: report.fileReports).description)
         """
@@ -157,5 +159,11 @@ final class PlainTextReporter: Reporter {
     private func printMessage(_ message: String) {
         print("+-----------------+")
         print(message)
+    }
+    
+    private func coverageMessage(from coverage: Coverage) -> String {
+        coverage == .null
+            ? "Muter could not gather coverage data from your project"
+            : "Code Coverage of your project: \(coverage.percent)%"
     }
 }

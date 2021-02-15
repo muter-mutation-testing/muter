@@ -73,12 +73,30 @@ class ReporterSpec: QuickSpec {
         }
 
         describe("text reporter") {
-            it("returns the report in text format") {
-                let plainText = PlainTextReporter()
-                    .report(
-                        from: .make(mutations:outcomes)
-                    )
-                expect(plainText).to(equalWithDiff(loadReport()))
+            context("when outcome have coverage data") {
+                it("adds coverage data to the report in text format") {
+                    let plainText = PlainTextReporter()
+                        .report(
+                            from: .make(
+                                mutations:outcomes,
+                                coverage: .make(percent: 1)
+                            )
+                        )
+                    expect(plainText).to(equalWithDiff(loadReportOfProjectWithCoverage()))
+                }
+            }
+            
+            context("when outcome doesn't have coverage data") {
+                it("doesn't add coverage data to the report in text format") {
+                    let plainText = PlainTextReporter()
+                        .report(
+                            from: .make(
+                                mutations:outcomes,
+                                coverage: .null
+                            )
+                        )
+                    expect(plainText).to(equalWithDiff(loadReportOfProjectWithoutCoverage()))
+                }
             }
         }
 
@@ -153,8 +171,17 @@ class ReporterSpec: QuickSpec {
     }
 }
 
-private func loadReport() -> String {
-    guard let data = FileManager.default.contents(atPath: "\(ReporterSpec().fixturesDirectory)/TestReporting/testReport.txt"),
+private func loadReportOfProjectWithCoverage() -> String {
+    guard let data = FileManager.default.contents(atPath: "\(ReporterSpec().fixturesDirectory)/TestReporting/testReportOfProjectWithCoverage.txt"),
+        let string = String(data: data, encoding: .utf8) else {
+            fatalError("Unable to load report for testing")
+    }
+
+    return string
+}
+
+private func loadReportOfProjectWithoutCoverage() -> String {
+    guard let data = FileManager.default.contents(atPath: "\(ReporterSpec().fixturesDirectory)/TestReporting/testReportOfProjectWithoutCoverage.txt"),
         let string = String(data: data, encoding: .utf8) else {
             fatalError("Unable to load report for testing")
     }
