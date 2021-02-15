@@ -23,7 +23,7 @@ struct PerformMutationTesting: RunCommandStep {
         case .success(let outcomes):
             let mutationTestOutcome = state.mutationTestOutcome
             mutationTestOutcome.mutations = outcomes
-            notificationCenter.post(name: .mutationTestingFinished, object: outcomes)
+            notificationCenter.post(name: .mutationTestingFinished, object: mutationTestOutcome)
             return .success([.mutationTestOutcomeGenerated(mutationTestOutcome)])
         case .failure(let reason):
             return .failure(reason)

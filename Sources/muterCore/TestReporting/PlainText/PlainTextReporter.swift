@@ -112,7 +112,7 @@ final class PlainTextReporter: Reporter {
         }
     }
     
-    func mutationTestingFinished(mutationTestOutcomes outcome: MutationTestOutcome) {
+    func mutationTestingFinished(mutationTestOutcome outcome: MutationTestOutcome) {
         printMessage(report(from: outcome))
     }
     
