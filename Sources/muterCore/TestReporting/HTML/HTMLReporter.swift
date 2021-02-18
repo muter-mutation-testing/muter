@@ -5,15 +5,15 @@ typealias Now = () -> Date
 
 final class HTMLReporter: Reporter {
     private let now: Now
-    
+
     init(now: @escaping Now = Date.init) {
         self.now = now
     }
-    
+
     func mutationTestingFinished(mutationTestOutcomes outcomes: [MutationTestOutcome]) {
         print(report(from: outcomes))
     }
-    
+
     func report(from outcomes: [MutationTestOutcome]) -> String {
         htmlReport(
             MuterTestReport(from: outcomes),
@@ -50,7 +50,7 @@ private extension Date {
     var string: String {
         let formatter = DateFormatter()
         formatter.dateFormat = "EEEE, MMMM d yyyy HH:mm:ss"
-        
+
         return formatter.string(from: self)
     }
 }
@@ -60,9 +60,9 @@ extension Node where Context == HTML.DocumentContext {
         let normalizeCSS = Bundle.resource(named: "normalize", ofType: "css")
         let reportCSS = Bundle.resource(named: "report", ofType: "css")
         let css = normalizeCSS + reportCSS
-        
+
         let javascript = Bundle.resource(named: "javascript", ofType: "js")
-        
+
         return .head(
             .attribute(named: "charset", value: "utf-8"),
             .title("Muter Report"),
@@ -75,7 +75,6 @@ extension Node where Context == HTML.DocumentContext {
 extension Node where Context: HTML.BodyContext {
     static func muterHeader(from testReport: MuterTestReport) -> Self {
         let muterLogo = Bundle.resource(named: "muterLogo", ofType: "svg")
-        
         return .header(
             .div(.class("logo"), .raw(muterLogo)),
             .div(
@@ -98,7 +97,7 @@ extension Node where Context: HTML.BodyContext {
             )
         )
     }
-    
+
     static func summary(from testReport: MuterTestReport) -> Self {
         .p(
             "In total, Muter introduced ",
@@ -108,14 +107,14 @@ extension Node where Context: HTML.BodyContext {
             " files."
         )
     }
-    
+
     static func divider(_ title: String) -> Self {
         .div(
             .class("divider"),
             .span(.class("divider-content"), "\(title)")
         )
     }
-    
+
     static func mutationOperatorsPerFile(from testReport: MuterTestReport) -> Self {
         .div(
             .class("mutation-operators-per-file"),
@@ -131,7 +130,7 @@ extension Node where Context: HTML.BodyContext {
             .mutationScoreTable(from: testReport.fileReports)
         )
     }
-    
+
     static func mutationScoreTable(from fileReports: [MuterTestReport.FileReport]) -> Self {
         .table(
             .id("mutation-operators-per-file"),
@@ -153,7 +152,7 @@ extension Node where Context: HTML.BodyContext {
             )
         )
     }
-    
+
     static func appliedOperators(from testReport: MuterTestReport) -> Self {
         .div(
             .class("applied-operators"),
@@ -169,14 +168,14 @@ extension Node where Context: HTML.BodyContext {
             .appliedOperatorsTable(from: testReport.fileReports)
         )
     }
-    
+
     static func appliedOperatorsTable(from fileReports: [MuterTestReport.FileReport]) -> Self {
         let reports = fileReports.sorted().flatMap { report in
             report.appliedOperators.compactMap { appliedOperator in
                 (fileName: report.fileName, appliedOperator: appliedOperator)
             }
         }
-        
+
         return .table(
             .id("applied-operators"),
             .thead(
@@ -201,7 +200,7 @@ extension Node where Context: HTML.BodyContext {
             )
         )
     }
-    
+
     static func diff(of appliedOperator: MuterTestReport.AppliedMutationOperator) -> Self {
         .div(
             .class("snapshot-changes"),
@@ -219,7 +218,7 @@ extension Node where Context: HTML.BodyContext {
             )
         )
     }
-    
+
     static func muterFooter(now: () -> Date) -> Self {
         .footer(
             .class("footer"),
@@ -258,7 +257,7 @@ private extension TestSuiteOutcome {
                 ofType: "svg"
             )
         }
-        
+
         return icon.replacingOccurrences(of: "$title$", with: asMutationTestOutcome)
     }
 }
