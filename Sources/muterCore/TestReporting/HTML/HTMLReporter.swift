@@ -162,7 +162,7 @@ extension Node where Context: HTML.BodyContext {
                 .input(
                     .id("show-more-mutation-operators-per-file"),
                     .type(.checkbox),
-                    .attribute(named: "onclick", value: "showHide(this.checked, 'mutation-operators-per-file');")
+                    .attribute(named: "onclick", value: "showHide(this.checked, 'applied-operators');")
                 ),
                 .label(.for("show-more-applied-operators"), "Show all")
             ),
