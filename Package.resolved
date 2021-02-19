@@ -47,6 +47,15 @@
         }
       },
       {
+        "package": "Plot",
+        "repositoryURL": "https://github.com/johnsundell/plot.git",
+        "state": {
+          "branch": "a12222bc4d25",
+          "revision": "a12222bc4d255fb584285376ed3a26978fb14f22",
+          "version": null
+        }
+      },
+      {
         "package": "Progress",
         "repositoryURL": "https://github.com/jkandzi/Progress.swift",
         "state": {
