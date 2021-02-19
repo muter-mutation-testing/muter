@@ -4,6 +4,14 @@ import TestingExtensions
 import Foundation
 import SwiftSyntax
 
+extension MuterTestReport {
+    static func make(
+        outcome: MutationTestOutcome = .make()
+    ) -> MuterTestReport {
+        .init(from: outcome)
+    }
+}
+
 extension MuterTestReport.AppliedMutationOperator {
     static func make(
         mutationPoint: MutationPoint = .make(),

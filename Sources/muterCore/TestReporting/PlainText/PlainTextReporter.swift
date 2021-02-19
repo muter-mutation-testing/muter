@@ -113,12 +113,12 @@ final class PlainTextReporter: Reporter {
     }
     
     func mutationTestingFinished(mutationTestOutcome outcome: MutationTestOutcome) {
-        printMessage(report(from: outcome))
+        printMessage(
+            report(from: MuterTestReport(from: outcome))
+        )
     }
     
-    func report(from outcome: MutationTestOutcome) -> String {
-        let report = MuterTestReport(from: outcome)
-        
+    func report(from report: MuterTestReport) -> String {
         let finishedRunningMessage = "Muter finished running!\n\nHere's your test report:\n\n"
         let appliedMutationsMessage = """
         --------------------------
@@ -135,7 +135,7 @@ final class PlainTextReporter: Reporter {
         """
         
         let coloredGlobalScore = coloredMutationScore(for: report.globalMutationScore, appliedTo: "\(report.globalMutationScore)%")
-        let projectCoverageMessage = coverageMessage(from: outcome.coverage)
+        let projectCoverageMessage = coverageMessage(from: report)
         let mutationScoreMessage = "Mutation Score of Test Suite: ".bold + "\(coloredGlobalScore)"
         let mutationScoresMessage = """
         --------------------
@@ -161,9 +161,8 @@ final class PlainTextReporter: Reporter {
         print(message)
     }
     
-    private func coverageMessage(from coverage: Coverage) -> String {
-        coverage == .null
-            ? "Muter could not gather coverage data from your project"
-            : "Code Coverage of your project: \(coverage.percent)%"
+    private func coverageMessage(from report: MuterTestReport) -> String {
+        report.projectCodeCoverage.map { "Code Coverage of your project: \($0)%" }
+            ?? "Muter could not gather coverage data from your project"
     }
 }

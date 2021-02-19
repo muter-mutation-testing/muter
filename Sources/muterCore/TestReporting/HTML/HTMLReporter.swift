@@ -10,13 +10,13 @@ final class HTMLReporter: Reporter {
         self.now = now
     }
 
-    func mutationTestingFinished(mutationTestOutcomes outcomes: [MutationTestOutcome]) {
-        print(report(from: outcomes))
+    func mutationTestingFinished(mutationTestOutcome outcome: MutationTestOutcome) {
+        print(report(from: outcome))
     }
 
-    func report(from outcomes: [MutationTestOutcome]) -> String {
+    func report(from outcome: MutationTestOutcome) -> String {
         htmlReport(
-            MuterTestReport(from: outcomes),
+            MuterTestReport(from: outcome),
             now
         )
     }
@@ -86,6 +86,17 @@ extension Node where Context: HTML.BodyContext {
                     .h1("\(testReport.globalMutationScore)%")
                 )
             ),
+            .unwrap(testReport.projectCodeCoverage) { coverage in
+                .div(
+                    .class("header-item"),
+                    .div(
+                        .class("box"),
+                        .style("background-color: #51a100"),
+                        .p(.class("small"), "Code Coverage"),
+                        .h1("\(coverage)%")
+                    )
+                )
+            },
             .div(
                 .class("header-item"),
                 .div(

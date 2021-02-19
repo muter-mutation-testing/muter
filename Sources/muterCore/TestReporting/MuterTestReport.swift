@@ -7,6 +7,7 @@ struct MuterTestReport {
     let globalMutationScore: Int
     let totalAppliedMutationOperators: Int
     let numberOfKilledMutants: Int
+    let projectCodeCoverage: Int?
     let fileReports: [FileReport]
 
     init(
@@ -16,6 +17,7 @@ struct MuterTestReport {
         totalAppliedMutationOperators = outcome.mutations.count
         numberOfKilledMutants = outcome.mutations
             .count { $0.testSuiteOutcome == .failed || $0.testSuiteOutcome == .runtimeError }
+        projectCodeCoverage = outcome.coverage == .null ? nil : outcome.coverage.percent
         fileReports = MuterTestReport.fileReports(from: outcome)
     }
 }

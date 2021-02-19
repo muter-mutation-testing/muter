@@ -78,8 +78,10 @@ class ReporterSpec: QuickSpec {
                     let plainText = PlainTextReporter()
                         .report(
                             from: .make(
-                                mutations:outcomes,
-                                coverage: .make(percent: 1)
+                                outcome: .make(
+                                    mutations: outcomes,
+                                    coverage: .make(percent: 1)
+                                )
                             )
                         )
                     expect(plainText).to(equalWithDiff(loadReportOfProjectWithCoverage()))
@@ -91,8 +93,10 @@ class ReporterSpec: QuickSpec {
                     let plainText = PlainTextReporter()
                         .report(
                             from: .make(
-                                mutations:outcomes,
-                                coverage: .null
+                                outcome: .make(
+                                    mutations: outcomes,
+                                    coverage: .null
+                                )
                             )
                         )
                     expect(plainText).to(equalWithDiff(loadReportOfProjectWithoutCoverage()))
