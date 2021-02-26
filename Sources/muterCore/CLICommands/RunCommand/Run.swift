@@ -54,7 +54,7 @@ public struct Run: ParsableCommand {
     
     @Flag(
         name: [.customLong("skip-coverage")],
-        help: "Skips the step in which Muter runs your project in order to filter out files without coverage"
+        help: "Skips the step in which Muter runs your project in order to filter out files without coverage."
     )
     var skipCoverage: Bool = false
 

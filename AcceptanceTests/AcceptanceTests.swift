@@ -233,9 +233,9 @@ class AcceptanceTests: QuickSpec {
                                 """
                                 OVERVIEW: Performs mutation testing for the Swift project contained within the
                                 current directory
-                                
-                                USAGE: muter run [--files-to-mutate <files-to-mutate> ...] [--output-json] [--output-html] [--output-xcode]
-                                
+
+                                USAGE: muter run [--files-to-mutate <files-to-mutate> ...] [--output-json] [--output-html] [--output-xcode] [--skip-coverage]
+
                                 OPTIONS:
                                   --files-to-mutate <files-to-mutate>
                                                           Only mutate a given list of source code files 
@@ -243,10 +243,12 @@ class AcceptanceTests: QuickSpec {
                                   --output-html           Output test results to an html file. 
                                   --output-xcode          Output test results in a format consumable by an
                                                           Xcode run script step. 
+                                  --skip-coverage         Skips the step in which Muter runs your project in
+                                                          order to filter out files without coverage 
                                   --version               Show the version.
                                   -h, --help              Show help information.
-                                
-                                
+
+
                                 """
                             )
                         )
