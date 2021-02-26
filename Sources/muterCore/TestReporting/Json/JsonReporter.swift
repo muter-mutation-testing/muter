@@ -1,7 +1,7 @@
 import Foundation
 
 final class JsonReporter: Reporter {
-    func mutationTestingFinished(mutationTestOutcomes outcome: MutationTestOutcome) {
+    func mutationTestingFinished(mutationTestOutcome outcome: MutationTestOutcome) {
         print(report(from: outcome))
     }
     
