@@ -8,8 +8,9 @@ extension Notification.Name {
     static let muterLaunched = Notification.Name("muterLaunched")
     static let projectCopyStarted = Notification.Name("projectCopyStarted")
     static let projectCopyFinished = Notification.Name("projectCopyFinished")
-
-    static let workingDirectoryCreated = Notification.Name("workingDirectoryCreated")
+    
+    static let projectCoverageDiscoveryStarted = Notification.Name("projectCoverageDiscoveryStarted")
+    static let projectCoverageDiscoveryFinished = Notification.Name("projectCoverageDiscoveryFinished")
 
     static let sourceFileDiscoveryStarted = Notification.Name("sourceFileDiscoveryStarted")
     static let sourceFileDiscoveryFinished = Notification.Name("sourceFileDiscoveryFinished")
@@ -38,11 +39,14 @@ final class RunCommandObserver {
     private var numberOfMutationPoints: Int!
     private let notificationCenter: NotificationCenter = .default
     private var notificationHandlerMappings: [(name: Notification.Name, handler: (Notification) -> Void)] {
-       return [
+        return [
             (name: .muterLaunched, handler: handleMuterLaunched),
             
             (name: .projectCopyStarted, handler: handleProjectCopyStarted),
             (name: .projectCopyFinished, handler: handleProjectCopyFinished),
+            
+            (name: .projectCoverageDiscoveryStarted, handler: handleProjectCoverageDiscoveryStarted),
+            (name: .projectCoverageDiscoveryFinished, handler: handleProjectCoverageDiscoveryFinished),
             
             (name: .sourceFileDiscoveryStarted, handler: handleSourceFileDiscoveryStarted),
             (name: .sourceFileDiscoveryFinished, handler: handleSourceFileDiscoveryFinished),
@@ -51,12 +55,12 @@ final class RunCommandObserver {
             (name: .mutationPointDiscoveryFinished, handler: handleMutationPointDiscoveryFinished),
             
             (name: .mutationTestingStarted, handler: handleMutationTestingStarted),
-
+            
             (name: .newMutationTestOutcomeAvailable, handler: handleNewMutationTestOutcomeAvailable),
             (name: .newTestLogAvailable, handler: handleNewTestLogAvailable),
-
+            
             (name: .mutationTestingFinished, handler: handleMutationTestingFinished),
-       ]
+        ]
     }
     
     init(reporter: Reporter, fileManager: FileSystemManager, flushHandler: @escaping () -> Void) {
@@ -86,6 +90,16 @@ extension RunCommandObserver {
 
     func handleProjectCopyFinished(notification: Notification) {
         reporter.projectCopyFinished(destinationPath: notification.object as! String)
+    }
+    
+    func handleProjectCoverageDiscoveryStarted(notification: Notification) {
+        reporter.projectCoverageDiscoveryStarted()
+    }
+
+    func handleProjectCoverageDiscoveryFinished(notification: Notification) {
+        (notification.object as? Bool).map {
+            reporter.projectCoverageDiscoveryFinished(success: $0)
+        }
     }
 
     func handleSourceFileDiscoveryStarted(notification: Notification) {

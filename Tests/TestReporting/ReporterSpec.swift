@@ -29,48 +29,6 @@ class ReporterSpec: QuickSpec {
                 originalProjectDirectoryUrl: URL(string: "/user/project")!
             ),
         ]
-        
-        describe("reporter choice") {
-            context("when they want a json") {
-                it("then return it") {
-                    expect(makeReporter(
-                            shouldOutputJson: true,
-                            shouldOutputXcode: false,
-                            shouldOutputHtml: false)
-                    ).to(beAKindOf(JsonReporter.self))
-                }
-            }
-            
-            context("when they want xcode") {
-                it("then return it") {
-                    expect(makeReporter(
-                            shouldOutputJson: false,
-                            shouldOutputXcode: true,
-                            shouldOutputHtml: false)
-                    ).to(beAKindOf(XcodeReporter.self))
-                }
-            }
-            
-            context("when they want plain text") {
-                it("then return it") {
-                    expect(makeReporter(
-                            shouldOutputJson: false,
-                            shouldOutputXcode: false,
-                            shouldOutputHtml: false)
-                    ).to(beAKindOf(PlainTextReporter.self))
-                }
-            }
-
-            context("when they want an html") {
-                it("then return it") {
-                    expect(makeReporter(
-                            shouldOutputJson: false,
-                            shouldOutputXcode: false,
-                            shouldOutputHtml: true)
-                    ).to(beAKindOf(HTMLReporter.self))
-                }
-            }
-        }
 
         describe("text reporter") {
             context("when outcome have coverage data") {

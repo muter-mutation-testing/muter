@@ -159,3 +159,21 @@ extension Coverage {
         )
     }
 }
+
+extension RunOptions {
+    static func make(
+        shouldOutputJson: Bool = false,
+        shouldOutputXcode: Bool = false,
+        shouldOutputHtml: Bool = false,
+        filesToMutate: [String] = [],
+        skipCoverage: Bool = false
+    ) -> RunOptions {
+        .init(
+            shouldOutputJson: shouldOutputJson,
+            shouldOutputXcode: shouldOutputXcode,
+            shouldOutputHtml: shouldOutputHtml,
+            filesToMutate: filesToMutate,
+            skipCoverage: skipCoverage
+        )
+    }
+}
