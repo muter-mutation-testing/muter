@@ -244,7 +244,7 @@ class AcceptanceTests: QuickSpec {
                                   --output-xcode          Output test results in a format consumable by an
                                                           Xcode run script step. 
                                   --skip-coverage         Skips the step in which Muter runs your project in
-                                                          order to filter out files without coverage 
+                                                          order to filter out files without coverage. 
                                   --version               Show the version.
                                   -h, --help              Show help information.
 
