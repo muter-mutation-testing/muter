@@ -3,18 +3,22 @@ import Foundation
 typealias FileName = String
 public typealias FilePath = String
 
-public struct MuterTestReport {
+struct MuterTestReport {
     let globalMutationScore: Int
     let totalAppliedMutationOperators: Int
     let numberOfKilledMutants: Int
+    let projectCodeCoverage: Int?
     let fileReports: [FileReport]
 
-    public init(from outcomes: [MutationTestOutcome] = []) {
-        globalMutationScore = mutationScore(from: outcomes.map { $0.testSuiteOutcome })
-        totalAppliedMutationOperators = outcomes.count
-        numberOfKilledMutants = outcomes
+    init(
+        from outcome: MutationTestOutcome = .init()
+    ) {
+        globalMutationScore = mutationScore(from: outcome.mutations.map { $0.testSuiteOutcome })
+        totalAppliedMutationOperators = outcome.mutations.count
+        numberOfKilledMutants = outcome.mutations
             .count { $0.testSuiteOutcome == .failed || $0.testSuiteOutcome == .runtimeError }
-        fileReports = MuterTestReport.fileReports(from: outcomes)
+        projectCodeCoverage = outcome.coverage == .null ? nil : outcome.coverage.percent
+        fileReports = MuterTestReport.fileReports(from: outcome)
     }
 }
 
@@ -61,7 +65,7 @@ extension MuterTestReport.FileReport: Comparable {
     }
 }
 
-public extension MuterTestReport {
+extension MuterTestReport {
     struct AppliedMutationOperator: Codable, Equatable {
         let mutationPoint: MutationPoint
         let mutationSnapshot: MutationOperatorSnapshot
@@ -92,26 +96,45 @@ public extension MuterTestReport {
 }
 
 private extension MuterTestReport {
-    static func fileReports(from outcomes: [MutationTestOutcome]) -> [FileReport] {
-        return mutationScoresOfFiles(from: outcomes)
+    static func fileReports(from outcome: MutationTestOutcome) -> [FileReport] {
+        let outcomes = outcome.mutations
+        let filesWithoutCoverage = outcome.coverage.filesWithoutCoverage
+
+        let scoreOfFiles = mutationScoresOfFiles(from: outcomes)
             .sorted(by: ascendingFilenameOrder)
             .map { mutationScoreByFilePath in
                 let filePath = mutationScoreByFilePath.key
                 let fileName = URL(fileURLWithPath: filePath).lastPathComponent
                 let mutationScore = mutationScoreByFilePath.value
                 let appliedOperators = outcomes
-                    .include { $0.mutationPoint.filePath == mutationScoreByFilePath.key }
-                    .map { AppliedMutationOperator(mutationPoint: $0.mutationPoint,
-                                                   mutationSnapshot: $0.mutationSnapshot,
-                                                   testSuiteOutcome: $0.testSuiteOutcome) }
+                    .include { $0.point.filePath == mutationScoreByFilePath.key }
+                    .map { AppliedMutationOperator(
+                        mutationPoint: $0.point,
+                        mutationSnapshot: $0.snapshot,
+                        testSuiteOutcome: $0.testSuiteOutcome)
+                    }
 
                 return (fileName, filePath, mutationScore, appliedOperators)
             }
             .map(FileReport.init(fileName:path:mutationScore:appliedOperators:))
+        
+        let scoreOfFilesWithoutCoverage = filesWithoutCoverage.map { filePath in
+            FileReport(
+                fileName: URL(fileURLWithPath: filePath).lastPathComponent,
+                path: filePath,
+                mutationScore: 0,
+                appliedOperators: []
+            )
+        }
+        
+        return scoreOfFiles + scoreOfFilesWithoutCoverage
     }
 }
 
-private func ascendingFilenameOrder(lhs: (key: String, value: Int), rhs: (key: String, value: Int)) -> Bool {
+private func ascendingFilenameOrder(
+    lhs: (key: String, value: Int),
+    rhs: (key: String, value: Int)
+) -> Bool {
     return lhs.key < rhs.key
 }
 

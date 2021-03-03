@@ -5,12 +5,13 @@ protocol AnyRunCommandState {
     var muterConfiguration: MuterConfiguration { get }
     var projectDirectoryURL: URL { get }
     var tempDirectoryURL: URL { get }
+    var projectCoverage: Coverage { get }
     var sourceFileCandidates: [FilePath] { get }
     var mutationPoints: [MutationPoint] { get }
     var sourceCodeByFilePath: [FilePath: SourceFileSyntax] { get }
     var filesToMutate: [String] { get }
     var swapFilePathsByOriginalPath: [FilePath: FilePath] { get }
-    var mutationTestOutcomes: [MutationTestOutcome] { get }
+    var mutationTestOutcome: MutationTestOutcome { get }
     
     func apply(_ stateChanges: [RunCommandState.Change])
 }
@@ -19,17 +20,18 @@ final class RunCommandState: AnyRunCommandState {
     var muterConfiguration: MuterConfiguration = .init()
     var projectDirectoryURL: URL = URL(string: "example.com")!
     var tempDirectoryURL: URL = URL(string: "example.com")!
+    var projectCoverage: Coverage = .null
     var sourceFileCandidates: [FilePath] = []
     var mutationPoints: [MutationPoint] = []
     var sourceCodeByFilePath: [FilePath: SourceFileSyntax] = [:]
     var filesToMutate: [String] = []
     var swapFilePathsByOriginalPath: [FilePath: FilePath] = [:]
-    var mutationTestOutcomes: [MutationTestOutcome] = []
+    var mutationTestOutcome: MutationTestOutcome = .init()
 
     init() { }
 
-    init(from command: Run) {
-        self.filesToMutate = command.filesToMutate
+    init(from options: RunOptions) {
+        self.filesToMutate = options.filesToMutate
     }
 }
 
@@ -38,11 +40,12 @@ extension RunCommandState {
         case configurationParsed(MuterConfiguration)
         case projectDirectoryUrlDiscovered(URL)
         case tempDirectoryUrlCreated(URL)
+        case projectCoverage(Coverage)
         case sourceFileCandidatesDiscovered([FilePath])
         case mutationPointsDiscovered([MutationPoint])
         case sourceCodeParsed([FilePath: SourceFileSyntax])
         case swapFilePathGenerated([FilePath: FilePath])
-        case mutationTestOutcomesGenerated([MutationTestOutcome])
+        case mutationTestOutcomeGenerated(MutationTestOutcome)
     }
 }
 
@@ -56,6 +59,8 @@ extension RunCommandState {
                 self.projectDirectoryURL = projectDirectoryURL
             case .tempDirectoryUrlCreated(let tempDirectoryURL):
                 self.tempDirectoryURL = tempDirectoryURL
+            case .projectCoverage(let projectCoverage):
+                self.projectCoverage = projectCoverage
             case .sourceFileCandidatesDiscovered(let sourceFileCandidates):
                 self.sourceFileCandidates = sourceFileCandidates
             case .mutationPointsDiscovered(let mutationPoints):
@@ -64,8 +69,8 @@ extension RunCommandState {
                 self.sourceCodeByFilePath = sourceCodeByFilePath
             case .swapFilePathGenerated(let swapFilePathsByOriginalPath):
                 self.swapFilePathsByOriginalPath = swapFilePathsByOriginalPath
-            case .mutationTestOutcomesGenerated(let mutationTestOutcomes):
-                self.mutationTestOutcomes = mutationTestOutcomes
+            case .mutationTestOutcomeGenerated(let mutationTestOutcome):
+                self.mutationTestOutcome = mutationTestOutcome
             }
         }
     }

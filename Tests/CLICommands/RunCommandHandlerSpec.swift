@@ -1,6 +1,7 @@
 import Quick
 import Nimble
 import Foundation
+import ArgumentParser
 @testable import muterCore
 
 class RunCommandHandlerSpec: QuickSpec {
@@ -30,10 +31,13 @@ class RunCommandHandlerSpec: QuickSpec {
                     
                     expectedState = RunCommandState()
                     
-                    runCommandHandler = RunCommandHandler(steps: [stepSpy1,
-                                                                  stepSpy2,
-                                                                  stepSpy3,],
-                                                          state: expectedState)
+                    runCommandHandler = RunCommandHandler(
+                        steps: [stepSpy1,
+                            stepSpy2,
+                            stepSpy3,
+                        ],
+                        state: expectedState
+                    )
 
                     do {
                         try runCommandHandler.run()
@@ -82,10 +86,14 @@ class RunCommandHandlerSpec: QuickSpec {
                     
                     expectedState = RunCommandState()
                     
-                    runCommandHandler = RunCommandHandler(steps: [stepSpy1,
-                                                                  stepSpy2,
-                                                                  stepSpy3,],
-                                                          state: expectedState)
+                    runCommandHandler = RunCommandHandler(
+                        steps: [
+                            stepSpy1,
+                            stepSpy2,
+                            stepSpy3,
+                        ],
+                        state: expectedState
+                    )
 
                     do {
                         try runCommandHandler.run()
@@ -114,6 +122,38 @@ class RunCommandHandlerSpec: QuickSpec {
                 }
             }
             
+            describe("steps") {
+                context("when skips coverage") {
+                    it("should skip coverage step") {
+                        runCommandHandler = RunCommandHandler(options: .make(skipCoverage: true))
+                                                
+                        expect(runCommandHandler.steps).to(haveCount(6))
+                        
+                        expect(runCommandHandler.steps[0]).to(beAKindOf(LoadConfiguration.self))
+                        expect(runCommandHandler.steps[1]).to(beAKindOf(CopyProjectToTempDirectory.self))
+                        expect(runCommandHandler.steps[2]).to(beAKindOf(DiscoverSourceFiles.self))
+                        expect(runCommandHandler.steps[3]).to(beAKindOf(DiscoverMutationPoints.self))
+                        expect(runCommandHandler.steps[4]).to(beAKindOf(GenerateSwapFilePaths.self))
+                        expect(runCommandHandler.steps[5]).to(beAKindOf(PerformMutationTesting.self))
+                    }
+                }
+                
+                context("when dont skip coverage") {
+                    it("should contain all default steps") {
+                        runCommandHandler = RunCommandHandler(options: .make(skipCoverage: false))
+                        
+                        expect(runCommandHandler.steps).to(haveCount(7))
+                        
+                        expect(runCommandHandler.steps[0]).to(beAKindOf(LoadConfiguration.self))
+                        expect(runCommandHandler.steps[1]).to(beAKindOf(CopyProjectToTempDirectory.self))
+                        expect(runCommandHandler.steps[2]).to(beAKindOf(DiscoverProjectCoverage.self))
+                        expect(runCommandHandler.steps[3]).to(beAKindOf(DiscoverSourceFiles.self))
+                        expect(runCommandHandler.steps[4]).to(beAKindOf(DiscoverMutationPoints.self))
+                        expect(runCommandHandler.steps[5]).to(beAKindOf(GenerateSwapFilePaths.self))
+                        expect(runCommandHandler.steps[6]).to(beAKindOf(PerformMutationTesting.self))
+                    }
+                }
+            }
         }
     }
 }

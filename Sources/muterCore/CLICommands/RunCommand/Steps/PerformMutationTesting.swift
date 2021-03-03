@@ -7,8 +7,10 @@ struct PerformMutationTesting: RunCommandStep {
     private let buildErrorsThreshold: Int = 5
     private let fileManager = FileManager.default
     
-    init(ioDelegate: MutationTestingIODelegate = MutationTestingDelegate(),
-         notificationCenter: NotificationCenter = .default) {
+    init(
+        ioDelegate: MutationTestingIODelegate = MutationTestingDelegate(),
+        notificationCenter: NotificationCenter = .default
+    ) {
         self.ioDelegate = ioDelegate
         self.notificationCenter = notificationCenter
     }
@@ -19,8 +21,10 @@ struct PerformMutationTesting: RunCommandStep {
         let result = performMutationTesting(using: state)
         switch result {
         case .success(let outcomes):
-            notificationCenter.post(name: .mutationTestingFinished, object: outcomes)
-            return .success([.mutationTestOutcomesGenerated(outcomes)])
+            let mutationTestOutcome = state.mutationTestOutcome
+            mutationTestOutcome.mutations = outcomes
+            notificationCenter.post(name: .mutationTestingFinished, object: mutationTestOutcome)
+            return .success([.mutationTestOutcomeGenerated(mutationTestOutcome)])
         case .failure(let reason):
             return .failure(reason)
         }
@@ -28,7 +32,7 @@ struct PerformMutationTesting: RunCommandStep {
 }
 
 private extension PerformMutationTesting {
-    func performMutationTesting(using state: AnyRunCommandState) -> Result<[MutationTestOutcome], MuterError> {
+    func performMutationTesting(using state: AnyRunCommandState) -> Result<[MutationTestOutcome.Mutation], MuterError> {
         notificationCenter.post(name: .mutationTestingStarted, object: nil)
 
         let initialTime = Date()
@@ -53,8 +57,8 @@ private extension PerformMutationTesting {
         return insertMutants(using: state)
     }
     
-    func insertMutants(using state: AnyRunCommandState) -> Result<[MutationTestOutcome], MuterError> {
-        var outcomes: [MutationTestOutcome] = []
+    func insertMutants(using state: AnyRunCommandState) -> Result<[MutationTestOutcome.Mutation], MuterError> {
+        var outcomes: [MutationTestOutcome.Mutation] = []
         outcomes.reserveCapacity(state.mutationPoints.count)
         var buildErrors = 0
         
@@ -70,7 +74,7 @@ private extension PerformMutationTesting {
 
             ioDelegate.restoreFile(at: mutationPoint.filePath, using: state.swapFilePathsByOriginalPath)
 
-            let outcome = MutationTestOutcome(testSuiteOutcome: testSuiteOutcome,
+            let outcome = MutationTestOutcome.Mutation(testSuiteOutcome: testSuiteOutcome,
                                               mutationPoint: mutationPoint,
                                               mutationSnapshot: mutantSnapshot,
                                               originalProjectDirectoryUrl: state.projectDirectoryURL)

@@ -12,7 +12,6 @@ public enum MuterError: Error, Equatable {
 
 extension MuterError: CustomStringConvertible {
     public var description: String {
-        
         switch self {
         case .configurationParsingError(let reason):
             return """
@@ -71,7 +70,5 @@ extension MuterError: CustomStringConvertible {
             \(reason)
             """
         }
-        
     }
-    
 }

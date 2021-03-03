@@ -18,76 +18,89 @@ class ReporterSpec: QuickSpec {
 
     override func spec() {
         let outcomes = [
-            MutationTestOutcome(
+            MutationTestOutcome.Mutation.make(
                 testSuiteOutcome: .passed,
-                mutationPoint: MutationPoint(mutationOperatorId: .ror, filePath: "/tmp/project/file3.swift", position: .firstPosition),
-                mutationSnapshot: MutationOperatorSnapshot(before: "!=", after: "==", description: "from != to =="),
+                point: MutationPoint(
+                    mutationOperatorId: .ror,
+                    filePath: "/tmp/project/file3.swift",
+                    position: .firstPosition
+                ),
+                snapshot: MutationOperatorSnapshot(before: "!=", after: "==", description: "from != to =="),
                 originalProjectDirectoryUrl: URL(string: "/user/project")!
             ),
         ]
-        
-        describe("reporter choice") {
-            context("when they want a json") {
-                it("then return it") {
-                    expect(makeReporter(
-                            shouldOutputJson: true,
-                            shouldOutputXcode: false,
-                            shouldOutputHtml: false)
-                    ).to(beAKindOf(JsonReporter.self))
-                }
-            }
-            
-            context("when they want xcode") {
-                it("then return it") {
-                    expect(makeReporter(
-                            shouldOutputJson: false,
-                            shouldOutputXcode: true,
-                            shouldOutputHtml: false)
-                    ).to(beAKindOf(XcodeReporter.self))
-                }
-            }
-            
-            context("when they want plain text") {
-                it("then return it") {
-                    expect(makeReporter(
-                            shouldOutputJson: false,
-                            shouldOutputXcode: false,
-                            shouldOutputHtml: false)
-                    ).to(beAKindOf(PlainTextReporter.self))
-                }
-            }
-
-            context("when they want an html") {
-                it("then return it") {
-                    expect(makeReporter(
-                            shouldOutputJson: false,
-                            shouldOutputXcode: false,
-                            shouldOutputHtml: true)
-                    ).to(beAKindOf(HTMLReporter.self))
-                }
-            }
-        }
 
         describe("text reporter") {
-            it("returns the report in text format") {
-                let plainText = PlainTextReporter().report(from: outcomes)
-                expect(plainText).to(equalWithDiff(loadReport()))
+            context("when outcome have coverage data") {
+                it("adds coverage data to the report in text format") {
+                    let plainText = PlainTextReporter()
+                        .report(
+                            from: .make(
+                                outcome: .make(
+                                    mutations: outcomes,
+                                    coverage: .make(percent: 1)
+                                )
+                            )
+                        )
+                    expect(plainText).to(equalWithDiff(loadReportOfProjectWithCoverage()))
+                }
+            }
+            
+            context("when outcome doesn't have coverage data") {
+                it("doesn't add coverage data to the report in text format") {
+                    let plainText = PlainTextReporter()
+                        .report(
+                            from: .make(
+                                outcome: .make(
+                                    mutations: outcomes,
+                                    coverage: .null
+                                )
+                            )
+                        )
+                    expect(plainText).to(equalWithDiff(loadReportOfProjectWithoutCoverage()))
+                }
             }
         }
 
         describe("xcode reporter") {
-            let outcomes = outcomes + [MutationTestOutcome(testSuiteOutcome: .failed,
-                                             mutationPoint: MutationPoint(mutationOperatorId: .ror, filePath: "/tmp/project/file4.swift", position: .firstPosition),
-                                             mutationSnapshot: MutationOperatorSnapshot(before: "==", after: "!=", description: "changed from == to !="),
-                                             originalProjectDirectoryUrl: URL(string: "/user/project")!),
-                         MutationTestOutcome(testSuiteOutcome: .passed,
-                                             mutationPoint: MutationPoint(mutationOperatorId: .ror, filePath: "/tmp/project/file5.swift", position: .firstPosition),
-                                             mutationSnapshot: MutationOperatorSnapshot(before: "==", after: "!=", description: "changed from == to !="),
-                                             originalProjectDirectoryUrl: URL(string: "/user/project")!),]
+            let outcomes = outcomes + [
+                MutationTestOutcome.Mutation.make(
+                    testSuiteOutcome: .failed,
+                    point: MutationPoint(
+                        mutationOperatorId: .ror,
+                        filePath: "/tmp/project/file4.swift",
+                        position: .firstPosition
+                    ),
+                    snapshot: MutationOperatorSnapshot(
+                        before: "==",
+                        after: "!=",
+                        description: "changed from == to !="
+                    ),
+                    originalProjectDirectoryUrl: URL(string: "/user/project")!
+                ),
+                MutationTestOutcome.Mutation.make(
+                    testSuiteOutcome: .passed,
+                    point: MutationPoint(
+                        mutationOperatorId: .ror,
+                        filePath: "/tmp/project/file5.swift",
+                        position: .firstPosition
+                    ),
+                    snapshot: MutationOperatorSnapshot(
+                        before: "==",
+                        after: "!=",
+                        description: "changed from == to !="
+                    ),
+                    originalProjectDirectoryUrl: URL(string: "/user/project")!
+                ),
+            ]
 
             context("with footer-only not requested") {
                 it("returns the report in xcode format") {
-                    expect(XcodeReporter().report(from: outcomes)).to(equalWithDiff(
+                    expect(XcodeReporter()
+                            .report(
+                                from: .make(mutations: outcomes)
+                            )
+                    ).to(equalWithDiff(
                         """
                         Mutation score: 33
                         Mutants introduced into your code: 3
@@ -100,7 +113,10 @@ class ReporterSpec: QuickSpec {
 
         describe("json reporter") {
             it("returns the report in json format") {
-                let json = JsonReporter().report(from: outcomes)
+                let json = JsonReporter()
+                    .report(
+                        from: .make(mutations: outcomes)
+                    )
 
                 guard let data = json.data(using: .utf8),
                     let actualReport = try? JSONDecoder().decode(MuterTestReport.self, from: data) else {
@@ -117,8 +133,17 @@ class ReporterSpec: QuickSpec {
     }
 }
 
-private func loadReport() -> String {
-    guard let data = FileManager.default.contents(atPath: "\(ReporterSpec().fixturesDirectory)/TestReporting/testReport.txt"),
+private func loadReportOfProjectWithCoverage() -> String {
+    guard let data = FileManager.default.contents(atPath: "\(ReporterSpec().fixturesDirectory)/TestReporting/testReportOfProjectWithCoverage.txt"),
+        let string = String(data: data, encoding: .utf8) else {
+            fatalError("Unable to load report for testing")
+    }
+
+    return string
+}
+
+private func loadReportOfProjectWithoutCoverage() -> String {
+    guard let data = FileManager.default.contents(atPath: "\(ReporterSpec().fixturesDirectory)/TestReporting/testReportOfProjectWithoutCoverage.txt"),
         let string = String(data: data, encoding: .utf8) else {
             fatalError("Unable to load report for testing")
     }

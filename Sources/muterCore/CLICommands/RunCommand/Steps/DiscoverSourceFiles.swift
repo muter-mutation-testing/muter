@@ -5,25 +5,31 @@ struct DiscoverSourceFiles: RunCommandStep {
     private let notificationCenter: NotificationCenter
     private let fileManager: FileSystemManager
     
-    init(notificationCenter: NotificationCenter = .default,
-         fileManager: FileSystemManager = FileManager.default) {
+    init(
+        notificationCenter: NotificationCenter = .default,
+        fileManager: FileSystemManager = FileManager.default
+    ) {
         self.notificationCenter = notificationCenter
         self.fileManager = fileManager
     }
     
     func run(with state: AnyRunCommandState) -> Result<[RunCommandState.Change], MuterError> {
-        
         notificationCenter.post(name: .sourceFileDiscoveryStarted, object: nil)
         
-        let sourceFileCandidates = state.filesToMutate.isEmpty ?
-            discoverSourceFiles(inDirectoryAt: state.tempDirectoryURL.path,
-                                excludingPathsIn: state.muterConfiguration.excludeFileList) :
-            findFilesToMutate(files: state.filesToMutate,
-                              inDirectoryAt: state.tempDirectoryURL.path)
+        let sourceFileCandidates = state.filesToMutate.isEmpty
+            ? discoverSourceFiles(
+                inDirectoryAt: state.tempDirectoryURL.path,
+                excludingPathsIn: state.muterConfiguration.excludeFileList,
+                ignoringFilesWithoutCoverage: state.projectCoverage.filesWithoutCoverage
+            )
+            : findFilesToMutate(
+                files: state.filesToMutate,
+                inDirectoryAt: state.tempDirectoryURL.path
+            )
         
-        let failure = state.filesToMutate.isEmpty ?
-            MuterError.noSourceFilesDiscovered :
-            .noSourceFilesOnExclusiveList
+        let failure: MuterError = state.filesToMutate.isEmpty
+            ? .noSourceFilesDiscovered
+            : .noSourceFilesOnExclusiveList
         
         notificationCenter.post(name: .sourceFileDiscoveryFinished, object: sourceFileCandidates)
 
@@ -49,7 +55,8 @@ private extension DiscoverSourceFiles {
     
     private func discoverSourceFiles(
         inDirectoryAt rootPath: FilePath,
-        excludingPathsIn providedExcludeList: [FilePath] = []
+        excludingPathsIn providedExcludeList: [FilePath],
+        ignoringFilesWithoutCoverage filesWithoutCoverage: [FilePath]
     ) -> [FilePath] {
         let excludeList = providedExcludeList + defaultExcludeList
         let subpaths = fileManager.subpaths(atPath: rootPath) ?? []
@@ -58,6 +65,7 @@ private extension DiscoverSourceFiles {
             from: subpaths
                 .exclude(pathsContainingItems(from: excludeList, root: rootPath))
                 .map { append(root: rootPath, to: $0) }
+                .exclude(filesWithoutCoverageList(filesWithoutCoverage))
         )
     }
 
@@ -69,12 +77,13 @@ private extension DiscoverSourceFiles {
         }
         
         return { path in
-            for item in excludeAlso where path.contains(item) {
-                return true
-            }
-            
+            for item in excludeAlso where path.contains(item) { return true }
             return false
         }
+    }
+    
+    private func filesWithoutCoverageList(_ list: [FilePath]) -> (FilePath) -> Bool {
+        { path in list.contains(path) }
     }
     
     private func findFilesToMutate(

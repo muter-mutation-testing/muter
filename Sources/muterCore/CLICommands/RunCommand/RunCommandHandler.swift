@@ -4,16 +4,20 @@ final class RunCommandHandler {
     let steps: [RunCommandStep]
     var state: AnyRunCommandState
 
-    init(steps: [RunCommandStep] = RunCommandHandler.defaultSteps,
-         state: RunCommandState = .init()) {
+    init(
+        steps: [RunCommandStep] = RunCommandHandler.defaultSteps,
+        state: RunCommandState = .init()
+    ) {
         self.steps = steps
         self.state = state
     }
     
-    init(command: Run,
-         steps: [RunCommandStep] = RunCommandHandler.defaultSteps) {
-        self.steps = steps
-        self.state = RunCommandState(from: command)
+    init(
+        options: RunOptions,
+        steps: [RunCommandStep] = RunCommandHandler.defaultSteps
+    ) {
+        self.steps = steps.filter(with: options)
+        self.state = RunCommandState(from: options)
     }
     
     func run() throws {
@@ -27,9 +31,18 @@ private extension RunCommandHandler {
     private static let defaultSteps: [RunCommandStep] = [
         LoadConfiguration(),
         CopyProjectToTempDirectory(),
+        DiscoverProjectCoverage(),
         DiscoverSourceFiles(),
         DiscoverMutationPoints(),
         GenerateSwapFilePaths(),
         PerformMutationTesting(),
     ]
+}
+
+private extension Array where Element == RunCommandStep {
+    func filter(with options: RunOptions) -> [Element] {
+        exclude {
+            options.skipCoverage && $0 is DiscoverProjectCoverage
+        }
+    }
 }

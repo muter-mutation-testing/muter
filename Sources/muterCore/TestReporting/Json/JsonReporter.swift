@@ -1,12 +1,12 @@
 import Foundation
 
 final class JsonReporter: Reporter {
-    func mutationTestingFinished(mutationTestOutcomes outcomes: [MutationTestOutcome]) {
-        print(report(from: outcomes))
+    func mutationTestingFinished(mutationTestOutcome outcome: MutationTestOutcome) {
+        print(report(from: outcome))
     }
     
-    func report(from outcomes: [MutationTestOutcome]) -> String {
-        let report = MuterTestReport(from: outcomes)
+    func report(from outcome: MutationTestOutcome) -> String {
+        let report = MuterTestReport(from: outcome)
         let encoder = JSONEncoder()
         encoder.outputFormatting = .prettyPrinted
         

@@ -1,0 +1,51 @@
+Filename                                                                               Regions    Missed Regions     Cover   Functions  Missed Functions  Executed       Lines      Missed Lines     Cover
+----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+CLICommands/Init.swift                                                                       5                 3    40.00%           5                 3    40.00%          22                 7    68.18%
+CLICommands/MuterError.swift                                                                 9                 9     0.00%           1                 1     0.00%          60                60     0.00%
+CLICommands/RunCommand/Run.swift                                                            14                 6    57.14%           5                 3    40.00%          56                38    32.14%
+CLICommands/RunCommand/RunCommandHandler.swift                                               8                 0   100.00%           8                 0   100.00%          26                 0   100.00%
+CLICommands/RunCommand/RunCommandObserver.swift                                             38                16    57.89%          34                16    52.94%         117                54    53.85%
+CLICommands/RunCommand/RunCommandState.swift                                                25                 7    72.00%          13                 0   100.00%          38                 7    81.58%
+CLICommands/RunCommand/Steps/CopyToTempDirectory.swift                                       7                 0   100.00%           4                 0   100.00%          31                 0   100.00%
+CLICommands/RunCommand/Steps/DiscoverMutationPoints.swift                                   30                 3    90.00%          18                 1    94.44%         150                 2    98.67%
+CLICommands/RunCommand/Steps/DiscoverProjectCoverage/DiscoverProjectCoverage.swift          45                 9    80.00%          32                 6    81.25%         175                29    83.43%
+CLICommands/RunCommand/Steps/DiscoverSourceFiles.swift                                      44                 7    84.09%          30                 6    80.00%         141                21    85.11%
+CLICommands/RunCommand/Steps/GenerateSwapFilePaths.swift                                    14                 0   100.00%           6                 0   100.00%          43                 0   100.00%
+CLICommands/RunCommand/Steps/LoadConfiguration.swift                                         8                 2    75.00%           3                 0   100.00%          20                 3    85.00%
+CLICommands/RunCommand/Steps/PerformMutationTesting.swift                                   18                 0   100.00%           7                 0   100.00%          94                 0   100.00%
+Configuration/MutationPosition.swift                                                         8                 4    50.00%           8                 4    50.00%          36                 8    77.78%
+Configuration/MuterConfiguration.swift                                                       5                 0   100.00%           5                 0   100.00%          25                 0   100.00%
+Configuration/configurationGeneration.swift                                                 32                 0   100.00%          18                 0   100.00%          77                 0   100.00%
+Extensions/ArrayExtensions.swift                                                             1                 0   100.00%           1                 0   100.00%           3                 0   100.00%
+Extensions/KeyPath.swift                                                                     4                 0   100.00%           4                 0   100.00%           8                 0   100.00%
+Extensions/Nullable.swift                                                                    2                 2     0.00%           2                 2     0.00%           4                 4     0.00%
+Extensions/ProgressExtensions.swift                                                         27                27     0.00%          12                12     0.00%          68                68     0.00%
+Extensions/SequenceExtensions.swift                                                          5                 0   100.00%           5                 0   100.00%          13                 0   100.00%
+Extensions/StringExtensions.swift                                                            8                 3    62.50%           6                 1    83.33%          15                 6    60.00%
+MutationOperators/ChangeLogicalConnectorOperator.swift                                       1                 0   100.00%           1                 0   100.00%           7                 0   100.00%
+MutationOperators/MutationOperator.swift                                                    16                 2    87.50%          12                 2    83.33%          52                 8    84.62%
+MutationOperators/MutationOperatorSnapshot.swift                                             1                 0   100.00%           1                 0   100.00%           7                 0   100.00%
+MutationOperators/OperatorAwareRewriter.swift                                               10                 0   100.00%           6                 0   100.00%          35                 0   100.00%
+MutationOperators/ROROperator.swift                                                          1                 0   100.00%           1                 0   100.00%          11                 0   100.00%
+MutationOperators/RemoveSideEffectsOperator.swift                                           48                 1    97.92%          34                 0   100.00%         156                 1    99.36%
+MutationOperators/TokenAwareVisitor.swift                                                   15                 0   100.00%          11                 0   100.00%          54                 0   100.00%
+MutationTesting/MutationTestingAbortReason.swift                                             5                 5     0.00%           1                 1     0.00%          28                28     0.00%
+MutationTesting/MutationTestingIODelegate.swift                                             11                10     9.09%           8                 7    12.50%          54                53     1.85%
+Muter.swift                                                                                  1                 1     0.00%           1                 1     0.00%           3                 3     0.00%
+SourceCodeOperations/SourceInfo.swift                                                        1                 0   100.00%           1                 0   100.00%           6                 0   100.00%
+SourceCodeOperations/fileOperations.swift                                                    5                 0   100.00%           5                 0   100.00%          20                 0   100.00%
+TestReporting/HTML/BundleResource.swift                                                      3                 1    66.67%           3                 1    66.67%          10                 1    90.00%
+TestReporting/HTML/HTMLReporter.swift                                                       39                 3    92.31%          26                 2    92.31%         283                 4    98.59%
+TestReporting/Json/JsonReporter.swift                                                        4                 2    50.00%           2                 1    50.00%          15                 4    73.33%
+TestReporting/MutationTestOutcome.swift                                                      9                 0   100.00%           9                 0   100.00%          36                 0   100.00%
+TestReporting/MuterTestReport.swift                                                         19                 1    94.74%          17                 1    94.12%         109                 8    92.66%
+TestReporting/PlainText/CLITable.swift                                                      13                 0   100.00%           9                 0   100.00%          91                 0   100.00%
+TestReporting/PlainText/PlainTextReporter.swift                                             33                29    12.12%          21                17    19.05%         166               123    25.90%
+TestReporting/PlainText/testReportTableGeneration.swift                                     20                 1    95.00%           9                 0   100.00%          88                 0   100.00%
+TestReporting/Reporter.swift                                                                13                12     7.69%          13                12     7.69%          13                12     7.69%
+TestReporting/TestSuiteOutcome.swift                                                        27                 0   100.00%          13                 0   100.00%          55                 0   100.00%
+TestReporting/Xcode/XcodeReporter.swift                                                      7                 3    57.14%           5                 2    60.00%          35                 9    74.29%
+TestReporting/mutationScoring.swift                                                         14                 0   100.00%           8                 0   100.00%          31                 0   100.00%
+----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+TOTAL                                                                                      673               169    74.89%         444               102    77.03%        2587               561    78.31%
+

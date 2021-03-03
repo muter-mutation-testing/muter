@@ -1,7 +1,16 @@
 @testable import muterCore
 
+import TestingExtensions
 import Foundation
 import SwiftSyntax
+
+extension MuterTestReport {
+    static func make(
+        outcome: MutationTestOutcome = .make()
+    ) -> MuterTestReport {
+        .init(from: outcome)
+    }
+}
 
 extension MuterTestReport.AppliedMutationOperator {
     static func make(
@@ -33,15 +42,27 @@ extension MutationOperatorSnapshot {
 
 extension MutationTestOutcome {
     static func make(
+        mutations: [Mutation] = [],
+        coverage: Coverage = .null
+    ) -> MutationTestOutcome {
+        MutationTestOutcome(
+            mutations: mutations,
+            coverage: coverage
+        )
+    }
+}
+
+extension MutationTestOutcome.Mutation {
+    static func make(
         testSuiteOutcome: TestSuiteOutcome = .passed,
-        mutationPoint: MutationPoint = .make(),
-        mutationSnapshot: MutationOperatorSnapshot = .null,
+        point: MutationPoint = .make(),
+        snapshot: MutationOperatorSnapshot = .null,
         originalProjectDirectoryUrl: URL = URL(fileURLWithPath: "")
     ) -> Self {
         Self(
             testSuiteOutcome: testSuiteOutcome,
-            mutationPoint: mutationPoint,
-            mutationSnapshot: mutationSnapshot,
+            mutationPoint: point,
+            mutationSnapshot: snapshot,
             originalProjectDirectoryUrl: originalProjectDirectoryUrl
         )
     }
@@ -124,5 +145,35 @@ extension SwiftSyntax.SourceLocation: ExpressibleByIntegerLiteral {
 extension Array {
     subscript(circular index: Int) -> Element {
         self[Swift.max(index, 1) % count]
+    }
+}
+
+extension Coverage {
+    static func make(
+        percent: Int = 0,
+        filesWithoutCoverage: [FilePath] = []
+    ) -> Coverage {
+        Coverage(
+            percent: percent,
+            filesWithoutCoverage: filesWithoutCoverage
+        )
+    }
+}
+
+extension RunOptions {
+    static func make(
+        shouldOutputJson: Bool = false,
+        shouldOutputXcode: Bool = false,
+        shouldOutputHtml: Bool = false,
+        filesToMutate: [String] = [],
+        skipCoverage: Bool = false
+    ) -> RunOptions {
+        .init(
+            shouldOutputJson: shouldOutputJson,
+            shouldOutputXcode: shouldOutputXcode,
+            shouldOutputHtml: shouldOutputHtml,
+            filesToMutate: filesToMutate,
+            skipCoverage: skipCoverage
+        )
     }
 }

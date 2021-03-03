@@ -27,6 +27,12 @@ struct MutationPosition: Codable, Equatable {
     }
 }
 
+extension MutationPosition: Nullable {
+    static var null: MutationPosition {
+        MutationPosition(utf8Offset: -999)
+    }
+}
+
 func == (lhs: MutationPosition, rhs: AbsolutePosition) -> Bool {
     lhs.utf8Offset == rhs.utf8Offset
 }

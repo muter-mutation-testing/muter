@@ -23,9 +23,14 @@ class RunCommandObserverSpec: QuickSpec {
                     flushHandlerWasCalled = false
                     notification = Notification(
                         name: .newMutationTestOutcomeAvailable,
-                        object: MutationTestOutcome(testSuiteOutcome: .passed,
-                                                    mutationPoint: MutationPoint(mutationOperatorId: .ror, filePath: "some/path", position: .firstPosition),
-                                                    mutationSnapshot: .null),
+                        object: MutationTestOutcome.Mutation.make(
+                            testSuiteOutcome: .passed,
+                            point: .make(
+                                mutationOperatorId: .ror,
+                                filePath: "some/path",
+                                position: .firstPosition
+                            ),
+                            snapshot: .null),
                         userInfo: nil
                     )
                 }
