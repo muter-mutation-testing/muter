@@ -55,9 +55,9 @@ func applyMutationTestResultsColor(to rows: [CLITable.Row]) -> [CLITable.Row] {
         let coloredValue = [
             TestSuiteOutcome.passed.asMutationTestOutcome,
             TestSuiteOutcome.buildError.asMutationTestOutcome
-        ].contains($0.value) ?
-            $0.value.red :
-            $0.value.green
+        ].contains($0.value)
+            ? $0.value.red
+            : $0.value.green
 
         let coloredRow = CLITable.Row(value: coloredValue)
         return coloredRow
