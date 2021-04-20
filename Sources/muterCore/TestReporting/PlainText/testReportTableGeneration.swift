@@ -52,9 +52,13 @@ func generateMutationScoresCLITable(from fileReports: [MuterTestReport.FileRepor
 // MARK: - Coloring Functions
 func applyMutationTestResultsColor(to rows: [CLITable.Row]) -> [CLITable.Row] {
     return rows.map {
-        let coloredValue = $0.value == TestSuiteOutcome.failed.asMutationTestOutcome ?
-            $0.value.green :
-            $0.value.red
+        let coloredValue = [
+            TestSuiteOutcome.passed.asMutationTestOutcome,
+            TestSuiteOutcome.buildError.asMutationTestOutcome
+        ].contains($0.value)
+            ? $0.value.red
+            : $0.value.green
+
         let coloredRow = CLITable.Row(value: coloredValue)
         return coloredRow
     }
