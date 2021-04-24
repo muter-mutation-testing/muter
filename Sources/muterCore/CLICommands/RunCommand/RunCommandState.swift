@@ -32,6 +32,12 @@ final class RunCommandState: AnyRunCommandState {
 
     init(from options: RunOptions) {
         self.filesToMutate = options.filesToMutate
+            .reduce(into: []) { accum, next in
+                accum.append(
+                    contentsOf: next.components(separatedBy: ",")
+                        .exclude { $0.isEmpty }
+                )
+            }
     }
 }
 
