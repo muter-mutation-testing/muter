@@ -12,3 +12,8 @@
 *.gif linguist-vendored
 *.sketch linguist-vendored
 *.resolved linguist-vendored
+*.lock linguist-vendored
+*.podspec linguist-vendored
+Gemfile linguist-vendored
+Fastfile linguist-vendored
+Dangerfile linguist-vendored
