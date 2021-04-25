@@ -1,0 +1,14 @@
+* text=auto
+*.css linguist-vendored
+*.html linguist-vendored
+*.js linguist-vendored
+*.rb linguist-vendored
+*.py linguist-vendored
+*.sh linguist-vendored
+*.yml linguist-vendored
+*.md linguist-vendored
+*.pdf linguist-vendored
+*.png linguist-vendored
+*.gif linguist-vendored
+*.sketch linguist-vendored
+*.resolved linguist-vendored
