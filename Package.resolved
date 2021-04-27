@@ -24,8 +24,8 @@
         "repositoryURL": "https://github.com/krzysztofzablocki/Difference.git",
         "state": {
           "branch": null,
-          "revision": "b67d4483312832b2eb3458a25374a353abd8fb21",
-          "version": "0.5.0"
+          "revision": "7d6a2be3273830794504e9cea56c7411eb7a599a",
+          "version": "0.6.0"
         }
       },
       {
@@ -33,8 +33,8 @@
         "repositoryURL": "https://github.com/Quick/Nimble",
         "state": {
           "branch": null,
-          "revision": "e491a6731307bb23783bf664d003be9b2fa59ab5",
-          "version": "9.0.0"
+          "revision": "7a54aaf19a8ef16f67787c260fda81ead7ba4d67",
+          "version": "9.0.1"
         }
       },
       {
@@ -78,8 +78,8 @@
         "repositoryURL": "https://github.com/onevcat/Rainbow",
         "state": {
           "branch": null,
-          "revision": "626c3d4b6b55354b4af3aa309f998fae9b31a3d9",
-          "version": "3.2.0"
+          "revision": "7c3dad0e918534c6d19dd1048bde734c246d05fe",
+          "version": "4.0.0"
         }
       },
       {
@@ -87,8 +87,8 @@
         "repositoryURL": "https://github.com/apple/swift-argument-parser.git",
         "state": {
           "branch": null,
-          "revision": "9564d61b08a5335ae0a36f789a7d71493eacadfc",
-          "version": "0.3.2"
+          "revision": "47bd06ebeff8146ecd0020809e186218b46f465f",
+          "version": "0.4.2"
         }
       },
       {
@@ -104,8 +104,8 @@
         "package": "SwiftSyntax",
         "repositoryURL": "https://github.com/apple/swift-syntax.git",
         "state": {
-          "branch": "0.50300.0",
-          "revision": "844574d683f53d0737a9c6d706c3ef31ed2955eb",
+          "branch": "swift-5.4-RELEASE",
+          "revision": "ce9020568227504e792d07839b91c5de18ed291a",
           "version": null
         }
       }
