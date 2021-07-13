@@ -13,7 +13,7 @@ let package = Package(
     dependencies: [
         .package(url: "https://github.com/apple/swift-argument-parser.git", from: "0.4.3"),
         .package(url: "https://github.com/onevcat/Rainbow", from: "4.0.0"),
-        .package(url: "https://github.com/Quick/Quick", from: "3.1.2"),
+        .package(url: "https://github.com/Quick/Quick", from: "4.0.0"),
         .package(url: "https://github.com/Quick/Nimble", from: "9.2.0"),
         .package(url: "https://github.com/dduan/Pathos", from: "0.4.0"),
         .package(name: "SwiftSyntax", url: "https://github.com/apple/swift-syntax.git", .revision("swift-5.4-RELEASE")),
