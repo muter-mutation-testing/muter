@@ -62,14 +62,14 @@ let package = Package(
     ]
 )
 
-resolveTestTargetFromEnviromentVarialbes()
+resolveTestTargetFromEnvironmentVarialbes()
 hookInternalSwiftSyntaxParser()
 isDebuggingMain(false)
 
 /// Make sure to select a single test target
 /// This is important because, as of today, we cannot pick a single test target from the command-line (and filtering also doesn't help)
 /// With that in mind, this (a hack, for sure) will look-up for an env var and pick the test target accodingly.
-func resolveTestTargetFromEnviromentVarialbes() {
+func resolveTestTargetFromEnvironmentVarialbes() {
     let shouldAddAcceptanceTests = ProcessInfo.processInfo.environment.keys.contains("acceptance_tests")
     let shouldAddRegressionTests = ProcessInfo.processInfo.environment.keys.contains("regression_tests")
 
