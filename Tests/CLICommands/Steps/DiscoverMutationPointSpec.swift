@@ -122,7 +122,7 @@ class DiscoverMutationPointSpec: QuickSpec {
                     beforeEach {
                         state = RunCommandState()
                         state.sourceFileCandidates = [
-                            "\(self.fixturesDirectory)/sourceWithoutMuteableCode.swift",
+                            "\(self.fixturesDirectory)/sourceWithoutMutableCode.swift",
                         ]
 
                         result = DiscoverMutationPoints().run(with: state)

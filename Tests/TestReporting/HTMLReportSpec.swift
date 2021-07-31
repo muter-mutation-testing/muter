@@ -67,7 +67,7 @@ class HTMLReportSpec: QuickSpec {
 private func loadReportOfProjectWithoutCoverage() -> String {
     guard let data = FileManager.default.contents(atPath: "\(HTMLReportSpec().fixturesDirectory)/TestReporting/testReportOfProjectWithoutCoverage.html"),
           let string = String(data: data, encoding: .utf8) else {
-        fatalError("Unable to load reportfor testing")
+        fatalError("Unable to load report for testing")
     }
     
     return string
@@ -76,7 +76,7 @@ private func loadReportOfProjectWithoutCoverage() -> String {
 private func loadReportOfProjectWithCoverage() -> String {
     guard let data = FileManager.default.contents(atPath: "\(HTMLReportSpec().fixturesDirectory)/TestReporting/testReportOfProjectWithCoverage.html"),
           let string = String(data: data, encoding: .utf8) else {
-        fatalError("Unable to load reportfor testing")
+        fatalError("Unable to load report for testing")
     }
     
     return string

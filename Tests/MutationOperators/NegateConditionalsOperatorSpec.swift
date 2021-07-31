@@ -8,12 +8,12 @@ class NegateConditionalsOperatorSpec: QuickSpec {
         describe("") {
 
             var sourceWithConditionalLogic: SourceCodeInfo!
-            var sourceWithoutMuteableCode: SourceCodeInfo!
+            var sourceWithoutMutableCode: SourceCodeInfo!
             var conditionalConformanceConstraints: SourceCodeInfo!
 
             beforeEach {
                 sourceWithConditionalLogic = sourceCode(fromFileAt: "\(self.mutationExamplesDirectory)/NegateConditionals/sampleWithConditionalOperators.swift")!
-                sourceWithoutMuteableCode = sourceCode(fromFileAt: "\(self.fixturesDirectory)/sourceWithoutMuteableCode.swift")!
+                sourceWithoutMutableCode = sourceCode(fromFileAt: "\(self.fixturesDirectory)/sourceWithoutMutableCode.swift")!
                 conditionalConformanceConstraints = sourceCode(fromFileAt: "\(self.mutationExamplesDirectory)/NegateConditionals/conditionalConformanceConstraints.swift")!
             }
 
@@ -39,8 +39,8 @@ class NegateConditionalsOperatorSpec: QuickSpec {
                 }
 
                 it("records no positions when a file doesn't contain a conditional operator") {
-                    let visitor = ROROperator.Visitor(sourceFileInfo: sourceWithoutMuteableCode.asSourceFileInfo)
-                    visitor.walk(sourceWithoutMuteableCode.code)
+                    let visitor = ROROperator.Visitor(sourceFileInfo: sourceWithoutMutableCode.asSourceFileInfo)
+                    visitor.walk(sourceWithoutMutableCode.code)
                     expect(visitor.positionsOfToken).to(haveCount(0))
                 }
 
