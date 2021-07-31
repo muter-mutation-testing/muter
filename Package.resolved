@@ -50,9 +50,9 @@
         "package": "Plot",
         "repositoryURL": "https://github.com/johnsundell/plot.git",
         "state": {
-          "branch": "a12222bc4d25",
-          "revision": "a12222bc4d255fb584285376ed3a26978fb14f22",
-          "version": null
+          "branch": null,
+          "revision": "c27f6857deeb4c4623db294172a8ec572790a9be",
+          "version": "0.10.0"
         }
       },
       {
@@ -104,8 +104,8 @@
         "package": "SwiftSyntax",
         "repositoryURL": "https://github.com/apple/swift-syntax.git",
         "state": {
-          "branch": "swift-5.4-RELEASE",
-          "revision": "ce9020568227504e792d07839b91c5de18ed291a",
+          "branch": "0.50400.0",
+          "revision": "2fff9fc25cdc059379b6bd309377cfab45d8520c",
           "version": null
         }
       }

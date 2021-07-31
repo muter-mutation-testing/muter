@@ -16,9 +16,9 @@ let package = Package(
         .package(url: "https://github.com/Quick/Quick", from: "4.0.0"),
         .package(url: "https://github.com/Quick/Nimble", from: "9.2.0"),
         .package(url: "https://github.com/dduan/Pathos", from: "0.4.0"),
-        .package(name: "SwiftSyntax", url: "https://github.com/apple/swift-syntax.git", .revision("swift-5.4-RELEASE")),
+        .package(name: "SwiftSyntax", url: "https://github.com/apple/swift-syntax.git", .revision("0.50400.0")),
         .package(name: "Progress", url: "https://github.com/jkandzi/Progress.swift", from: "0.4.0"),
-        .package(name: "Plot", url: "https://github.com/johnsundell/plot.git", .revision("a12222bc4d25")),
+        .package(name: "Plot", url: "https://github.com/johnsundell/plot.git", from: "0.10.0"),
         .package(name: "Difference", url: "https://github.com/krzysztofzablocki/Difference.git", from: "0.6.0"),
         .package(name: "SnapshotTesting", url: "https://github.com/pointfreeco/swift-snapshot-testing.git", from: "1.9.0")
     ],
