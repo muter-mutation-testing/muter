@@ -1,7 +1,7 @@
 <img src="Docs/Images/Muter%20Logo.png" width="475" alt="Muter logo" />
 
-[![Swift 5 support](https://img.shields.io/badge/swift-5.3-ED523F.svg?style=flat)](https://swift.org/download/) 
-[![Build](https://img.shields.io/bitrise/84b65f2a76ed7616/master?label=build&token=ZtVl3AxP2ybPB17Ug1wIJQ)](https://app.bitrise.io/app/84b65f2a76ed7616)
+[![Swift 5 support](https://img.shields.io/badge/swift-5.5-ED523F.svg?style=flat)](https://swift.org/download/) 
+[![Build](https://img.shields.io/bitrise/6354dbc8bfead01c/master?label=build&token=jq6MzFouY0nlkBzizYvuhQ)](https://app.bitrise.io/app/6354dbc8bfead01c)
 ![Regression Tests](https://img.shields.io/endpoint?url=https://api.jsonbin.io/b/5f77f02e7243cd7e8249528f/latest&style=flat)
 ![Acceptance Tests](https://img.shields.io/endpoint?url=https://api.jsonbin.io/b/602712c33b303d3d964fd4bf/latest&style=flat)
 [![Code coverage](https://img.shields.io/endpoint?url=https://api.jsonbin.io/b/5f791c9e302a837e9573fa65/latest&style=falt)](https://codecov.io/gh/muter-mutation-testing/muter)
