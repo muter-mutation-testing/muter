@@ -57,11 +57,9 @@ private extension Date {
 
 extension Node where Context == HTML.DocumentContext {
     static func muterHeader() -> Self {
-        let normalizeCSS = Bundle.resource(named: "normalize", ofType: "css")
-        let reportCSS = Bundle.resource(named: "report", ofType: "css")
+        let normalizeCSS = normalize
+        let reportCSS = report
         let css = normalizeCSS + reportCSS
-
-        let javascript = Bundle.resource(named: "javascript", ofType: "js")
 
         return .head(
             .attribute(named: "charset", value: "utf-8"),
@@ -74,7 +72,6 @@ extension Node where Context == HTML.DocumentContext {
 
 extension Node where Context: HTML.BodyContext {
     static func muterHeader(from testReport: MuterTestReport) -> Self {
-        let muterLogo = Bundle.resource(named: "muterLogo", ofType: "svg")
         return .header(
             .div(.class("logo"), .raw(muterLogo)),
             .div(
@@ -253,20 +250,11 @@ private extension TestSuiteOutcome {
         let icon: String
         switch self {
         case .passed:
-            icon = Bundle.resource(
-                named: "testPassed",
-                ofType: "svg"
-            )
+            icon = testPassed
         case .failed, .runtimeError:
-            icon = Bundle.resource(
-                named: "testFailed",
-                ofType: "svg"
-            )
+            icon = testFailed
         case .buildError:
-            icon = Bundle.resource(
-                named: "testBuildError",
-                ofType: "svg"
-            )
+            icon = testBuildError
         }
 
         return icon.replacingOccurrences(of: "$title$", with: asMutationTestOutcome)

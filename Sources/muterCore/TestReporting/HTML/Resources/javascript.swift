@@ -1,3 +1,4 @@
+let javascript = """
 window.onload = function() {
     showHide(false, 'mutation-operators-per-file');
     showHide(false, 'applied-operators');
@@ -39,3 +40,4 @@ function showChange(button) {
         button.innerHTML = "-";
     }
 }
+"""

@@ -1,3 +1,5 @@
+let report =
+"""
 body {
     background-color: #FAFAFA;
     color: #000000;
@@ -215,3 +217,4 @@ th {
         background-color: #293649;
     }
 }
+"""

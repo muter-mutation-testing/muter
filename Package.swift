@@ -37,16 +37,7 @@ let package = Package(
                 "Plot",
                 .product(name: "ArgumentParser", package: "swift-argument-parser")
             ],
-            path: "Sources/muterCore",
-            resources: [
-                .copy("TestReporting/HTML/Resources/javascript.js"),
-                .copy("TestReporting/HTML/Resources/muterLogo.svg"),
-                .copy("TestReporting/HTML/Resources/normalize.css"),
-                .copy("TestReporting/HTML/Resources/report.css"),
-                .copy("TestReporting/HTML/Resources/testBuildError.svg"),
-                .copy("TestReporting/HTML/Resources/testFailed.svg"),
-                .copy("TestReporting/HTML/Resources/testPassed.svg"),
-            ]
+            path: "Sources/muterCore"
         ),        
         .target(
             name: "TestingExtensions",
