@@ -4,7 +4,7 @@ import Foundation
 enum RemoveSideEffectsOperator {
     final class Visitor: SyntaxAnyVisitor, PositionDiscoveringVisitor {
         var positionsOfToken = [MutationPosition]()
-        private var concurencyPropertiesInFile = [String]()
+        private var concurrencyPropertiesInFile = [String]()
         private let concurrencyTypes = [
             "DispatchSemaphore",
             "NSRecursiveLock",
@@ -23,7 +23,7 @@ enum RemoveSideEffectsOperator {
         override func visit(_ node: PatternBindingListSyntax) -> SyntaxVisitorContinueKind {
             for statement in node where statementsContainsConcurrencyTypes(statement) {
                 let property = propertyName(from: statement)
-                concurencyPropertiesInFile.append(property)
+                concurrencyPropertiesInFile.append(property)
             }
 
             return super.visit(node)
@@ -84,7 +84,7 @@ enum RemoveSideEffectsOperator {
                 return false
             }
 
-            return concurencyPropertiesInFile.contains(variableName)
+            return concurrencyPropertiesInFile.contains(variableName)
         }
 
         private func untestedFunctionCallStatements(_ node: Syntax) -> Bool {

@@ -29,7 +29,7 @@ echo " > Running in Xcode mode..."
 rm -rf ./muter_logs # don't pollute the staging area
 
 echo " > Running with --filesToMutate flag"
-"$muterdir"/muter --files-to-mutate --skip-coverage "/ExampleApp/Module.swift" > "$samplesdir"/muters_files_to_mutate_output.txt
+"$muterdir"/muter --skip-coverage --files-to-mutate "/ExampleApp/Module.swift" > "$samplesdir"/muters_files_to_mutate_output.txt
 rm -rf ./muter_logs # don't pollute the staging area
 
 rm muter.conf.json # cleanup the created configuration file for the next test run
