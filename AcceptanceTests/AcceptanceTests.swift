@@ -238,13 +238,13 @@ class AcceptanceTests: QuickSpec {
 
                                 OPTIONS:
                                   --files-to-mutate <files-to-mutate>
-                                                          Only mutate a given list of source code files 
-                                  --output-json           Output test results to a json file. 
-                                  --output-html           Output test results to an html file. 
+                                                          Only mutate a given list of source code files
+                                  --output-json           Output test results to a json file.
+                                  --output-html           Output test results to an html file.
                                   --output-xcode          Output test results in a format consumable by an
-                                                          Xcode run script step. 
+                                                          Xcode run script step.
                                   --skip-coverage         Skips the step in which Muter runs your project in
-                                                          order to filter out files without coverage. 
+                                                          order to filter out files without coverage.
                                   --version               Show the version.
                                   -h, --help              Show help information.
 
