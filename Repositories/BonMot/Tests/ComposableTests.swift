@@ -9,15 +9,27 @@
 @testable import BonMot
 import XCTest
 
+#if canImport(UIKit)
+import UIKit
+#elseif canImport(AppKit)
+import AppKit
+#endif
+
+#if canImport(UIKit) || canImport(AppKit)
+
 class ComposableTests: XCTestCase {
 
-    #if os(OSX)
-        let imageForTest = testBundle.image(forResource: "robot")!
-    #else
-        let imageForTest = UIImage(named: "robot", in: testBundle, compatibleWith: nil)!
-    #endif
+    func robotImage() throws -> BONImage {
+        #if os(OSX)
+        let imageForTest = testBundle.image(forResource: "robot")
+        #else
+        let imageForTest = UIImage(named: "robot", in: testBundle, compatibleWith: nil)
+        #endif
+        return try XCTUnwrap(imageForTest)
+    }
 
-    func testImageConstructor() {
+    func testImageConstructor() throws {
+        let imageForTest = try robotImage()
         let imageString = imageForTest.attributedString()
         let string = "\(Special.objectReplacementCharacter)"
         XCTAssertEqual(imageString.string, string)
@@ -28,7 +40,9 @@ class ComposableTests: XCTestCase {
         XCTAssertEqual("A-B-C", string.string)
     }
 
-    func testAttributesArePassedAlongExtend() {
+    func testAttributesArePassedAlongExtend() throws {
+        let imageForTest = try robotImage()
+
         let style = StringStyle(.extraAttributes(["test": "test"]))
 
         let chainString = NSAttributedString.composed(of: [imageForTest, "Test", imageForTest], baseStyle: style).attributedString()
@@ -37,7 +51,9 @@ class ComposableTests: XCTestCase {
         XCTAssertEqual(attributes["test"] as? String, "test")
     }
 
-    func testTabStopsWithSpacer() {
+    func testTabStopsWithSpacer() throws {
+        let imageForTest = try robotImage()
+
         let stringWidth = CGFloat(115)
 
         let multiLineWithTabs = NSAttributedString.composed(of: [
@@ -127,18 +143,19 @@ class ComposableTests: XCTestCase {
             XCTAssertEqual(value, expected, line: line)
         }
 
-        check(forPart: .paragraphSpacingAfter(10), { $0.paragraphSpacing }, 10)
-        check(forPart: .alignment(.center), { $0.alignment }, .center)
-        check(forPart: .firstLineHeadIndent(10), { $0.firstLineHeadIndent }, 10)
-        check(forPart: .headIndent(10), { $0.headIndent }, 10)
-        check(forPart: .tailIndent(10), { $0.tailIndent }, 10)
-        check(forPart: .lineBreakMode(.byClipping), { $0.lineBreakMode }, .byClipping)
-        check(forPart: .minimumLineHeight(10), { $0.minimumLineHeight }, 10)
-        check(forPart: .maximumLineHeight(10), { $0.maximumLineHeight }, 10)
-        check(forPart: .baseWritingDirection(.leftToRight), { $0.baseWritingDirection }, .leftToRight)
-        check(forPart: .lineHeightMultiple(10), { $0.lineHeightMultiple }, 10)
-        check(forPart: .paragraphSpacingBefore(10), { $0.paragraphSpacingBefore }, 10)
-        check(forPart: .hyphenationFactor(10), { $0.hyphenationFactor }, 10)
+        check(forPart: .paragraphSpacingAfter(10), \.paragraphSpacing, 10)
+        check(forPart: .alignment(.center), \.alignment, .center)
+        check(forPart: .firstLineHeadIndent(10), \.firstLineHeadIndent, 10)
+        check(forPart: .headIndent(10), \.headIndent, 10)
+        check(forPart: .tailIndent(10), \.tailIndent, 10)
+        check(forPart: .lineBreakMode(.byClipping), \.lineBreakMode, .byClipping)
+        check(forPart: .minimumLineHeight(10), \.minimumLineHeight, 10)
+        check(forPart: .maximumLineHeight(10), \.maximumLineHeight, 10)
+        check(forPart: .baseWritingDirection(.leftToRight), \.baseWritingDirection, .leftToRight)
+        check(forPart: .lineHeightMultiple(10), \.lineHeightMultiple, 10)
+        check(forPart: .paragraphSpacingBefore(10), \.paragraphSpacingBefore, 10)
+        check(forPart: .hyphenationFactor(10), \.hyphenationFactor, 10)
+        check(forPart: .allowsDefaultTighteningForTruncation(true), \.allowsDefaultTighteningForTruncation, true)
     }
 
     func testInitialParagraphStyle() {
@@ -213,7 +230,7 @@ class ComposableTests: XCTestCase {
     func testKerningStrippingOnLastCharacter() {
         let styleWithTracking = StringStyle(.tracking(.point(0.5)))
 
-        let pairsline = #line; let testCases: [(input: String, lastCharacterUnicodeLength: Int)] = [
+        let pairsLine = #line; let testCases: [(input: String, lastCharacterUnicodeLength: Int)] = [
             ("abc", 1),
             ("abc🍕", 2),
             ("🍕🍕", 2),
@@ -226,9 +243,11 @@ class ComposableTests: XCTestCase {
             let maxRange = NSRange(location: 0, length: styledString.length)
 
             let kerning = styledString.attribute(.kern, at: 0, longestEffectiveRange: &range, in: maxRange) as? Float
-            let testLine = UInt(pairsline + offset + 1)
+            let testLine = UInt(pairsLine + offset + 1)
             XCTAssertEqual(kerning, 0.5, line: testLine)
             XCTAssertEqual(range, NSRange(location: 0, length: styledString.length - testCase.lastCharacterUnicodeLength), line: testLine)
         }
     }
 }
+
+#endif

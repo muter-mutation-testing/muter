@@ -1,19 +1,24 @@
 <img width=443 src="Resources/readme-images/BonMot-logo.png" alt="BonMot Logo" />
 
-[![Swift 4.2 + 5.0](https://img.shields.io/badge/Swift-4.2%20+%205.0-orange.svg?style=flat)](https://swift.org)
+[![Swift 5.0](https://img.shields.io/badge/Swift-%205.0-orange.svg?style=flat)](https://swift.org)
 [![CircleCI](https://img.shields.io/circleci/project/github/Rightpoint/BonMot/master.svg)](https://circleci.com/gh/Rightpoint/BonMot)
 [![Version](https://img.shields.io/cocoapods/v/BonMot.svg?style=flat)](http://cocoapods.org/pods/BonMot)
 [![License](https://img.shields.io/cocoapods/l/BonMot.svg?style=flat)](http://cocoapods.org/pods/BonMot)
 [![Platform](https://img.shields.io/cocoapods/p/BonMot.svg?style=flat)](http://cocoapods.org/pods/BonMot)
-[![Carthage compatible](https://img.shields.io/badge/Carthage-compatible-4BC51D.svg?style=flat)](https://github.com/Carthage/Carthage)
+[![Carthage compatible](https://img.shields.io/badge/Carthage-compatible-4BC51D.svg?style=flat)](https://github.com/Carthage/Carthage) [![Swift Package Manager compatible](https://img.shields.io/badge/Swift_Package_Manager-compatible-orange?style=flat)](https://swift.org/package-manager/)
 [![codecov](https://codecov.io/gh/Rightpoint/BonMot/branch/master/graph/badge.svg)](https://codecov.io/gh/Rightpoint/BonMot)
 
 BonMot (pronounced *Bon Mo*, French for *good word*) is a Swift attributed string library. It abstracts away the complexities of the iOS, macOS, tvOS, and watchOS typography tools, freeing you to focus on making your text beautiful.
 
 To run the example project, run `pod try BonMot`, or clone the repo, open `BonMot.xcodeproj`, and run the **Example-iOS** target.
 
-### Note
-If you are migrating a project from BonMot 3 to BonMot 4, please see the [Migration Guide](#bonmot-3--4-migration-guide).
+### AttributedString
+
+BonMot has been [sherlocked](https://en.wikipedia.org/wiki/Sherlock_(software)#Sherlocked_as_a_term)!  If you're targeting iOS 15 or higher, you may want to check out [AttributedString](https://developer.apple.com/documentation/foundation/attributedstring) instead. If you're an existing user of BonMot using Xcode 13, you may want to add the following `typealias` somewhere in your project to avoid a conflict with `Foundation.StringStyle`:
+
+```swift
+typealias StringStyle = BonMot.StringStyle
+```
 
 # Usage
 
@@ -179,7 +184,7 @@ If you want more manual control over the adaptation process and are targeting iO
 
 The `.control` and `.body` behaviors both scale the same, except that when enabling the "Larger Dynamic Type" accessibility setting, `.body` grows unbounded. Here is a graph of the default behaviors of the [system Dynamic Type styles](https://developer.apple.com/ios/human-interface-guidelines/visual-design/typography#dynamic-type-sizes):
 
-<img width=443 src="Resources/readme-images/ios-type-scaling-behavior.png" alt="Graph of iOS Dynamic Type scaling behavior, showing that Control text tops out at the XXL size, but Body text keeps growing all the way up to AccessibilityXXL" />
+<img width=443 src="Resources/readme-images/ios-type-scaling-behavior.png" alt="Graph of iOS Dynamic Type scaling behavior, showing that most text tops out at the XXL size, but Body, Large Title, and Title 1 text keeps growing all the way up through AccessibilityXXXL" />
 
 ## Storyboard and XIB Integration
 
@@ -309,7 +314,7 @@ In BonMot 3, you may have stored `BONChain`s for later use. You can accomplish t
 ##### BonMot 3
 
 ```swift
-struct Constants {
+enum Constants {
 
     static let myChain = BONChain()
         .color(myColor)
@@ -328,7 +333,7 @@ let attrString = myChain.string("some string").attributedString
 ##### BonMot 4
 
 ```swift
-struct Constants {
+enum Constants {
 
     static let myStyle = StringStyle(
         .color(myColor),
@@ -345,6 +350,15 @@ let attrString = "some string".styled(with: Constants.myStyle)
 ```
 
 # Installation
+
+## Swift Package Manager
+
+BonMot is available through [Swift Package Manager](https://swift.org/package-manager/). To install
+it through Xcode, go to `File -> Swift Packages -> Add Package Dependency...` and paste the repository URL:
+
+```
+https://github.com/Rightpoint/BonMot.git
+```
 
 ## CocoaPods
 
@@ -371,7 +385,7 @@ Contributors are expected to abide by the [Contributor Covenant Code of Conduct]
 
 # Author
 
-Zev Eisenberg: [zeisenberg@rightpoint.com](mailto:zeisenberg@rightpoint.com), [@ZevEisenberg](https://twitter.com/zeveisenberg)
+Zev Eisenberg: [@ZevEisenberg](https://twitter.com/zeveisenberg)
 
 Logo by Jon Lopkin: [@jonlopkin](https://twitter.com/jonlopkin)
 

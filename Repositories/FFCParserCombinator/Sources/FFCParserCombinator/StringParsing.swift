@@ -175,7 +175,7 @@ extension Double: ParsableType {
 
         let decimalLiteral = UInt.parser
 
-        let decimalFraction = "." *> UInt.parser
+        let decimalFraction = "." *> ({ String($0) } <^> BasicParser.digit.many1)
 
         let decimalExponent = { (s, m) in Int(m) * (s == .minus ? -1 : 1) } <^> floatingPointE *> sign <&> UInt.parser
 

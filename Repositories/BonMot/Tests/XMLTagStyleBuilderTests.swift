@@ -12,7 +12,7 @@ import XCTest
 class XMLTagStyleBuilderTests: XCTestCase {
 
     /// There have been concerns about XMLParser's performance. This is a
-    /// baseline test, but doesn't mean much without a comparision.
+    /// baseline test, but doesn't mean much without a comparison.
     func testBasicParserPerformance() {
         let styles = NamedStyles(styles: ["A": styleA, "B": styleB])
 
@@ -174,7 +174,7 @@ class XMLTagStyleBuilderTests: XCTestCase {
     }
 
     func testBONXML() {
-        for value in Special.all {
+        for value in Special.allCases {
             let xmlString = "this<BON:\(value.name)/>should embed a special character"
             let xmlAttributedString = try? NSAttributedString.composed(ofXML: xmlString)
             XCTAssertEqual(xmlAttributedString?.string, "this\(value)should embed a special character")

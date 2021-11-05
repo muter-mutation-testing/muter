@@ -69,6 +69,7 @@ extension StringStyle {
         case baseWritingDirection(NSWritingDirection)
         case lineHeightMultiple(CGFloat)
         case paragraphSpacingBefore(CGFloat)
+        case allowsDefaultTighteningForTruncation(Bool)
 
         /// Values from 0 to 1 will result in varying levels of hyphenation,
         /// with higher values resulting in more aggressive (i.e. more frequent)
@@ -155,8 +156,8 @@ extension StringStyle {
         return style
     }
 
-    //swiftlint:disable function_body_length
-    //swiftlint:disable cyclomatic_complexity
+    // swiftlint:disable function_body_length
+    // swiftlint:disable cyclomatic_complexity
     /// Update the style with the specified style part.
     ///
     /// - Parameter stylePart: The style part with which to update the receiver.
@@ -219,84 +220,57 @@ extension StringStyle {
             self.add(stringStyle: style)
         case let .emphasis(emphasis):
             self.emphasis = emphasis
-        default:
-            // interaction between `#if` and `switch` is disappointing. This case
-            // is in `default:` to remove a warning that default won't be accessed
-            // on some platforms.
-            switch stylePart {
-            case let .hyphenationFactor(hyphenationFactor):
-                self.hyphenationFactor = hyphenationFactor
-            default:
-                #if os(iOS) || os(tvOS) || os(watchOS)
-                    switch stylePart {
-                    case let .speaksPunctuation(speaksPunctuation):
-                        self.speaksPunctuation = speaksPunctuation
-                        return
-                    case let .speakingLanguage(speakingLanguage):
-                        self.speakingLanguage = speakingLanguage
-                        return
-                    case let .speakingPitch(speakingPitch):
-                        self.speakingPitch = speakingPitch
-                        return
-                    case let .speakingPronunciation(speakingPronunciation):
-                        self.speakingPronunciation = speakingPronunciation
-                        return
-                    case let .shouldQueueSpeechAnnouncement(shouldQueueSpeechAnnouncement):
-                        self.shouldQueueSpeechAnnouncement = shouldQueueSpeechAnnouncement
-                        return
-                    case let .headingLevel(headingLevel):
-                        self.headingLevel = headingLevel
-                        return
-                    default:
-                        break
-                    }
-                #endif
-
-                #if os(OSX) || os(iOS) || os(tvOS)
-                    switch stylePart {
-                    case let .numberCase(numberCase):
-                        self.numberCase = numberCase
-                    case let .numberSpacing(numberSpacing):
-                        self.numberSpacing = numberSpacing
-                    case let .fractions(fractions):
-                        self.fractions = fractions
-                    case let .superscript(superscript):
-                        self.superscript = superscript
-                    case let .`subscript`(`subscript`):
-                        self.`subscript` = `subscript`
-                    case let .ordinals(ordinals):
-                        self.ordinals = ordinals
-                    case let .scientificInferiors(scientificInferiors):
-                        self.scientificInferiors = scientificInferiors
-                    case let .smallCaps(smallCaps):
-                        self.smallCaps.insert(smallCaps)
-                    case let .stylisticAlternates(stylisticAlternates):
-                        self.stylisticAlternates.add(other: stylisticAlternates)
-                    case let .contextualAlternates(contextualAlternates):
-                        self.contextualAlternates.add(other: contextualAlternates)
-                    case let .fontFeature(featureProvider):
-                        self.fontFeatureProviders.append(featureProvider)
-                    default:
-                        #if os(iOS) || os(tvOS)
-                            switch stylePart {
-                            case let .adapt(style):
-                                self.adaptations.append(style)
-                            case let .textStyle(textStyle):
-                                self.font = UIFont.bon_preferredFont(forTextStyle: textStyle, compatibleWith: nil)
-                            default:
-                                fatalError("StylePart \(stylePart) should have been caught by an earlier case.")
-                            }
-                        #else
-                            fatalError("StylePart \(stylePart) should have been caught by an earlier case.")
-                        #endif
-                    }
-                #else
-                    fatalError("StylePart \(stylePart) should have been caught by an earlier case.")
-                #endif
-            }
+        case let .hyphenationFactor(hyphenationFactor):
+            self.hyphenationFactor = hyphenationFactor
+        case let .allowsDefaultTighteningForTruncation(allowsDefaultTighteningForTruncation):
+            self.allowsDefaultTighteningForTruncation = allowsDefaultTighteningForTruncation
+#if os(iOS) || os(tvOS) || os(watchOS)
+        case let .speaksPunctuation(speaksPunctuation):
+            self.speaksPunctuation = speaksPunctuation
+        case let .speakingLanguage(speakingLanguage):
+            self.speakingLanguage = speakingLanguage
+        case let .speakingPitch(speakingPitch):
+            self.speakingPitch = speakingPitch
+        case let .speakingPronunciation(speakingPronunciation):
+            self.speakingPronunciation = speakingPronunciation
+        case let .shouldQueueSpeechAnnouncement(shouldQueueSpeechAnnouncement):
+            self.shouldQueueSpeechAnnouncement = shouldQueueSpeechAnnouncement
+        case let .headingLevel(headingLevel):
+            self.headingLevel = headingLevel
+#endif
+#if os(OSX) || os(iOS) || os(tvOS)
+        case let .numberCase(numberCase):
+            self.numberCase = numberCase
+        case let .numberSpacing(numberSpacing):
+            self.numberSpacing = numberSpacing
+        case let .fractions(fractions):
+            self.fractions = fractions
+        case let .superscript(superscript):
+            self.superscript = superscript
+        case let .`subscript`(`subscript`):
+            self.`subscript` = `subscript`
+        case let .ordinals(ordinals):
+            self.ordinals = ordinals
+        case let .scientificInferiors(scientificInferiors):
+            self.scientificInferiors = scientificInferiors
+        case let .smallCaps(smallCaps):
+            self.smallCaps.insert(smallCaps)
+        case let .stylisticAlternates(stylisticAlternates):
+            self.stylisticAlternates.add(other: stylisticAlternates)
+        case let .contextualAlternates(contextualAlternates):
+            self.contextualAlternates.add(other: contextualAlternates)
+        case let .fontFeature(featureProvider):
+            self.fontFeatureProviders.append(featureProvider)
+#endif
+#if os(iOS) || os(tvOS)
+        case let .adapt(style):
+            self.adaptations.append(style)
+        case let .textStyle(textStyle):
+            self.font = UIFont.bon_preferredFont(forTextStyle: textStyle, compatibleWith: nil)
+#endif
         }
     }
-    //swiftlint:enable function_body_length
-    //swiftlint:enable cyclomatic_complexity
+    // swiftlint:enable function_body_length
+    // swiftlint:enable cyclomatic_complexity
 
 }

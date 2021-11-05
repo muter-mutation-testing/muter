@@ -33,7 +33,7 @@ extension NSAttributedString {
     ///                specify styling options.
     ///   - styler: An optional custom styler to perform extra style operations.
     ///   - options: XML parsing options.
-    /// - Returns: A styled attriubted string.
+    /// - Returns: A styled attriubuted string.
     /// - Throws: Any errors encountered by the XML parser.
     public static func composed(ofXML fragment: String, baseStyle: StringStyle? = nil, styler: XMLStyler? = nil, options: XMLParsingOptions = []) throws -> NSAttributedString {
         let builder = XMLBuilder(
@@ -96,7 +96,7 @@ extension Special {
 
     /// Rules describing how to insert values from `Special` into attributed strings.
     public static var insertionRules: [XMLStyleRule] {
-        let rulePairs: [[XMLStyleRule]] = all.map {
+        let rulePairs: [[XMLStyleRule]] = allCases.map {
             let elementName = "BON:\($0.name)"
             // Add the insertion rule and a style rule so we don't look up the style and generate a warning
             return [XMLStyleRule.enter(element: elementName, insert: $0), XMLStyleRule.style(elementName, StringStyle())]
@@ -116,11 +116,21 @@ public enum XMLStyleRule {
     /// A name/style pairing.
     case style(String, StringStyle)
 
+    /// A name with a block that returns style based on `attributes` dictionary.
+    case styleBlock(String, ([String: String]) -> StringStyle)
+
     /// A `Composable` to insert before entering tags whose name equals `element`.
     case enter(element: String, insert: Composable)
 
+    /// A block that returns `Composable` to insert before entering tags whose name equals `element`, based on
+    /// `attributes` dictionary.
+    case enterBlock(element: String, insert: ([String: String]) -> Composable)
+
     /// A `Composable` to insert before exiting tags whose name equals `element`.
     case exit(element: String, insert: Composable)
+
+    /// A block that returns `Composable` to insert before exiting tags whose name equals `element`.
+    case exitBlock(element: String, insert: () -> Composable)
 
     /// An `XMLStyler` implementation for handling `XMLStyleRule`s.
     struct Styler: XMLStyler {
@@ -132,6 +142,8 @@ public enum XMLStyleRule {
                 switch rule {
                 case let .style(string, style) where string == name:
                     return style
+                case let .styleBlock(string, block) where string == name:
+                    return block(attributes)
                 default:
                     break
                 }
@@ -149,6 +161,8 @@ public enum XMLStyleRule {
                 switch rule {
                 case let .enter(string, composable) where string == name:
                     return composable
+                case let .enterBlock(string, block) where string == name:
+                    return block(attributes)
                 default: break
                 }
             }
@@ -160,6 +174,8 @@ public enum XMLStyleRule {
                 switch rule {
                 case let .exit(string, composable) where string == name:
                     return composable
+                case let .exitBlock(string, block) where string == name:
+                    return block()
                 default: break
                 }
             }
