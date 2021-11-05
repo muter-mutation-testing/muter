@@ -1,9 +1,16 @@
 {
-    "executable": "/usr/bin/swift",
-    "arguments": [
-        "test"
-    ],
-    "exclude": [
-    	"Package.swift"
-    ]
+  "arguments" : [
+    "-project",
+    "FFCParserCombinator.xcodeproj",
+    "-scheme",
+    "FFCParserCombinator-Package",
+    "test"
+  ],
+  "exclude" : [
+
+  ],
+  "excludeCalls" : [
+
+  ],
+  "executable" : "\/usr\/bin\/xcodebuild"
 }

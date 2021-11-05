@@ -11,14 +11,17 @@ import XCTest
 
 class NSAttributedStringDebugTests: XCTestCase {
 
-    #if os(OSX)
-        let imageForTest = testBundle.image(forResource: "robot")!
-    #else
-        let imageForTest = UIImage(named: "robot", in: testBundle, compatibleWith: nil)!
-    #endif
+    func robotImage() throws -> BONImage {
+        #if os(OSX)
+        let imageForTest = testBundle.image(forResource: "robot")
+        #else
+        let imageForTest = UIImage(named: "robot", in: testBundle, compatibleWith: nil)
+        #endif
+        return try XCTUnwrap(imageForTest)
+    }
 
     func testSpecialFromUnicodeScalar() {
-        let enDash = Special(rawValue: UnicodeScalar("\u{2013}"))
+        let enDash = Special(rawValue: "\u{2013}")
         XCTAssertEqual(enDash, Special.enDash)
     }
 
@@ -47,7 +50,9 @@ class NSAttributedStringDebugTests: XCTestCase {
         }
     }
 
-    func testComposedDebugRepresentation() {
+    func testComposedDebugRepresentation() throws {
+        let imageForTest = try robotImage()
+
         let testCases: [([Composable], String, UInt)] = [
             ([imageForTest], "<BON:image size='36x36'/>", #line),
             ([Special.enDash], "<BON:enDash/>", #line),
@@ -76,7 +81,7 @@ class NSAttributedStringDebugTests: XCTestCase {
     }
 
     // ParagraphStyles are a bit interesting, as tabs behave over a line, but multiple paragraph styles can be applied on that line.
-    // I'm not sure how a multi-paragrah line would behave, but this confirms that NSAttributedString doesn't do any coalescing
+    // I'm not sure how a multi-paragraph line would behave, but this confirms that NSAttributedString doesn't do any coalescing
     func testParagraphStyleBehavior() {
         let style1 = NSMutableParagraphStyle()
         style1.lineSpacing = 1000

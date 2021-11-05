@@ -9,7 +9,8 @@
 import BonMot
 import XCTest
 
-#if swift(>=2.3)
+#if canImport(UIKit)
+import UIKit
 
 class UIKitBonMotTests: XCTestCase {
 
@@ -44,7 +45,7 @@ class UIKitBonMotTests: XCTestCase {
         // Update the trait collection and ensure the font grows.
         if #available(iOS 10.0, tvOS 10.0, *) {
             label.adaptText(forTraitCollection: UITraitCollection(preferredContentSizeCategory: UIContentSizeCategory.extraLarge))
-            BONAssert(attributes: label.attributedText?.attributes(at: 0, effectiveRange: nil), query: { $0.pointSize }, float: expectedFont.pointSize + 2)
+            BONAssert(attributes: label.attributedText?.attributes(at: 0, effectiveRange: nil), query: \.pointSize, float: expectedFont.pointSize + 2)
             BONAssertColor(inAttributes: label.attributedText?.attributes(at: 0, effectiveRange: nil), key: .foregroundColor, color: adaptiveStyle.color!)
         }
     }
@@ -67,7 +68,7 @@ class UIKitBonMotTests: XCTestCase {
         // Update the trait collection and ensure the font grows.
         if #available(iOS 10.0, tvOS 10.0, *) {
             textField.adaptText(forTraitCollection: UITraitCollection(preferredContentSizeCategory: UIContentSizeCategory.extraLarge))
-            BONAssert(attributes: textField.attributedText?.attributes(at: 0, effectiveRange: nil), query: { $0.pointSize }, float: expectedFont.pointSize + 2)
+            BONAssert(attributes: textField.attributedText?.attributes(at: 0, effectiveRange: nil), query: \.pointSize, float: expectedFont.pointSize + 2)
             BONAssertColor(inAttributes: textField.attributedText?.attributes(at: 0, effectiveRange: nil), key: .foregroundColor, color: adaptiveStyle.color!)
         }
     }
@@ -90,7 +91,7 @@ class UIKitBonMotTests: XCTestCase {
         // Update the trait collection and ensure the font grows.
         if #available(iOS 10.0, tvOS 10.0, *) {
             textView.adaptText(forTraitCollection: UITraitCollection(preferredContentSizeCategory: UIContentSizeCategory.extraLarge))
-            BONAssert(attributes: textView.attributedText?.attributes(at: 0, effectiveRange: nil), query: { $0.pointSize }, float: expectedFont.pointSize + 2)
+            BONAssert(attributes: textView.attributedText?.attributes(at: 0, effectiveRange: nil), query: \.pointSize, float: expectedFont.pointSize + 2)
             BONAssertColor(inAttributes: textView.attributedText?.attributes(at: 0, effectiveRange: nil), key: .foregroundColor, color: adaptiveStyle.color!)
         }
     }
@@ -114,12 +115,35 @@ class UIKitBonMotTests: XCTestCase {
         if #available(iOS 10.0, tvOS 10.0, *) {
             button.adaptText(forTraitCollection: UITraitCollection(preferredContentSizeCategory: UIContentSizeCategory.extraLarge))
             attributes = button.attributedTitle(for: .normal)?.attributes(at: 0, effectiveRange: nil)
+            BONAssert(attributes: attributes, query: \.pointSize, float: expectedFont.pointSize + 2)
+            BONAssertColor(inAttributes: attributes, key: .foregroundColor, color: adaptiveStyle.color!)
+        }
+    }
+
+    func testSegmentedControl() {
+        let segmentedControl = UISegmentedControl()
+        // Make sure the test is valid and the title text attributes are not defined for the normal state
+        XCTAssertNil(segmentedControl.titleTextAttributes(for: .normal))
+
+        segmentedControl.insertSegment(withTitle: ".", at: 0, animated: false)
+
+        // Assign the title text attributes for the normal state and ensure original values match
+        segmentedControl.setTitleTextAttributes(adaptiveStyle.attributes, for: .normal)
+
+        var attributes = segmentedControl.titleTextAttributes(for: .normal)
+        XCTAssertEqual(attributes?[.font] as? UIFont, expectedFont)
+        BONAssertColor(inAttributes: attributes, key: .foregroundColor, color: adaptiveStyle.color!)
+        BONAssert(attributes: attributes, query: { $0.pointSize }, float: expectedFont.pointSize)
+
+        // Update the trait collection and ensure the font grows.
+        if #available(iOS 10.0, tvOS 10.0, *) {
+            segmentedControl.adaptText(forTraitCollection: UITraitCollection(preferredContentSizeCategory: UIContentSizeCategory.extraLarge))
+            attributes = segmentedControl.titleTextAttributes(for: .normal)
             BONAssert(attributes: attributes, query: { $0.pointSize }, float: expectedFont.pointSize + 2)
             BONAssertColor(inAttributes: attributes, key: .foregroundColor, color: adaptiveStyle.color!)
         }
     }
 
-    func writeTestSegmentedControl() {}
     func writeTestNavigationBar() {}
     func writeTestToolbar() {}
     func writeTestViewController() {}

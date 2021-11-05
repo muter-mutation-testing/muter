@@ -96,7 +96,7 @@ class StringParsingTests: XCTestCase {
     func testDouble() {
         let d = Double.parser
 
-        XCTAssertEqual(Double.parser.run(String(Double.leastNormalMagnitude))!.0, Double.leastNormalMagnitude, accuracy: 1e-322)
+        XCTAssertEqual(d.run(String(Double.leastNormalMagnitude))!.0, Double.leastNormalMagnitude, accuracy: 1e-322)
 
         XCTAssertEqual(d.run("0")?.0, 0)
         XCTAssertEqual(d.run("1")?.0, 1)
@@ -114,6 +114,11 @@ class StringParsingTests: XCTestCase {
         XCTAssertEqual(d.run("12.5e+1")?.0, 125)
         XCTAssertEqual(d.run("-12.5e-1")?.0, -1.25)
         XCTAssertEqual(d.run("-12.5e+1")?.0, -125)
+        
+        XCTAssertEqual(d.run("1001")?.0, 1001)
+        XCTAssertEqual(d.run("1.001")?.0, 1.001)
+        XCTAssertEqual(d.run("1e+100")?.0, 1e+100)
+        XCTAssertEqual(d.run("1.001e+100")?.0, 1.001e+100)
 
         XCTAssertEqual(Double("1.7976931348623e308")!, Double.greatestFiniteMagnitude, accuracy: 1e+295)
         // Currect reconstruction method loses too much precision to test this way

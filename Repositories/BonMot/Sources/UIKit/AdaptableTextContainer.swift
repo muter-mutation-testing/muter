@@ -62,11 +62,7 @@ extension UITextView {
         if let attributedText = attributedText {
             self.attributedText = attributedText.adapted(to: traitCollection)
         }
-        #if swift(>=4.2)
-            typingAttributes = NSAttributedString.adapt(attributes: typingAttributes, to: traitCollection)
-        #else
-            typingAttributes = NSAttributedString.adapt(attributes: typingAttributes.withTypedKeys(), to: traitCollection).withStringKeys
-        #endif
+        typingAttributes = NSAttributedString.adapt(attributes: typingAttributes, to: traitCollection)
     }
 
 }
@@ -93,37 +89,12 @@ extension UITextField {
         if let attributedPlaceholder = attributedPlaceholder {
             self.attributedPlaceholder = attributedPlaceholder.adapted(to: traitCollection)
         }
-        #if swift(>=4.2)
-            defaultTextAttributes = NSAttributedString.adapt(attributes: defaultTextAttributes, to: traitCollection)
-        #else
-            defaultTextAttributes = NSAttributedString.adapt(attributes: defaultTextAttributes.withTypedKeys(), to: traitCollection).withStringKeys
-        #endif
+        defaultTextAttributes = NSAttributedString.adapt(attributes: defaultTextAttributes, to: traitCollection)
         // Fix an issue where shrinking or growing text would stay the same width, but add whitespace.
         setNeedsDisplay()
     }
 
 }
-
-// Extension is here to work around [SR-631](https://bugs.swift.org/browse/SR-631),
-// which requires new types declared in extensions to be built before they can
-// themselves be extended. This is fixed in Xcode 10, so we can revert this when
-// we stop supporting Xcode 9. (Another workaround is to reorder the files in
-// the Compile Sources build phase, but since this is a library, we do not own
-// that build phase in all projects that we are used in. We could have renamed
-// Compatibility.swift to _Compatibility.swift and trusted CocoaPods to sort
-// built files alphabetically, but we're opting to use the more reliable method
-// of just putting the extension in the file where it's used.
-
-#if os(iOS) || os(tvOS)
-    #if swift(>=4.2)
-    #else
-        extension UIControl {
-
-            typealias State = UIControlState
-
-        }
-    #endif
-#endif
 
 // MARK: - AdaptableTextContainer for UIButton
 extension UIButton {
@@ -146,20 +117,8 @@ extension UISegmentedControl {
 
     // `UISegmentedControl` has terrible generics ([NSObject: AnyObject]? or [AnyHashable: Any]?) on
     /// `titleTextAttributes`, so use a helper in Swift 3+
-    @nonobjc final func bon_titleTextAttributes(for state: UIControl.State) -> StyleAttributes {
-        let attributes = titleTextAttributes(for: state) ?? [:]
-        var result: StyleAttributes = [:]
-        for value in attributes {
-            #if swift(>=4.2)
-                result[value.key] = value
-            #else
-                guard let string = value.key as? StyleAttributes.Key else {
-                    fatalError("Can not convert key \(value.key) to String")
-                }
-            result[string] = value
-            #endif
-        }
-        return result
+    @nonobjc final func bon_titleTextAttributes(for state: UIControl.State) -> StyleAttributes? {
+        titleTextAttributes(for: state)
     }
 
     /// Adapt `attributedTitle`, for all control states, to the specified trait collection.
@@ -168,7 +127,7 @@ extension UISegmentedControl {
     @objc(bon_updateTextForTraitCollection:)
     public func adaptText(forTraitCollection traitCollection: UITraitCollection) {
         for state in UIControl.State.commonStates {
-            let attributes = bon_titleTextAttributes(for: state)
+            guard let attributes = bon_titleTextAttributes(for: state) else { continue }
             let newAttributes = NSAttributedString.adapt(attributes: attributes, to: traitCollection)
             setTitleTextAttributes(newAttributes, for: state)
         }
@@ -218,7 +177,7 @@ extension UIToolbar {
 // MARK: - AdaptableTextContainer for UIViewController
 extension UIViewController {
 
-    /// Adapt the attributed text of teh bar items in the navigation item or in
+    /// Adapt the attributed text of the bar items in the navigation item or in
     /// the toolbar to the specified trait collection.
     ///
     /// - parameter traitCollection: The new trait collection.
@@ -246,19 +205,14 @@ extension UIBarItem {
     /// Adapt `titleTextAttributes` to the specified trait collection.
     ///
     /// - note: This extension does not conform to `AdaptableTextContainer`
-    /// because `UIBarIterm` is not a view or view controller.
+    /// because `UIBarItem` is not a view or view controller.
     /// - parameter traitCollection: the new trait collection.
     @objc(bon_updateTextForTraitCollection:)
     public func adaptText(forTraitCollection traitCollection: UITraitCollection) {
         for state in UIControl.State.commonStates {
             let attributes = titleTextAttributes(for: state) ?? [:]
-            #if swift(>=4.2)
-                let newAttributes = NSAttributedString.adapt(attributes: attributes, to: traitCollection)
-                setTitleTextAttributes(newAttributes, for: state)
-            #else
-                let newAttributes = NSAttributedString.adapt(attributes: attributes.withTypedKeys(), to: traitCollection)
-                setTitleTextAttributes(newAttributes, for: state)
-            #endif
+            let newAttributes = NSAttributedString.adapt(attributes: attributes, to: traitCollection)
+            setTitleTextAttributes(newAttributes, for: state)
         }
     }
 

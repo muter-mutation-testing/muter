@@ -8,11 +8,11 @@
 
 /// The core Parser type in FFCParserCombinator.
 ///
-/// A parser is a function that accepts an S an input, optionally returning a
-/// structure A and S.
+/// A parser is a function that accepts an `S` an input, optionally returning a
+/// structure `A` and `S`.
 ///
-/// S is commonly a String or Substring. A is a type to be constructed from
-/// information found in the input S, and the returned S may be a remainder.
+/// `S` is commonly a `String` or `Substring`. `A` is a type to be constructed from
+/// information found in the input `S`, and the returned `S` may be a remainder.
 ///
 /// See static parsers in `BasicParser` for simple examples.
 public struct Parser<S, A> {

@@ -9,7 +9,9 @@
 import BonMot
 import UIKit
 
-//swiftlint:disable type_body_length file_length
+typealias StringStyle = BonMot.StringStyle
+
+// swiftlint:disable type_body_length file_length
 enum DemoStrings {
 
     // A Simple Example
@@ -232,7 +234,7 @@ enum DemoStrings {
             let xml = "<li>This list is defined with XML and displayed in a single <code>UILabel</code>.</li><li>Each row is represented with an <code>&lt;li&gt;</code> tag.</li><li>Attributed strings define the string to use for bullets.</li><li>The text style is also specified for the <code>&lt;li&gt;</code> and <code>&lt;code&gt;</code> tags.</li>"
 
             // Use this method of parsing XML if the content is not under your
-            // control, since you are less likley to catch edge cases while
+            // control, since you are less likely to catch edge cases while
             // developing. This way, you can handle parsing errors gracefully.
             guard let string = try? NSAttributedString.composed(ofXML: xml, rules: rules) else {
                 fatalError("Unable to load XML \(xml)")
@@ -285,10 +287,10 @@ enum DemoStrings {
     /// Demonstrate specifying Dynamic Type sizing behavior and custom styles
     /// via IBDesignable in Interface Builder. To see this example in action,
     /// play with the iOS Text Size slider and see how the UI elements react.
-    static let dynamcTypeUIKitExample = DemoStrings.customStoryboard(identifier: "CatalogViewController")
+    static let dynamicTypeUIKitExample = DemoStrings.customStoryboard(identifier: "CatalogViewController")
         .attributedString(from: "Dynamic UIKit elements with custom fonts")
 
-    /// Demonstrate how BonMot interacts with sytem preferred text styles.
+    /// Demonstrate how BonMot interacts with system preferred text styles.
     static let preferredFontsExample = DemoStrings.customStoryboard(identifier: "PreferredFonts")
         .attributedString(from: "Preferred Fonts")
 
@@ -434,7 +436,7 @@ enum DemoStrings {
     }()
 
 }
-//swiftlint:enable type_body_length
+// swiftlint:enable type_body_length
 
 extension DemoStrings {
 
@@ -450,4 +452,4 @@ extension DemoStrings {
 
 }
 
-//swiftlint:enable file_length
+// swiftlint:enable file_length

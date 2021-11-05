@@ -39,6 +39,7 @@ public struct StringStyle {
     public var lineHeightMultiple: CGFloat?
     public var paragraphSpacingBefore: CGFloat?
     public var hyphenationFactor: Float?
+    public var allowsDefaultTighteningForTruncation: Bool?
 
     #if os(iOS) || os(tvOS) || os(watchOS)
     public var speaksPunctuation: Bool?
@@ -122,6 +123,7 @@ extension StringStyle {
         paragraph.lineHeightMultiple = lineHeightMultiple ?? paragraph.lineHeightMultiple
         paragraph.paragraphSpacingBefore = paragraphSpacingBefore ?? paragraph.paragraphSpacingBefore
         paragraph.hyphenationFactor = hyphenationFactor ?? paragraph.hyphenationFactor
+        paragraph.allowsDefaultTighteningForTruncation = allowsDefaultTighteningForTruncation ?? paragraph.allowsDefaultTighteningForTruncation
 
         if paragraph != NSParagraphStyle.default {
             theAttributes.update(possibleValue: paragraph, forKey: .paragraphStyle)
@@ -273,6 +275,7 @@ extension StringStyle {
         lineHeightMultiple = theStringStyle.lineHeightMultiple ?? lineHeightMultiple
         paragraphSpacingBefore = theStringStyle.paragraphSpacingBefore ?? paragraphSpacingBefore
         hyphenationFactor = theStringStyle.hyphenationFactor ?? hyphenationFactor
+        allowsDefaultTighteningForTruncation = theStringStyle.allowsDefaultTighteningForTruncation ?? allowsDefaultTighteningForTruncation
 
         #if os(iOS) || os(tvOS) || os(OSX)
             fontFeatureProviders.append(contentsOf: theStringStyle.fontFeatureProviders)
@@ -372,7 +375,7 @@ public extension StringStyle {
 
 extension NSParagraphStyle {
 
-    //swiftlint:disable cyclomatic_complexity
+    // swiftlint:disable cyclomatic_complexity
     /// Update the passed `NSParagraphStyle`'s properties with the value in this
     /// the receiver (only if the supplied `NSParagraphStyle`'s value for a
     /// given property is the default value).
@@ -396,9 +399,10 @@ extension NSParagraphStyle {
         if paragraph.paragraphSpacingBefore == defaults.paragraphSpacingBefore { paragraph.paragraphSpacingBefore = paragraphSpacingBefore }
         if paragraph.hyphenationFactor == defaults.hyphenationFactor { paragraph.hyphenationFactor = hyphenationFactor }
         if paragraph.tabStops == defaults.tabStops { paragraph.tabStops = tabStops }
+        if paragraph.allowsDefaultTighteningForTruncation == defaults.allowsDefaultTighteningForTruncation { paragraph.allowsDefaultTighteningForTruncation = allowsDefaultTighteningForTruncation }
         return paragraph
     }
-    //swiftlint:enable cyclomatic_complexity
+    // swiftlint:enable cyclomatic_complexity
 
 }
 

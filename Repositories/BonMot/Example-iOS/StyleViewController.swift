@@ -11,7 +11,7 @@ import UIKit
 
 /// UITableViewCell's built in labels are re-created when the content size
 /// category changes, so we use a cell subclass with a custom label to avoid this.
-class MasterTableViewCell: UITableViewCell {
+class BaseTableViewCell: UITableViewCell {
 
     @IBOutlet var titleLabel: UILabel?
 
@@ -29,7 +29,7 @@ class StyleViewController: UITableViewController {
         ("Baseline Offset", [DemoStrings.heartsExample]),
         ("Indentation", DemoStrings.indentationExamples),
         ("Advanced XML and Kerning", [DemoStrings.advancedXMLAndKerningExample]),
-        ("Dynamic Type", [DemoStrings.dynamcTypeUIKitExample, DemoStrings.preferredFontsExample]),
+        ("Dynamic Type", [DemoStrings.dynamicTypeUIKitExample, DemoStrings.preferredFontsExample]),
         ("OpenType Features", [
             DemoStrings.figureStylesExample,
             DemoStrings.ordinalsExample,
@@ -42,16 +42,12 @@ class StyleViewController: UITableViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        #if swift(>=4.2)
-            tableView.rowHeight = UITableView.automaticDimension
-        #else
-            tableView.rowHeight = UITableViewAutomaticDimension
-        #endif
+        tableView.rowHeight = UITableView.automaticDimension
         tableView.estimatedRowHeight = 50
     }
 
     func cell(at indexPath: IndexPath) -> UITableViewCell {
-        guard let cell = tableView.dequeueReusableCell(withIdentifier: "StyleCell", for: indexPath) as? MasterTableViewCell else {
+        guard let cell = tableView.dequeueReusableCell(withIdentifier: "StyleCell", for: indexPath) as? BaseTableViewCell else {
             fatalError("Misconfigured VC")
         }
         let attributedText = styles[indexPath.section].1[indexPath.row]
