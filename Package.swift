@@ -1,4 +1,4 @@
-// swift-tools-version:5.4
+// swift-tools-version:5.6
 import PackageDescription
 import Foundation
 
@@ -11,16 +11,15 @@ let package = Package(
         .executable(name: "muter", targets: ["muter", "muterCore"]),
     ],
     dependencies: [
-        .package(url: "https://github.com/apple/swift-argument-parser.git", from: "1.0.1"),
-        .package(url: "https://github.com/onevcat/Rainbow", from: "4.0.1"),
-        .package(url: "https://github.com/Quick/Quick", from: "4.0.0"),
-        .package(url: "https://github.com/Quick/Nimble", from: "9.2.1"),
-        .package(url: "https://github.com/dduan/Pathos", from: "0.4.2"),
-        .package(name: "SwiftSyntax", url: "https://github.com/apple/swift-syntax.git", .revision("0.50500.0")),
-        .package(name: "Progress", url: "https://github.com/jkandzi/Progress.swift", from: "0.4.0"),
-        .package(name: "Plot", url: "https://github.com/johnsundell/plot.git", from: "0.10.0"),
-        .package(name: "Difference", url: "https://github.com/krzysztofzablocki/Difference.git", from: "1.0.0"),
-        .package(name: "SnapshotTesting", url: "https://github.com/pointfreeco/swift-snapshot-testing.git", from: "1.9.0")
+        .package(url: "https://github.com/apple/swift-argument-parser.git", from: "1.1.2"),
+        .package(url: "https://github.com/onevcat/Rainbow.git", from: "4.0.1"),
+        .package(url: "https://github.com/Quick/Quick.git", from: "5.0.1"),
+        .package(url: "https://github.com/Quick/Nimble.git", from: "10.0.0"),
+        .package(url: "https://github.com/dduan/Pathos.git", from: "0.4.2"),
+        .package(url: "https://github.com/apple/swift-syntax.git", from: "0.50600.1"),
+        .package(url: "https://github.com/jkandzi/Progress.swift.git", from: "0.4.0"),
+        .package(url: "https://github.com/johnsundell/plot.git", from: "0.11.0"),
+        .package(url: "https://github.com/krzysztofzablocki/Difference.git", from: "1.0.1"),
     ],
     targets: [
         .executableTarget(
@@ -30,18 +29,26 @@ let package = Package(
         .target(
             name: "muterCore",
             dependencies: [
-                "SwiftSyntax", 
-                "Rainbow", 
-                "Progress",
+                "Rainbow",
                 "Pathos",
-                "Plot",
+                .product(name: "Plot", package: "plot"),
+                .product(name: "Progress", package: "Progress.swift"),
+                .product(name: "SwiftSyntax", package: "swift-syntax"),
+                .product(name: "SwiftSyntaxParser", package: "swift-syntax"),
                 .product(name: "ArgumentParser", package: "swift-argument-parser")
             ],
             path: "Sources/muterCore"
         ),        
         .target(
             name: "TestingExtensions",
-            dependencies: ["SwiftSyntax", "muterCore", "Difference", "Quick", "Nimble"],
+            dependencies: [
+                "muterCore",
+                "Difference",
+                "Quick",
+                "Nimble",
+                .product(name: "SwiftSyntax", package: "swift-syntax"),
+                .product(name: "SwiftSyntaxParser", package: "swift-syntax"),
+            ],
             path: "Tests/Extensions"
         ),
         .testTarget(
@@ -80,10 +87,18 @@ func resolveTestTargetFromEnvironmentVarialbes() {
     }
 
     if shouldAddRegressionTests {
+        package.dependencies.append(
+            .package(url: "https://github.com/pointfreeco/swift-snapshot-testing.git", from: "1.9.0")
+        )
+
         package.targets.append(
             .testTarget(
                 name: "muterRegressionTests",
-                dependencies: ["muterCore", "TestingExtensions", "SnapshotTesting"],
+                dependencies: [
+                    "muterCore",
+                    "TestingExtensions",
+                    .product(name: "SnapshotTesting", package: "swift-snapshot-testing")
+                ],
                 path: "RegressionTests",
                 exclude: ["samples", "__Snapshots__", "runRegressionTests.sh"]
             )
