@@ -4,26 +4,27 @@ import Difference
 
 public func they(
     _ description: String,
-    flags: FilterFlags = [:],
     file: StaticString = #filePath,
     line: UInt = #line,
     closure: @escaping () -> Void
 ) {
-    it("they " + description, flags: flags, file: file, line: line, closure: closure)
+    it("they " + description, file: file, line: line, closure: closure)
 }
 
 public func fthey(
     _ description: String,
-    flags: FilterFlags = [:],
     file: StaticString = #filePath,
     line: UInt = #line,
     closure: @escaping () -> Void
 ) {
-    fit(description, flags: flags, file: file, line: line, closure: closure)
+    fit(description, file: file, line: line, closure: closure)
 }
 
-public func when(_ description: String, flags: FilterFlags = [:], closure: () -> Void) {
-    context("when " + description, flags: flags, closure: closure)
+public func when(
+    _ description: String,
+    closure: () -> Void
+) {
+    context("when " + description, closure: closure)
 }
 
 // via https://github.com/krzysztofzablocki/Difference#integrate-with-quick

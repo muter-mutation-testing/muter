@@ -70,7 +70,6 @@ class RunCommandHandlerSpec: QuickSpec {
                         return
                     }
                 }
-                
             }
             
             context("when there is a failure in one of its steps") {
