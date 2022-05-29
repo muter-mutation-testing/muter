@@ -1,7 +1,7 @@
 import SwiftSyntax
 import Foundation
 
-protocol AnyRunCommandState {
+protocol AnyRunCommandState: AnyObject {
     var muterConfiguration: MuterConfiguration { get }
     var projectDirectoryURL: URL { get }
     var tempDirectoryURL: URL { get }
