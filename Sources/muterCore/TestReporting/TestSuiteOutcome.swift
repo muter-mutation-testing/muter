@@ -24,12 +24,12 @@ public enum TestSuiteOutcome: String, Codable, CaseIterable {
 
 extension TestSuiteOutcome {
     public static func from(testLog: String, terminationStatus: Int32) -> TestSuiteOutcome {
-        if !terminationStatusIsSuccess(terminationStatus) {
-            return .runtimeError
-        } else if logContainsBuildError(testLog) {
+        if logContainsBuildError(testLog) {
             return .buildError
         } else if logContainsTestFailure(testLog) {
             return .failed
+        } else if !terminationStatusIsSuccess(terminationStatus) {
+            return .runtimeError
         }
 
         return .passed
