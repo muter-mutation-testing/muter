@@ -22,7 +22,7 @@ final class SwiftRunner: BuildSystemRunner {
     
     private func runWithCoverageInVerboseMode(using configuration: MuterConfiguration) -> String? {
         runProcess(
-            self.makeProcess,
+            makeProcess,
             url: configuration.testCommandExecutable,
             arguments: configuration.testCommandArguments + ["--enable-code-coverage", "--verbose"],
             toString
@@ -55,7 +55,7 @@ final class SwiftRunner: BuildSystemRunner {
             ["--ignore-filename-regex=.build|Tests"]
         
         return runProcess(
-            self.makeProcess,
+            makeProcess,
             url: executable,
             arguments: exportArguments,
             toString

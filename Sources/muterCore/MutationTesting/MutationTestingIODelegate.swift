@@ -48,7 +48,6 @@ struct MutationTestingDelegate: MutationTestingIODelegate {
 }
 
 private extension MutationTestingDelegate {
-
     func copySourceCode(fromFileAt sourcePath: String, to destinationPath: String) {
         let source = sourceCode(fromFileAt: sourcePath)
         try? source?.code.description.write(toFile: destinationPath, atomically: true, encoding: .utf8)

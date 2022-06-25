@@ -29,7 +29,7 @@ final class XcodeRunner: BuildSystemRunner {
         using configuration: MuterConfiguration
     ) -> String? {
         runProcess(
-            self.makeProcess,
+            makeProcess,
             url: configuration.testCommandExecutable,
             arguments: configuration.testCommandArguments + ["-enableCodeCoverage", "YES"],
             toString
@@ -40,7 +40,7 @@ final class XcodeRunner: BuildSystemRunner {
 
     private func runXcodeSelect() -> String? {
         runProcess(
-            self.makeProcess,
+            makeProcess,
             url: "/usr/bin/xcode-select",
             arguments: ["-p"],
             toString
@@ -50,7 +50,7 @@ final class XcodeRunner: BuildSystemRunner {
     
     private func runXccov(path: String, with result: String) -> CoverageReport? {
         runProcess(
-            self.makeProcess,
+            makeProcess,
             url: path + "/usr/bin/xccov",
             arguments: ["view", "--report", "--json", result]
         ) { try? JSONDecoder().decode(CoverageReport.self, from: $0) }
