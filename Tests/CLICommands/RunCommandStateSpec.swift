@@ -13,7 +13,7 @@ final class RunCommandStateSpec: QuickSpec {
                         state = RunCommandState(
                             from: .make(
                                 filesToMutate: [
-                                    "/path/to/file1.swift,/path/to/file3.swift,/path/to/file3.swift,"
+                                    "/path/to/file1.swift,/path/to/file3.swift,/path/to/file3.swift,",
                                 ]
                             )
                         )

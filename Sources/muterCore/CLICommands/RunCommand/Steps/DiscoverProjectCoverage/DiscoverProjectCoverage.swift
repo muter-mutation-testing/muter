@@ -16,7 +16,7 @@ final class DiscoverProjectCoverage: RunCommandStep {
     func run(with state: AnyRunCommandState) -> Result<[RunCommandState.Change], MuterError> {        
         guard let runner = runner(for: state.muterConfiguration.testCommandExecutable) else {
             return .success([
-                .projectCoverage(.null)
+                .projectCoverage(.null),
             ])
         }
 
