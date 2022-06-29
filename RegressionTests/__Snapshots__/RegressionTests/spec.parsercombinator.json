@@ -11,7 +11,7 @@
               "utf8Offset" : 3469
             }
           },
-          "testSuiteOutcome" : "runtimeError"
+          "testSuiteOutcome" : "failed"
         },
         {
           "mutationPoint" : {
@@ -22,7 +22,7 @@
               "utf8Offset" : 3492
             }
           },
-          "testSuiteOutcome" : "runtimeError"
+          "testSuiteOutcome" : "failed"
         },
         {
           "mutationPoint" : {
@@ -33,7 +33,7 @@
               "utf8Offset" : 3676
             }
           },
-          "testSuiteOutcome" : "runtimeError"
+          "testSuiteOutcome" : "failed"
         },
         {
           "mutationPoint" : {
@@ -44,7 +44,7 @@
               "utf8Offset" : 3476
             }
           },
-          "testSuiteOutcome" : "runtimeError"
+          "testSuiteOutcome" : "failed"
         }
       ],
       "fileName" : "FFCParserCombinator.swift",
@@ -61,7 +61,7 @@
               "utf8Offset" : 3765
             }
           },
-          "testSuiteOutcome" : "runtimeError"
+          "testSuiteOutcome" : "failed"
         },
         {
           "mutationPoint" : {
@@ -72,7 +72,7 @@
               "utf8Offset" : 6412
             }
           },
-          "testSuiteOutcome" : "runtimeError"
+          "testSuiteOutcome" : "failed"
         },
         {
           "mutationPoint" : {
@@ -83,7 +83,7 @@
               "utf8Offset" : 7185
             }
           },
-          "testSuiteOutcome" : "runtimeError"
+          "testSuiteOutcome" : "failed"
         },
         {
           "mutationPoint" : {
@@ -94,7 +94,7 @@
               "utf8Offset" : 9337
             }
           },
-          "testSuiteOutcome" : "runtimeError"
+          "testSuiteOutcome" : "failed"
         },
         {
           "mutationPoint" : {
@@ -105,7 +105,7 @@
               "utf8Offset" : 10445
             }
           },
-          "testSuiteOutcome" : "runtimeError"
+          "testSuiteOutcome" : "failed"
         },
         {
           "mutationPoint" : {
@@ -116,7 +116,7 @@
               "utf8Offset" : 10473
             }
           },
-          "testSuiteOutcome" : "runtimeError"
+          "testSuiteOutcome" : "failed"
         },
         {
           "mutationPoint" : {
@@ -127,7 +127,7 @@
               "utf8Offset" : 10503
             }
           },
-          "testSuiteOutcome" : "runtimeError"
+          "testSuiteOutcome" : "failed"
         }
       ],
       "fileName" : "StringParsing.swift",

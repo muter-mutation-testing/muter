@@ -28,7 +28,7 @@
               "utf8Offset" : 1100
             }
           },
-          "testSuiteOutcome" : "runtimeError"
+          "testSuiteOutcome" : "failed"
         },
         {
           "mutationPoint" : {
@@ -39,7 +39,7 @@
               "utf8Offset" : 1273
             }
           },
-          "testSuiteOutcome" : "runtimeError"
+          "testSuiteOutcome" : "failed"
         },
         {
           "mutationPoint" : {
@@ -50,7 +50,7 @@
               "utf8Offset" : 1576
             }
           },
-          "testSuiteOutcome" : "runtimeError"
+          "testSuiteOutcome" : "failed"
         }
       ],
       "fileName" : "FontFeatures.swift",
@@ -269,7 +269,7 @@
               "utf8Offset" : 4695
             }
           },
-          "testSuiteOutcome" : "runtimeError"
+          "testSuiteOutcome" : "failed"
         },
         {
           "mutationPoint" : {
@@ -280,7 +280,7 @@
               "utf8Offset" : 4731
             }
           },
-          "testSuiteOutcome" : "runtimeError"
+          "testSuiteOutcome" : "failed"
         },
         {
           "mutationPoint" : {
@@ -396,9 +396,27 @@
       ],
       "fileName" : "UIKit+Helpers.swift",
       "mutationScore" : 0
+    },
+    {
+      "appliedOperators" : [
+        {
+          "mutationPoint" : {
+            "mutationOperatorId" : "RemoveSideEffects",
+            "position" : {
+              "column" : 0,
+              "line" : 0,
+              "utf8Offset" : -999
+            }
+          },
+          "testSuiteOutcome" : "noCoverage"
+        }
+      ],
+      "fileName" : "Platform.swift",
+      "mutationScore" : 0
     }
   ],
   "globalMutationScore" : 17,
   "numberOfKilledMutants" : 5,
+  "projectCodeCoverage" : 80,
   "totalAppliedMutationOperators" : 29
 }
