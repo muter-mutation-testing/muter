@@ -7,6 +7,7 @@ public enum TestSuiteOutcome: String, Codable, CaseIterable {
     case failed
     case buildError
     case runtimeError
+    case noCoverage
 
     var asMutationTestOutcome: String {
         switch self {
@@ -18,6 +19,8 @@ public enum TestSuiteOutcome: String, Codable, CaseIterable {
             return "build error"
         case .runtimeError:
             return "mutant killed (runtime error)"
+        case .noCoverage:
+            return "skipped (no coverage)"
         }
     }
 }

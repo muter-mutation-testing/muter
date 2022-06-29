@@ -87,6 +87,18 @@ class AcceptanceTests: QuickSpec {
                     }
                 }
                 
+                context("without '--skip-coverage' as an argument") {
+                    var output: String!
+                    
+                    beforeEach {
+                        output = self.muterWithCoverageOutput
+                    }
+                    
+                    they("see their project code coverage") {
+                        expect(output.contains("Code Coverage of your project: ")).to(beTrue())
+                    }
+                }
+                
                 context("with '--output-xcode' as an argument") {
                     var output: String!
                     
@@ -272,6 +284,7 @@ extension AcceptanceTests {
     var muterXcodeOutput: String { contentsOfFileAsString("\(AcceptanceTests().rootTestDirectory)/samples/muters_xcode_output.txt") }
     
     var muterFilesToMutateOutput: String { contentsOfFileAsString("\(AcceptanceTests().rootTestDirectory)/samples/muters_files_to_mutate_output.txt") }
+    var muterWithCoverageOutput: String { contentsOfFileAsString("\(AcceptanceTests().rootTestDirectory)/samples/muters_with_coverage_output.txt") }
     
     var muterEmptyStateOutput: String { contentsOfFileAsString("\(AcceptanceTests().rootTestDirectory)/samples/muters_empty_state_output.txt") }
     var muterAbortedTestingOutput: String { contentsOfFileAsString("\(AcceptanceTests().rootTestDirectory)/samples/muters_aborted_testing_output.txt") }

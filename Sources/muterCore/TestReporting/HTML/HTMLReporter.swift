@@ -88,7 +88,7 @@ extension Node where Context: HTML.BodyContext {
                     .class("header-item"),
                     .div(
                         .class("box"),
-                        .style("background-color: #51a100"),
+                        .style("background-color: \(coloredMutationScore(for: coverage))"),
                         .p(.class("small"), "Code Coverage"),
                         .h1("\(coverage)%")
                     )
@@ -212,16 +212,23 @@ extension Node where Context: HTML.BodyContext {
     static func diff(of appliedOperator: MuterTestReport.AppliedMutationOperator) -> Self {
         .div(
             .class("snapshot-changes"),
-            .if(appliedOperator.mutationPoint.mutationOperatorId == .removeSideEffects,
+            .if(appliedOperator.testSuiteOutcome == .noCoverage,
                 .span(
-                    .class("snapshot-before"),
-                    "\(appliedOperator.mutationSnapshot.before)"
+                    .class("snapshot-no-coverage"),
+                    ""
                 ),
                 else:
-                    .group(
-                        .span(.class("snapshot-before"), "\(appliedOperator.mutationSnapshot.before)"),
-                        .span(.class("snapshot-arrow"), "→"),
-                        .span(.class("snapshot-after"), "\(appliedOperator.mutationSnapshot.after)")
+                    .if(appliedOperator.mutationPoint.mutationOperatorId == .removeSideEffects,
+                        .span(
+                            .class("snapshot-before"),
+                            "\(appliedOperator.mutationSnapshot.before)"
+                        ),
+                        else:
+                            .group(
+                                .span(.class("snapshot-before"), "\(appliedOperator.mutationSnapshot.before)"),
+                                .span(.class("snapshot-arrow"), "→"),
+                                .span(.class("snapshot-after"), "\(appliedOperator.mutationSnapshot.after)")
+                            )
                     )
             )
         )
@@ -255,6 +262,8 @@ private extension TestSuiteOutcome {
             icon = testFailed
         case .buildError:
             icon = testBuildError
+        case .noCoverage:
+            icon = skipped
         }
 
         return icon.replacingOccurrences(of: "$title$", with: asMutationTestOutcome)

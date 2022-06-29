@@ -51,7 +51,7 @@ class HTMLReportSpec: QuickSpec {
             context("when outcome doesn't have coverage data") {
                 it("should output HTML report without coverage") {
                     let outcome = MutationTestOutcome.make(
-                        mutations: mutations,
+                        mutations: mutations.exclude { $0.testSuiteOutcome == .noCoverage },
                         coverage: .null
                     )
                     let actual = sut.report(from: outcome)

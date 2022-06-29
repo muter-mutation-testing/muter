@@ -123,7 +123,13 @@ private extension MuterTestReport {
                 fileName: URL(fileURLWithPath: filePath).lastPathComponent,
                 path: filePath,
                 mutationScore: 0,
-                appliedOperators: []
+                appliedOperators: [
+                    .init(
+                        mutationPoint: .null,
+                        mutationSnapshot: .null,
+                        testSuiteOutcome: .noCoverage
+                    ),
+                ]
             )
         }
         
