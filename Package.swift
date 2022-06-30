@@ -35,10 +35,10 @@ let package = Package(
                 .product(name: "Progress", package: "Progress.swift"),
                 .product(name: "SwiftSyntax", package: "swift-syntax"),
                 .product(name: "SwiftSyntaxParser", package: "swift-syntax"),
-                .product(name: "ArgumentParser", package: "swift-argument-parser")
+                .product(name: "ArgumentParser", package: "swift-argument-parser"),
             ],
             path: "Sources/muterCore"
-        ),        
+        ),
         .target(
             name: "TestingExtensions",
             dependencies: [
@@ -56,7 +56,7 @@ let package = Package(
             dependencies: ["muterCore", "TestingExtensions"],
             path: "Tests",
             exclude: ["fixtures", "Extensions"]
-        )
+        ),
     ]
 )
 
@@ -97,7 +97,7 @@ func resolveTestTargetFromEnvironmentVarialbes() {
                 dependencies: [
                     "muterCore",
                     "TestingExtensions",
-                    .product(name: "SnapshotTesting", package: "swift-snapshot-testing")
+                    .product(name: "SnapshotTesting", package: "swift-snapshot-testing"),
                 ],
                 path: "RegressionTests",
                 exclude: ["samples", "__Snapshots__", "runRegressionTests.sh"]
@@ -133,14 +133,14 @@ extension PackageDescription.Target {
     func installSwiftSyntaxParser() {
         linkerSettings = [linkerSetting]
     }
-    
+
     private var linkerSetting: LinkerSetting {
         guard let xcodeFolder = Executable("/usr/bin/xcode-select")("-p") else {
             fatalError("Could not run `xcode-select -p`")
         }
 
         let toolchainFolder = "\(xcodeFolder.trimmed)/Toolchains/XcodeDefault.xctoolchain/usr/lib/swift/macosx"
-        
+
         return .unsafeFlags(["-rpath", toolchainFolder])
     }
 }
@@ -151,22 +151,22 @@ extension String {
 
 private struct Executable {
     private let url: URL
-    
+
     init(_ filePath: String) {
         url = URL(fileURLWithPath: filePath)
     }
-    
+
     func callAsFunction(_ arguments: String...) -> String? {
         let process = Process()
         process.executableURL = url
         process.arguments = arguments
-        
+
         let stdout = Pipe()
         process.standardOutput = stdout
-        
+
         process.launch()
         process.waitUntilExit()
-        
+
         return stdout.readStringToEndOfFile()
     }
 }
@@ -179,7 +179,7 @@ extension Pipe {
         } else {
             data = fileHandleForReading.readDataToEndOfFile()
         }
-        
+
         return String(data: data, encoding: .utf8)
     }
 }

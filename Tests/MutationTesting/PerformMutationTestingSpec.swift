@@ -83,7 +83,7 @@ class PerformMutationTestingSpec: QuickSpec {
                     expect(stateChanges) == [
                         .mutationTestOutcomeGenerated(
                             MutationTestOutcome(mutations: expectedTestOutcomes)
-                        )
+                        ),
                     ]
                 }
             }
@@ -291,7 +291,7 @@ class PerformMutationTestingSpec: QuickSpec {
                     expect(stateChanges) == [
                         .mutationTestOutcomeGenerated(
                             MutationTestOutcome(mutations: expectedTestOutcomes)
-                        )
+                        ),
                     ]
                 }
             }

@@ -16,13 +16,20 @@ final class DiscoverProjectCoverage: RunCommandStep {
     func run(with state: AnyRunCommandState) -> Result<[RunCommandState.Change], MuterError> {        
         guard let runner = runner(for: state.muterConfiguration.testCommandExecutable) else {
             return .success([
-                .projectCoverage(.null)
+                .projectCoverage(.null),
             ])
         }
 
         notificationCenter.post(name: .projectCoverageDiscoveryStarted, object: nil)
 
-        switch runner.run(process: self.makeProcess, with: state.muterConfiguration) {
+        let currentDirectoryPath = FileManager.default.currentDirectoryPath
+        FileManager.default.changeCurrentDirectoryPath(state.tempDirectoryURL.path)
+
+        defer {
+            FileManager.default.changeCurrentDirectoryPath(currentDirectoryPath)
+        }
+
+        switch runner.run(process: makeProcess, with: state.muterConfiguration) {
         case .success(let coverage):
             notificationCenter.post(
                 name: .projectCoverageDiscoveryFinished,

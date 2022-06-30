@@ -97,10 +97,10 @@ class DiscoverProjectCoverageSpec: QuickSpec {
                                             Coverage.make(
                                                 percent: 81,
                                                 filesWithoutCoverage: [
-                                                    "/path/to/file1.swift"
+                                                    "/path/to/file1.swift",
                                                 ]
                                             )
-                                        )
+                                        ),
                                     ]))
                                 }
                             }
@@ -171,7 +171,7 @@ class DiscoverProjectCoverageSpec: QuickSpec {
                                 "report",
                                 "-instr-profile=/path/to/default.profdata",
                                 "/path/to/muterPackageTests",
-                                "--ignore-filename-regex=.build|Tests"
+                                "--ignore-filename-regex=.build|Tests",
                             ]))
                         }
                         
@@ -202,7 +202,7 @@ class DiscoverProjectCoverageSpec: QuickSpec {
                                                 "MutationTesting/MutationTestingAbortReason.swift",
                                                 "Muter.swift",
                                             ])
-                                    )
+                                    ),
                                 ]))
                             }
                         }

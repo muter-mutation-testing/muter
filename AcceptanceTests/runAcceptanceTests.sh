@@ -6,10 +6,11 @@ muterdir="../../.build/debug"
 samplesdir="../../AcceptanceTests/samples"
 
 echo "Cleaning up from prior acceptance test runs..."
-rm -rf ./AcceptanceTests/muter_logs
+rm -rf ./AcceptanceTests/samples/muter_logs
 rm -rf ./AcceptanceTests/samples
 
 mkdir -p ./AcceptanceTests/samples
+mkdir -p ./AcceptanceTests/samples/muter_logs
 
 echo "Running Muter on an iOS codebase with a test suite..."
 cd ./Repositories/ExampleApp
@@ -19,9 +20,13 @@ echo " > Creating a configuration file..."
 cp ./muter.conf.json "$samplesdir"/created_iOS_config.json
 
 echo " > Running in CLI mode..."
-"$muterdir"/muter > "$samplesdir"/muters_output.txt
+"$muterdir"/muter --skip-coverage > "$samplesdir"/muters_output.txt
 echo " > Copying logs..."
 cp -R ./muter_logs "$samplesdir"/
+rm -rf ./muter_logs
+
+echo " > Running with coverage"
+"$muterdir"/muter > "$samplesdir"/muters_with_coverage_output.txt
 rm -rf ./muter_logs
 
 echo " > Running in Xcode mode..."

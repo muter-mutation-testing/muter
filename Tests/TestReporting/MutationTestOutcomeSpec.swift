@@ -21,7 +21,6 @@ class MutationTestOutcomeSpec: QuickSpec {
                             snapshot: .null,
                             originalProjectDirectoryUrl: URL(fileURLWithPath: "/Users/user0/Code/ProjectDirectory")
                         )
-
                         
                         expect(outcome.originalProjectPath) == "/Users/user0/Code/ProjectDirectory/Subdirectory/file.swift"
                     }

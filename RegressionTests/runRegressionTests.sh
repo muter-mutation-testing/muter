@@ -17,14 +17,14 @@ cd ../..
 
 echo "Running Regression Test on Parser Combinator..."
 cd ./Repositories/FFCParserCombinator
-"$muterdir"/muter --output-json > muterReport.json
+"$muterdir"/muter --skip-coverage --output-json > muterReport.json
 cp ./muterReport.json "$samplesdir"/parsercombinator_regression_test_output.json
 cd ../..
 
 echo "Running Regression Test on Project With Concurrency..."
 cd ./Repositories/ProjectWithConcurrency
 swift package generate-xcodeproj
-"$muterdir"/muter --output-json > muterReport.json
+"$muterdir"/muter --skip-coverage --output-json > muterReport.json
 cp ./muterReport.json "$samplesdir"/projectwithconcurrency_test_output.json
 cd ../..
 

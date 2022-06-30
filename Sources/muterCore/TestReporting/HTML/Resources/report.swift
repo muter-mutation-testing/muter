@@ -131,6 +131,10 @@ th {
     height: 30px;
 }
 
+.no-coverage {
+    height: 30px;
+}
+
 .footer {
     left: 0;
     bottom: 0;
