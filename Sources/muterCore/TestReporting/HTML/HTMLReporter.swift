@@ -10,10 +10,6 @@ final class HTMLReporter: Reporter {
         self.now = now
     }
 
-    func mutationTestingFinished(mutationTestOutcome outcome: MutationTestOutcome) {
-        print(report(from: outcome))
-    }
-
     func report(from outcome: MutationTestOutcome) -> String {
         htmlReport(
             MuterTestReport(from: outcome),

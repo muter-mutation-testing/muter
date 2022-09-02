@@ -162,18 +162,18 @@ extension Coverage {
 
 extension RunOptions {
     static func make(
-        shouldOutputJson: Bool = false,
-        shouldOutputXcode: Bool = false,
-        shouldOutputHtml: Bool = false,
         filesToMutate: [String] = [],
-        skipCoverage: Bool = false
-    ) -> RunOptions {
+        reportType: ReportType = .plain,
+        reportURL: URL? = nil,
+        skipCoverage: Bool = false,
+        logger: Logger = .init()
+    ) -> Self {
         .init(
-            shouldOutputJson: shouldOutputJson,
-            shouldOutputXcode: shouldOutputXcode,
-            shouldOutputHtml: shouldOutputHtml,
             filesToMutate: filesToMutate,
-            skipCoverage: skipCoverage
+            reportType: reportType,
+            reportURL: reportURL,
+            skipCoverage: skipCoverage,
+            logger: logger
         )
     }
 }

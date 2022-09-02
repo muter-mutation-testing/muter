@@ -11,7 +11,7 @@
 
 #### Muter can be run within Xcode
 Use this mode to rapidly diagnose areas where you can begin improving your test code
- 
+
 ![Muter running inside Xcode](Docs/Images/muter-in-xcode.png) 
 
 #### Muter can be run from the command line
@@ -98,6 +98,24 @@ make uninstall
 brew link muter
 ```
 
+## Development
+If you want to run Muter on Xcode, you need to edit `Package.swift` as such:
+
+```swift
+isDebuggingMain(true)
+```
+
+And change the `FileManager` current path (on `main.swift`):
+
+```swift
+import Foundation
+
+FileManager.default.changeCurrentDirectoryPath("/some/path")
+```
+Now you can run Muter from Xcode.
+
+*P.S: To pass arguments on launch, you can use Xcode's Scheme Editor and add them.*
+
 ## Setup
 ### Muter's Configuration
 To get started using Muter, run `muter init` in the root of your project directory. Muter will take its best guess at a configuration that will work for your project. Muter supports generating configurations for the following build systems:
@@ -163,7 +181,7 @@ Setting up Muter to run within Xcode is simple. After creating your configuation
 3) **Add the Muter Xcode command** to the build step:
 
 ```sh
-muter --output-xcode
+muter -r xcode
 ```
 
 ## Running Muter
@@ -185,9 +203,18 @@ Muter defaults to run when you don't specify any subcommands
 
 ```
 --files-to-mutate    Only mutate a given list of source code files (Supports glob expressions like Sources/**/*.swift)
---output-json        Output test results to a json file
---output-xcode       Output test results in a format consumable by an Xcode run script step
 ```
+
+**Available Reports**
+
+```
+plain: (default) prints the report to stdout.
+json: prints the report in JSON format.
+html: prints an HTML report.
+xcode: prints mutation test results, as they are produced, in Xcode format.
+```
+Note: If you pass `--output` muter will save the report, instead of using stdout.
+
 
 ### Within Xcode
 Build (Cmd + B) your aggregate build target and let Muter run. The mutants which survive testing will be called out in the issue navigator. Once the target finishes building, testing has completed.
@@ -223,7 +250,7 @@ Check out this example to familiarize yourself with what a report looks like.
 
 Muter supports any platform that compiles and tests using `xcodebuild`, which includes iOS, macOS, tvOS, and watchOS. 
 
-Muter can run only on macOS 10.13 or higher.
+Muter can run only on macOS 10.15 or higher.
 
 **Does Muter support UI test suites?**
 
