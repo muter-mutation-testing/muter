@@ -9,49 +9,33 @@ final class RunOptionsSepc: QuickSpec {
 
             context("when they want a json") {
                 it("then return it") {
-                    runOptions = .make(
-                        shouldOutputJson: true,
-                        shouldOutputXcode: false,
-                        shouldOutputHtml: false
-                    )
+                    runOptions = .make(reportType: .json)
 
-                    expect(runOptions.reporter).to(beAKindOf(JsonReporter.self))
+                    expect(runOptions.reportOptions.reporter).to(beAKindOf(JsonReporter.self))
                 }
             }
             
             context("when they want xcode") {
                 it("then return it") {
-                    runOptions = .make(
-                        shouldOutputJson: false,
-                        shouldOutputXcode: true,
-                        shouldOutputHtml: false
-                    )
+                    runOptions = .make(reportType: .xcode)
 
-                    expect(runOptions.reporter).to(beAKindOf(XcodeReporter.self))
+                    expect(runOptions.reportOptions.reporter).to(beAKindOf(XcodeReporter.self))
                 }
             }
             
             context("when they want plain text") {
                 it("then return it") {
-                    runOptions = .make(
-                        shouldOutputJson: false,
-                        shouldOutputXcode: false,
-                        shouldOutputHtml: false
-                    )
+                    runOptions = .make(reportType: .plain)
 
-                    expect(runOptions.reporter).to(beAKindOf(PlainTextReporter.self))
+                    expect(runOptions.reportOptions.reporter).to(beAKindOf(PlainTextReporter.self))
                 }
             }
 
             context("when they want an html") {
                 it("then return it") {
-                    runOptions = .make(
-                        shouldOutputJson: false,
-                        shouldOutputXcode: false,
-                        shouldOutputHtml: true
-                    )
+                    runOptions = .make(reportType: .html)
 
-                    expect(runOptions.reporter).to(beAKindOf(HTMLReporter.self))
+                    expect(runOptions.reportOptions.reporter).to(beAKindOf(HTMLReporter.self))
                 }
             }
         }
