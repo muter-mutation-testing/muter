@@ -13,7 +13,7 @@ struct CopyProjectToTempDirectory: RunCommandStep {
             let projectDirectory = state.projectDirectoryURL
             notificationCenter.post(name: .projectCopyStarted, object: nil)
             
-            let destinationPath = destinationDirectoryPath(in: projectDirectory, withPrefix: "_mutated")
+            let destinationPath = destinationDirectoryPath(in: projectDirectory, withSuffix: "_mutated")
             try fileManager.copyItem(atPath: projectDirectory.path, toPath: destinationPath)
             
             notificationCenter.post(name: .projectCopyFinished, object: destinationPath)
@@ -25,7 +25,7 @@ struct CopyProjectToTempDirectory: RunCommandStep {
         }
     }
     
-    private func destinationDirectoryPath(in directory: URL, withPrefix name: String) -> String {
+    private func destinationDirectoryPath(in directory: URL, withSuffix name: String) -> String {
         let lastComponent = directory.lastPathComponent
         let modifiedDirectory = directory.deletingLastPathComponent()
         let destination = modifiedDirectory.appendingPathComponent(lastComponent + name)
