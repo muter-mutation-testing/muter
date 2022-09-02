@@ -126,7 +126,7 @@ class RunCommandHandlerSpec: QuickSpec {
                     it("should skip coverage step") {
                         runCommandHandler = RunCommandHandler(options: .make(skipCoverage: true))
                                                 
-                        expect(runCommandHandler.steps).to(haveCount(6))
+                        expect(runCommandHandler.steps).to(haveCount(7))
                         
                         expect(runCommandHandler.steps[0]).to(beAKindOf(LoadConfiguration.self))
                         expect(runCommandHandler.steps[1]).to(beAKindOf(CopyProjectToTempDirectory.self))
@@ -134,6 +134,7 @@ class RunCommandHandlerSpec: QuickSpec {
                         expect(runCommandHandler.steps[3]).to(beAKindOf(DiscoverMutationPoints.self))
                         expect(runCommandHandler.steps[4]).to(beAKindOf(GenerateSwapFilePaths.self))
                         expect(runCommandHandler.steps[5]).to(beAKindOf(PerformMutationTesting.self))
+                        expect(runCommandHandler.steps[6]).to(beAKindOf(RemoveTempDirectory.self))
                     }
                 }
                 
@@ -141,7 +142,7 @@ class RunCommandHandlerSpec: QuickSpec {
                     it("should contain all default steps") {
                         runCommandHandler = RunCommandHandler(options: .make(skipCoverage: false))
                         
-                        expect(runCommandHandler.steps).to(haveCount(7))
+                        expect(runCommandHandler.steps).to(haveCount(8))
                         
                         expect(runCommandHandler.steps[0]).to(beAKindOf(LoadConfiguration.self))
                         expect(runCommandHandler.steps[1]).to(beAKindOf(CopyProjectToTempDirectory.self))
@@ -150,6 +151,7 @@ class RunCommandHandlerSpec: QuickSpec {
                         expect(runCommandHandler.steps[4]).to(beAKindOf(DiscoverMutationPoints.self))
                         expect(runCommandHandler.steps[5]).to(beAKindOf(GenerateSwapFilePaths.self))
                         expect(runCommandHandler.steps[6]).to(beAKindOf(PerformMutationTesting.self))
+                        expect(runCommandHandler.steps[7]).to(beAKindOf(RemoveTempDirectory.self))
                     }
                 }
             }

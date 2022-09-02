@@ -11,7 +11,7 @@ class MutationTestOutcomeSpec: QuickSpec {
                     it("maps the paths") {
                         let mutationPoint = MutationPoint(
                             mutationOperatorId: .logicalOperator,
-                            filePath: "/var/tmp/nonsense/ProjectDirectory/Subdirectory/file.swift",
+                            filePath: "/Users/user0/Code/ProjectDirectory_mutated/Subdirectory/file.swift",
                             position: .firstPosition
                         )
                         
@@ -19,7 +19,8 @@ class MutationTestOutcomeSpec: QuickSpec {
                             testSuiteOutcome: .failed,
                             point: mutationPoint,
                             snapshot: .null,
-                            originalProjectDirectoryUrl: URL(fileURLWithPath: "/Users/user0/Code/ProjectDirectory")
+                            originalProjectDirectoryUrl: URL(fileURLWithPath: "/Users/user0/Code/ProjectDirectory"),
+                            tempDirectoryURL: URL(fileURLWithPath: "/Users/user0/Code/ProjectDirectory_mutated")
                         )
                         
                         expect(outcome.originalProjectPath) == "/Users/user0/Code/ProjectDirectory/Subdirectory/file.swift"
@@ -30,7 +31,7 @@ class MutationTestOutcomeSpec: QuickSpec {
                     it("maps the paths") {
                         let mutationPoint = MutationPoint(
                             mutationOperatorId: .logicalOperator,
-                            filePath: "/tmp/ProjectDirectory/file.swift",
+                            filePath: "/Code/ProjectDirectory_mutated/file.swift",
                             position: .firstPosition
                         )
                         
@@ -38,7 +39,8 @@ class MutationTestOutcomeSpec: QuickSpec {
                             testSuiteOutcome: .failed,
                             point: mutationPoint,
                             snapshot: .null,
-                            originalProjectDirectoryUrl: URL(fileURLWithPath: "/Users/user0/Code/ProjectDirectory")
+                            originalProjectDirectoryUrl: URL(fileURLWithPath: "/Users/user0/Code/ProjectDirectory"),
+                            tempDirectoryURL: URL(fileURLWithPath: "/Users/user0/Code/ProjectDirectory_mutated")
                         )
 
                         expect(outcome.originalProjectPath) == "/Users/user0/Code/ProjectDirectory/file.swift"
@@ -50,7 +52,7 @@ class MutationTestOutcomeSpec: QuickSpec {
                     it("maps the paths") {
                         let mutationPoint = MutationPoint(
                             mutationOperatorId: .logicalOperator,
-                            filePath: "/tmp/Project Directory/file.swift",
+                            filePath: "/Code/Project Directory_mutated/file.swift",
                             position: .firstPosition
                         )
                         
@@ -58,7 +60,8 @@ class MutationTestOutcomeSpec: QuickSpec {
                             testSuiteOutcome: .failed,
                             point: mutationPoint,
                             snapshot: .null,
-                            originalProjectDirectoryUrl: URL(fileURLWithPath: "/Users/user0/Project Directory")
+                            originalProjectDirectoryUrl: URL(fileURLWithPath: "/Users/user0/Project Directory"),
+                            tempDirectoryURL: URL(fileURLWithPath: "/Users/user0/Code/Project Directory_mutated")
                         )
 
                         expect(outcome.originalProjectPath) == "/Users/user0/Project Directory/file.swift"

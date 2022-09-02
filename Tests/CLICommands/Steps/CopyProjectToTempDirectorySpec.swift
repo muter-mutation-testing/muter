@@ -35,24 +35,17 @@ class CopyProjectToTempDirectorySpec: QuickSpec {
                         return
                     }
                     
-                    expect(stateChanges) == [.tempDirectoryUrlCreated(URL(fileURLWithPath: "/tmp/projectName"))]
-                }
-                
-                it("creates a temp directory to store a copy of the code under test") {
-                    expect(fileManagerSpy.searchPathDirectories).to(equal([.itemReplacementDirectory]))
-                    expect(fileManagerSpy.domains).to(equal([.userDomainMask]))
-                    expect(fileManagerSpy.paths).to(equal(["/some/projectName"]))
+                    expect(stateChanges) == [.tempDirectoryUrlCreated(URL(fileURLWithPath: "/some/projectName_mutated"))]
                 }
                 
                 it("copies the project to the temp directory") {
                     expect(fileManagerSpy.copyPaths.first?.source).to(equal("/some/projectName"))
-                    expect(fileManagerSpy.copyPaths.first?.dest).to(equal("/tmp/projectName"))
+                    expect(fileManagerSpy.copyPaths.first?.dest).to(equal("/some/projectName_mutated"))
                     expect(fileManagerSpy.copyPaths).to(haveCount(1))
                 }
                 
                 it("copies the project after creating the temp directory") {
-                    expect(fileManagerSpy.methodCalls).to(equal(["url(for:in:appropriateFor:create:)",
-                                                                 "copyItem(atPath:toPath:)",]))
+                    expect(fileManagerSpy.methodCalls).to(equal(["copyItem(atPath:toPath:)"]))
                 }
             }
             

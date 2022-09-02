@@ -38,28 +38,11 @@ class FileManagerSpy: Spy, FileSystemManager {
         return true
     }
 
-    func url(for directory: FileManager.SearchPathDirectory,
-             in domain: FileManager.SearchPathDomainMask,
-             appropriateFor url: URL?,
-             create shouldCreate: Bool) throws -> URL {
-        methodCalls.append(#function)
-        searchPathDirectories.append(directory)
-        domains.append(domain)
-        if let path = url?.path {
-            paths.append(path)
-        }
-        
-        if let error = errorToThrow {
-            throw error
-        }
-        
-        return tempDirectory
-    }
-
     func copyItem(atPath srcPath: String,
                   toPath dstPath: String) throws {
         methodCalls.append(#function)
         copyPaths.append((source: srcPath, dest: dstPath))
+        if let error = errorToThrow { throw error }
     }
 
     func contents(atPath path: String) -> Data? {

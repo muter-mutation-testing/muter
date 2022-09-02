@@ -57,13 +57,15 @@ extension MutationTestOutcome.Mutation {
         testSuiteOutcome: TestSuiteOutcome = .passed,
         point: MutationPoint = .make(),
         snapshot: MutationOperatorSnapshot = .null,
-        originalProjectDirectoryUrl: URL = URL(fileURLWithPath: "")
+        originalProjectDirectoryUrl: URL = URL(fileURLWithPath: ""),
+        tempDirectoryURL: URL = URL(fileURLWithPath: "")
     ) -> Self {
         Self(
             testSuiteOutcome: testSuiteOutcome,
             mutationPoint: point,
             mutationSnapshot: snapshot,
-            originalProjectDirectoryUrl: originalProjectDirectoryUrl
+            originalProjectDirectoryUrl: originalProjectDirectoryUrl,
+            tempDirectoryURL: tempDirectoryURL
         )
     }
 }
