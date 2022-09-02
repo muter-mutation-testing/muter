@@ -19,7 +19,6 @@ class CopyProjectToTempDirectorySpec: QuickSpec {
             context("when it's able to copy a project into a temp directory") {
                 beforeEach {
                     fileManagerSpy = FileManagerSpy()
-                    fileManagerSpy.tempDirectory = URL(string: "/tmp/")!
                     
                     state = RunCommandState()
                     state.projectDirectoryURL = URL(string: "/some/projectName")!
@@ -52,7 +51,6 @@ class CopyProjectToTempDirectorySpec: QuickSpec {
             context("when it's unable to copy a project into a temp directory") {
                 beforeEach {
                     fileManagerSpy = FileManagerSpy()
-                    fileManagerSpy.tempDirectory = URL(string: "/tmp/")!
                     fileManagerSpy.errorToThrow = TestingError.stub
                     
                     state = RunCommandState()

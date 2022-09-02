@@ -10,13 +10,11 @@ class FileManagerSpy: Spy, FileSystemManager {
     private(set) var domains: [FileManager.SearchPathDomainMask] = []
     private(set) var copyPaths: [(source: String, dest: String)] = []
 
-    var tempDirectory: URL!
     var fileContentsToReturn: Data!
     var currentDirectoryPathToReturn: String!
     var errorToThrow: Error?
     var subpathsToReturn: [String]?
     var fileExistsToReturn: Bool!
-    var removeItemError: Error?
 
     var currentDirectoryPath: String {
         return currentDirectoryPathToReturn
@@ -62,6 +60,7 @@ class FileManagerSpy: Spy, FileSystemManager {
 
     func removeItem(atPath path: String) throws {
         methodCalls.append(#function)
-        if let error = removeItemError { throw error }
+        paths.append(path)
+        if let error = errorToThrow { throw error }
     }
 }
