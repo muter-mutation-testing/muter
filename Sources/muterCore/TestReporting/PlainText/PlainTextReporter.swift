@@ -134,6 +134,14 @@ final class PlainTextReporter: Reporter {
         )
     }
     
+    func removeTempDirectoryStarted(path: String) {
+        print("Removing temporary directory at path: \(path)....\n")
+    }
+    
+    func removeTempDirectoryFinished() {
+        print("Finished to remove temporary directory.\n")
+    }
+    
     func report(from report: MuterTestReport) -> String {
         let finishedRunningMessage = "Muter finished running!\n\nHere's your test report:\n\n"
         let appliedMutationsMessage = """

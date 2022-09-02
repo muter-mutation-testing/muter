@@ -16,6 +16,7 @@ class FileManagerSpy: Spy, FileSystemManager {
     var errorToThrow: Error?
     var subpathsToReturn: [String]?
     var fileExistsToReturn: Bool!
+    var removeItemError: Error?
 
     var currentDirectoryPath: String {
         return currentDirectoryPathToReturn
@@ -76,4 +77,8 @@ class FileManagerSpy: Spy, FileSystemManager {
         return fileExistsToReturn
     }
 
+    func removeItem(atPath path: String) throws {
+        methodCalls.append(#function)
+        if let error = removeItemError { throw error }
+    }
 }

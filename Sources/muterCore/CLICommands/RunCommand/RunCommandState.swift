@@ -52,6 +52,7 @@ extension RunCommandState {
         case sourceCodeParsed([FilePath: SourceFileSyntax])
         case swapFilePathGenerated([FilePath: FilePath])
         case mutationTestOutcomeGenerated(MutationTestOutcome)
+        case tempDirectoryRemoved(URL)
     }
 }
 
@@ -77,6 +78,8 @@ extension RunCommandState {
                 self.swapFilePathsByOriginalPath = swapFilePathsByOriginalPath
             case .mutationTestOutcomeGenerated(let mutationTestOutcome):
                 self.mutationTestOutcome = mutationTestOutcome
+            case .tempDirectoryRemoved(_):
+                break
             }
         }
     }

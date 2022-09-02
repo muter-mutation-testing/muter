@@ -36,6 +36,7 @@ private extension RunCommandHandler {
         DiscoverMutationPoints(),
         GenerateSwapFilePaths(),
         PerformMutationTesting(),
+        RemoveTempDirectory()
     ]
 }
 

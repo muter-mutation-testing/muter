@@ -45,7 +45,6 @@ extension MutationTestOutcome {
             let pathSuffix = splitTempFilePath.dropFirst(numberOfDirectoriesToDrop).joined(separator: "/")
             
             self.originalProjectPath = originalProjectDirectoryUrl
-                .deletingLastPathComponent()
                 .appendingPathComponent(pathSuffix, isDirectory: true)
                 .path
         }

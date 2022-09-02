@@ -8,6 +8,7 @@ public enum MuterError: Error, Equatable {
     case noSourceFilesOnExclusiveList
     case noMutationPointsDiscovered
     case mutationTestingAborted(reason: MutationTestingAbortReason)
+    case removeTempDirectoryFailed(reason: String)
 }
 
 extension MuterError: CustomStringConvertible {
@@ -68,6 +69,13 @@ extension MuterError: CustomStringConvertible {
         case .mutationTestingAborted(let reason):
             return """
             \(reason)
+            """
+        case .removeTempDirectoryFailed(reason: let reason):
+            return """
+            Muter wasn't able to remove temporary directory.
+            
+            ******************
+            FileManager Error: \(reason)
             """
         }
     }

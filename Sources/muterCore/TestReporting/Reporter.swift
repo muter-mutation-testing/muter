@@ -16,6 +16,8 @@ protocol Reporter {
     func newMutationTestOutcomeAvailable(outcomeWithFlush: MutationOutcomeWithFlush)
     func newMutationTestLogAvailable(mutationTestLog: MutationTestLog)
     func mutationTestingFinished(mutationTestOutcome outcome: MutationTestOutcome)
+    func removeTempDirectoryStarted(path: String)
+    func removeTempDirectoryFinished()
 }
 
 extension Reporter {
@@ -32,4 +34,6 @@ extension Reporter {
     func newMutationTestOutcomeAvailable(outcomeWithFlush: MutationOutcomeWithFlush) { }
     func newMutationTestLogAvailable(mutationTestLog: MutationTestLog) { }
     func mutationTestingFinished(mutationTestOutcome outcome: MutationTestOutcome) { }
+    func removeTempDirectoryStarted(path: String) { }
+    func removeTempDirectoryFinished() { }
 }

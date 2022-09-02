@@ -24,6 +24,8 @@ public protocol FileSystemManager {
     func subpaths(atPath path: String) -> [String]?
     
     func fileExists(atPath path: String) -> Bool
+    
+    func removeItem(atPath path: String) throws
 }
 
 extension FileManager: FileSystemManager {}

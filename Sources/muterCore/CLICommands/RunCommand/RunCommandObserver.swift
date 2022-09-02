@@ -25,6 +25,9 @@ extension Notification.Name {
     static let newTestLogAvailable = Notification.Name("newTestLogAvailable")
 
     static let configurationFileCreated = Notification.Name("configurationFileCreated")
+    
+    static let removeTempDirectoryStarted = Notification.Name("removeTempDirectoryStarted")
+    static let removeTempDirectoryFinished = Notification.Name("removeTempDirectoryFinished")
 }
 
 func flushStdOut() {
@@ -60,6 +63,9 @@ final class RunCommandObserver {
             (name: .newTestLogAvailable, handler: handleNewTestLogAvailable),
             
             (name: .mutationTestingFinished, handler: handleMutationTestingFinished),
+            
+            (name: .removeTempDirectoryStarted, handler: handleRemoveTempDirectoryStarted),
+            (name: .removeTempDirectoryFinished, handler: handleRemoveTempDirectoryFinished),
         ]
     }
     
@@ -155,5 +161,13 @@ extension RunCommandObserver {
         reporter.mutationTestingFinished(
             mutationTestOutcome: notification.object as! MutationTestOutcome
         )
+    }
+    
+    func handleRemoveTempDirectoryStarted(notification: Notification) {
+        reporter.removeTempDirectoryStarted(path: notification.object as! String)
+    }
+    
+    func handleRemoveTempDirectoryFinished(notification: Notification) {
+        reporter.removeTempDirectoryFinished()
     }
 }
