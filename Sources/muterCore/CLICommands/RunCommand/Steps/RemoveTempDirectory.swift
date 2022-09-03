@@ -16,7 +16,7 @@ struct RemoveTempDirectory: RunCommandStep {
             
             notificationCenter.post(name: .removeTempDirectoryFinished, object: nil)
             return .success([
-                .tempDirectoryRemoved(state.tempDirectoryURL),
+                .tempDirectoryRemoved,
             ])
         } catch {
             return .failure(.removeTempDirectoryFailed(reason: error.localizedDescription))

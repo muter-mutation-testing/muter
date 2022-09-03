@@ -28,13 +28,13 @@ class RemoveTempDirectorySpec: QuickSpec {
                     result = removeTempDirectory.run(with: state)
                 }
                 
-                it("returns the location of removed directory") {
+                it("returns the tempDirectoryRemoved change") {
                     guard case .success(let stateChanges) = result! else {
                         fail("expected success but got \(String(describing: result!))")
                         return
                     }
                     
-                    expect(stateChanges) == [.tempDirectoryRemoved(URL(fileURLWithPath: "/some/projectName_mutated"))]
+                    expect(stateChanges) == [.tempDirectoryRemoved]
                 }
                 
                 it("remove the project from the temp directory") {
