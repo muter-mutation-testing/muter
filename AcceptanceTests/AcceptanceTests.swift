@@ -47,8 +47,7 @@ class AcceptanceTests: QuickSpec {
                         }
                         
                         they("see that Muter is working in a temporary directory") {
-                            expect(output.contains("/var/folders")).to(beTrue())
-                            expect(output.contains("/T/TemporaryItems/")).to(beTrue())
+                            expect(output.contains("_mutated")).to(beTrue())
                         }
                         
                         they("see how many mutants were inserted") {
@@ -112,7 +111,7 @@ class AcceptanceTests: QuickSpec {
                     
                     they("see only one temporary path") {
                         let numberOfTemporaryPaths = output.split(separator: "\n").count {
-                            $0.contains("/T/TemporaryItems/")
+                            $0.contains("_mutated")
                         }
                         expect(numberOfTemporaryPaths) == 1
                     }

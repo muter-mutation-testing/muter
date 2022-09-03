@@ -81,7 +81,7 @@ func resolveTestTargetFromEnvironmentVarialbes() {
                 name: "muterAcceptanceTests",
                 dependencies: ["muterCore", "TestingExtensions"],
                 path: "AcceptanceTests",
-                exclude: ["samples", "runAcceptanceTests.sh"]
+                exclude: ["samples", "runAcceptanceTests.sh", "Repositories"]
             )
         )
     }

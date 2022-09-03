@@ -16,6 +16,7 @@ muter.xcodeproj
 muterReport.json
 muter_logs
 AcceptanceTests/samples/*.*
+AcceptanceTests/Repositories/
 RegressionTests/samples/*.*
 Tests/muters_aborted_testing_output.txt
 ExampleApp/muterReport.json
