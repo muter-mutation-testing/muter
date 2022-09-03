@@ -2,14 +2,17 @@
 
 echo "🦕🦕🦕🦕🦕🦕🦕🦕 Regression Testing has started 🦕🦕🦕🦕🦕🦕🦕🦕"
 
-muterdir="../../.build/debug"
-samplesdir="../../RegressionTests/samples"
+muterdir="../../../.build/debug"
+samplesdir="../../samples"
 
 rm -rf ./RegressionTests/samples
 mkdir -p ./RegressionTests/samples
 
+rm -rf ./RegressionTests/Repositories
+cp -R ./Repositories ./RegressionTests
+
 echo "Running Regression Test on BonMot..."
-cd ./Repositories/BonMot
+cd ./RegressionTests/Repositories/BonMot
 "$muterdir"/muter --output-json > muterReport.json
 
 cp ./muterReport.json "$samplesdir"/bonmot_regression_test_output.json
@@ -26,7 +29,7 @@ cd ./Repositories/ProjectWithConcurrency
 swift package generate-xcodeproj
 "$muterdir"/muter --skip-coverage --output-json > muterReport.json
 cp ./muterReport.json "$samplesdir"/projectwithconcurrency_test_output.json
-cd ../..
+cd ../../..
 
 export regression_tests=true
 swift test
