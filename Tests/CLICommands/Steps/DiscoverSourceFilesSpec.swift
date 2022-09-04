@@ -264,12 +264,13 @@ class DiscoverSourceFilesSpec: QuickSpec {
                     let path = "\(self.fixturesDirectory)/FilesToMutate"
                     let fileManager = FileManagerSpy()
                     fileManager.subpathsToReturn = []
-                    fileManager.fileExistsToReturn = true
                     
                     beforeEach {
                         state.filesToMutate = ["file1.swift", "file2.swift", "/Directory2/Directory3/file6.swift"]
                         state.tempDirectoryURL = URL(fileURLWithPath: path, isDirectory: true)
-                        
+
+                        fileManager.fileExistsToReturn = state.filesToMutate.compactMap { _ in true }
+
                         discoverSourceFiles = DiscoverSourceFiles(fileManager: fileManager)
                         
                         result = discoverSourceFiles.run(with: state)
