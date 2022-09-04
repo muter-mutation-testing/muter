@@ -20,6 +20,7 @@ let package = Package(
         .package(url: "https://github.com/jkandzi/Progress.swift.git", from: "0.4.0"),
         .package(url: "https://github.com/johnsundell/plot.git", from: "0.11.0"),
         .package(url: "https://github.com/krzysztofzablocki/Difference.git", from: "1.0.1"),
+        .package(url: "https://github.com/jpsim/Yams.git", from: "5.0.1")
     ],
     targets: [
         .executableTarget(
@@ -36,6 +37,7 @@ let package = Package(
                 .product(name: "SwiftSyntax", package: "swift-syntax"),
                 .product(name: "SwiftSyntaxParser", package: "swift-syntax"),
                 .product(name: "ArgumentParser", package: "swift-argument-parser"),
+                .product(name: "Yams", package: "yams")
             ],
             path: "Sources/muterCore"
         ),
