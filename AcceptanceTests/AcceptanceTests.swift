@@ -176,7 +176,7 @@ class AcceptanceTests: QuickSpec {
             context("with the 'init' command") {
                 context("ran inside of a directory containing an iOS project") {
                     they("have a configuration file created for them") {
-                        let decodedConfiguration = try? JSONDecoder().decode(MuterConfiguration.self, from: self.createdIOSConfiguration)
+                        let decodedConfiguration = try? MuterConfiguration.make(from: self.createdIOSConfiguration)
                         expect(decodedConfiguration?.testCommandExecutable) == "/usr/bin/xcodebuild"
                         expect(decodedConfiguration?.testCommandArguments).to(contain("-destination"))
                         expect(decodedConfiguration?.testCommandArguments).to(contain("platform=iOS Simulator,name=iPhone 8"))
@@ -185,7 +185,7 @@ class AcceptanceTests: QuickSpec {
                 
                 context("ran inside of a directory containing a macOS project") {
                     they("have a configuration file created for them") {
-                        let decodedConfiguration: MuterConfiguration? = try? JSONDecoder().decode(MuterConfiguration.self, from: self.createdMacOSConfiguration)
+                        let decodedConfiguration: MuterConfiguration? = try? MuterConfiguration.make(from: self.createdMacOSConfiguration)
                         expect(decodedConfiguration?.testCommandExecutable) == "/usr/bin/xcodebuild"
                         expect(decodedConfiguration?.testCommandArguments).toNot(contain("-destination"))
                         expect(decodedConfiguration?.testCommandArguments).toNot(contain("platform=iOS Simulator,name=iPhone 8"))
