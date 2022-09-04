@@ -7,7 +7,7 @@ class ConfigurationParsingSpec: QuickSpec {
     override func spec() {
         describe("parsing a configuration file from JSON") {
             it("parses the minimum necessary configuration") {
-                let configuration = MuterConfiguration.fromFixture(at: "\(self.fixturesDirectory)/muter.conf.withoutExcludeList.json")
+                let configuration = MuterConfiguration.fromFixture(at: "\(self.fixturesDirectory)/muter.conf.withoutExcludeList.yaml")
 
                 expect(configuration?.excludeFileList).to(equal([]))
                 expect(configuration?.testCommandExecutable).to(equal("/usr/bin/xcodebuild"))
@@ -25,7 +25,7 @@ class ConfigurationParsingSpec: QuickSpec {
             }
 
             it("parses the excludeList when it's present") {
-                let configuration = MuterConfiguration.fromFixture(at: "\(self.fixturesDirectory)/muter.conf.withExcludeList.json")
+                let configuration = MuterConfiguration.fromFixture(at: "\(self.fixturesDirectory)/muter.conf.withExcludeList.yaml")
 
                 expect(configuration?.excludeFileList).to(equal(["ExampleApp"]))
             }
