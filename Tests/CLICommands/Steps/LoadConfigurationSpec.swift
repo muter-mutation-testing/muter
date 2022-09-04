@@ -6,19 +6,29 @@ import Foundation
 class LoadConfigurationSpec: QuickSpec {
     override func spec() {
         
+        var fileManager: FileManagerSpy!
         var loadConfiguration: LoadConfiguration!
         var result: Result<[RunCommandState.Change], MuterError>!
         
         describe("the LoadConfiguration step") {
             context("when it's able to load a Muter configuration from disk") {
                 beforeEach {
-                    loadConfiguration = LoadConfiguration(currentDirectory: self.fixturesDirectory)
+                    fileManager = FileManagerSpy()
+                    fileManager.fileExistsToReturn = [false, true]
+                    fileManager.fileContentsToReturn = self.loadYAMLConfiguration()
+
+                    loadConfiguration = LoadConfiguration(
+                        fileManager: fileManager,
+                        currentDirectory: self.fixturesDirectory
+                    )
                     result = loadConfiguration.run(with: RunCommandState())
                 }
 
                 it("returns the parsed configuration") {
                     let expectedUrl = URL(fileURLWithPath: self.fixturesDirectory)
-                    let expectedConfiguration = MuterConfiguration.fromFixture(at: "\(self.fixturesDirectory)/muter.conf.json")!
+                    let expectedConfiguration = MuterConfiguration.fromFixture(
+                        at: "\(self.fixturesDirectory)/\(MuterConfiguration.legacyFileNameWithExtension)"
+                    )!
 
                     guard case .success(let stateChanges) = result! else {
                         fail("expected success but got \(String(describing: result!))")
@@ -30,9 +40,35 @@ class LoadConfigurationSpec: QuickSpec {
                 }
             }
             
+            context("when it's able to load a legacy Muter configuration from disk") {
+                beforeEach {
+                    fileManager = FileManagerSpy()
+                    fileManager.fileExistsToReturn = [true, false]
+                    fileManager.fileContentsToReturn = self.loadJSONConfiguration()
+
+                    loadConfiguration = LoadConfiguration(
+                        fileManager: fileManager,
+                        currentDirectory: self.fixturesDirectory
+                    )
+                    result = loadConfiguration.run(with: RunCommandState())
+                }
+
+                it("migrates to YAML") {
+                    expect(fileManager.methodCalls).to(contain("removeItem(atPath:)"))
+                    expect(fileManager.methodCalls).to(contain("createFile(atPath:contents:attributes:)"))
+                    expect(fileManager.contents).to(equal(self.loadYAMLConfiguration()))
+                }
+            }
+            
             context("when it's unable to load a Muter configuration from disk") {
                 beforeEach {
-                    loadConfiguration = LoadConfiguration(currentDirectory: "/some/projectName")
+                    fileManager = FileManagerSpy()
+                    fileManager.fileExistsToReturn = [false, false]
+
+                    loadConfiguration = LoadConfiguration(
+                        fileManager: fileManager,
+                        currentDirectory: "/some/projectName"
+                    )
                     result = loadConfiguration.run(with: RunCommandState())
                 }
                 
@@ -44,5 +80,17 @@ class LoadConfigurationSpec: QuickSpec {
                 }
             }
         }
+    }
+    
+    private func loadJSONConfiguration() -> Data? {
+        FileManager.default.contents(
+            atPath: "\(self.fixturesDirectory)/\(MuterConfiguration.legacyFileNameWithExtension)"
+        )
+    }
+    
+    private func loadYAMLConfiguration() -> Data? {
+        FileManager.default.contents(
+            atPath: "\(self.fixturesDirectory)/\(MuterConfiguration.fileNameWithExtension)"
+        )
     }
 }
