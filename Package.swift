@@ -11,12 +11,12 @@ let package = Package(
         .executable(name: "muter", targets: ["muter", "muterCore"]),
     ],
     dependencies: [
-        .package(url: "https://github.com/apple/swift-argument-parser.git", from: "1.1.2"),
+        .package(url: "https://github.com/apple/swift-argument-parser.git", from: "1.1.4"),
         .package(url: "https://github.com/onevcat/Rainbow.git", from: "4.0.1"),
         .package(url: "https://github.com/Quick/Quick.git", from: "5.0.1"),
         .package(url: "https://github.com/Quick/Nimble.git", from: "10.0.0"),
         .package(url: "https://github.com/dduan/Pathos.git", from: "0.4.2"),
-        .package(url: "https://github.com/apple/swift-syntax.git", from: "0.50600.1"),
+        .package(url: "https://github.com/apple/swift-syntax.git", from: .swiftSyntaxTag),
         .package(url: "https://github.com/jkandzi/Progress.swift.git", from: "0.4.0"),
         .package(url: "https://github.com/johnsundell/plot.git", from: "0.11.0"),
         .package(url: "https://github.com/krzysztofzablocki/Difference.git", from: "1.0.1"),
@@ -66,7 +66,7 @@ isDebuggingMain(false)
 
 /// Make sure to select a single test target
 /// This is important because, as of today, we cannot pick a single test target from the command-line (and filtering also doesn't help)
-/// With that in mind, this (a hack, for sure) will look-up for an env var and pick the test target accodingly.
+/// With that in mind, this (a hack, for sure) will look-up for an env var and pick the test target accordingly.
 func resolveTestTargetFromEnvironmentVarialbes() {
     let shouldAddAcceptanceTests = ProcessInfo.processInfo.environment.keys.contains("acceptance_tests")
     let shouldAddRegressionTests = ProcessInfo.processInfo.environment.keys.contains("regression_tests")
@@ -129,19 +129,46 @@ func isDebuggingMain(_ isDebug: Bool) {
     }
 }
 
+func xcodeFolder() -> String {
+    (Executable("/usr/bin/xcode-select")("-p") ?? "").trimmed
+}
+
+func swiftCompilerVersion() -> String {
+    let versionLine = Executable(
+        "\(xcodeFolder().trimmed)/Toolchains/XcodeDefault.xctoolchain/usr/bin/swift-frontend"
+    )("--version") ?? ""
+
+    let regex = try? NSRegularExpression(pattern: " \\d.\\d")
+    return regex?.firstMatch(in: versionLine, range: NSRange(location: 0, length: versionLine.count)).flatMap {
+        Range($0.range, in: versionLine)
+    }.flatMap {
+        String(versionLine[$0]).trimmed
+    } ?? ""
+}
+
 extension PackageDescription.Target {
     func installSwiftSyntaxParser() {
         linkerSettings = [linkerSetting]
     }
 
     private var linkerSetting: LinkerSetting {
-        guard let xcodeFolder = Executable("/usr/bin/xcode-select")("-p") else {
-            fatalError("Could not run `xcode-select -p`")
+        let toolchainFolder = "\(xcodeFolder().trimmed)/Toolchains/XcodeDefault.xctoolchain/usr/lib/swift/macosx"
+        return .unsafeFlags([
+            "-rpath", toolchainFolder
+        ])
+    }
+}
+
+extension Version {
+    static var swiftSyntaxTag: Self {
+        switch swiftCompilerVersion() {
+        case "5.6": return "0.50600.1"
+        case "5.5": return "0.50500.0"
+        case "5.4": return "0.50400.0"
+        case "5.3": return "0.50300.0"
+        case "5.2": return "0.50200.0"
+        default: return "0.50600.1"
         }
-
-        let toolchainFolder = "\(xcodeFolder.trimmed)/Toolchains/XcodeDefault.xctoolchain/usr/lib/swift/macosx"
-
-        return .unsafeFlags(["-rpath", toolchainFolder])
     }
 }
 
