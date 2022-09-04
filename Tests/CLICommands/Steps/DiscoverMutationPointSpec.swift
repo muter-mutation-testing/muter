@@ -77,7 +77,7 @@ class DiscoverMutationPointSpec: QuickSpec {
                         state = RunCommandState()
                         state.sourceFileCandidates = [
                             "\(self.fixturesDirectory)/sampleForDiscoveringMutations.swift",
-                            "\(self.fixturesDirectory)/muter.conf.json",
+                            "\(self.fixturesDirectory)/\(MuterConfiguration.fileNameWithExtension)",
                         ]
 
                         result = DiscoverMutationPoints().run(with: state)
