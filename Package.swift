@@ -11,7 +11,7 @@ let package = Package(
         .executable(name: "muter", targets: ["muter", "muterCore"]),
     ],
     dependencies: [
-        .package(url: "https://github.com/apple/swift-argument-parser.git", from: "1.1.2"),
+        .package(url: "https://github.com/apple/swift-argument-parser.git", from: "1.1.4"),
         .package(url: "https://github.com/onevcat/Rainbow.git", from: "4.0.1"),
         .package(url: "https://github.com/Quick/Quick.git", from: "5.0.1"),
         .package(url: "https://github.com/Quick/Nimble.git", from: "10.0.0"),
