@@ -24,7 +24,7 @@ public extension XCTestCase {
     }
 
     var fixturesDirectory: String { return "\(rootTestDirectory)/fixtures" }
-    var configurationPath: String { return "\(fixturesDirectory)/muter.conf.json" }
+    var configurationPath: String { return "\(fixturesDirectory)/\(MuterConfiguration.fileNameWithExtension)" }
     var mutationExamplesDirectory: String { return "\(fixturesDirectory)/MutationExamples" }
 
     var exampleMutationTestResults: [MutationTestOutcome.Mutation] {
