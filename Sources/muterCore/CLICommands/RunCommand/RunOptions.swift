@@ -1,6 +1,6 @@
 import Foundation
 
-typealias ReportOptions = (reporter: any Reporter, path: String?)
+typealias ReportOptions = (reporter: Reporter, path: String?)
 
 struct RunOptions {
     let reportOptions: ReportOptions
@@ -10,7 +10,7 @@ struct RunOptions {
     
     init(
         filesToMutate: [String],
-        reportType: ReportType,
+        reportFormat: ReportFormat,
         reportURL: URL?,
         skipCoverage: Bool,
         logger: Logger
@@ -19,7 +19,7 @@ struct RunOptions {
         self.skipCoverage = skipCoverage
         self.logger = logger
         self.reportOptions = ReportOptions(
-            reporter: reportType.reporter,
+            reporter: reportFormat.reporter,
             path: reportPath(reportURL)
         )
     }
@@ -38,14 +38,14 @@ private func reportPath(_ reportURL: URL?) -> String? {
     }
 }
 
-enum ReportType: String, CaseIterable {
+enum ReportFormat: String, CaseIterable {
     case plain, json, html, xcode
     
     static var description: String {
         allCases.map(\.rawValue).joined(separator: ", ")
     }
     
-    var reporter: any Reporter {
+    var reporter: Reporter {
         switch self {
         case .plain:
             return PlainTextReporter()
