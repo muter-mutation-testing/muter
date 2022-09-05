@@ -155,6 +155,16 @@ class RunCommandHandlerSpec: QuickSpec {
                     }
                 }
             }
+            
+            context("traps") {
+                it("should contain all default traps") {
+                    runCommandHandler = RunCommandHandler()
+                    
+                    expect(runCommandHandler.traps).to(haveCount(1))
+                    
+                    expect(runCommandHandler.traps[0]).to(beAKindOf(RemoveTempDirectory.self))
+                }
+            }
         }
     }
 }
