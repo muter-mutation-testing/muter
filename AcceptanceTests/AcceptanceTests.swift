@@ -299,8 +299,8 @@ extension AcceptanceTests {
             .flatMap(contentsOfDirectory)
     }
     
-    var createdIOSConfiguration: Data { contentsOfFileAsData("\(AcceptanceTests().rootTestDirectory)/samples/created_iOS_config.yaml") }
-    var createdMacOSConfiguration: Data { contentsOfFileAsData("\(AcceptanceTests().rootTestDirectory)/samples/created_macOS_config.yaml") }
+    var createdIOSConfiguration: Data { contentsOfFileAsData("\(AcceptanceTests().rootTestDirectory)/samples/created_iOS_config.yml") }
+    var createdMacOSConfiguration: Data { contentsOfFileAsData("\(AcceptanceTests().rootTestDirectory)/samples/created_macOS_config.yml") }
     
     var muterLogsRootPath: String { "\(AcceptanceTests().rootTestDirectory)/samples/muter_logs/" }
 }

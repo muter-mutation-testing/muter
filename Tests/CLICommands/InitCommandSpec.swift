@@ -11,13 +11,13 @@ class InitCommandSpec: QuickSpec {
                 try? FileManager.default.removeItem(atPath: "\(workingDirectory)/\(MuterConfiguration.fileNameWithExtension)")
             }
 
-            it("creates a configuration file named muter.conf.yaml with placeholder values in a specified directory") {
+            it("creates a configuration file named muter.conf.yml with placeholder values in a specified directory") {
                 let workingDirectory = self.rootTestDirectory
                 let initCommand = Init(directory: workingDirectory)
 
                 do {
                     try initCommand.run()
-                    guard let contents = FileManager.default.contents(atPath: "\(workingDirectory)/muter.conf.yaml"),
+                    guard let contents = FileManager.default.contents(atPath: "\(workingDirectory)/muter.conf.yml"),
                         let _ = try? MuterConfiguration(from: contents) else {
                             fail("Expected a valid configuration file to be written")
                             return
