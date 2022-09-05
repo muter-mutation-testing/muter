@@ -100,7 +100,7 @@ func resolveTestTargetFromEnvironmentVarialbes() {
                     .product(name: "SnapshotTesting", package: "swift-snapshot-testing"),
                 ],
                 path: "RegressionTests",
-                exclude: ["samples", "__Snapshots__", "runRegressionTests.sh", "Repositories"]
+                exclude: ["samples", "__Snapshots__", "runRegressionTests.sh"]
             )
         )
     }
