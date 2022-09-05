@@ -10,6 +10,7 @@ class FileManagerSpy: Spy, FileSystemManager {
     private(set) var domains: [FileManager.SearchPathDomainMask] = []
     private(set) var copyPaths: [(source: String, dest: String)] = []
 
+    var tempDirectory: URL!
     var fileContentsToReturn: Data!
     var currentDirectoryPathToReturn: String!
     var errorToThrow: Error?
@@ -34,6 +35,24 @@ class FileManagerSpy: Spy, FileSystemManager {
         paths.append(path)
 
         return true
+    }
+    
+    func url(for directory: FileManager.SearchPathDirectory,
+             in domain: FileManager.SearchPathDomainMask,
+             appropriateFor url: URL?,
+             create shouldCreate: Bool) throws -> URL {
+        methodCalls.append(#function)
+        searchPathDirectories.append(directory)
+        domains.append(domain)
+        if let path = url?.path {
+            paths.append(path)
+        }
+        
+        if let error = errorToThrow {
+            throw error
+        }
+        
+        return tempDirectory
     }
 
     func copyItem(atPath srcPath: String,
