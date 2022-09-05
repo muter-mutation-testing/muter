@@ -31,7 +31,7 @@ public struct Run: ParsableCommand {
     var skipCoverage: Bool = false
     
     @Option(
-        name: [.customLong("output"), .customShort("o")],
+        name: [.customShort("o"), .customLong("output")],
         help: "Output file for the report to be saved."
     )
     var reportURL: URL?
