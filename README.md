@@ -179,7 +179,7 @@ Setting up Muter to run within Xcode is simple. After creating your configuation
 3) **Add the Muter Xcode command** to the build step:
 
 ```sh
-muter -r xcode
+muter --report xcode
 ```
 
 ## Running Muter
