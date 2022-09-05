@@ -1,0 +1,13 @@
+arguments:
+- -project
+- ProjectWithFailingTests.xcodeproj
+- -scheme
+- ProjectWithFailingTests
+- -sdk
+- macosx
+- -destination
+- platform=macOS
+- test
+executable: /usr/bin/xcodebuild
+exclude: []
+excludeCalls: []

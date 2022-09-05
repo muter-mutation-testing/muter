@@ -1,24 +1,24 @@
 import Quick
 import Nimble
 import Foundation
-import muterCore
+@testable import muterCore
 
 class InitCommandSpec: QuickSpec {
     override func spec() {
         describe("InitCommand") {
             afterEach {
                 let workingDirectory = self.rootTestDirectory
-                try? FileManager.default.removeItem(atPath: "\(workingDirectory)/muter.conf.json")
+                try? FileManager.default.removeItem(atPath: "\(workingDirectory)/\(MuterConfiguration.fileNameWithExtension)")
             }
 
-            it("creates a configuration file named muter.conf.json with placeholder values in a specified directory") {
+            it("creates a configuration file named muter.conf.yml with placeholder values in a specified directory") {
                 let workingDirectory = self.rootTestDirectory
                 let initCommand = Init(directory: workingDirectory)
 
                 do {
                     try initCommand.run()
-                    guard let contents = FileManager.default.contents(atPath: "\(workingDirectory)/muter.conf.json"),
-                        let _ = try? JSONDecoder().decode(MuterConfiguration.self, from: contents) else {
+                    guard let contents = FileManager.default.contents(atPath: "\(workingDirectory)/muter.conf.yml"),
+                        let _ = try? MuterConfiguration(from: contents) else {
                             fail("Expected a valid configuration file to be written")
                             return
                     }

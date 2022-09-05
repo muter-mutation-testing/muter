@@ -104,7 +104,7 @@ To get started using Muter, run `muter init` in the root of your project directo
 * Xcode Projects & Workspace
 * Swift Package Manager
 
-It saves its configuration into a file named `muter.conf.json`, which you should keep in the root directory of your project. You should version control your configuration file as well. 
+It saves its configuration into a file named `muter.conf.yml`, which you should keep in the root directory of your project. You should version control your configuration file as well. 
 
 After running `muter init`, you should look at the generated configuration and ensure that it will run your project. We recommend trying the settings it generates in your terminal, and verifying those commands run your tests.
 
@@ -135,25 +135,23 @@ Should you need to modify any of the options, you can use the list below to unde
 
 Below is an example pulled directly from the `ExampleApp` project.
 The configuration file will end up looking something like this:
-```json
-{
-    "executable": "/usr/bin/xcodebuild",
-    "arguments": [
-        "-project",
-        "ExampleApp.xcodeproj",
-        "-scheme",
-        "ExampleApp",
-        "-sdk",
-        "iphonesimulator",
-        "-destination",
-        "platform=iOS Simulator,name=iPhone 8",
-        "test"
-    ],
-    "exclude": ["AppDelegate.swift"]
-}
+```yaml
+arguments:
+- -project
+- ExampleApp.xcodeproj
+- -scheme
+- ExampleApp
+- -sdk
+- iphonesimulator
+- -destination
+- platform=iOS Simulator,name=iPhone 8
+- test
+executable: /usr/bin/xcodebuild
+exclude:
+- AppDelegate.swift
 ```
 
-Check out the `muter.conf.json` in the root directory of this repository for another example.
+Check out the `muter.conf.yml` in the root directory of this repository for another example.
 
 ### Xcode Setup
 Setting up Muter to run within Xcode is simple. After creating your configuation:
@@ -206,8 +204,8 @@ You can mark specific lines to skip mutations on, rather than entire files, by a
 - Muter assumes you aren't putting multiple expressions on one line (and we have the opinion you shouldn't be doing this anyway). Basically, if you aren't using semicolons in your code then Muter shouldn't have an issue mutating it.
 
 ## Best Practices
-- Commit your `muter.conf.json`
-- It's possible for Muter to cause compile time warnings. As a result of this, we recommend you don't treat Swift warnings as errors while mutation testing by adding the argument `SWIFT_TREAT_WARNINGS_AS_ERRORS=NO` to your `muter.conf.json` if you're using `xcodebuild`.
+- Commit your `muter.conf.yml`
+- It's possible for Muter to cause compile time warnings. As a result of this, we recommend you don't treat Swift warnings as errors while mutation testing by adding the argument `SWIFT_TREAT_WARNINGS_AS_ERRORS=NO` to your `muter.conf.yml` if you're using `xcodebuild`.
 - Disable or relax linting rules that would cause a build error as a consequence of a code change not matching your project's style. Muter operates on your source code and then rebuilds it, and the change it introduces could trigger your linter if it's part of your build process.
 - Running Muter can be a lengthy process, so be sure to allocate enough time for the test to finish.
 - Because Muter can take a while to run, it is recommend to exclude UI or journey tests from your test suite. We recommend creating a separate schemes or targets for mutation testing. However, you should feel free to run these kinds of tests if you're okay with the longer feedback cycle.

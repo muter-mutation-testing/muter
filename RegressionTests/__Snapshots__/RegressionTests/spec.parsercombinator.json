@@ -109,6 +109,28 @@
         },
         {
           "mutationPoint" : {
+            "mutationOperatorId" : "SwapTernaryOperator",
+            "position" : {
+              "column" : 73,
+              "line" : 180,
+              "utf8Offset" : 6430
+            }
+          },
+          "testSuiteOutcome" : "failed"
+        },
+        {
+          "mutationPoint" : {
+            "mutationOperatorId" : "SwapTernaryOperator",
+            "position" : {
+              "column" : 52,
+              "line" : 204,
+              "utf8Offset" : 7199
+            }
+          },
+          "testSuiteOutcome" : "failed"
+        },
+        {
+          "mutationPoint" : {
             "mutationOperatorId" : "RelationalOperatorReplacement",
             "position" : {
               "column" : 76,
@@ -135,6 +157,6 @@
     }
   ],
   "globalMutationScore" : 100,
-  "numberOfKilledMutants" : 11,
-  "totalAppliedMutationOperators" : 11
+  "numberOfKilledMutants" : 13,
+  "totalAppliedMutationOperators" : 13
 }

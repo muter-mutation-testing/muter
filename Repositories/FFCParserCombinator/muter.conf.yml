@@ -1,0 +1,9 @@
+arguments:
+- -project
+- FFCParserCombinator.xcodeproj
+- -scheme
+- FFCParserCombinator-Package
+- test
+executable: /usr/bin/xcodebuild
+exclude: []
+excludeCalls: []
