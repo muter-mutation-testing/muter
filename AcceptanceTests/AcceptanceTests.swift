@@ -1,29 +1,26 @@
-import Quick
 import Nimble
+import Quick
 
 import Foundation
 import TestingExtensions
 
 @testable import muterCore
 
-class AcceptanceTests: QuickSpec {
-    
+final class AcceptanceTests: QuickSpec {
     override func spec() {
-        
         describe("someone using Muter for mutation testing") {
-            
             let messages = (
                 mutationScoreOfTestSuite: "Mutation Score of Test Suite: 33%",
                 mutationScoresHeader: """
-                        --------------------
-                        Mutation Test Scores
-                        --------------------
-                        """,
+                --------------------
+                Mutation Test Scores
+                --------------------
+                """,
                 appliedMutationOperatorsHeader: """
-                        --------------------------
-                        Applied Mutation Operators
-                        --------------------------
-                        """
+                --------------------------
+                Applied Mutation Operators
+                --------------------------
+                """
             )
             
             context("with the 'run' command") {
@@ -74,13 +71,13 @@ class AcceptanceTests: QuickSpec {
                                 "baseline run.log",
                                 "ChangeLogicalConnector @ Module2.swift-2-17.log",
                                 "RelationalOperatorReplacement @ Module.swift-4-18.log",
-                                "RemoveSideEffects @ ViewController.swift-5-28.log"
+                                "RemoveSideEffects @ ViewController.swift-5-28.log",
                             ]
                             
                             let numberOfEmptyLogFiles = expectedLogFiles
                                 .map(self.contentsOfLogFile(named:))
                                 .count { $0.isEmpty }
-
+                            
                             expect(logFiles.sorted()).to(equal(expectedLogFiles.sorted())) // Sort these so it's easier to reason about any erroneous failures
                             expect(numberOfEmptyLogFiles) == 0
                         }
@@ -173,6 +170,7 @@ class AcceptanceTests: QuickSpec {
                 }
             }
             
+            
             context("with the 'init' command") {
                 context("ran inside of a directory containing an iOS project") {
                     they("have a configuration file created for them") {
@@ -199,20 +197,20 @@ class AcceptanceTests: QuickSpec {
                         equalWithDiff(
                             """
                             OVERVIEW: 🔎 Automated mutation testing for Swift 🕳️
-
+                            
                             USAGE: muter <subcommand>
-
+                            
                             OPTIONS:
                               --version               Show the version.
                               -h, --help              Show help information.
-
+                            
                             SUBCOMMANDS:
                               init                    Creates the configuration file that Muter uses
                               run (default)           Performs mutation testing for the Swift project
                                                       contained within the current directory
-
+                            
                               See 'muter help <subcommand>' for detailed help.
-
+                            
                             """
                         )
                     )
@@ -224,14 +222,14 @@ class AcceptanceTests: QuickSpec {
                             equalWithDiff(
                                 """
                                 OVERVIEW: Creates the configuration file that Muter uses
-
+                                
                                 USAGE: muter init
-
+                                
                                 OPTIONS:
                                   --version               Show the version.
                                   -h, --help              Show help information.
-
-
+                                
+                                
                                 """
                             )
                         )
@@ -278,7 +276,7 @@ extension AcceptanceTests {
                 .withoutScheme()
         )
     }
-
+    
     var muterOutput: String { contentsOfFileAsString("\(AcceptanceTests().rootTestDirectory)/samples/muters_output.txt") }
     var muterXcodeOutput: String { contentsOfFileAsString("\(AcceptanceTests().rootTestDirectory)/samples/muters_xcode_output.txt") }
     
@@ -291,7 +289,7 @@ extension AcceptanceTests {
     var muterHelpOutput: String { contentsOfFileAsString("\(AcceptanceTests().rootTestDirectory)/samples/muters_help_output.txt") }
     var muterInitHelpOutput: String { contentsOfFileAsString("\(AcceptanceTests().rootTestDirectory)/samples/muters_init_help_output.txt") }
     var muterRunHelpOutput: String { contentsOfFileAsString("\(AcceptanceTests().rootTestDirectory)/samples/muters_run_help_output.txt") }
-
+    
     var muterLogFiles: [String] {
         contentsOfDirectory(muterLogsRootPath)
             .map { muterLogsRootPath + "/" + $0 }
@@ -321,8 +319,9 @@ extension AcceptanceTests {
     
     func contentsOfFileAsString(_ path: String) -> String {
         guard let data = FileManager.default.contents(atPath: path),
-            let output = String(data: data, encoding: .utf8) else {
-                fatalError("File not found at \(path)")
+              let output = String(data: data, encoding: .utf8)
+        else {
+            fatalError("File not found at \(path)")
         }
         return output
     }
