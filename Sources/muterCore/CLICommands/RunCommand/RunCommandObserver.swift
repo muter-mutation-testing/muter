@@ -174,6 +174,10 @@ extension RunCommandObserver {
                 """
             )
         }
+        
+        if fileManager.fileExists(atPath: reportPath) {
+            try? fileManager.removeItem(atPath: reportPath)
+        }
 
         let didSave = fileManager.createFile(
             atPath: reportPath,
