@@ -17,6 +17,7 @@ public struct Run: ParsableCommand {
         help: "The report format for muter: \(ReportFormat.description)",
         transform: {
             guard let report = ReportFormat(rawValue: $0) else {
+                throw MuterError.literal(reason: ReportFormat.description)
             }
             return report
         }
