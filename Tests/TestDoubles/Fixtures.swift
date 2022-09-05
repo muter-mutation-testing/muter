@@ -163,14 +163,14 @@ extension Coverage {
 extension RunOptions {
     static func make(
         filesToMutate: [String] = [],
-        reportType: ReportType = .plain,
+        reportFormat: ReportFormat = .plain,
         reportURL: URL? = nil,
         skipCoverage: Bool = false,
         logger: Logger = .init()
     ) -> Self {
         .init(
             filesToMutate: filesToMutate,
-            reportType: reportType,
+            reportFormat: reportFormat,
             reportURL: reportURL,
             skipCoverage: skipCoverage,
             logger: logger

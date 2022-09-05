@@ -9,7 +9,7 @@ final class RunOptionsSepc: QuickSpec {
 
             context("when they want a json") {
                 it("then return it") {
-                    runOptions = .make(reportType: .json)
+                    runOptions = .make(reportFormat: .json)
 
                     expect(runOptions.reportOptions.reporter).to(beAKindOf(JsonReporter.self))
                 }
@@ -17,7 +17,7 @@ final class RunOptionsSepc: QuickSpec {
             
             context("when they want xcode") {
                 it("then return it") {
-                    runOptions = .make(reportType: .xcode)
+                    runOptions = .make(reportFormat: .xcode)
 
                     expect(runOptions.reportOptions.reporter).to(beAKindOf(XcodeReporter.self))
                 }
@@ -25,7 +25,7 @@ final class RunOptionsSepc: QuickSpec {
             
             context("when they want plain text") {
                 it("then return it") {
-                    runOptions = .make(reportType: .plain)
+                    runOptions = .make(reportFormat: .plain)
 
                     expect(runOptions.reportOptions.reporter).to(beAKindOf(PlainTextReporter.self))
                 }
@@ -33,7 +33,7 @@ final class RunOptionsSepc: QuickSpec {
 
             context("when they want an html") {
                 it("then return it") {
-                    runOptions = .make(reportType: .html)
+                    runOptions = .make(reportFormat: .html)
 
                     expect(runOptions.reportOptions.reporter).to(beAKindOf(HTMLReporter.self))
                 }

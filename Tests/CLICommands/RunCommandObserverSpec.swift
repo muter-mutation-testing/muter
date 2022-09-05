@@ -37,7 +37,7 @@ class RunCommandObserverSpec: QuickSpec {
                 
                 it("flushes stdout when using an Xcode reporter") {
                     let subject = RunCommandObserver(
-                        options: .make(reportType: .xcode),
+                        options: .make(reportFormat: .xcode),
                         fileManager: fileManagerSpy,
                         flushHandler: flushHandlerSpy
                     )
@@ -48,7 +48,7 @@ class RunCommandObserverSpec: QuickSpec {
                 
                 it("doesn't flush stdout when using a JSON reporter") {
                     let subject = RunCommandObserver(
-                        options: .make(reportType: .json),
+                        options: .make(reportFormat: .json),
                         fileManager: fileManagerSpy,
                         flushHandler: flushHandlerSpy
                     )
@@ -59,7 +59,7 @@ class RunCommandObserverSpec: QuickSpec {
                 
                 it("doesn't flush stdout when using a plain text reporter") {
                     let subject = RunCommandObserver(
-                        options: .make(reportType: .plain),
+                        options: .make(reportFormat: .plain),
                         fileManager: fileManagerSpy,
                         flushHandler: flushHandlerSpy
                     )
@@ -72,7 +72,7 @@ class RunCommandObserverSpec: QuickSpec {
             describe("logFileName(from:)") {
                 it("names a log file as baseline run.log when there is no MutationPoint") {
                     let subject = RunCommandObserver(
-                        options: .make(reportType: .plain),
+                        options: .make(reportFormat: .plain),
                         fileManager: fileManagerSpy,
                         flushHandler: {}
                     )
@@ -90,7 +90,7 @@ class RunCommandObserverSpec: QuickSpec {
                                                        position: MutationPosition(utf8Offset: 2, line: 5, column: 6))
                     
                     let subject = RunCommandObserver(
-                        options: .make(reportType: .xcode),
+                        options: .make(reportFormat: .xcode),
                         fileManager: fileManagerSpy,
                         flushHandler: {}
                     )

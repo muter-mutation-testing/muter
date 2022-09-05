@@ -13,16 +13,15 @@ public struct Run: ParsableCommand {
     var filesToMutate: [String] = []
     
     @Option(
-        name: [.customShort("r"), .customLong("report")],
-        help: "The report type for muter: \(ReportType.description)",
+        name: [.customShort("f"), .customLong("format")],
+        help: "The report format for muter: \(ReportFormat.description)",
         transform: {
-            guard let report = ReportType(rawValue: $0) else {
-                throw ReportType.description
+            guard let report = ReportFormat(rawValue: $0) else {
             }
             return report
         }
     )
-    var reportType: ReportType = .plain
+    var reportFormat: ReportFormat = .plain
     
     @Flag(
         name: [.customLong("skip-coverage")],
@@ -41,7 +40,7 @@ public struct Run: ParsableCommand {
     public func run() throws {
         let options = RunOptions(
             filesToMutate: filesToMutate,
-            reportType: reportType,
+            reportFormat: reportFormat,
             reportURL: reportURL,
             skipCoverage: skipCoverage,
             logger: Logger()
