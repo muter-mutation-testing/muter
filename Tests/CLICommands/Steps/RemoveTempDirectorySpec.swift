@@ -66,6 +66,25 @@ class RemoveTempDirectorySpec: QuickSpec {
                     expect(reason).notTo(beEmpty())
                 }
             }
+            
+            context("when it run as a trap") {
+                beforeEach {
+                    fileManagerSpy = FileManagerSpy()
+                    
+                    state = RunCommandState()
+                    state.tempDirectoryURL = URL(fileURLWithPath: "/some/projectName_mutated")
+                    
+                    removeTempDirectory = RemoveTempDirectory(fileManager: fileManagerSpy)
+                    
+                    (removeTempDirectory as RunCommandTrap).run(with: state)
+                }
+                
+                it("remove the project from the temp directory") {
+                    expect(fileManagerSpy.paths.first).to(equal("/some/projectName_mutated"))
+                    expect(fileManagerSpy.paths).to(haveCount(1))
+                    expect(fileManagerSpy.methodCalls).to(equal(["removeItem(atPath:)"]))
+                }
+            }
         }
     }
 }
