@@ -99,13 +99,13 @@ brew link muter
 ```
 
 ## Development
-If you want to run Muter on Xcode, you need to edit `Package.swift` as such:
+If you want to run Muter in Xcode, you need to edit the top-level function `isDebuggingMain` on `Package.swift`:
 
 ```swift
 isDebuggingMain(true)
 ```
 
-And change the `FileManager` current path (on `main.swift`):
+And change the `FileManager` current path (in `main.swift`) to point to the directory containing the project you'd like to test using Muter:
 
 ```swift
 import Foundation
@@ -114,7 +114,7 @@ FileManager.default.changeCurrentDirectoryPath("/some/path")
 ```
 Now you can run Muter from Xcode.
 
-*P.S: To pass arguments on launch, you can use Xcode's Scheme Editor and add them.*
+*Note: To pass arguments on launch, you can use Xcode's Scheme Editor and add them.*
 
 ## Setup
 ### Muter's Configuration
@@ -179,7 +179,7 @@ Setting up Muter to run within Xcode is simple. After creating your configuation
 3) **Add the Muter Xcode command** to the build step:
 
 ```sh
-muter --report xcode
+muter --format xcode
 ```
 
 ## Running Muter
@@ -203,13 +203,13 @@ Muter defaults to run when you don't specify any subcommands
 --files-to-mutate    Only mutate a given list of source code files (Supports glob expressions like Sources/**/*.swift)
 ```
 
-**Available Reports**
+**Available Report Formats**
 
 ```
 plain: (default) prints the report to stdout.
 json: prints the report in JSON format.
 html: prints an HTML report.
-xcode: prints mutation test results, as they are produced, in Xcode format.
+xcode: prints mutation test results in real-time, as they are produced, in a format that Xcode can use to report them in the Issue Navigator.
 ```
 Note: If you pass `--output` muter will save the report, instead of using stdout.
 
