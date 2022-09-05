@@ -17,7 +17,7 @@ extension MuterError: CustomStringConvertible {
             return """
             Muter was unable to parse your configuration file.
             
-            This is often caused from running Muter from the wrong directory, or having a corrupted or missing muter.conf.json
+            This is often caused from running Muter from the wrong directory, or having a corrupted or missing \(MuterConfiguration.fileNameWithExtension)
             
             You can run \("muter init".bold) to generate or regenerate a configuration file.
             

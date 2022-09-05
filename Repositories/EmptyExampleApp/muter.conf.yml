@@ -1,0 +1,9 @@
+arguments:
+- -project
+- EmptyExampleApp.xcodeproj
+- -scheme
+- EmptyExampleApp
+- test
+executable: /usr/bin/xcodebuild
+exclude: []
+excludeCalls: []

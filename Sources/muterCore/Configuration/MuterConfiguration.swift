@@ -1,4 +1,5 @@
 import Foundation
+import Yams
 
 public struct MuterConfiguration: Equatable, Codable {
     let testCommandArguments: [String]
@@ -15,7 +16,12 @@ public struct MuterConfiguration: Equatable, Codable {
         case excludeCallList = "excludeCalls"
     }
 
-    public init(executable: String = "", arguments: [String] = [], excludeList: [String] = [], excludeCallList: [String] = []) {
+    public init(
+        executable: String = "",
+        arguments: [String] = [],
+        excludeList: [String] = [],
+        excludeCallList: [String] = []
+    ) {
         self.testCommandExecutable = executable
         self.testCommandArguments = arguments
         self.excludeFileList = excludeList
@@ -34,12 +40,25 @@ public struct MuterConfiguration: Equatable, Codable {
         let excludeCallList = try? container.decode([String].self, forKey: .excludeCallList)
         self.excludeCallList = excludeCallList ?? []
     }
+    
+    init(from data: Data) throws {
+        do {
+            self = try YAMLDecoder().decode(MuterConfiguration.self, from: data)
+        } catch {
+            self = try JSONDecoder().decode(MuterConfiguration.self, from: data)
+        }
+    }
 }
 
 extension MuterConfiguration {
-    var asJSONData: Data {
-        let encoder = JSONEncoder()
-        encoder.outputFormatting = [.prettyPrinted, .sortedKeys]
-        return try! encoder.encode(self)
+    static let fileName = "muter.conf"
+    static let fileNameWithExtension = fileName + ".yml"
+    static let legacyFileNameWithExtension = fileName + ".json"
+}
+
+extension MuterConfiguration {
+    var asData: Data {
+        let encoder = YAMLEncoder()
+        return (try! encoder.encode(self)).data(using: .utf8)!
     }
 }

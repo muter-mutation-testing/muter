@@ -12,10 +12,43 @@
             }
           },
           "testSuiteOutcome" : "passed"
+        },
+        {
+          "mutationPoint" : {
+            "mutationOperatorId" : "SwapTernaryOperator",
+            "position" : {
+              "column" : 123,
+              "line" : 75,
+              "utf8Offset" : 2289
+            }
+          },
+          "testSuiteOutcome" : "failed"
+        },
+        {
+          "mutationPoint" : {
+            "mutationOperatorId" : "SwapTernaryOperator",
+            "position" : {
+              "column" : 108,
+              "line" : 78,
+              "utf8Offset" : 2467
+            }
+          },
+          "testSuiteOutcome" : "passed"
+        },
+        {
+          "mutationPoint" : {
+            "mutationOperatorId" : "SwapTernaryOperator",
+            "position" : {
+              "column" : 138,
+              "line" : 81,
+              "utf8Offset" : 2695
+            }
+          },
+          "testSuiteOutcome" : "passed"
         }
       ],
       "fileName" : "ContextualAlternates.swift",
-      "mutationScore" : 0
+      "mutationScore" : 25
     },
     {
       "appliedOperators" : [
@@ -85,10 +118,230 @@
             }
           },
           "testSuiteOutcome" : "passed"
+        },
+        {
+          "mutationPoint" : {
+            "mutationOperatorId" : "SwapTernaryOperator",
+            "position" : {
+              "column" : 96,
+              "line" : 217,
+              "utf8Offset" : 6863
+            }
+          },
+          "testSuiteOutcome" : "passed"
+        },
+        {
+          "mutationPoint" : {
+            "mutationOperatorId" : "SwapTernaryOperator",
+            "position" : {
+              "column" : 96,
+              "line" : 220,
+              "utf8Offset" : 7005
+            }
+          },
+          "testSuiteOutcome" : "failed"
+        },
+        {
+          "mutationPoint" : {
+            "mutationOperatorId" : "SwapTernaryOperator",
+            "position" : {
+              "column" : 102,
+              "line" : 223,
+              "utf8Offset" : 7157
+            }
+          },
+          "testSuiteOutcome" : "passed"
+        },
+        {
+          "mutationPoint" : {
+            "mutationOperatorId" : "SwapTernaryOperator",
+            "position" : {
+              "column" : 99,
+              "line" : 226,
+              "utf8Offset" : 7304
+            }
+          },
+          "testSuiteOutcome" : "passed"
+        },
+        {
+          "mutationPoint" : {
+            "mutationOperatorId" : "SwapTernaryOperator",
+            "position" : {
+              "column" : 99,
+              "line" : 229,
+              "utf8Offset" : 7451
+            }
+          },
+          "testSuiteOutcome" : "failed"
+        },
+        {
+          "mutationPoint" : {
+            "mutationOperatorId" : "SwapTernaryOperator",
+            "position" : {
+              "column" : 96,
+              "line" : 232,
+              "utf8Offset" : 7593
+            }
+          },
+          "testSuiteOutcome" : "failed"
+        },
+        {
+          "mutationPoint" : {
+            "mutationOperatorId" : "SwapTernaryOperator",
+            "position" : {
+              "column" : 102,
+              "line" : 235,
+              "utf8Offset" : 7745
+            }
+          },
+          "testSuiteOutcome" : "passed"
+        },
+        {
+          "mutationPoint" : {
+            "mutationOperatorId" : "SwapTernaryOperator",
+            "position" : {
+              "column" : 102,
+              "line" : 238,
+              "utf8Offset" : 7897
+            }
+          },
+          "testSuiteOutcome" : "passed"
+        },
+        {
+          "mutationPoint" : {
+            "mutationOperatorId" : "SwapTernaryOperator",
+            "position" : {
+              "column" : 99,
+              "line" : 241,
+              "utf8Offset" : 8044
+            }
+          },
+          "testSuiteOutcome" : "passed"
+        },
+        {
+          "mutationPoint" : {
+            "mutationOperatorId" : "SwapTernaryOperator",
+            "position" : {
+              "column" : 96,
+              "line" : 244,
+              "utf8Offset" : 8186
+            }
+          },
+          "testSuiteOutcome" : "passed"
+        },
+        {
+          "mutationPoint" : {
+            "mutationOperatorId" : "SwapTernaryOperator",
+            "position" : {
+              "column" : 105,
+              "line" : 247,
+              "utf8Offset" : 8343
+            }
+          },
+          "testSuiteOutcome" : "passed"
+        },
+        {
+          "mutationPoint" : {
+            "mutationOperatorId" : "SwapTernaryOperator",
+            "position" : {
+              "column" : 105,
+              "line" : 250,
+              "utf8Offset" : 8500
+            }
+          },
+          "testSuiteOutcome" : "passed"
+        },
+        {
+          "mutationPoint" : {
+            "mutationOperatorId" : "SwapTernaryOperator",
+            "position" : {
+              "column" : 111,
+              "line" : 253,
+              "utf8Offset" : 8667
+            }
+          },
+          "testSuiteOutcome" : "passed"
+        },
+        {
+          "mutationPoint" : {
+            "mutationOperatorId" : "SwapTernaryOperator",
+            "position" : {
+              "column" : 111,
+              "line" : 256,
+              "utf8Offset" : 8834
+            }
+          },
+          "testSuiteOutcome" : "passed"
+        },
+        {
+          "mutationPoint" : {
+            "mutationOperatorId" : "SwapTernaryOperator",
+            "position" : {
+              "column" : 108,
+              "line" : 259,
+              "utf8Offset" : 8996
+            }
+          },
+          "testSuiteOutcome" : "passed"
+        },
+        {
+          "mutationPoint" : {
+            "mutationOperatorId" : "SwapTernaryOperator",
+            "position" : {
+              "column" : 108,
+              "line" : 262,
+              "utf8Offset" : 9158
+            }
+          },
+          "testSuiteOutcome" : "passed"
+        },
+        {
+          "mutationPoint" : {
+            "mutationOperatorId" : "SwapTernaryOperator",
+            "position" : {
+              "column" : 114,
+              "line" : 265,
+              "utf8Offset" : 9330
+            }
+          },
+          "testSuiteOutcome" : "passed"
+        },
+        {
+          "mutationPoint" : {
+            "mutationOperatorId" : "SwapTernaryOperator",
+            "position" : {
+              "column" : 111,
+              "line" : 268,
+              "utf8Offset" : 9497
+            }
+          },
+          "testSuiteOutcome" : "passed"
+        },
+        {
+          "mutationPoint" : {
+            "mutationOperatorId" : "SwapTernaryOperator",
+            "position" : {
+              "column" : 111,
+              "line" : 271,
+              "utf8Offset" : 9664
+            }
+          },
+          "testSuiteOutcome" : "passed"
+        },
+        {
+          "mutationPoint" : {
+            "mutationOperatorId" : "SwapTernaryOperator",
+            "position" : {
+              "column" : 105,
+              "line" : 274,
+              "utf8Offset" : 9821
+            }
+          },
+          "testSuiteOutcome" : "passed"
         }
       ],
       "fileName" : "StylisticAlternates.swift",
-      "mutationScore" : 0
+      "mutationScore" : 14
     },
     {
       "appliedOperators" : [
@@ -155,6 +408,28 @@
               "column" : 30,
               "line" : 133,
               "utf8Offset" : 5393
+            }
+          },
+          "testSuiteOutcome" : "passed"
+        },
+        {
+          "mutationPoint" : {
+            "mutationOperatorId" : "SwapTernaryOperator",
+            "position" : {
+              "column" : 90,
+              "line" : 131,
+              "utf8Offset" : 5320
+            }
+          },
+          "testSuiteOutcome" : "passed"
+        },
+        {
+          "mutationPoint" : {
+            "mutationOperatorId" : "SwapTernaryOperator",
+            "position" : {
+              "column" : 88,
+              "line" : 133,
+              "utf8Offset" : 5451
             }
           },
           "testSuiteOutcome" : "passed"
@@ -415,8 +690,8 @@
       "mutationScore" : 0
     }
   ],
-  "globalMutationScore" : 17,
-  "numberOfKilledMutants" : 5,
+  "globalMutationScore" : 16,
+  "numberOfKilledMutants" : 9,
   "projectCodeCoverage" : 80,
-  "totalAppliedMutationOperators" : 29
+  "totalAppliedMutationOperators" : 54
 }
