@@ -4,10 +4,10 @@ import ArgumentParser
 public struct Run: ParsableCommand {
     public static let configuration = CommandConfiguration(
         commandName: "run",
-        abstract: "Performs mutation testing for the Swift project contained within the current directory"
+        abstract: "Performs mutation testing for the Swift project contained within the current directory."
     )
     
-    @Option(help: "Only mutate a given list of source code files")
+    @Option(help: "Only mutate a given list of source code files.")
     var filesToMutate: [String] = []
     
     @Option(
