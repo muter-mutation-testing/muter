@@ -23,3 +23,10 @@ struct RemoveTempDirectory: RunCommandStep {
         }
     }
 }
+
+extension RemoveTempDirectory: RunCommandTrap {
+    
+    func run(with state: AnyRunCommandState) {
+        try? fileManager.removeItem(atPath: state.tempDirectoryURL.path)
+    }
+}
