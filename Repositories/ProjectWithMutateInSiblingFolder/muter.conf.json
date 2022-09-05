@@ -1,0 +1,15 @@
+{
+    "arguments" : [
+        "-project",
+        "ProjectWithMutateInSiblingFolder.xcodeproj",
+        "-scheme",
+        "ProjectWithMutateInSiblingFolder",
+        "-sdk",
+        "macosx",
+        "-destination",
+        "platform=macOS",
+        "test"
+    ],
+    "executable" : "/usr/bin/xcodebuild",
+    "mutateInSiblingFolder" : true
+}
