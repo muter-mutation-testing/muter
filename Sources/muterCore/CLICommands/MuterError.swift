@@ -8,6 +8,7 @@ public enum MuterError: Error, Equatable {
     case noSourceFilesOnExclusiveList
     case noMutationPointsDiscovered
     case mutationTestingAborted(reason: MutationTestingAbortReason)
+    case literal(reason: String)
 }
 
 extension MuterError: CustomStringConvertible {
@@ -69,6 +70,8 @@ extension MuterError: CustomStringConvertible {
             return """
             \(reason)
             """
+        case .literal(let reason):
+            return reason
         }
     }
 }

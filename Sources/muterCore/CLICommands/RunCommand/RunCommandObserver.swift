@@ -32,7 +32,8 @@ func flushStdOut() {
 }
 
 final class RunCommandObserver {
-    private let reporter: Reporter
+    private let options: RunOptions
+    private let logger: Logger
     private let fileManager: FileSystemManager
     private let loggingDirectory: String
     private let flushStdOut: () -> Void
@@ -63,8 +64,13 @@ final class RunCommandObserver {
         ]
     }
     
-    init(reporter: Reporter, fileManager: FileSystemManager, flushHandler: @escaping () -> Void) {
-        self.reporter = reporter
+    init(
+        options: RunOptions,
+        fileManager: FileSystemManager,
+        flushHandler: @escaping () -> Void
+    ) {
+        self.options = options
+        self.logger = options.logger
         self.fileManager = fileManager
         self.flushStdOut = flushHandler
         self.loggingDirectory = createLoggingDirectory(in: fileManager.currentDirectoryPath, fileManager: fileManager)
@@ -81,49 +87,49 @@ final class RunCommandObserver {
 
 extension RunCommandObserver {
     func handleMuterLaunched(notification: Notification) {
-        reporter.launched()
+        logger.launched()
     }
     
     func handleProjectCopyStarted(notification: Notification) {
-        reporter.projectCopyStarted()
+        logger.projectCopyStarted()
     }
 
     func handleProjectCopyFinished(notification: Notification) {
-        reporter.projectCopyFinished(destinationPath: notification.object as! String)
+        logger.projectCopyFinished(destinationPath: notification.object as! String)
     }
     
     func handleProjectCoverageDiscoveryStarted(notification: Notification) {
-        reporter.projectCoverageDiscoveryStarted()
+        logger.projectCoverageDiscoveryStarted()
     }
 
     func handleProjectCoverageDiscoveryFinished(notification: Notification) {
         (notification.object as? Bool).map {
-            reporter.projectCoverageDiscoveryFinished(success: $0)
+            logger.projectCoverageDiscoveryFinished(success: $0)
         }
     }
 
     func handleSourceFileDiscoveryStarted(notification: Notification) {
-        reporter.sourceFileDiscoveryStarted()
+        logger.sourceFileDiscoveryStarted()
     }
 
     func handleSourceFileDiscoveryFinished(notification: Notification) {
-        reporter.sourceFileDiscoveryFinished(sourceFileCandidates: notification.object as! [String])
+        logger.sourceFileDiscoveryFinished(sourceFileCandidates: notification.object as! [String])
     }
 
     func handleMutationPointDiscoveryStarted(notification: Notification) {
-        reporter.mutationPointDiscoveryStarted()
+        logger.mutationPointDiscoveryStarted()
     }
 
     func handleMutationPointDiscoveryFinished(notification: Notification) {
-        reporter.mutationPointDiscoveryFinished(mutationPoints: notification.object as! [MutationPoint])
+        logger.mutationPointDiscoveryFinished(mutationPoints: notification.object as! [MutationPoint])
     }
 
     func handleMutationTestingStarted(notification: Notification) {
-        reporter.mutationTestingStarted()
+        logger.mutationTestingStarted()
     }
 
     func handleNewMutationTestOutcomeAvailable(notification: Notification) {
-        reporter.newMutationTestOutcomeAvailable(
+        options.reportOptions.reporter.newMutationTestOutcomeAvailable(
             outcomeWithFlush: MutationOutcomeWithFlush(
                 mutation: notification.object as! MutationTestOutcome.Mutation,
                 fflush: flushStdOut
@@ -134,7 +140,7 @@ extension RunCommandObserver {
     func handleNewTestLogAvailable(notification: Notification) {
         let mutationTestLog = notification.object as! MutationTestLog
 
-        reporter.newMutationTestLogAvailable(mutationTestLog: mutationTestLog)
+        logger.newMutationTestLogAvailable(mutationTestLog: mutationTestLog)
         
         _ = fileManager.createFile(
             atPath: "\(loggingDirectory)/\(logFileName(from: mutationTestLog.mutationPoint))",
@@ -152,8 +158,39 @@ extension RunCommandObserver {
     }
 
     func handleMutationTestingFinished(notification: Notification) {
-        reporter.mutationTestingFinished(
-            mutationTestOutcome: notification.object as! MutationTestOutcome
+        Logger.print("Muter finished running!")
+        Logger.print("\n\n")
+
+        let reporter = options.reportOptions.reporter
+        let reportPath = options.reportOptions.path ?? ""
+        let report = reporter.report(from: notification.object as! MutationTestOutcome)
+        
+        guard !reportPath.isEmpty else {
+            return Logger.print(
+                """
+                Muter's report
+                
+                \(report)
+                """
+            )
+        }
+        
+        if fileManager.fileExists(atPath: reportPath) {
+            try? fileManager.removeItem(atPath: reportPath)
+        }
+
+        let didSave = fileManager.createFile(
+            atPath: reportPath,
+            contents: report.data(using: .utf8),
+            attributes: nil
         )
+        
+        if didSave {
+            Logger.print("Report generated: \(reportPath)")
+        } else {
+            Logger.print(report)
+            Logger.print("\n\n")
+            Logger.print("Could not save report!")
+        }
     }
 }

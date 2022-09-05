@@ -30,7 +30,7 @@ echo " > Running with coverage"
 rm -rf ./muter_logs
 
 echo " > Running in Xcode mode..."
-"$muterdir"/muter --output-xcode --skip-coverage > "$samplesdir"/muters_xcode_output.txt
+"$muterdir"/muter --format xcode --skip-coverage > "$samplesdir"/muters_xcode_output.txt
 rm -rf ./muter_logs # don't pollute the staging area
 
 echo " > Running with --filesToMutate flag"

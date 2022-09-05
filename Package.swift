@@ -137,7 +137,7 @@ func xcodeFolder() -> String {
 
 func swiftCompilerVersion() -> String {
     let versionLine = Executable(
-        "\(xcodeFolder().trimmed)/Toolchains/XcodeDefault.xctoolchain/usr/bin/swift-frontend"
+        "\(xcodeFolder())/Toolchains/XcodeDefault.xctoolchain/usr/bin/swift-frontend"
     )("--version") ?? ""
 
     let regex = try? NSRegularExpression(pattern: " \\d.\\d")
@@ -154,7 +154,7 @@ extension PackageDescription.Target {
     }
 
     private var linkerSetting: LinkerSetting {
-        let toolchainFolder = "\(xcodeFolder().trimmed)/Toolchains/XcodeDefault.xctoolchain/usr/lib/swift/macosx"
+        let toolchainFolder = "\(xcodeFolder())/Toolchains/XcodeDefault.xctoolchain/usr/lib/swift/macosx"
         return .unsafeFlags([
             "-rpath", toolchainFolder
         ])
