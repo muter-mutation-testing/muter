@@ -1,8 +1,6 @@
 import Foundation
 import ArgumentParser
 
-extension String: Error { }
-
 public struct Run: ParsableCommand {
     public static let configuration = CommandConfiguration(
         commandName: "run",

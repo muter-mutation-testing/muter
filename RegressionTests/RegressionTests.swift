@@ -5,7 +5,9 @@ import SnapshotTesting
 @testable import muterCore
 import TestingExtensions
 
-class RegressionTests: QuickSpec {
+extension String: Error {}
+
+final class RegressionTests: QuickSpec {
 
     override func spec() {
         
