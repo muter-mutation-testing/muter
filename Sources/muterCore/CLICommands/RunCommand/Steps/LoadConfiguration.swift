@@ -28,7 +28,7 @@ struct LoadConfiguration: RunCommandStep {
                 )
             }
 
-            let configuration = try MuterConfiguration.make(from: configurationData)
+            let configuration = try MuterConfiguration(from: configurationData)
 
             if hasJSON {
                 try migrateToYAML(configurationData)

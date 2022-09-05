@@ -18,7 +18,7 @@ class InitCommandSpec: QuickSpec {
                 do {
                     try initCommand.run()
                     guard let contents = FileManager.default.contents(atPath: "\(workingDirectory)/muter.conf.yaml"),
-                        let _ = try? MuterConfiguration.make(from: contents) else {
+                        let _ = try? MuterConfiguration(from: contents) else {
                             fail("Expected a valid configuration file to be written")
                             return
                     }

@@ -40,22 +40,20 @@ public struct MuterConfiguration: Equatable, Codable {
         let excludeCallList = try? container.decode([String].self, forKey: .excludeCallList)
         self.excludeCallList = excludeCallList ?? []
     }
+    
+    init(from data: Data) throws {
+        do {
+            self = try YAMLDecoder().decode(MuterConfiguration.self, from: data)
+        } catch {
+            self = try JSONDecoder().decode(MuterConfiguration.self, from: data)
+        }
+    }
 }
 
 extension MuterConfiguration {
     static let fileName = "muter.conf"
     static let fileNameWithExtension = fileName + ".yaml"
     static let legacyFileNameWithExtension = fileName + ".json"
-}
-
-extension MuterConfiguration {
-    static func make(from data: Data) throws -> Self {
-        do {
-            return try YAMLDecoder().decode(MuterConfiguration.self, from: data)
-        } catch {
-            return try JSONDecoder().decode(MuterConfiguration.self, from: data)
-        }
-    }
 }
 
 extension MuterConfiguration {
