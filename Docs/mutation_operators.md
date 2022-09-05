@@ -104,3 +104,13 @@ func update(email: String, for userId: String) {
     userRecord.email = email
 }
 ```
+
+## Change Ternary Operator
+
+The change ternary operator will swap ternary operators in your code based on this table:
+
+| Original Operator                             | Changed Operator                              |
+| --------------------------------------------- | --------------------------------------------- |
+| `<condition> ? <expression1> : <expression2>` | `<condition> ? <expression2> : <expression1>` |
+
+The purpose of this operator is to highlight how your tests respond to changes in logic. A well-engineered test suite will be able to fail clearly in response to different logical constraints.
