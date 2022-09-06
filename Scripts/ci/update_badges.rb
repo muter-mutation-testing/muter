@@ -4,14 +4,14 @@ require "net/http"
 require "uri"
 require "json"
 
-gistKey = ARGV[1]
-gistId = ARGV[2]
-gistName = ARGV[3]
-gistContent = ARGV[4]
+gistKey = ARGV[0]
+gistId = ARGV[1]
+gistName = ARGV[2]
+gistContent = ARGV[3]
 
 header = {
-	"Content-Type": "application/json; charset=utf-8",
-	"Authorization": "token #{gistKey}"
+    "Content-Type": "application/json; charset=utf-8",
+    "Authorization": "token #{gistKey}"
 }
 
 payload = {
@@ -32,7 +32,7 @@ request.body = payload.to_json
 response = http.request(request)
 
 if (response.code == '200') then
-	exit(true)
+    exit(true)
 else
-	abort("Got #{response.code}")
+    abort("Got #{response.code}")
 end
