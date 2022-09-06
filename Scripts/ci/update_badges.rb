@@ -15,8 +15,8 @@ header = {
 }
 
 payload = {
-    files: {
-        "muter-coverage-badge.json": {
+    "files": {
+        "#{gistName}": {
             "content": "#{gistContent}"
         }
     }
