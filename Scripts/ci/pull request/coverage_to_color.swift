@@ -1,7 +1,6 @@
 import Foundation
 
 let coverage = CommandLine.arguments[1]
-
 let value = (Double(coverage.replacingOccurrences(of: "%", with: "")) ?? 0).rounded(.toNearestOrAwayFromZero)
 let rounded = Int(value)
 var color = "red"
@@ -13,11 +12,6 @@ case 41...60: color = "yellow"
 default: color = "red"
 }
 
-print("""
-    {
-      "color":"\(color)",
-      "label":"coverage",
-      "message": \(coverage),
-      "schemaVersion":1
-    }
-    """)
+print(
+    "{\"color\":\"\(color)\",\"label\":\"coverage\",\"message\":\"\(value)\",\"schemaVersion\":1}"
+)
