@@ -1,4 +1,4 @@
-<img src="Docs/Images/Muter%20Logo.png" width="475" alt="Muter logo" />
+<img src="./Docs/Images/Muter%20Logo.png" width="475" alt="Muter logo" />
 
 [![Swift 5 support](https://img.shields.io/badge/swift-5.5-ED523F.svg?style=flat)](https://swift.org/download/) 
 [![Build](https://img.shields.io/bitrise/6354dbc8bfead01c/master?label=build&token=jq6MzFouY0nlkBzizYvuhQ)](https://app.bitrise.io/app/6354dbc8bfead01c)
