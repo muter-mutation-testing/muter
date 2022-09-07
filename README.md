@@ -2,9 +2,9 @@
 
 [![Swift 5 support](https://img.shields.io/badge/swift-5.5-ED523F.svg?style=flat)](https://swift.org/download/) 
 [![Build](https://img.shields.io/bitrise/6354dbc8bfead01c/master?label=build&token=jq6MzFouY0nlkBzizYvuhQ)](https://app.bitrise.io/app/6354dbc8bfead01c)
-![Regression Tests](https://img.shields.io/endpoint?url=https://api.jsonbin.io/b/5f77f02e7243cd7e8249528f/latest&style=flat)
-![Acceptance Tests](https://img.shields.io/endpoint?url=https://api.jsonbin.io/b/602712c33b303d3d964fd4bf/latest&style=flat)
-[![Code coverage](https://img.shields.io/endpoint?url=https://api.jsonbin.io/b/5f791c9e302a837e9573fa65/latest&style=falt)](https://codecov.io/gh/muter-mutation-testing/muter)
+![Regression Tests](https://img.shields.io/endpoint?url=https://gist.githubusercontent.com/rakaramos/905b694fb277c23630c5476c3ddf0dae/raw/muter-regression-badge.json&style=flat)
+![Acceptance Tests](https://img.shields.io/endpoint?url=https://gist.githubusercontent.com/rakaramos/c064fc556513a6be07349b0d2f3ba44e/raw/muter-acceptance-badge.json&style=flat)
+[![Code coverage](https://img.shields.io/endpoint?url=https://gist.githubusercontent.com/rakaramos/2c3b3eae1b44a4c859bb8f8f2f32c783/raw/muter-coverage-badge.json&style=flat)](https://codecov.io/gh/muter-mutation-testing/muter)
 ![Mutation score](https://img.shields.io/badge/mutation%20score-67-blue?style=flat)
 
 ### Automated [mutation testing](https://en.wikipedia.org/wiki/Mutation_testing) for Swift inspired by [Stryker](https://github.com/stryker-mutator/stryker), [PITest](https://github.com/hcoles/pitest), and [Mull](https://github.com/mull-project/mull).
