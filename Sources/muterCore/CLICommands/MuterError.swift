@@ -8,6 +8,7 @@ public enum MuterError: Error, Equatable {
     case noSourceFilesOnExclusiveList
     case noMutationPointsDiscovered
     case mutationTestingAborted(reason: MutationTestingAbortReason)
+    case literal(reason: String)
     case removeTempDirectoryFailed(reason: String)
 }
 
@@ -18,7 +19,7 @@ extension MuterError: CustomStringConvertible {
             return """
             Muter was unable to parse your configuration file.
             
-            This is often caused from running Muter from the wrong directory, or having a corrupted or missing muter.conf.json
+            This is often caused from running Muter from the wrong directory, or having a corrupted or missing \(MuterConfiguration.fileNameWithExtension)
             
             You can run \("muter init".bold) to generate or regenerate a configuration file.
             
@@ -77,6 +78,8 @@ extension MuterError: CustomStringConvertible {
             ******************
             FileManager Error: \(reason)
             """
+        case .literal(let reason):
+            return reason
         }
     }
 }

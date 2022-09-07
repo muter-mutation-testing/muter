@@ -20,7 +20,7 @@ cd ./AcceptanceTests/Repositories/ExampleApp
 
 echo " > Creating a configuration file..."
 "$muterdir"/muter init
-cp ./muter.conf.json "$samplesdir"/created_iOS_config.json
+cp ./muter.conf.yml "$samplesdir"/created_iOS_config.yml
 
 echo " > Running in CLI mode..."
 "$muterdir"/muter --skip-coverage > "$samplesdir"/muters_output.txt
@@ -33,14 +33,14 @@ echo " > Running with coverage"
 rm -rf ./muter_logs
 
 echo " > Running in Xcode mode..."
-"$muterdir"/muter --output-xcode --skip-coverage > "$samplesdir"/muters_xcode_output.txt
+"$muterdir"/muter --format xcode --skip-coverage > "$samplesdir"/muters_xcode_output.txt
 rm -rf ./muter_logs # don't pollute the staging area
 
 echo " > Running with --filesToMutate flag"
 "$muterdir"/muter --skip-coverage --files-to-mutate "/ExampleApp/Module.swift" > "$samplesdir"/muters_files_to_mutate_output.txt
 rm -rf ./muter_logs # don't pollute the staging area
 
-rm muter.conf.json # cleanup the created configuration file for the next test run
+rm muter.conf.yml # cleanup the created configuration file for the next test run
 cd ../..
 
 echo "Initializing Muter on an macOS codebase with a test suite..."
@@ -48,10 +48,10 @@ cd ./Repositories/ExampleMacOSApp
 
 echo " > Creating a configuration file..."
 "$muterdir"/muter init
-cp ./muter.conf.json "$samplesdir"/created_macOS_config.json
+cp ./muter.conf.yml "$samplesdir"/created_macOS_config.yml
 
 echo " > Cleaning up after test..."
-rm muter.conf.json # cleanup the created configuration file for the next test run
+rm muter.conf.yml # cleanup the created configuration file for the next test run
 cd ../..
 
 echo "Running Muter on an empty example codebase..."

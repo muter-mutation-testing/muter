@@ -11,7 +11,7 @@
 
 #### Muter can be run within Xcode
 Use this mode to rapidly diagnose areas where you can begin improving your test code
- 
+
 ![Muter running inside Xcode](Docs/Images/muter-in-xcode.png) 
 
 #### Muter can be run from the command line
@@ -98,13 +98,31 @@ make uninstall
 brew link muter
 ```
 
+## Development
+If you want to run Muter in Xcode, you need to edit the top-level function `isDebuggingMain` on `Package.swift`:
+
+```swift
+isDebuggingMain(true)
+```
+
+And change the `FileManager` current path (in `main.swift`) to point to the directory containing the project you'd like to test using Muter:
+
+```swift
+import Foundation
+
+FileManager.default.changeCurrentDirectoryPath("/some/path")
+```
+Now you can run Muter from Xcode.
+
+*Note: To pass arguments on launch, you can use Xcode's Scheme Editor and add them.*
+
 ## Setup
 ### Muter's Configuration
 To get started using Muter, run `muter init` in the root of your project directory. Muter will take its best guess at a configuration that will work for your project. Muter supports generating configurations for the following build systems:
 * Xcode Projects & Workspace
 * Swift Package Manager
 
-It saves its configuration into a file named `muter.conf.json`, which you should keep in the root directory of your project. You should version control your configuration file as well. 
+It saves its configuration into a file named `muter.conf.yml`, which you should keep in the root directory of your project. You should version control your configuration file as well. 
 
 After running `muter init`, you should look at the generated configuration and ensure that it will run your project. We recommend trying the settings it generates in your terminal, and verifying those commands run your tests.
 
@@ -135,25 +153,23 @@ Should you need to modify any of the options, you can use the list below to unde
 
 Below is an example pulled directly from the `ExampleApp` project.
 The configuration file will end up looking something like this:
-```json
-{
-    "executable": "/usr/bin/xcodebuild",
-    "arguments": [
-        "-project",
-        "ExampleApp.xcodeproj",
-        "-scheme",
-        "ExampleApp",
-        "-sdk",
-        "iphonesimulator",
-        "-destination",
-        "platform=iOS Simulator,name=iPhone 8",
-        "test"
-    ],
-    "exclude": ["AppDelegate.swift"]
-}
+```yaml
+arguments:
+- -project
+- ExampleApp.xcodeproj
+- -scheme
+- ExampleApp
+- -sdk
+- iphonesimulator
+- -destination
+- platform=iOS Simulator,name=iPhone 8
+- test
+executable: /usr/bin/xcodebuild
+exclude:
+- AppDelegate.swift
 ```
 
-Check out the `muter.conf.json` in the root directory of this repository for another example.
+Check out the `muter.conf.yml` in the root directory of this repository for another example.
 
 ### Xcode Setup
 Setting up Muter to run within Xcode is simple. After creating your configuation:
@@ -163,7 +179,7 @@ Setting up Muter to run within Xcode is simple. After creating your configuation
 3) **Add the Muter Xcode command** to the build step:
 
 ```sh
-muter --output-xcode
+muter --format xcode
 ```
 
 ## Running Muter
@@ -185,9 +201,18 @@ Muter defaults to run when you don't specify any subcommands
 
 ```
 --files-to-mutate    Only mutate a given list of source code files (Supports glob expressions like Sources/**/*.swift)
---output-json        Output test results to a json file
---output-xcode       Output test results in a format consumable by an Xcode run script step
 ```
+
+**Available Report Formats**
+
+```
+plain: (default) prints the report to stdout.
+json: prints the report in JSON format.
+html: prints an HTML report.
+xcode: prints mutation test results in real-time, as they are produced, in a format that Xcode can use to report them in the Issue Navigator.
+```
+Note: If you pass `--output` muter will save the report, instead of using stdout.
+
 
 ### Within Xcode
 Build (Cmd + B) your aggregate build target and let Muter run. The mutants which survive testing will be called out in the issue navigator. Once the target finishes building, testing has completed.
@@ -206,8 +231,8 @@ You can mark specific lines to skip mutations on, rather than entire files, by a
 - Muter assumes you aren't putting multiple expressions on one line (and we have the opinion you shouldn't be doing this anyway). Basically, if you aren't using semicolons in your code then Muter shouldn't have an issue mutating it.
 
 ## Best Practices
-- Commit your `muter.conf.json`
-- It's possible for Muter to cause compile time warnings. As a result of this, we recommend you don't treat Swift warnings as errors while mutation testing by adding the argument `SWIFT_TREAT_WARNINGS_AS_ERRORS=NO` to your `muter.conf.json` if you're using `xcodebuild`.
+- Commit your `muter.conf.yml`
+- It's possible for Muter to cause compile time warnings. As a result of this, we recommend you don't treat Swift warnings as errors while mutation testing by adding the argument `SWIFT_TREAT_WARNINGS_AS_ERRORS=NO` to your `muter.conf.yml` if you're using `xcodebuild`.
 - Disable or relax linting rules that would cause a build error as a consequence of a code change not matching your project's style. Muter operates on your source code and then rebuilds it, and the change it introduces could trigger your linter if it's part of your build process.
 - Running Muter can be a lengthy process, so be sure to allocate enough time for the test to finish.
 - Because Muter can take a while to run, it is recommend to exclude UI or journey tests from your test suite. We recommend creating a separate schemes or targets for mutation testing. However, you should feel free to run these kinds of tests if you're okay with the longer feedback cycle.
@@ -223,7 +248,7 @@ Check out this example to familiarize yourself with what a report looks like.
 
 Muter supports any platform that compiles and tests using `xcodebuild`, which includes iOS, macOS, tvOS, and watchOS. 
 
-Muter can run only on macOS 10.13 or higher.
+Muter can run only on macOS 10.15 or higher.
 
 **Does Muter support UI test suites?**
 

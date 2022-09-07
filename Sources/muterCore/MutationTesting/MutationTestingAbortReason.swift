@@ -11,7 +11,7 @@ extension MutationTestingAbortReason: CustomStringConvertible {
             return """
             Muter noticed that your test suite initially failed to compile or produced a test failure.
             
-            Assuming you have no build errors, this is usually due to misconfiguring the "executable" and "arguments" options inside of your muter.conf.json.
+            Assuming you have no build errors, this is usually due to misconfiguring the "executable" and "arguments" options inside of your \(MuterConfiguration.fileName).
             Alternatively, it could mean you have a nondeterministic test failure in your test suite.
             
             We recommend you try your settings out in a terminal prior to using Muter for the best configuration experience.

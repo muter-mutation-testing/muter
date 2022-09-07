@@ -1,0 +1,13 @@
+arguments:
+- -project
+- ProjectWithConcurrency.xcodeproj
+- -scheme
+- ProjectWithConcurrency
+- -sdk
+- macosx
+- -destination
+- platform=macOS
+- test
+executable: /usr/bin/xcodebuild
+exclude: []
+excludeCalls: []

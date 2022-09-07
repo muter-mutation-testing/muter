@@ -12,30 +12,42 @@ public struct Init: ParsableCommand {
     private let fileManager: FileManager
     private let notificationCenter: NotificationCenter
 
-    public init(directory: String = FileManager.default.currentDirectoryPath,
-                fileManager: FileManager = FileManager.default,
-                notificationCenter: NotificationCenter = .default) {
+    public init(
+        directory: String = FileManager.default.currentDirectoryPath,
+        fileManager: FileManager = FileManager.default,
+        notificationCenter: NotificationCenter = .default
+    ) {
         self.directory = directory
         self.fileManager = fileManager
         self.notificationCenter = notificationCenter
     }
 
     public init(from decoder: Decoder) throws {
-        self.init(directory: FileManager.default.currentDirectoryPath, fileManager: .default, notificationCenter: .default)
+        self.init(
+            directory: FileManager.default.currentDirectoryPath,
+            fileManager: .default,
+            notificationCenter: .default
+        )
     }
 
     public init() {
-        self.init(directory: FileManager.default.currentDirectoryPath, fileManager: .default, notificationCenter: .default)
+        self.init(
+            directory: FileManager.default.currentDirectoryPath,
+            fileManager: .default,
+            notificationCenter: .default
+        )
     }
 
     public func run() throws {
         notificationCenter.post(name: .muterLaunched, object: nil)
 
-        let directoryContents = fileManager.subpaths(atPath: self.directory) ?? []
-        fileManager.createFile(atPath: "\(self.directory)/muter.conf.json",
-                               contents: MuterConfiguration(from: directoryContents).asJSONData,
-                               attributes: nil)
+        let directoryContents = fileManager.subpaths(atPath: directory) ?? []
+        fileManager.createFile(
+            atPath: "\(directory)/\(MuterConfiguration.fileNameWithExtension)",
+            contents: MuterConfiguration(from: directoryContents).asData,
+            attributes: nil
+        )
 
-        notificationCenter.post(name: .configurationFileCreated, object: "\(self.directory)/muter.conf.json")
+        notificationCenter.post(name: .configurationFileCreated, object: "\(self.directory)/\(MuterConfiguration.fileNameWithExtension)")
     }
 }

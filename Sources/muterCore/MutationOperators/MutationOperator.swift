@@ -34,6 +34,7 @@ struct MutationOperator {
         case ror = "RelationalOperatorReplacement"
         case removeSideEffects = "RemoveSideEffects"
         case logicalOperator = "ChangeLogicalConnector"
+        case ternaryOperator = "SwapTernaryOperator"
         
         var rewriterVisitorPair: (rewriter: RewriterInitializer, visitor: VisitorInitializer) {
             switch self {
@@ -46,6 +47,9 @@ struct MutationOperator {
             case .logicalOperator:
                 return (rewriter: ChangeLogicalConnectorOperator.Rewriter.init,
                         visitor: ChangeLogicalConnectorOperator.Visitor.init)
+            case .ternaryOperator:
+                return (rewriter: TernaryOperator.Rewriter.init,
+                        visitor: TernaryOperator.Visitor.init)
             }
         }
         

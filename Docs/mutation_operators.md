@@ -64,7 +64,7 @@ The Remove Side Effects operator will remove code it determines is causing a sid
 
 * A line contains a function call which is explicitly discarding a return result
 * A line contains a function call and doesn't save the result of the function call into a named variable or constant (i.e. a line implicitly discards a return result or doesn't produce one)
-* A line does not contain a call to `print`, `exit`, `fatalError`, `abort`, or any function listed in `muter.conf.json` under the `excludeCalls` key.
+* A line does not contain a call to `print`, `exit`, `fatalError`, `abort`, or any function listed in `muter.conf.yml` under the `excludeCalls` key.
 
 The purpose of this operator is to highlight how your tests respond to the absence of expected side effects.
 
@@ -104,3 +104,13 @@ func update(email: String, for userId: String) {
     userRecord.email = email
 }
 ```
+
+## Change Ternary Operator
+
+The change ternary operator will swap ternary operators in your code based on this table:
+
+| Original Operator                             | Changed Operator                              |
+| --------------------------------------------- | --------------------------------------------- |
+| `<condition> ? <expression1> : <expression2>` | `<condition> ? <expression2> : <expression1>` |
+
+The purpose of this operator is to highlight how your tests respond to changes in logic. A well-engineered test suite will be able to fail clearly in response to different logical constraints.

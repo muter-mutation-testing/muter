@@ -9,19 +9,24 @@ class FileManagerSpy: Spy, FileSystemManager {
     private(set) var searchPathDirectories: [FileManager.SearchPathDirectory] = []
     private(set) var domains: [FileManager.SearchPathDomainMask] = []
     private(set) var copyPaths: [(source: String, dest: String)] = []
+    private(set) var contents: Data?
 
     var tempDirectory: URL!
     var fileContentsToReturn: Data!
     var currentDirectoryPathToReturn: String!
     var errorToThrow: Error?
     var subpathsToReturn: [String]?
-    var fileExistsToReturn: Bool!
+    var fileExistsToReturn: [Bool] = []
 
     var currentDirectoryPath: String {
         return currentDirectoryPathToReturn
     }
 
-    func createDirectory(atPath path: String, withIntermediateDirectories createIntermediates: Bool, attributes: [FileAttributeKey: Any]? = nil) throws {
+    func createDirectory(
+        atPath path: String,
+        withIntermediateDirectories createIntermediates: Bool,
+        attributes: [FileAttributeKey: Any]? = nil
+    ) throws {
         methodCalls.append(#function)
         paths.append(path)
         createsIntermediates.append(createIntermediates)
@@ -33,6 +38,7 @@ class FileManagerSpy: Spy, FileSystemManager {
     func createFile(atPath path: String, contents data: Data?, attributes attr: [FileAttributeKey: Any]?) -> Bool {
         methodCalls.append(#function)
         paths.append(path)
+        contents = data
 
         return true
     }
@@ -74,7 +80,7 @@ class FileManagerSpy: Spy, FileSystemManager {
     
     func fileExists(atPath path: String) -> Bool {
         methodCalls.append(#function)
-        return fileExistsToReturn
+        return fileExistsToReturn.removeFirst()
     }
 
     func removeItem(atPath path: String) throws {

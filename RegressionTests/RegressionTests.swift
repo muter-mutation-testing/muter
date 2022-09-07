@@ -7,7 +7,7 @@ import TestingExtensions
 
 extension String: Error {}
 
-class RegressionTests: QuickSpec {
+final class RegressionTests: QuickSpec {
 
     override func spec() {
         

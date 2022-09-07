@@ -1,0 +1,13 @@
+arguments:
+- test
+executable: /usr/bin/swift
+exclude:
+- AcceptanceTests
+- RegressionTests
+- main.swift
+- Package.swift
+- Repositories
+- RunCommandObserver.swift
+- ProgressExtensions.swift
+- BundleResource.swift
+excludeCalls: []

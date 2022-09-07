@@ -1,10 +1,6 @@
 import Foundation
 
-final class JsonReporter: Reporter {
-    func mutationTestingFinished(mutationTestOutcome outcome: MutationTestOutcome) {
-        print(report(from: outcome))
-    }
-    
+final class JsonReporter: Reporter {    
     func report(from outcome: MutationTestOutcome) -> String {
         let report = MuterTestReport(from: outcome)
         let encoder = JSONEncoder()

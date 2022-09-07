@@ -1,29 +1,26 @@
-import Quick
 import Nimble
+import Quick
 
 import Foundation
 import TestingExtensions
 
 @testable import muterCore
 
-class AcceptanceTests: QuickSpec {
-    
+final class AcceptanceTests: QuickSpec {
     override func spec() {
-        
         describe("someone using Muter for mutation testing") {
-            
             let messages = (
                 mutationScoreOfTestSuite: "Mutation Score of Test Suite: 33%",
                 mutationScoresHeader: """
-                        --------------------
-                        Mutation Test Scores
-                        --------------------
-                        """,
+                --------------------
+                Mutation Test Scores
+                --------------------
+                """,
                 appliedMutationOperatorsHeader: """
-                        --------------------------
-                        Applied Mutation Operators
-                        --------------------------
-                        """
+                --------------------------
+                Applied Mutation Operators
+                --------------------------
+                """
             )
             
             context("with the 'run' command") {
@@ -74,13 +71,13 @@ class AcceptanceTests: QuickSpec {
                                 "baseline run.log",
                                 "ChangeLogicalConnector @ Module2.swift-2-17.log",
                                 "RelationalOperatorReplacement @ Module.swift-4-18.log",
-                                "RemoveSideEffects @ ViewController.swift-5-28.log"
+                                "RemoveSideEffects @ ViewController.swift-5-28.log",
                             ]
                             
                             let numberOfEmptyLogFiles = expectedLogFiles
                                 .map(self.contentsOfLogFile(named:))
                                 .count { $0.isEmpty }
-
+                            
                             expect(logFiles.sorted()).to(equal(expectedLogFiles.sorted())) // Sort these so it's easier to reason about any erroneous failures
                             expect(numberOfEmptyLogFiles) == 0
                         }
@@ -99,7 +96,7 @@ class AcceptanceTests: QuickSpec {
                     }
                 }
                 
-                context("with '--output-xcode' as an argument") {
+                context("with '--format xcode' as an argument") {
                     var output: String!
                     
                     beforeEach {
@@ -188,10 +185,11 @@ class AcceptanceTests: QuickSpec {
                 }
             }
             
+            
             context("with the 'init' command") {
                 context("ran inside of a directory containing an iOS project") {
                     they("have a configuration file created for them") {
-                        let decodedConfiguration = try? JSONDecoder().decode(MuterConfiguration.self, from: self.createdIOSConfiguration)
+                        let decodedConfiguration = try? MuterConfiguration(from: self.createdIOSConfiguration)
                         expect(decodedConfiguration?.testCommandExecutable) == "/usr/bin/xcodebuild"
                         expect(decodedConfiguration?.testCommandArguments).to(contain("-destination"))
                         expect(decodedConfiguration?.testCommandArguments).to(contain("platform=iOS Simulator,name=iPhone 8"))
@@ -201,7 +199,7 @@ class AcceptanceTests: QuickSpec {
                 
                 context("ran inside of a directory containing a macOS project") {
                     they("have a configuration file created for them") {
-                        let decodedConfiguration: MuterConfiguration? = try? JSONDecoder().decode(MuterConfiguration.self, from: self.createdMacOSConfiguration)
+                        let decodedConfiguration: MuterConfiguration? = try? MuterConfiguration(from: self.createdMacOSConfiguration)
                         expect(decodedConfiguration?.testCommandExecutable) == "/usr/bin/xcodebuild"
                         expect(decodedConfiguration?.testCommandArguments).toNot(contain("-destination"))
                         expect(decodedConfiguration?.testCommandArguments).toNot(contain("platform=iOS Simulator,name=iPhone 8"))
@@ -226,7 +224,7 @@ class AcceptanceTests: QuickSpec {
                             SUBCOMMANDS:
                               init                    Creates the configuration file that Muter uses
                               run (default)           Performs mutation testing for the Swift project
-                                                      contained within the current directory
+                                                      contained within the current directory.
 
                               See 'muter help <subcommand>' for detailed help.
 
@@ -241,14 +239,14 @@ class AcceptanceTests: QuickSpec {
                             equalWithDiff(
                                 """
                                 OVERVIEW: Creates the configuration file that Muter uses
-
+                                
                                 USAGE: muter init
-
+                                
                                 OPTIONS:
                                   --version               Show the version.
                                   -h, --help              Show help information.
-
-
+                                
+                                
                                 """
                             )
                         )
@@ -261,19 +259,18 @@ class AcceptanceTests: QuickSpec {
                             equalWithDiff(
                                 """
                                 OVERVIEW: Performs mutation testing for the Swift project contained within the
-                                current directory
+                                current directory.
 
-                                USAGE: muter run [--files-to-mutate <files-to-mutate> ...] [--output-json] [--output-html] [--output-xcode] [--skip-coverage]
+                                USAGE: muter run [--files-to-mutate <files-to-mutate> ...] [--format <format>] [--skip-coverage] [--output <output>]
 
                                 OPTIONS:
                                   --files-to-mutate <files-to-mutate>
-                                                          Only mutate a given list of source code files
-                                  --output-json           Output test results to a json file.
-                                  --output-html           Output test results to an html file.
-                                  --output-xcode          Output test results in a format consumable by an
-                                                          Xcode run script step.
+                                                          Only mutate a given list of source code files.
+                                  -f, --format <format>   The report format for muter: plain, json, html, xcode
+                                                          (default: plain)
                                   --skip-coverage         Skips the step in which Muter runs your project in
                                                           order to filter out files without coverage.
+                                  -o, --output <output>   Output file for the report to be saved.
                                   --version               Show the version.
                                   -h, --help              Show help information.
 
@@ -296,7 +293,7 @@ extension AcceptanceTests {
                 .withoutScheme()
         )
     }
-
+    
     var muterOutput: String { contentsOfFileAsString("\(AcceptanceTests().rootTestDirectory)/samples/muters_output.txt") }
     var muterXcodeOutput: String { contentsOfFileAsString("\(AcceptanceTests().rootTestDirectory)/samples/muters_xcode_output.txt") }
     
@@ -311,15 +308,15 @@ extension AcceptanceTests {
     var muterHelpOutput: String { contentsOfFileAsString("\(AcceptanceTests().rootTestDirectory)/samples/muters_help_output.txt") }
     var muterInitHelpOutput: String { contentsOfFileAsString("\(AcceptanceTests().rootTestDirectory)/samples/muters_init_help_output.txt") }
     var muterRunHelpOutput: String { contentsOfFileAsString("\(AcceptanceTests().rootTestDirectory)/samples/muters_run_help_output.txt") }
-
+    
     var muterLogFiles: [String] {
         contentsOfDirectory(muterLogsRootPath)
             .map { muterLogsRootPath + "/" + $0 }
             .flatMap(contentsOfDirectory)
     }
     
-    var createdIOSConfiguration: Data { contentsOfFileAsData("\(AcceptanceTests().rootTestDirectory)/samples/created_iOS_config.json") }
-    var createdMacOSConfiguration: Data { contentsOfFileAsData("\(AcceptanceTests().rootTestDirectory)/samples/created_macOS_config.json") }
+    var createdIOSConfiguration: Data { contentsOfFileAsData("\(AcceptanceTests().rootTestDirectory)/samples/created_iOS_config.yml") }
+    var createdMacOSConfiguration: Data { contentsOfFileAsData("\(AcceptanceTests().rootTestDirectory)/samples/created_macOS_config.yml") }
     
     var muterLogsRootPath: String { "\(AcceptanceTests().rootTestDirectory)/samples/muter_logs/" }
 }
@@ -341,8 +338,9 @@ extension AcceptanceTests {
     
     func contentsOfFileAsString(_ path: String) -> String {
         guard let data = FileManager.default.contents(atPath: path),
-            let output = String(data: data, encoding: .utf8) else {
-                fatalError("File not found at \(path)")
+              let output = String(data: data, encoding: .utf8)
+        else {
+            fatalError("File not found at \(path)")
         }
         return output
     }

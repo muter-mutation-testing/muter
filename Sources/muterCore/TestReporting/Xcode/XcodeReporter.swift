@@ -1,8 +1,5 @@
 final class XcodeReporter: Reporter {
-    func projectCopyFinished(destinationPath: String) {
-        print("Finished copying your project to a temporary directory for mutation testing:\n\(destinationPath.bold)\n")
-    }
-    
+
     func newMutationTestOutcomeAvailable(outcomeWithFlush: MutationOutcomeWithFlush) {
         let outcome = outcomeWithFlush.mutation
         
@@ -10,13 +7,9 @@ final class XcodeReporter: Reporter {
             return
         }
 
-        print(outcomeIntoXcodeString(outcome: outcome))
+        Logger.print(outcomeIntoXcodeString(outcome: outcome))
 
         outcomeWithFlush.fflush()
-    }
-    
-    func mutationTestingFinished(mutationTestOutcome outcome: MutationTestOutcome) {
-        print(report(from: outcome))
     }
     
     func report(from outcome: MutationTestOutcome) -> String {

@@ -73,14 +73,14 @@ struct ProgressBarMultilineTerminalPrinter: ProgressBarPrinter {
         self.numberOfLines = numberOfLines
         // the cursor is moved up before printing the progress bar.
         // have to move the cursor down one line initially.
-        print("")
+        Logger.print("")
     }
     
     mutating func display(_ progressBar: ProgressBar) {
         let currentTime = getTimeOfDay()
         if currentTime - lastPrintedTime > 0.1 || progressBar.index == progressBar.count {
             let lines = "\u{1B}[1A\u{1B}".repeated(numberOfLines)
-            print("\(lines)[K\(progressBar.value)")
+            Logger.print("\(lines)[K\(progressBar.value)")
             lastPrintedTime = currentTime
         }
     }

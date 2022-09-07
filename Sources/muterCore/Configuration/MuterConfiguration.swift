@@ -1,4 +1,5 @@
 import Foundation
+import Yams
 
 public struct MuterConfiguration: Equatable, Codable {
     let testCommandArguments: [String]
@@ -17,11 +18,13 @@ public struct MuterConfiguration: Equatable, Codable {
         case mutateFilesInSiblingOfProjectFolder = "mutateInSiblingFolder"
     }
 
-    public init(executable: String = "",
-                arguments: [String] = [],
-                excludeList: [String] = [],
-                excludeCallList: [String] = [],
-                mutateFilesInSiblingOfProjectFolder: Bool = false) {
+    public init(
+        executable: String = "",
+        arguments: [String] = [],
+        excludeList: [String] = [],
+        excludeCallList: [String] = [],
+        mutateFilesInSiblingOfProjectFolder: Bool = false
+    ) {
         self.testCommandExecutable = executable
         self.testCommandArguments = arguments
         self.excludeFileList = excludeList
@@ -44,12 +47,25 @@ public struct MuterConfiguration: Equatable, Codable {
         let mutateFilesInSiblingOfProjectFolder = try? container.decode(Bool.self, forKey: .mutateFilesInSiblingOfProjectFolder)
         self.mutateFilesInSiblingOfProjectFolder = mutateFilesInSiblingOfProjectFolder ?? false
     }
+    
+    init(from data: Data) throws {
+        do {
+            self = try YAMLDecoder().decode(MuterConfiguration.self, from: data)
+        } catch {
+            self = try JSONDecoder().decode(MuterConfiguration.self, from: data)
+        }
+    }
 }
 
 extension MuterConfiguration {
-    var asJSONData: Data {
-        let encoder = JSONEncoder()
-        encoder.outputFormatting = [.prettyPrinted, .sortedKeys]
-        return try! encoder.encode(self)
+    static let fileName = "muter.conf"
+    static let fileNameWithExtension = fileName + ".yml"
+    static let legacyFileNameWithExtension = fileName + ".json"
+}
+
+extension MuterConfiguration {
+    var asData: Data {
+        let encoder = YAMLEncoder()
+        return (try! encoder.encode(self)).data(using: .utf8)!
     }
 }
