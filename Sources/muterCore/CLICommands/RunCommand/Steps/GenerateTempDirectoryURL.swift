@@ -18,7 +18,7 @@ struct CreateTempDirectoryURL: RunCommandStep {
             
             let destinationPath = try destinationPath(with: state)
             
-            notificationCenter.post(name: .tempDirectoryCreationFinished, object: destinationPath)
+            notificationCenter.post(name: .tempDirectoryCreationFinished, object: nil)
             
             return .success([
                 .tempDirectoryUrlCreated(URL(fileURLWithPath: destinationPath)),

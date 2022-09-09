@@ -131,12 +131,20 @@ final class Logger {
         progressBar.next()
     }
     
-    func removeTempDirectoryStarted(path: String) {
-        print("Removing temporary directory at path: \(path)....\n")
+    func tempDirectoryCreationStarted() {
+        print("Started creating a temporary directory.")
+    }
+
+    func tempDirectoryCreationFinished() {
+        print("Temporary path created.")
     }
     
-    func removeTempDirectoryFinished() {
-        print("Finished to remove temporary directory.\n")
+    func removeProjectFromPreviousRunStarted() {
+        print("Removing a project from a previous run.")
+    }
+    
+    func removeProjectFromPreviousRunFinished() {
+        print("Finished removing a project.")
     }
     
     private func print(_ message: String) {

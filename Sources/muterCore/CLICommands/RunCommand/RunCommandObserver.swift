@@ -30,8 +30,8 @@ extension Notification.Name {
 
     static let configurationFileCreated = Notification.Name("configurationFileCreated")
     
-    static let removeTempDirectoryStarted = Notification.Name("removeTempDirectoryStarted")
-    static let removeTempDirectoryFinished = Notification.Name("removeTempDirectoryFinished")
+    static let removeProjectFromPreviousRunStarted = Notification.Name("removeProjectFromPreviousRunStarted")
+    static let removeProjectFromPreviousRunFinished = Notification.Name("removeProjectFromPreviousRunFinished")
 }
 
 func flushStdOut() {
@@ -49,6 +49,12 @@ final class RunCommandObserver {
     private var notificationHandlerMappings: [(name: Notification.Name, handler: (Notification) -> Void)] {
         return [
             (name: .muterLaunched, handler: handleMuterLaunched),
+            
+            (name: .tempDirectoryCreationStarted, handler: handleTempDirectoryCreationStarted),
+            (name: .tempDirectoryCreationFinished, handler: handleTempDirectoryCreationFinished),
+            
+            (name: .removeProjectFromPreviousRunStarted, handler: handleRemoveProjectFromPreviousRunStarted),
+            (name: .removeProjectFromPreviousRunFinished, handler: handleRemoveProjectFromPreviousRunFinished),
             
             (name: .projectCopyStarted, handler: handleProjectCopyStarted),
             (name: .projectCopyFinished, handler: handleProjectCopyFinished),
@@ -68,9 +74,6 @@ final class RunCommandObserver {
             (name: .newTestLogAvailable, handler: handleNewTestLogAvailable),
             
             (name: .mutationTestingFinished, handler: handleMutationTestingFinished),
-            
-            (name: .removeTempDirectoryStarted, handler: handleRemoveTempDirectoryStarted),
-            (name: .removeTempDirectoryFinished, handler: handleRemoveTempDirectoryFinished),
         ]
     }
     
@@ -98,6 +101,22 @@ final class RunCommandObserver {
 extension RunCommandObserver {
     func handleMuterLaunched(notification: Notification) {
         logger.launched()
+    }
+    
+    func handleTempDirectoryCreationStarted(notification: Notification) {
+        logger.tempDirectoryCreationStarted()
+    }
+    
+    func handleTempDirectoryCreationFinished(notification: Notification) {
+        logger.tempDirectoryCreationFinished()
+    }
+    
+    func handleRemoveProjectFromPreviousRunStarted(notification: Notification) {
+        logger.removeProjectFromPreviousRunStarted()
+    }
+    
+    func handleRemoveProjectFromPreviousRunFinished(notification: Notification) {
+        logger.removeProjectFromPreviousRunFinished()
     }
     
     func handleProjectCopyStarted(notification: Notification) {
@@ -202,13 +221,5 @@ extension RunCommandObserver {
             Logger.print("\n\n")
             Logger.print("Could not save report!")
         }
-    }
-    
-    func handleRemoveTempDirectoryStarted(notification: Notification) {
-        logger.removeTempDirectoryStarted(path: notification.object as! String)
-    }
-    
-    func handleRemoveTempDirectoryFinished(notification: Notification) {
-        logger.removeTempDirectoryFinished()
     }
 }

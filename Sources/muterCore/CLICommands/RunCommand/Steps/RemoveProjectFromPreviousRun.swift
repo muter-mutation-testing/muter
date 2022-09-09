@@ -19,11 +19,11 @@ struct RemoveProjectFromPreviousRun: RunCommandStep {
             ])
         }
         do {
-            notificationCenter.post(name: .removeTempDirectoryStarted, object: state.tempDirectoryURL.path)
+            notificationCenter.post(name: .removeProjectFromPreviousRunStarted, object: nil)
             
             try fileManager.removeItem(atPath: state.tempDirectoryURL.path)
             
-            notificationCenter.post(name: .removeTempDirectoryFinished, object: nil)
+            notificationCenter.post(name: .removeProjectFromPreviousRunFinished, object: nil)
             
             return .success([
                 .removeProjectFromPreviousRunCompleted,
