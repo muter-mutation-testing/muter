@@ -19,29 +19,23 @@ class CopyProjectToTempDirectorySpec: QuickSpec {
             context("when it's able to copy a project into a temp directory") {
                 beforeEach {
                     fileManagerSpy = FileManagerSpy()
-                    fileManagerSpy.tempDirectory = URL(string: "/tmp/")!
                     
                     state = RunCommandState()
                     state.projectDirectoryURL = URL(string: "/some/projectName")!
+                    state.tempDirectoryURL = URL(string: "/tmp/projectName")!
                     
                     copyProjectToTempDirectory = CopyProjectToTempDirectory(fileManager: fileManagerSpy)
                     
                     result = copyProjectToTempDirectory.run(with: state)
                 }
                 
-                it("returns the temp directory location for Muter to use") {
+                it("returns the copyToTempDirectoryCompleted") {
                     guard case .success(let stateChanges) = result! else {
                         fail("expected success but got \(String(describing: result!))")
                         return
                     }
                     
-                    expect(stateChanges) == [.tempDirectoryUrlCreated(URL(fileURLWithPath: "/tmp/projectName"))]
-                }
-                
-                it("creates a temp directory to store a copy of the code under test") {
-                    expect(fileManagerSpy.searchPathDirectories).to(equal([.itemReplacementDirectory]))
-                    expect(fileManagerSpy.domains).to(equal([.userDomainMask]))
-                    expect(fileManagerSpy.paths).to(equal(["/some/projectName"]))
+                    expect(stateChanges) == [.copyToTempDirectoryCompleted]
                 }
                 
                 it("copies the project to the temp directory") {
@@ -51,77 +45,18 @@ class CopyProjectToTempDirectorySpec: QuickSpec {
                 }
                 
                 it("copies the project after creating the temp directory") {
-                    expect(fileManagerSpy.methodCalls).to(equal(["url(for:in:appropriateFor:create:)",
-                                                                 "copyItem(atPath:toPath:)",]))
+                    expect(fileManagerSpy.methodCalls).to(equal(["copyItem(atPath:toPath:)"]))
                 }
             }
             
             context("when it's unable to copy a project into a temp directory") {
                 beforeEach {
                     fileManagerSpy = FileManagerSpy()
-                    fileManagerSpy.tempDirectory = URL(string: "/tmp/")!
                     fileManagerSpy.errorToThrow = TestingError.stub
                     
                     state = RunCommandState()
                     state.projectDirectoryURL = URL(string: "/some/projectName")!
-                    
-                    copyProjectToTempDirectory = CopyProjectToTempDirectory(fileManager: fileManagerSpy)
-                    
-                    result = copyProjectToTempDirectory.run(with: state)
-                }
-                
-                it("cascades the failure up with a reason that explains why the project copy failed") {
-                    guard case .failure(.projectCopyFailed(let reason)) = result! else {
-                        fail("expected success but got \(String(describing: result!))")
-                        return
-                    }
-                    
-                    expect(reason).notTo(beEmpty())
-                }
-            }
-        }
-        
-        describe("the CopyProjectToTempDirectory step to sibling folder") {
-            context("when it's able to copy a project into a sibling directory") {
-                beforeEach {
-                    fileManagerSpy = FileManagerSpy()
-                    
-                    state = RunCommandState()
-                    state.projectDirectoryURL = URL(string: "/some/projectName")!
-                    state.muterConfiguration = .init(mutateFilesInSiblingOfProjectFolder: true)
-                    
-                    copyProjectToTempDirectory = CopyProjectToTempDirectory(fileManager: fileManagerSpy)
-                    
-                    result = copyProjectToTempDirectory.run(with: state)
-                }
-                
-                it("returns the sibling directory location for Muter to use") {
-                    guard case .success(let stateChanges) = result! else {
-                        fail("expected success but got \(String(describing: result!))")
-                        return
-                    }
-                    
-                    expect(stateChanges) == [.tempDirectoryUrlCreated(URL(fileURLWithPath: "/some/projectName_mutated"))]
-                }
-                
-                it("copies the project to the sibling directory") {
-                    expect(fileManagerSpy.copyPaths.first?.source).to(equal("/some/projectName"))
-                    expect(fileManagerSpy.copyPaths.first?.dest).to(equal("/some/projectName_mutated"))
-                    expect(fileManagerSpy.copyPaths).to(haveCount(1))
-                }
-                
-                it("copies the project after creating the temp directory") {
-                    expect(fileManagerSpy.methodCalls).to(equal(["copyItem(atPath:toPath:)"]))
-                }
-            }
-            
-            context("when it's unable to copy a project into a sibling directory") {
-                beforeEach {
-                    fileManagerSpy = FileManagerSpy()
-                    fileManagerSpy.errorToThrow = TestingError.stub
-                    
-                    state = RunCommandState()
-                    state.projectDirectoryURL = URL(string: "/some/projectName")!
+                    state.tempDirectoryURL = URL(string: "/tmp/projectName")!
                     
                     copyProjectToTempDirectory = CopyProjectToTempDirectory(fileManager: fileManagerSpy)
                     

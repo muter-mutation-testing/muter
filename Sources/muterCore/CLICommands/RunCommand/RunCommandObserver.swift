@@ -6,6 +6,10 @@ import Rainbow
 
 extension Notification.Name {
     static let muterLaunched = Notification.Name("muterLaunched")
+    
+    static let tempDirectoryCreationStarted = Notification.Name("tempDirectoryCreationStarted")
+    static let tempDirectoryCreationFinished = Notification.Name("tempDirectoryCreationFinished")
+    
     static let projectCopyStarted = Notification.Name("projectCopyStarted")
     static let projectCopyFinished = Notification.Name("projectCopyFinished")
     

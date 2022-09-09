@@ -9,7 +9,8 @@ public enum MuterError: Error, Equatable {
     case noMutationPointsDiscovered
     case mutationTestingAborted(reason: MutationTestingAbortReason)
     case literal(reason: String)
-    case removeTempDirectoryFailed(reason: String)
+    case removeProjectFromPreviousRunFailed(reason: String)
+    case createTempDirectoryUrlFailed(reason: String)
 }
 
 extension MuterError: CustomStringConvertible {
@@ -71,15 +72,22 @@ extension MuterError: CustomStringConvertible {
             return """
             \(reason)
             """
-        case .removeTempDirectoryFailed(reason: let reason):
+        case .removeProjectFromPreviousRunFailed(reason: let reason):
             return """
-            Muter wasn't able to remove temporary directory.
+            Muter wasn't able to remove project from previous run.
             
             ******************
             FileManager Error: \(reason)
             """
         case .literal(let reason):
             return reason
+        case .createTempDirectoryUrlFailed(reason: let reason):
+            return """
+            Muter wasn't able to create a temporary directory.
+            
+            ******************
+            FileManager Error: \(reason)
+            """
         }
     }
 }

@@ -52,13 +52,10 @@ public struct Run: ParsableCommand {
         )
         
         NotificationCenter.default.post(name: .muterLaunched, object: nil)
-        
-        let runCommandHandler = RunCommandHandler(options: options)
-        
+                
         do {
-            try runCommandHandler.run()
+            try RunCommandHandler(options: options).run()
         } catch {
-            runCommandHandler.trap()
             Logger.print(
                 """
                 ⚠️ ⚠️ ⚠️ ⚠️ ⚠️  Muter has encountered an error  ⚠️ ⚠️ ⚠️ ⚠️ ⚠️

@@ -2,26 +2,21 @@ import Foundation
 
 final class RunCommandHandler {
     let steps: [RunCommandStep]
-    let traps: [RunCommandTrap]
     var state: AnyRunCommandState
 
     init(
         steps: [RunCommandStep] = RunCommandHandler.defaultSteps,
-        traps: [RunCommandTrap] = RunCommandHandler.defaultTraps,
         state: RunCommandState = .init()
     ) {
         self.steps = steps
-        self.traps = traps
         self.state = state
     }
     
     init(
         options: RunOptions,
-        steps: [RunCommandStep] = RunCommandHandler.defaultSteps,
-        traps: [RunCommandTrap] = RunCommandHandler.defaultTraps
+        steps: [RunCommandStep] = RunCommandHandler.defaultSteps
     ) {
         self.steps = steps.filter(with: options)
-        self.traps = traps
         self.state = RunCommandState(from: options)
     }
     
@@ -30,28 +25,19 @@ final class RunCommandHandler {
             try step.run(with: state).map(state.apply(_:)).get()
         }
     }
-    
-    func trap() {
-        traps.forEach { trap in
-            trap.run(with: state)
-        }
-    }
 }
 
 private extension RunCommandHandler {
     private static let defaultSteps: [RunCommandStep] = [
         LoadConfiguration(),
+        CreateTempDirectoryURL(),
+        RemoveProjectFromPreviousRun(),
         CopyProjectToTempDirectory(),
         DiscoverProjectCoverage(),
         DiscoverSourceFiles(),
         DiscoverMutationPoints(),
         GenerateSwapFilePaths(),
         PerformMutationTesting(),
-        RemoveTempDirectory()
-    ]
-    
-    private static let defaultTraps: [RunCommandTrap] = [
-        RemoveTempDirectory()
     ]
 }
 

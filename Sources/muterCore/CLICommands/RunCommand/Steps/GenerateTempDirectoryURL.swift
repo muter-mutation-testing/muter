@@ -1,32 +1,35 @@
 import Foundation
 
-struct CopyProjectToTempDirectory: RunCommandStep {
+struct CreateTempDirectoryURL: RunCommandStep {
     private let fileManager: FileSystemManager
-    private let notificationCenter: NotificationCenter = .default
+    private let notificationCenter: NotificationCenter
     
-    init(fileManager: FileSystemManager = FileManager.default) {
+    init(
+        fileManager: FileSystemManager = FileManager.default,
+        notificationCenter: NotificationCenter = .default
+    ) {
         self.fileManager = fileManager
+        self.notificationCenter = notificationCenter
     }
     
     func run(with state: AnyRunCommandState) -> Result<[RunCommandState.Change], MuterError> {
         do {
-            notificationCenter.post(name: .projectCopyStarted, object: nil)
+            notificationCenter.post(name: .tempDirectoryCreationStarted, object: nil)
             
             let destinationPath = try destinationPath(with: state)
             
-            try fileManager.copyItem(atPath: state.projectDirectoryURL.path, toPath: destinationPath)
+            notificationCenter.post(name: .tempDirectoryCreationFinished, object: destinationPath)
             
-            notificationCenter.post(name: .projectCopyFinished, object: destinationPath)
             return .success([
                 .tempDirectoryUrlCreated(URL(fileURLWithPath: destinationPath)),
             ])
         } catch {
-            return .failure(.projectCopyFailed(reason: error.localizedDescription))
+            return .failure(.createTempDirectoryUrlFailed(reason: error.localizedDescription))
         }
     }
 }
 
-private extension CopyProjectToTempDirectory {
+private extension CreateTempDirectoryURL {
     
     private func destinationPath(with state: AnyRunCommandState) throws -> String {
         if state.muterConfiguration.mutateFilesInSiblingOfProjectFolder {
