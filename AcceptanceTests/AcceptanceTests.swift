@@ -111,7 +111,7 @@ final class AcceptanceTests: QuickSpec {
                         let numberOfTemporaryPaths = output.split(separator: "\n").count {
                             $0.contains("/T/TemporaryItems/")
                         }
-                        expect(numberOfTemporaryPaths) == 2
+                        expect(numberOfTemporaryPaths) == 1
                     }
                 }
                 
@@ -180,7 +180,7 @@ final class AcceptanceTests: QuickSpec {
                         let numberOfPaths = output.split(separator: "\n").count {
                             $0.contains("_mutated")
                         }
-                        expect(numberOfPaths) == 2
+                        expect(numberOfPaths) == 1
                     }
                 }
             }
