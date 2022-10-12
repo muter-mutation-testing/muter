@@ -168,6 +168,21 @@ final class AcceptanceTests: QuickSpec {
                         expect(output.contains(messages.appliedMutationOperatorsHeader)).to(beFalse())
                     }
                 }
+                
+                context("see that Muter is working in a sibling directory") {
+                    var output: String!
+                    
+                    beforeEach {
+                        output = self.muterWithMutateInSiblingFolderOutput
+                    }
+                    
+                    they("see sibling project folder path") {
+                        let numberOfPaths = output.split(separator: "\n").count {
+                            $0.contains("_mutated")
+                        }
+                        expect(numberOfPaths) == 1
+                    }
+                }
             }
             
             
@@ -178,6 +193,7 @@ final class AcceptanceTests: QuickSpec {
                         expect(decodedConfiguration?.testCommandExecutable) == "/usr/bin/xcodebuild"
                         expect(decodedConfiguration?.testCommandArguments).to(contain("-destination"))
                         expect(decodedConfiguration?.testCommandArguments).to(contain("platform=iOS Simulator,name=iPhone 8"))
+                        expect(decodedConfiguration?.mutateFilesInSiblingOfProjectFolder) == false
                     }
                 }
                 
@@ -187,6 +203,7 @@ final class AcceptanceTests: QuickSpec {
                         expect(decodedConfiguration?.testCommandExecutable) == "/usr/bin/xcodebuild"
                         expect(decodedConfiguration?.testCommandArguments).toNot(contain("-destination"))
                         expect(decodedConfiguration?.testCommandArguments).toNot(contain("platform=iOS Simulator,name=iPhone 8"))
+                        expect(decodedConfiguration?.mutateFilesInSiblingOfProjectFolder) == false
                     }
                 }
             }
@@ -285,6 +302,8 @@ extension AcceptanceTests {
     
     var muterEmptyStateOutput: String { contentsOfFileAsString("\(AcceptanceTests().rootTestDirectory)/samples/muters_empty_state_output.txt") }
     var muterAbortedTestingOutput: String { contentsOfFileAsString("\(AcceptanceTests().rootTestDirectory)/samples/muters_aborted_testing_output.txt") }
+    
+    var muterWithMutateInSiblingFolderOutput: String { contentsOfFileAsString("\(AcceptanceTests().rootTestDirectory)/samples/muter_with_mutateInSiblingFolder_output.txt") }
     
     var muterHelpOutput: String { contentsOfFileAsString("\(AcceptanceTests().rootTestDirectory)/samples/muters_help_output.txt") }
     var muterInitHelpOutput: String { contentsOfFileAsString("\(AcceptanceTests().rootTestDirectory)/samples/muters_init_help_output.txt") }

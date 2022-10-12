@@ -1,4 +1,5 @@
 final class XcodeReporter: Reporter {
+
     func newMutationTestOutcomeAvailable(outcomeWithFlush: MutationOutcomeWithFlush) {
         let outcome = outcomeWithFlush.mutation
         

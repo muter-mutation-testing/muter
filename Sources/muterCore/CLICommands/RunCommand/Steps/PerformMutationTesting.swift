@@ -74,11 +74,14 @@ private extension PerformMutationTesting {
                                                                       savingResultsIntoFileNamed: logFileName(for: mutationPoint))
 
             ioDelegate.restoreFile(at: mutationPoint.filePath, using: state.swapFilePathsByOriginalPath)
-
-            let outcome = MutationTestOutcome.Mutation(testSuiteOutcome: testSuiteOutcome,
-                                              mutationPoint: mutationPoint,
-                                              mutationSnapshot: mutantSnapshot,
-                                              originalProjectDirectoryUrl: state.projectDirectoryURL)
+            
+            let outcome = MutationTestOutcome.Mutation(
+                testSuiteOutcome: testSuiteOutcome,
+                mutationPoint: mutationPoint,
+                mutationSnapshot: mutantSnapshot,
+                originalProjectDirectoryUrl: state.projectDirectoryURL,
+                tempDirectoryURL: state.tempDirectoryURL
+            )
             outcomes.append(outcome)
             
             let mutationLog = MutationTestLog(

@@ -46,12 +46,15 @@ extension RunCommandState {
         case configurationParsed(MuterConfiguration)
         case projectDirectoryUrlDiscovered(URL)
         case tempDirectoryUrlCreated(URL)
+        case copyToTempDirectoryCompleted
         case projectCoverage(Coverage)
         case sourceFileCandidatesDiscovered([FilePath])
         case mutationPointsDiscovered([MutationPoint])
         case sourceCodeParsed([FilePath: SourceFileSyntax])
         case swapFilePathGenerated([FilePath: FilePath])
         case mutationTestOutcomeGenerated(MutationTestOutcome)
+        case removeProjectFromPreviousRunCompleted
+        case removeProjectFromPreviousRunSkipped
     }
 }
 
@@ -77,6 +80,12 @@ extension RunCommandState {
                 self.swapFilePathsByOriginalPath = swapFilePathsByOriginalPath
             case .mutationTestOutcomeGenerated(let mutationTestOutcome):
                 self.mutationTestOutcome = mutationTestOutcome
+            case .removeProjectFromPreviousRunCompleted:
+                break
+            case .copyToTempDirectoryCompleted:
+                break
+            case .removeProjectFromPreviousRunSkipped:
+                break
             }
         }
     }

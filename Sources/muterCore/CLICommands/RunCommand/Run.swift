@@ -52,7 +52,7 @@ public struct Run: ParsableCommand {
         )
         
         NotificationCenter.default.post(name: .muterLaunched, object: nil)
-        
+                
         do {
             try RunCommandHandler(options: options).run()
         } catch {

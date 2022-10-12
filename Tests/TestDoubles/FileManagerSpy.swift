@@ -42,7 +42,7 @@ class FileManagerSpy: Spy, FileSystemManager {
 
         return true
     }
-
+    
     func url(for directory: FileManager.SearchPathDirectory,
              in domain: FileManager.SearchPathDomainMask,
              appropriateFor url: URL?,
@@ -65,6 +65,7 @@ class FileManagerSpy: Spy, FileSystemManager {
                   toPath dstPath: String) throws {
         methodCalls.append(#function)
         copyPaths.append((source: srcPath, dest: dstPath))
+        if let error = errorToThrow { throw error }
     }
 
     func contents(atPath path: String) -> Data? {
@@ -84,5 +85,7 @@ class FileManagerSpy: Spy, FileSystemManager {
 
     func removeItem(atPath path: String) throws {
         methodCalls.append(#function)
+        paths.append(path)
+        if let error = errorToThrow { throw error }
     }
 }

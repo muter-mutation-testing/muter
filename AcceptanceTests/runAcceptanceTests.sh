@@ -2,18 +2,21 @@
 
 echo "📴📴📴📴📴📴📴 Acceptance Testing has started 📴📴📴📴📴📴📴"
 
-muterdir="../../.build/debug"
-samplesdir="../../AcceptanceTests/samples"
+muterdir="../../../.build/debug"
+samplesdir="../../samples"
 
 echo "Cleaning up from prior acceptance test runs..."
 rm -rf ./AcceptanceTests/samples/muter_logs
 rm -rf ./AcceptanceTests/samples
+rm -rf ./AcceptanceTests/Repositories
 
 mkdir -p ./AcceptanceTests/samples
 mkdir -p ./AcceptanceTests/samples/muter_logs
 
+cp -R ./Repositories ./AcceptanceTests
+
 echo "Running Muter on an iOS codebase with a test suite..."
-cd ./Repositories/ExampleApp
+cd ./AcceptanceTests/Repositories/ExampleApp
 
 echo " > Creating a configuration file..."
 "$muterdir"/muter init
@@ -67,6 +70,14 @@ rm -rf ./muter_logs # don't pollute the staging area
 
 cd ../..
 
+echo "Running Muter on an example with mutateInSiblingFolder configuration..."
+cd ./Repositories/ProjectWithMutateInSiblingFolder
+
+echo " > Running in CLI mode..."
+"$muterdir"/muter > "$samplesdir"/muter_with_mutateInSiblingFolder_output.txt
+rm -rf ./muter_logs
+cd ../..
+
 echo "Running Muter's help command..."
 cd ./Repositories/ExampleApp
 
@@ -79,7 +90,7 @@ echo " > Running init help command..."
 echo " > Running run help command..."
 "$muterdir"/muter help run > "$samplesdir"/muters_run_help_output.txt
 
-cd ../..
+cd ../../..
 
 echo "Running tests..."
 

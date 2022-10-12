@@ -19,7 +19,8 @@ class MutationTestOutcomeSpec: QuickSpec {
                             testSuiteOutcome: .failed,
                             point: mutationPoint,
                             snapshot: .null,
-                            originalProjectDirectoryUrl: URL(fileURLWithPath: "/Users/user0/Code/ProjectDirectory")
+                            originalProjectDirectoryUrl: URL(fileURLWithPath: "/Users/user0/Code/ProjectDirectory"),
+                            tempDirectoryURL: URL(fileURLWithPath: "/var/tmp/nonsense/ProjectDirectory")
                         )
                         
                         expect(outcome.originalProjectPath) == "/Users/user0/Code/ProjectDirectory/Subdirectory/file.swift"
@@ -38,7 +39,8 @@ class MutationTestOutcomeSpec: QuickSpec {
                             testSuiteOutcome: .failed,
                             point: mutationPoint,
                             snapshot: .null,
-                            originalProjectDirectoryUrl: URL(fileURLWithPath: "/Users/user0/Code/ProjectDirectory")
+                            originalProjectDirectoryUrl: URL(fileURLWithPath: "/Users/user0/Code/ProjectDirectory"),
+                            tempDirectoryURL: URL(fileURLWithPath: "/var/tmp/nonsense/ProjectDirectory")
                         )
 
                         expect(outcome.originalProjectPath) == "/Users/user0/Code/ProjectDirectory/file.swift"
@@ -58,10 +60,31 @@ class MutationTestOutcomeSpec: QuickSpec {
                             testSuiteOutcome: .failed,
                             point: mutationPoint,
                             snapshot: .null,
-                            originalProjectDirectoryUrl: URL(fileURLWithPath: "/Users/user0/Project Directory")
+                            originalProjectDirectoryUrl: URL(fileURLWithPath: "/Users/user0/Project Directory"),
+                            tempDirectoryURL: URL(fileURLWithPath: "/var/tmp/nonsense/Project Directory")
                         )
 
                         expect(outcome.originalProjectPath) == "/Users/user0/Project Directory/file.swift"
+                    }
+                }
+                
+                context("when the path of a file with a mutation contains folders with the same name") {
+                    it("maps the paths") {
+                        let mutationPoint = MutationPoint(
+                            mutationOperatorId: .logicalOperator,
+                            filePath: "/var/tmp/nonsense/ProjectDirectory/ProjectDirectory/file.swift",
+                            position: .firstPosition
+                        )
+                        
+                        let outcome = MutationTestOutcome.Mutation.make(
+                            testSuiteOutcome: .failed,
+                            point: mutationPoint,
+                            snapshot: .null,
+                            originalProjectDirectoryUrl: URL(fileURLWithPath: "/Users/user0/Code/ProjectDirectory"),
+                            tempDirectoryURL: URL(fileURLWithPath: "/var/tmp/nonsense/ProjectDirectory")
+                        )
+                        
+                        expect(outcome.originalProjectPath) == "/Users/user0/Code/ProjectDirectory/ProjectDirectory/file.swift"
                     }
                 }
             }

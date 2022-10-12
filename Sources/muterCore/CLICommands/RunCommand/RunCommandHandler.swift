@@ -30,6 +30,8 @@ final class RunCommandHandler {
 private extension RunCommandHandler {
     private static let defaultSteps: [RunCommandStep] = [
         LoadConfiguration(),
+        CreateTempDirectoryURL(),
+        RemoveProjectFromPreviousRun(),
         CopyProjectToTempDirectory(),
         DiscoverProjectCoverage(),
         DiscoverSourceFiles(),

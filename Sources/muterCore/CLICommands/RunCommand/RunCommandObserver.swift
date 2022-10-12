@@ -6,6 +6,10 @@ import Rainbow
 
 extension Notification.Name {
     static let muterLaunched = Notification.Name("muterLaunched")
+    
+    static let tempDirectoryCreationStarted = Notification.Name("tempDirectoryCreationStarted")
+    static let tempDirectoryCreationFinished = Notification.Name("tempDirectoryCreationFinished")
+    
     static let projectCopyStarted = Notification.Name("projectCopyStarted")
     static let projectCopyFinished = Notification.Name("projectCopyFinished")
     
@@ -25,6 +29,9 @@ extension Notification.Name {
     static let newTestLogAvailable = Notification.Name("newTestLogAvailable")
 
     static let configurationFileCreated = Notification.Name("configurationFileCreated")
+    
+    static let removeProjectFromPreviousRunStarted = Notification.Name("removeProjectFromPreviousRunStarted")
+    static let removeProjectFromPreviousRunFinished = Notification.Name("removeProjectFromPreviousRunFinished")
 }
 
 func flushStdOut() {
@@ -42,6 +49,12 @@ final class RunCommandObserver {
     private var notificationHandlerMappings: [(name: Notification.Name, handler: (Notification) -> Void)] {
         return [
             (name: .muterLaunched, handler: handleMuterLaunched),
+            
+            (name: .tempDirectoryCreationStarted, handler: handleTempDirectoryCreationStarted),
+            (name: .tempDirectoryCreationFinished, handler: handleTempDirectoryCreationFinished),
+            
+            (name: .removeProjectFromPreviousRunStarted, handler: handleRemoveProjectFromPreviousRunStarted),
+            (name: .removeProjectFromPreviousRunFinished, handler: handleRemoveProjectFromPreviousRunFinished),
             
             (name: .projectCopyStarted, handler: handleProjectCopyStarted),
             (name: .projectCopyFinished, handler: handleProjectCopyFinished),
@@ -88,6 +101,22 @@ final class RunCommandObserver {
 extension RunCommandObserver {
     func handleMuterLaunched(notification: Notification) {
         logger.launched()
+    }
+    
+    func handleTempDirectoryCreationStarted(notification: Notification) {
+        logger.tempDirectoryCreationStarted()
+    }
+    
+    func handleTempDirectoryCreationFinished(notification: Notification) {
+        logger.tempDirectoryCreationFinished()
+    }
+    
+    func handleRemoveProjectFromPreviousRunStarted(notification: Notification) {
+        logger.removeProjectFromPreviousRunStarted()
+    }
+    
+    func handleRemoveProjectFromPreviousRunFinished(notification: Notification) {
+        logger.removeProjectFromPreviousRunFinished()
     }
     
     func handleProjectCopyStarted(notification: Notification) {
