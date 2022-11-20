@@ -3,7 +3,7 @@ import Quick
 import Nimble
 import SwiftSyntax
 
-class SwapTernaryOperatorSpec: QuickSpec {
+class TernaryOperatorSpec: QuickSpec {
     override func spec() {
         describe("") {
 
@@ -37,7 +37,7 @@ class SwapTernaryOperatorSpec: QuickSpec {
 
                     expect(mutatedSource.description).to(equal(changedCode.code.description))
                 }
-                
+
                 it("swap expressions of ternary operator with wrong position") {
                     let mutationPos = MutationPosition(utf8Offset: 0, line: 0, column: 0)
                     let rewriter = TernaryOperator.Rewriter(positionToMutate: mutationPos)
@@ -46,7 +46,7 @@ class SwapTernaryOperatorSpec: QuickSpec {
 
                     expect(mutatedSource.description).to(equal(sampleCode.code.description))
                 }
-                
+
                 it("swap expressions of nested ternary operator with wrong position") {
                     let mutationPos = MutationPosition(utf8Offset: 136, line: 6, column: 33)
                     let rewriter = TernaryOperator.Rewriter(positionToMutate: mutationPos)
@@ -56,40 +56,40 @@ class SwapTernaryOperatorSpec: QuickSpec {
                     expect(mutatedSource.description).to(equal(changedNestedCode.code.description))
                 }
             }
-            
+
             describe("TernaryOperator.Visitor") {
                 it("records the positions of code that contains a ternary operator") {
 
                     let visitor = TernaryOperator.Visitor(sourceFileInfo: sampleCode.asSourceFileInfo)
-                    
+
                     visitor.walk(sampleCode.code)
 
                     expect(visitor.positionsOfToken.count).to(equal(2))
-                    
-                    expect(visitor.positionsOfToken[0].utf8Offset).to(equal(120))
-                    expect(visitor.positionsOfToken[0].line).to(equal(6))
-                    expect(visitor.positionsOfToken[0].column).to(equal(28))
-                    
-                    expect(visitor.positionsOfToken[1].utf8Offset).to(equal(199))
-                    expect(visitor.positionsOfToken[1].line).to(equal(10))
-                    expect(visitor.positionsOfToken[1].column).to(equal(32))
+
+                    expect(visitor.positionsOfToken[safe: 0]?.utf8Offset).to(equal(120))
+                    expect(visitor.positionsOfToken[safe: 0]?.line).to(equal(6))
+                    expect(visitor.positionsOfToken[safe: 0]?.column).to(equal(28))
+
+                    expect(visitor.positionsOfToken[safe: 1]?.utf8Offset).to(equal(199))
+                    expect(visitor.positionsOfToken[safe: 1]?.line).to(equal(10))
+                    expect(visitor.positionsOfToken[safe: 1]?.column).to(equal(32))
                 }
-                
+
                 it("records the positions of code that contains a nested ternary operator") {
 
                     let visitor = TernaryOperator.Visitor(sourceFileInfo: sampleNestedCode.asSourceFileInfo)
-                    
+
                     visitor.walk(sampleNestedCode.code)
 
                     expect(visitor.positionsOfToken.count).to(equal(2))
-                    
-                    expect(visitor.positionsOfToken[0].utf8Offset).to(equal(143))
-                    expect(visitor.positionsOfToken[0].line).to(equal(6))
-                    expect(visitor.positionsOfToken[0].column).to(equal(40))
-                    
-                    expect(visitor.positionsOfToken[1].utf8Offset).to(equal(136))
-                    expect(visitor.positionsOfToken[1].line).to(equal(6))
-                    expect(visitor.positionsOfToken[1].column).to(equal(33))
+
+                    expect(visitor.positionsOfToken[safe: 0]?.utf8Offset).to(equal(143))
+                    expect(visitor.positionsOfToken[safe: 0]?.line).to(equal(6))
+                    expect(visitor.positionsOfToken[safe: 0]?.column).to(equal(40))
+
+                    expect(visitor.positionsOfToken[safe: 1]?.utf8Offset).to(equal(136))
+                    expect(visitor.positionsOfToken[safe: 1]?.line).to(equal(6))
+                    expect(visitor.positionsOfToken[safe: 1]?.column).to(equal(33))
                 }
             }
         }

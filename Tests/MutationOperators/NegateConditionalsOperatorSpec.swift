@@ -28,14 +28,14 @@ class NegateConditionalsOperatorSpec: QuickSpec {
                         return
                     }
 
-                    expect(visitor.positionsOfToken[0].line).to(equal(3))
-                    expect(visitor.positionsOfToken[1].line).to(equal(4))
-                    expect(visitor.positionsOfToken[2].line).to(equal(5))
-                    expect(visitor.positionsOfToken[3].line).to(equal(6))
-                    expect(visitor.positionsOfToken[4].line).to(equal(7))
-                    expect(visitor.positionsOfToken[5].line).to(equal(8))
-                    expect(visitor.positionsOfToken[6].line).to(equal(10))
-                    expect(visitor.positionsOfToken[7].line).to(equal(14))
+                    expect(visitor.positionsOfToken[safe: 0]?.line).to(equal(3))
+                    expect(visitor.positionsOfToken[safe: 1]?.line).to(equal(4))
+                    expect(visitor.positionsOfToken[safe: 2]?.line).to(equal(5))
+                    expect(visitor.positionsOfToken[safe: 3]?.line).to(equal(6))
+                    expect(visitor.positionsOfToken[safe: 4]?.line).to(equal(7))
+                    expect(visitor.positionsOfToken[safe: 5]?.line).to(equal(8))
+                    expect(visitor.positionsOfToken[safe: 6]?.line).to(equal(10))
+                    expect(visitor.positionsOfToken[safe: 7]?.line).to(equal(14))
                 }
 
                 it("records no positions when a file doesn't contain a conditional operator") {

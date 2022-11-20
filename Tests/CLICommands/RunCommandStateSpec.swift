@@ -21,9 +21,9 @@ final class RunCommandStateSpec: QuickSpec {
 
                     it("should parse") {
                         expect(state.filesToMutate).to(haveCount(3))
-                        expect(state.filesToMutate[0]).to(equal("/path/to/file1.swift"))
-                        expect(state.filesToMutate[1]).to(equal("/path/to/file3.swift"))
-                        expect(state.filesToMutate[2]).to(equal("/path/to/file3.swift"))
+                        expect(state.filesToMutate[safe: 0]).to(equal("/path/to/file1.swift"))
+                        expect(state.filesToMutate[safe: 1]).to(equal("/path/to/file3.swift"))
+                        expect(state.filesToMutate[safe: 2]).to(equal("/path/to/file3.swift"))
                     }
                 }
             }

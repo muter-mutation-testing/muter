@@ -32,10 +32,10 @@ class RemoveSideEffectsOperatorSpec: QuickSpec {
                     return
                 }
 
-                expect(visitor.positionsOfToken[0].line).to(equal(3))
-                expect(visitor.positionsOfToken[1].line).to(equal(10))
-                expect(visitor.positionsOfToken[2].line).to(equal(21))
-                expect(visitor.positionsOfToken[3].line).to(equal(38))
+                expect(visitor.positionsOfToken[safe: 0]?.line).to(equal(3))
+                expect(visitor.positionsOfToken[safe: 1]?.line).to(equal(10))
+                expect(visitor.positionsOfToken[safe: 2]?.line).to(equal(21))
+                expect(visitor.positionsOfToken[safe: 3]?.line).to(equal(38))
             }
 
             it("records no positions when a file doesn't contain code that causes a side effect") {

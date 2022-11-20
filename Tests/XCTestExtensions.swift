@@ -140,3 +140,18 @@ public extension XCTestCase {
         ]
     }
 }
+
+public func XCTAssertTypeEqual<A>(
+    _ lhs: Any?,
+    _ rhs: A.Type,
+    file: StaticString = #filePath,
+    line: UInt = #line
+) {
+    guard let lhs = lhs else {
+        return XCTFail("First argument should not be nil", file: file, line: line)
+    }
+
+    if type(of: lhs) != rhs {
+        XCTFail("Expected \(rhs), got \(type(of: lhs))", file: file, line: line)
+    }
+}

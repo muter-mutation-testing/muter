@@ -45,8 +45,8 @@ class ChangeLogicalConnectorOperatorSpec: QuickSpec {
                         return
                     }
 
-                    expect(visitor.positionsOfToken[0].line).to(equal(6))
-                    expect(visitor.positionsOfToken[1].line).to(equal(10))
+                    expect(visitor.positionsOfToken[safe: 0]?.line).to(equal(6))
+                    expect(visitor.positionsOfToken[safe: 1]?.line).to(equal(10))
                 }
                 
                 it("ignore lines with compiler directives") {
@@ -59,7 +59,7 @@ class ChangeLogicalConnectorOperatorSpec: QuickSpec {
                         return
                     }
 
-                    expect(visitor.positionsOfToken[0].line).to(equal(7))
+                    expect(visitor.positionsOfToken[safe: 0]?.line).to(equal(7))
                 }
             }
         }
