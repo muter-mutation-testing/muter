@@ -11,15 +11,15 @@ let package = Package(
         .executable(name: "muter", targets: ["muter", "muterCore"]),
     ],
     dependencies: [
-        .package(url: "https://github.com/apple/swift-argument-parser.git", from: "1.1.4"),
+        .package(url: "https://github.com/apple/swift-argument-parser.git", from: "1.2.0"),
         .package(url: "https://github.com/onevcat/Rainbow.git", from: "4.0.1"),
         .package(url: "https://github.com/Quick/Quick.git", from: "5.0.1"),
         .package(url: "https://github.com/Quick/Nimble.git", from: "10.0.0"),
         .package(url: "https://github.com/dduan/Pathos.git", from: "0.4.2"),
-        .package(url: "https://github.com/apple/swift-syntax.git", from: .swiftSyntaxTag),
+        .package(url: "https://github.com/apple/swift-syntax.git", branch: "0.50700.1"),
         .package(url: "https://github.com/jkandzi/Progress.swift.git", from: "0.4.0"),
         .package(url: "https://github.com/johnsundell/plot.git", from: "0.11.0"),
-        .package(url: "https://github.com/krzysztofzablocki/Difference.git", from: "1.0.1"),
+        .package(url: "https://github.com/krzysztofzablocki/Difference.git", from: "1.0.2"),
         .package(url: "https://github.com/jpsim/Yams.git", from: "5.0.1")
     ],
     targets: [
@@ -30,8 +30,8 @@ let package = Package(
         .target(
             name: "muterCore",
             dependencies: [
-                "Rainbow",
-                "Pathos",
+                .product(name: "Pathos", package: "Pathos"),
+                .product(name: "Rainbow", package: "Rainbow"),
                 .product(name: "Plot", package: "plot"),
                 .product(name: "Progress", package: "Progress.swift"),
                 .product(name: "SwiftSyntax", package: "swift-syntax"),
@@ -63,8 +63,8 @@ let package = Package(
 )
 
 resolveTestTargetFromEnvironmentVarialbes()
-hookInternalSwiftSyntaxParser()
-isDebuggingMain(false)
+//hookInternalSwiftSyntaxParser()
+//isDebuggingMain(false)
 
 /// Make sure to select a single test target
 /// This is important because, as of today, we cannot pick a single test target from the command-line (and filtering also doesn't help)

@@ -5,8 +5,8 @@
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/mattgallagher/CwlCatchException.git",
       "state" : {
-        "revision" : "f809deb30dc5c9d9b78c872e553261a61177721a",
-        "version" : "2.0.0"
+        "revision" : "35f9e770f54ce62dd8526470f14c6e137cef3eea",
+        "version" : "2.1.1"
       }
     },
     {
@@ -23,8 +23,8 @@
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/krzysztofzablocki/Difference.git",
       "state" : {
-        "revision" : "02fe1111edc8318c4f8a0da96336fcbcc201f38b",
-        "version" : "1.0.1"
+        "revision" : "f627d00718033c3d7888acd5f4e3524a843db1cf",
+        "version" : "1.0.2"
       }
     },
     {
@@ -86,8 +86,8 @@
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/apple/swift-argument-parser.git",
       "state" : {
-        "revision" : "9f39744e025c7d377987f30b03770805dcb0bcd1",
-        "version" : "1.1.4"
+        "revision" : "fddd1c00396eed152c45a46bea9f47b98e59301d",
+        "version" : "1.2.0"
       }
     },
     {
@@ -95,8 +95,8 @@
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/apple/swift-syntax.git",
       "state" : {
-        "revision" : "0b6c22b97f8e9320bca62e82cdbee601cf37ad3f",
-        "version" : "0.50600.1"
+        "branch" : "0.50700.1",
+        "revision" : "72d3da66b085c2299dd287c2be3b92b5ebd226de"
       }
     },
     {
