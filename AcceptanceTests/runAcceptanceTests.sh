@@ -94,13 +94,8 @@ cd ../../..
 
 echo "Running tests..."
 
-export acceptance_tests=true
-swift test
+swift test --filter 'AcceptanceTests'
 
-exitCode=$?
-
-unset acceptance_tests
-
-exit $exitCode
+exit $?
 
 echo "📳📳📳📳📳📳📳 Acceptance Testing has finished 📳📳📳📳📳📳📳"

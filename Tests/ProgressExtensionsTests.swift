@@ -1,6 +1,5 @@
-import Quick
-import Nimble
 import Progress
+
 @testable import muterCore
 
 // class ProgressExtensionsSpec: QuickSpec {

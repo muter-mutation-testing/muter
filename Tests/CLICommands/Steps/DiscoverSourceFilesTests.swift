@@ -6,7 +6,10 @@ final class DiscoverSourceFilesTests: XCTestCase {
     private lazy var filesToMutatePath = "\(self.fixturesDirectory)/FilesToMutate"
     private lazy var filsToDiscoverPath = "\(self.fixturesDirectory)/FilesToDiscover"
     private var state = RunCommandState()
-    private var sut = DiscoverSourceFiles()
+    private var fileManager: FileManagerSpy?
+    private lazy var sut = DiscoverSourceFiles(
+        fileManager: fileManager ?? FileManager.default
+    )
     
     func test_discoveredFilesShouldBeSortedAlphabetically() throws {
         state.tempDirectoryURL = URL(
@@ -195,4 +198,56 @@ final class DiscoverSourceFilesTests: XCTestCase {
         FileManager.default.changeCurrentDirectoryPath(currentDirectoryPath)
     }
 
+    func test_listOfFileToMutateWithoutGlobExpressions() throws {
+        fileManager = FileManagerSpy()
+        fileManager!.subpathsToReturn = []
+
+        state.filesToMutate = ["file1.swift", "file2.swift", "/Directory2/Directory3/file6.swift"]
+        state.tempDirectoryURL = URL(
+            fileURLWithPath: filesToMutatePath,
+            isDirectory: true
+        )
+
+        fileManager!.fileExistsToReturn = state.filesToMutate.compactMap { _ in true }
+
+        let result = try XCTUnwrap(sut.run(with: state).get())
+
+        XCTAssertEqual(result, [
+            .sourceFileCandidatesDiscovered([
+                "\(filesToMutatePath)/Directory2/Directory3/file6.swift",
+                "\(filesToMutatePath)/file1.swift",
+                "\(filesToMutatePath)/file2.swift",
+            ])
+        ])
+
+        XCTAssertEqual(fileManager?.methodCalls, [
+            "fileExists(atPath:)",
+            "fileExists(atPath:)",
+            "fileExists(atPath:)",
+        ])
+    }
+
+    func test_fileNotFoundFailure() {
+        state.filesToMutate = ["doesntExist.swift"]
+        state.tempDirectoryURL = URL(
+            fileURLWithPath: filesToMutatePath,
+            isDirectory: true
+        )
+
+        let result = sut.run(with: state)
+
+        XCTAssertEqual(result, .failure(.noSourceFilesOnExclusiveList))
+    }
+
+    func test_noSwiftFileFailure() {
+        state.filesToMutate = ["/Directory2/Directory3/file6"]
+        state.tempDirectoryURL = URL(
+            fileURLWithPath: filesToMutatePath,
+            isDirectory: true
+        )
+
+        let result = sut.run(with: state)
+
+        XCTAssertEqual(result, .failure(.noSourceFilesOnExclusiveList))
+    }
 }

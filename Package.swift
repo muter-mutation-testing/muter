@@ -13,14 +13,13 @@ let package = Package(
     dependencies: [
         .package(url: "https://github.com/apple/swift-argument-parser.git", from: "1.2.0"),
         .package(url: "https://github.com/onevcat/Rainbow.git", from: "4.0.1"),
-        .package(url: "https://github.com/Quick/Quick.git", from: "5.0.1"),
-        .package(url: "https://github.com/Quick/Nimble.git", from: "10.0.0"),
         .package(url: "https://github.com/dduan/Pathos.git", from: "0.4.2"),
         .package(url: "https://github.com/apple/swift-syntax.git", branch: "0.50700.1"),
         .package(url: "https://github.com/jkandzi/Progress.swift.git", from: "0.4.0"),
         .package(url: "https://github.com/johnsundell/plot.git", from: "0.11.0"),
         .package(url: "https://github.com/krzysztofzablocki/Difference.git", from: "1.0.2"),
-        .package(url: "https://github.com/jpsim/Yams.git", from: "5.0.1")
+        .package(url: "https://github.com/jpsim/Yams.git", from: "5.0.1"),
+        .package(url: "https://github.com/pointfreeco/swift-snapshot-testing.git", from: "1.9.0")
     ],
     targets: [
         .executableTarget(
@@ -46,8 +45,6 @@ let package = Package(
             dependencies: [
                 "muterCore",
                 "Difference",
-                "Quick",
-                "Nimble",
                 .product(name: "SwiftSyntax", package: "swift-syntax"),
                 .product(name: "SwiftSyntaxParser", package: "swift-syntax"),
             ],
@@ -59,6 +56,22 @@ let package = Package(
             path: "Tests",
             exclude: ["fixtures", "Extensions"]
         ),
+        .testTarget(
+            name: "muterAcceptanceTests",
+            dependencies: ["muterCore", "TestingExtensions"],
+            path: "AcceptanceTests",
+            exclude: ["samples", "runAcceptanceTests.sh", "Repositories"]
+        ),
+        .testTarget(
+            name: "muterRegressionTests",
+            dependencies: [
+                "muterCore",
+                "TestingExtensions",
+                .product(name: "SnapshotTesting", package: "swift-snapshot-testing"),
+            ],
+            path: "RegressionTests",
+            exclude: ["samples", "__Snapshots__", "runRegressionTests.sh"]
+        )
     ]
 )
 

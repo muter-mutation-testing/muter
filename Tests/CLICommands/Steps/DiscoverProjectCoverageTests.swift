@@ -44,15 +44,25 @@ final class DiscoverProjectCoverageTests: XCTestCase {
     }
     
     func test_whenBuildSucceeds_shouldRunXcodeSelectCommand() {
+        state.muterConfiguration = MuterConfiguration(
+            executable: "/path/to/xcodebuild",
+            arguments: ["arg0", "arg1"]
+        )
+
         process.stdoutToBeReturned = "something\nsomething\npath/to/testResult.xcresult"
-        
+
         _ = sut.run(with: state)
-        
+
         XCTAssertEqual(process.executableURL?.absoluteString, "file:///usr/bin/xcode-select")
         XCTAssertEqual(process.arguments, ["-p"])
     }
     
     func test_whenXcodeSelectSucceeds_thenRunXccovCommand() {
+        state.muterConfiguration = MuterConfiguration(
+            executable: "/path/to/xcodebuild",
+            arguments: ["arg0", "arg1"]
+        )
+
         process.stdoutToBeReturned = "something\nsomething\npath/to/testResult.xcresult"
         process.stdoutToBeReturned = "/path/to/xccov"
         
@@ -63,6 +73,11 @@ final class DiscoverProjectCoverageTests: XCTestCase {
     }
     
     func test_whenXccovSucceeds_thenReturnFilsWithoutCoverage() throws {
+        state.muterConfiguration = MuterConfiguration(
+            executable: "/path/to/xcodebuild",
+            arguments: ["arg0", "arg1"]
+        )
+
         process.stdoutToBeReturned = "something\nsomething\npath/to/testResult.xcresult"
         process.stdoutToBeReturned = "/path/to/xccov"
         process.stdoutToBeReturned = coverageData
@@ -82,6 +97,11 @@ final class DiscoverProjectCoverageTests: XCTestCase {
     }
     
     func test_whenXcodeSelectFailes_shouldNotRunXccov() {
+        state.muterConfiguration = MuterConfiguration(
+            executable: "/path/to/xcodebuild",
+            arguments: ["arg0", "arg1"]
+        )
+
         process.stdoutToBeReturned = "something\nsomething\npath/to/testResult.xcresult"
         process.stdoutToBeReturned = ""
         
@@ -116,15 +136,19 @@ final class DiscoverProjectCoverageTests: XCTestCase {
     }
     
     func test_whenBuildSucceeds_thenRunLlvmCovCommand() {
-        process.stdoutToBeReturned =
-                                        """
-                                        Test Suite 'muterPackageTests.xctest' failed at 2021-02-25 16:20:37.112.
-                                             Executed 144 tests, with 5 failures (0 unexpected) in 2.109 (2.116) seconds
-                                        Test Suite 'All tests' failed at 2021-02-25 16:20:37.113.
-                                             Executed 144 tests, with 5 failures (0 unexpected) in 2.109 (2.117) seconds
-                                        /path/to/llvm-profdata merge -sparse /path/to/default16636031009452225957_0.profraw -o /path/to/default.profdata
-                                        /path/to/llvm-cov export -instr-profile=/path/to/default.profdata /path/to/muterPackageTests
-                                        """
+        state.muterConfiguration = MuterConfiguration(
+            executable: "/path/to/swift",
+            arguments: ["arg0", "arg1"]
+        )
+
+        process.stdoutToBeReturned = """
+        Test Suite 'muterPackageTests.xctest' failed at 2021-02-25 16:20:37.112.
+             Executed 144 tests, with 5 failures (0 unexpected) in 2.109 (2.116) seconds
+        Test Suite 'All tests' failed at 2021-02-25 16:20:37.113.
+             Executed 144 tests, with 5 failures (0 unexpected) in 2.109 (2.117) seconds
+        /path/to/llvm-profdata merge -sparse /path/to/default16636031009452225957_0.profraw -o /path/to/default.profdata
+        /path/to/llvm-cov export -instr-profile=/path/to/default.profdata /path/to/muterPackageTests
+        """
         
         _ = sut.run(with: state)
         
@@ -140,15 +164,19 @@ final class DiscoverProjectCoverageTests: XCTestCase {
     }
     
     func test_whenLlvmCovSucceeds_thenParseResults() throws {
-        process.stdoutToBeReturned =
-            """
-            Test Suite 'muterPackageTests.xctest' failed at 2021-02-25 16:20:37.112.
-                 Executed 144 tests, with 5 failures (0 unexpected) in 2.109 (2.116) seconds
-            Test Suite 'All tests' failed at 2021-02-25 16:20:37.113.
-                 Executed 144 tests, with 5 failures (0 unexpected) in 2.109 (2.117) seconds
-            /path/to/llvm-profdata merge -sparse /path/to/default16636031009452225957_0.profraw -o /path/to/default.profdata
-            /path/to/llvm-cov export -instr-profile=/path/to/default.profdata /path/to/muterPackageTests
-            """
+        state.muterConfiguration = MuterConfiguration(
+            executable: "/path/to/swift",
+            arguments: ["arg0", "arg1"]
+        )
+
+        process.stdoutToBeReturned = """
+        Test Suite 'muterPackageTests.xctest' failed at 2021-02-25 16:20:37.112.
+             Executed 144 tests, with 5 failures (0 unexpected) in 2.109 (2.116) seconds
+        Test Suite 'All tests' failed at 2021-02-25 16:20:37.113.
+             Executed 144 tests, with 5 failures (0 unexpected) in 2.109 (2.117) seconds
+        /path/to/llvm-profdata merge -sparse /path/to/default16636031009452225957_0.profraw -o /path/to/default.profdata
+        /path/to/llvm-cov export -instr-profile=/path/to/default.profdata /path/to/muterPackageTests
+        """
 
         process.stdoutToBeReturned = loadLLVMCovLog()
         
