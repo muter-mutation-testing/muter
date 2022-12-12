@@ -60,7 +60,7 @@ let package = Package(
             name: "muterAcceptanceTests",
             dependencies: ["muterCore", "TestingExtensions"],
             path: "AcceptanceTests",
-            exclude: ["samples", "runAcceptanceTests.sh", "Repositories"]
+            exclude: ["runAcceptanceTests.sh"]
         ),
         .testTarget(
             name: "muterRegressionTests",
@@ -70,56 +70,13 @@ let package = Package(
                 .product(name: "SnapshotTesting", package: "swift-snapshot-testing"),
             ],
             path: "RegressionTests",
-            exclude: ["samples", "__Snapshots__", "runRegressionTests.sh"]
+            exclude: ["__Snapshots__", "runRegressionTests.sh"]
         )
     ]
 )
 
-resolveTestTargetFromEnvironmentVarialbes()
 //hookInternalSwiftSyntaxParser()
 //isDebuggingMain(false)
-
-/// Make sure to select a single test target
-/// This is important because, as of today, we cannot pick a single test target from the command-line (and filtering also doesn't help)
-/// With that in mind, this (a hack, for sure) will look-up for an env var and pick the test target accordingly.
-func resolveTestTargetFromEnvironmentVarialbes() {
-    let shouldAddAcceptanceTests = ProcessInfo.processInfo.environment.keys.contains("acceptance_tests")
-    let shouldAddRegressionTests = ProcessInfo.processInfo.environment.keys.contains("regression_tests")
-
-    if shouldAddAcceptanceTests || shouldAddRegressionTests {
-        package.targets.removeAll(where: \.isTest)
-    }
-
-    if shouldAddAcceptanceTests {
-        package.targets.append(
-            .testTarget(
-                name: "muterAcceptanceTests",
-                dependencies: ["muterCore", "TestingExtensions"],
-                path: "AcceptanceTests",
-                exclude: ["samples", "runAcceptanceTests.sh", "Repositories"]
-            )
-        )
-    }
-
-    if shouldAddRegressionTests {
-        package.dependencies.append(
-            .package(url: "https://github.com/pointfreeco/swift-snapshot-testing.git", from: "1.9.0")
-        )
-
-        package.targets.append(
-            .testTarget(
-                name: "muterRegressionTests",
-                dependencies: [
-                    "muterCore",
-                    "TestingExtensions",
-                    .product(name: "SnapshotTesting", package: "swift-snapshot-testing"),
-                ],
-                path: "RegressionTests",
-                exclude: ["samples", "__Snapshots__", "runRegressionTests.sh"]
-            )
-        )
-    }
-}
 
 /// We need to manually add an -rpath to the project so the tests can run via Xcode
 /// If we are running from console (swift build & friend) we don't need to do it

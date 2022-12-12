@@ -25,7 +25,7 @@ final class AcceptanceTests: XCTestCase {
         XCTAssertTrue(output.contains("Copying your project to a temporary directory for testing"))
         
         XCTAssertTrue(output.contains("In total, Muter discovered 4 Swift files"))
-        XCTAssertTrue(numberOfDiscoveredFileLists(in: output) >= 4)
+        XCTAssertTrue(numberOfDiscoveredFileLists(in: output) >= 1)
         
         XCTAssertTrue(output.contains("/var/folders"))
         XCTAssertTrue(output.contains("/T/TemporaryItems/"))
@@ -162,7 +162,6 @@ final class AcceptanceTests: XCTestCase {
                   --files-to-mutate <files-to-mutate>
                                           Only mutate a given list of source code files.
                   -f, --format <format>   The report format for muter: plain, json, html, xcode
-                                          (default: plain)
                   --skip-coverage         Skips the step in which Muter runs your project in
                                           order to filter out files without coverage.
                   -o, --output <output>   Output file for the report to be saved.

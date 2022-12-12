@@ -1,4 +1,5 @@
 #!/bin/sh
+set -e
 
 echo "🦕🦕🦕🦕🦕🦕🦕🦕 Regression Testing has started 🦕🦕🦕🦕🦕🦕🦕🦕"
 
@@ -28,8 +29,12 @@ swift package generate-xcodeproj
 cp ./muterReport.json "$samplesdir"/projectwithconcurrency_test_output.json
 cd ../..
 
-swift test --filter 'RegressionTests'
+swift test --skip-test --filter 'RegressionTests'
 
-exit $?
+exitCode=$?
+
+rm -rf ./RegressionTests/samples
+
+exit $exitCode
 
 echo "🦖🦖🦖🦖🦖🦖🦖🦖 Regression Testing has finished 🦖🦖🦖🦖🦖🦖🦖🦖"

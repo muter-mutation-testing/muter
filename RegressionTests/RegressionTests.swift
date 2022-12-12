@@ -39,21 +39,21 @@ final class RegressionTests: XCTestCase {
     }
     
     func test_bonMot() {
-        let path = "\(self.rootTestDirectory)/samples/bonmot_regression_test_output.json"
+        let path = "\(rootTestDirectory)/samples/bonmot_regression_test_output.json"
         if case .failure(let description) = runRegressionTest(forFixtureNamed: "bonmot", withResultAt: path) {
             XCTFail(description)
         }
     }
     
     func test_parseCombinator() {
-        let path = "\(self.rootTestDirectory)/samples/parsercombinator_regression_test_output.json"
+        let path = "\(rootTestDirectory)/samples/parsercombinator_regression_test_output.json"
         if case .failure(let description) = runRegressionTest(forFixtureNamed: "parsercombinator", withResultAt: path) {
             XCTFail(description)
         }
     }
     
     func test_projectWithConcurrency() {
-        let path = "\(self.rootTestDirectory)/samples/projectwithconcurrency_test_output.json"
+        let path = "\(rootTestDirectory)/samples/projectwithconcurrency_test_output.json"
         if case .failure(let description) = runRegressionTest(forFixtureNamed: "projectwithconcurrency", withResultAt: path) {
             XCTFail(description)
         }

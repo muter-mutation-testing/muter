@@ -1,4 +1,5 @@
 #!/bin/sh
+set -e
 
 echo "📴📴📴📴📴📴📴 Acceptance Testing has started 📴📴📴📴📴📴📴"
 
@@ -92,10 +93,16 @@ echo " > Running run help command..."
 
 cd ../../..
 
+rm -rf ./AcceptanceTests/Repositories
+
 echo "Running tests..."
 
-swift test --filter 'AcceptanceTests'
+swift test --skip-build --filter 'AcceptanceTests'
 
-exit $?
+exitCode=$?
+
+ rm -rf ./AcceptanceTests/samples
+
+exit $exitCode
 
 echo "📳📳📳📳📳📳📳 Acceptance Testing has finished 📳📳📳📳📳📳📳"
