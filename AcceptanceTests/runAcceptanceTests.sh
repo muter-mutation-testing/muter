@@ -96,7 +96,7 @@ rm -rf ./AcceptanceTests/Repositories
 
 echo "Running tests..."
 
-swift test --skip-build --filter 'AcceptanceTests'
+swift test --filter 'AcceptanceTests'
 
 exitCode=$?
 

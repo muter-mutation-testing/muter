@@ -29,7 +29,7 @@ swift package generate-xcodeproj
 cp ./muterReport.json "$samplesdir"/projectwithconcurrency_test_output.json
 cd ../..
 
-swift test --skip-test --filter 'RegressionTests'
+swift test --filter 'RegressionTests'
 
 exitCode=$?
 
