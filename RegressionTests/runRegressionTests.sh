@@ -1,5 +1,4 @@
 #!/bin/sh
-set -e
 
 echo "🦕🦕🦕🦕🦕🦕🦕🦕 Regression Testing has started 🦕🦕🦕🦕🦕🦕🦕🦕"
 

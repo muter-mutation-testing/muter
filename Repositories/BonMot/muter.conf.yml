@@ -3,8 +3,8 @@ arguments:
 - BonMot.xcodeproj
 - -scheme
 - BonMot-OSX
-- -sdk
-- macosx
+- -destination
+- platform=macOS,arch=arm64
 - test
 executable: /usr/bin/xcodebuild
 exclude:
