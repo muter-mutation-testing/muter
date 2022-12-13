@@ -4,7 +4,7 @@ arguments:
 - -scheme
 - BonMot-OSX
 - -destination
-- platform=macOS,arch=arm64
+- platform=macOS,arch=x86_x64
 - test
 executable: /usr/bin/xcodebuild
 exclude:
