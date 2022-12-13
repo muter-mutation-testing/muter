@@ -3,7 +3,7 @@
 set -o pipefail
 
 # --verbose will output llvm-cov command
-llvm_export=$(swift test --enable-code-coverage --verbose | tail -1)
+llvm_export=$(swift test --filter 'muterTests' --enable-code-coverage --verbose | tail -1)
 
 # bail out if error
 if [ $? -ne 0 ]; then

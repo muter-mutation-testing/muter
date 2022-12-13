@@ -1,5 +1,4 @@
 #!/bin/sh
-set -e
 
 echo "📴📴📴📴📴📴📴 Acceptance Testing has started 📴📴📴📴📴📴📴"
 
