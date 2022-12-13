@@ -100,7 +100,7 @@ final class AcceptanceTests: XCTestCase {
         let decodedConfiguration = try? MuterConfiguration(from: self.createdIOSConfiguration)
         XCTAssertEqual(decodedConfiguration?.testCommandExecutable, "/usr/bin/xcodebuild")
         XCTAssertTrue(decodedConfiguration?.testCommandArguments.contains("-destination"))
-        XCTAssertTrue(decodedConfiguration?.testCommandArguments.contains("platform=iOS Simulator,name=iPhone 8"))
+        XCTAssertTrue(decodedConfiguration?.testCommandArguments.contains("platform=iOS Simulator,name=iPhone SE (3rd generation)"))
         XCTAssertFalse(decodedConfiguration?.mutateFilesInSiblingOfProjectFolder)
     }
     
@@ -108,7 +108,7 @@ final class AcceptanceTests: XCTestCase {
         let decodedConfiguration: MuterConfiguration? = try? MuterConfiguration(from: self.createdMacOSConfiguration)
         XCTAssertEqual(decodedConfiguration?.testCommandExecutable, "/usr/bin/xcodebuild")
         XCTAssertFalse(decodedConfiguration?.testCommandArguments.contains("-destination"))
-        XCTAssertFalse(decodedConfiguration?.testCommandArguments.contains("platform=iOS Simulator,name=iPhone 8"))
+        XCTAssertFalse(decodedConfiguration?.testCommandArguments.contains("platform=iOS Simulator,name=iPhone SE (3rd generation)"))
         XCTAssertFalse(decodedConfiguration?.mutateFilesInSiblingOfProjectFolder)
     }
     

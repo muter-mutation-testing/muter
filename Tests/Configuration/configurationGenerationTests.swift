@@ -28,7 +28,7 @@ final class ConfigurationGenerationTests: XCTestCase {
                         "-scheme",
                         "iOSApp",
                         "-destination",
-                        "platform=iOS Simulator,name=iPhone 8",
+                        "platform=iOS Simulator,name=iPhone SE (3rd generation)",
                         "test"])
         )
     }
@@ -45,7 +45,7 @@ final class ConfigurationGenerationTests: XCTestCase {
                         "-scheme",
                         "iOSApp",
                         "-destination",
-                        "platform=iOS Simulator,name=iPhone 8",
+                        "platform=iOS Simulator,name=iPhone SE (3rd generation)",
                         "test"])
         )
     }
@@ -66,7 +66,7 @@ final class ConfigurationGenerationTests: XCTestCase {
                         "-scheme",
                         "iOSApp",
                         "-destination",
-                        "platform=iOS Simulator,name=iPhone 8",
+                        "platform=iOS Simulator,name=iPhone SE (3rd generation)",
                         "test"])
         )
     }
@@ -101,7 +101,7 @@ final class ConfigurationGenerationTests: XCTestCase {
                         "-scheme",
                         "iOSApp",
                         "-destination",
-                        "platform=iOS Simulator,name=iPhone 8",
+                        "platform=iOS Simulator,name=iPhone SE (3rd generation)",
                         "test",])
         )
     }

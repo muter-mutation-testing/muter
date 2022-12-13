@@ -3,12 +3,10 @@ arguments:
 - ExampleApp.xcodeproj
 - -scheme
 - ExampleApp
-- -sdk
-- iphonesimulator
 - -destination
 - platform=iOS Simulator,name=iPhone SE (3rd generation)
 - test
 executable: /usr/bin/xcodebuild
-exclude:
-- ExampleApp
+exclude: []
 excludeCalls: []
+mutateInSiblingFolder: false

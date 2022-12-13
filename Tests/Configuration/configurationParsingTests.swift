@@ -16,7 +16,7 @@ final class ConfigurationParsingTests: XCTestCase {
             "-sdk",
             "iphonesimulator",
             "-destination",
-            "platform=iOS Simulator,name=iPhone 8",
+            "platform=iOS Simulator,name=iPhone SE (3rd generation)",
             "test",
         ])
     }
