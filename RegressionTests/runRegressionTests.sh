@@ -10,7 +10,7 @@ mkdir -p ./RegressionTests/samples
 
 echo "Running Regression Test on BonMot..."
 cd ./Repositories/BonMot
-"$muterdir"/muter --format json --output muterReport.json
+"$muterdir"/muter --skip-coverage --format json --output muterReport.json
 
 cp ./muterReport.json "$samplesdir"/bonmot_regression_test_output.json
 cd ../..
