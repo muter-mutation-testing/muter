@@ -28,12 +28,11 @@ swift package generate-xcodeproj
 cp ./muterReport.json "$samplesdir"/projectwithconcurrency_test_output.json
 cd ../..
 
-export regression_tests=true
-swift test
+swift test --filter 'RegressionTests'
 
 exitCode=$?
 
-unset regression_tests
+rm -rf ./RegressionTests/samples
 
 exit $exitCode
 

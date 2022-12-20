@@ -64,7 +64,7 @@ private extension MuterConfiguration {
         ]
         
         let destination = projectFile.contains("SDKROOT = iphoneos") ?
-            ["-destination", "platform=iOS Simulator,name=iPhone 8"] :
+            ["-destination", "platform=iOS Simulator,name=iPhone SE (3rd generation)"] :
             []
         
         return defaultArguments + destination + ["test"]

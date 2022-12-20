@@ -99,13 +99,7 @@ brew link muter
 ```
 
 ## Development
-If you want to run Muter in Xcode, you need to edit the top-level function `isDebuggingMain` on `Package.swift`:
-
-```swift
-isDebuggingMain(true)
-```
-
-And change the `FileManager` current path (in `main.swift`) to point to the directory containing the project you'd like to test using Muter:
+If you want to run Muter in Xcode, change the `FileManager` current path (in `main.swift`) to point to the directory containing the project you'd like to test using Muter:
 
 ```swift
 import Foundation

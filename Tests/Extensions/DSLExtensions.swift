@@ -1,48 +1,44 @@
-import Quick
-import Nimble
 import Difference
+import XCTest
 
-public func they(
-    _ description: String,
+public func XCTAssertEqual<T: Equatable>(
+    _ expected: @autoclosure () throws -> T,
+    _ received: @autoclosure () throws -> T,
     file: StaticString = #filePath,
-    line: UInt = #line,
-    closure: @escaping () -> Void
+    line: UInt = #line
 ) {
-    it("they " + description, file: file, line: line, closure: closure)
-}
-
-public func fthey(
-    _ description: String,
-    file: StaticString = #filePath,
-    line: UInt = #line,
-    closure: @escaping () -> Void
-) {
-    fit(description, file: file, line: line, closure: closure)
-}
-
-public func when(
-    _ description: String,
-    closure: () -> Void
-) {
-    context("when " + description, closure: closure)
-}
-
-// via https://github.com/krzysztofzablocki/Difference#integrate-with-quick
-public func equalWithDiff<T: Equatable>(_ expectedValue: T?) -> Predicate<T> {
-    return Predicate.define { actualExpression in
-        let receivedValue = try actualExpression.evaluate()
-
-        if receivedValue == nil {
-            var message = ExpectationMessage.fail("")
-            if let expectedValue = expectedValue {
-                message = ExpectationMessage.expectedCustomValueTo("equal <\(expectedValue)>", actual: "nil")
-            }
-            return PredicateResult(status: .fail, message: message)
-        }
-        if expectedValue == nil {
-            return PredicateResult(status: .fail, message: ExpectationMessage.fail("").appendedBeNilHint())
-        }
-
-        return PredicateResult(bool: receivedValue == expectedValue, message: ExpectationMessage.fail("Found difference for " + diff(expectedValue, receivedValue).joined(separator: ", ")))
+    do {
+        let expected = try expected()
+        let received = try received()
+        XCTAssertTrue(expected == received, "Found difference for \n" + diff(expected, received).joined(separator: ", "), file: file, line: line)
     }
+    catch {
+        XCTFail("Caught error while testing: \(error)", file: file, line: line)
+    }
+}
+
+public func XCTAssertTrue(
+    _ expression: @autoclosure () throws -> Bool?,
+    _ message: @autoclosure () -> String = "",
+    file: StaticString = #filePath,
+    line: UInt = #line
+) {
+    guard let actual = try? expression() else {
+        return XCTFail("Expected boolean, got nil")
+    }
+
+    XCTAssertTrue(actual, message(), file: file, line: line)
+}
+
+public func XCTAssertFalse(
+    _ expression: @autoclosure () throws -> Bool?,
+    _ message: @autoclosure () -> String = "",
+    file: StaticString = #filePath,
+    line: UInt = #line
+) {
+    guard let actual = try? expression() else {
+        return XCTFail("Expected boolean, got nil")
+    }
+
+    XCTAssertFalse(actual, message(), file: file, line: line)
 }

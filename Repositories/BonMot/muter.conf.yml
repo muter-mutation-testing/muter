@@ -1,12 +1,6 @@
 arguments:
-- -project
-- BonMot.xcodeproj
-- -scheme
-- BonMot-OSX
-- -sdk
-- macosx
 - test
-executable: /usr/bin/xcodebuild
+executable: /usr/bin/swift
 exclude:
 - DemoStrings.swift
 - StyleViewController.swift

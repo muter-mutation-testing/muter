@@ -92,14 +92,15 @@ echo " > Running run help command..."
 
 cd ../../..
 
+rm -rf ./AcceptanceTests/Repositories
+
 echo "Running tests..."
 
-export acceptance_tests=true
-swift test
+swift test --filter 'AcceptanceTests'
 
 exitCode=$?
 
-unset acceptance_tests
+ rm -rf ./AcceptanceTests/samples
 
 exit $exitCode
 
