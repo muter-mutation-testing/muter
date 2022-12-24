@@ -2,16 +2,18 @@
 
 set -o pipefail
 
-# --verbose will output llvm-cov command
-llvm_export=$(swift test --filter 'muterTests' --enable-code-coverage --verbose | tail -1)
+swift test --filter 'muterTests' --enable-code-coverage
 
 # bail out if error
 if [ $? -ne 0 ]; then
     exit 1
 fi
 
+toolchain="$(xcode-select -p)/Toolchains/XcodeDefault.xctoolchain/usr/bin/llvm-cov"
+xctest=".build/debug/muterPackageTests.xctest/Contents/MacOS/muterPackageTests"
+
 # export coverage but ignore .build and any test targets
-llvm_report="${llvm_export/llvm-cov export/llvm-cov report} --ignore-filename-regex='.build|Tests'"
+llvm_report="$toolchain report $xctest -instr-profile=.build/debug/codecov/default.profdata --ignore-filename-regex='.build|Tests'"
 
 #Filename   Regions    Missed Regions     Cover   Functions  Missed Functions  Executed       Lines      Missed Lines     Cover
 #------------------------------------------------------------------------------------------------------------------------------------------------------------------------
