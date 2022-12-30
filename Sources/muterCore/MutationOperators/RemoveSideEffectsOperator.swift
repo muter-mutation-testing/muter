@@ -1,9 +1,11 @@
 import SwiftSyntax
+import SwiftSyntaxBuilder
 import Foundation
 
 enum RemoveSideEffectsOperator {
     final class Visitor: SyntaxAnyVisitor, PositionDiscoveringVisitor {
         var positionsOfToken = [MutationPosition]()
+
         private var concurrencyPropertiesInFile = [String]()
         private let concurrencyTypes = [
             "DispatchSemaphore",
@@ -157,14 +159,27 @@ extension RemoveSideEffectsOperator {
                 description: "removed line"
             )
 
-            return mutated(node, with: newFunctionBody)
+            return mutated(
+                node,
+                originalBody: statements,
+                withNewFunctionBody: newFunctionBody.statements
+            )
         }
 
         private func currentLineIsPositionToMutate(_ currentStatement: CodeBlockItemSyntax) -> Bool {
             return currentStatement.endPosition == positionToMutate
         }
 
-        private func mutated(_ node: FunctionDeclSyntax, with body: CodeBlockSyntax) -> DeclSyntax {
+        private func mutated(
+            _ node: FunctionDeclSyntax,
+            originalBody: CodeBlockItemListSyntax,
+            withNewFunctionBody: CodeBlockItemListSyntax
+        ) -> DeclSyntax {
+            let body = insertSchemataSwitch(
+                at: originalBody,
+                transformedSyntax: withNewFunctionBody
+            ).newSyntax
+
             let functionDecl = SyntaxFactory.makeFunctionDecl(
                 attributes: node.attributes,
                 modifiers: node.modifiers,
@@ -173,10 +188,84 @@ extension RemoveSideEffectsOperator {
                 genericParameterClause: node.genericParameterClause,
                 signature: node.signature,
                 genericWhereClause: node.genericWhereClause,
-                body: body
+                body: SyntaxFactory.makeCodeBlock(
+                    leftBrace: .leftBrace,
+                    statements: body,
+                    rightBrace: .rightBrace
+                )
             )
 
             return DeclSyntax(functionDecl)
         }
+    }
+}
+
+func insertSchemataSwitch(
+    at originalSyntax: CodeBlockItemListSyntax,
+    transformedSyntax: CodeBlockItemListSyntax
+) -> (newSyntax: CodeBlockItemListSyntax, schemataId: String) {
+    let schemataId = UUID().uuidString
+
+    let schemataSyntax = CodeBlockItemList([
+        CodeBlockItem(
+            item: IfStmt(
+                conditions: ConditionElementList(
+                    arrayLiteral: ConditionElement(
+                        condition: SequenceExpr(
+                            elements: ExprList(
+                                arrayLiteral: SubscriptExpr(
+                                    calledExpression:
+                                        MemberAccessExpr(
+                                            base: MemberAccessExpr(
+                                                base: IdentifierExpr("ProcessInfo"),
+                                                dot: TokenSyntax.period,
+                                                name: TokenSyntax.identifier("processInfo")
+                                            ),
+                                            dot: TokenSyntax.period,
+                                            name: TokenSyntax.identifier("environment")
+                                        ),
+                                    leftBracket: TokenSyntax.leftSquareBracket,
+                                    rightBracket: TokenSyntax.rightSquareBracket,
+                                    argumentListBuilder: {
+                                        TupleExprElement(expression: StringLiteralExpr(schemataId))
+                                    }
+                                ),
+                                BinaryOperatorExpr("!="),
+                                NilLiteralExpr()
+                            )
+                        )
+                    )
+                ),
+                body: CodeBlock(statements: originalSyntax),
+                elseKeyword: .else.withLeadingTrivia(.spaces(1)),
+                elseBody: CodeBlock(statements: transformedSyntax)
+            )
+        )
+    ]).buildSyntax(format: Format())
+
+    return (schemataSyntax.as(CodeBlockItemListSyntax.self)!, schemataId)
+}
+
+extension CodeBlockItemListSyntax: ExpressibleAsCodeBlockItemList {
+    public func createCodeBlockItemList() -> SwiftSyntaxBuilder.CodeBlockItemList {
+        CodeBlockItemList(compactMap { CodeBlockItem(item: $0) })
+    }
+}
+
+extension CodeBlockItemSyntax: ExpressibleAsSyntaxBuildable {
+    public func createSyntaxBuildable() -> SwiftSyntaxBuilder.SyntaxBuildable {
+        self._syntaxNode
+    }
+}
+
+extension Syntax: ExpressibleAsSyntaxBuildable {
+    public func createSyntaxBuildable() -> SwiftSyntaxBuilder.SyntaxBuildable {
+        self
+    }
+}
+
+extension Syntax: SyntaxBuildable {
+    public func buildSyntax(format: SwiftSyntaxBuilder.Format, leadingTrivia: SwiftSyntax.Trivia?) -> SwiftSyntax.Syntax {
+        self
     }
 }
