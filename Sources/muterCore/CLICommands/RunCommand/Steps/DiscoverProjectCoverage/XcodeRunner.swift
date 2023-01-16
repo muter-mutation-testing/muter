@@ -6,13 +6,13 @@ final class XcodeRunner: BuildSystemRunner {
     func run(
         process makeProcess: @escaping () -> Launchable,
         with configuration: MuterConfiguration
-    ) -> Result<Coverage, BuildSystem> {
+    ) -> Result<Coverage, BuildSystemError> {
         self.makeProcess = makeProcess
         guard let resultPath = runTestsWithCoverageEnabled(using: configuration),
               let xccovPath = runXcodeSelect(),
               let report = runXccov(path: xccovPath, with: resultPath) else {
 
-            return .failure(BuildSystem.buildError)
+            return .failure(BuildSystemError.buildError)
         }
 
         let untested = extractUntested(from: report)

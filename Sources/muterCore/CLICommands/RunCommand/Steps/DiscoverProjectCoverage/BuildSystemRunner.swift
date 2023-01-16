@@ -1,6 +1,6 @@
 import Foundation
 
-enum BuildSystem: Error {
+enum BuildSystemError: Error {
     case buildError
 }
 
@@ -8,7 +8,7 @@ protocol BuildSystemRunner: AnyObject {
     func run(
         process makeProcess: @escaping () -> Launchable,
         with configuration: MuterConfiguration
-    ) -> Result<Coverage, BuildSystem>
+    ) -> Result<Coverage, BuildSystemError>
 }
 
 extension BuildSystemRunner {

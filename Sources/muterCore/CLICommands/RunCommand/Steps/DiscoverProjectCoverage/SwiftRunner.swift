@@ -6,7 +6,7 @@ final class SwiftRunner: BuildSystemRunner {
     func run(
         process makeProcess: @escaping () -> Launchable,
         with configuration: MuterConfiguration
-    ) -> Result<Coverage, BuildSystem> {
+    ) -> Result<Coverage, BuildSystemError> {
         self.makeProcess = makeProcess
         guard let verboseCoverageOutput = runWithCoverageInVerboseMode(using: configuration),
               let llvmCovExport = extractLlvmCovFrom(verboseCoverageOutput),
