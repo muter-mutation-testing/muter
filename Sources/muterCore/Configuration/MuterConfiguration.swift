@@ -10,6 +10,9 @@ public struct MuterConfiguration: Equatable, Codable {
     let excludeCallList: [String]
     let mutateFilesInSiblingOfProjectFolder: Bool
 
+    // dont even tell
+    var xcTestRunCommand: [String] = []
+
     enum CodingKeys: String, CodingKey {
         case testCommandArguments = "arguments"
         case testCommandExecutable = "executable"

@@ -150,7 +150,7 @@ extension RunCommandObserver {
     }
 
     func handleMutationPointDiscoveryFinished(notification: Notification) {
-        logger.mutationPointDiscoveryFinished(mutationPoints: notification.object as! [MutationPoint])
+//        logger.mutationPointDiscoveryFinished(mutationPoints: notification.object as! [MutationPoint])
     }
 
     func handleMutationTestingStarted(notification: Notification) {
@@ -167,15 +167,15 @@ extension RunCommandObserver {
     }
 
     func handleNewTestLogAvailable(notification: Notification) {
-        let mutationTestLog = notification.object as! MutationTestLog
-
-        logger.newMutationTestLogAvailable(mutationTestLog: mutationTestLog)
-        
-        _ = fileManager.createFile(
-            atPath: "\(loggingDirectory)/\(logFileName(from: mutationTestLog.mutationPoint))",
-            contents: mutationTestLog.testLog.data(using: .utf8),
-            attributes: nil
-        )
+//        let mutationTestLog = notification.object as! MutationTestLog
+//
+//        logger.newMutationTestLogAvailable(mutationTestLog: mutationTestLog)
+//        
+//        _ = fileManager.createFile(
+//            atPath: "\(loggingDirectory)/\(logFileName(from: mutationTestLog.mutationPoint))",
+//            contents: mutationTestLog.testLog.data(using: .utf8),
+//            attributes: nil
+//        )
     }
     
     func logFileName(from mutationPoint: MutationPoint?) -> String {

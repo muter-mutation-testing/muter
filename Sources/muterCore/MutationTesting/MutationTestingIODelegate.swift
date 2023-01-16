@@ -3,7 +3,11 @@ import Foundation
 protocol MutationTestingIODelegate {
     func backupFile(at path: String, using swapFilePaths: [FilePath: FilePath])
     func writeFile(to path: String, contents: String) throws
-    func runTestSuite(using configuration: MuterConfiguration, savingResultsIntoFileNamed fileName: String) -> (outcome: TestSuiteOutcome, testLog: String)
+    func runTestSuite(
+        using configuration: MuterConfiguration,
+        activeSchemata: Schemata?,
+        savingResultsIntoFileNamed fileName: String
+    ) -> (outcome: TestSuiteOutcome, testLog: String)
     func restoreFile(at path: String, using swapFilePaths: [FilePath: FilePath])
 }
 
@@ -20,12 +24,15 @@ struct MutationTestingDelegate: MutationTestingIODelegate {
     }
 
     func runTestSuite(using configuration: MuterConfiguration,
+                      activeSchemata: Schemata?,
                       savingResultsIntoFileNamed fileName: String) -> (outcome: TestSuiteOutcome, testLog: String) {
         do {
             let (testProcessFileHandle, testLogUrl) = try fileHandle(for: fileName)
             defer { testProcessFileHandle.closeFile() }
 
-            let process = try testProcess(with: configuration, and: testProcessFileHandle)
+            let process = try testProcess(with: configuration,
+                                          schemataId: activeSchemata?.id,
+                                          and: testProcessFileHandle)
             try process.run()
             process.waitUntilExit()
 
@@ -63,9 +70,28 @@ private extension MutationTestingDelegate {
         )
     }
 
-    func testProcess(with configuration: MuterConfiguration, and fileHandle: FileHandle) throws -> Process {
+    func testProcess(
+        with configuration: MuterConfiguration,
+        schemataId: String?,
+        and fileHandle: FileHandle
+    ) throws -> Process {
         let process = Process()
-        process.arguments = configuration.testCommandArguments
+        schemataId.map {
+            process.environment = [$0: $0]
+        }
+
+        let destinationIndex = configuration.testCommandArguments.firstIndex(of: "-destination")!
+
+        // yeah i know...i know, hold you breath :)
+        if !configuration.xcTestRunCommand.isEmpty {
+            process.arguments = [
+                configuration.testCommandArguments[destinationIndex],
+                configuration.testCommandArguments[destinationIndex + 1]
+            ] + configuration.xcTestRunCommand
+        } else {
+            process.arguments = configuration.testCommandArguments
+        }
+
         process.executableURL = URL(fileURLWithPath: configuration.testCommandExecutable)
         process.standardOutput = fileHandle
         process.standardError = fileHandle

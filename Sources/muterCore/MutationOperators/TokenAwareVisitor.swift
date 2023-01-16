@@ -1,9 +1,13 @@
 import SwiftSyntax
 
 class TokenAwareVisitor: SyntaxAnyVisitor, PositionDiscoveringVisitor {
+    var oppositeOperatorMapping: [String: String] = [:]
+
     fileprivate(set) var tokensToDiscover = [TokenKind]()
+
     private(set) var positionsOfToken = [MutationPosition]()
-    
+    private(set) var schematas = [CodeBlockItemListSyntax: [Schemata]]()
+
     private let sourceFileInfo: SourceFileInfo
 
     required init(configuration: MuterConfiguration?, sourceFileInfo: SourceFileInfo) {
@@ -12,10 +16,24 @@ class TokenAwareVisitor: SyntaxAnyVisitor, PositionDiscoveringVisitor {
     
     override func visitAny(_ node: Syntax) -> SyntaxVisitorContinueKind {
         node.as(TokenSyntax.self).map { node in
-            if canMutateToken(node) {
-                positionsOfToken.append(
-                    node.mutationPosition(with: sourceFileInfo)
+            if canMutateToken(node),
+               let oppositeOperator = oppositeOperator(for: node.tokenKind) {
+
+                let mutation = Schemata(
+                    id: makeSchemataId(sourceFileInfo, node),
+                    syntaxMutation: transform(
+                        node: node,
+                        mutatedSyntax: mutated(node, using: oppositeOperator)
+                    ),
+                    positionInSourceCode: node.mutationPosition(with: sourceFileInfo),
+                    snapshot: MutationOperatorSnapshot(
+                        before: node.description.trimmed,
+                        after: oppositeOperator,
+                        description: "changed \(node.description.trimmed) to \(oppositeOperator)"
+                    )
                 )
+
+                schematas[node.codeBlockItemListSyntax, default: []].append(mutation)
             }
         }
         
@@ -31,6 +49,24 @@ class TokenAwareVisitor: SyntaxAnyVisitor, PositionDiscoveringVisitor {
     private func canMutateToken(_ token: TokenSyntax) -> Bool {
         tokensToDiscover.contains(token.tokenKind) &&
         token.parent?.is(BinaryOperatorExprSyntax.self) == true
+    }
+
+    private func oppositeOperator(for tokenKind: TokenKind) -> String? {
+        guard case .spacedBinaryOperator(let `operator`) = tokenKind else {
+            return nil
+        }
+
+        return oppositeOperatorMapping[`operator`]
+    }
+
+    private func mutated(_ token: TokenSyntax, using `operator`: String) -> Syntax {
+        let tokenSyntax = SyntaxFactory.makeToken(
+            .spacedBinaryOperator(`operator`),
+            presence: .present,
+            leadingTrivia: token.leadingTrivia,
+            trailingTrivia: token.trailingTrivia
+        )
+        return Syntax(tokenSyntax)
     }
 }
 
@@ -53,8 +89,16 @@ enum ROROperator {
                 .spacedBinaryOperator("<"),
                 .spacedBinaryOperator(">"),
             ]
-        }
 
+            oppositeOperatorMapping = [
+                "==": "!=",
+                "!=": "==",
+                ">=": "<=",
+                "<=": ">=",
+                ">": "<",
+                "<": ">",
+            ]
+        }
     }
 }
 
@@ -65,6 +109,11 @@ enum ChangeLogicalConnectorOperator {
             tokensToDiscover = [
                 .spacedBinaryOperator("||"),
                 .spacedBinaryOperator("&&"),
+            ]
+
+            oppositeOperatorMapping = [
+                "||": "&&",
+                "&&": "||",
             ]
         }
     }

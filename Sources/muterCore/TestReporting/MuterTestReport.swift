@@ -67,28 +67,28 @@ extension MuterTestReport.FileReport: Comparable {
 
 extension MuterTestReport {
     struct AppliedMutationOperator: Codable, Equatable {
-        let mutationPoint: MutationPoint
+        let mutationPoint: _MutationPoint = .null
         let mutationSnapshot: MutationOperatorSnapshot
         let testSuiteOutcome: TestSuiteOutcome
 
         enum CodingKeys: String, CodingKey {
-            case mutationPoint
+//            case mutationPoint
             case testSuiteOutcome
         }
 
         init(
-            mutationPoint: MutationPoint,
+            mutationPoint: _MutationPoint,
             mutationSnapshot: MutationOperatorSnapshot,
             testSuiteOutcome: TestSuiteOutcome
         ) {
-            self.mutationPoint = mutationPoint
+//            self.mutationPoint = mutationPoint
             self.mutationSnapshot = mutationSnapshot
             self.testSuiteOutcome = testSuiteOutcome
         }
 
         public init(from decoder: Decoder) throws {
             let container = try decoder.container(keyedBy: CodingKeys.self)
-            mutationPoint = try container.decode(MutationPoint.self, forKey: .mutationPoint)
+//            mutationPoint = try container.decode(_MutationPoint.self, forKey: .mutationPoint)
             testSuiteOutcome = try container.decode(TestSuiteOutcome.self, forKey: .testSuiteOutcome)
             mutationSnapshot = .null
         }

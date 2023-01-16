@@ -1,0 +1,27 @@
+Command line invocation:
+    /Applications/Xcode.app/Contents/Developer/usr/bin/xcodebuild -destination "platform=iOS Simulator,name=iPhone SE (3rd generation)" -xctestrun /Users/rafaelmachado/Developer/muter/Repositories/ExampleApp/Debug/ExampleApp_iphonesimulator16.1-arm64.xctestrun test-without-building
+
+User defaults from command line:
+    IDEPackageSupportUseBuiltinSCM = YES
+
+Test Suite 'All tests' started at 2023-01-15 07:56:18.831
+Test Suite 'ExampleAppTests.xctest' started at 2023-01-15 07:56:18.832
+Test Suite 'ModuleTests' started at 2023-01-15 07:56:18.832
+Test Case '-[ExampleAppTests.ModuleTests test]' started.
+Test Case '-[ExampleAppTests.ModuleTests test]' passed (0.002 seconds).
+Test Suite 'ModuleTests' passed at 2023-01-15 07:56:18.835.
+	 Executed 1 test, with 0 failures (0 unexpected) in 0.002 (0.003) seconds
+Test Suite 'ExampleAppTests.xctest' passed at 2023-01-15 07:56:18.835.
+	 Executed 1 test, with 0 failures (0 unexpected) in 0.002 (0.003) seconds
+Test Suite 'All tests' passed at 2023-01-15 07:56:18.835.
+	 Executed 1 test, with 0 failures (0 unexpected) in 0.002 (0.004) seconds
+2023-01-15 07:56:19.091 xcodebuild[32577:9271972] [MT] IDETestOperationsObserverDebug: 0.430 elapsed -- Testing started completed.
+2023-01-15 07:56:19.091 xcodebuild[32577:9271972] [MT] IDETestOperationsObserverDebug: 0.000 sec, +0.000 sec -- start
+2023-01-15 07:56:19.091 xcodebuild[32577:9271972] [MT] IDETestOperationsObserverDebug: 0.430 sec, +0.430 sec -- end
+
+Test session results, code coverage, and logs:
+	/Users/rafaelmachado/Library/Developer/Xcode/DerivedData/ExampleApp-hgabtzraxwdporalpsfhqvqhfikr/Logs/Test/Test-ExampleApp-2023.01.15_07-56-18--0300.xcresult
+
+** TEST EXECUTE SUCCEEDED **
+
+Testing started

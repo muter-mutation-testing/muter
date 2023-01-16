@@ -22,10 +22,13 @@ func generateAppliedMutationOperatorsCLITable(from fileReports: [MuterTestReport
 }
 
 private func operatorsToTableRows(fileReport: MuterTestReport.FileReport) -> [(CLITable.Row, CLITable.Row, CLITable.Row)] {
-    return fileReport.appliedOperators.map {
-        (CLITable.Row(value: "\(fileReport.fileName):\($0.mutationPoint.position.line)"),
-         CLITable.Row(value: $0.mutationPoint.mutationOperatorId.rawValue),
-         CLITable.Row(value: $0.testSuiteOutcome.asMutationTestOutcome))
+    return fileReport.appliedOperators.map { _ in 
+//        (CLITable.Row(value: "\(fileReport.fileName):\($0.mutationPoint.position.line)"),
+//         CLITable.Row(value: $0.mutationPoint.mutationOperatorId.rawValue),
+//         CLITable.Row(value: $0.testSuiteOutcome.asMutationTestOutcome))
+        (CLITable.Row(value: "todo"),
+         CLITable.Row(value: "todo"),
+         CLITable.Row(value: ""))
     }
 }
 

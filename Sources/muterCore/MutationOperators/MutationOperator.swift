@@ -77,7 +77,8 @@ protocol PositionSpecificRewriter {
 }
 
 protocol PositionDiscoveringVisitor {
-    var positionsOfToken: [MutationPosition] { get }
+//    var positionsOfToken: [MutationPosition] { get }
+    var schematas: [CodeBlockItemListSyntax: [Schemata]] { get }
     init(configuration: MuterConfiguration?, sourceFileInfo: SourceFileInfo)
 
     func walk<SyntaxType: SyntaxProtocol>(_ node: SyntaxType)

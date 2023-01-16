@@ -25,13 +25,13 @@ extension MutationTestOutcome: Equatable {
 extension MutationTestOutcome {
     struct Mutation: Equatable {
         let testSuiteOutcome: TestSuiteOutcome
-        let point: MutationPoint
+        let point: _MutationPoint
         let snapshot: MutationOperatorSnapshot
         let originalProjectPath: String
         
         init(
             testSuiteOutcome: TestSuiteOutcome,
-            mutationPoint: MutationPoint,
+            mutationPoint: _MutationPoint,
             mutationSnapshot: MutationOperatorSnapshot,
             originalProjectDirectoryUrl: URL,
             tempDirectoryURL: URL

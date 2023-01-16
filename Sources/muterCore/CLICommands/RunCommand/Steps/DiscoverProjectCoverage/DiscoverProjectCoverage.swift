@@ -22,11 +22,11 @@ final class DiscoverProjectCoverage: RunCommandStep {
 
         notificationCenter.post(name: .projectCoverageDiscoveryStarted, object: nil)
 
-        let currentDirectoryPath = FileManager.default.currentDirectoryPath
-        FileManager.default.changeCurrentDirectoryPath(state.tempDirectoryURL.path)
+//        let currentDirectoryPath = FileManager.default.currentDirectoryPath
+//        FileManager.default.changeCurrentDirectoryPath(state.tempDirectoryURL.path)
 
         defer {
-            FileManager.default.changeCurrentDirectoryPath(currentDirectoryPath)
+//            FileManager.default.changeCurrentDirectoryPath(currentDirectoryPath)
         }
 
         switch runner.run(process: makeProcess, with: state.muterConfiguration) {

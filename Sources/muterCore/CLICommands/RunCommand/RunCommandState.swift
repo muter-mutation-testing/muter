@@ -7,7 +7,7 @@ protocol AnyRunCommandState: AnyObject {
     var tempDirectoryURL: URL { get }
     var projectCoverage: Coverage { get }
     var sourceFileCandidates: [FilePath] { get }
-    var mutationPoints: [MutationPoint] { get }
+    var mutationPoints: [_MutationPoint] { get }
     var sourceCodeByFilePath: [FilePath: SourceFileSyntax] { get }
     var filesToMutate: [String] { get }
     var swapFilePathsByOriginalPath: [FilePath: FilePath] { get }
@@ -22,7 +22,7 @@ final class RunCommandState: AnyRunCommandState {
     var tempDirectoryURL: URL = URL(string: "example.com")!
     var projectCoverage: Coverage = .null
     var sourceFileCandidates: [FilePath] = []
-    var mutationPoints: [MutationPoint] = []
+    var mutationPoints: [_MutationPoint] = []
     var sourceCodeByFilePath: [FilePath: SourceFileSyntax] = [:]
     var filesToMutate: [String] = []
     var swapFilePathsByOriginalPath: [FilePath: FilePath] = [:]
@@ -49,7 +49,7 @@ extension RunCommandState {
         case copyToTempDirectoryCompleted
         case projectCoverage(Coverage)
         case sourceFileCandidatesDiscovered([FilePath])
-        case mutationPointsDiscovered([MutationPoint])
+        case mutationPointsDiscovered([_MutationPoint])
         case sourceCodeParsed([FilePath: SourceFileSyntax])
         case swapFilePathGenerated([FilePath: FilePath])
         case mutationTestOutcomeGenerated(MutationTestOutcome)

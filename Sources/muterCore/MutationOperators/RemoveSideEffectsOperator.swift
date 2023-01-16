@@ -3,6 +3,8 @@ import Foundation
 
 enum RemoveSideEffectsOperator {
     final class Visitor: SyntaxAnyVisitor, PositionDiscoveringVisitor {
+        private(set) var schematas = [CodeBlockItemListSyntax: [Schemata]]()
+        
         var positionsOfToken = [MutationPosition]()
         private var concurrencyPropertiesInFile = [String]()
         private let concurrencyTypes = [

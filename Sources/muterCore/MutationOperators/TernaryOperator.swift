@@ -2,6 +2,8 @@ import SwiftSyntax
 
 enum TernaryOperator {
     final class Visitor: SyntaxAnyVisitor, PositionDiscoveringVisitor {
+        private(set) var schematas = [CodeBlockItemListSyntax: [Schemata]]()
+
         private(set) var positionsOfToken: [MutationPosition] = []
         private let sourceFileInfo: SourceFileInfo
         

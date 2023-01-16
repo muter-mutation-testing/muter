@@ -7,7 +7,7 @@ final class XcodeReporter: Reporter {
             return
         }
 
-        Logger.print(outcomeIntoXcodeString(outcome: outcome))
+//        Logger.print(outcomeIntoXcodeString(outcome: outcome))
 
         outcomeWithFlush.fflush()
     }
@@ -21,12 +21,12 @@ final class XcodeReporter: Reporter {
             """
     }
 
-    private func outcomeIntoXcodeString(outcome: MutationTestOutcome.Mutation) -> String {
-        // {full_path_to_file}{:line}{:character}: {error,warning}: {content}
-
-        return "\(outcome.originalProjectPath):" +
-            "\(outcome.point.position.line):\(outcome.point.position.column): " +
-            "warning: " +
-            "Your test suite did not kill this mutant: \(outcome.snapshot.description)"
-    }
+//    private func outcomeIntoXcodeString(outcome: MutationTestOutcome.Mutation) -> String {
+//        // {full_path_to_file}{:line}{:character}: {error,warning}: {content}
+//
+//        return "\(outcome.originalProjectPath):" +
+//            "\(outcome.point.position.line):\(outcome.point.position.column): " +
+//            "warning: " +
+//            "Your test suite did not kill this mutant: \(outcome.snapshot.description)"
+//    }
 }
