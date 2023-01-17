@@ -5,6 +5,7 @@ protocol AnyRunCommandState: AnyObject {
     var muterConfiguration: MuterConfiguration { get }
     var projectDirectoryURL: URL { get }
     var tempDirectoryURL: URL { get }
+    var projectXCTestRun: XCTestRun { get }
     var projectCoverage: Coverage { get }
     var sourceFileCandidates: [FilePath] { get }
     var mutationPoints: [MutationPoint] { get }
@@ -18,8 +19,9 @@ protocol AnyRunCommandState: AnyObject {
 
 final class RunCommandState: AnyRunCommandState {
     var muterConfiguration: MuterConfiguration = .init()
-    var projectDirectoryURL: URL = URL(string: "example.com")!
-    var tempDirectoryURL: URL = URL(string: "example.com")!
+    var projectDirectoryURL: URL = URL(fileURLWithPath: "path")
+    var tempDirectoryURL: URL = URL(fileURLWithPath: "path")
+    var projectXCTestRun: XCTestRun = .init()
     var projectCoverage: Coverage = .null
     var sourceFileCandidates: [FilePath] = []
     var mutationPoints: [MutationPoint] = []
@@ -46,6 +48,7 @@ extension RunCommandState {
         case configurationParsed(MuterConfiguration)
         case projectDirectoryUrlDiscovered(URL)
         case tempDirectoryUrlCreated(URL)
+        case projectXCTestRun(XCTestRun)
         case copyToTempDirectoryCompleted
         case projectCoverage(Coverage)
         case sourceFileCandidatesDiscovered([FilePath])
@@ -68,6 +71,8 @@ extension RunCommandState {
                 self.projectDirectoryURL = projectDirectoryURL
             case .tempDirectoryUrlCreated(let tempDirectoryURL):
                 self.tempDirectoryURL = tempDirectoryURL
+            case .projectXCTestRun(let projectXCTestRun):
+                self.projectXCTestRun = projectXCTestRun
             case .projectCoverage(let projectCoverage):
                 self.projectCoverage = projectCoverage
             case .sourceFileCandidatesDiscovered(let sourceFileCandidates):
