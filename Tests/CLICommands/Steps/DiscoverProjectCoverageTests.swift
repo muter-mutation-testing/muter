@@ -185,7 +185,7 @@ final class DiscoverProjectCoverageTests: XCTestCase {
         XCTAssertEqual(
             result, [
                 .projectCoverage(
-                    Coverage.make(
+                    .make(
                         percent: 78,
                         filesWithoutCoverage: [
                             "CLICommands/MuterError.swift",
