@@ -15,7 +15,7 @@ final class LaunchableSpy: Launchable {
         }
     }
     
-    private let queue = Queue()
+    private let queue = Queue<Data>()
     var availableData: Data? {
         queue.dequeue()
     }
@@ -28,17 +28,5 @@ final class LaunchableSpy: Launchable {
     var waitUntilExitCalled = false
     func waitUntilExit() {
         waitUntilExitCalled = true
-    }
-}
-
-private class Queue {
-    private var contents = [Data]()
-    
-    func dequeue() -> Data? {
-        contents.isEmpty ? nil : contents.removeFirst()
-    }
-    
-    func enqueue(_ data: Data) {
-        contents.append(data)
     }
 }
