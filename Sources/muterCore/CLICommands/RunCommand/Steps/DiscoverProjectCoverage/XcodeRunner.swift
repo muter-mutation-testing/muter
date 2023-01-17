@@ -32,7 +32,7 @@ final class XcodeRunner: BuildSystemRunner {
             makeProcess,
             url: configuration.testCommandExecutable,
             arguments: configuration.testCommandArguments + ["-enableCodeCoverage", "YES"],
-            toString
+            string
         ).flatMap { $0.firstMatchOf("^.*.xcresult$", options: .anchorsMatchLines) }
          .flatMap(notEmpty)
          .map(\.trimmed)
@@ -43,7 +43,7 @@ final class XcodeRunner: BuildSystemRunner {
             makeProcess,
             url: "/usr/bin/xcode-select",
             arguments: ["-p"],
-            toString
+            string
         ).flatMap(notEmpty)
          .map(\.trimmed)
     }

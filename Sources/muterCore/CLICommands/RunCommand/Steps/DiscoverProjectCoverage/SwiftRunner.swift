@@ -25,7 +25,7 @@ final class SwiftRunner: BuildSystemRunner {
             makeProcess,
             url: configuration.testCommandExecutable,
             arguments: configuration.testCommandArguments + ["--enable-code-coverage", "--verbose"],
-            toString
+            string
         )
          .flatMap(notEmpty)
          .map(\.trimmed)
@@ -58,7 +58,7 @@ final class SwiftRunner: BuildSystemRunner {
             makeProcess,
             url: executable,
             arguments: exportArguments,
-            toString
+            string
         ).flatMap(notEmpty)
     }
 }

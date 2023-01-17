@@ -11,21 +11,23 @@ protocol BuildSystemRunner: AnyObject {
     ) -> Result<Coverage, BuildSystemError>
 }
 
-extension BuildSystemRunner {
-    func toString(_ data: Data) -> String? {
-        String(data: data, encoding: .utf8)
-    }
+func string(_ data: Data) -> String? {
+    String(data: data, encoding: .utf8)
+}
 
-    func notEmpty(_ input: String) -> String? {
-        !input.isEmpty ? input : nil
-    }
+func notEmpty(_ input: String) -> String? {
+    !input.isEmpty ? input : nil
+}
+
+private func id(_ data: Data) -> Data {
+    data
 }
 
 func runProcess<A>(
     _ makeProcess: () -> Launchable,
     url: String,
     arguments: [String],
-    _ transform: (Data) -> A?
+    _ transform: (Data) -> A? = id
 ) -> A? {
     let process = makeProcess()
     process.standardOutput = Pipe()
