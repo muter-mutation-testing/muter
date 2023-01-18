@@ -15,12 +15,12 @@ class FileManagerSpy: Spy, FileSystemManager {
 
     var tempDirectory: URL!
     private var fileContentsQueue: Queue<Data> = .init()
-    var fileContentsToReturn: Data! {
+    var fileContentsToReturn: Data? {
         set {
-            fileContentsQueue.enqueue(newValue)
+            newValue.map { fileContentsQueue.enqueue($0) }
         }
         get {
-            fileContentsQueue.dequeue() ?? .init()
+            fileContentsQueue.dequeue()
         }
     }
     var currentDirectoryPathToReturn: String!

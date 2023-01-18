@@ -100,8 +100,8 @@ final class BuildForTestingTests: XCTestCase {
 
         process.stdoutToBeReturned = makeBuildForTestingLog()
 
-        fileManager.contentsAtPathSortedToReturn = [buildDescriptionPath + "/project.xctestrun"]
         fileManager.fileContentsToReturn = makeBuildRequestJson().data(using: .utf8)
+        fileManager.contentsAtPathSortedToReturn = [buildDescriptionPath + "/project.xctestrun"]
         fileManager.fileContentsToReturn = loadXCTestRun()
 
         let result = try sut.run(with: state).get()
@@ -113,7 +113,119 @@ final class BuildForTestingTests: XCTestCase {
         ])
     }
 
-    func makeBuildForTestingLog() -> String {
+    func test_buildForTestingFailed() {
+        state.muterConfiguration = MuterConfiguration(
+            executable: "/path/to/xcodebuild",
+            arguments: ["some", "commands", "test"]
+        )
+
+        process.stdoutToBeReturned = ""
+
+        let result = sut.run(with: state)
+
+        XCTAssertEqual(
+            result,
+            .failure(.literal(reason: "Could not run test with -build-for-testing argument"))
+        )
+    }
+
+    func test_findBuildRequestJsonFailed() {
+        state.muterConfiguration = MuterConfiguration(
+            executable: "/path/to/xcodebuild",
+            arguments: ["some", "commands", "test"]
+        )
+
+        process.stdoutToBeReturned = "im not important"
+
+        let result = sut.run(with: state)
+
+        XCTAssertEqual(
+            result,
+            .failure(.literal(reason: "Could not parse buildRequest.json from build description path"))
+        )
+    }
+
+    func test_parseBuildRequestJsonFailed() {
+        state.muterConfiguration = MuterConfiguration(
+            executable: "/path/to/xcodebuild",
+            arguments: ["some", "commands", "test"]
+        )
+
+        state.tempDirectoryURL = URL(fileURLWithPath: "/path/to/temp")
+        process.stdoutToBeReturned = makeBuildForTestingLog()
+
+        let result = sut.run(with: state)
+
+        guard case let .failure(.literal(reason)) = result else {
+            return XCTFail("Expected failure, got\(result)")
+        }
+
+        XCTAssertFalse(reason.isEmpty)
+
+        XCTAssertTrue(
+            reason.contains("Could not parse build request json at path")
+        )
+    }
+
+    func test_copyBuildArtifactsFailed() {
+        state.muterConfiguration = MuterConfiguration(
+            executable: "/path/to/xcodebuild",
+            arguments: ["some", "commands", "test"]
+        )
+
+        state.tempDirectoryURL = URL(fileURLWithPath: "/path/to/temp")
+        process.stdoutToBeReturned = makeBuildForTestingLog()
+        fileManager.fileContentsToReturn = makeBuildRequestJson().data(using: .utf8)
+        fileManager.errorToThrow = TestingError.stub
+
+        let result = sut.run(with: state)
+
+        guard case let .failure(.literal(reason)) = result else {
+            return XCTFail("Expected failure, got\(result)")
+        }
+
+        XCTAssertFalse(reason.isEmpty)
+    }
+
+    func test_findMostRecentXCTestRunFails() {
+        state.muterConfiguration = MuterConfiguration(
+            executable: "/path/to/xcodebuild",
+            arguments: ["some", "commands", "test"]
+        )
+
+        state.tempDirectoryURL = URL(fileURLWithPath: "/path/to/temp")
+        process.stdoutToBeReturned = makeBuildForTestingLog()
+        fileManager.fileContentsToReturn = makeBuildRequestJson().data(using: .utf8)
+        fileManager.contentsAtPathSortedToReturn = [""]
+
+        let result = sut.run(with: state)
+
+        XCTAssertEqual(
+            result,
+            .failure(.literal(reason: "Could not find xctestrun file at path: /path/to/temp/Debug"))
+        )
+    }
+
+    func test_parseXCTestRunFails() {
+        state.muterConfiguration = MuterConfiguration(
+            executable: "/path/to/xcodebuild",
+            arguments: ["some", "commands", "test"]
+        )
+
+        state.tempDirectoryURL = URL(fileURLWithPath: "/path/to/temp")
+        process.stdoutToBeReturned = makeBuildForTestingLog()
+        fileManager.fileContentsToReturn = makeBuildRequestJson().data(using: .utf8)
+        fileManager.contentsAtPathSortedToReturn = ["some/project.xctestrun"]
+
+        let result = sut.run(with: state)
+
+        XCTAssertEqual(
+            result,
+            .failure(.literal(reason: "Could not parse xctestrun at path: some/project.xctestrun"))
+        )
+    }
+
+    private func makeBuildForTestingLog() -> String {
         """
         Command line invocation:
             /Applications/Xcode.app/Contents/Developer/usr/bin/xcodebuild -project iOSProject.xcodeproj -scheme iOSProject -destination "platform=iOS Simulator,name=iPhone SE (3rd generation)" build-for-testing

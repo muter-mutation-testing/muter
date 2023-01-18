@@ -44,12 +44,11 @@ struct BuildForTesting: RunCommandStep {
     private func runBuildForTestingCommand(
         _ configuration: MuterConfiguration
     ) throws -> String {
-        guard let output = runProcess(
+        guard let output: String = runProcess(
             makeProcess,
             url: configuration.testCommandExecutable,
-            arguments: configuration.testCommandArguments.dropLast() + ["build-for-testing"],
-            string
-        ) else {
+            arguments: configuration.testCommandArguments.dropLast() + ["build-for-testing"]
+        ).flatMap(\.nilIfEmpty) else {
             throw MuterError.literal(reason: "Could not run test with -build-for-testing argument")
         }
 
@@ -71,6 +70,7 @@ struct BuildForTesting: RunCommandStep {
         guard let jsonContent = fileManager.contents(atPath: path) else {
             throw MuterError.literal(reason: "Could not parse build request json at path: \(path)")
         }
+
         return try JSONDecoder().decode(XCTestBuildRequest.self, from: jsonContent)
     }
 

@@ -1,12 +1,12 @@
 import Foundation
 
 final class DiscoverProjectCoverage: RunCommandStep {
-    private let makeProcess: () -> Launchable
+    private let makeProcess: ProcessFactory
     
     private let notificationCenter: NotificationCenter
     
     init(
-        process: @autoclosure @escaping () -> Launchable = Process(),
+        process: @autoclosure @escaping ProcessFactory = Process(),
         notificationCenter: NotificationCenter = .default
     ) {
         self.makeProcess = process
@@ -14,7 +14,10 @@ final class DiscoverProjectCoverage: RunCommandStep {
     }
     
     func run(with state: AnyRunCommandState) -> Result<[RunCommandState.Change], MuterError> {        
-        guard let runner = runner(for: state.muterConfiguration.testCommandExecutable) else {
+        guard let coverage = buildSystemCoverge(
+            for: state.muterConfiguration.buildSystem,
+            processFactory: makeProcess
+        ) else {
             return .success([
                 .projectCoverage(.null),
             ])
@@ -29,7 +32,7 @@ final class DiscoverProjectCoverage: RunCommandStep {
             FileManager.default.changeCurrentDirectoryPath(currentDirectoryPath)
         }
 
-        switch runner.run(process: makeProcess, with: state.muterConfiguration) {
+        switch coverage.run(process: makeProcess, with: state.muterConfiguration) {
         case .success(let coverage):
             notificationCenter.post(
                 name: .projectCoverageDiscoveryFinished,
@@ -44,6 +47,17 @@ final class DiscoverProjectCoverage: RunCommandStep {
             )
             
             return .success([.projectCoverage(.null)])
+        }
+    }
+
+    func buildSystemCoverge(
+        for buildSystem: BuildSystem,
+        processFactory: @escaping ProcessFactory
+    ) -> BuildSystemCoverage? {
+        switch buildSystem {
+        case .swift: return SwiftCoverage(processFactory)
+        case .xcodebuild: return XcodeCoverage(processFactory)
+        default: return nil
         }
     }
 }

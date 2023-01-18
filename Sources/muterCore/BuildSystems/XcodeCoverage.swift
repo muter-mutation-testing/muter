@@ -1,18 +1,21 @@
 import Foundation
 
-final class XcodeRunner: BuildSystemRunner {
-    private var makeProcess: (() -> Launchable)!
+final class XcodeCoverage: BuildSystemCoverage {
+    private let makeProcess: ProcessFactory
+
+    init(_ makeProcess: @escaping ProcessFactory) {
+        self.makeProcess = makeProcess
+    }
 
     func run(
-        process makeProcess: @escaping () -> Launchable,
+        process makeProcess: ProcessFactory,
         with configuration: MuterConfiguration
-    ) -> Result<Coverage, BuildSystemError> {
-        self.makeProcess = makeProcess
+    ) -> Result<Coverage, CoverageError> {
         guard let resultPath = runTestsWithCoverageEnabled(using: configuration),
               let xccovPath = runXcodeSelect(),
               let report = runXccov(path: xccovPath, with: resultPath) else {
 
-            return .failure(BuildSystemError.buildError)
+            return .failure(.build)
         }
 
         let untested = extractUntested(from: report)
@@ -31,29 +34,33 @@ final class XcodeRunner: BuildSystemRunner {
         runProcess(
             makeProcess,
             url: configuration.testCommandExecutable,
-            arguments: configuration.testCommandArguments + ["-enableCodeCoverage", "YES"],
-            string
-        ).flatMap { $0.firstMatchOf("^.*.xcresult$", options: .anchorsMatchLines) }
-         .flatMap(notEmpty)
-         .map(\.trimmed)
+            arguments: configuration.testCommandArguments + ["-enableCodeCoverage", "YES"]
+        )
+        .flatMap { $0.firstMatchOf("^.*.xcresult$", options: .anchorsMatchLines) }
+        .map(\.trimmed)
+        .flatMap(\.nilIfEmpty)
     }
 
     private func runXcodeSelect() -> String? {
         runProcess(
             makeProcess,
             url: "/usr/bin/xcode-select",
-            arguments: ["-p"],
-            string
-        ).flatMap(notEmpty)
-         .map(\.trimmed)
+            arguments: ["-p"]
+        )
+        .map(\.trimmed)
+        .flatMap(\.nilIfEmpty)
     }
     
     private func runXccov(path: String, with result: String) -> CoverageReport? {
-        runProcess(
+        guard let output: Data = runProcess(
             makeProcess,
             url: path + "/usr/bin/xccov",
             arguments: ["view", "--report", "--json", result]
-        ) { try? JSONDecoder().decode(CoverageReport.self, from: $0) }
+        ) else {
+            return nil
+        }
+
+        return try? JSONDecoder().decode(CoverageReport.self, from: output)
     }
     
     private func extractUntested(from report: CoverageReport) -> [String] {
