@@ -51,6 +51,19 @@ final class LoadConfigurationTests: XCTestCase {
         XCTAssertFalse(reason.isEmpty)
     }
 
+    func test_whenUsingXcodeBuildSystem_shouldRequireDestinationInTestArguments() {
+        fileManager.fileExistsToReturn = [false, true]
+        fileManager.fileContentsToReturn = loadYAMLConfigurationWithoutDestination()
+
+        let result = sut.run(with: RunCommandState())
+
+        guard case let .failure(.configurationParsingError(reason: reason)) = result else {
+            return XCTFail("Expected failure, got \(result)")
+        }
+
+        XCTAssertFalse(reason.isEmpty)
+    }
+
     private func loadJSONConfiguration() -> Data? {
         FileManager.default.contents(
             atPath: "\(self.fixturesDirectory)/\(MuterConfiguration.legacyFileNameWithExtension)"
@@ -60,6 +73,12 @@ final class LoadConfigurationTests: XCTestCase {
     private func loadYAMLConfiguration() -> Data? {
         FileManager.default.contents(
             atPath: "\(self.fixturesDirectory)/\(MuterConfiguration.fileNameWithExtension)"
+        )
+    }
+
+    private func loadYAMLConfigurationWithoutDestination() -> Data? {
+        FileManager.default.contents(
+            atPath: "\(self.fixturesDirectory)/muter.conf.withoutDestination.yml"
         )
     }
 }

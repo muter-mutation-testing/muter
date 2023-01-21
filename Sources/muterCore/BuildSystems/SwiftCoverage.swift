@@ -1,18 +1,20 @@
 import Foundation
 
-final class SwiftRunner: BuildSystemRunner {
-    private var makeProcess: (() -> Launchable)!
+final class SwiftCoverage: BuildSystemCoverage {
+    private let makeProcess: ProcessFactory
 
-    func run(
-        process makeProcess: @escaping () -> Launchable,
-        with configuration: MuterConfiguration
-    ) -> Result<Coverage, BuildSystem> {
+    init(_ makeProcess: @escaping ProcessFactory) {
         self.makeProcess = makeProcess
+    }
+    func run(
+        process makeProcess: ProcessFactory,
+        with configuration: MuterConfiguration
+    ) -> Result<Coverage, CoverageError> {
         guard let verboseCoverageOutput = runWithCoverageInVerboseMode(using: configuration),
               let llvmCovExport = extractLlvmCovFrom(verboseCoverageOutput),
               let commands = executableAndArgumentsFrom(llvmCovExport),
               let llvmCovReport = runLlvmCovReport(with: commands) else {
-            return .failure(.buildError)
+            return .failure(.build)
         }
 
         let projectCoverage = Coverage.from(report: llvmCovReport)
@@ -24,11 +26,8 @@ final class SwiftRunner: BuildSystemRunner {
         runProcess(
             makeProcess,
             url: configuration.testCommandExecutable,
-            arguments: configuration.testCommandArguments + ["--enable-code-coverage", "--verbose"],
-            toString
-        )
-         .flatMap(notEmpty)
-         .map(\.trimmed)
+            arguments: configuration.testCommandArguments + ["--enable-code-coverage", "--verbose"]
+        ).map(\.trimmed)
     }
     
     private func extractLlvmCovFrom(_ output: String) -> String? {
@@ -57,9 +56,8 @@ final class SwiftRunner: BuildSystemRunner {
         return runProcess(
             makeProcess,
             url: executable,
-            arguments: exportArguments,
-            toString
-        ).flatMap(notEmpty)
+            arguments: exportArguments
+        )
     }
 }
 

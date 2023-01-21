@@ -96,7 +96,7 @@ final class DiscoverProjectCoverageTests: XCTestCase {
         )
     }
     
-    func test_whenXcodeSelectFailes_shouldNotRunXccov() {
+    func test_whenXcodeSelectFails_shouldNotRunXccov() {
         state.muterConfiguration = MuterConfiguration(
             executable: "/path/to/xcodebuild",
             arguments: ["arg0", "arg1"]
@@ -107,9 +107,8 @@ final class DiscoverProjectCoverageTests: XCTestCase {
         
         _ = sut.run(with: state)
         
-        XCTAssertEqual(
-            process.executableURL?.absoluteString.contains("xccov"),
-            false
+        XCTAssertFalse(
+            process.executableURL?.absoluteString.contains("xccov")
         )
     }
     
@@ -185,7 +184,7 @@ final class DiscoverProjectCoverageTests: XCTestCase {
         XCTAssertEqual(
             result, [
                 .projectCoverage(
-                    Coverage.make(
+                    .make(
                         percent: 78,
                         filesWithoutCoverage: [
                             "CLICommands/MuterError.swift",

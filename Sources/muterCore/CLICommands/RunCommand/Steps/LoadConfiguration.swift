@@ -14,17 +14,16 @@ struct LoadConfiguration: RunCommandStep {
     
     func run(with state: AnyRunCommandState) -> Result<[RunCommandState.Change], MuterError> {
         do {
-            let hasJSON = fileManager.fileExists(
-                atPath: currentDirectory + "/\(MuterConfiguration.legacyFileNameWithExtension)"
-            )
-            
-            let hasYAML = fileManager.fileExists(
-                atPath: currentDirectory + "/\(MuterConfiguration.fileNameWithExtension)"
-            )
+            let hasJSON = hasJsonInProject()
+            let hasYAML = hasYamlInProject()
+            let canLoadConfiguration = hasJSON || hasYAML
 
-            guard hasJSON || hasYAML, let configurationData = loadConfigurationData(legacy: hasJSON) else {
+            guard canLoadConfiguration,
+                  let configurationData = loadConfigurationData(legacy: hasJSON) else {
                 return .failure(
-                    .configurationParsingError(reason: "Could not find \(MuterConfiguration.fileName) at path \(currentDirectory)")
+                    .configurationParsingError(
+                        reason: "Could not find \(MuterConfiguration.fileName) at path \(currentDirectory)"
+                    )
                 )
             }
 
@@ -32,6 +31,14 @@ struct LoadConfiguration: RunCommandStep {
 
             if hasJSON {
                 try migrateToYAML(configurationData)
+            }
+
+            guard isConfigurationValid(configuration) else {
+                return .failure(
+                    .configurationParsingError(
+                        reason: "Please provide a valid `-destination` argument for your project"
+                    )
+                )
             }
             
             return .success([
@@ -41,6 +48,26 @@ struct LoadConfiguration: RunCommandStep {
         } catch {
             return .failure(.configurationParsingError(reason: error.localizedDescription))
         }
+    }
+
+    private func hasJsonInProject() -> Bool {
+        fileManager.fileExists(
+            atPath: currentDirectory + "/\(MuterConfiguration.legacyFileNameWithExtension)"
+        )
+    }
+
+    private func hasYamlInProject() -> Bool {
+        fileManager.fileExists(
+            atPath: currentDirectory + "/\(MuterConfiguration.fileNameWithExtension)"
+        )
+    }
+
+    private func isConfigurationValid(_ configuration: MuterConfiguration) -> Bool {
+        guard configuration.testCommandExecutable.contains("xcodebuild") else {
+            return true
+        }
+
+        return configuration.testCommandArguments.contains("-destination")
     }
     
     private func loadConfigurationData(legacy: Bool) -> Data? {

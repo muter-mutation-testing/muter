@@ -17,6 +17,10 @@ extension String {
             .map { $0.trimmed }
             .joined(separator: " ")
     }
+
+    var nilIfEmpty: String? {
+        !isEmpty ? self : nil
+    }
 }
 
 extension String {
