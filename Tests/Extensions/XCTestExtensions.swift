@@ -1,5 +1,5 @@
 import XCTest
-import CustomDump
+import Difference
 
 @testable import muterCore
 
@@ -12,18 +12,10 @@ public func XCTAssertEqual<T: Equatable>(
     do {
         let expected = try expected()
         let received = try received()
-        XCTAssertNoDifference(
-            expected,
-            received,
-            file: file,
-            line: line
-        )
-    } catch {
-        XCTFail(
-            "Caught error while testing: \(error)",
-            file: file,
-            line: line
-        )
+        XCTAssertTrue(expected == received, "Found difference for \n" + diff(expected, received).joined(separator: ", "), file: file, line: line)
+    }
+    catch {
+        XCTFail("Caught error while testing: \(error)", file: file, line: line)
     }
 }
 
