@@ -17,6 +17,10 @@ extension String {
             .map { $0.trimmed }
             .joined(separator: " ")
     }
+    
+    func distance(to index: Index) -> Int {
+        distance(from: startIndex, to: index)
+    }
 }
 
 extension String {

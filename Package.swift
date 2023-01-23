@@ -16,7 +16,7 @@ let package = Package(
         .package(url: "https://github.com/apple/swift-syntax.git", branch: "0.50700.1"),
         .package(url: "https://github.com/jkandzi/Progress.swift.git", from: "0.4.0"),
         .package(url: "https://github.com/johnsundell/plot.git", from: "0.11.0"),
-        .package(url: "https://github.com/krzysztofzablocki/Difference.git", from: "1.0.2"),
+        .package(url: "https://github.com/pointfreeco/swift-custom-dump", from: "0.3.0"),
         .package(url: "https://github.com/jpsim/Yams.git", from: "5.0.1"),
         .package(url: "https://github.com/pointfreeco/swift-snapshot-testing.git", from: "1.9.0")
     ],
@@ -34,6 +34,7 @@ let package = Package(
                 .product(name: "Progress", package: "Progress.swift"),
                 .product(name: "SwiftSyntax", package: "swift-syntax"),
                 .product(name: "SwiftSyntaxParser", package: "swift-syntax"),
+                .product(name: "SwiftSyntaxBuilder", package: "swift-syntax"),
                 .product(name: "ArgumentParser", package: "swift-argument-parser"),
                 .product(name: "Yams", package: "yams"),
             ],
@@ -43,7 +44,7 @@ let package = Package(
             name: "TestingExtensions",
             dependencies: [
                 "muterCore",
-                "Difference",
+                .product(name: "CustomDump", package: "swift-custom-dump"),
                 .product(name: "SwiftSyntax", package: "swift-syntax"),
                 .product(name: "SwiftSyntaxParser", package: "swift-syntax"),
             ],
