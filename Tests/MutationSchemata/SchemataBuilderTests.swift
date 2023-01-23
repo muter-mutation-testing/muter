@@ -6,57 +6,39 @@ import TestingExtensions
 @testable import muterCore
 
 final class SchemataBuilderTests: XCTestCase {
-    func test_syntaxTransformShouldChangeCodeBlockSyntax() throws {
-        let source = try SyntaxParser.parse(source: "a != b")
-        
-        let visitor = Visitor()
-        visitor.walk(source)
-        
-        let actual = transform(
-            node: visitor.targetToken,
-            mutatedSyntax: visitor.mutatedToken
-        )
-        
-        XCTAssertTrue(actual.syntaxNodeType == CodeBlockItemListSyntax.self)
-        XCTAssertEqual(actual.description, "a == b")
-    }
-    
-    func test__() throws {
+    func test_mutationSwitch() throws {
         let originalSyntax = try SyntaxParser.parse(source: "a != b").statements
-        let mutatedSyntax = try SyntaxParser.parse(source: "a == b").statements
-        let schemataMutation: [SchemataMutation] = [(
-            id: "switch-id",
-            syntaxMutation: mutatedSyntax
-        )]
+        let schemataMutations = try makeSchemataMutations(["a >= b", "a <= b", "a == b"])
 
         let actualMutationSwitch = applyMutationSwitch(
             withOriginalSyntax: originalSyntax,
-            and: schemataMutation
+            and: schemataMutations
         )
         
         XCTAssertEqual(
             actualMutationSwitch.description,
-            "if ProcessInfo.processInfo.environment[\"switch-id\"] != nil {a == b} else {a != b}"
+            """
+            if ProcessInfo.processInfo.environment[\"0\"] != nil {
+              a >= b
+            } else if ProcessInfo.processInfo.environment[\"2\"] != nil {
+              a == b
+            } else if ProcessInfo.processInfo.environment[\"1\"] != nil {
+              a <= b
+            } else {
+              a != b
+            }
+            """
         )
     }
-}
 
-private class Visitor: SyntaxAnyVisitor {
-    var targetToken: TokenSyntax!
-    var mutatedToken: TokenSyntax!
-    
-    override func visitAny(_ node: Syntax) -> SyntaxVisitorContinueKind {
-        if let token = node.as(TokenSyntax.self),
-           token.parent?.is(BinaryOperatorExprSyntax.self) == true {
-            targetToken = token
-            mutatedToken = SyntaxFactory.makeToken(
-                .spacedBinaryOperator("=="),
-                presence: .present,
-                leadingTrivia: token.leadingTrivia,
-                trailingTrivia: token.trailingTrivia
-            )
-        }
+    private func makeSchemataMutations(_ mutations: [String]) throws -> [SchemataMutation] {
+        try mutations
+            .enumerated()
+            .compactMap { (id: "\($0.offset)", source: try makeCodeBlock($0.element)) }
+            .compactMap(SchemataMutation.init)
+    }
 
-        return .visitChildren
+    private func makeCodeBlock(_ source: String) throws -> CodeBlockItemListSyntax {
+        try SyntaxParser.parse(source: source).statements
     }
 }
