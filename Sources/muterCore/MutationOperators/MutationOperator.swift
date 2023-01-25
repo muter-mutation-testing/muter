@@ -82,3 +82,11 @@ protocol PositionDiscoveringVisitor {
 
     func walk<SyntaxType: SyntaxProtocol>(_ node: SyntaxType)
 }
+
+
+protocol MutationSchemataVisitor {
+    var schemataMappings: SchemataMutationMapping { get }
+    init(configuration: MuterConfiguration?, sourceFileInfo: SourceFileInfo)
+
+    func walk<SyntaxType: SyntaxProtocol>(_ node: SyntaxType)
+}

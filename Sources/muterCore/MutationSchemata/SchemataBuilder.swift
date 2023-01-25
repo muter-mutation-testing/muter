@@ -7,15 +7,29 @@ struct SchemataMutation {
     let syntaxMutation: CodeBlockItemListSyntax
 }
 
-struct MutationMapping {
-    let schematas: [CodeBlockItemListSyntax: [Schemata]]
-}
+typealias SchemataMutationMapping = [CodeBlockItemListSyntax: [Schemata]]
 
 struct Schemata: Equatable {
     let id: String
     let syntaxMutation: CodeBlockItemListSyntax
     let positionInSourceCode: MutationPosition
     let snapshot: MutationOperatorSnapshot
+    
+    static func == (lhs: Schemata, rhs: Schemata) -> Bool {
+        lhs.id == rhs.id &&
+        lhs.syntaxMutation.description == rhs.syntaxMutation.description &&
+        lhs.positionInSourceCode == rhs.positionInSourceCode &&
+        lhs.snapshot == rhs.snapshot
+    }
+}
+
+extension Schemata: Comparable {
+    static func < (
+        lhs: Schemata,
+        rhs: Schemata
+    ) -> Bool {
+        lhs.id < rhs.id
+    }
 }
 
 func transform(
@@ -228,15 +242,18 @@ func makeSchemataId(
     _ sourceFileInfo: SourceFileInfo,
     _ node: SyntaxProtocol
 ) -> String {
-    let sourceLocation = node.endLocation(
-        converter: SourceLocationConverter(
-            file: sourceFileInfo.path,
-            source: sourceFileInfo.source
-        ),
-        afterTrailingTrivia: true
-    )
+    let sourceLocation = node.mutationPosition(with: sourceFileInfo)
 
-    return UUID().uuidString
+    let fileName = URL(
+        string: sourceFileInfo.path)?
+        .deletingLastPathComponent()
+        .lastPathComponent ?? ""
+    
+    let line = sourceLocation.line
+    let column = sourceLocation.column
+    let offset = sourceLocation.utf8Offset
+    
+    return "\(fileName)_@\(line)_\(offset)_\(column)"
 }
 
 extension SyntaxProtocol {
