@@ -54,7 +54,36 @@ enum ROROperator {
                 .spacedBinaryOperator(">"),
             ]
         }
+    }
 
+    class SchemataVisitor: TokenAwareSchemataVisitor {
+        required init(
+            configuration: MuterConfiguration? = nil,
+            sourceFileInfo: SourceFileInfo
+        ) {
+            super.init(
+                configuration: configuration,
+                sourceFileInfo: sourceFileInfo
+            )
+
+            tokensToDiscover = [
+                .spacedBinaryOperator("=="),
+                .spacedBinaryOperator("!="),
+                .spacedBinaryOperator(">="),
+                .spacedBinaryOperator("<="),
+                .spacedBinaryOperator("<"),
+                .spacedBinaryOperator(">"),
+            ]
+
+            oppositeOperatorMapping = [
+                "==": "!=",
+                "!=": "==",
+                ">=": "<=",
+                "<=": ">=",
+                ">": "<",
+                "<": ">",
+            ]
+        }
     }
 }
 
@@ -82,11 +111,23 @@ enum ChangeLogicalConnectorOperator {
             tokensToDiscover = [
                 .spacedBinaryOperator("||"),
                 .spacedBinaryOperator("&&"),
+                .spacedBinaryOperator("=="),
+                .spacedBinaryOperator("!="),
+                .spacedBinaryOperator(">="),
+                .spacedBinaryOperator("<="),
+                .spacedBinaryOperator("<"),
+                .spacedBinaryOperator(">"),
             ]
             
             oppositeOperatorMapping = [
                 "||": "&&",
                 "&&": "||",
+                "==": "!=",
+                "!=": "==",
+                ">=": "<=",
+                "<=": ">=",
+                ">": "<",
+                "<": ">",
             ]
         }
     }
@@ -129,8 +170,10 @@ class TokenAwareSchemataVisitor: SyntaxAnyVisitor, MutationSchemataVisitor {
             )
         )
         
-        schemataMappings[node.codeBlockItemListSyntax,
-                         default: []].append(mutation)
+        schemataMappings.add(
+            node.codeBlockItemListSyntax,
+            mutation
+        )
         
         return .visitChildren
     }
@@ -162,5 +205,26 @@ class TokenAwareSchemataVisitor: SyntaxAnyVisitor, MutationSchemataVisitor {
             trailingTrivia: token.trailingTrivia
         )
         return Syntax(tokenSyntax)
+    }
+}
+
+final class Rewriter: SyntaxRewriter {
+    private let schemataMappings: SchemataMutationMapping
+
+    required init(_ schemataMappings: SchemataMutationMapping) {
+        self.schemataMappings = schemataMappings
+    }
+
+    override func visit(_ node: CodeBlockItemListSyntax) -> Syntax {
+        guard let mutationsInNode = schemataMappings.schematas(node) else {
+            return super.visit(node)
+        }
+
+        let newNode = applyMutationSwitch(
+            withOriginalSyntax: node,
+            and: mutationsInNode
+        )
+
+        return super.visit(newNode)
     }
 }

@@ -1,8 +1,9 @@
-@testable import muterCore
-
 import TestingExtensions
 import Foundation
 import SwiftSyntax
+import SwiftSyntaxParser
+
+@testable import muterCore
 
 extension MuterTestReport {
     static func make(
@@ -176,6 +177,43 @@ extension RunOptions {
             reportURL: reportURL,
             skipCoverage: skipCoverage,
             logger: logger
+        )
+    }
+}
+
+typealias SchemataMutationMappings = (source: String, schematas: [Schemata])
+
+extension SchemataMutationMapping {
+    static func make(
+        _ mappings: SchemataMutationMappings...
+    ) throws -> SchemataMutationMapping {
+        let schemataMutationMapping = SchemataMutationMapping()
+
+        for (source, schematas) in mappings {
+            let codeBlockSyntax = try SyntaxParser.parse(source: source).statements
+
+            schematas.forEach { schemata in
+                schemataMutationMapping.add(codeBlockSyntax, schemata)
+            }
+        }
+
+
+        return schemataMutationMapping
+    }
+}
+
+extension Schemata {
+    static func make(
+        id: String = "",
+        syntaxMutation: String = "",
+        positionInSourceCode: MutationPosition = .null,
+        snapshot: MutationOperatorSnapshot = .null
+    ) throws -> Schemata {
+        Schemata(
+            id: id,
+            syntaxMutation: try SyntaxParser.parse(source: syntaxMutation).statements,
+            positionInSourceCode: positionInSourceCode,
+            snapshot: snapshot
         )
     }
 }

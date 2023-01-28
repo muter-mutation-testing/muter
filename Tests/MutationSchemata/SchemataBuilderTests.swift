@@ -7,8 +7,12 @@ import TestingExtensions
 
 final class SchemataBuilderTests: XCTestCase {
     func test_mutationSwitch() throws {
-        let originalSyntax = try SyntaxParser.parse(source: "a != b").statements
-        let schemataMutations = try makeSchemataMutations(["a >= b", "a <= b", "a == b"])
+        let originalSyntax = try SyntaxParser.parse(source: "\n  a != b\n").statements
+        let schemataMutations = try makeSchemataMutations([
+            "\n  a >= b\n",
+            "\n  a <= b\n",
+            "\n  a == b\n"
+        ])
 
         let actualMutationSwitch = applyMutationSwitch(
             withOriginalSyntax: originalSyntax,
@@ -31,14 +35,9 @@ final class SchemataBuilderTests: XCTestCase {
         )
     }
 
-    private func makeSchemataMutations(_ mutations: [String]) throws -> [SchemataMutation] {
+    private func makeSchemataMutations(_ mutations: [String]) throws -> [Schemata] {
         try mutations
             .enumerated()
-            .compactMap { (id: "\($0.offset)", source: try makeCodeBlock($0.element)) }
-            .compactMap(SchemataMutation.init)
-    }
-
-    private func makeCodeBlock(_ source: String) throws -> CodeBlockItemListSyntax {
-        try SyntaxParser.parse(source: source).statements
+            .compactMap { try Schemata.make(id: "\($0.offset)", syntaxMutation: $0.element) }
     }
 }

@@ -2,12 +2,60 @@ import Foundation
 import SwiftSyntax
 import SwiftSyntaxParser
 
-struct SchemataMutation {
-    let id: String
-    let syntaxMutation: CodeBlockItemListSyntax
+final class SchemataMutationMapping: Equatable {
+    var count: Int { mappings.count }
+
+    var isEmpty: Bool { mappings.isEmpty }
+
+    private(set) var mappings: [CodeBlockItemListSyntax: [Schemata]]
+
+    convenience init() {
+        self.init(mappings: [:])
+    }
+
+    fileprivate init(
+        mappings: [CodeBlockItemListSyntax: [Schemata]]
+    ) {
+        self.mappings = mappings
+    }
+
+    func add(
+        _ codeBlockSyntax: CodeBlockItemListSyntax,
+        _ schemata: Schemata
+    ) {
+        mappings[codeBlockSyntax, default: []].append(schemata)
+    }
+
+    func schematas(
+        _ codeBlockSyntax: CodeBlockItemListSyntax
+    ) -> [Schemata]? {
+        mappings[codeBlockSyntax]
+    }
 }
 
-typealias SchemataMutationMapping = [CodeBlockItemListSyntax: [Schemata]]
+func + (
+    lhs: SchemataMutationMapping,
+    rhs: SchemataMutationMapping
+) -> SchemataMutationMapping {
+    SchemataMutationMapping(
+        mappings: lhs.mappings.merging(rhs.mappings) { $0 + $1 }
+    )
+}
+
+func == (
+    lhs: SchemataMutationMapping,
+    rhs: SchemataMutationMapping
+) -> Bool {
+    let lhsKeys = lhs.mappings.keys.map(\.description).sorted()
+    let rhsKeys = rhs.mappings.keys.map(\.description).sorted()
+
+    let lhsValues = Array(lhs.mappings.values).reduce([], +).sorted()
+    let rhsValues = Array(rhs.mappings.values).reduce([], +).sorted()
+
+    return lhsKeys == rhsKeys
+        && lhsValues == rhsValues
+}
+
 
 struct Schemata: Equatable {
     let id: String
@@ -73,7 +121,7 @@ func transform(
 
 func applyMutationSwitch(
     withOriginalSyntax originalSyntax: CodeBlockItemListSyntax,
-    and mutationsToBeApplied: [SchemataMutation]
+    and mutationsToBeApplied: [Schemata]
 ) -> CodeBlockItemListSyntax {
     guard !mutationsToBeApplied.isEmpty else {
         return originalSyntax
@@ -93,12 +141,7 @@ func applyMutationSwitch(
         body: SyntaxFactory.makeCodeBlock(
             leftBrace: SyntaxFactory.makeLeftBraceToken()
                 .withTrailingTrivia(
-                    Trivia(
-                        pieces: [
-                            .newlines(1),
-                            .spaces(2)
-                        ]
-                    )
+                    firstMutation.syntaxMutation.trailingTrivia ?? .spaces(0)
                 ),
             statements: firstMutation.syntaxMutation,
             rightBrace: SyntaxFactory.makeRightBraceToken()
@@ -111,12 +154,7 @@ func applyMutationSwitch(
             SyntaxFactory.makeCodeBlock(
                 leftBrace: SyntaxFactory.makeLeftBraceToken()
                     .withTrailingTrivia(
-                        Trivia(
-                            pieces: [
-                                .newlines(1),
-                                .spaces(2)
-                            ]
-                        )
+                        originalSyntax.trailingTrivia ?? .spaces(0)
                     ),
                 statements: originalSyntax,
                 rightBrace: SyntaxFactory.makeRightBraceToken()
@@ -140,12 +178,7 @@ func applyMutationSwitch(
                     body: SyntaxFactory.makeCodeBlock(
                         leftBrace: SyntaxFactory.makeLeftBraceToken()
                             .withTrailingTrivia(
-                                Trivia(
-                                    pieces: [
-                                        .newlines(1),
-                                        .spaces(2)
-                                    ]
-                                )
+                                mutation.syntaxMutation.trailingTrivia ?? .spaces(0)
                             ),
                         statements: mutation.syntaxMutation,
                         rightBrace: SyntaxFactory.makeRightBraceToken()
