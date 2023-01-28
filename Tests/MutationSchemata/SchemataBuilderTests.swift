@@ -6,6 +6,23 @@ import TestingExtensions
 @testable import muterCore
 
 final class SchemataBuilderTests: XCTestCase {
+    func test_schemataMerging() throws {
+        let codeBlock = try SyntaxParser.parse(source: "return 1").statements
+
+        let x = SchemataMutationMapping()
+        x.add(codeBlock, try .make())
+        x.add(codeBlock, try .make())
+        
+        let y = SchemataMutationMapping()
+        y.add(codeBlock, try .make())
+        y.add(codeBlock, try .make())
+        
+        let actualMappings = x + y
+        
+        XCTAssertEqual(actualMappings.codeBlocks, ["return 1"])
+        XCTAssertEqual(actualMappings.schematas.count, 4)
+    }
+    
     func test_mutationSwitch() throws {
         let originalSyntax = try SyntaxParser.parse(source: "\n  a != b\n").statements
         let schemataMutations = try makeSchemataMutations([

@@ -3,11 +3,23 @@ import SwiftSyntax
 import SwiftSyntaxParser
 
 final class SchemataMutationMapping: Equatable {
-    var count: Int { mappings.count }
+    var count: Int {
+        mappings.count
+    }
 
-    var isEmpty: Bool { mappings.isEmpty }
+    var isEmpty: Bool {
+        mappings.isEmpty
+    }
+    
+    var codeBlocks: [String] {
+        mappings.keys.map(\.description).sorted()
+    }
+    
+    var schematas: [Schemata] {
+        Array(mappings.values).reduce([], +).sorted()
+    }
 
-    private(set) var mappings: [CodeBlockItemListSyntax: [Schemata]]
+    private var mappings: [CodeBlockItemListSyntax: [Schemata]]
 
     convenience init() {
         self.init(mappings: [:])
@@ -31,43 +43,85 @@ final class SchemataMutationMapping: Equatable {
     ) -> [Schemata]? {
         mappings[codeBlockSyntax]
     }
+    
+    static func + (
+        lhs: SchemataMutationMapping,
+        rhs: SchemataMutationMapping
+    ) -> SchemataMutationMapping {
+        SchemataMutationMapping(
+            mappings: lhs.mappings.merging(rhs.mappings) { $0 + $1 }
+        )
+    }
+    
+    static func == (
+        lhs: SchemataMutationMapping,
+        rhs: SchemataMutationMapping
+    ) -> Bool {
+        lhs.codeBlocks == rhs.codeBlocks &&
+        lhs.schematas == rhs.schematas
+    }
 }
 
-func + (
-    lhs: SchemataMutationMapping,
-    rhs: SchemataMutationMapping
-) -> SchemataMutationMapping {
-    SchemataMutationMapping(
-        mappings: lhs.mappings.merging(rhs.mappings) { $0 + $1 }
-    )
+extension SchemataMutationMapping: CustomStringConvertible, CustomDebugStringConvertible {
+    var debugDescription: String { description }
+    
+    var description: String {
+        let description = mappings.reduce(into: "") { (accum, pair) in
+            accum +=
+            """
+            source: "\(pair.key.scapedDescription)",
+            schematas: \(pair.value)
+            """
+        }
+        return """
+        SchemataMutationMapping(
+            \(description)
+        )
+        """
+    }
 }
 
-func == (
-    lhs: SchemataMutationMapping,
-    rhs: SchemataMutationMapping
-) -> Bool {
-    let lhsKeys = lhs.mappings.keys.map(\.description).sorted()
-    let rhsKeys = rhs.mappings.keys.map(\.description).sorted()
-
-    let lhsValues = Array(lhs.mappings.values).reduce([], +).sorted()
-    let rhsValues = Array(rhs.mappings.values).reduce([], +).sorted()
-
-    return lhsKeys == rhsKeys
-        && lhsValues == rhsValues
-}
-
-
-struct Schemata: Equatable {
+struct Schemata {
     let id: String
     let syntaxMutation: CodeBlockItemListSyntax
     let positionInSourceCode: MutationPosition
     let snapshot: MutationOperatorSnapshot
-    
+}
+
+extension Schemata: Equatable {
     static func == (lhs: Schemata, rhs: Schemata) -> Bool {
         lhs.id == rhs.id &&
         lhs.syntaxMutation.description == rhs.syntaxMutation.description &&
         lhs.positionInSourceCode == rhs.positionInSourceCode &&
         lhs.snapshot == rhs.snapshot
+    }
+}
+
+extension Schemata: CustomStringConvertible, CustomDebugStringConvertible {
+    var debugDescription: String { description }
+    
+    var description: String {
+        """
+        Schemata(
+            id: "\(id)",
+            syntaxMutation: "\(syntaxMutation.scapedDescription)",
+            positionInSourceCode: \(positionInSourceCode),
+            snapshot: \(snapshot)
+        )
+        """
+    }
+}
+
+private extension SyntaxProtocol {
+    var scapedDescription: String {
+        description.replacingOccurrences(
+            of: "\n",
+            with: "\\n"
+        )
+        .replacingOccurrences(
+            of: "\"",
+            with: "\\\""
+        )
     }
 }
 

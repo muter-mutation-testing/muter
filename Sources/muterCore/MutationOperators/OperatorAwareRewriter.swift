@@ -2,9 +2,7 @@ import SwiftSyntax
 
 class OperatorAwareRewriter: SyntaxRewriter, PositionSpecificRewriter {
     let positionToMutate: MutationPosition
-    var operatorSnapshot: MutationOperatorSnapshot = .null
-    var currentExpression: String = ""
-    
+    var operatorSnapshot: MutationOperatorSnapshot = .null    
     var oppositeOperatorMapping: [String: String] = [:]
     
     required init(positionToMutate: MutationPosition) {

@@ -197,7 +197,6 @@ extension SchemataMutationMapping {
             }
         }
 
-
         return schemataMutationMapping
     }
 }

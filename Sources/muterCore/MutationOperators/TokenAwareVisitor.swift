@@ -1,12 +1,15 @@
 import SwiftSyntax
 
 class TokenAwareVisitor: SyntaxAnyVisitor, PositionDiscoveringVisitor {
-    fileprivate(set) var tokensToDiscover = [TokenKind]()
-    private(set) var positionsOfToken = [MutationPosition]()
+    var tokensToDiscover = [TokenKind]()
+    var positionsOfToken = [MutationPosition]()
     
     private let sourceFileInfo: SourceFileInfo
 
-    required init(configuration: MuterConfiguration?, sourceFileInfo: SourceFileInfo) {
+    required init(
+        configuration: MuterConfiguration?,
+        sourceFileInfo: SourceFileInfo
+    ) {
         self.sourceFileInfo = sourceFileInfo
     }
     
@@ -34,109 +37,10 @@ class TokenAwareVisitor: SyntaxAnyVisitor, PositionDiscoveringVisitor {
     }
 }
 
-private extension SequenceExprSyntax {
-    var isInsideCompilerDirective: Bool {
-        parent?.is(IfConfigClauseSyntax.self) == true
-    }
-}
-
-/// Relational Operator Replacement
-enum ROROperator {
-    class Visitor: TokenAwareVisitor {
-        required init(configuration: MuterConfiguration? = nil, sourceFileInfo: SourceFileInfo) {
-            super.init(configuration: configuration, sourceFileInfo: sourceFileInfo)
-            tokensToDiscover = [
-                .spacedBinaryOperator("=="),
-                .spacedBinaryOperator("!="),
-                .spacedBinaryOperator(">="),
-                .spacedBinaryOperator("<="),
-                .spacedBinaryOperator("<"),
-                .spacedBinaryOperator(">"),
-            ]
-        }
-    }
-
-    class SchemataVisitor: TokenAwareSchemataVisitor {
-        required init(
-            configuration: MuterConfiguration? = nil,
-            sourceFileInfo: SourceFileInfo
-        ) {
-            super.init(
-                configuration: configuration,
-                sourceFileInfo: sourceFileInfo
-            )
-
-            tokensToDiscover = [
-                .spacedBinaryOperator("=="),
-                .spacedBinaryOperator("!="),
-                .spacedBinaryOperator(">="),
-                .spacedBinaryOperator("<="),
-                .spacedBinaryOperator("<"),
-                .spacedBinaryOperator(">"),
-            ]
-
-            oppositeOperatorMapping = [
-                "==": "!=",
-                "!=": "==",
-                ">=": "<=",
-                "<=": ">=",
-                ">": "<",
-                "<": ">",
-            ]
-        }
-    }
-}
-
-enum ChangeLogicalConnectorOperator {
-    class Visitor: TokenAwareVisitor {
-        required init(configuration: MuterConfiguration? = nil, sourceFileInfo: SourceFileInfo) {
-            super.init(configuration: configuration, sourceFileInfo: sourceFileInfo)
-            tokensToDiscover = [
-                .spacedBinaryOperator("||"),
-                .spacedBinaryOperator("&&"),
-            ]
-        }
-    }
-    
-    class SchemataVisitor: TokenAwareSchemataVisitor {
-        required init(
-            configuration: MuterConfiguration? = nil,
-            sourceFileInfo: SourceFileInfo
-        ) {
-            super.init(
-                configuration: configuration,
-                sourceFileInfo: sourceFileInfo
-            )
-
-            tokensToDiscover = [
-                .spacedBinaryOperator("||"),
-                .spacedBinaryOperator("&&"),
-                .spacedBinaryOperator("=="),
-                .spacedBinaryOperator("!="),
-                .spacedBinaryOperator(">="),
-                .spacedBinaryOperator("<="),
-                .spacedBinaryOperator("<"),
-                .spacedBinaryOperator(">"),
-            ]
-            
-            oppositeOperatorMapping = [
-                "||": "&&",
-                "&&": "||",
-                "==": "!=",
-                "!=": "==",
-                ">=": "<=",
-                "<=": ">=",
-                ">": "<",
-                "<": ">",
-            ]
-        }
-    }
-}
-
 class TokenAwareSchemataVisitor: SyntaxAnyVisitor, MutationSchemataVisitor {
-    fileprivate(set) var tokensToDiscover = [TokenKind]()
-    fileprivate(set) var oppositeOperatorMapping: [String: String] = [:]
-    fileprivate(set) var schemataMappings = SchemataMutationMapping()
+    var tokensToDiscover = [TokenKind]()
+    var oppositeOperatorMapping: [String: String] = [:]
+    var schemataMappings = SchemataMutationMapping()
     
     private let sourceFileInfo: SourceFileInfo
 
@@ -197,7 +101,10 @@ class TokenAwareSchemataVisitor: SyntaxAnyVisitor, MutationSchemataVisitor {
         token.parent?.is(BinaryOperatorExprSyntax.self) == true
     }
 
-    private func mutated(_ token: TokenSyntax, using `operator`: String) -> Syntax {
+    private func mutated(
+        _ token: TokenSyntax,
+        using `operator`: String
+    ) -> Syntax {
         let tokenSyntax = SyntaxFactory.makeToken(
             .spacedBinaryOperator(`operator`),
             presence: .present,
@@ -208,23 +115,9 @@ class TokenAwareSchemataVisitor: SyntaxAnyVisitor, MutationSchemataVisitor {
     }
 }
 
-final class Rewriter: SyntaxRewriter {
-    private let schemataMappings: SchemataMutationMapping
 
-    required init(_ schemataMappings: SchemataMutationMapping) {
-        self.schemataMappings = schemataMappings
-    }
-
-    override func visit(_ node: CodeBlockItemListSyntax) -> Syntax {
-        guard let mutationsInNode = schemataMappings.schematas(node) else {
-            return super.visit(node)
-        }
-
-        let newNode = applyMutationSwitch(
-            withOriginalSyntax: node,
-            and: mutationsInNode
-        )
-
-        return super.visit(newNode)
+private extension SequenceExprSyntax {
+    var isInsideCompilerDirective: Bool {
+        parent?.is(IfConfigClauseSyntax.self) == true
     }
 }

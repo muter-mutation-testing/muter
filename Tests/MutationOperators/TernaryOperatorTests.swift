@@ -7,72 +7,136 @@ final class TernaryOperatorTests: XCTestCase {
     private lazy var sampleCode = sourceCode(
         fromFileAt: "\(mutationExamplesDirectory)/TernaryOperator/sampleWithTernaryOperator.swift"
     )!
-    private lazy var changedCode = sourceCode(
-        fromFileAt: "\(mutationExamplesDirectory)/TernaryOperator/changedTernaryOperator.swift"
-    )!
+
     private lazy var sampleNestedCode = sourceCode(
         fromFileAt: "\(mutationExamplesDirectory)/TernaryOperator/sampleWithNestedTernaryOperator.swift"
     )!
-    private lazy var changedNestedCode = sourceCode(
-        fromFileAt: "\(mutationExamplesDirectory)/TernaryOperator/changedNestedTernaryOperator.swift"
-    )!
     
-    func test_visitor() {
-        let visitor = TernaryOperator.Visitor(sourceFileInfo: sampleCode.asSourceFileInfo)
+    func test_visitor() throws {
+        let visitor = TernaryOperator.SchemataVisitor(
+            sourceFileInfo: sampleCode.asSourceFileInfo
+        )
 
         visitor.walk(sampleCode.code)
 
-        XCTAssertEqual(visitor.positionsOfToken.count, 2)
+        let actualMappings = visitor.schemataMappings
+        let expectedMappings = try SchemataMutationMapping.make(
+            (
+                source: "\n    return a ? \"true\" : \"false\"",
+                schematas: [
+                    try .make(
+                        id: "TernaryOperator_@10_179_12",
+                        syntaxMutation: "\n    return a ? \"false\" : \"true\"",
+                        positionInSourceCode: MutationPosition(
+                            utf8Offset: 179,
+                            line: 10,
+                            column: 12
+                        ),
+                        snapshot: MutationOperatorSnapshot(
+                            before: "a ? \"true\" : \"false\"",
+                            after: "a ? \"false\" : \"true\"",
+                            description: "swapped ternary operator"
+                        )
+                    )
+                ]
+            ),
+            (
+                source: "\n    return a ? true : false",
+                schematas: [
+                    try .make(
+                        id: "TernaryOperator_@6_104_12",
+                        syntaxMutation: "\n    return a ? false : true",
+                        positionInSourceCode: MutationPosition(
+                            utf8Offset: 104,
+                            line: 6,
+                            column: 12
+                        ),
+                        snapshot: MutationOperatorSnapshot(
+                            before: "a ? true : false",
+                            after: "a ? false : true",
+                            description: "swapped ternary operator"
+                        )
+                    )
+                ]
+            )
+        )
 
-        XCTAssertEqual(visitor.positionsOfToken[safe: 0]?.utf8Offset, 120)
-        XCTAssertEqual(visitor.positionsOfToken[safe: 0]?.line, 6)
-        XCTAssertEqual(visitor.positionsOfToken[safe: 0]?.column, 28)
-
-        XCTAssertEqual(visitor.positionsOfToken[safe: 1]?.utf8Offset, 199)
-        XCTAssertEqual(visitor.positionsOfToken[safe: 1]?.line, 10)
-        XCTAssertEqual(visitor.positionsOfToken[safe: 1]?.column, 32)
+        XCTAssertEqual(actualMappings, expectedMappings)
     }
     
-    func test_visitor_nestedTernaryOperator() {
-        let visitor = TernaryOperator.Visitor(sourceFileInfo: sampleNestedCode.asSourceFileInfo)
-
+    func test_visitor_nestedTernaryOperator() throws {
+        let visitor = TernaryOperator.SchemataVisitor(
+            sourceFileInfo: sampleNestedCode.asSourceFileInfo
+        )
+        
         visitor.walk(sampleNestedCode.code)
+        
+        let actualMappings = visitor.schemataMappings
+        let expectedMappings = try SchemataMutationMapping.make(
+            (
+                source: "\n    return a ? b ? true : false : false",
+                schematas: [
+                    try .make(
+                        id: "TernaryOperator_@6_115_12",
+                        syntaxMutation: "\n    return a ? false : b ? true : false",
+                        positionInSourceCode: MutationPosition(
+                            utf8Offset: 115,
+                            line: 6,
+                            column: 12
+                        ),
+                        snapshot: MutationOperatorSnapshot(
+                            before: "a ? b ? true : false : false",
+                            after: "a ? false : b ? true : false",
+                            description: "swapped ternary operator"
+                        )
+                    ),
+                    try .make(
+                        id: "TernaryOperator_@6_119_16",
+                        syntaxMutation: "\n    return a ? b ? false : true: false",
+                        positionInSourceCode: MutationPosition(
+                            utf8Offset: 119,
+                            line: 6,
+                            column: 16
+                        ),
+                        snapshot: MutationOperatorSnapshot(
+                            before: "b ? true : false",
+                            after: "b ? false : true",
+                            description: "swapped ternary operator"
+                        )
+                    )
+                ]
+            )
+        )
 
-        XCTAssertEqual(visitor.positionsOfToken.count, 2)
-
-        XCTAssertEqual(visitor.positionsOfToken[safe: 0]?.utf8Offset, 143)
-        XCTAssertEqual(visitor.positionsOfToken[safe: 0]?.line, 6)
-        XCTAssertEqual(visitor.positionsOfToken[safe: 0]?.column, 40)
-
-        XCTAssertEqual(visitor.positionsOfToken[safe: 1]?.utf8Offset, 136)
-        XCTAssertEqual(visitor.positionsOfToken[safe: 1]?.line, 6)
-        XCTAssertEqual(visitor.positionsOfToken[safe: 1]?.column, 33)
+        XCTAssertEqual(actualMappings, expectedMappings)
     }
     
-    func test_rewriter_swapCorrectPositions() {
-        let mutationPos = MutationPosition(utf8Offset: 120, line: 6, column: 28)
-        let rewriter = TernaryOperator.Rewriter(positionToMutate: mutationPos)
+    func test_rewriter() {
+        let visitor = TernaryOperator.SchemataVisitor(
+            sourceFileInfo: sampleNestedCode.asSourceFileInfo
+        )
+        
+        visitor.walk(sampleNestedCode.code)
+        
+        let rewritter = Rewriter(visitor.schemataMappings).visit(sampleNestedCode.code)
+        
+        XCTAssertEqual(
+            rewritter.description,
+            """
+            #if os(iOS) || os(tvOS)
+            print("please ignore me")
+            #endif
 
-        let mutatedSource = rewriter.visit(sampleCode.code)
+            func someCode(_ a: Bool, _ b: Bool) -> Bool {if ProcessInfo.processInfo.environment["TernaryOperator_@6_115_12"] != nil {
+                return a ? false : b ? true : false
+            } else if ProcessInfo.processInfo.environment["TernaryOperator_@6_119_16"] != nil {
+                return a ? b ? false : true: false
+            } else {
+                return a ? b ? true : false : false
+            }
+            }
 
-        XCTAssertEqual(mutatedSource.description, changedCode.code.description)
-    }
-    
-    func test_rewriter_swapWrongPositions() {
-        let mutationPos = MutationPosition(utf8Offset: 0, line: 0, column: 0)
-        let rewriter = TernaryOperator.Rewriter(positionToMutate: mutationPos)
-
-        let mutatedSource = rewriter.visit(sampleCode.code)
-
-        XCTAssertEqual(mutatedSource.description, sampleCode.code.description)
-    }
-    
-    func test_rewriter_swapNestedWrongPositions() {
-        let mutationPos = MutationPosition(utf8Offset: 136, line: 6, column: 33)
-        let rewriter = TernaryOperator.Rewriter(positionToMutate: mutationPos)
-
-        let mutatedSource = rewriter.visit(sampleNestedCode.code)
-
-        XCTAssertEqual(mutatedSource.description, changedNestedCode.code.description)
+            """
+        )
     }
 }
