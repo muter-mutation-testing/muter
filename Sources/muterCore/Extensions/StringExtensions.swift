@@ -21,6 +21,10 @@ extension String {
     func distance(to index: Index) -> Int {
         distance(from: startIndex, to: index)
     }
+
+    var nilIfEmpty: String? {
+        !isEmpty ? self : nil
+    }
 }
 
 extension String {

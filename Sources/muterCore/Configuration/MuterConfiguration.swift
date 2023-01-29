@@ -10,6 +10,14 @@ public struct MuterConfiguration: Equatable, Codable {
     let excludeCallList: [String]
     let mutateFilesInSiblingOfProjectFolder: Bool
 
+    var buildSystem: BuildSystem {
+        guard let buildSystem = testCommandExecutable.components(separatedBy: "/").last?.trimmed else {
+            return .unknown
+        }
+
+        return BuildSystem(rawValue: buildSystem)
+    }
+
     enum CodingKeys: String, CodingKey {
         case testCommandArguments = "arguments"
         case testCommandExecutable = "executable"

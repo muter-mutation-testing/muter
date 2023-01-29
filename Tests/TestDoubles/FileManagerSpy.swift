@@ -9,14 +9,25 @@ class FileManagerSpy: Spy, FileSystemManager {
     private(set) var searchPathDirectories: [FileManager.SearchPathDirectory] = []
     private(set) var domains: [FileManager.SearchPathDomainMask] = []
     private(set) var copyPaths: [(source: String, dest: String)] = []
+    private(set) var contentsAtPathSorted: [String] = []
+    private(set) var contentsAtPathSortedOrder: [ComparisonResult] = []
     private(set) var contents: Data?
 
     var tempDirectory: URL!
-    var fileContentsToReturn: Data!
+    private var fileContentsQueue: Queue<Data> = .init()
+    var fileContentsToReturn: Data? {
+        set {
+            newValue.map { fileContentsQueue.enqueue($0) }
+        }
+        get {
+            fileContentsQueue.dequeue()
+        }
+    }
     var currentDirectoryPathToReturn: String!
     var errorToThrow: Error?
     var subpathsToReturn: [String]?
     var fileExistsToReturn: [Bool] = []
+    var contentsAtPathSortedToReturn: [String] = []
 
     var currentDirectoryPath: String {
         return currentDirectoryPathToReturn
@@ -87,5 +98,12 @@ class FileManagerSpy: Spy, FileSystemManager {
         methodCalls.append(#function)
         paths.append(path)
         if let error = errorToThrow { throw error }
+    }
+
+    func contents(atPath path: String, sortedByDate: ComparisonResult) throws -> [String] {
+        methodCalls.append(#function)
+        contentsAtPathSorted.append(path)
+        contentsAtPathSortedOrder.append(sortedByDate)
+        return contentsAtPathSortedToReturn
     }
 }
