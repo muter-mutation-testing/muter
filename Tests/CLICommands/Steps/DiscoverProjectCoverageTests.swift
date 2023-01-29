@@ -1,4 +1,5 @@
 import XCTest
+import TestingExtensions
 
 @testable import muterCore
 
