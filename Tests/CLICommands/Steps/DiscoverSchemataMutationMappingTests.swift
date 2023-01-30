@@ -3,9 +3,9 @@ import SwiftSyntax
 
 @testable import muterCore
 
-final class DiscoverMutationPointTests: XCTestCase {
+final class DiscoverSchemataMutationMappingTests: XCTestCase {
     private let state = RunCommandState()
-    private let sut = DiscoverMutationPoints()
+    private let sut = DiscoverSchemataMutationMapping()
     
     func test_whenItDiscoversMutationPoints_thenAddThemToParsedSourceCode() throws {
         state.sourceFileCandidates = [

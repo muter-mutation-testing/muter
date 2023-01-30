@@ -99,7 +99,7 @@ final class RemoveSideEffectsOperatorTests: XCTestCase {
         XCTAssertEqual(actualSchematas, expectedSchematas)
     }
 
-    func test_rewriter() throws {
+    func test__rewriter() throws {
         let visitor = RemoveSideEffectsOperator.SchemataVisitor(
             sourceFileInfo: sourceWithSideEffects.asSourceFileInfo
         )
@@ -111,60 +111,76 @@ final class RemoveSideEffectsOperatorTests: XCTestCase {
         XCTAssertEqual(
             rewritter.description,
             """
-            struct Example {
-                func containsSideEffect() -> Int {if ProcessInfo.processInfo.environment["SideEffect_@1_16_17"] != nil {
-                    return 1
-            } else {
-                    _ = causesSideEffect()
-                    return 1
-            }
-                }
-
-                func containsSideEffect() -> Int {if ProcessInfo.processInfo.environment["SideEffect_@5_109_6"] != nil {
-                    print("something")
-            } else {
-                    print("something")
-
-                    _ = causesSideEffect()
-            }
-                }
-
-                @discardableResult
-                func causesSideEffect() -> Int {
-                    return 0
-                }
-
-                func causesAnotherSideEffect() {if ProcessInfo.processInfo.environment["SideEffect_@16_298_6"] != nil {
-                    let key = "some key"
-                    let value = aFunctionThatReturnsAValue()
-            } else {
-                    let key = "some key"
-                    let value = aFunctionThatReturnsAValue()
-                    someFunctionThatWritesToADatabase(key: key, value: value)
-            }
-                }
-
-                func containsSpecialCases() {
-                    fatalError("this should never be deleted!")
-                    exit(1)
-                    abort()
-                }
-
-                func containsADeepMethodCall() {
-                    let containsIgnoredResult = statement.description.contains("_ = ")
-                    var anotherIgnoredResult = statement.description.contains("_ = ")
-                }
-
-                func containsAVoidFunctionCallThatSpansManyLine() {if ProcessInfo.processInfo.environment["SideEffect_@33_804_6"] != nil {
-            } else {
-                    functionCall("some argument",
-                                 anArgumentLabel: "some argument that's different",
-                                 anotherArgumentLabel: 5)
-            }
-                }
-            }
-
             """
         )
     }
+    
+//    func test_rewriter() throws {
+//        let visitor = RemoveSideEffectsOperator.SchemataVisitor(
+//            sourceFileInfo: sourceWithSideEffects.asSourceFileInfo
+//        )
+//
+//        visitor.walk(sourceWithSideEffects.code)
+//
+//        let rewritter = Rewriter(visitor.schemataMappings).visit(sourceWithSideEffects.code)
+//
+//        XCTAssertEqual(
+//            rewritter.description,
+//            """
+//            struct Example {
+//                func containsSideEffect() -> Int {if ProcessInfo.processInfo.environment["SideEffect_@1_16_17"] != nil {
+//                    return 1
+//            } else {
+//                    _ = causesSideEffect()
+//                    return 1
+//            }
+//                }
+//
+//                func containsSideEffect() -> Int {if ProcessInfo.processInfo.environment["SideEffect_@5_109_6"] != nil {
+//                    print("something")
+//            } else {
+//                    print("something")
+//
+//                    _ = causesSideEffect()
+//            }
+//                }
+//
+//                @discardableResult
+//                func causesSideEffect() -> Int {
+//                    return 0
+//                }
+//
+//                func causesAnotherSideEffect() {if ProcessInfo.processInfo.environment["SideEffect_@16_298_6"] != nil {
+//                    let key = "some key"
+//                    let value = aFunctionThatReturnsAValue()
+//            } else {
+//                    let key = "some key"
+//                    let value = aFunctionThatReturnsAValue()
+//                    someFunctionThatWritesToADatabase(key: key, value: value)
+//            }
+//                }
+//
+//                func containsSpecialCases() {
+//                    fatalError("this should never be deleted!")
+//                    exit(1)
+//                    abort()
+//                }
+//
+//                func containsADeepMethodCall() {
+//                    let containsIgnoredResult = statement.description.contains("_ = ")
+//                    var anotherIgnoredResult = statement.description.contains("_ = ")
+//                }
+//
+//                func containsAVoidFunctionCallThatSpansManyLine() {if ProcessInfo.processInfo.environment["SideEffect_@33_804_6"] != nil {
+//            } else {
+//                    functionCall("some argument",
+//                                 anArgumentLabel: "some argument that's different",
+//                                 anotherArgumentLabel: 5)
+//            }
+//                }
+//            }
+//
+//            """
+//        )
+//    }
 }

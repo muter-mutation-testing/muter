@@ -1,4 +1,4 @@
-struct MutationOperatorSnapshot: Equatable, Codable {
+struct MutationOperatorSnapshot: Codable, Equatable {
     let before: String
     let after: String
     let description: String
