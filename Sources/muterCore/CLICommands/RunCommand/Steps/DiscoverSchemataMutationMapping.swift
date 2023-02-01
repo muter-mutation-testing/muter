@@ -8,7 +8,7 @@ struct DiscoverSchemataMutationMapping: RunCommandStep {
         
         notificationCenter.post(name: .mutationPointDiscoveryStarted, object: nil)
         
-        let (mutationPoints, sourceCodeByFilePath) = discoverMutationPoints(inFilesAt: state.sourceFileCandidates, configuration: state.muterConfiguration)
+        let mutationPoints = discoverMutationPoints(inFilesAt: state.sourceFileCandidates, configuration: state.muterConfiguration)
         
         notificationCenter.post(name: .mutationPointDiscoveryFinished, object: mutationPoints)
         
@@ -16,71 +16,64 @@ struct DiscoverSchemataMutationMapping: RunCommandStep {
             return .failure(.noMutationPointsDiscovered)
         }
         
-        return .success([.mutationPointsDiscovered(mutationPoints),
-                         .sourceCodeParsed(sourceCodeByFilePath),])
+        return .success([
+            .mutationMappingsDiscovered(mutationPoints)
+        ])
     }
 }
 
 private extension DiscoverSchemataMutationMapping {
     
-    func discoverMutationPoints(inFilesAt filePaths: [String], configuration: MuterConfiguration) -> (mutationPoints: [MutationPoint], sourceCodeByFilePath: [FilePath: SourceFileSyntax]) {
-        
-        var sourceCodeByFilePath: [FilePath: SourceFileSyntax] = [:]
-        let mutationPoints: [MutationPoint] = filePaths.accumulate(into: []) { alreadyDiscoveredMutationPoints, path in
+    func discoverMutationPoints(
+        inFilesAt filePaths: [String],
+        configuration: MuterConfiguration
+    ) -> [SchemataMutationMapping] {
+        let mutationPoints: [SchemataMutationMapping] = filePaths.accumulate(into: []) { alreadyDiscoveredMutationPoints, path in
             
             guard
                 pathContainsDotSwift(path),
                 let source = sourceCode(fromFileAt: path)?.code
             else { return alreadyDiscoveredMutationPoints }
             
-            let newMutationPoints = discoverNewMutationPoints(inFile: SourceCodeInfo(path: path, code: source), configuration: configuration).sorted(by: filePositionOrder)
-            
-            if !newMutationPoints.isEmpty {
-                sourceCodeByFilePath[path] = source
-            }
+            let newMutationPoints = discoverNewMutationPoints(
+                inFile: SourceCodeInfo(path: path, code: source),
+                configuration: configuration
+            )
             
             return alreadyDiscoveredMutationPoints + newMutationPoints
         }
         
-        return (
-            mutationPoints: mutationPoints,
-            sourceCodeByFilePath: sourceCodeByFilePath
-        )
+        return mutationPoints
     }
     
     func discoverNewMutationPoints(
         inFile sourceCodeInfo: SourceCodeInfo,
         configuration: MuterConfiguration
-    ) -> [MutationPoint] {
-        let excludedMutationPointsDetector = ExcludedMutationPointsDetector(
-            configuration: configuration,
+    ) -> [SchemataMutationMapping] {
+        let excludedMutationPoints = ExcludedMutationPoints(
             sourceFileInfo: sourceCodeInfo.asSourceFileInfo
         )
 
-        excludedMutationPointsDetector.walk(sourceCodeInfo.code)
+        excludedMutationPoints.walk(sourceCodeInfo.code)
 
-        return MutationOperator.Id.allCases.accumulate(into: []) { newMutationPoints, mutationOperatorId in
+        return MutationOperator.Id.allCases.accumulate(into: []) { newMutationSchematas, mutationOperatorId in
             
-            let visitor = mutationOperatorId.rewriterVisitorPair.visitor(
+            let visitor = mutationOperatorId.schemataVisitor(
                 configuration,
                 sourceCodeInfo.asSourceFileInfo
             )
 
             visitor.walk(sourceCodeInfo.code)
+
+            let schemataMappings = visitor.schemataMappings
+            schemataMappings.excludePoints(excludedMutationPoints.excludedPositions)
             
-            return newMutationPoints + visitor.positionsOfToken
-                .filter { !excludedMutationPointsDetector.positionsOfToken.contains($0) }
-                .map { position in
-                    return MutationPoint(mutationOperatorId: mutationOperatorId,
-                                         filePath: sourceCodeInfo.path,
-                                         position: position)
+            if schemataMappings.isEmpty {
+                return newMutationSchematas
+            } else {
+                return newMutationSchematas + [schemataMappings]
             }
         }
-    }
-    
-    func filePositionOrder(lhs: MutationPoint, rhs: MutationPoint) -> Bool {
-        return lhs.position.line < rhs.position.line &&
-            lhs.position.column < rhs.position.column
     }
     
     func pathContainsDotSwift(_ filePath: String) -> Bool {
@@ -90,21 +83,24 @@ private extension DiscoverSchemataMutationMapping {
 }
 
 // Currently supports only line comments (in block comments, would need to detect in which actual line the skip marker appears - and if it isn't the first or last line, it won't contain code anyway)
-private class ExcludedMutationPointsDetector: SyntaxAnyVisitor, PositionDiscoveringVisitor {
-    var positionsOfToken: [MutationPosition] = []
+private class ExcludedMutationPoints: SyntaxAnyVisitor {
+    private(set) var excludedPositions: [MutationPosition] = []
     
     private let muterSkipMarker = "muter:skip"
     
     private let sourceFileInfo: SourceFileInfo
     
-    required init(configuration: MuterConfiguration?, sourceFileInfo: SourceFileInfo) {
+    required init(
+        sourceFileInfo: SourceFileInfo
+    ) {
         self.sourceFileInfo = sourceFileInfo
     }
     
     override func visitAnyPost(_ node: Syntax) {
         node.leadingTrivia.map { leadingTrivia in
             if leadingTrivia.containsLineComment(muterSkipMarker) {
-                positionsOfToken.append(
+                print(node.mutationPosition(with: sourceFileInfo))
+                excludedPositions.append(
                     node.mutationPosition(with: sourceFileInfo)
                 )
             }

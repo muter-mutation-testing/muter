@@ -38,6 +38,11 @@ enum ROROperator {
                 configuration: configuration,
                 sourceFileInfo: sourceFileInfo
             )
+            
+            schemataMappings = SchemataMutationMapping(
+                filePath: sourceFileInfo.path,
+                mutationOperatorId: .ror
+            )
 
             tokensToDiscover = [
                 .spacedBinaryOperator("=="),

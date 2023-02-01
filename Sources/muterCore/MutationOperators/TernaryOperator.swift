@@ -27,7 +27,7 @@ enum TernaryOperator {
     }
     
     final class SchemataVisitor: SyntaxAnyVisitor, MutationSchemataVisitor {
-        private(set) var schemataMappings: SchemataMutationMapping = .init()
+        private(set) var schemataMappings: SchemataMutationMapping
         private let sourceFileInfo: SourceFileInfo
         
         init(
@@ -35,6 +35,10 @@ enum TernaryOperator {
             sourceFileInfo: SourceFileInfo
         ) {
             self.sourceFileInfo = sourceFileInfo
+            self.schemataMappings = SchemataMutationMapping(
+                filePath: sourceFileInfo.path,
+                mutationOperatorId: .ternaryOperator
+            )
         }
         
         override func visitAny(_ node: Syntax) -> SyntaxVisitorContinueKind {

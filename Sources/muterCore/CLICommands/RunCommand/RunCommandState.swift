@@ -9,7 +9,7 @@ protocol AnyRunCommandState: AnyObject {
     var projectCoverage: Coverage { get }
     var sourceFileCandidates: [FilePath] { get }
     var mutationPoints: [MutationPoint] { get }
-    var mutationMapping: SchemataMutationMapping { get }
+    var mutationMapping: [SchemataMutationMapping] { get }
     var sourceCodeByFilePath: [FilePath: SourceFileSyntax] { get }
     var filesToMutate: [String] { get }
     var swapFilePathsByOriginalPath: [FilePath: FilePath] { get }
@@ -26,7 +26,7 @@ final class RunCommandState: AnyRunCommandState {
     var projectCoverage: Coverage = .null
     var sourceFileCandidates: [FilePath] = []
     var mutationPoints: [MutationPoint] = []
-    var mutationMapping: SchemataMutationMapping = .init()
+    var mutationMapping: [SchemataMutationMapping] = []
     var sourceCodeByFilePath: [FilePath: SourceFileSyntax] = [:]
     var filesToMutate: [String] = []
     var swapFilePathsByOriginalPath: [FilePath: FilePath] = [:]
@@ -55,7 +55,7 @@ extension RunCommandState {
         case projectCoverage(Coverage)
         case sourceFileCandidatesDiscovered([FilePath])
         case mutationPointsDiscovered([MutationPoint])
-        case mutationMappingsDiscovered(SchemataMutationMapping)
+        case mutationMappingsDiscovered([SchemataMutationMapping])
         case sourceCodeParsed([FilePath: SourceFileSyntax])
         case swapFilePathGenerated([FilePath: FilePath])
         case mutationTestOutcomeGenerated(MutationTestOutcome)
@@ -82,8 +82,8 @@ extension RunCommandState {
                 self.sourceFileCandidates = sourceFileCandidates
             case .mutationPointsDiscovered(let mutationPoints):
                 self.mutationPoints = mutationPoints
-            case .mutationMappingsDiscovered(let mutationMapping):
-                self.mutationMapping = mutationMapping
+            case .mutationMappingsDiscovered(let mutationMappings):
+                self.mutationMapping = mutationMappings
             case .sourceCodeParsed(let sourceCodeByFilePath):
                 self.sourceCodeByFilePath = sourceCodeByFilePath
             case .swapFilePathGenerated(let swapFilePathsByOriginalPath):

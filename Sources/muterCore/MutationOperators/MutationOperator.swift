@@ -5,6 +5,9 @@ typealias SourceCodeTransformation = (SourceFileSyntax) -> (mutatedSource: Synta
 typealias RewriterInitializer = (MutationPosition) -> PositionSpecificRewriter
 typealias VisitorInitializer = (MuterConfiguration, SourceFileInfo) -> PositionDiscoveringVisitor
 
+typealias SchemataVisitorInitializer = (MuterConfiguration, SourceFileInfo) -> MutationSchemataVisitor
+
+
 public struct MutationPoint: Equatable, Codable {
     let mutationOperatorId: MutationOperator.Id
     let filePath: String
@@ -50,6 +53,19 @@ struct MutationOperator {
             case .ternaryOperator:
                 return (rewriter: TernaryOperator.Rewriter.init,
                         visitor: TernaryOperator.Visitor.init)
+            }
+        }
+        
+        var schemataVisitor: SchemataVisitorInitializer {
+            switch self{
+            case .removeSideEffects:
+                return RemoveSideEffectsOperator.SchemataVisitor.init
+            case .ror:
+                return ROROperator.SchemataVisitor.init
+            case .logicalOperator:
+                return ChangeLogicalConnectorOperator.SchemataVisitor.init
+            case .ternaryOperator:
+                return TernaryOperator.SchemataVisitor.init
             }
         }
         

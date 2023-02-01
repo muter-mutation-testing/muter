@@ -19,15 +19,29 @@ final class SchemataMutationMapping: Equatable {
         Array(mappings.values).reduce([], +).sorted()
     }
 
-    private var mappings: [CodeBlockItemListSyntax: [Schemata]]
+    let filePath: String
+    let mutationOperatorId: MutationOperator.Id
+    
+    fileprivate var mappings: [CodeBlockItemListSyntax: [Schemata]]
 
-    convenience init() {
-        self.init(mappings: [:])
+    convenience init(
+        filePath: String = "",
+        mutationOperatorId: MutationOperator.Id = .ror
+    ) {
+        self.init(
+            filePath: filePath,
+            mutationOperatorId: mutationOperatorId,
+            mappings: [:]
+        )
     }
-
+    
     fileprivate init(
+        filePath: String = "",
+        mutationOperatorId: MutationOperator.Id = .ror,
         mappings: [CodeBlockItemListSyntax: [Schemata]]
     ) {
+        self.filePath = filePath
+        self.mutationOperatorId = mutationOperatorId
         self.mappings = mappings
     }
 
@@ -37,6 +51,13 @@ final class SchemataMutationMapping: Equatable {
     ) {
         mappings[codeBlockSyntax, default: []].append(schemata)
     }
+    
+    func add(
+        _ codeBlockSyntax: CodeBlockItemListSyntax,
+        _ schematas: [Schemata]
+    ) {
+        mappings[codeBlockSyntax, default: []].append(contentsOf: schematas)
+    }
 
     func schematas(
         _ codeBlockSyntax: CodeBlockItemListSyntax
@@ -44,13 +65,30 @@ final class SchemataMutationMapping: Equatable {
         mappings[codeBlockSyntax]
     }
     
+    func excludePoints(_ mutationPoints: [MutationPosition]) {
+        for (codeBlock, schematas) in mappings {
+            mappings[codeBlock] = schematas.exclude {
+                mutationPoints.contains($0.positionInSourceCode)
+            }
+        }
+    }
+    
     static func + (
         lhs: SchemataMutationMapping,
         rhs: SchemataMutationMapping
     ) -> SchemataMutationMapping {
-        SchemataMutationMapping(
-            mappings: lhs.mappings.merging(rhs.mappings) { $0 + $1 }
+        let result = SchemataMutationMapping(
+            filePath: lhs.filePath,
+            mutationOperatorId: lhs.mutationOperatorId
         )
+
+        let mergedMappgins = lhs.mappings.merging(rhs.mappings) { $0 + $1 }
+
+        mergedMappgins.forEach { (codeBlock, schematas) in
+            result.add(codeBlock, schematas)
+        }
+        
+        return result
     }
     
     static func == (

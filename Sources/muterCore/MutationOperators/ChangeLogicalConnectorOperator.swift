@@ -31,6 +31,11 @@ enum ChangeLogicalConnectorOperator {
                 sourceFileInfo: sourceFileInfo
             )
 
+            schemataMappings = SchemataMutationMapping(
+                filePath: sourceFileInfo.path,
+                mutationOperatorId: .logicalOperator
+            )
+            
             tokensToDiscover = [
                 .spacedBinaryOperator("||"),
                 .spacedBinaryOperator("&&"),

@@ -107,7 +107,7 @@ enum RemoveSideEffectsOperator {
     }
 
     final class SchemataVisitor: SyntaxAnyVisitor, MutationSchemataVisitor {
-        var schemataMappings: SchemataMutationMapping = .init()
+        private(set) var schemataMappings: SchemataMutationMapping
         private var concurrencyPropertiesInFile = [String]()
         private let concurrencyTypes = [
             "DispatchSemaphore",
@@ -119,9 +119,22 @@ enum RemoveSideEffectsOperator {
         private let untestedFunctionNames: [String]
         private let sourceFileInfo: SourceFileInfo
 
-        init(configuration: MuterConfiguration? = nil, sourceFileInfo: SourceFileInfo) {
-            untestedFunctionNames = ["print", "fatalError", "exit", "abort"] + (configuration?.excludeCallList ?? [])
+        init(
+            configuration: MuterConfiguration? = nil,
+            sourceFileInfo: SourceFileInfo
+        ) {
+            self.untestedFunctionNames = [
+                "print",
+                "fatalError",
+                "exit",
+                "abort"
+            ] + (configuration?.excludeCallList ?? [])
+
             self.sourceFileInfo = sourceFileInfo
+            self.schemataMappings = SchemataMutationMapping(
+                filePath: sourceFileInfo.path,
+                mutationOperatorId: .removeSideEffects
+            )
         }
 
         override func visit(_ node: PatternBindingListSyntax) -> SyntaxVisitorContinueKind {
@@ -153,9 +166,7 @@ enum RemoveSideEffectsOperator {
                         node: statements,
                         mutatedSyntax: newCodeBlockItemList
                     ),
-                    positionInSourceCode: node.mutationPosition(
-                        with: sourceFileInfo
-                    ),
+                    positionInSourceCode: mutationPosition(for: statement),
                     snapshot: MutationOperatorSnapshot(
                         before: statement.description.trimmed.inlined,
                         after: "removed line",
@@ -170,6 +181,22 @@ enum RemoveSideEffectsOperator {
             }
 
             return .visitChildren
+        }
+        
+        private func mutationPosition(
+            for node: CodeBlockItemSyntax
+        ) -> MutationPosition {
+            let sourceLocation = node.endLocation(
+                converter: SourceLocationConverter(
+                    file: sourceFileInfo.path,
+                    source: sourceFileInfo.source
+                ),
+                afterTrailingTrivia: true
+            )
+            
+            return MutationPosition(
+                sourceLocation: sourceLocation
+            )
         }
 
         private func mutated(_ node: FunctionDeclSyntax, with body: CodeBlockSyntax) -> DeclSyntax {

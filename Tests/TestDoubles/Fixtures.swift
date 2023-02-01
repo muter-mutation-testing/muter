@@ -216,3 +216,11 @@ extension Schemata {
         )
     }
 }
+
+extension Array where Element == SchemataMutationMapping {
+    func first(
+        by mutationOperatorId: MutationOperator.Id
+    ) -> SchemataMutationMapping? {
+        first { $0.mutationOperatorId == mutationOperatorId }
+    }
+}
