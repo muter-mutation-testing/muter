@@ -365,18 +365,16 @@ func buildSchemataCondition(withId id: String) -> ConditionElementListSyntax {
 
 func makeSchemataId(
     _ sourceFileInfo: SourceFileInfo,
-    _ node: SyntaxProtocol
+    _ position: MutationPosition
 ) -> String {
-    let sourceLocation = node.mutationPosition(with: sourceFileInfo)
-
     let fileName = URL(
         string: sourceFileInfo.path)?
         .deletingLastPathComponent()
         .lastPathComponent ?? ""
     
-    let line = sourceLocation.line
-    let column = sourceLocation.column
-    let offset = sourceLocation.utf8Offset
+    let line = position.line
+    let column = position.column
+    let offset = position.utf8Offset
     
     return "\(fileName)_@\(line)_\(offset)_\(column)"
 }

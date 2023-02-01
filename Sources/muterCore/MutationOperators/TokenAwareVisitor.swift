@@ -58,15 +58,14 @@ class TokenAwareSchemataVisitor: SyntaxAnyVisitor, MutationSchemataVisitor {
             return .visitChildren
         }
         
+        let positionInSourceCode = node.mutationPosition(with: sourceFileInfo)
         let mutation = Schemata(
-            id: makeSchemataId(sourceFileInfo, node),
+            id: makeSchemataId(sourceFileInfo, positionInSourceCode),
             syntaxMutation: transform(
                 node: node,
                 mutatedSyntax: mutated(node, using: oppositeOperator)
             ),
-            positionInSourceCode: node.mutationPosition(
-                with: sourceFileInfo
-            ),
+            positionInSourceCode: positionInSourceCode,
             snapshot: MutationOperatorSnapshot(
                 before: node.description.trimmed,
                 after: oppositeOperator,

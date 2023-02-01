@@ -22,12 +22,12 @@ final class RemoveSideEffectsOperatorTests: XCTestCase {
                 source: "\n        functionCall(\"some argument\",\n                     anArgumentLabel: \"some argument that\'s different\",\n                     anotherArgumentLabel: 5)",
                 schematas: [
                     try .make(
-                        id: "SideEffect_@33_804_6",
+                        id: "SideEffect_@38_1017_46",
                         syntaxMutation: "",
                         positionInSourceCode: MutationPosition(
-                            utf8Offset: 804,
-                            line: 33,
-                            column: 6
+                            utf8Offset: 1017,
+                            line: 38,
+                            column: 46
                         ),
                         snapshot: .make(
                             before: "functionCall(\"some argument\", anArgumentLabel: \"some argument that\'s different\", anotherArgumentLabel: 5)",
@@ -41,12 +41,12 @@ final class RemoveSideEffectsOperatorTests: XCTestCase {
                 source: "\n        _ = causesSideEffect()\n        return 1",
                 schematas: [
                     try .make(
-                        id: "SideEffect_@1_16_17",
+                        id: "SideEffect_@3_86_31",
                         syntaxMutation: "\n        return 1",
                         positionInSourceCode: MutationPosition(
-                            utf8Offset: 16,
-                            line: 1,
-                            column: 17
+                            utf8Offset: 86,
+                            line: 3,
+                            column: 31
                         ),
                         snapshot: .make(
                             before: "_ = causesSideEffect()",
@@ -60,12 +60,12 @@ final class RemoveSideEffectsOperatorTests: XCTestCase {
                 source: "\n        let key = \"some key\"\n        let value = aFunctionThatReturnsAValue()\n        someFunctionThatWritesToADatabase(key: key, value: value)",
                 schematas: [
                     try .make(
-                        id: "SideEffect_@16_298_6",
+                        id: "SideEffect_@21_480_66",
                         syntaxMutation:  "\n        let key = \"some key\"\n        let value = aFunctionThatReturnsAValue()",
                         positionInSourceCode: MutationPosition(
-                            utf8Offset: 298,
-                            line: 16,
-                            column: 6
+                            utf8Offset: 480,
+                            line: 21,
+                            column: 66
                         ),
                         snapshot: .make(
                             before: "someFunctionThatWritesToADatabase(key: key, value: value)",
@@ -79,12 +79,12 @@ final class RemoveSideEffectsOperatorTests: XCTestCase {
                 source: "\n        print(\"something\")\n\n        _ = causesSideEffect()",
                 schematas: [
                     try .make(
-                        id: "SideEffect_@5_109_6",
+                        id: "SideEffect_@10_208_31",
                         syntaxMutation: "\n        print(\"something\")",
                         positionInSourceCode: MutationPosition(
-                            utf8Offset: 109,
-                            line: 5,
-                            column: 6
+                            utf8Offset: 208,
+                            line: 10,
+                            column: 31
                         ),
                         snapshot: .make(
                             before: "_ = causesSideEffect()",
@@ -96,6 +96,7 @@ final class RemoveSideEffectsOperatorTests: XCTestCase {
             )
         )
 
+        print(actualSchematas)
         XCTAssertEqual(actualSchematas, expectedSchematas)
     }
     
@@ -112,7 +113,7 @@ final class RemoveSideEffectsOperatorTests: XCTestCase {
             rewritter.description,
             """
             struct Example {
-                func containsSideEffect() -> Int {if ProcessInfo.processInfo.environment["SideEffect_@1_16_17"] != nil {
+                func containsSideEffect() -> Int {if ProcessInfo.processInfo.environment["SideEffect_@3_86_31"] != nil {
                     return 1
             } else {
                     _ = causesSideEffect()
@@ -120,7 +121,7 @@ final class RemoveSideEffectsOperatorTests: XCTestCase {
             }
                 }
 
-                func containsSideEffect() -> Int {if ProcessInfo.processInfo.environment["SideEffect_@5_109_6"] != nil {
+                func containsSideEffect() -> Int {if ProcessInfo.processInfo.environment["SideEffect_@10_208_31"] != nil {
                     print("something")
             } else {
                     print("something")
@@ -134,7 +135,7 @@ final class RemoveSideEffectsOperatorTests: XCTestCase {
                     return 0
                 }
 
-                func causesAnotherSideEffect() {if ProcessInfo.processInfo.environment["SideEffect_@16_298_6"] != nil {
+                func causesAnotherSideEffect() {if ProcessInfo.processInfo.environment["SideEffect_@21_480_66"] != nil {
                     let key = "some key"
                     let value = aFunctionThatReturnsAValue()
             } else {
@@ -155,7 +156,7 @@ final class RemoveSideEffectsOperatorTests: XCTestCase {
                     var anotherIgnoredResult = statement.description.contains("_ = ")
                 }
 
-                func containsAVoidFunctionCallThatSpansManyLine() {if ProcessInfo.processInfo.environment["SideEffect_@33_804_6"] != nil {
+                func containsAVoidFunctionCallThatSpansManyLine() {if ProcessInfo.processInfo.environment["SideEffect_@38_1017_46"] != nil {
             } else {
                     functionCall("some argument",
                                  anArgumentLabel: "some argument that's different",

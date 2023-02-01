@@ -159,14 +159,15 @@ enum RemoveSideEffectsOperator {
             for statement in body.statements where statementContainsMutableToken(statement) {
                 let mutatedFunctionStatements = body.statements.exclude { $0.description == statement.description }
                 let newCodeBlockItemList = SyntaxFactory.makeCodeBlockItemList(mutatedFunctionStatements)
-
+                
+                let positionInSourceCode = mutationPosition(for: statement)
                 let mutation = Schemata(
-                    id: makeSchemataId(sourceFileInfo, node),
+                    id: makeSchemataId(sourceFileInfo, positionInSourceCode),
                     syntaxMutation: transform(
                         node: statements,
                         mutatedSyntax: newCodeBlockItemList
                     ),
-                    positionInSourceCode: mutationPosition(for: statement),
+                    positionInSourceCode: positionInSourceCode,
                     snapshot: MutationOperatorSnapshot(
                         before: statement.description.trimmed.inlined,
                         after: "removed line",

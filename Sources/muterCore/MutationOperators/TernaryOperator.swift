@@ -47,16 +47,14 @@ enum TernaryOperator {
             }
             
             let mutatedSyntax = mutated(node)
-
+            let positionInSourceCode = node.mutationPosition(with: sourceFileInfo)
             let mutation = Schemata(
-                id: makeSchemataId(sourceFileInfo, node),
+                id: makeSchemataId(sourceFileInfo, positionInSourceCode),
                 syntaxMutation: transform(
                     node: node,
                     mutatedSyntax: mutatedSyntax
                 ),
-                positionInSourceCode: node.mutationPosition(
-                    with: sourceFileInfo
-                ),
+                positionInSourceCode: positionInSourceCode,
                 snapshot: MutationOperatorSnapshot(
                     before: node.description.trimmed.inlined,
                     after: mutatedSyntax.description.trimmed.inlined,
