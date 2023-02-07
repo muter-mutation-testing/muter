@@ -2,7 +2,6 @@ import SwiftSyntax
 @testable import muterCore
 
 class MutationTestingDelegateSpy: Spy, MutationTestingIODelegate {
-
     private(set) var methodCalls: [String] = []
     private(set) var backedUpFilePaths: [String] = []
     private(set) var mutatedFileContents: [String] = []
@@ -24,6 +23,10 @@ class MutationTestingDelegateSpy: Spy, MutationTestingIODelegate {
 
     func runTestSuite(using configuration: MuterConfiguration, savingResultsIntoFileNamed fileName: String) -> (outcome: TestSuiteOutcome, testLog: String) {
         methodCalls.append(#function)
+        return (testSuiteOutcomes.remove(at: 0), "testLog")
+    }
+    
+    func runTestSuite(withSchemata schemata: muterCore.Schemata, using configuration: muterCore.MuterConfiguration, savingResultsIntoFileNamed fileName: String) -> (outcome: muterCore.TestSuiteOutcome, testLog: String) {
         return (testSuiteOutcomes.remove(at: 0), "testLog")
     }
     

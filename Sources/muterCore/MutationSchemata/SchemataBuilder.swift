@@ -3,6 +3,8 @@ import SwiftSyntax
 import SwiftSyntaxParser
 
 final class SchemataMutationMapping: Equatable {
+    var needsImportStatement: Bool = false
+
     var count: Int {
         mappings.count
     }
@@ -17,6 +19,10 @@ final class SchemataMutationMapping: Equatable {
     
     var schematas: [Schemata] {
         Array(mappings.values).reduce([], +).sorted()
+    }
+    
+    var fileName: String {
+        return URL(fileURLWithPath: filePath).lastPathComponent
     }
 
     let filePath: String
@@ -65,7 +71,7 @@ final class SchemataMutationMapping: Equatable {
         mappings[codeBlockSyntax]
     }
     
-    func excludePoints(_ mutationPoints: [MutationPosition]) {
+    func skipMutations(_ mutationPoints: [MutationPosition]) {
         for (codeBlock, schematas) in mappings {
             mappings[codeBlock] = schematas.exclude {
                 mutationPoints.contains($0.positionInSourceCode)
@@ -376,7 +382,7 @@ func makeSchemataId(
     let column = position.column
     let offset = position.utf8Offset
     
-    return "\(fileName)_@\(line)_\(offset)_\(column)"
+    return "\(fileName)_\(line)_\(offset)_\(column)"
 }
 
 extension SyntaxProtocol {

@@ -32,11 +32,11 @@ struct CreateTempDirectoryURL: RunCommandStep {
 private extension CreateTempDirectoryURL {
     
     private func destinationPath(with state: AnyRunCommandState) throws -> String {
-        if state.muterConfiguration.mutateFilesInSiblingOfProjectFolder {
-            return destinationPathToSiblingProjectFolder(with: state.projectDirectoryURL)
-        } else {
-            return try destinationPathToTempFolder(with: state.projectDirectoryURL)
-        }
+        return destinationPathToSiblingProjectFolder(with: state.projectDirectoryURL)
+//        if state.muterConfiguration.mutateFilesInSiblingOfProjectFolder {
+//        } else {
+//            return try destinationPathToTempFolder(with: state.projectDirectoryURL)
+//        }
     }
     
     private func destinationPathToTempFolder(with projectDirectoryURL: URL) throws -> String {

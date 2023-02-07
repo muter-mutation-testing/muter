@@ -65,7 +65,7 @@ private extension DiscoverMutationPoints {
                 configuration,
                 sourceCodeInfo.asSourceFileInfo
             )
-
+            
             visitor.walk(sourceCodeInfo.code)
             
             return newMutationPoints + visitor.positionsOfToken

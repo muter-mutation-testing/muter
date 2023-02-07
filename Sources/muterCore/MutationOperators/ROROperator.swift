@@ -39,7 +39,7 @@ enum ROROperator {
                 sourceFileInfo: sourceFileInfo
             )
             
-            schemataMappings = SchemataMutationMapping(
+            self.schemataMappings = SchemataMutationMapping(
                 filePath: sourceFileInfo.path,
                 mutationOperatorId: .ror
             )

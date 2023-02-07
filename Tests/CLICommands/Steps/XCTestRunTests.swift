@@ -14,14 +14,12 @@ final class XCTestRunTests: XCTestCase {
 
     func test_updateEnvironmentVariable() {
         let actualPlist = sut.updateEnvironmentVariable(
-            setting: "keyToBeSet",
-            unsetting: "keyToBeUnset"
+            setting: "keyToBeSet"
         )
 
         let project = actualPlist["iOSProjectTests"] as? [String: AnyHashable]
         let environmentVariables = project?["EnvironmentVariables"] as? [String: AnyHashable]
         XCTAssertNotNil(environmentVariables?["keyToBeSet"])
-        XCTAssertNil(environmentVariables?["keyToBeUnset"])
     }
 
     private func loadPlist() throws -> [String: AnyHashable] {

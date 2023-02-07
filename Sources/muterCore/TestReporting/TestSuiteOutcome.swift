@@ -50,6 +50,7 @@ extension TestSuiteOutcome {
         switch binaryType {
         case .xcodebuild: return "** TEST FAILED **"
         case .buck: return "TESTS FAILED: "
+        case .swift: return " failures "
         }
     }
 
@@ -73,4 +74,5 @@ extension TestSuiteOutcome {
 private enum BinaryType {
     case xcodebuild
     case buck
+    case swift
 }

@@ -28,8 +28,43 @@ final class BuildForTestingTests: XCTestCase {
 
         XCTAssertEqual(result, [])
     }
+    
 
     // MARK: xcodebuild
+
+    func test_changeCurrentPathToTempDirectory() throws {
+        fileManager.currentDirectoryPathToReturn = "/path/to/project"
+
+        state.muterConfiguration = MuterConfiguration(
+            executable: "/path/to/xcodebuild"
+        )
+        
+        state.tempDirectoryURL = URL(fileURLWithPath: "/path/to/temp")
+        
+        _ = sut.run(with: state)
+        
+        XCTAssertTrue(fileManager.methodCalls.contains("changeCurrentDirectoryPath(_:)"))
+        XCTAssertEqual(
+            fileManager.changeCurrentDirectoryPath.first,
+            state.tempDirectoryURL.path
+        )
+    }
+    
+    func test_resetCurrentPath() {
+        fileManager.currentDirectoryPathToReturn = "/path/to/project"
+
+        state.muterConfiguration = MuterConfiguration(
+            executable: "/path/to/xcodebuild"
+        )
+        
+        state.tempDirectoryURL = URL(fileURLWithPath: "/path/to/temp")
+        
+        XCTAssertEqual(fileManager.methodCalls, [])
+        XCTAssertEqual(
+            fileManager.currentDirectoryPath,
+            "/path/to/project"
+        )
+    }
 
     func test_runBuildWithoutTestCommand() {
         state.muterConfiguration = MuterConfiguration(
@@ -60,7 +95,7 @@ final class BuildForTestingTests: XCTestCase {
         XCTAssertTrue(process.runCalled)
         XCTAssertTrue(process.waitUntilExitCalled)
 
-        XCTAssertEqual(fileManager.methodCalls.first, "contents(atPath:)")
+        XCTAssertTrue(fileManager.methodCalls.contains("contents(atPath:)"))
     }
 
     func test_copyBuildProductsPathContents() {

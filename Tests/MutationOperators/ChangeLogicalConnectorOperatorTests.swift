@@ -22,22 +22,17 @@ final class ChangeLogicalConnectorOperatorTests: XCTestCase {
         XCTAssertEqual(
             rewritten.description,
             """
+            import Foundation
             #if os(iOS) || os(tvOS)
             print("please ignore me")
             #endif
 
-            func someCode() -> Bool {if ProcessInfo.processInfo.environment["LogicalOperator_@6_101_18"] != nil {
-                return false || false
-            } else {
+            func someCode() -> Bool {
                 return false && false
             }
-            }
 
-            func someOtherCode() -> Bool {if ProcessInfo.processInfo.environment["LogicalOperator_@10_160_17"] != nil {
-                return true && true
-            } else {
+            func someOtherCode() -> Bool {
                 return true || true
-            }
             }
 
             """

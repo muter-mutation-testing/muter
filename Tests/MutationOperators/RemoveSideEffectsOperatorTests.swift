@@ -107,27 +107,22 @@ final class RemoveSideEffectsOperatorTests: XCTestCase {
 
         visitor.walk(sourceWithSideEffects.code)
 
-        let rewritter = Rewriter(visitor.schemataMappings).visit(sourceWithSideEffects.code)
+        let rewriter = Rewriter(visitor.schemataMappings).visit(sourceWithSideEffects.code)
 
         XCTAssertEqual(
-            rewritter.description,
+            rewriter.description,
             """
+            import Foundation
             struct Example {
-                func containsSideEffect() -> Int {if ProcessInfo.processInfo.environment["SideEffect_@3_86_31"] != nil {
-                    return 1
-            } else {
+                func containsSideEffect() -> Int {
                     _ = causesSideEffect()
                     return 1
-            }
                 }
 
-                func containsSideEffect() -> Int {if ProcessInfo.processInfo.environment["SideEffect_@10_208_31"] != nil {
-                    print("something")
-            } else {
+                func containsSideEffect() -> Int {
                     print("something")
 
                     _ = causesSideEffect()
-            }
                 }
 
                 @discardableResult
@@ -135,14 +130,10 @@ final class RemoveSideEffectsOperatorTests: XCTestCase {
                     return 0
                 }
 
-                func causesAnotherSideEffect() {if ProcessInfo.processInfo.environment["SideEffect_@21_480_66"] != nil {
-                    let key = "some key"
-                    let value = aFunctionThatReturnsAValue()
-            } else {
+                func causesAnotherSideEffect() {
                     let key = "some key"
                     let value = aFunctionThatReturnsAValue()
                     someFunctionThatWritesToADatabase(key: key, value: value)
-            }
                 }
 
                 func containsSpecialCases() {
@@ -156,14 +147,13 @@ final class RemoveSideEffectsOperatorTests: XCTestCase {
                     var anotherIgnoredResult = statement.description.contains("_ = ")
                 }
 
-                func containsAVoidFunctionCallThatSpansManyLine() {if ProcessInfo.processInfo.environment["SideEffect_@38_1017_46"] != nil {
-            } else {
+                func containsAVoidFunctionCallThatSpansManyLine() {
                     functionCall("some argument",
                                  anArgumentLabel: "some argument that's different",
                                  anotherArgumentLabel: 5)
-            }
                 }
             }
+
 
             """
         )

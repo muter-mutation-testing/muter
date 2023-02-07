@@ -106,8 +106,7 @@ enum RemoveSideEffectsOperator {
         }
     }
 
-    final class SchemataVisitor: SyntaxAnyVisitor, MutationSchemataVisitor {
-        private(set) var schemataMappings: SchemataMutationMapping
+    final class SchemataVisitor: MutationSchemataVisitor {        
         private var concurrencyPropertiesInFile = [String]()
         private let concurrencyTypes = [
             "DispatchSemaphore",
@@ -117,9 +116,8 @@ enum RemoveSideEffectsOperator {
         ]
 
         private let untestedFunctionNames: [String]
-        private let sourceFileInfo: SourceFileInfo
 
-        init(
+        required init(
             configuration: MuterConfiguration? = nil,
             sourceFileInfo: SourceFileInfo
         ) {
@@ -130,7 +128,11 @@ enum RemoveSideEffectsOperator {
                 "abort"
             ] + (configuration?.excludeCallList ?? [])
 
-            self.sourceFileInfo = sourceFileInfo
+            super.init(
+                configuration: configuration,
+                sourceFileInfo: sourceFileInfo
+            )
+
             self.schemataMappings = SchemataMutationMapping(
                 filePath: sourceFileInfo.path,
                 mutationOperatorId: .removeSideEffects

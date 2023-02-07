@@ -14,7 +14,10 @@ struct GenerateSwapFilePaths: RunCommandStep {
         case .success(let swapFileDirectoryPath):
             
             let filePaths = state.sourceCodeByFilePath.keys.map { String($0) }
-            let swapFilePathsByOriginalPath = swapFilePaths(forFilesAt: filePaths, using: swapFileDirectoryPath)
+            let swapFilePathsByOriginalPath = swapFilePaths(
+                forFilesAt: filePaths,
+                using: swapFileDirectoryPath
+            )
             
             return .success([.swapFilePathGenerated(swapFilePathsByOriginalPath)])
             

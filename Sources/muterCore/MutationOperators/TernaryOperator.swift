@@ -26,15 +26,16 @@ enum TernaryOperator {
         }
     }
     
-    final class SchemataVisitor: SyntaxAnyVisitor, MutationSchemataVisitor {
-        private(set) var schemataMappings: SchemataMutationMapping
-        private let sourceFileInfo: SourceFileInfo
-        
-        init(
+    final class SchemataVisitor: MutationSchemataVisitor {
+        required init(
             configuration: MuterConfiguration? = nil,
             sourceFileInfo: SourceFileInfo
         ) {
-            self.sourceFileInfo = sourceFileInfo
+            super.init(
+                configuration: configuration,
+                sourceFileInfo: sourceFileInfo
+            )
+
             self.schemataMappings = SchemataMutationMapping(
                 filePath: sourceFileInfo.path,
                 mutationOperatorId: .ternaryOperator

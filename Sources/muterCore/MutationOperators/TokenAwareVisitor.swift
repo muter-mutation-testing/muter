@@ -37,19 +37,9 @@ class TokenAwareVisitor: SyntaxAnyVisitor, PositionDiscoveringVisitor {
     }
 }
 
-class TokenAwareSchemataVisitor: SyntaxAnyVisitor, MutationSchemataVisitor {
+class TokenAwareSchemataVisitor: MutationSchemataVisitor {
     var tokensToDiscover = [TokenKind]()
     var oppositeOperatorMapping: [String: String] = [:]
-    var schemataMappings = SchemataMutationMapping()
-    
-    private let sourceFileInfo: SourceFileInfo
-
-    required init(
-        configuration: MuterConfiguration?,
-        sourceFileInfo: SourceFileInfo
-    ) {
-        self.sourceFileInfo = sourceFileInfo
-    }
     
     override func visitAny(_ node: Syntax) -> SyntaxVisitorContinueKind {
         guard let node = node.as(TokenSyntax.self),

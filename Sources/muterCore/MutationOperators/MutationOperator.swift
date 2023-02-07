@@ -100,9 +100,26 @@ protocol PositionDiscoveringVisitor {
 }
 
 
-protocol MutationSchemataVisitor {
-    var schemataMappings: SchemataMutationMapping { get }
-    init(configuration: MuterConfiguration?, sourceFileInfo: SourceFileInfo)
+//protocol MutationSchemataVisitor {
+//    var schemataMappings: SchemataMutationMapping { get }
+//    init(
+//        configuration: MuterConfiguration?,
+//        sourceFileInfo: SourceFileInfo
+//    )
+//
+//    func walk<SyntaxType: SyntaxProtocol>(_ node: SyntaxType)
+//}
 
-    func walk<SyntaxType: SyntaxProtocol>(_ node: SyntaxType)
+class MutationSchemataVisitor: SyntaxAnyVisitor {
+    var schemataMappings: SchemataMutationMapping = .init()
+    let configuration: MuterConfiguration?
+    let sourceFileInfo: SourceFileInfo
+
+    required init(
+        configuration: MuterConfiguration?,
+        sourceFileInfo: SourceFileInfo
+    ) {
+        self.configuration = configuration
+        self.sourceFileInfo = sourceFileInfo
+    }
 }

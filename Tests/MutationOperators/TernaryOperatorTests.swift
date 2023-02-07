@@ -118,22 +118,18 @@ final class TernaryOperatorTests: XCTestCase {
         
         visitor.walk(sampleNestedCode.code)
         
-        let rewritter = Rewriter(visitor.schemataMappings).visit(sampleNestedCode.code)
+        let rewriter = Rewriter(visitor.schemataMappings).visit(sampleNestedCode.code)
         
         XCTAssertEqual(
-            rewritter.description,
+            rewriter.description,
             """
+            import Foundation
             #if os(iOS) || os(tvOS)
             print("please ignore me")
             #endif
 
-            func someCode(_ a: Bool, _ b: Bool) -> Bool {if ProcessInfo.processInfo.environment["TernaryOperator_@6_115_12"] != nil {
-                return a ? false : b ? true : false
-            } else if ProcessInfo.processInfo.environment["TernaryOperator_@6_119_16"] != nil {
-                return a ? b ? false : true: false
-            } else {
+            func someCode(_ a: Bool, _ b: Bool) -> Bool {
                 return a ? b ? true : false : false
-            }
             }
 
             """

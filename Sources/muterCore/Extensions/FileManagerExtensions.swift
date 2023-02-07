@@ -18,6 +18,9 @@ public protocol FileSystemManager {
                   toPath dstPath: String) throws
 
     var currentDirectoryPath: String { get }
+    
+    @discardableResult
+    func changeCurrentDirectoryPath(_ path: String) -> Bool
 
     func contents(atPath path: String) -> Data?
     
@@ -31,7 +34,10 @@ public protocol FileSystemManager {
 }
 
 extension FileManager: FileSystemManager {
-    public func contents(atPath path: String, sortedByDate order: ComparisonResult) throws -> [String] {
+    public func contents(
+        atPath path: String,
+        sortedByDate order: ComparisonResult
+    ) throws -> [String] {
         var files = try contentsOfDirectory(
             at: URL(fileURLWithPath: path),
             includingPropertiesForKeys: [.creationDateKey],

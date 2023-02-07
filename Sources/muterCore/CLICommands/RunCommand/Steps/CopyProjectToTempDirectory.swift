@@ -12,19 +12,34 @@ struct CopyProjectToTempDirectory: RunCommandStep {
         self.notificationCenter = notificationCenter
     }
     
-    func run(with state: AnyRunCommandState) -> Result<[RunCommandState.Change], MuterError> {
+    func run(
+        with state: AnyRunCommandState
+    ) -> Result<[RunCommandState.Change], MuterError> {
         do {
-            notificationCenter.post(name: .projectCopyStarted, object: nil)
+            notificationCenter.post(
+                name: .projectCopyStarted,
+                object: nil
+            )
                         
-            try fileManager.copyItem(atPath: state.projectDirectoryURL.path, toPath: state.tempDirectoryURL.path)
+            try fileManager.copyItem(
+                atPath: state.projectDirectoryURL.path,
+                toPath: state.tempDirectoryURL.path
+            )
             
-            notificationCenter.post(name: .projectCopyFinished, object: state.tempDirectoryURL.path)
+            notificationCenter.post(
+                name: .projectCopyFinished,
+                object: state.tempDirectoryURL.path
+            )
             
             return .success([
                 .copyToTempDirectoryCompleted,
             ])
         } catch {
-            return .failure(.projectCopyFailed(reason: error.localizedDescription))
+            return .failure(
+                .projectCopyFailed(
+                    reason: error.localizedDescription
+                )
+            )
         }
     }
 }

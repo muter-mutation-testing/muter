@@ -185,10 +185,10 @@ final class ROROperatorTests: XCTestCase {
         visitor.walk(sourceWithConditionalLogic.code)
 
         let actualSchematas = visitor.schemataMappings
-        let rewritter = Rewriter(actualSchematas).visit(sourceWithConditionalLogic.code)
+        let rewriter = Rewriter(actualSchematas).visit(sourceWithConditionalLogic.code)
 
         XCTAssertEqual(
-            rewritter.description,
+            rewriter.description,
             """
             struct Example {
                 func something(_ a: Int) -> String {if ProcessInfo.processInfo.environment["NegateConditionals_@3_76_19"] != nil {

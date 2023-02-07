@@ -23,7 +23,8 @@ class FileManagerSpy: Spy, FileSystemManager {
             fileContentsQueue.dequeue()
         }
     }
-    var currentDirectoryPathToReturn: String!
+    var currentDirectoryPathToReturn: String = ""
+    var changeCurrentDirectoryPath: [String] = []
     var errorToThrow: Error?
     var subpathsToReturn: [String]?
     var fileExistsToReturn: [Bool] = []
@@ -31,6 +32,12 @@ class FileManagerSpy: Spy, FileSystemManager {
 
     var currentDirectoryPath: String {
         return currentDirectoryPathToReturn
+    }
+    
+    func changeCurrentDirectoryPath(_ path: String) -> Bool {
+        methodCalls.append(#function)
+        changeCurrentDirectoryPath.append(path)
+        return true
     }
 
     func createDirectory(
