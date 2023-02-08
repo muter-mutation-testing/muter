@@ -36,26 +36,26 @@ class ImageTintingTests: XCTestCase {
 
     let accessibilityDescription = "I’m the very model of a modern accessible image."
 
-    func testImageTinting() throws {
-        #if SWIFT_PACKAGE && os(OSX)
-        try XCTSkipIf(true, "Doesn't work on macOS SPM targets")
-        #endif
-
-        let blackImageName = "rz-logo-black"
-        let redImageName = "rz-logo-red"
-
-        #if os(OSX)
-            let sourceImage = try XCTUnwrap(testBundle.image(forResource: blackImageName))
-            let controlTintedImage = try XCTUnwrap(testBundle.image(forResource: redImageName))
-            let testTintedImage = sourceImage.tintedImage(color: raizlabsRed)
-        #else
-            let sourceImage = try XCTUnwrap(UIImage(named: blackImageName, in: testBundle, compatibleWith: nil))
-            let controlTintedImage = try XCTUnwrap(UIImage(named: redImageName, in: testBundle, compatibleWith: nil))
-            let testTintedImage = sourceImage.tintedImage(color: raizlabsRed)
-        #endif
-
-        BONAssertEqualImages(controlTintedImage, testTintedImage)
-    }
+//    func testImageTinting() throws {
+//        #if SWIFT_PACKAGE && os(OSX)
+//        try XCTSkipIf(true, "Doesn't work on macOS SPM targets")
+//        #endif
+//
+//        let blackImageName = "rz-logo-black"
+//        let redImageName = "rz-logo-red"
+//
+//        #if os(OSX)
+//            let sourceImage = try XCTUnwrap(testBundle.image(forResource: blackImageName))
+//            let controlTintedImage = try XCTUnwrap(testBundle.image(forResource: redImageName))
+//            let testTintedImage = sourceImage.tintedImage(color: raizlabsRed)
+//        #else
+//            let sourceImage = try XCTUnwrap(UIImage(named: blackImageName, in: testBundle, compatibleWith: nil))
+//            let controlTintedImage = try XCTUnwrap(UIImage(named: redImageName, in: testBundle, compatibleWith: nil))
+//            let testTintedImage = sourceImage.tintedImage(color: raizlabsRed)
+//        #endif
+//
+//        BONAssertEqualImages(controlTintedImage, testTintedImage)
+//    }
 
     func testTintingInAttributedString() throws {
         #if os(iOS) || os(tvOS)

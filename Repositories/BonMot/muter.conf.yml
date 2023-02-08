@@ -10,4 +10,25 @@ exclude:
 - Image+Tinting.swift
 - StringStyle.swift
 - Tab.swift
+- Package.swift
 excludeCalls: []
+
+# arguments:
+# - -project 
+# - BonMot.xcodeproj
+# - -scheme 
+# - BonMot-iOS 
+# - -destination 
+# - platform=iOS Simulator,name=iPhone SE (3rd generation)
+# - test
+# executable: /usr/bin/xcodebuild
+# exclude:
+# - DemoStrings.swift
+# - StyleViewController.swift
+# - CatalogViewController.swift
+# - AppDelegate.swift
+# - Composable.swift
+# - Image+Tinting.swift
+# - StringStyle.swift
+# - Tab.swift
+# excludeCalls: []

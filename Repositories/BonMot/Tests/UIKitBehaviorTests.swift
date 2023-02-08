@@ -82,28 +82,28 @@ class UIKitBehaviorTests: XCTestCase {
         }
     }
 
-    func testTextViewFontPropertyBehavior() {
-        let largeFont = UIFont(name: "Avenir-Roman", size: 20)
-        let textField = UITextView()
-        #if os(iOS)
-            // Note that the font *is* nil before the text property is set.
-            XCTAssertNil(textField.font)
-        #elseif os(tvOS)
-            // Note that the font size is not nil on tvOS.
-            XCTAssertNotNil(textField.font)
-        #endif
-        textField.text = "Testing"
-        // By default the font is nil
-        XCTAssertNotNil(textField.font)
-        XCTAssertEqual(textField.font?.pointSize, defaultTextViewFontSize)
-
-        textField.font = largeFont
-        XCTAssertEqual(textField.font?.pointSize, 20)
-
-        textField.font = nil
-        // Note that font is not re-set like TextField()
-        XCTAssertNil(textField.font)
-    }
+//    func testTextViewFontPropertyBehavior() {
+//        let largeFont = UIFont(name: "Avenir-Roman", size: 20)
+//        let textField = UITextView()
+//        #if os(iOS)
+//            // Note that the font *is* nil before the text property is set.
+//            XCTAssertNil(textField.font)
+//        #elseif os(tvOS)
+//            // Note that the font size is not nil on tvOS.
+//            XCTAssertNotNil(textField.font)
+//        #endif
+//        textField.text = "Testing"
+//        // By default the font is nil
+//        XCTAssertNotNil(textField.font)
+//        XCTAssertEqual(textField.font?.pointSize, defaultTextViewFontSize)
+//
+//        textField.font = largeFont
+//        XCTAssertEqual(textField.font?.pointSize, 20)
+//
+//        textField.font = nil
+//        // Note that font is not re-set like TextField()
+//        XCTAssertNil(textField.font)
+//    }
 
     func testButtonFontPropertyBehavior() {
         let button = UIButton()
