@@ -3,32 +3,36 @@ import Foundation
 
 struct DiscoverSchemataMutationMapping: RunCommandStep {
     private let notificationCenter: NotificationCenter = .default
-    private let ioDelegate: MutationTestingIODelegate = MutationTestingDelegate()
-    
-    func run(with state: AnyRunCommandState) -> Result<[RunCommandState.Change], MuterError> {
+    var prepareSourceCode: (String) -> PreparedSourceCode? = muterCore.prepareSourceCode
+
+    func run(
+        with state: AnyRunCommandState
+    ) -> Result<[RunCommandState.Change], MuterError> {
         
         notificationCenter.post(
-            name: .mutationPointDiscoveryStarted,
+            name: .mutationsDiscoveryStarted,
             object: nil
         )
         
-        let (mutationMappings, sourceCodeByFilePath) = discoverMutationPoints(
+        let discovered = discoverMutationPoints(
             inFilesAt: state.sourceFileCandidates,
             configuration: state.muterConfiguration
         )
-
-        notificationCenter.post(
-            name: .mutationPointDiscoveryFinished,
-            object: [MutationPoint]()
-        )
         
-        guard mutationMappings.count >= 1 else {
+        guard discovered.mappings.count >= 1 else {
             return .failure(.noMutationPointsDiscovered)
         }
+       
+        let mappings = discovered.mappings.mergeByFileName()
+
+        notificationCenter.post(
+            name: .mutationsDiscoveryFinished,
+            object: mappings
+        )
         
         return .success([
-            .mutationMappingsDiscovered(mutationMappings),
-            .sourceCodeParsed(sourceCodeByFilePath)
+            .mutationMappingsDiscovered(mappings),
+            .sourceCodeParsed(discovered.sourceCodeByFilePath)
         ])
     }
 }
@@ -38,100 +42,56 @@ private extension DiscoverSchemataMutationMapping {
     func discoverMutationPoints(
         inFilesAt filePaths: [String],
         configuration: MuterConfiguration
-    ) -> (
-        mappings: [SchemataMutationMapping],
-        sourceCodeByFilePath: [FilePath: SourceFileSyntax]
-    ) {
-        var sourceCodeByFilePath: [FilePath: SourceFileSyntax] = [:]
-        let mappings: [SchemataMutationMapping] = filePaths.accumulate(into: []) { alreadyDiscoveredMutationPoints, path in
-            
+    ) -> DiscoveredFiles {
+        return filePaths.accumulate(into: DiscoveredFiles()) { discoveredFiles, path in
             guard
                 pathContainsDotSwift(path),
-                let source = addImplicitReturn(path)
-            else { return alreadyDiscoveredMutationPoints }
+                let sourceCode = prepareSourceCode(path)
+            else { return discoveredFiles }
             
-            let newSchemataMappings = discoverNewSchemataMappings(
-                inFile: SourceCodeInfo(
-                    path: path,
-                    code: source
-                ),
+            let schemataMappings = discoverNewSchemataMappings(
+                inFile: sourceCode,
                 configuration: configuration
             )
             
-            if !newSchemataMappings.isEmpty {
-                sourceCodeByFilePath[path] = source
+            if !schemataMappings.isEmpty {
+                discoveredFiles.sourceCodeByFilePath[path] = sourceCode.source.code
             }
+
+            discoveredFiles.mappings.append(contentsOf: schemataMappings)
             
-            return alreadyDiscoveredMutationPoints + newSchemataMappings
+            return discoveredFiles
         }
-        
-        return (
-            mappings: mergeSchematasByFileName(mappings),
-            sourceCodeByFilePath: sourceCodeByFilePath
-        )
-    }
-    
-    func addImplicitReturn(_ filePath: FilePath) -> SourceFileSyntax? {
-        guard let source = sourceCode(fromFileAt: filePath)?.code else {
-            return nil
-        }
-
-        let rewriter = AddImportRewritter().visit(
-            ImplicitReturnRewriter().visit(source)
-        )
-        
-        try! ioDelegate.writeFile(
-            to: filePath,
-            contents: rewriter.description
-        )
-        
-        return sourceCode(fromFileAt: filePath)?.code
-    }
-    
-    private func mergeSchematasByFileName(
-        _ mappings: [SchemataMutationMapping]
-    ) -> [SchemataMutationMapping] {
-        var result = [FileName: SchemataMutationMapping]()
-
-        for map in mappings {
-            if let exists = result[map.fileName] {
-                result[map.fileName] = exists + map
-            } else {
-                result[map.fileName] = map
-            }
-        }
-        
-        return Array(result.values)
     }
     
     func discoverNewSchemataMappings(
-        inFile sourceCodeInfo: SourceCodeInfo,
+        inFile sourceCode: PreparedSourceCode,
         configuration: MuterConfiguration
     ) -> [SchemataMutationMapping] {
+        let source = sourceCode.source.code
+        let sourceFileInfo = sourceCode.source.asSourceFileInfo
         let skipMutations = SkipMutations(
-            sourceFileInfo: sourceCodeInfo.asSourceFileInfo
+            sourceFileInfo: sourceFileInfo
         )
+        
+        skipMutations.walk(source)
 
-        skipMutations.walk(sourceCodeInfo.code)
-
-        return MutationOperator.Id.allCases.accumulate(into: []) { newMutationSchematas, mutationOperatorId in
-            
+        return MutationOperator.Id.allCases.accumulate(into: []) { newSchemataMappings, mutationOperatorId in
             let visitor = mutationOperatorId.schemataVisitor(
                 configuration,
-                sourceCodeInfo.asSourceFileInfo
-            )
-
-            visitor.walk(sourceCodeInfo.code)
-
-            let schemataMappings = visitor.schemataMappings
-            schemataMappings.skipMutations(
-                skipMutations.skipPositions
+                sourceFileInfo
             )
             
-            if schemataMappings.isEmpty {
-                return newMutationSchematas
+            visitor.walk(source)
+
+            let schemataMapping = visitor
+                .schemataMappings
+                .skipMutations(skipMutations.skipPositions)
+            
+            if !schemataMapping.isEmpty {
+                return newSchemataMappings + [schemataMapping]
             } else {
-                return newMutationSchematas + [schemataMappings]
+                return newSchemataMappings
             }
         }
     }
@@ -155,16 +115,31 @@ private class SkipMutations: SyntaxAnyVisitor {
     ) {
         self.sourceFileInfo = sourceFileInfo
     }
-    
+
     override func visitAnyPost(_ node: Syntax) {
         node.leadingTrivia.map { leadingTrivia in
             if leadingTrivia.containsLineComment(muterSkipMarker) {
-                print(node.mutationPosition(with: sourceFileInfo))
                 skipPositions.append(
-                    node.mutationPosition(with: sourceFileInfo)
+                    mutationPosition(for: node)
                 )
             }
         }
+    }
+    
+    func mutationPosition(for node: Syntax) -> MutationPosition {
+        let converter = SourceLocationConverter(
+            file: sourceFileInfo.path,
+            source: sourceFileInfo.source
+        )
+
+        let sourceLocation = SourceLocation(
+            offset: node.position.utf8Offset,
+            converter: converter
+        )
+
+        return MutationPosition(
+            sourceLocation: sourceLocation
+        )
     }
 }
 
@@ -177,5 +152,52 @@ private extension SwiftSyntax.Trivia {
                 return false
             }
         }
+    }
+}
+
+private class DiscoveredFiles {
+    var mappings: [SchemataMutationMapping] = []
+    var sourceCodeByFilePath: [FilePath: SourceFileSyntax] = [:]
+}
+
+typealias PreparedSourceCode = (
+    source: SourceCodeInfo,
+    changes: MutationSourceCodePreparationChange
+)
+
+func prepareSourceCode(
+    _ path: String
+) -> PreparedSourceCode? {
+    guard let source = sourceCode(fromFileAt: path) else {
+        return nil
+    }
+
+    let addImport = AddImportRewriter()
+    let addImportSource = addImport.visit(source.code)
+    
+    let disableLinters = DisableLintersRewriter()
+    let disableLintersSource = disableLinters.visit(addImportSource)
+    
+    let filePath = source.path
+    let newSourceCode = disableLintersSource.description
+    
+    let numberOfNewLines = addImport.newLinesAddedToFile + disableLinters.newLinesAddedToFile
+    let changes = MutationSourceCodePreparationChange(
+        newLines: numberOfNewLines
+    )
+
+    do {
+        try newSourceCode.write(
+            toFile: filePath,
+            atomically: true,
+            encoding: .utf8
+        )
+        
+        return sourceCode(fromFileAt: filePath)
+            .map { sourceCode in
+                return (source: sourceCode, changes: changes)
+            }
+    } catch {
+        return nil
     }
 }

@@ -1,4 +1,6 @@
+import Foundation
 import SwiftSyntax
+
 @testable import muterCore
 
 class MutationTestingDelegateSpy: Spy, MutationTestingIODelegate {
@@ -7,6 +9,11 @@ class MutationTestingDelegateSpy: Spy, MutationTestingIODelegate {
     private(set) var mutatedFileContents: [String] = []
     private(set) var mutatedFilePaths: [String] = []
     private(set) var restoredFilePaths: [String] = []
+    
+    private(set) var schematas: [Schemata] = []
+    private(set) var testRuns: [XCTestRun] = []
+    private(set) var testRunPaths: [URL] = []
+    private(set) var testLogs: [String] = []
 
     var testSuiteOutcomes: [TestSuiteOutcome]!
 
@@ -26,8 +33,24 @@ class MutationTestingDelegateSpy: Spy, MutationTestingIODelegate {
         return (testSuiteOutcomes.remove(at: 0), "testLog")
     }
     
-    func runTestSuite(withSchemata schemata: muterCore.Schemata, using configuration: muterCore.MuterConfiguration, savingResultsIntoFileNamed fileName: String) -> (outcome: muterCore.TestSuiteOutcome, testLog: String) {
+    func runTestSuite(
+        withSchemata schemata: Schemata,
+        using configuration: MuterConfiguration,
+        savingResultsIntoFileNamed fileName: String
+    ) -> (
+        outcome: TestSuiteOutcome,
+        testLog: String
+    ) {
+        methodCalls.append(#function)
+        testLogs.append(fileName)
         return (testSuiteOutcomes.remove(at: 0), "testLog")
+    }
+    
+    func switchOn(schemata: Schemata, for testRun: XCTestRun, at path: URL) throws {
+        methodCalls.append(#function)
+        schematas.append(schemata)
+        testRuns.append(testRun)
+        testRunPaths.append(path)
     }
     
     func restoreFile(at path: String, using swapFilePaths: [FilePath: FilePath]) {

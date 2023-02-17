@@ -75,29 +75,25 @@ final class Logger {
         print("In total, Muter discovered \(sourceFileCandidates.count) Swift files\n\n\(fileNames)")
     }
     
-    func mutationPointDiscoveryStarted() {
+    func mutationsDiscoveryStarted() {
         printMessage("Analyzing source files to find mutants which can be inserted into your project...")
     }
     
-    func mutationPointDiscoveryFinished(mutationPoints: [MutationPoint]) {
-        numberOfMutationPoints = mutationPoints.count
-        let numberOfFiles = mutationPoints
-            .map(\.fileName)
-            .deduplicated()
-            .count
+    func mutationsDiscoveryFinished(mutations: [SchemataMutationMapping]) {
+        let numberOfFiles = mutations.count
+        var filesSummary: [String: Int] = [:]
         
-        print("In total, Muter discovered \(mutationPoints.count) mutants in \(numberOfFiles) files\n")
-        for (fileName, mutantCount) in mutationPointsByFileName(from: mutationPoints) {
+        for mutation in mutations {
+            numberOfMutationPoints += mutation.schematas.count
+            filesSummary[mutation.fileName] = mutation.schematas.count
+        }
+
+        print("In total, Muter discovered \(numberOfMutationPoints) mutants in \(numberOfFiles) files\n")
+        for (fileName, mutantCount) in filesSummary {
             print("\(fileName) (\(mutantCount) mutants)".bold)
         }
     }
-    
-    private func mutationPointsByFileName(from mutationPoints: [MutationPoint]) -> [String: Int] {
-        mutationPoints.reduce(into: [:]) { partialResult, mutationPoint in
-            partialResult[mutationPoint.fileName, default: 1] += 1
-        }
-    }
-    
+
     func mutationTestingStarted() {
         printMessage("Mutation testing will now begin\nRunning your test suite to determine a baseline for mutation testing...")
     }
@@ -113,22 +109,22 @@ final class Logger {
                 """
             )
 
-            progressBar = ProgressBar(
-                count: numberOfMutationPoints,
-                configuration: [
-                    ProgressString(string: "Inserting mutant"),
-                    ProgressOneIndexed(),
-                    ProgressString(string: "\nPercentage complete: "),
-                    ProgressPercent(),
-                    ColoredProgressBarLine(barLength: 50),
-                    SimpleTimeEstimate(
-                        initialEstimate: Double(mutationTestLog.remainingMutationPointsCount!) * mutationTestLog.timePerBuildTestCycle!),
-                ],
-                printer: ProgressBarMultilineTerminalPrinter(numberOfLines: 2)
-            )
+//            progressBar = ProgressBar(
+//                count: numberOfMutationPoints,
+//                configuration: [
+//                    ProgressString(string: "Inserting mutant"),
+//                    ProgressOneIndexed(),
+//                    ProgressString(string: "\nPercentage complete: "),
+//                    ProgressPercent(),
+//                    ColoredProgressBarLine(barLength: 50),
+//                    SimpleTimeEstimate(
+//                        initialEstimate: Double(mutationTestLog.remainingMutationPointsCount!) * mutationTestLog.timePerBuildTestCycle!),
+//                ],
+//                printer: ProgressBarMultilineTerminalPrinter(numberOfLines: 2)
+//            )
         }
 
-        progressBar.next()
+//        progressBar.next()
     }
     
     func tempDirectoryCreationStarted() {

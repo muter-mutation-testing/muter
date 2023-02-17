@@ -13,8 +13,13 @@ struct DiscoverSourceFiles: RunCommandStep {
         self.fileManager = fileManager
     }
     
-    func run(with state: AnyRunCommandState) -> Result<[RunCommandState.Change], MuterError> {
-        notificationCenter.post(name: .sourceFileDiscoveryStarted, object: nil)
+    func run(
+        with state: AnyRunCommandState
+    ) -> Result<[RunCommandState.Change], MuterError> {
+        notificationCenter.post(
+            name: .sourceFileDiscoveryStarted,
+            object: nil
+        )
         
         let sourceFileCandidates = state.filesToMutate.isEmpty
             ? discoverSourceFiles(
@@ -31,17 +36,21 @@ struct DiscoverSourceFiles: RunCommandStep {
             ? .noSourceFilesDiscovered
             : .noSourceFilesOnExclusiveList
         
-        notificationCenter.post(name: .sourceFileDiscoveryFinished, object: sourceFileCandidates)
+        notificationCenter.post(
+            name: .sourceFileDiscoveryFinished,
+            object: sourceFileCandidates
+        )
 
-        return sourceFileCandidates.count >= 1 ?
-            .success([.sourceFileCandidatesDiscovered(sourceFileCandidates)]) :
-            .failure(failure)
+        return sourceFileCandidates.count >= 1
+            ? .success([.sourceFileCandidatesDiscovered(sourceFileCandidates)])
+            : .failure(failure)
     }
 }
 
 private extension DiscoverSourceFiles {
     private var defaultExcludeList: [FilePath] {
         return [
+            ".swiftpm",
             ".build",
             "Build",
             "Carthage",
@@ -63,13 +72,21 @@ private extension DiscoverSourceFiles {
         
         return includeSwiftFiles(
             from: subpaths
-                .exclude(pathsContainingItems(from: excludeList, root: rootPath))
+                .exclude(
+                    pathsContainingItems(
+                        from: excludeList,
+                        root: rootPath
+                    )
+                )
                 .map { append(root: rootPath, to: $0) }
                 .exclude(filesWithoutCoverageList(filesWithoutCoverage))
         )
     }
 
-    private func pathsContainingItems(from excludeList: [FilePath], root: FilePath) -> (FilePath) -> Bool {
+    private func pathsContainingItems(
+        from excludeList: [FilePath],
+        root: FilePath
+    ) -> (FilePath) -> Bool {
         let excludeAlso: [FilePath] = excludeList.flatMap { path in
             path.contains("*")
                 ? expandGlobExpressions(root: root, pattern: path)
@@ -82,8 +99,10 @@ private extension DiscoverSourceFiles {
         }
     }
     
-    private func filesWithoutCoverageList(_ list: [FilePath]) -> (FilePath) -> Bool {
-        { path in list.contains(path) }
+    private func filesWithoutCoverageList(
+        _ list: [FilePath]
+    ) -> (FilePath) -> Bool {
+        return { path in list.contains(path) }
     }
     
     private func findFilesToMutate(
@@ -111,18 +130,25 @@ private extension DiscoverSourceFiles {
         return paths.map(\.description)
     }
     
-    private func append(root: FilePath, to path: FilePath) -> FilePath {
+    private func append(
+        root: FilePath,
+        to path: FilePath
+    ) -> FilePath {
         return Path(root + "/" + path).normal.description
     }
     
-    private func standardizing(path: String) -> String {
+    private func standardizing(
+        path: String
+    ) -> String {
         let components = (path as NSString).pathComponents
         guard components.contains(".") || components.contains("..") else {
             return path
         }
         let result = URL(
                 string: path,
-                relativeTo: URL(fileURLWithPath: fileManager.currentDirectoryPath)
+                relativeTo: URL(
+                    fileURLWithPath: fileManager.currentDirectoryPath
+                )
             )
             .map(\.absoluteString)
             .map(dropScheme)
@@ -131,7 +157,9 @@ private extension DiscoverSourceFiles {
         return result
     }
     
-    private func includeSwiftFiles(from paths: [FilePath]) -> [FilePath] {
+    private func includeSwiftFiles(
+        from paths: [FilePath]
+    ) -> [FilePath] {
         return paths
             .include(swiftFiles)
             .include(fileManager.fileExists)
@@ -142,7 +170,9 @@ private extension DiscoverSourceFiles {
         return path.hasSuffix(".swift")
     }
     
-    private func dropScheme(from path: FilePath) -> FilePath {
+    private func dropScheme(
+        from path: FilePath
+    ) -> FilePath {
         return URLComponents(string: path)
             .map(\.scheme)
             .flatMap { $0 }

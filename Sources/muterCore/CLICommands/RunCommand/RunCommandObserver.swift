@@ -19,8 +19,8 @@ extension Notification.Name {
     static let sourceFileDiscoveryStarted = Notification.Name("sourceFileDiscoveryStarted")
     static let sourceFileDiscoveryFinished = Notification.Name("sourceFileDiscoveryFinished")
 
-    static let mutationPointDiscoveryStarted = Notification.Name("mutationPointDiscoveryStarted")
-    static let mutationPointDiscoveryFinished = Notification.Name("mutationPointDiscoveryFinished")
+    static let mutationsDiscoveryStarted = Notification.Name("mutationsDiscoveryStarted")
+    static let mutationsDiscoveryFinished = Notification.Name("mutationsDiscoveryFinished")
 
     static let mutationTestingStarted = Notification.Name("mutationTestingStarted")
     static let mutationTestingFinished = Notification.Name("mutationTestingFinished")
@@ -65,8 +65,8 @@ final class RunCommandObserver {
             (name: .sourceFileDiscoveryStarted, handler: handleSourceFileDiscoveryStarted),
             (name: .sourceFileDiscoveryFinished, handler: handleSourceFileDiscoveryFinished),
             
-            (name: .mutationPointDiscoveryStarted, handler: handleMutationPointDiscoveryStarted),
-            (name: .mutationPointDiscoveryFinished, handler: handleMutationPointDiscoveryFinished),
+            (name: .mutationsDiscoveryStarted, handler: handleMutationsDiscoveryStarted),
+            (name: .mutationsDiscoveryFinished, handler: handleMutationsDiscoveryFinished),
             
             (name: .mutationTestingStarted, handler: handleMutationTestingStarted),
             
@@ -86,10 +86,18 @@ final class RunCommandObserver {
         self.logger = options.logger
         self.fileManager = fileManager
         self.flushStdOut = flushHandler
-        self.loggingDirectory = createLoggingDirectory(in: fileManager.currentDirectoryPath, fileManager: fileManager)
+        self.loggingDirectory = createLoggingDirectory(
+            in: fileManager.currentDirectoryPath,
+            fileManager: fileManager
+        )
 
         for (name, handler) in notificationHandlerMappings {
-            notificationCenter.addObserver(forName: name, object: nil, queue: nil, using: handler)
+            notificationCenter.addObserver(
+                forName: name,
+                object: nil,
+                queue: nil,
+                using: handler
+            )
         }
     }
 
@@ -145,12 +153,12 @@ extension RunCommandObserver {
         logger.sourceFileDiscoveryFinished(sourceFileCandidates: notification.object as! [String])
     }
 
-    func handleMutationPointDiscoveryStarted(notification: Notification) {
-        logger.mutationPointDiscoveryStarted()
+    func handleMutationsDiscoveryStarted(notification: Notification) {
+        logger.mutationsDiscoveryStarted()
     }
 
-    func handleMutationPointDiscoveryFinished(notification: Notification) {
-        logger.mutationPointDiscoveryFinished(mutationPoints: notification.object as! [MutationPoint])
+    func handleMutationsDiscoveryFinished(notification: Notification) {
+        logger.mutationsDiscoveryFinished(mutations: notification.object as! [SchemataMutationMapping])
     }
 
     func handleMutationTestingStarted(notification: Notification) {

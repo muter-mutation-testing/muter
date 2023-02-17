@@ -30,17 +30,13 @@ enum ROROperator {
     }
 
     class SchemataVisitor: TokenAwareSchemataVisitor {
-        required init(
+        convenience init(
             configuration: MuterConfiguration? = nil,
             sourceFileInfo: SourceFileInfo
         ) {
-            super.init(
+            self.init(
                 configuration: configuration,
-                sourceFileInfo: sourceFileInfo
-            )
-            
-            self.schemataMappings = SchemataMutationMapping(
-                filePath: sourceFileInfo.path,
+                sourceFileInfo: sourceFileInfo,
                 mutationOperatorId: .ror
             )
 

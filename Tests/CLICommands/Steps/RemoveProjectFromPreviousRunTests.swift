@@ -17,7 +17,7 @@ final class RemoveProjectFromPreviousRunTests: XCTestCase {
 
         let result = try XCTUnwrap(sut.run(with: state).get())
 
-        XCTAssertEqual(result, [.removeProjectFromPreviousRunCompleted])
+        XCTAssertEqual(result, [])
         XCTAssertEqual(fileManager.paths, ["/some/projectName_mutated"])
         XCTAssertEqual(fileManager.methodCalls, ["fileExists(atPath:)", "removeItem(atPath:)"])
     }
@@ -45,6 +45,6 @@ final class RemoveProjectFromPreviousRunTests: XCTestCase {
 
         let result = try XCTUnwrap(sut.run(with: state).get())
 
-        XCTAssertEqual(result, [.removeProjectFromPreviousRunSkipped])
+        XCTAssertEqual(result, [])
     }
 }

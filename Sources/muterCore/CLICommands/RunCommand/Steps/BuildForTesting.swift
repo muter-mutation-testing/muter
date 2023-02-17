@@ -16,8 +16,10 @@ struct BuildForTesting: RunCommandStep {
         self.notificationCenter = notificationCenter
     }
     
-    func run(with state: AnyRunCommandState) -> Result<[RunCommandState.Change], MuterError> {
-        guard state.muterConfiguration.testCommandExecutable.contains("xcodebuild") else {
+    func run(
+        with state: AnyRunCommandState
+    ) -> Result<[RunCommandState.Change], MuterError> {
+        guard state.muterConfiguration.buildSystem == .xcodebuild else {
             return .success([])
         }
         

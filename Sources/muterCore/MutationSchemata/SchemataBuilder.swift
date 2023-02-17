@@ -2,306 +2,10 @@ import Foundation
 import SwiftSyntax
 import SwiftSyntaxParser
 
-final class SchemataMutationMapping: Equatable {
-    var needsImportStatement: Bool = false
-
-    var count: Int {
-        mappings.count
-    }
-
-    var isEmpty: Bool {
-        mappings.isEmpty
-    }
-    
-    var codeBlocks: [String] {
-        mappings.keys.map(\.description).sorted()
-    }
-    
-    var schematas: [Schemata] {
-        Array(mappings.values).reduce([], +).sorted()
-    }
-    
-    var fileName: String {
-        return URL(fileURLWithPath: filePath).lastPathComponent
-    }
-
-    let filePath: String
-    let mutationOperatorId: MutationOperator.Id
-    
-    fileprivate var mappings: [CodeBlockItemListSyntax: [Schemata]]
-
-    convenience init(
-        filePath: String = "",
-        mutationOperatorId: MutationOperator.Id = .ror
-    ) {
-        self.init(
-            filePath: filePath,
-            mutationOperatorId: mutationOperatorId,
-            mappings: [:]
-        )
-    }
-    
-    fileprivate init(
-        filePath: String = "",
-        mutationOperatorId: MutationOperator.Id = .ror,
-        mappings: [CodeBlockItemListSyntax: [Schemata]]
-    ) {
-        self.filePath = filePath
-        self.mutationOperatorId = mutationOperatorId
-        self.mappings = mappings
-    }
-
-    func add(
-        _ codeBlockSyntax: CodeBlockItemListSyntax,
-        _ schemata: Schemata
-    ) {
-        mappings[codeBlockSyntax, default: []].append(schemata)
-    }
-    
-    func add(
-        _ codeBlockSyntax: CodeBlockItemListSyntax,
-        _ schematas: [Schemata]
-    ) {
-        mappings[codeBlockSyntax, default: []].append(contentsOf: schematas)
-    }
-
-    func schematas(
-        _ codeBlockSyntax: CodeBlockItemListSyntax
-    ) -> [Schemata]? {
-        mappings[codeBlockSyntax]
-    }
-    
-    func skipMutations(_ mutationPoints: [MutationPosition]) {
-        for (codeBlock, schematas) in mappings {
-            mappings[codeBlock] = schematas.exclude {
-                mutationPoints.contains($0.positionInSourceCode)
-            }
-        }
-    }
-    
-    static func + (
-        lhs: SchemataMutationMapping,
-        rhs: SchemataMutationMapping
-    ) -> SchemataMutationMapping {
-        let result = SchemataMutationMapping(
-            filePath: lhs.filePath,
-            mutationOperatorId: lhs.mutationOperatorId
-        )
-
-        let mergedMappgins = lhs.mappings.merging(rhs.mappings) { $0 + $1 }
-
-        mergedMappgins.forEach { (codeBlock, schematas) in
-            result.add(codeBlock, schematas)
-        }
-        
-        return result
-    }
-    
-    static func == (
-        lhs: SchemataMutationMapping,
-        rhs: SchemataMutationMapping
-    ) -> Bool {
-        lhs.codeBlocks == rhs.codeBlocks &&
-        lhs.schematas == rhs.schematas
-    }
-}
-
-extension SchemataMutationMapping: CustomStringConvertible, CustomDebugStringConvertible {
-    var debugDescription: String { description }
-    
-    var description: String {
-        let description = mappings.reduce(into: "") { (accum, pair) in
-            accum +=
-            """
-            source: "\(pair.key.scapedDescription)",
-            schematas: \(pair.value)
-            """
-        }
-        return """
-        SchemataMutationMapping(
-            \(description)
-        )
-        """
-    }
-}
-
-struct Schemata {
-    let id: String
-    let syntaxMutation: CodeBlockItemListSyntax
-    let positionInSourceCode: MutationPosition
-    let snapshot: MutationOperatorSnapshot
-}
-
-extension Schemata: Equatable {
-    static func == (lhs: Schemata, rhs: Schemata) -> Bool {
-        lhs.id == rhs.id &&
-        lhs.syntaxMutation.description == rhs.syntaxMutation.description &&
-        lhs.positionInSourceCode == rhs.positionInSourceCode &&
-        lhs.snapshot == rhs.snapshot
-    }
-}
-
-extension Schemata: CustomStringConvertible, CustomDebugStringConvertible {
-    var debugDescription: String { description }
-    
-    var description: String {
-        """
-        Schemata(
-            id: "\(id)",
-            syntaxMutation: "\(syntaxMutation.scapedDescription)",
-            positionInSourceCode: \(positionInSourceCode),
-            snapshot: \(snapshot)
-        )
-        """
-    }
-}
-
-private extension SyntaxProtocol {
-    var scapedDescription: String {
-        description.replacingOccurrences(
-            of: "\n",
-            with: "\\n"
-        )
-        .replacingOccurrences(
-            of: "\"",
-            with: "\\\""
-        )
-    }
-}
-
-extension Schemata: Comparable {
-    static func < (
-        lhs: Schemata,
-        rhs: Schemata
-    ) -> Bool {
-        lhs.id < rhs.id
-    }
-}
-
-func transform(
-    node: SyntaxProtocol,
-    mutatedSyntax: SyntaxProtocol
-) -> CodeBlockItemListSyntax {
-    let codeBlockItemListSyntax = node.codeBlockItemListSyntax
-    let codeBlockDescription = codeBlockItemListSyntax.description
-    let mutationDescription = mutatedSyntax.description
-    guard let codeBlockTree = try? SyntaxParser.parse(source: codeBlockDescription),
-          let mutationRangeInCodeBlock = codeBlockDescription.range(of: node.description) else {
-        return codeBlockItemListSyntax
-    }
-
-    let mutationPositionInCodeBlock = codeBlockDescription.distance(to: mutationRangeInCodeBlock.lowerBound)
-    let edit = SourceEdit(
-        offset: mutationPositionInCodeBlock,
-        length: mutatedSyntax.description.utf8.count,
-        replacementLength: mutatedSyntax.description.utf8.count
-    )
-
-    let codeBlockWithMutation = codeBlockDescription.replacingCharacters(
-        in: mutationRangeInCodeBlock,
-        with: mutationDescription
-    )
-
-    let parseTransition = IncrementalParseTransition(
-        previousTree: codeBlockTree,
-        edits: ConcurrentEdits(edit)
-    )
-
-    guard let mutationParsed = try? SyntaxParser.parse(
-        source: codeBlockWithMutation,
-        parseTransition: parseTransition
-    ) else {
-        return codeBlockItemListSyntax
-    }
-
-    return mutationParsed.statements
-}
-
-func applyMutationSwitch(
-    withOriginalSyntax originalSyntax: CodeBlockItemListSyntax,
-    and mutationsToBeApplied: [Schemata]
-) -> CodeBlockItemListSyntax {
-    guard !mutationsToBeApplied.isEmpty else {
-        return originalSyntax
-    }
-
-    var mutations = mutationsToBeApplied
-    let firstMutation = mutations.removeFirst()
-    var outterIfStatement = SyntaxFactory.makeIfStmt(
-        labelName: nil,
-        labelColon: nil,
-        ifKeyword: SyntaxFactory
-            .makeIfKeyword()
-            .withTrailingTrivia(.spaces(1)),
-        conditions: buildSchemataCondition(
-            withId: firstMutation.id
-        ),
-        body: SyntaxFactory.makeCodeBlock(
-            leftBrace: SyntaxFactory.makeLeftBraceToken()
-                .withTrailingTrivia(
-                    firstMutation.syntaxMutation.trailingTrivia ?? .spaces(0)
-                ),
-            statements: firstMutation.syntaxMutation,
-            rightBrace: SyntaxFactory.makeRightBraceToken()
-                .withLeadingTrivia(.newlines(1))
-        ),
-        elseKeyword: SyntaxFactory.makeElseKeyword()
-            .withTrailingTrivia(.spaces(1))
-            .withLeadingTrivia(.spaces(1)),
-        elseBody: Syntax(
-            SyntaxFactory.makeCodeBlock(
-                leftBrace: SyntaxFactory.makeLeftBraceToken()
-                    .withTrailingTrivia(
-                        originalSyntax.trailingTrivia ?? .spaces(0)
-                    ),
-                statements: originalSyntax,
-                rightBrace: SyntaxFactory.makeRightBraceToken()
-                    .withLeadingTrivia(.newlines(1))
-            )
-        )
-    )
-
-    for mutation in mutations {
-        outterIfStatement = outterIfStatement.withElseBody(
-            Syntax(
-                SyntaxFactory.makeIfStmt(
-                    labelName: nil,
-                    labelColon: nil,
-                    ifKeyword: SyntaxFactory
-                        .makeIfKeyword()
-                        .withTrailingTrivia(.spaces(1)),
-                    conditions: buildSchemataCondition(
-                        withId: mutation.id
-                    ),
-                    body: SyntaxFactory.makeCodeBlock(
-                        leftBrace: SyntaxFactory.makeLeftBraceToken()
-                            .withTrailingTrivia(
-                                mutation.syntaxMutation.trailingTrivia ?? .spaces(0)
-                            ),
-                        statements: mutation.syntaxMutation,
-                        rightBrace: SyntaxFactory.makeRightBraceToken()
-                            .withLeadingTrivia(.newlines(1))
-                    ),
-                    elseKeyword: SyntaxFactory.makeElseKeyword()
-                        .withTrailingTrivia(.spaces(1))
-                        .withLeadingTrivia(.spaces(1)),
-                    elseBody: outterIfStatement.elseBody.map(Syntax.init)
-                )
-            )
-        )
-    }
-
-    return SyntaxFactory.makeCodeBlockItemList([
-        SyntaxFactory.makeCodeBlockItem(
-            item: Syntax(outterIfStatement),
-            semicolon: nil,
-            errorTokens: nil
-        )
-    ])
-}
-
-func buildSchemataCondition(withId id: String) -> ConditionElementListSyntax {
-    SyntaxFactory.makeConditionElementList([
+func buildSchemataCondition(
+    withId id: String
+) -> ConditionElementListSyntax {
+    return SyntaxFactory.makeConditionElementList([
         SyntaxFactory.makeConditionElement(
             condition: Syntax(
                 SyntaxFactory.makeSequenceExpr(
@@ -373,31 +77,80 @@ func makeSchemataId(
     _ sourceFileInfo: SourceFileInfo,
     _ position: MutationPosition
 ) -> String {
-    let fileName = URL(
-        string: sourceFileInfo.path)?
-        .deletingLastPathComponent()
-        .lastPathComponent ?? ""
+    let fileName = URL(fileURLWithPath: sourceFileInfo.path)
+        .deletingPathExtension()
+        .lastPathComponent
     
     let line = position.line
     let column = position.column
     let offset = position.utf8Offset
     
-    return "\(fileName)_\(line)_\(offset)_\(column)"
+    return "\(fileName)_\(line)_\(column)_\(offset)"
 }
 
-extension SyntaxProtocol {
-    var codeBlockItemListSyntax: CodeBlockItemListSyntax {
+extension CodeBlockItemListSyntax {
+    var functionDeclarationSyntax: FunctionDeclSyntax? {
         let syntax = Syntax(self)
-        if syntax.is(CodeBlockItemListSyntax.self) {
-            return syntax.as(CodeBlockItemListSyntax.self)!
+        if syntax.is(FunctionDeclSyntax.self) {
+            return syntax.as(FunctionDeclSyntax.self)!
         }
-
+        
         var parent = parent
-
-        while parent?.is(CodeBlockItemListSyntax.self) == false {
+        
+        while parent?.is(FunctionDeclSyntax.self) == false {
             parent = parent?.parent
         }
-
-        return parent!.as(CodeBlockItemListSyntax.self)!
+        
+        return parent?.as(FunctionDeclSyntax.self)
+    }
+    
+    var accessorDeclGetSyntax: AccessorDeclSyntax? {
+        let syntax = Syntax(self)
+        if syntax.is(AccessorDeclSyntax.self) {
+            return syntax.as(AccessorDeclSyntax.self)!
+        }
+        
+        var parent = parent
+        
+        while parent?.is(AccessorDeclSyntax.self) == false {
+            parent = parent?.parent
+        }
+        
+        if let accessor = parent?.as(AccessorDeclSyntax.self),
+           accessor.accessorKind.tokenKind == .contextualKeyword("get") {
+            return accessor
+        }
+        
+        return nil
+    }
+    
+    var patternBindingSyntax: PatternBindingSyntax? {
+        let syntax = Syntax(self)
+        if syntax.is(PatternBindingSyntax.self) {
+            return syntax.as(PatternBindingSyntax.self)!
+        }
+        
+        var parent = parent
+        
+        while parent?.is(PatternBindingSyntax.self) == false {
+            parent = parent?.parent
+        }
+        
+        return parent?.as(PatternBindingSyntax.self)
+    }
+    
+    var closureExprSyntax: ClosureExprSyntax? {
+        let syntax = Syntax(self)
+        if syntax.is(ClosureExprSyntax.self) {
+            return syntax.as(ClosureExprSyntax.self)!
+        }
+        
+        var parent = parent
+        
+        while parent?.is(ClosureExprSyntax.self) == false {
+            parent = parent?.parent
+        }
+        
+        return parent?.as(ClosureExprSyntax.self)
     }
 }

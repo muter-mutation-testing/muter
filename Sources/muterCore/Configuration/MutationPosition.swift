@@ -27,9 +27,37 @@ struct MutationPosition: Codable, Equatable {
     }
 }
 
+extension MutationPosition {
+    func minusLine(_ minusLine: Int) -> MutationPosition {
+        MutationPosition(
+            utf8Offset: utf8Offset,
+            line: line - minusLine,
+            column: column
+        )
+    }
+    
+    func minusColumn(_ minusColumn: Int?) -> MutationPosition {
+        guard let minusColumn = minusColumn else {
+            return self
+        }
+
+        return MutationPosition(
+            utf8Offset: utf8Offset,
+            line: line,
+            column: column - minusColumn
+        )
+    }
+}
+
+extension MutationPosition: CustomStringConvertible {
+    var description: String {
+        "\(utf8Offset)_\(line)_\(column)"
+    }
+}
+
 extension MutationPosition: Nullable {
     static var null: MutationPosition {
-        MutationPosition(utf8Offset: -999)
+        MutationPosition(utf8Offset: 0)
     }
 }
 
@@ -52,7 +80,21 @@ extension SyntaxProtocol {
             offset: position.utf8Offset,
             converter: converter
         )
-
+        
         return MutationPosition(sourceLocation: sourceLocation)
+    }
+    
+    func line(with sourceFileInfo: SourceFileInfo) -> Int {
+        let converter = SourceLocationConverter(
+            file: sourceFileInfo.path,
+            source: sourceFileInfo.source
+        )
+
+        let sourceLocation = SourceLocation(
+            offset: position.utf8Offset,
+            converter: converter
+        )
+        
+        return MutationPosition(sourceLocation: sourceLocation).line
     }
 }

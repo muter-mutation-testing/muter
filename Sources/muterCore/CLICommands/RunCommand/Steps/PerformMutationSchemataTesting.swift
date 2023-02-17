@@ -2,20 +2,25 @@ import Foundation
 import SwiftSyntax
 
 struct PerformMutationSchemataTesting: RunCommandStep {
-    private let ioDelegate: MutationTestingIODelegate
+    private let ioDelegate: SchemataMutationTestingIODelegate
     private let notificationCenter: NotificationCenter
+    private let fileManager: FileManager
     private let buildErrorsThreshold: Int = 5
-    private let fileManager = FileManager.default
     
     init(
         ioDelegate: MutationTestingIODelegate = MutationTestingDelegate(),
-        notificationCenter: NotificationCenter = .default
+        notificationCenter: NotificationCenter = .default,
+        fileManager: FileManager = FileManager.default
     ) {
         self.ioDelegate = ioDelegate
         self.notificationCenter = notificationCenter
+        self.fileManager = fileManager
     }
     
-    func run(with state: AnyRunCommandState) -> Result<[RunCommandState.Change], MuterError> {
+    func run(
+        with state: AnyRunCommandState
+    ) -> Result<[RunCommandState.Change], MuterError> {
+        
         fileManager.changeCurrentDirectoryPath(state.tempDirectoryURL.path)
 
         let result = performMutationTesting(using: state)
@@ -24,8 +29,15 @@ struct PerformMutationSchemataTesting: RunCommandStep {
             let mutationTestOutcome = state.mutationTestOutcome
             mutationTestOutcome.mutations = outcomes
             mutationTestOutcome.coverage = state.projectCoverage
-            notificationCenter.post(name: .mutationTestingFinished, object: mutationTestOutcome)
-            return .success([.mutationTestOutcomeGenerated(mutationTestOutcome)])
+
+            notificationCenter.post(
+                name: .mutationTestingFinished,
+                object: mutationTestOutcome
+            )
+
+            return .success([
+                .mutationTestOutcomeGenerated(mutationTestOutcome)
+            ])
         case .failure(let reason):
             return .failure(reason)
         }
@@ -40,6 +52,7 @@ private extension PerformMutationSchemataTesting {
 
         let initialTime = Date()
         let (testSuiteOutcome, testLog) = ioDelegate.runTestSuite(
+            withSchemata: .null,
             using: state.muterConfiguration,
             savingResultsIntoFileNamed: "baseline run"
         )
@@ -78,37 +91,29 @@ private extension PerformMutationSchemataTesting {
     ) -> Result<[MutationTestOutcome.Mutation], MuterError> {
         var outcomes: [MutationTestOutcome.Mutation] = []
         outcomes.reserveCapacity(state.mutationPoints.count)
-            
-        let xcTestRun = state.projectXCTestRun
+        var buildErrors = 0
+        
         for mutationMap in state.mutationMapping {
             for schemata in mutationMap.schematas {
-                Logger.print("Testing \(schemata.id)")
-                Logger.print("  \(mutationMap.mutationOperatorId)")
 
-                let updated = xcTestRun.updateEnvironmentVariable(
-                    setting: schemata.id
-                )
-                
-                let data = try! PropertyListSerialization.data(
-                    fromPropertyList: updated,
-                    format: .xml, options: 0
-                )
-                
-                try! data.write(to: state.tempDirectoryURL.appendingPathComponent("muter.xctestrun")
+                try! ioDelegate.switchOn(
+                    schemata: schemata,
+                    for: state.projectXCTestRun,
+                    at: state.tempDirectoryURL
                 )
                 
                 let (testSuiteOutcome, testLog) = ioDelegate.runTestSuite(
                     withSchemata: schemata, 
                     using: state.muterConfiguration,
                     savingResultsIntoFileNamed: logFileName(
-                        for: mutationMap,
+                        for: mutationMap.fileName,
                         schemata: schemata
                     )
                 )
                 
                 let mutationPoint = MutationPoint(
-                    mutationOperatorId: mutationMap.mutationOperatorId,
-                    filePath: mutationMap.filePath,
+                    mutationOperatorId: schemata.mutationOperatorId,
+                    filePath: schemata.filePath,
                     position: schemata.positionInSourceCode
                 )
 
@@ -138,78 +143,21 @@ private extension PerformMutationSchemataTesting {
                     name: .newTestLogAvailable,
                     object: mutationLog
                 )
+                
+                buildErrors = testSuiteOutcome == .buildError ? (buildErrors + 1) : 0
+                if buildErrors >= buildErrorsThreshold {
+                    return .failure(.mutationTestingAborted(reason: .tooManyBuildErrors))
+                }
             }
         }
-        
-//        for mutationPoint in state.mutationPoints {
-//
-//            ioDelegate.backupFile(
-//                at: mutationPoint.filePath,
-//                using: state.swapFilePathsByOriginalPath
-//            )
-//
-//            let sourceCode = state.sourceCodeByFilePath[mutationPoint.filePath]!
-//            let mutantSnapshot = insertMutant(
-//                at: mutationPoint,
-//                within: sourceCode
-//            )
-//
-//            let (testSuiteOutcome, testLog) = ioDelegate.runTestSuite(
-//                using: state.muterConfiguration,
-//                savingResultsIntoFileNamed: logFileName(for: mutationPoint)
-//            )
-//
-//            ioDelegate.restoreFile(
-//                at: mutationPoint.filePath,
-//                using: state.swapFilePathsByOriginalPath
-//            )
-//
-//            let outcome = MutationTestOutcome.Mutation(
-//                testSuiteOutcome: testSuiteOutcome,
-//                mutationPoint: mutationPoint,
-//                mutationSnapshot: mutantSnapshot,
-//                originalProjectDirectoryUrl: state.projectDirectoryURL,
-//                tempDirectoryURL: state.tempDirectoryURL
-//            )
-//            outcomes.append(outcome)
-//
-//            let mutationLog = MutationTestLog(
-//                mutationPoint: mutationPoint,
-//                testLog: testLog,
-//                timePerBuildTestCycle: .none,
-//                remainingMutationPointsCount: .none
-//            )
-//
-//            notificationCenter.post(
-//                name: .newMutationTestOutcomeAvailable,
-//                object: outcome
-//            )
-//
-//            notificationCenter.post(
-//                name: .newTestLogAvailable,
-//                object: mutationLog
-//            )
-//
-//            buildErrors = testSuiteOutcome == .buildError ? (buildErrors + 1) : 0
-//            if buildErrors >= buildErrorsThreshold {
-//                return .failure(.mutationTestingAborted(reason: .tooManyBuildErrors))
-//            }
-//        }
         
         return .success(outcomes)
     }
     
-    func insertMutant(at mutationPoint: MutationPoint, within sourceCode: SourceFileSyntax) -> MutationOperatorSnapshot {
-        let (mutatedSource, snapshot) = mutationPoint.mutationOperator(sourceCode)
-        try! ioDelegate.writeFile(to: mutationPoint.filePath, contents: mutatedSource.description)
-        
-        return snapshot
-    }
-    
     func logFileName(
-        for mapping: SchemataMutationMapping,
+        for fileName: FileName,
         schemata: Schemata
     ) -> String {
-        return "\(mapping.fileName)_\(mapping.mutationOperatorId.rawValue)_\(schemata.positionInSourceCode).log"
+        return "\(fileName)_\(schemata.mutationOperatorId.rawValue)_\(schemata.positionInSourceCode).log"
     }
 }

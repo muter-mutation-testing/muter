@@ -17,17 +17,14 @@ struct ApplySchemata: RunCommandStep {
     ) -> Result<[RunCommandState.Change], MuterError> {
         for mutationMap in state.mutationMapping {
             let sourceCode = state.sourceCodeByFilePath[mutationMap.filePath]!
-            let rewriter = Rewriter(mutationMap)
+            let rewriter = MutationSchemataRewriter(mutationMap)
             
-            let newFile = rewriter.visit(
-                sourceCode
-            )
+            let newFile = rewriter.visit(sourceCode)
             
             try! ioDelegate.writeFile(
                 to: mutationMap.filePath,
                 contents: newFile.description
             )
-            
         }
         
         return .success([])

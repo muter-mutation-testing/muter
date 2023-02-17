@@ -27,45 +27,31 @@ enum TernaryOperator {
     }
     
     final class SchemataVisitor: MutationSchemataVisitor {
-        required init(
+        convenience init(
             configuration: MuterConfiguration? = nil,
             sourceFileInfo: SourceFileInfo
         ) {
-            super.init(
+            self.init(
                 configuration: configuration,
-                sourceFileInfo: sourceFileInfo
-            )
-
-            self.schemataMappings = SchemataMutationMapping(
-                filePath: sourceFileInfo.path,
+                sourceFileInfo: sourceFileInfo,
                 mutationOperatorId: .ternaryOperator
             )
         }
         
-        override func visitAny(_ node: Syntax) -> SyntaxVisitorContinueKind {
-            guard let node = node.as(TernaryExprSyntax.self) else {
-                return .visitChildren
-            }
-            
+        override func visit(_ node: TernaryExprSyntax) -> SyntaxVisitorContinueKind {
             let mutatedSyntax = mutated(node)
-            let positionInSourceCode = node.mutationPosition(with: sourceFileInfo)
-            let mutation = Schemata(
-                id: makeSchemataId(sourceFileInfo, positionInSourceCode),
-                syntaxMutation: transform(
-                    node: node,
-                    mutatedSyntax: mutatedSyntax
-                ),
-                positionInSourceCode: positionInSourceCode,
-                snapshot: MutationOperatorSnapshot(
-                    before: node.description.trimmed.inlined,
-                    after: mutatedSyntax.description.trimmed.inlined,
-                    description: "swapped ternary operator"
-                )
+            let position = endLocation(for: node)
+            let snapshot = MutationOperatorSnapshot(
+                before: node.description.trimmed.inlined,
+                after: mutatedSyntax.description.trimmed.inlined,
+                description: "swapped ternary operator"
             )
-
-            schemataMappings.add(
-                node.codeBlockItemListSyntax,
-                mutation
+            
+            add(
+                mutation: mutated(node),
+                with: node,
+                at: position,
+                snapshot: snapshot
             )
             
             return .visitChildren

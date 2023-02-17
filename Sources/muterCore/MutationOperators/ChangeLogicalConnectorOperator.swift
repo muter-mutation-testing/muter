@@ -22,17 +22,13 @@ enum ChangeLogicalConnectorOperator {
     }
     
     class SchemataVisitor: TokenAwareSchemataVisitor {
-        required init(
+        convenience init(
             configuration: MuterConfiguration? = nil,
             sourceFileInfo: SourceFileInfo
         ) {
-            super.init(
+            self.init(
                 configuration: configuration,
-                sourceFileInfo: sourceFileInfo
-            )
-
-            schemataMappings = SchemataMutationMapping(
-                filePath: sourceFileInfo.path,
+                sourceFileInfo: sourceFileInfo,
                 mutationOperatorId: .logicalOperator
             )
             

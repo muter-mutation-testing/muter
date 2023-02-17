@@ -190,7 +190,7 @@ extension SchemataMutationMapping {
         let schemataMutationMapping = SchemataMutationMapping()
 
         for (source, schematas) in mappings {
-            let codeBlockSyntax = try SyntaxParser.parse(source: source).statements
+            let codeBlockSyntax = try sourceCode(source).statements
 
             schematas.forEach { schemata in
                 schemataMutationMapping.add(codeBlockSyntax, schemata)
@@ -204,23 +204,25 @@ extension SchemataMutationMapping {
 extension Schemata {
     static func make(
         id: String = "",
+        filePath: String = "",
+        mutationOperatorId: MutationOperator.Id = .ror,
         syntaxMutation: String = "",
         positionInSourceCode: MutationPosition = .null,
         snapshot: MutationOperatorSnapshot = .null
     ) throws -> Schemata {
         Schemata(
             id: id,
-            syntaxMutation: try SyntaxParser.parse(source: syntaxMutation).statements,
+            filePath: filePath,
+            mutationOperatorId: mutationOperatorId,
+            syntaxMutation: try sourceCode(syntaxMutation).statements,
             positionInSourceCode: positionInSourceCode,
             snapshot: snapshot
         )
     }
 }
 
-extension Array where Element == SchemataMutationMapping {
-    func first(
-        by mutationOperatorId: MutationOperator.Id
-    ) -> SchemataMutationMapping? {
-        first { $0.mutationOperatorId == mutationOperatorId }
-    }
+func sourceCode(
+    _ source: String
+) throws -> SourceFileSyntax {
+    try SyntaxParser.parse(source: source)
 }

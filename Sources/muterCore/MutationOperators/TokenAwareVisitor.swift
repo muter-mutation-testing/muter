@@ -48,24 +48,21 @@ class TokenAwareSchemataVisitor: MutationSchemataVisitor {
             return .visitChildren
         }
         
-        let positionInSourceCode = node.mutationPosition(with: sourceFileInfo)
-        let mutation = Schemata(
-            id: makeSchemataId(sourceFileInfo, positionInSourceCode),
-            syntaxMutation: transform(
-                node: node,
-                mutatedSyntax: mutated(node, using: oppositeOperator)
-            ),
-            positionInSourceCode: positionInSourceCode,
-            snapshot: MutationOperatorSnapshot(
-                before: node.description.trimmed,
-                after: oppositeOperator,
-                description: "changed \(node.description.trimmed) to \(oppositeOperator)"
-            )
+        let position = location(for: node)
+        let snapshot = MutationOperatorSnapshot(
+            before: node.description.trimmed,
+            after: oppositeOperator,
+            description: "changed \(node.description.trimmed) to \(oppositeOperator)"
         )
         
-        schemataMappings.add(
-            node.codeBlockItemListSyntax,
-            mutation
+        add(
+            mutation: mutated(
+                node,
+                using: oppositeOperator
+            ),
+            with: node,
+            at: position,
+            snapshot: snapshot
         )
         
         return .visitChildren
@@ -100,10 +97,43 @@ class TokenAwareSchemataVisitor: MutationSchemataVisitor {
             leadingTrivia: token.leadingTrivia,
             trailingTrivia: token.trailingTrivia
         )
+
         return Syntax(tokenSyntax)
+    }
+    
+    override func transform(
+        node: SyntaxProtocol,
+        mutatedSyntax: SyntaxProtocol,
+        at mutationRange: Range<String.Index>? = nil
+    ) -> CodeBlockItemListSyntax {
+        let codeBlockItemListSyntax = node.codeBlockItemListSyntax
+        let codeBlockDescription = codeBlockItemListSyntax.description
+        let nodePosition = node.offsetInCodeBlockItemListSyntax(sourceFileInfo)
+        let nodeStartRange = codeBlockDescription.index(codeBlockDescription.startIndex, offsetBy: nodePosition)
+        let nodeEndRange = codeBlockDescription.index(codeBlockDescription.startIndex, offsetBy: nodePosition + mutatedSyntax.description.count)
+        let mutationRangeInCodeBlock = nodeStartRange..<nodeEndRange
+        
+        return super.transform(
+            node: node,
+            mutatedSyntax: mutatedSyntax,
+            at: mutationRangeInCodeBlock
+        )
     }
 }
 
+extension SyntaxProtocol {
+    func offsetInCodeBlockItemListSyntax(_ sourceCode: SourceFileInfo) -> Int {
+        let nodePosition = mutationPosition(
+            with: sourceCode
+        )
+
+        let codeBlockItemListSyntax = codeBlockItemListSyntax.mutationPosition(
+            with: sourceCode
+        )
+        
+        return nodePosition.utf8Offset - codeBlockItemListSyntax.utf8Offset
+    }
+}
 
 private extension SequenceExprSyntax {
     var isInsideCompilerDirective: Bool {

@@ -6,11 +6,17 @@ struct DiscoverMutationPoints: RunCommandStep {
     
     func run(with state: AnyRunCommandState) -> Result<[RunCommandState.Change], MuterError> {
         
-        notificationCenter.post(name: .mutationPointDiscoveryStarted, object: nil)
+        notificationCenter.post(name: .mutationsDiscoveryStarted, object: nil)
         
-        let (mutationPoints, sourceCodeByFilePath) = discoverMutationPoints(inFilesAt: state.sourceFileCandidates, configuration: state.muterConfiguration)
+        let (mutationPoints, sourceCodeByFilePath) = discoverMutationPoints(
+            inFilesAt: state.sourceFileCandidates,
+            configuration: state.muterConfiguration
+        )
         
-        notificationCenter.post(name: .mutationPointDiscoveryFinished, object: mutationPoints)
+//        notificationCenter.post(
+//            name: .mutationPointDiscoveryFinished,
+//            object: mutationPoints
+//        )
         
         guard mutationPoints.count >= 1 else {
             return .failure(.noMutationPointsDiscovered)
@@ -99,16 +105,6 @@ private class ExcludedMutationPointsDetector: SyntaxAnyVisitor, PositionDiscover
     
     required init(configuration: MuterConfiguration?, sourceFileInfo: SourceFileInfo) {
         self.sourceFileInfo = sourceFileInfo
-    }
-    
-    override func visitAnyPost(_ node: Syntax) {
-        node.leadingTrivia.map { leadingTrivia in
-            if leadingTrivia.containsLineComment(muterSkipMarker) {
-                positionsOfToken.append(
-                    node.mutationPosition(with: sourceFileInfo)
-                )
-            }
-        }
     }
 }
 

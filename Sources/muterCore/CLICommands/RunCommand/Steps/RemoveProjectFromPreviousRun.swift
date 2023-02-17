@@ -14,9 +14,7 @@ struct RemoveProjectFromPreviousRun: RunCommandStep {
     
     func run(with state: AnyRunCommandState) -> Result<[RunCommandState.Change], MuterError> {
         guard fileManager.fileExists(atPath: state.tempDirectoryURL.path) else {
-            return .success([
-                .removeProjectFromPreviousRunSkipped,
-            ])
+            return .success([])
         }
         do {
             notificationCenter.post(name: .removeProjectFromPreviousRunStarted, object: nil)
@@ -25,9 +23,7 @@ struct RemoveProjectFromPreviousRun: RunCommandStep {
             
             notificationCenter.post(name: .removeProjectFromPreviousRunFinished, object: nil)
             
-            return .success([
-                .removeProjectFromPreviousRunCompleted,
-            ])
+            return .success([])
         } catch {
             return .failure(.removeProjectFromPreviousRunFailed(reason: error.localizedDescription))
         }

@@ -12,4 +12,3 @@ executable: /usr/bin/xcodebuild
 exclude:
 - AppDelegate.swift
 excludeCalls: []
-mutateInSiblingFolder: false

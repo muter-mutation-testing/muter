@@ -1,5 +1,4 @@
 import XCTest
-import SwiftSyntax
 
 @testable import muterCore
 
@@ -25,12 +24,14 @@ final class TernaryOperatorTests: XCTestCase {
                 source: "\n    return a ? \"true\" : \"false\"",
                 schematas: [
                     try .make(
-                        id: "TernaryOperator_@10_179_12",
+                        id: "sampleWithTernaryOperator_10_32_199",
+                        filePath: sampleCode.path,
+                        mutationOperatorId: .ternaryOperator,
                         syntaxMutation: "\n    return a ? \"false\" : \"true\"",
                         positionInSourceCode: MutationPosition(
-                            utf8Offset: 179,
+                            utf8Offset: 199,
                             line: 10,
-                            column: 12
+                            column: 32
                         ),
                         snapshot: MutationOperatorSnapshot(
                             before: "a ? \"true\" : \"false\"",
@@ -44,12 +45,14 @@ final class TernaryOperatorTests: XCTestCase {
                 source: "\n    return a ? true : false",
                 schematas: [
                     try .make(
-                        id: "TernaryOperator_@6_104_12",
+                        id: "sampleWithTernaryOperator_6_28_120",
+                        filePath: sampleCode.path,
+                        mutationOperatorId: .ternaryOperator,
                         syntaxMutation: "\n    return a ? false : true",
                         positionInSourceCode: MutationPosition(
-                            utf8Offset: 104,
+                            utf8Offset: 120,
                             line: 6,
-                            column: 12
+                            column: 28
                         ),
                         snapshot: MutationOperatorSnapshot(
                             before: "a ? true : false",
@@ -77,12 +80,14 @@ final class TernaryOperatorTests: XCTestCase {
                 source: "\n    return a ? b ? true : false : false",
                 schematas: [
                     try .make(
-                        id: "TernaryOperator_@6_115_12",
+                        id: "sampleWithNestedTernaryOperator_6_40_143",
+                        filePath: sampleNestedCode.path,
+                        mutationOperatorId: .ternaryOperator,
                         syntaxMutation: "\n    return a ? false : b ? true : false",
                         positionInSourceCode: MutationPosition(
-                            utf8Offset: 115,
+                            utf8Offset: 143,
                             line: 6,
-                            column: 12
+                            column: 40
                         ),
                         snapshot: MutationOperatorSnapshot(
                             before: "a ? b ? true : false : false",
@@ -91,12 +96,14 @@ final class TernaryOperatorTests: XCTestCase {
                         )
                     ),
                     try .make(
-                        id: "TernaryOperator_@6_119_16",
+                        id: "sampleWithNestedTernaryOperator_6_33_136",
+                        filePath: sampleNestedCode.path,
+                        mutationOperatorId: .ternaryOperator,
                         syntaxMutation: "\n    return a ? b ? false : true: false",
                         positionInSourceCode: MutationPosition(
-                            utf8Offset: 119,
+                            utf8Offset: 136,
                             line: 6,
-                            column: 16
+                            column: 33
                         ),
                         snapshot: MutationOperatorSnapshot(
                             before: "b ? true : false",
@@ -118,18 +125,23 @@ final class TernaryOperatorTests: XCTestCase {
         
         visitor.walk(sampleNestedCode.code)
         
-        let rewriter = Rewriter(visitor.schemataMappings).visit(sampleNestedCode.code)
+        let rewriter = MutationSchemataRewriter(visitor.schemataMappings)
+            .visit(sampleNestedCode.code)
         
         XCTAssertEqual(
             rewriter.description,
             """
-            import Foundation
             #if os(iOS) || os(tvOS)
             print("please ignore me")
             #endif
 
-            func someCode(_ a: Bool, _ b: Bool) -> Bool {
+            func someCode(_ a: Bool, _ b: Bool) -> Bool { if ProcessInfo.processInfo.environment["sampleWithNestedTernaryOperator_6_40_143"] != nil {
+                return a ? false : b ? true : false
+            } else if ProcessInfo.processInfo.environment["sampleWithNestedTernaryOperator_6_33_136"] != nil {
+                return a ? b ? false : true: false
+            } else {
                 return a ? b ? true : false : false
+            }
             }
 
             """

@@ -144,7 +144,7 @@ final class BuildForTestingTests: XCTestCase {
         XCTAssertEqual(fileManager.contentsAtPathSorted, ["/path/to/temp/Debug"])
         XCTAssertEqual(fileManager.contentsAtPathSortedOrder, [.orderedDescending])
         XCTAssertEqual(result, [
-            .projectXCTestRun(.from(loadXCTestRun()))
+            .projectXCTestRun(.from(loadXCTestRunWithDebugFolder()))
         ])
     }
 
@@ -352,6 +352,10 @@ final class BuildForTestingTests: XCTestCase {
 
     private func loadXCTestRun() -> Data {
         FileManager.default.contents(atPath: buildDescriptionPath + "/project.xctestrun") ?? .init()
+    }
+    
+    private func loadXCTestRunWithDebugFolder() -> Data {
+        FileManager.default.contents(atPath: buildDescriptionPath + "/projectWithDebugPath.xctestrun") ?? .init()
     }
 }
 

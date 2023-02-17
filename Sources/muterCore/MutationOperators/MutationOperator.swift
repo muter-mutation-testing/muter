@@ -7,7 +7,6 @@ typealias VisitorInitializer = (MuterConfiguration, SourceFileInfo) -> PositionD
 
 typealias SchemataVisitorInitializer = (MuterConfiguration, SourceFileInfo) -> MutationSchemataVisitor
 
-
 public struct MutationPoint: Equatable, Codable {
     let mutationOperatorId: MutationOperator.Id
     let filePath: String
@@ -97,29 +96,4 @@ protocol PositionDiscoveringVisitor {
     init(configuration: MuterConfiguration?, sourceFileInfo: SourceFileInfo)
 
     func walk<SyntaxType: SyntaxProtocol>(_ node: SyntaxType)
-}
-
-
-//protocol MutationSchemataVisitor {
-//    var schemataMappings: SchemataMutationMapping { get }
-//    init(
-//        configuration: MuterConfiguration?,
-//        sourceFileInfo: SourceFileInfo
-//    )
-//
-//    func walk<SyntaxType: SyntaxProtocol>(_ node: SyntaxType)
-//}
-
-class MutationSchemataVisitor: SyntaxAnyVisitor {
-    var schemataMappings: SchemataMutationMapping = .init()
-    let configuration: MuterConfiguration?
-    let sourceFileInfo: SourceFileInfo
-
-    required init(
-        configuration: MuterConfiguration?,
-        sourceFileInfo: SourceFileInfo
-    ) {
-        self.configuration = configuration
-        self.sourceFileInfo = sourceFileInfo
-    }
 }

@@ -1,11 +1,7 @@
 import Foundation
 
-protocol MutationTestingIODelegate {
-    func backupFile(at path: String, using swapFilePaths: [FilePath: FilePath])
-    func writeFile(to path: String, contents: String) throws
-    func runTestSuite(using configuration: MuterConfiguration, savingResultsIntoFileNamed fileName: String) -> (outcome: TestSuiteOutcome, testLog: String)
-    func restoreFile(at path: String, using swapFilePaths: [FilePath: FilePath])
-    
+
+protocol SchemataMutationTestingIODelegate {    
     func runTestSuite(
         withSchemata schemata: Schemata,
         using configuration: MuterConfiguration,
@@ -14,10 +10,24 @@ protocol MutationTestingIODelegate {
         outcome: TestSuiteOutcome,
         testLog: String
     )
+    
+    func switchOn(
+        schemata: Schemata,
+        for testRun: XCTestRun,
+        at path: URL
+    ) throws
+}
+
+protocol MutationTestingIODelegate: SchemataMutationTestingIODelegate {
+    func backupFile(at path: String, using swapFilePaths: [FilePath: FilePath])
+    func writeFile(to path: String, contents: String) throws
+    func runTestSuite(using configuration: MuterConfiguration, savingResultsIntoFileNamed fileName: String) -> (outcome: TestSuiteOutcome, testLog: String)
+    func restoreFile(at path: String, using swapFilePaths: [FilePath: FilePath])
 }
 
 struct MutationTestingDelegate: MutationTestingIODelegate {
     private let notificationCenter: NotificationCenter = .default
+    private let muterTestRunFileName = "muter.xctestrun"
 
     func backupFile(at path: String, using swapFilePaths: [FilePath: FilePath]) {
         let swapFilePath = swapFilePaths[path]!
@@ -89,37 +99,46 @@ struct MutationTestingDelegate: MutationTestingIODelegate {
         }
     }
     
+    func switchOn(
+        schemata: Schemata,
+        for testRun: XCTestRun,
+        at path: URL
+    ) throws {
+        let updated = testRun.updateEnvironmentVariable(
+            setting: schemata.id
+        )
+        
+        let data = try PropertyListSerialization.data(
+            fromPropertyList: updated,
+            format: .xml,
+            options: 0
+        )
+        
+        try data.write(
+            to: path.appendingPathComponent(muterTestRunFileName)
+        )
+    }
+    
     func testProcess(
         with configuration: MuterConfiguration,
         schemata: Schemata,
         and fileHandle: FileHandle
     ) throws -> Process {
-        var commands = configuration.testCommandArguments
-        
-        if configuration.buildSystem == .xcodebuild {
-            let destinationIndex = commands.firstIndex(of: "-destination")!
-            commands = [
-                "test-without-building",
-                commands[destinationIndex],
-                commands[destinationIndex.advanced(by: 1)],
-                "-xctestrun",
-                "muter.xctestrun"
-            ]
-        }
-        
-        if configuration.buildSystem == .swift {
-            commands += [
-                "--skip-build"
-            ]
-        }
-        
-        let process = Process()
-        process.environment = [
-            schemata.id: "YES"
-        ]
+        let testCommandArguments = schemata == .null
+            ? configuration.testCommandArguments
+            : configuration.testWithoutBuildArguments(with: muterTestRunFileName)
 
-        process.arguments = commands
+        let process = Process()
+
+        if schemata != .null {
+            process.environment = [
+                schemata.id: "YES"
+            ]
+        }
+
+        process.arguments = testCommandArguments
         process.executableURL = URL(fileURLWithPath: configuration.testCommandExecutable)
+        process.qualityOfService = .userInitiated
         process.standardOutput = fileHandle
         process.standardError = fileHandle
 
@@ -127,13 +146,18 @@ struct MutationTestingDelegate: MutationTestingIODelegate {
     }
 }
 
-private extension MutationTestingDelegate {
+extension MutationTestingDelegate {
     func copySourceCode(fromFileAt sourcePath: String, to destinationPath: String) {
         let source = sourceCode(fromFileAt: sourcePath)
         try? source?.code.description.write(toFile: destinationPath, atomically: true, encoding: .utf8)
     }
 
-    func fileHandle(for logFileName: String) throws -> (handle: FileHandle, logFileUrl: URL) {
+    func fileHandle(
+        for logFileName: String
+    ) throws -> (
+        handle: FileHandle,
+        logFileUrl: URL
+    ) {
         let testLogUrl = URL(fileURLWithPath: FileManager.default.currentDirectoryPath + "/" + logFileName)
         try Data().write(to: testLogUrl)
 
@@ -154,5 +178,25 @@ private extension MutationTestingDelegate {
         process.standardError = fileHandle
 
         return process
+    }
+}
+
+private extension MuterConfiguration {
+    func testWithoutBuildArguments(with testRunFile: String) -> [String] {
+        switch buildSystem {
+        case .xcodebuild:
+            guard let destinationIndex = testCommandArguments.firstIndex(of: "-destination") else { return testCommandArguments }
+                return [
+                    "test-without-building",
+                    testCommandArguments[destinationIndex],
+                    testCommandArguments[destinationIndex.advanced(by: 1)],
+                    "-xctestrun",
+                    testRunFile
+                ]
+        case .swift:
+            return testCommandArguments + ["--skip-build"]
+        case .unknown:
+            return testCommandArguments
+        }
     }
 }

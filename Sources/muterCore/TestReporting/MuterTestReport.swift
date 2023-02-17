@@ -9,6 +9,7 @@ struct MuterTestReport {
     let numberOfKilledMutants: Int
     let projectCodeCoverage: Int?
     let fileReports: [FileReport]
+    let timeElapsed: String
 
     init(
         from outcome: MutationTestOutcome = .init()
@@ -19,6 +20,26 @@ struct MuterTestReport {
             .count { $0.testSuiteOutcome == .failed || $0.testSuiteOutcome == .runtimeError }
         projectCodeCoverage = outcome.coverage == .null ? nil : outcome.coverage.percent
         fileReports = MuterTestReport.fileReports(from: outcome)
+        timeElapsed = outcome.testDuration.formatted()
+    }
+}
+
+private extension TimeInterval{
+    func formatted() -> String {
+        let time = NSInteger(self)
+        let ms = Int(truncatingRemainder(dividingBy: 1) * 1000)
+        let seconds = time % 60
+        let minutes = (time / 60) % 60
+        let hours = (time / 3600)
+        
+        return String(
+            format: "%0.2d:%0.2d:%0.2d.%0.3d",
+            hours,
+            minutes,
+            seconds,
+            ms
+        )
+        
     }
 }
 

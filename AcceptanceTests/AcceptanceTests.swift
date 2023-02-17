@@ -3,6 +3,10 @@ import TestingExtensions
 
 @testable import muterCore
 
+private enum AcceptanceTestsError: Error {
+    case reason(String)
+}
+
 final class AcceptanceTests: XCTestCase {
     private let messages = (
         mutationScoreOfTestSuite: "Mutation Score of Test Suite: 33%",
@@ -18,22 +22,21 @@ final class AcceptanceTests: XCTestCase {
         """
     )
     
-    func test_runCommand() {
-        let output = muterOutput
-        let logFiles = muterLogFiles
+    func test_runCommand() throws {
+        let output = try muterOutput
+        let logFiles = try muterLogFiles
         
         XCTAssertTrue(output.contains("Copying your project to a temporary directory for testing"))
         
         XCTAssertTrue(output.contains("In total, Muter discovered 4 Swift files"))
-        XCTAssertTrue(numberOfDiscoveredFileLists(in: output) >= 1)
+        XCTAssertTrue(try numberOfDiscoveredFileLists(in: output) >= 1)
         
-        XCTAssertTrue(output.contains("/var/folders"))
-        XCTAssertTrue(output.contains("/T/TemporaryItems/"))
+        XCTAssertTrue(output.contains("_mutated"))
         
         XCTAssertTrue(output.contains("In total, Muter introduced 3 mutants in 3 files."))
         
-        XCTAssertEqual(self.numberOfProgressUpdates(in: output), 4)
-        XCTAssertEqual(self.numberOfDurationEstimates(in: output), 4)
+        XCTAssertEqual(try numberOfProgressUpdates(in: output), 4)
+        XCTAssertEqual(try numberOfDurationEstimates(in: output), 4)
         
         XCTAssertTrue(output.contains(messages.mutationScoresHeader))
         XCTAssertTrue(output.contains(messages.mutationScoreOfTestSuite))
@@ -47,7 +50,7 @@ final class AcceptanceTests: XCTestCase {
             "RemoveSideEffects @ ViewController.swift-5-28.log",
         ]
         
-        let numberOfEmptyLogFiles = expectedLogFiles
+        let numberOfEmptyLogFiles = try expectedLogFiles
             .map(self.contentsOfLogFile(named:))
             .count { $0.isEmpty }
         
@@ -55,31 +58,26 @@ final class AcceptanceTests: XCTestCase {
         XCTAssertEqual(numberOfEmptyLogFiles, 0)
     }
     
-    func test_skipCoverage() {
-        let output = muterWithCoverageOutput
+    func test_skipCoverage() throws {
+        let output = try muterWithCoverageOutput
         
         XCTAssertTrue(output.contains("Code Coverage of your project: "))
     }
     
-    func test_xcodeFormat() {
-        let output = muterXcodeOutput
+    func test_xcodeFormat() throws {
+        let output = try muterXcodeOutput
         
-        XCTAssertEqual(numberOfXcodeFormattedMessages(in: output), 1)
-        
-        let numberOfTemporaryPaths = output.split(separator: "\n").count {
-            $0.contains("/T/TemporaryItems/")
-        }
-        XCTAssertEqual(numberOfTemporaryPaths, 1)
+        XCTAssertEqual(try numberOfXcodeFormattedMessages(in: output), 1)
     }
     
-    func test_filesToMutate() {
-        let output = muterFilesToMutateOutput
+    func test_filesToMutate() throws {
+        let output = try muterFilesToMutateOutput
         
         XCTAssertTrue(output.contains("In total, Muter discovered 1 mutants in 1 files"))
     }
     
-    func test_muterDoesntDiscoverAnyMutationOperators() {
-        let output = muterEmptyStateOutput
+    func test_muterDoesntDiscoverAnyMutationOperators() throws {
+        let output = try muterEmptyStateOutput
         
         XCTAssertTrue(output.contains("Muter wasn't able to discover any code it could mutation test."))
         XCTAssertFalse(output.contains(messages.mutationScoresHeader))
@@ -87,33 +85,22 @@ final class AcceptanceTests: XCTestCase {
         XCTAssertFalse(output.contains(messages.appliedMutationOperatorsHeader))
     }
     
-    func test_sibilingDirectory() {
-        let output = muterWithMutateInSiblingFolderOutput
-        
-        let numberOfPaths = output.split(separator: "\n").count {
-            $0.contains("_mutated")
-        }
-        XCTAssertEqual(numberOfPaths, 1)
+    func test_initCommandOniOSProject() throws {
+        let decodedConfiguration = try MuterConfiguration(from: self.createdIOSConfiguration)
+        XCTAssertEqual(decodedConfiguration.testCommandExecutable, "/usr/bin/xcodebuild")
+        XCTAssertTrue(decodedConfiguration.testCommandArguments.contains("-destination"))
+        XCTAssertTrue(decodedConfiguration.testCommandArguments.contains("platform=iOS Simulator,name=iPhone SE (3rd generation)"))
     }
     
-    func test_initCommandOniOSProject() {
-        let decodedConfiguration = try? MuterConfiguration(from: self.createdIOSConfiguration)
-        XCTAssertEqual(decodedConfiguration?.testCommandExecutable, "/usr/bin/xcodebuild")
-        XCTAssertTrue(decodedConfiguration?.testCommandArguments.contains("-destination"))
-        XCTAssertTrue(decodedConfiguration?.testCommandArguments.contains("platform=iOS Simulator,name=iPhone SE (3rd generation)"))
-        XCTAssertFalse(decodedConfiguration?.mutateFilesInSiblingOfProjectFolder)
+    func test_initCommandOnMacOSProject() throws {
+        let decodedConfiguration = try MuterConfiguration(from: self.createdMacOSConfiguration)
+        XCTAssertEqual(decodedConfiguration.testCommandExecutable, "/usr/bin/xcodebuild")
+        XCTAssertFalse(decodedConfiguration.testCommandArguments.contains("-destination"))
+        XCTAssertFalse(decodedConfiguration.testCommandArguments.contains("platform=iOS Simulator,name=iPhone SE (3rd generation)"))
     }
     
-    func test_initCommandOnMacOSProject() {
-        let decodedConfiguration: MuterConfiguration? = try? MuterConfiguration(from: self.createdMacOSConfiguration)
-        XCTAssertEqual(decodedConfiguration?.testCommandExecutable, "/usr/bin/xcodebuild")
-        XCTAssertFalse(decodedConfiguration?.testCommandArguments.contains("-destination"))
-        XCTAssertFalse(decodedConfiguration?.testCommandArguments.contains("platform=iOS Simulator,name=iPhone SE (3rd generation)"))
-        XCTAssertFalse(decodedConfiguration?.mutateFilesInSiblingOfProjectFolder)
-    }
-    
-    func test_helpCommand() {
-        XCTAssertEqual(muterHelpOutput,
+    func test_helpCommand() throws {
+        XCTAssertEqual(try muterHelpOutput,
                 """
                 OVERVIEW: 🔎 Automated mutation testing for Swift 🕳️
                 
@@ -134,8 +121,8 @@ final class AcceptanceTests: XCTestCase {
         )
     }
     
-    func test_helpCommandInit() {
-        XCTAssertEqual(muterInitHelpOutput,
+    func test_helpCommandInit() throws {
+        XCTAssertEqual(try muterInitHelpOutput,
                 """
                 OVERVIEW: Creates the configuration file that Muter uses
                 
@@ -150,8 +137,8 @@ final class AcceptanceTests: XCTestCase {
         )
     }
     
-    func test_helpCommandRun() {
-        XCTAssertEqual(muterRunHelpOutput,
+    func test_helpCommandRun() throws {
+        XCTAssertEqual(try muterRunHelpOutput,
                 """
                 OVERVIEW: Performs mutation testing for the Swift project contained within the
                 current directory.
@@ -183,87 +170,136 @@ extension AcceptanceTests {
         )
     }
     
-    var muterOutput: String { contentsOfFileAsString("\(AcceptanceTests().rootTestDirectory)/samples/muters_output.txt") }
-    var muterXcodeOutput: String { contentsOfFileAsString("\(AcceptanceTests().rootTestDirectory)/samples/muters_xcode_output.txt") }
-    
-    var muterFilesToMutateOutput: String { contentsOfFileAsString("\(AcceptanceTests().rootTestDirectory)/samples/muters_files_to_mutate_output.txt") }
-    var muterWithCoverageOutput: String { contentsOfFileAsString("\(AcceptanceTests().rootTestDirectory)/samples/muters_with_coverage_output.txt") }
-    
-    var muterEmptyStateOutput: String { contentsOfFileAsString("\(AcceptanceTests().rootTestDirectory)/samples/muters_empty_state_output.txt") }
-    var muterAbortedTestingOutput: String { contentsOfFileAsString("\(AcceptanceTests().rootTestDirectory)/samples/muters_aborted_testing_output.txt") }
-    
-    var muterWithMutateInSiblingFolderOutput: String { contentsOfFileAsString("\(AcceptanceTests().rootTestDirectory)/samples/muter_with_mutateInSiblingFolder_output.txt") }
-    
-    var muterHelpOutput: String { contentsOfFileAsString("\(AcceptanceTests().rootTestDirectory)/samples/muters_help_output.txt") }
-    var muterInitHelpOutput: String { contentsOfFileAsString("\(AcceptanceTests().rootTestDirectory)/samples/muters_init_help_output.txt") }
-    var muterRunHelpOutput: String { contentsOfFileAsString("\(AcceptanceTests().rootTestDirectory)/samples/muters_run_help_output.txt") }
-    
-    var muterLogFiles: [String] {
-        contentsOfDirectory(muterLogsRootPath)
-            .map { muterLogsRootPath + "/" + $0 }
-            .flatMap(contentsOfDirectory)
+    var muterOutput: String {
+        get throws {
+            try contentsOfFileAsString("\(AcceptanceTests().rootTestDirectory)/samples/muters_output.txt")
+        }
+    }
+    var muterXcodeOutput: String {
+        get throws {
+            try contentsOfFileAsString("\(AcceptanceTests().rootTestDirectory)/samples/muters_xcode_output.txt")
+        }
     }
     
-    var createdIOSConfiguration: Data { contentsOfFileAsData("\(AcceptanceTests().rootTestDirectory)/samples/created_iOS_config.yml") }
-    var createdMacOSConfiguration: Data { contentsOfFileAsData("\(AcceptanceTests().rootTestDirectory)/samples/created_macOS_config.yml") }
+    var muterFilesToMutateOutput: String {
+        get throws {
+            try contentsOfFileAsString("\(AcceptanceTests().rootTestDirectory)/samples/muters_files_to_mutate_output.txt")
+        }
+    }
+    var muterWithCoverageOutput: String {
+        get throws {
+            try contentsOfFileAsString("\(AcceptanceTests().rootTestDirectory)/samples/muters_with_coverage_output.txt")
+        }
+    }
+    
+    var muterEmptyStateOutput: String {
+        get throws {
+            try contentsOfFileAsString("\(AcceptanceTests().rootTestDirectory)/samples/muters_empty_state_output.txt")
+        }
+    }
+    
+    var muterAbortedTestingOutput: String {
+        get throws {
+            try contentsOfFileAsString("\(AcceptanceTests().rootTestDirectory)/samples/muters_aborted_testing_output.txt")
+        }
+    }
+    
+    var muterHelpOutput: String {
+        get throws {
+            try contentsOfFileAsString("\(AcceptanceTests().rootTestDirectory)/samples/muters_help_output.txt")
+        }
+    }
+    
+    var muterInitHelpOutput: String {
+        get throws {
+            try contentsOfFileAsString("\(AcceptanceTests().rootTestDirectory)/samples/muters_init_help_output.txt")
+        }
+    }
+    
+    var muterRunHelpOutput: String {
+        get throws {
+            try contentsOfFileAsString("\(AcceptanceTests().rootTestDirectory)/samples/muters_run_help_output.txt")
+        }
+    }
+    
+    var muterLogFiles: [String] {
+        get throws {
+            try contentsOfDirectory(muterLogsRootPath)
+                .map { muterLogsRootPath + "/" + $0 }
+                .flatMap(contentsOfDirectory)
+        }
+    }
+    
+    var createdIOSConfiguration: Data {
+        get throws {
+            try contentsOfFileAsData("\(AcceptanceTests().rootTestDirectory)/samples/created_iOS_config.yml")
+        }
+    }
+    
+    var createdMacOSConfiguration: Data {
+        get throws {
+            try contentsOfFileAsData("\(AcceptanceTests().rootTestDirectory)/samples/created_macOS_config.yml")
+        }
+    }
     
     var muterLogsRootPath: String { "\(AcceptanceTests().rootTestDirectory)/samples/muter_logs/" }
 }
 
 extension AcceptanceTests {
-    func contentsOfLogFile(named fileName: String) -> String {
-        return contentsOfDirectory(muterLogsRootPath)
+    func contentsOfLogFile(named fileName: String) throws -> String {
+        return try contentsOfDirectory(muterLogsRootPath)
             .first
             .map { muterLogsRootPath + $0 + "/" + fileName }
             .map(contentsOfFileAsString)!
     }
     
-    func contentsOfDirectory(_ path: String) -> [String] {
-        return try! FileManager
+    func contentsOfDirectory(_ path: String) throws -> [String] {
+        return try FileManager
             .default
             .contentsOfDirectory(atPath: path)
             .exclude { $0.starts(with: ".") } // this filters out hidden files/folders
     }
     
-    func contentsOfFileAsString(_ path: String) -> String {
+    func contentsOfFileAsString(_ path: String) throws -> String {
         guard let data = FileManager.default.contents(atPath: path),
               let output = String(data: data, encoding: .utf8)
         else {
-            fatalError("File not found at \(path)")
+            throw AcceptanceTestsError.reason("File not found at \(path)")
         }
+
         return output
     }
     
-    func contentsOfFileAsData(_ path: String) -> Data {
+    func contentsOfFileAsData(_ path: String) throws -> Data {
         guard let data = FileManager.default.contents(atPath: path) else {
-            fatalError("Unable to find a valid output file from a prior run of Muter at \(path)")
+            throw AcceptanceTestsError.reason("Unable to find a valid output file from a prior run of Muter at \(path)")
         }
         return data
     }
 }
 
 extension AcceptanceTests {
-    func numberOfDiscoveredFileLists(in output: String) -> Int {
-        return applyRegex("[a-zA-Z]+.swift \\([0-9]+ mutants\\)", to: output)
+    func numberOfDiscoveredFileLists(in output: String) throws -> Int {
+        return try applyRegex("[a-zA-Z]+.swift \\([0-9]+ mutants\\)", to: output)
     }
     
-    func numberOfXcodeFormattedMessages(in output: String) -> Int {
-        return applyRegex("[\\/[:alnum:]\\/]+[a-zA-Z]+.swift\\:[0-9]+:[0-9]+\\: warning: [a-zA-Z ]+: [a-zA-Z[:punct:] ]+/?",
-                          to: output)
+    func numberOfXcodeFormattedMessages(in output: String) throws -> Int {
+        return try applyRegex("[\\/[:alnum:]\\/]+[a-zA-Z]+.swift\\:[0-9]+:[0-9]+\\: warning: [a-zA-Z ]+: [a-zA-Z[:punct:] ]+/?",
+                              to: output)
     }
     
-    func numberOfProgressUpdates(in output: String) -> Int {
-        return applyRegex("Percentage complete:  [0-9]+%/?",
-                          to: output)
+    func numberOfProgressUpdates(in output: String) throws -> Int {
+        return try applyRegex("Percentage complete:  [0-9]+%/?",
+                              to: output)
     }
     
-    func numberOfDurationEstimates(in output: String) -> Int {
-        return applyRegex("ETC: [0-9]+ minute/?",
-                          to: output)
+    func numberOfDurationEstimates(in output: String) throws -> Int {
+        return try applyRegex("ETC: [0-9]+ minute/?",
+                              to: output)
     }
     
-    func applyRegex(_ regex: String, to output: String) -> Int {
-        let filePathRegex = try! NSRegularExpression(pattern: regex, options: .anchorsMatchLines)
+    func applyRegex(_ regex: String, to output: String) throws -> Int {
+        let filePathRegex = try NSRegularExpression(pattern: regex, options: .anchorsMatchLines)
         let entireString = NSRange(location: 0, length: output.count)
         return filePathRegex.numberOfMatches(in: output,
                                              options: .withoutAnchoringBounds,

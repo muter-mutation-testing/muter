@@ -3,13 +3,16 @@ import Foundation
 final class MutationTestOutcome {
     var mutations: [Mutation]
     var coverage: Coverage
+    var testDuration: TimeInterval
     
     init(
         mutations: [Mutation] = [],
-        coverage: Coverage = .null
+        coverage: Coverage = .null,
+        testDuration: TimeInterval = 0
     ) {
         self.mutations = mutations
         self.coverage = coverage
+        self.testDuration = 0
     }
 }
 

@@ -2,6 +2,7 @@ import SwiftSyntax
 import Foundation
 
 protocol AnyRunCommandState: AnyObject {
+    var mutationTestingStartTime: Date { get }
     var muterConfiguration: MuterConfiguration { get }
     var projectDirectoryURL: URL { get }
     var tempDirectoryURL: URL { get }
@@ -19,6 +20,7 @@ protocol AnyRunCommandState: AnyObject {
 }
 
 final class RunCommandState: AnyRunCommandState {
+    var mutationTestingStartTime: Date = .init()
     var muterConfiguration: MuterConfiguration = .init()
     var projectDirectoryURL: URL = URL(fileURLWithPath: "path")
     var tempDirectoryURL: URL = URL(fileURLWithPath: "path")
@@ -59,8 +61,6 @@ extension RunCommandState {
         case sourceCodeParsed([FilePath: SourceFileSyntax])
         case swapFilePathGenerated([FilePath: FilePath])
         case mutationTestOutcomeGenerated(MutationTestOutcome)
-        case removeProjectFromPreviousRunCompleted
-        case removeProjectFromPreviousRunSkipped
     }
 }
 
@@ -90,9 +90,7 @@ extension RunCommandState {
                 self.swapFilePathsByOriginalPath = swapFilePathsByOriginalPath
             case .mutationTestOutcomeGenerated(let mutationTestOutcome):
                 self.mutationTestOutcome = mutationTestOutcome
-            case .removeProjectFromPreviousRunCompleted,
-                 .copyToTempDirectoryCompleted,
-                 .removeProjectFromPreviousRunSkipped:
+            case .copyToTempDirectoryCompleted:
                 break
             }
         }

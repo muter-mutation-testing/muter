@@ -7,7 +7,7 @@ import SwiftSyntaxParser
 func sourceCode(fromFileAt path: String) -> SourceCodeInfo? {
     let url = URL(fileURLWithPath: path)
     return (try? SyntaxParser.parse(url))
-        .map { (path: url.absoluteString, code: $0) }
+        .map { (path: url.path, code: $0) }
         .map(SourceCodeInfo.init)
 }
 

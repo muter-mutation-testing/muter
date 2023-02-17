@@ -15,7 +15,9 @@ struct PerformMutationTesting: RunCommandStep {
         self.notificationCenter = notificationCenter
     }
     
-    func run(with state: AnyRunCommandState) -> Result<[RunCommandState.Change], MuterError> {
+    func run(
+        with state: AnyRunCommandState
+    ) -> Result<[RunCommandState.Change], MuterError> {
         fileManager.changeCurrentDirectoryPath(state.tempDirectoryURL.path)
 
         let result = performMutationTesting(using: state)
@@ -24,7 +26,12 @@ struct PerformMutationTesting: RunCommandStep {
             let mutationTestOutcome = state.mutationTestOutcome
             mutationTestOutcome.mutations = outcomes
             mutationTestOutcome.coverage = state.projectCoverage
-            notificationCenter.post(name: .mutationTestingFinished, object: mutationTestOutcome)
+            mutationTestOutcome.testDuration = Date().timeElapsed(since: state.mutationTestingStartTime)
+
+            notificationCenter.post(
+                name: .mutationTestingFinished,
+                object: mutationTestOutcome
+            )
             return .success([.mutationTestOutcomeGenerated(mutationTestOutcome)])
         case .failure(let reason):
             return .failure(reason)
@@ -113,5 +120,14 @@ private extension PerformMutationTesting {
     
     func logFileName(for mutationPoint: MutationPoint) -> String {
         return "\(mutationPoint.fileName)_\(mutationPoint.mutationOperatorId.rawValue)_\(mutationPoint.position).log"
+    }
+}
+
+private extension Date {
+    func timeElapsed(since reference: Date) -> TimeInterval {
+        DateInterval(
+            start: reference,
+            end: self
+        ).duration
     }
 }

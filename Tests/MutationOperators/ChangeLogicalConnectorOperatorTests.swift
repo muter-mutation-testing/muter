@@ -1,6 +1,5 @@
 import XCTest
-import SwiftSyntax
-import SwiftSyntaxParser
+import TestingExtensions
 
 @testable import muterCore
 
@@ -16,23 +15,28 @@ final class ChangeLogicalConnectorOperatorTests: XCTestCase {
 
         visitor.walk(sourceWithLogicalOperators.code)
 
-        let rewritten = Rewriter(visitor.schemataMappings)
+        let rewritten = MutationSchemataRewriter(visitor.schemataMappings)
             .visit(sourceWithLogicalOperators.code)
 
         XCTAssertEqual(
             rewritten.description,
             """
-            import Foundation
             #if os(iOS) || os(tvOS)
             print("please ignore me")
             #endif
 
-            func someCode() -> Bool {
+            func someCode() -> Bool { if ProcessInfo.processInfo.environment["sampleWithLogicalOperators_6_18_101"] != nil {
+                return false || false
+            } else {
                 return false && false
             }
+            }
 
-            func someOtherCode() -> Bool {
+            func someOtherCode() -> Bool { if ProcessInfo.processInfo.environment["sampleWithLogicalOperators_10_17_160"] != nil {
+                return true && true
+            } else {
                 return true || true
+            }
             }
 
             """
@@ -52,7 +56,9 @@ final class ChangeLogicalConnectorOperatorTests: XCTestCase {
                 source: "\n    return false && false",
                 schematas: [
                     try .make(
-                        id: "LogicalOperator_@10_160_17",
+                        id: "sampleWithLogicalOperators_10_17_160",
+                        filePath: sourceWithLogicalOperators.path,
+                        mutationOperatorId: .logicalOperator,
                         syntaxMutation: "\n    return true && true",
                         positionInSourceCode: MutationPosition(
                             utf8Offset: 160,
@@ -71,7 +77,9 @@ final class ChangeLogicalConnectorOperatorTests: XCTestCase {
                 source: "\n    return true || true",
                 schematas: [
                     try .make(
-                        id: "LogicalOperator_@6_101_18",
+                        id: "sampleWithLogicalOperators_6_18_101",
+                        filePath: sourceWithLogicalOperators.path,
+                        mutationOperatorId: .logicalOperator,
                         syntaxMutation: "\n    return false || false",
                         positionInSourceCode: MutationPosition(
                             utf8Offset: 101,
