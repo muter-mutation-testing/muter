@@ -130,12 +130,12 @@ struct MutationTestingDelegate: MutationTestingIODelegate {
 
         let process = Process()
 
+        var environment = [isMuterRunningKey: isMuterRunningValue]
         if schemata != .null {
-            process.environment = [
-                schemata.id: "YES"
-            ]
+            environment[schemata.id] = "YES"
         }
 
+        process.environment = environment
         process.arguments = testCommandArguments
         process.executableURL = URL(fileURLWithPath: configuration.testCommandExecutable)
         process.qualityOfService = .userInitiated

@@ -68,13 +68,19 @@ final class MutationTestingDelegateTests: XCTestCase {
             and: FileHandle()
         )
         
+        XCTAssertEqual(
+            testProcess.environment,
+            [
+                "schemata_id": "YES",
+                isMuterRunningKey: isMuterRunningValue
+            ]
+        )
         XCTAssertEqual(testProcess.arguments, ["test", "--skip-build"])
-        XCTAssertEqual(testProcess.environment, ["schemata_id": "YES"])
         XCTAssertEqual(testProcess.executableURL?.path, "/tmp/swift")
         XCTAssertEqual(testProcess.qualityOfService, .userInitiated)
     }
     
-    func test_whenSchemetaIsNull_thenDontAddToEnvVars() throws {
+    func test_alwaysAddMuterRunningKey() throws {
         let configuration = MuterConfiguration(
             executable: "/tmp/swift",
             arguments: ["test"]
@@ -88,7 +94,10 @@ final class MutationTestingDelegateTests: XCTestCase {
             and: FileHandle()
         )
 
-        XCTAssertNil(testProcess.environment)
+        XCTAssertEqual(
+            testProcess.environment,
+            [isMuterRunningKey: isMuterRunningValue]
+        )
     }
     
     func test_switchOn() throws {

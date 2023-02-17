@@ -1,6 +1,8 @@
 import Foundation
 
-// TODO: Move
+let isMuterRunningKey = "IS_MUTER_RUNNING"
+let isMuterRunningValue = "YES"
+
 enum BuildSystem: String {
     case xcodebuild
     case swift
