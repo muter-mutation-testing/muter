@@ -11,11 +11,12 @@ final class SchemataBuilderTests: MuterTestCase {
         
         fileManager.currentDirectoryPathToReturn = "/path/fileName"
     }
+
     func test_schemataMerging() throws {
         let codeBlock = try sourceCode("return 1").statements
 
         let x = SchemataMutationMapping()
-        x.add(codeBlock, try .make())
+        x.add(codeBlock, try .make(filePath: ""))
         x.add(codeBlock, try .make())
         
         let y = SchemataMutationMapping()
@@ -44,11 +45,11 @@ final class SchemataBuilderTests: MuterTestCase {
         XCTAssertEqual(
             actualMutationSwitch.description,
             """
-            if ProcessInfo.processInfo.environment[\"Debug_0_0_0\"] != nil {
+            if ProcessInfo.processInfo.environment[\"file_0_0_0\"] != nil {
               a >= b
-            } else if ProcessInfo.processInfo.environment[\"Debug_2_0_0\"] != nil {
+            } else if ProcessInfo.processInfo.environment[\"file_2_0_0\"] != nil {
               a == b
-            } else if ProcessInfo.processInfo.environment[\"Debug_1_0_0\"] != nil {
+            } else if ProcessInfo.processInfo.environment[\"file_1_0_0\"] != nil {
               a <= b
             } else {
               a != b
@@ -73,11 +74,11 @@ final class SchemataBuilderTests: MuterTestCase {
         XCTAssertEqual(
             actualMutationSwitch.description,
             """
-            if ProcessInfo.processInfo.environment[\"Debug_0_0_0\"] != nil {
+            if ProcessInfo.processInfo.environment[\"file_0_0_0\"] != nil {
               a >= b
-            } else if ProcessInfo.processInfo.environment[\"Debug_2_0_0\"] != nil {
+            } else if ProcessInfo.processInfo.environment[\"file_2_0_0\"] != nil {
               a == b
-            } else if ProcessInfo.processInfo.environment[\"Debug_1_0_0\"] != nil {
+            } else if ProcessInfo.processInfo.environment[\"file_1_0_0\"] != nil {
               a <= b
             } else {
               a != b
@@ -93,6 +94,7 @@ final class SchemataBuilderTests: MuterTestCase {
             .enumerated()
             .compactMap {
                 try MutationSchema.make(
+                    filePath: "/path/to/file",
                     syntaxMutation: $0.element,
                     position: MutationPosition(
                         utf8Offset: 0,
