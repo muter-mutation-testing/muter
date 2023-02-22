@@ -2,7 +2,7 @@ import XCTest
 
 @testable import muterCore
 
-final class RunCommandStateTests: XCTestCase {
+final class RunCommandStateTests: MuterTestCase {
     private let sut = RunCommandState(
         from: .make(
             filesToMutate: [

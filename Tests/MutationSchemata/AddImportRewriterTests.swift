@@ -2,7 +2,7 @@ import XCTest
 
 @testable import muterCore
 
-final class AddImportRewriterTests: XCTestCase {
+final class AddImportRewriterTests: MuterTestCase {
     func test_addImport() throws {
         let code = try sourceCode(
             """

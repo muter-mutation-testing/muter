@@ -10,7 +10,7 @@ class MutationTestingDelegateSpy: Spy, MutationTestingIODelegate {
     private(set) var mutatedFilePaths: [String] = []
     private(set) var restoredFilePaths: [String] = []
     
-    private(set) var schematas: [Schemata] = []
+    private(set) var schematas: MutationSchemata = []
     private(set) var testRuns: [XCTestRun] = []
     private(set) var testRunPaths: [URL] = []
     private(set) var testLogs: [String] = []
@@ -34,7 +34,7 @@ class MutationTestingDelegateSpy: Spy, MutationTestingIODelegate {
     }
     
     func runTestSuite(
-        withSchemata schemata: Schemata,
+        withSchemata schemata: MutationSchema,
         using configuration: MuterConfiguration,
         savingResultsIntoFileNamed fileName: String
     ) -> (
@@ -46,7 +46,7 @@ class MutationTestingDelegateSpy: Spy, MutationTestingIODelegate {
         return (testSuiteOutcomes.remove(at: 0), "testLog")
     }
     
-    func switchOn(schemata: Schemata, for testRun: XCTestRun, at path: URL) throws {
+    func switchOn(schemata: MutationSchema, for testRun: XCTestRun, at path: URL) throws {
         methodCalls.append(#function)
         schematas.append(schemata)
         testRuns.append(testRun)

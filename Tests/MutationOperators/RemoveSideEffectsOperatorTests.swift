@@ -4,29 +4,28 @@ import TestingExtensions
 
 @testable import muterCore
 
-final class RemoveSideEffectsOperatorTests: XCTestCase {
+final class RemoveSideEffectsOperatorTests: MuterTestCase {
     private lazy var sourceWithSideEffects = sourceCode(
         fromFileAt: "\(fixturesDirectory)/MutationExamples/SideEffect/sampleWithSideEffects.swift"
     )!
 
     func test_visitor() throws {
-        let visitor = RemoveSideEffectsOperator.SchemataVisitor(
+        let visitor = RemoveSideEffectsOperator.Visitor(
             sourceFileInfo: sourceWithSideEffects.asSourceFileInfo
         )
 
         visitor.walk(sourceWithSideEffects.code)
 
-        let actualSchematas = visitor.schemataMappings
-        let expectedSchematas = try SchemataMutationMapping.make(
+        let actualSchemata = visitor.schemataMappings
+        let expectedSchemata = try SchemataMutationMapping.make(
             (
                 source: "\n        functionCall(\"some argument\",\n                     anArgumentLabel: \"some argument that\'s different\",\n                     anotherArgumentLabel: 5)",
-                schematas: [
+                schemata: [
                     try .make(
-                        id: "sampleWithSideEffects_38_46_1017",
                         filePath: sourceWithSideEffects.path,
                         mutationOperatorId: .removeSideEffects,
                         syntaxMutation: "",
-                        positionInSourceCode: MutationPosition(
+                        position: MutationPosition(
                             utf8Offset: 1017,
                             line: 38,
                             column: 46
@@ -41,13 +40,12 @@ final class RemoveSideEffectsOperatorTests: XCTestCase {
             ),
             (
                 source: "\n        _ = causesSideEffect()\n        return 1",
-                schematas: [
+                schemata: [
                     try .make(
-                        id: "sampleWithSideEffects_3_31_86",
                         filePath: sourceWithSideEffects.path,
                         mutationOperatorId: .removeSideEffects,
                         syntaxMutation: "\n        return 1",
-                        positionInSourceCode: MutationPosition(
+                        position: MutationPosition(
                             utf8Offset: 86,
                             line: 3,
                             column: 31
@@ -62,13 +60,12 @@ final class RemoveSideEffectsOperatorTests: XCTestCase {
             ),
             (
                 source: "\n        let key = \"some key\"\n        let value = aFunctionThatReturnsAValue()\n        someFunctionThatWritesToADatabase(key: key, value: value)",
-                schematas: [
+                schemata: [
                     try .make(
-                        id: "sampleWithSideEffects_21_66_480",
                         filePath: sourceWithSideEffects.path,
                         mutationOperatorId: .removeSideEffects,
                         syntaxMutation:  "\n        let key = \"some key\"\n        let value = aFunctionThatReturnsAValue()",
-                        positionInSourceCode: MutationPosition(
+                        position: MutationPosition(
                             utf8Offset: 480,
                             line: 21,
                             column: 66
@@ -83,13 +80,12 @@ final class RemoveSideEffectsOperatorTests: XCTestCase {
             ),
             (
                 source: "\n        print(\"something\")\n\n        _ = causesSideEffect()",
-                schematas: [
+                schemata: [
                     try .make(
-                        id: "sampleWithSideEffects_10_31_208",
                         filePath: sourceWithSideEffects.path,
                         mutationOperatorId: .removeSideEffects,
                         syntaxMutation: "\n        print(\"something\")",
-                        positionInSourceCode: MutationPosition(
+                        position: MutationPosition(
                             utf8Offset: 208,
                             line: 10,
                             column: 31
@@ -104,17 +100,17 @@ final class RemoveSideEffectsOperatorTests: XCTestCase {
             )
         )
 
-        XCTAssertEqual(actualSchematas, expectedSchematas)
+        XCTAssertEqual(actualSchemata, expectedSchemata)
     }
 
     func test_rewriter() throws {
-        let visitor = RemoveSideEffectsOperator.SchemataVisitor(
+        let visitor = RemoveSideEffectsOperator.Visitor(
             sourceFileInfo: sourceWithSideEffects.asSourceFileInfo
         )
 
         visitor.walk(sourceWithSideEffects.code)
 
-        let rewriter = MutationSchemataRewriter(visitor.schemataMappings).visit(sourceWithSideEffects.code)
+        let rewriter = MuterRewriter(visitor.schemataMappings).visit(sourceWithSideEffects.code)
 
         XCTAssertEqual(
             rewriter.description,

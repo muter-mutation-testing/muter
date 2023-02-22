@@ -2,7 +2,7 @@ import XCTest
 
 @testable import muterCore
 
-final class MuterTestReportTests: XCTestCase {
+final class MuterTestReportTests: MuterTestCase {
     func test_calculatingNonEmptyTestOutcomes() {
         let outcome =
             MutationTestOutcome.make(
@@ -69,7 +69,7 @@ extension MuterTestReportTests {
                     mutationOperatorId: .ror,
                     filePath: "/tmp/file1.swift",
                     position: .firstPosition),
-                snapshot: MutationOperatorSnapshot(
+                snapshot: MutationOperator.Snapshot(
                     before: "==",
                     after: "!=",
                     description: "changed from == to !="
@@ -81,7 +81,7 @@ extension MuterTestReportTests {
                     mutationOperatorId: .ror,
                     filePath: "/tmp/file1.swift",
                     position: .firstPosition),
-                snapshot: MutationOperatorSnapshot(
+                snapshot: MutationOperator.Snapshot(
                     before: "==",
                     after: "!=",
                     description: "changed from == to !="
@@ -93,7 +93,7 @@ extension MuterTestReportTests {
                     mutationOperatorId: .ror,
                     filePath: "/tmp/file1.swift",
                     position: .firstPosition),
-                snapshot: MutationOperatorSnapshot(
+                snapshot: MutationOperator.Snapshot(
                     before: "==",
                     after: "!=",
                     description: "changed from == to !="
@@ -105,7 +105,7 @@ extension MuterTestReportTests {
                     mutationOperatorId: .removeSideEffects,
                     filePath: "/tmp/file2.swift",
                     position: .firstPosition),
-                snapshot: MutationOperatorSnapshot(
+                snapshot: MutationOperator.Snapshot(
                     before: "==",
                     after: "!=",
                     description: "changed from == to !="
@@ -117,7 +117,7 @@ extension MuterTestReportTests {
                     mutationOperatorId: .removeSideEffects,
                     filePath: "/tmp/file2.swift",
                     position: .firstPosition),
-                snapshot: MutationOperatorSnapshot(
+                snapshot: MutationOperator.Snapshot(
                     before: "==",
                     after: "!=",
                     description: "changed from == to !="
@@ -129,7 +129,7 @@ extension MuterTestReportTests {
                     mutationOperatorId: .ror,
                     filePath: "/tmp/file3.swift",
                     position: .firstPosition),
-                snapshot: MutationOperatorSnapshot(
+                snapshot: MutationOperator.Snapshot(
                     before: "==",
                     after: "!=",
                     description: "changed from == to !="
@@ -141,7 +141,7 @@ extension MuterTestReportTests {
                     mutationOperatorId: .ror,
                     filePath: "/tmp/file3.swift",
                     position: .firstPosition),
-                snapshot: MutationOperatorSnapshot(
+                snapshot: MutationOperator.Snapshot(
                     before: "==",
                     after: "!=",
                     description: "changed from == to !="
@@ -153,7 +153,7 @@ extension MuterTestReportTests {
                     mutationOperatorId: .ror,
                     filePath: "/tmp/file3.swift",
                     position: .firstPosition),
-                snapshot: MutationOperatorSnapshot(
+                snapshot: MutationOperator.Snapshot(
                     before: "==",
                     after: "!=",
                     description: "changed from == to !="
@@ -165,7 +165,7 @@ extension MuterTestReportTests {
                     mutationOperatorId: .ror,
                     filePath: "/tmp/file 4.swift", // this file name intentionally has a space in it
                     position: .firstPosition),
-                snapshot: MutationOperatorSnapshot(
+                snapshot: MutationOperator.Snapshot(
                     before: "==",
                     after: "!=",
                     description: "changed from == to !="

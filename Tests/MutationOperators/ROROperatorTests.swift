@@ -2,7 +2,7 @@ import XCTest
 
 @testable import muterCore
 
-final class ROROperatorTests: XCTestCase {
+final class ROROperatorTests: MuterTestCase {
     private lazy var sourceWithConditionalLogic = sourceCode(
         fromFileAt: "\(mutationExamplesDirectory)/NegateConditionals/sampleWithConditionalOperators.swift"
     )!
@@ -16,7 +16,7 @@ final class ROROperatorTests: XCTestCase {
     )!
 
     func test_visitor() throws {
-        let visitor = ROROperator.SchemataVisitor(
+        let visitor = ROROperator.Visitor(
             sourceFileInfo: sourceWithConditionalLogic.asSourceFileInfo
         )
 
@@ -26,130 +26,122 @@ final class ROROperatorTests: XCTestCase {
         let expectedMappings = try SchemataMutationMapping.make(
             (
                 source: "\n        let b = a == 5\n        let e = a != 1\n        let c = a >= 4\n        let d = a <= 10\n        let f = a < 5\n        let g = a > 5\n\n        if a == 10 {\n            return \"hello\"\n        }\n\n        return a == 9 ? \"goodbye\" : \"what\"",
-                schematas: [
+                schemata: [
                     try .make(
-                    id: "sampleWithConditionalOperators_3_19_76",
                     filePath: sourceWithConditionalLogic.path,
                     mutationOperatorId: .ror,
                     syntaxMutation: "\n        let b = a != 5\n        let e = a != 1\n        let c = a >= 4\n        let d = a <= 10\n        let f = a < 5\n        let g = a > 5\n\n        if a == 10 {\n            return \"hello\"\n        }\n\n        return a == 9 ? \"goodbye\" : \"what\"",
-                    positionInSourceCode: MutationPosition(
+                    position: MutationPosition(
                         utf8Offset: 76,
                         line: 3,
                         column: 19
                     ),
-                    snapshot: MutationOperatorSnapshot(
+                    snapshot: MutationOperator.Snapshot(
                         before: "==",
                         after: "!=",
                         description: "changed == to !="
                     )
                 ),
                     try .make(
-                    id: "sampleWithConditionalOperators_4_19_99",
                     filePath: sourceWithConditionalLogic.path,
                     mutationOperatorId: .ror,
                     syntaxMutation: "\n        let b = a == 5\n        let e = a == 1\n        let c = a >= 4\n        let d = a <= 10\n        let f = a < 5\n        let g = a > 5\n\n        if a == 10 {\n            return \"hello\"\n        }\n\n        return a == 9 ? \"goodbye\" : \"what\"",
-                    positionInSourceCode: MutationPosition(
+                    position: MutationPosition(
                         utf8Offset: 99,
                         line: 4,
                         column: 19
                     ),
-                    snapshot: MutationOperatorSnapshot(
+                    snapshot: MutationOperator.Snapshot(
                         before: "!=",
                         after: "==",
                         description: "changed != to =="
                     )
                 ),
                     try .make(
-                    id: "sampleWithConditionalOperators_5_19_122",
                     filePath: sourceWithConditionalLogic.path,
                     mutationOperatorId: .ror,
                     syntaxMutation: "\n        let b = a == 5\n        let e = a != 1\n        let c = a <= 4\n        let d = a <= 10\n        let f = a < 5\n        let g = a > 5\n\n        if a == 10 {\n            return \"hello\"\n        }\n\n        return a == 9 ? \"goodbye\" : \"what\"",
-                    positionInSourceCode: MutationPosition(
+                    position: MutationPosition(
                         utf8Offset: 122,
                         line: 5,
                         column: 19
                     ),
-                    snapshot: MutationOperatorSnapshot(
+                    snapshot: MutationOperator.Snapshot(
                         before: ">=",
                         after: "<=",
                         description: "changed >= to <="
                     )
                 ),
                     try .make(
-                    id: "sampleWithConditionalOperators_6_19_145",
                     filePath: sourceWithConditionalLogic.path,
                     mutationOperatorId: .ror,
                     syntaxMutation: "\n        let b = a == 5\n        let e = a != 1\n        let c = a >= 4\n        let d = a >= 10\n        let f = a < 5\n        let g = a > 5\n\n        if a == 10 {\n            return \"hello\"\n        }\n\n        return a == 9 ? \"goodbye\" : \"what\"",
-                    positionInSourceCode: MutationPosition(
+                    position: MutationPosition(
                         utf8Offset: 145,
                         line: 6,
                         column: 19
                     ),
-                    snapshot: MutationOperatorSnapshot(
+                    snapshot: MutationOperator.Snapshot(
                         before: "<=",
                         after: ">=",
                         description: "changed <= to >="
                     )
                 ),
                     try .make(
-                    id: "sampleWithConditionalOperators_7_19_169",
                     filePath: sourceWithConditionalLogic.path,
                     mutationOperatorId: .ror,
                     syntaxMutation: "\n        let b = a == 5\n        let e = a != 1\n        let c = a >= 4\n        let d = a <= 10\n        let f = a > 5\n        let g = a > 5\n\n        if a == 10 {\n            return \"hello\"\n        }\n\n        return a == 9 ? \"goodbye\" : \"what\"",
-                    positionInSourceCode: MutationPosition(
+                    position: MutationPosition(
                         utf8Offset: 169,
                         line: 7,
                         column: 19
                     ),
-                    snapshot: MutationOperatorSnapshot(
+                    snapshot: MutationOperator.Snapshot(
                         before: "<",
                         after: ">",
                         description: "changed < to >"
                     )
                 ),
                     try .make(
-                    id: "sampleWithConditionalOperators_8_19_191",
                     filePath: sourceWithConditionalLogic.path,
                     mutationOperatorId: .ror,
                     syntaxMutation: "\n        let b = a == 5\n        let e = a != 1\n        let c = a >= 4\n        let d = a <= 10\n        let f = a < 5\n        let g = a < 5\n\n        if a == 10 {\n            return \"hello\"\n        }\n\n        return a == 9 ? \"goodbye\" : \"what\"",
-                    positionInSourceCode: MutationPosition(
+                    position: MutationPosition(
                         utf8Offset: 191,
                         line: 8,
                         column: 19
                     ),
-                    snapshot: MutationOperatorSnapshot(
+                    snapshot: MutationOperator.Snapshot(
                         before: ">",
                         after: "<",
                         description: "changed > to <"
                     )
                 ),
                     try .make(
-                    id: "sampleWithConditionalOperators_10_14_209",
                     filePath: sourceWithConditionalLogic.path,
                     mutationOperatorId: .ror,
                     syntaxMutation: "\n        let b = a == 5\n        let e = a != 1\n        let c = a >= 4\n        let d = a <= 10\n        let f = a < 5\n        let g = a > 5\n\n        if a != 10 {\n            return \"hello\"\n        }\n\n        return a == 9 ? \"goodbye\" : \"what\"",
-                    positionInSourceCode: MutationPosition(
+                    position: MutationPosition(
                         utf8Offset: 209,
                         line: 10,
                         column: 14
                     ),
-                    snapshot: MutationOperatorSnapshot(
+                    snapshot: MutationOperator.Snapshot(
                         before: "==",
                         after: "!=",
                         description: "changed == to !="
                     )
                 ),
                     try .make(
-                    id: "sampleWithConditionalOperators_14_18_272",
                     filePath: sourceWithConditionalLogic.path,
                     mutationOperatorId: .ror,
                     syntaxMutation: "\n        let b = a == 5\n        let e = a != 1\n        let c = a >= 4\n        let d = a <= 10\n        let f = a < 5\n        let g = a > 5\n\n        if a == 10 {\n            return \"hello\"\n        }\n\n        return a != 9 ? \"goodbye\" : \"what\"",
-                    positionInSourceCode: MutationPosition(
+                    position: MutationPosition(
                         utf8Offset: 272,
                         line: 14,
                         column: 18
                     ),
-                    snapshot: MutationOperatorSnapshot(
+                    snapshot: MutationOperator.Snapshot(
                         before: "==",
                         after: "!=",
                         description: "changed == to !="
@@ -162,7 +154,7 @@ final class ROROperatorTests: XCTestCase {
     }
 
     func test_visitorOnFileWithoutOperator() {
-        let visitor = ROROperator.SchemataVisitor(
+        let visitor = ROROperator.Visitor(
             sourceFileInfo: sourceWithoutMutableCode.asSourceFileInfo
         )
 
@@ -172,7 +164,7 @@ final class ROROperatorTests: XCTestCase {
     }
 
     func test_ignoresFunctionDeclarations() throws {
-        let visitor = ROROperator.SchemataVisitor(
+        let visitor = ROROperator.Visitor(
             sourceFileInfo: sourceWithConditionalLogic.asSourceFileInfo
         )
 
@@ -183,7 +175,7 @@ final class ROROperatorTests: XCTestCase {
     }
 
     func test_ignoresConditionalConformancesConstraints() {
-        let visitor = ROROperator.SchemataVisitor(
+        let visitor = ROROperator.Visitor(
             sourceFileInfo: conditionalConformanceConstraints.asSourceFileInfo
         )
 
@@ -193,14 +185,14 @@ final class ROROperatorTests: XCTestCase {
     }
 
     func test_rewriter() {
-        let visitor = ROROperator.SchemataVisitor(
+        let visitor = ROROperator.Visitor(
             sourceFileInfo: sourceWithConditionalLogic.asSourceFileInfo
         )
 
         visitor.walk(sourceWithConditionalLogic.code)
 
         let actualSchematas = visitor.schemataMappings
-        let rewriter = MutationSchemataRewriter(actualSchematas).visit(sourceWithConditionalLogic.code)
+        let rewriter = MuterRewriter(actualSchematas).visit(sourceWithConditionalLogic.code)
 
         XCTAssertEqual(
             rewriter.description,

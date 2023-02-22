@@ -1,6 +1,10 @@
 import Foundation
 
 public protocol FileSystemManager {
+    var currentDirectoryPath: String { get }
+
+    var temporaryDirectory: URL { get }
+
     func createDirectory(atPath path: String,
                          withIntermediateDirectories createIntermediates: Bool,
                          attributes: [FileAttributeKey: Any]?) throws
@@ -8,16 +12,9 @@ public protocol FileSystemManager {
     func createFile(atPath path: String,
                     contents data: Data?,
                     attributes attr: [FileAttributeKey: Any]?) -> Bool
-    
-    func url(for directory: FileManager.SearchPathDirectory,
-             in domain: FileManager.SearchPathDomainMask,
-             appropriateFor url: URL?,
-             create shouldCreate: Bool) throws -> URL
 
     func copyItem(atPath srcPath: String,
                   toPath dstPath: String) throws
-
-    var currentDirectoryPath: String { get }
     
     @discardableResult
     func changeCurrentDirectoryPath(_ path: String) -> Bool

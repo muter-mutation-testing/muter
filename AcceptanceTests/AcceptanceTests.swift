@@ -51,7 +51,7 @@ final class AcceptanceTests: XCTestCase {
         ]
         
         let numberOfEmptyLogFiles = try expectedLogFiles
-            .map(self.contentsOfLogFile(named:))
+            .map(contentsOfLogFile(named:))
             .count { $0.isEmpty }
         
         XCTAssertEqual(logFiles.sorted(), expectedLogFiles.sorted()) // Sort these so it's easier to reason about any erroneous failures

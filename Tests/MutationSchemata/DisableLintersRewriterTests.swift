@@ -2,7 +2,7 @@ import XCTest
 
 @testable import muterCore
 
-final class DisableLintersRewriterTests: XCTestCase {
+final class DisableLintersRewriterTests: MuterTestCase {
     func test_disableLinters() throws {
         let code = try sourceCode(
             """

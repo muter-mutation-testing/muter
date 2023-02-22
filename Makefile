@@ -6,10 +6,11 @@ repodir = $(shell pwd)
 builddir = $(repodir)/.build
 flags=-Xlinker -weak-l_InternalSwiftSyntaxParser -Xswiftc -suppress-warnings
 
-build: 
+build:
+	@swift package clean
 	@swift build -c debug $(flags)
 
-build-release: 
+build-release:
 	@swift build -c release --product muter --disable-sandbox $(flags)
 
 project:

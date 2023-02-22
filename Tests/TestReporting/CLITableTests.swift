@@ -2,7 +2,7 @@ import XCTest
 
 @testable import muterCore
 
-final class CLITableTests: XCTestCase {
+final class CLITableTests: MuterTestCase {
     private let fileColumn = CLITable.Column(title: "File name", rows: [
         CLITable.Row(value: "file 1.swift"),
         CLITable.Row(value: "file2.swift"),

@@ -13,7 +13,7 @@ class FileManagerSpy: Spy, FileSystemManager {
     private(set) var contentsAtPathSortedOrder: [ComparisonResult] = []
     private(set) var contents: Data?
 
-    var tempDirectory: URL!
+
     private var fileContentsQueue: Queue<Data> = .init()
     var fileContentsToReturn: Data? {
         set {
@@ -23,6 +23,8 @@ class FileManagerSpy: Spy, FileSystemManager {
             fileContentsQueue.dequeue()
         }
     }
+
+    var temporaryDirectory: URL = URL(fileURLWithPath: "")
     var currentDirectoryPathToReturn: String = ""
     var changeCurrentDirectoryPath: [String] = []
     var errorToThrow: Error?
@@ -34,7 +36,10 @@ class FileManagerSpy: Spy, FileSystemManager {
         return currentDirectoryPathToReturn
     }
     
-    func changeCurrentDirectoryPath(_ path: String) -> Bool {
+    @discardableResult
+    func changeCurrentDirectoryPath(
+        _ path: String
+    ) -> Bool {
         methodCalls.append(#function)
         changeCurrentDirectoryPath.append(path)
         return true
@@ -53,61 +58,60 @@ class FileManagerSpy: Spy, FileSystemManager {
         }
     }
 
-    func createFile(atPath path: String, contents data: Data?, attributes attr: [FileAttributeKey: Any]?) -> Bool {
+    func createFile(
+        atPath path: String,
+        contents data: Data?,
+        attributes attr: [FileAttributeKey: Any]?
+    ) -> Bool {
         methodCalls.append(#function)
         paths.append(path)
         contents = data
 
         return true
     }
-    
-    func url(for directory: FileManager.SearchPathDirectory,
-             in domain: FileManager.SearchPathDomainMask,
-             appropriateFor url: URL?,
-             create shouldCreate: Bool) throws -> URL {
-        methodCalls.append(#function)
-        searchPathDirectories.append(directory)
-        domains.append(domain)
-        if let path = url?.path {
-            paths.append(path)
-        }
-        
-        if let error = errorToThrow {
-            throw error
-        }
-        
-        return tempDirectory
-    }
 
-    func copyItem(atPath srcPath: String,
-                  toPath dstPath: String) throws {
+    func copyItem(
+        atPath srcPath: String,
+        toPath dstPath: String
+    ) throws {
         methodCalls.append(#function)
         copyPaths.append((source: srcPath, dest: dstPath))
         if let error = errorToThrow { throw error }
     }
 
-    func contents(atPath path: String) -> Data? {
+    func contents(
+        atPath path: String
+    ) -> Data? {
         methodCalls.append(#function)
         return fileContentsToReturn
     }
     
-    func subpaths(atPath path: String) -> [String]? {
+    func subpaths(
+        atPath path: String
+    ) -> [String]? {
         methodCalls.append(#function)
         return subpathsToReturn
     }
     
-    func fileExists(atPath path: String) -> Bool {
+    func fileExists(
+        atPath path: String
+    ) -> Bool {
         methodCalls.append(#function)
-        return fileExistsToReturn.removeFirst()
+        return fileExistsToReturn.isEmpty ? false : fileExistsToReturn.removeFirst()
     }
 
-    func removeItem(atPath path: String) throws {
+    func removeItem(
+        atPath path: String
+    ) throws {
         methodCalls.append(#function)
         paths.append(path)
         if let error = errorToThrow { throw error }
     }
 
-    func contents(atPath path: String, sortedByDate: ComparisonResult) throws -> [String] {
+    func contents(
+        atPath path: String,
+        sortedByDate: ComparisonResult
+    ) throws -> [String] {
         methodCalls.append(#function)
         contentsAtPathSorted.append(path)
         contentsAtPathSortedOrder.append(sortedByDate)

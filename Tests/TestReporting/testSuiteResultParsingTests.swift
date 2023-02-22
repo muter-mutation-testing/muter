@@ -2,7 +2,7 @@ import XCTest
 
 @testable import muterCore
 
-final class TestSuiteResultParsingTests: XCTestCase {
+final class TestSuiteResultParsingTests: MuterTestCase {
     func test_logWithoutAnyError() {
         var contents = loadLogFile(named: "testRunWithoutFailures_withTestSucceededFooter.log")
         XCTAssertEqual(TestSuiteOutcome.from(testLog: contents, terminationStatus: 0), .passed)

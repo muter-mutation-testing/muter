@@ -2,7 +2,7 @@ import XCTest
 
 @testable import muterCore
 
-final class TestReportTableGenerationTests: XCTestCase {
+final class TestReportTableGenerationTests: MuterTestCase {
     private let fileReports = [
         FileReportProvider.expectedFileReport3,
         FileReportProvider.expectedFileReport4,

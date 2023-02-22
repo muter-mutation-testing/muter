@@ -7,9 +7,6 @@ import Rainbow
 extension Notification.Name {
     static let muterLaunched = Notification.Name("muterLaunched")
     
-    static let tempDirectoryCreationStarted = Notification.Name("tempDirectoryCreationStarted")
-    static let tempDirectoryCreationFinished = Notification.Name("tempDirectoryCreationFinished")
-    
     static let projectCopyStarted = Notification.Name("projectCopyStarted")
     static let projectCopyFinished = Notification.Name("projectCopyFinished")
     
@@ -29,32 +26,25 @@ extension Notification.Name {
     static let newTestLogAvailable = Notification.Name("newTestLogAvailable")
 
     static let configurationFileCreated = Notification.Name("configurationFileCreated")
-    
-    static let removeProjectFromPreviousRunStarted = Notification.Name("removeProjectFromPreviousRunStarted")
-    static let removeProjectFromPreviousRunFinished = Notification.Name("removeProjectFromPreviousRunFinished")
-}
-
-func flushStdOut() {
-    fflush(stdout)
 }
 
 final class RunCommandObserver {
-    private let options: RunOptions
-    private let logger: Logger
-    private let fileManager: FileSystemManager
-    private let loggingDirectory: String
-    private let flushStdOut: () -> Void
-    private var numberOfMutationPoints: Int!
-    private let notificationCenter: NotificationCenter = .default
+    @Dependency(\.logger)
+    private var logger: Logger
+    @Dependency(\.fileManager)
+    private var fileManager: FileSystemManager
+    @Dependency(\.flushStandardOut)
+    private var flushStdOut: () -> Void
+    @Dependency(\.notificationCenter)
+    private var notificationCenter: NotificationCenter
+    
+    private var numberOfMutationPoints: Int = 0
+    private var loggingDirectory: String = ""
+    private let runOptions: RunOptions
+
     private var notificationHandlerMappings: [(name: Notification.Name, handler: (Notification) -> Void)] {
         return [
             (name: .muterLaunched, handler: handleMuterLaunched),
-            
-            (name: .tempDirectoryCreationStarted, handler: handleTempDirectoryCreationStarted),
-            (name: .tempDirectoryCreationFinished, handler: handleTempDirectoryCreationFinished),
-            
-            (name: .removeProjectFromPreviousRunStarted, handler: handleRemoveProjectFromPreviousRunStarted),
-            (name: .removeProjectFromPreviousRunFinished, handler: handleRemoveProjectFromPreviousRunFinished),
             
             (name: .projectCopyStarted, handler: handleProjectCopyStarted),
             (name: .projectCopyFinished, handler: handleProjectCopyFinished),
@@ -78,14 +68,9 @@ final class RunCommandObserver {
     }
     
     init(
-        options: RunOptions,
-        fileManager: FileSystemManager,
-        flushHandler: @escaping () -> Void
+        runOptions: RunOptions
     ) {
-        self.options = options
-        self.logger = options.logger
-        self.fileManager = fileManager
-        self.flushStdOut = flushHandler
+        self.runOptions = runOptions
         self.loggingDirectory = createLoggingDirectory(
             in: fileManager.currentDirectoryPath,
             fileManager: fileManager
@@ -99,6 +84,7 @@ final class RunCommandObserver {
                 using: handler
             )
         }
+
     }
 
     deinit {
@@ -109,22 +95,6 @@ final class RunCommandObserver {
 extension RunCommandObserver {
     func handleMuterLaunched(notification: Notification) {
         logger.launched()
-    }
-    
-    func handleTempDirectoryCreationStarted(notification: Notification) {
-        logger.tempDirectoryCreationStarted()
-    }
-    
-    func handleTempDirectoryCreationFinished(notification: Notification) {
-        logger.tempDirectoryCreationFinished()
-    }
-    
-    func handleRemoveProjectFromPreviousRunStarted(notification: Notification) {
-        logger.removeProjectFromPreviousRunStarted()
-    }
-    
-    func handleRemoveProjectFromPreviousRunFinished(notification: Notification) {
-        logger.removeProjectFromPreviousRunFinished()
     }
     
     func handleProjectCopyStarted(notification: Notification) {
@@ -166,7 +136,7 @@ extension RunCommandObserver {
     }
 
     func handleNewMutationTestOutcomeAvailable(notification: Notification) {
-        options.reportOptions.reporter.newMutationTestOutcomeAvailable(
+        runOptions.reportOptions.reporter.newMutationTestOutcomeAvailable(
             outcomeWithFlush: MutationOutcomeWithFlush(
                 mutation: notification.object as! MutationTestOutcome.Mutation,
                 fflush: flushStdOut
@@ -196,10 +166,10 @@ extension RunCommandObserver {
 
     func handleMutationTestingFinished(notification: Notification) {
         Logger.print("Muter finished running!")
-        Logger.print("\n\n")
+        Logger.print("\n")
 
-        let reporter = options.reportOptions.reporter
-        let reportPath = options.reportOptions.path ?? ""
+        let reporter = runOptions.reportOptions.reporter
+        let reportPath = runOptions.reportOptions.path ?? ""
         let report = reporter.report(from: notification.object as! MutationTestOutcome)
         
         guard !reportPath.isEmpty else {
@@ -223,10 +193,10 @@ extension RunCommandObserver {
         )
         
         if didSave {
-            Logger.print("Report generated: \(reportPath)")
+            Logger.print("Report generated: \(reportPath.bold)")
         } else {
             Logger.print(report)
-            Logger.print("\n\n")
+            Logger.print("\n")
             Logger.print("Could not save report!")
         }
     }

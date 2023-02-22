@@ -2,16 +2,16 @@ import XCTest
 
 @testable import muterCore
 
-final class DiscoverSourceFilesTests: XCTestCase {
+final class DiscoverSourceFilesTests: MuterTestCase {    
+    private lazy var sut = DiscoverSourceFiles()
+
+    private var state = RunCommandState()
     private lazy var filesToMutatePath = "\(self.fixturesDirectory)/FilesToMutate"
     private lazy var filsToDiscoverPath = "\(self.fixturesDirectory)/FilesToDiscover"
-    private var state = RunCommandState()
-    private var fileManager: FileManagerSpy?
-    private lazy var sut = DiscoverSourceFiles(
-        fileManager: fileManager ?? FileManager.default
-    )
     
     func test_discoveredFilesShouldBeSortedAlphabetically() throws {
+        current.fileManager = FileManager.default
+
         state.tempDirectoryURL = URL(
             fileURLWithPath: filsToDiscoverPath,
             isDirectory: true
@@ -31,6 +31,8 @@ final class DiscoverSourceFilesTests: XCTestCase {
     }
     
     func test_exclusionList() throws {
+        current.fileManager = FileManager.default
+
         state.muterConfiguration = MuterConfiguration(
             executable: "",
             arguments: [],
@@ -55,6 +57,8 @@ final class DiscoverSourceFilesTests: XCTestCase {
     }
     
     func test_exclusionListWithGlobExpression() throws {
+        current.fileManager = FileManager.default
+
         state.tempDirectoryURL = URL(fileURLWithPath: filesToMutatePath, isDirectory: true)
         state.muterConfiguration = MuterConfiguration(
             executable: "",
@@ -81,6 +85,8 @@ final class DiscoverSourceFilesTests: XCTestCase {
     }
 
     func test_shouldIgnoreFilesWithoutCoverage() throws {
+        current.fileManager = FileManager.default
+
         state.muterConfiguration = MuterConfiguration(executable: "", arguments: [])
         state.tempDirectoryURL = URL(
             fileURLWithPath: filsToDiscoverPath,
@@ -117,7 +123,6 @@ final class DiscoverSourceFilesTests: XCTestCase {
     }
     
     func test_listOfFilesToMutate() throws {
-        let fileManager = FileManagerSpy()
         fileManager.subpathsToReturn = []
     
         state.filesToMutate = [
@@ -129,7 +134,7 @@ final class DiscoverSourceFilesTests: XCTestCase {
         state.tempDirectoryURL = URL(fileURLWithPath: filesToMutatePath, isDirectory: true)
         fileManager.fileExistsToReturn = state.filesToMutate.compactMap { _ in true }
         
-        sut = DiscoverSourceFiles(fileManager: fileManager)
+        sut = DiscoverSourceFiles()
 
         let result = try XCTUnwrap(sut.run(with: state).get())
         
@@ -143,6 +148,8 @@ final class DiscoverSourceFilesTests: XCTestCase {
     }
     
     func test_listOfFileToMutateWithGlobExpression() throws {
+        current.fileManager = FileManager.default
+
         state.filesToMutate = [
             "/Directory2/**/*.swift",
             "file1.swift",
@@ -163,6 +170,8 @@ final class DiscoverSourceFilesTests: XCTestCase {
     }
 
     func test_listOfFileToMutateWithRelativePaths() throws {
+        current.fileManager = FileManager.default
+
         let currentDirectoryPath = FileManager.default.currentDirectoryPath
         FileManager.default.changeCurrentDirectoryPath(filesToMutatePath)
 
@@ -199,8 +208,7 @@ final class DiscoverSourceFilesTests: XCTestCase {
     }
 
     func test_listOfFileToMutateWithoutGlobExpressions() throws {
-        fileManager = FileManagerSpy()
-        fileManager!.subpathsToReturn = []
+        fileManager.subpathsToReturn = []
 
         state.filesToMutate = ["file1.swift", "file2.swift", "/Directory2/Directory3/file6.swift"]
         state.tempDirectoryURL = URL(
@@ -208,7 +216,7 @@ final class DiscoverSourceFilesTests: XCTestCase {
             isDirectory: true
         )
 
-        fileManager!.fileExistsToReturn = state.filesToMutate.compactMap { _ in true }
+        fileManager.fileExistsToReturn = state.filesToMutate.compactMap { _ in true }
 
         let result = try XCTUnwrap(sut.run(with: state).get())
 
@@ -220,7 +228,7 @@ final class DiscoverSourceFilesTests: XCTestCase {
             ])
         ])
 
-        XCTAssertEqual(fileManager?.methodCalls, [
+        XCTAssertEqual(fileManager.methodCalls, [
             "fileExists(atPath:)",
             "fileExists(atPath:)",
             "fileExists(atPath:)",

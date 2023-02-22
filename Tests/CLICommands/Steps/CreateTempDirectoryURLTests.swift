@@ -2,7 +2,7 @@ import XCTest
 
 @testable import muterCore
 
-final class CreateTempDirectoryURLTests: XCTestCase {
+final class CreateTempDirectoryURLTests: MuterTestCase {
     private var state = RunCommandState()
 
     private let sut = CreateTempDirectoryURL()

@@ -6,10 +6,9 @@ enum RemoveTempDirectorySpecError: String, Error {
     case stub
 }
 
-final class RemoveProjectFromPreviousRunTests: XCTestCase {
-    private var fileManager = FileManagerSpy()
+final class RemoveProjectFromPreviousRunTests: MuterTestCase {
     private var state = RunCommandState()
-    private lazy var sut = RemoveProjectFromPreviousRun(fileManager: fileManager)
+    private lazy var sut = RemoveProjectFromPreviousRun()
 
     func test_removeTempDirectorySucceeds() throws {
         fileManager.fileExistsToReturn = [true]

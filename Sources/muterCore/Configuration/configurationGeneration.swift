@@ -18,7 +18,6 @@ extension MuterConfiguration {
 }
 
 private extension MuterConfiguration {
-    
     static func generateXcodeProjectConfiguration(from directoryContents: [URL]) -> MuterConfiguration? {
         guard !directoryContainsXcodeWorkspace(directoryContents),
             let index = directoryContents.firstIndex(where: { $0.lastPathComponent.contains(".xcodeproj") }),
@@ -42,7 +41,6 @@ private extension MuterConfiguration {
     }
 
     static func directoryContainsXcodeWorkspace(_ directoryContents: [URL]) -> Bool {
-        
         let indexOfUserGeneratedWorkSpace = directoryContents
             .exclude { $0.absoluteString.contains("project.xcworkspace") }
             .firstIndex { $0.lastPathComponent.contains(".xcworkspace") }

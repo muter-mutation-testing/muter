@@ -1,43 +1,6 @@
 import SwiftSyntax
 
-class TokenAwareVisitor: SyntaxAnyVisitor, PositionDiscoveringVisitor {
-    var tokensToDiscover = [TokenKind]()
-    var positionsOfToken = [MutationPosition]()
-    
-    private let sourceFileInfo: SourceFileInfo
-
-    required init(
-        configuration: MuterConfiguration?,
-        sourceFileInfo: SourceFileInfo
-    ) {
-        self.sourceFileInfo = sourceFileInfo
-    }
-    
-    override func visitAny(_ node: Syntax) -> SyntaxVisitorContinueKind {
-        node.as(TokenSyntax.self).map { node in
-            if canMutateToken(node) {
-                positionsOfToken.append(
-                    node.mutationPosition(with: sourceFileInfo)
-                )
-            }
-        }
-        
-        return .visitChildren
-    }
-    
-    override func visit(_ node: SequenceExprSyntax) -> SyntaxVisitorContinueKind {
-        node.isInsideCompilerDirective
-            ? .skipChildren
-            : .visitChildren
-    }
-
-    private func canMutateToken(_ token: TokenSyntax) -> Bool {
-        tokensToDiscover.contains(token.tokenKind) &&
-        token.parent?.is(BinaryOperatorExprSyntax.self) == true
-    }
-}
-
-class TokenAwareSchemataVisitor: MutationSchemataVisitor {
+class TokenAwareVisitor: MuterVisitor {
     var tokensToDiscover = [TokenKind]()
     var oppositeOperatorMapping: [String: String] = [:]
     
@@ -49,7 +12,7 @@ class TokenAwareSchemataVisitor: MutationSchemataVisitor {
         }
         
         let position = location(for: node)
-        let snapshot = MutationOperatorSnapshot(
+        let snapshot = MutationOperator.Snapshot(
             before: node.description.trimmed,
             after: oppositeOperator,
             description: "changed \(node.description.trimmed) to \(oppositeOperator)"
@@ -121,7 +84,7 @@ class TokenAwareSchemataVisitor: MutationSchemataVisitor {
     }
 }
 
-extension SyntaxProtocol {
+private extension SyntaxProtocol {
     func offsetInCodeBlockItemListSyntax(_ sourceCode: SourceFileInfo) -> Int {
         let nodePosition = mutationPosition(
             with: sourceCode

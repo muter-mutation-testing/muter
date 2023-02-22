@@ -1,7 +1,12 @@
 import Foundation
 import SwiftSyntax
 
+typealias MutationSchemata = [MutationSchema]
+
 final class SchemataMutationMapping: Equatable {
+    let filePath: String
+    fileprivate var mappings: [CodeBlockItemListSyntax: MutationSchemata]
+
     var count: Int {
         mappings.count
     }
@@ -10,28 +15,17 @@ final class SchemataMutationMapping: Equatable {
         mappings.isEmpty
     }
     
+    
+    var mutationSchemata: MutationSchemata {
+        Array(mappings.values).reduce([], +).sorted()
+    }
+
     var codeBlocks: [String] {
         mappings.keys.map(\.description).sorted()
     }
     
-    var schematas: [Schemata] {
-        Array(mappings.values).reduce([], +).sorted()
-    }
-    
-    var sortedSchematas: [MutationPosition] {
-        schematasSortedByKey().map(\.positionInSourceCode)
-    }
-    
     var fileName: String {
         return URL(fileURLWithPath: filePath).lastPathComponent
-    }
-
-    let filePath: String
-    
-    fileprivate var mappings: [CodeBlockItemListSyntax: [Schemata]]
-    
-    private var sortedKeys: [CodeBlockItemListSyntax] {
-        mappings.keys.sorted(by: { $0.hashValue < $1.hashValue })
     }
 
     convenience init(
@@ -45,7 +39,7 @@ final class SchemataMutationMapping: Equatable {
     
     fileprivate init(
         filePath: String = "",
-        mappings: [CodeBlockItemListSyntax: [Schemata]]
+        mappings: [CodeBlockItemListSyntax: MutationSchemata]
     ) {
         self.filePath = filePath
         self.mappings = mappings
@@ -53,48 +47,32 @@ final class SchemataMutationMapping: Equatable {
 
     func add(
         _ codeBlockSyntax: CodeBlockItemListSyntax,
-        _ schemata: Schemata
+        _ schemata: MutationSchema
     ) {
         mappings[codeBlockSyntax, default: []].append(schemata)
     }
     
     func add(
         _ codeBlockSyntax: CodeBlockItemListSyntax,
-        _ schematas: [Schemata]
+        _ schemata: MutationSchemata
     ) {
-        mappings[codeBlockSyntax, default: []].append(contentsOf: schematas)
+        mappings[codeBlockSyntax, default: []].append(contentsOf: schemata)
     }
 
-    func schematas(
+    func schemata(
         _ codeBlockSyntax: CodeBlockItemListSyntax
-    ) -> [Schemata]? {
+    ) -> MutationSchemata? {
         mappings[codeBlockSyntax]
     }
     
     func skipMutations(_ mutationPoints: [MutationPosition]) -> Self {
-        for (codeBlock, schematas) in mappings {
-            mappings[codeBlock] = schematas.exclude {
-                mutationPoints.contains($0.positionInSourceCode)
+        for (codeBlock, schemata) in mappings {
+            mappings[codeBlock] = schemata.exclude {
+                mutationPoints.contains($0.position)
             }
         }
         
         return self
-    }
-    
-    func mapSchematas(_ transform: (Int, Schemata) -> Schemata) {
-        var index = 0
-        sortedKeys.forEach { codeBlock in
-            mappings[codeBlock] = (mappings[codeBlock] ?? []).map {
-                transform(index, $0)
-            }
-            index += 1
-        }
-    }
-    
-    func schematasSortedByKey() -> [Schemata] {
-        sortedKeys.reduce(into: []) { partialResult, codeBlock in
-            partialResult.append(contentsOf: mappings[codeBlock] ?? [])
-        }
     }
 }
 
@@ -108,8 +86,8 @@ func + (
     
     let mergedMappgins = lhs.mappings.merging(rhs.mappings) { $0 + $1 }
     
-    mergedMappgins.forEach { (codeBlock, schematas) in
-        result.add(codeBlock, schematas)
+    mergedMappgins.forEach { (codeBlock, schemata) in
+        result.add(codeBlock, schemata)
     }
     
     return result
@@ -120,7 +98,7 @@ func == (
     rhs: SchemataMutationMapping
 ) -> Bool {
     lhs.codeBlocks == rhs.codeBlocks &&
-    lhs.schematas == rhs.schematas
+    lhs.mutationSchemata == rhs.mutationSchemata
 }
 
 extension Array where Element == SchemataMutationMapping {
@@ -148,7 +126,7 @@ extension SchemataMutationMapping: CustomStringConvertible, CustomDebugStringCon
             accum +=
             """
             source: "\(pair.key.scapedDescription)",
-            schematas: \(pair.value)
+            schemata: \(pair.value)
             """
         }
         return """

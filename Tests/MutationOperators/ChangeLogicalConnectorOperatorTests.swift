@@ -3,19 +3,19 @@ import TestingExtensions
 
 @testable import muterCore
 
-final class ChangeLogicalConnectorOperatorTests: XCTestCase {
+final class ChangeLogicalConnectorOperatorTests: MuterTestCase {
     private lazy var sourceWithLogicalOperators = sourceCode(
         fromFileAt: "\(fixturesDirectory)/MutationExamples/LogicalOperator/sampleWithLogicalOperators.swift"
     )!
     
     func test_rewriter() throws {
-        let visitor = ChangeLogicalConnectorOperator.SchemataVisitor(
+        let visitor = ChangeLogicalConnectorOperator.Visitor(
             sourceFileInfo: sourceWithLogicalOperators.asSourceFileInfo
         )
 
         visitor.walk(sourceWithLogicalOperators.code)
 
-        let rewritten = MutationSchemataRewriter(visitor.schemataMappings)
+        let rewritten = MuterRewriter(visitor.schemataMappings)
             .visit(sourceWithLogicalOperators.code)
 
         XCTAssertEqual(
@@ -44,23 +44,22 @@ final class ChangeLogicalConnectorOperatorTests: XCTestCase {
     }
     
     func test_visitor() throws {
-        let visitor = ChangeLogicalConnectorOperator.SchemataVisitor(
+        let visitor = ChangeLogicalConnectorOperator.Visitor(
             sourceFileInfo: sourceWithLogicalOperators.asSourceFileInfo
         )
 
         visitor.walk(sourceWithLogicalOperators.code)
 
-        let actualSchematas = visitor.schemataMappings
-        let expectedSchematas = try SchemataMutationMapping.make(
+        let actualSchemata = visitor.schemataMappings
+        let expectedSchemata = try SchemataMutationMapping.make(
             (
                 source: "\n    return false && false",
-                schematas: [
+                schemata: [
                     try .make(
-                        id: "sampleWithLogicalOperators_10_17_160",
                         filePath: sourceWithLogicalOperators.path,
                         mutationOperatorId: .logicalOperator,
                         syntaxMutation: "\n    return true && true",
-                        positionInSourceCode: MutationPosition(
+                        position: MutationPosition(
                             utf8Offset: 160,
                             line: 10,
                             column: 17
@@ -75,13 +74,12 @@ final class ChangeLogicalConnectorOperatorTests: XCTestCase {
             ),
             (
                 source: "\n    return true || true",
-                schematas: [
+                schemata: [
                     try .make(
-                        id: "sampleWithLogicalOperators_6_18_101",
                         filePath: sourceWithLogicalOperators.path,
                         mutationOperatorId: .logicalOperator,
                         syntaxMutation: "\n    return false || false",
-                        positionInSourceCode: MutationPosition(
+                        position: MutationPosition(
                             utf8Offset: 101,
                             line: 6,
                             column: 18
@@ -96,6 +94,6 @@ final class ChangeLogicalConnectorOperatorTests: XCTestCase {
             )
         )
 
-        XCTAssertEqual(actualSchematas, expectedSchematas)
+        XCTAssertEqual(actualSchemata, expectedSchemata)
     }
 }

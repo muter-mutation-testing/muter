@@ -3,7 +3,7 @@ import SwiftSyntaxParser
 
 @testable import muterCore
 
-final class PrepareSourceCodeTests: XCTestCase {
+final class PrepareSourceCodeTests: MuterTestCase {
     private lazy var outputFilePath = fixturesDirectory + "/preparedSourceCode.swift"
     
     override func setUpWithError() throws {
@@ -28,7 +28,7 @@ final class PrepareSourceCodeTests: XCTestCase {
     }
     
     func test_prepareSourceCode() throws {
-        let sut = try XCTUnwrap(prepareSourceCode(outputFilePath))
+        let sut = try XCTUnwrap(PrepareSourceCode().prepareSourceCode(outputFilePath))
         
         XCTAssertEqual(
             sut.source.code.description,

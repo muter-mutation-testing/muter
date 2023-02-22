@@ -3,8 +3,7 @@ import TestingExtensions
 
 @testable import muterCore
 
-final class MutationTestingDelegateTests: XCTestCase {
-    private let fileManager = FileManager.default
+final class MutationTestingDelegateTests: MuterTestCase {
     private lazy var outputFolder = fixturesDirectory + "/MutationTestingDelegateTests"
     private lazy var outputFolderURL = URL(fileURLWithPath: outputFolder)
     
@@ -13,7 +12,7 @@ final class MutationTestingDelegateTests: XCTestCase {
     override func setUpWithError() throws {
         try super.setUpWithError()
         
-        try fileManager.createDirectory(
+        try FileManager.default.createDirectory(
             at: URL(fileURLWithPath: outputFolder),
             withIntermediateDirectories: true
         )
@@ -22,10 +21,12 @@ final class MutationTestingDelegateTests: XCTestCase {
     override func tearDownWithError() throws {
         try super.tearDownWithError()
         
-        try fileManager.removeItem(atPath: outputFolder)
+        try FileManager.default.removeItem(atPath: outputFolder)
     }
     
     func test_testProcessForXcodeBuild() throws {
+        current.process = Process.Factory.makeProcess
+
         let configuration = MuterConfiguration(
             executable: "/tmp/xcodebuild",
             arguments: [
@@ -34,7 +35,10 @@ final class MutationTestingDelegateTests: XCTestCase {
             ]
         )
 
-        let schemata = try Schemata.make(id: "schemata_id")
+        let schemata = try MutationSchema.make(
+            filePath: "/path/fileName",
+            position: .init(line: 1)
+        )
         
         let testProcess = try sut.testProcess(
             with: configuration,
@@ -55,12 +59,17 @@ final class MutationTestingDelegateTests: XCTestCase {
     }
     
     func test_testProcessForSwiftBuild() throws {
+        current.process = Process.Factory.makeProcess
+
         let configuration = MuterConfiguration(
             executable: "/tmp/swift",
             arguments: ["test"]
         )
 
-        let schemata = try Schemata.make(id: "schemata_id")
+        let schemata = try MutationSchema.make(
+            filePath: "/path/fileName",
+            position: .init(line: 1)
+        )
         
         let testProcess = try sut.testProcess(
             with: configuration,
@@ -71,7 +80,7 @@ final class MutationTestingDelegateTests: XCTestCase {
         XCTAssertEqual(
             testProcess.environment,
             [
-                "schemata_id": "YES",
+                "fileName_1_0_0": "YES",
                 isMuterRunningKey: isMuterRunningValue
             ]
         )
@@ -80,28 +89,8 @@ final class MutationTestingDelegateTests: XCTestCase {
         XCTAssertEqual(testProcess.qualityOfService, .userInitiated)
     }
     
-    func test_alwaysAddMuterRunningKey() throws {
-        let configuration = MuterConfiguration(
-            executable: "/tmp/swift",
-            arguments: ["test"]
-        )
-
-        let schemata = Schemata.null
-        
-        let testProcess = try sut.testProcess(
-            with: configuration,
-            schemata: schemata,
-            and: FileHandle()
-        )
-
-        XCTAssertEqual(
-            testProcess.environment,
-            [isMuterRunningKey: isMuterRunningValue]
-        )
-    }
-    
     func test_switchOn() throws {
-        let schemata = try Schemata.make(id: "id")
+        let schemata = try MutationSchema.make()
         let testRun = XCTestRun.init()
         
         try sut.switchOn(
@@ -111,7 +100,7 @@ final class MutationTestingDelegateTests: XCTestCase {
         )
         
         XCTAssertTrue(
-            fileManager.fileExists(
+            FileManager.default.fileExists(
                 atPath: outputFolderURL.appendingPathComponent("muter.xctestrun").path
             )
         )

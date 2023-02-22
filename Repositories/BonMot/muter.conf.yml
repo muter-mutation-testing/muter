@@ -1,12 +1,6 @@
 arguments:
-- -project 
-- BonMot.xcodeproj
-- -scheme 
-- BonMot-OSX 
-- -destination 
-- platform=macOS,arch=x86_64
 - test
-executable: /usr/bin/xcodebuild
+executable: /usr/bin/swift
 exclude:
 - DemoStrings.swift
 - StyleViewController.swift
@@ -16,19 +10,5 @@ exclude:
 - Image+Tinting.swift
 - StringStyle.swift
 - Tab.swift
+- Package.swift
 excludeCalls: []
-
-# arguments:
-# - test
-# executable: /usr/bin/swift
-# exclude:
-# - DemoStrings.swift
-# - StyleViewController.swift
-# - CatalogViewController.swift
-# - AppDelegate.swift
-# - Composable.swift
-# - Image+Tinting.swift
-# - StringStyle.swift
-# - Tab.swift
-# - Package.swift
-# excludeCalls: []

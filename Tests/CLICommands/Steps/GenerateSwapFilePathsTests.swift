@@ -3,10 +3,9 @@ import SwiftSyntax
 
 @testable import muterCore
 
-final class GenerateSwapFilePathsTests: XCTestCase {
-    private let fileManager = FileManagerSpy()
+final class GenerateSwapFilePathsTests: MuterTestCase {
     private let state = RunCommandState()
-    private lazy var sut = GenerateSwapFilePaths(fileManager: fileManager)
+    private lazy var sut = GenerateSwapFilePaths()
 
     func test_muterTempDirectoryCreation() {
         state.sourceCodeByFilePath = ["/folder/file1.swift": SyntaxFactory.makeBlankSourceFile(),

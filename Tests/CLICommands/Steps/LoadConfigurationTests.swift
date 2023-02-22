@@ -2,13 +2,15 @@ import XCTest
 
 @testable import muterCore
 
-final class LoadConfigurationTests: XCTestCase {
-    private let fileManager = FileManagerSpy()
+final class LoadConfigurationTests: MuterTestCase {
     private lazy var currentDirectory = fixturesDirectory
-    private lazy var sut = LoadConfiguration(
-        fileManager: fileManager,
-        currentDirectory: currentDirectory
-    )
+    private lazy var sut = LoadConfiguration()
+    
+    override func setUp() {
+        super.setUp()
+
+        fileManager.currentDirectoryPathToReturn = fixturesDirectory
+    }
 
     func test_loadLJSONConfigurationFromDisk() throws {
         fileManager.fileExistsToReturn = [false, true]

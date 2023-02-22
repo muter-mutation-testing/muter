@@ -5,7 +5,12 @@ import TestingExtensions
 
 @testable import muterCore
 
-final class SchemataBuilderTests: XCTestCase {
+final class SchemataBuilderTests: MuterTestCase {
+    override func setUp() {
+        super.setUp()
+        
+        fileManager.currentDirectoryPathToReturn = "/path/fileName"
+    }
     func test_schemataMerging() throws {
         let codeBlock = try sourceCode("return 1").statements
 
@@ -20,30 +25,30 @@ final class SchemataBuilderTests: XCTestCase {
         let actualMappings = x + y
         
         XCTAssertEqual(actualMappings.codeBlocks, ["return 1"])
-        XCTAssertEqual(actualMappings.schematas.count, 4)
+        XCTAssertEqual(actualMappings.mutationSchemata.count, 4)
     }
     
     func test_mutationSwitch() throws {
         let originalSyntax = try sourceCode("\n  a != b\n").statements
-        let schemataMutations = try makeSchemataMutations([
+        let mutationSchemata = try makeMutationSchemata([
             "\n  a >= b\n",
             "\n  a <= b\n",
             "\n  a == b\n"
         ])
 
-        let actualMutationSwitch = applyMutationSwitch(
-            withOriginalSyntax: originalSyntax,
-            and: schemataMutations
+        let actualMutationSwitch = MutationSwitch.apply(
+            mutationSchemata: mutationSchemata,
+            with: originalSyntax
         )
         
         XCTAssertEqual(
             actualMutationSwitch.description,
             """
-            if ProcessInfo.processInfo.environment[\"0\"] != nil {
+            if ProcessInfo.processInfo.environment[\"Debug_0_0_0\"] != nil {
               a >= b
-            } else if ProcessInfo.processInfo.environment[\"2\"] != nil {
+            } else if ProcessInfo.processInfo.environment[\"Debug_2_0_0\"] != nil {
               a == b
-            } else if ProcessInfo.processInfo.environment[\"1\"] != nil {
+            } else if ProcessInfo.processInfo.environment[\"Debug_1_0_0\"] != nil {
               a <= b
             } else {
               a != b
@@ -54,25 +59,25 @@ final class SchemataBuilderTests: XCTestCase {
     
     func test_mutationsThatRequiredImplicitReturn() throws {
         let originalSyntax = try sourceCode("\n  a != b\n").statements
-        let schemataMutations = try makeSchemataMutations([
+        let mutationSchemata = try makeMutationSchemata([
             "\n  a >= b\n",
             "\n  a <= b\n",
             "\n  a == b\n"
         ])
 
-        let actualMutationSwitch = applyMutationSwitch(
-            withOriginalSyntax: originalSyntax,
-            and: schemataMutations
+        let actualMutationSwitch = MutationSwitch.apply(
+            mutationSchemata: mutationSchemata,
+            with: originalSyntax
         )
         
         XCTAssertEqual(
             actualMutationSwitch.description,
             """
-            if ProcessInfo.processInfo.environment[\"0\"] != nil {
+            if ProcessInfo.processInfo.environment[\"Debug_0_0_0\"] != nil {
               a >= b
-            } else if ProcessInfo.processInfo.environment[\"2\"] != nil {
+            } else if ProcessInfo.processInfo.environment[\"Debug_2_0_0\"] != nil {
               a == b
-            } else if ProcessInfo.processInfo.environment[\"1\"] != nil {
+            } else if ProcessInfo.processInfo.environment[\"Debug_1_0_0\"] != nil {
               a <= b
             } else {
               a != b
@@ -81,9 +86,19 @@ final class SchemataBuilderTests: XCTestCase {
         )
     }
 
-    private func makeSchemataMutations(_ mutations: [String]) throws -> [Schemata] {
+    private func makeMutationSchemata(
+        _ mutations: [String]
+    ) throws -> MutationSchemata {
         try mutations
             .enumerated()
-            .compactMap { try Schemata.make(id: "\($0.offset)", syntaxMutation: $0.element) }
+            .compactMap {
+                try MutationSchema.make(
+                    syntaxMutation: $0.element,
+                    position: MutationPosition(
+                        utf8Offset: 0,
+                        line: $0.offset
+                    )
+                )
+            }
     }
 }

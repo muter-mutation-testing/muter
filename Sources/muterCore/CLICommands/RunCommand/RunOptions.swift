@@ -6,18 +6,18 @@ struct RunOptions {
     let reportOptions: ReportOptions
     let filesToMutate: [String]
     let skipCoverage: Bool
-    let logger: Logger
+    
+    @Dependency(\.logger)
+    private var logger: Logger
     
     init(
         filesToMutate: [String],
         reportFormat: ReportFormat,
         reportURL: URL?,
-        skipCoverage: Bool,
-        logger: Logger
+        skipCoverage: Bool
     ) {
         self.filesToMutate = filesToMutate
         self.skipCoverage = skipCoverage
-        self.logger = logger
         self.reportOptions = ReportOptions(
             reporter: reportFormat.reporter,
             path: reportPath(reportURL)

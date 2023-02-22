@@ -41,14 +41,11 @@ public struct Run: ParsableCommand {
             filesToMutate: filesToMutate,
             reportFormat: reportFormat,
             reportURL: reportURL,
-            skipCoverage: skipCoverage,
-            logger: Logger()
+            skipCoverage: skipCoverage
         )
         
         _ = RunCommandObserver(
-            options: options,
-            fileManager: FileManager.default,
-            flushHandler: flushStdOut
+            runOptions: options
         )
         
         NotificationCenter.default.post(name: .muterLaunched, object: nil)

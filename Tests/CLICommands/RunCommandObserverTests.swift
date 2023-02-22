@@ -2,21 +2,15 @@ import XCTest
 
 @testable import muterCore
 
-final class RunCommandObserverTests: XCTestCase {
-    private let flushHandlerSpy = FlushHandlerSpy()
-    private let fileManagerSpy = FileManagerSpy()
+final class RunCommandObserverTests: MuterTestCase {
     private var options = RunOptions.make()
     
-    private lazy var sut = RunCommandObserver(
-        options: options,
-        fileManager: fileManagerSpy,
-        flushHandler: flushHandlerSpy.flushHandler
-    )
+    private lazy var sut = RunCommandObserver(runOptions: options)
     
     override func setUp() {
         super.setUp()
         
-        fileManagerSpy.currentDirectoryPathToReturn = "/"
+        fileManager.currentDirectoryPathToReturn = "/"
     }
     
     func test_flushesStdoutWhenUsingAnXcodeReporter() {
@@ -24,7 +18,7 @@ final class RunCommandObserverTests: XCTestCase {
 
         sut.handleNewMutationTestOutcomeAvailable(notification: .make())
         
-        XCTAssertTrue(flushHandlerSpy.flushHandlerWasCalled)
+        XCTAssertTrue(flushStandardOut.flushHandlerWasCalled)
     }
     
     func test_doesntFlushStdoutWhenUsingAJsonReporter() {
@@ -32,7 +26,7 @@ final class RunCommandObserverTests: XCTestCase {
 
         sut.handleNewMutationTestOutcomeAvailable(notification: .make())
         
-        XCTAssertFalse(flushHandlerSpy.flushHandlerWasCalled)
+        XCTAssertFalse(flushStandardOut.flushHandlerWasCalled)
     }
     
     func test_doesntFlushStdoutWhenUsingAPlainTextReporter() {
@@ -40,7 +34,7 @@ final class RunCommandObserverTests: XCTestCase {
 
         sut.handleNewMutationTestOutcomeAvailable(notification: .make())
         
-        XCTAssertFalse(flushHandlerSpy.flushHandlerWasCalled)
+        XCTAssertFalse(flushStandardOut.flushHandlerWasCalled)
     }
     
     func test_logFileNameUsingAPlainTextReporter() {
@@ -73,14 +67,6 @@ final class RunCommandObserverTests: XCTestCase {
             sut.logFileName(from: mutationPoint2),
             "RemoveSideEffects @ file2.swift-5-6.log"
         )
-    }
-}
-
-private class FlushHandlerSpy {
-    private(set) var flushHandlerWasCalled = false
-    
-    func flushHandler() {
-        flushHandlerWasCalled = true
     }
 }
 

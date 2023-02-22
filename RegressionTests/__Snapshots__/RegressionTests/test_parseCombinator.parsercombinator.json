@@ -7,30 +7,7 @@
             "mutationOperatorId" : "RelationalOperatorReplacement",
             "position" : {
               "column" : 23,
-              "line" : 88,
-              "utf8Offset" : 3469
-            }
-          },
-          "testSuiteOutcome" : "failed"
-        },
-        {
-          "mutationPoint" : {
-            "mutationOperatorId" : "RelationalOperatorReplacement",
-            "position" : {
-              "column" : 46,
-              "line" : 88,
-              "utf8Offset" : 3492
-            }
-          },
-          "testSuiteOutcome" : "failed"
-        },
-        {
-          "mutationPoint" : {
-            "mutationOperatorId" : "RelationalOperatorReplacement",
-            "position" : {
-              "column" : 29,
-              "line" : 92,
-              "utf8Offset" : 3676
+              "line" : 88
             }
           },
           "testSuiteOutcome" : "failed"
@@ -40,8 +17,27 @@
             "mutationOperatorId" : "ChangeLogicalConnector",
             "position" : {
               "column" : 30,
-              "line" : 88,
-              "utf8Offset" : 3476
+              "line" : 88
+            }
+          },
+          "testSuiteOutcome" : "failed"
+        },
+        {
+          "mutationPoint" : {
+            "mutationOperatorId" : "RelationalOperatorReplacement",
+            "position" : {
+              "column" : 46,
+              "line" : 88
+            }
+          },
+          "testSuiteOutcome" : "failed"
+        },
+        {
+          "mutationPoint" : {
+            "mutationOperatorId" : "RelationalOperatorReplacement",
+            "position" : {
+              "column" : 29,
+              "line" : 92
             }
           },
           "testSuiteOutcome" : "failed"
@@ -57,8 +53,7 @@
             "mutationOperatorId" : "RelationalOperatorReplacement",
             "position" : {
               "column" : 73,
-              "line" : 103,
-              "utf8Offset" : 3765
+              "line" : 103
             }
           },
           "testSuiteOutcome" : "failed"
@@ -68,41 +63,7 @@
             "mutationOperatorId" : "RelationalOperatorReplacement",
             "position" : {
               "column" : 55,
-              "line" : 180,
-              "utf8Offset" : 6412
-            }
-          },
-          "testSuiteOutcome" : "failed"
-        },
-        {
-          "mutationPoint" : {
-            "mutationOperatorId" : "RelationalOperatorReplacement",
-            "position" : {
-              "column" : 38,
-              "line" : 204,
-              "utf8Offset" : 7185
-            }
-          },
-          "testSuiteOutcome" : "failed"
-        },
-        {
-          "mutationPoint" : {
-            "mutationOperatorId" : "RelationalOperatorReplacement",
-            "position" : {
-              "column" : 42,
-              "line" : 254,
-              "utf8Offset" : 9337
-            }
-          },
-          "testSuiteOutcome" : "failed"
-        },
-        {
-          "mutationPoint" : {
-            "mutationOperatorId" : "RelationalOperatorReplacement",
-            "position" : {
-              "column" : 48,
-              "line" : 282,
-              "utf8Offset" : 10445
+              "line" : 180
             }
           },
           "testSuiteOutcome" : "failed"
@@ -112,8 +73,17 @@
             "mutationOperatorId" : "SwapTernaryOperator",
             "position" : {
               "column" : 73,
-              "line" : 180,
-              "utf8Offset" : 6430
+              "line" : 180
+            }
+          },
+          "testSuiteOutcome" : "failed"
+        },
+        {
+          "mutationPoint" : {
+            "mutationOperatorId" : "RelationalOperatorReplacement",
+            "position" : {
+              "column" : 38,
+              "line" : 204
             }
           },
           "testSuiteOutcome" : "failed"
@@ -123,8 +93,7 @@
             "mutationOperatorId" : "SwapTernaryOperator",
             "position" : {
               "column" : 52,
-              "line" : 204,
-              "utf8Offset" : 7199
+              "line" : 204
             }
           },
           "testSuiteOutcome" : "failed"
@@ -133,9 +102,8 @@
           "mutationPoint" : {
             "mutationOperatorId" : "RelationalOperatorReplacement",
             "position" : {
-              "column" : 76,
-              "line" : 282,
-              "utf8Offset" : 10473
+              "column" : 42,
+              "line" : 254
             }
           },
           "testSuiteOutcome" : "failed"
@@ -145,8 +113,27 @@
             "mutationOperatorId" : "RelationalOperatorReplacement",
             "position" : {
               "column" : 106,
-              "line" : 282,
-              "utf8Offset" : 10503
+              "line" : 282
+            }
+          },
+          "testSuiteOutcome" : "failed"
+        },
+        {
+          "mutationPoint" : {
+            "mutationOperatorId" : "RelationalOperatorReplacement",
+            "position" : {
+              "column" : 48,
+              "line" : 282
+            }
+          },
+          "testSuiteOutcome" : "failed"
+        },
+        {
+          "mutationPoint" : {
+            "mutationOperatorId" : "RelationalOperatorReplacement",
+            "position" : {
+              "column" : 76,
+              "line" : 282
             }
           },
           "testSuiteOutcome" : "failed"

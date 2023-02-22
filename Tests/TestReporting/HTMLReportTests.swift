@@ -4,7 +4,7 @@ import TestingExtensions
 
 @testable import muterCore
 
-final class HTMLReportTests: XCTestCase {
+final class HTMLReportTests: MuterTestCase {
     private let dateStub = {
         DateComponents(
             calendar: .init(identifier: .gregorian),

@@ -12,11 +12,12 @@ func sourceCode(fromFileAt path: String) -> SourceCodeInfo? {
 }
 
 // MARK: - Logging Directory
-func createLoggingDirectory(in directory: String,
-                            fileManager: FileSystemManager = FileManager.default,
-                            locale: Locale = .autoupdatingCurrent,
-                            timestamp: () -> Date = Date.init) -> String {
-    
+func createLoggingDirectory(
+    in directory: String,
+    fileManager: FileSystemManager = FileManager.default,
+    locale: Locale = .autoupdatingCurrent,
+    timestamp: () -> Date = Date.init
+) -> String {
     let formatter = DateFormatter()
     formatter.locale = locale
     formatter.dateStyle = .medium

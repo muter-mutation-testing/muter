@@ -1,99 +1,42 @@
 import SwiftSyntax
 import Foundation
 
-typealias SourceCodeTransformation = (SourceFileSyntax) -> (mutatedSource: SyntaxProtocol, mutationSnapshot: MutationOperatorSnapshot)
-typealias RewriterInitializer = (MutationPosition) -> PositionSpecificRewriter
-typealias VisitorInitializer = (MuterConfiguration, SourceFileInfo) -> PositionDiscoveringVisitor
-
-typealias SchemataVisitorInitializer = (MuterConfiguration, SourceFileInfo) -> MutationSchemataVisitor
-
-public struct MutationPoint: Equatable, Codable {
-    let mutationOperatorId: MutationOperator.Id
-    let filePath: String
-    let position: MutationPosition
-    
-    var fileName: String {
-        return URL(fileURLWithPath: self.filePath).lastPathComponent
-    }
-    
-    var mutationOperator: SourceCodeTransformation {
-        return mutationOperatorId.mutationOperator(for: position)
-    }
-}
-
-extension MutationPoint: Nullable {
-    static var null: MutationPoint {
-        MutationPoint(
-            mutationOperatorId: .removeSideEffects,
-            filePath: "",
-            position: .null
-        )
-    }
-}
+typealias VisitorInitializer = (MuterConfiguration?, SourceFileInfo) -> MuterVisitor
 
 struct MutationOperator {
-    public enum Id: String, Codable, CaseIterable {
+    enum Id: String, Codable, CaseIterable {
         case ror = "RelationalOperatorReplacement"
         case removeSideEffects = "RemoveSideEffects"
         case logicalOperator = "ChangeLogicalConnector"
         case ternaryOperator = "SwapTernaryOperator"
         
-        var rewriterVisitorPair: (rewriter: RewriterInitializer, visitor: VisitorInitializer) {
+        var visitor: VisitorInitializer {
             switch self {
             case .removeSideEffects:
-               return (rewriter: RemoveSideEffectsOperator.Rewriter.init,
-                       visitor: RemoveSideEffectsOperator.Visitor.init)
+               return RemoveSideEffectsOperator.Visitor.init
             case .ror:
-                return (rewriter: ROROperator.Rewriter.init,
-                        visitor: ROROperator.Visitor.init)
+                return ROROperator.Visitor.init
             case .logicalOperator:
-                return (rewriter: ChangeLogicalConnectorOperator.Rewriter.init,
-                        visitor: ChangeLogicalConnectorOperator.Visitor.init)
+                return ChangeLogicalConnectorOperator.Visitor.init
             case .ternaryOperator:
-                return (rewriter: TernaryOperator.Rewriter.init,
-                        visitor: TernaryOperator.Visitor.init)
-            }
-        }
-        
-        var schemataVisitor: SchemataVisitorInitializer {
-            switch self{
-            case .removeSideEffects:
-                return RemoveSideEffectsOperator.SchemataVisitor.init
-            case .ror:
-                return ROROperator.SchemataVisitor.init
-            case .logicalOperator:
-                return ChangeLogicalConnectorOperator.SchemataVisitor.init
-            case .ternaryOperator:
-                return TernaryOperator.SchemataVisitor.init
-            }
-        }
-        
-        func mutationOperator(for position: MutationPosition) -> SourceCodeTransformation {
-            return { source in
-                let visitor = self.rewriterVisitorPair.rewriter(position)
-                let mutatedSource = visitor.visit(source)
-                let operatorSnapshot = visitor.operatorSnapshot
-                return (
-                    mutatedSource: mutatedSource,
-                    mutationSnapshot: operatorSnapshot
-                )
+                return TernaryOperator.Visitor.init
             }
         }
     }
-}
-
-protocol PositionSpecificRewriter {
-    var positionToMutate: MutationPosition { get }
-    var operatorSnapshot: MutationOperatorSnapshot { get set }
-
-    init(positionToMutate: MutationPosition)
     
-    func visit(_ node: SourceFileSyntax) -> Syntax
+    struct Snapshot: Codable, Equatable {
+        let before: String
+        let after: String
+        let description: String
+    }
 }
 
-protocol PositionDiscoveringVisitor {
-    var positionsOfToken: [MutationPosition] { get }
-    init(configuration: MuterConfiguration?, sourceFileInfo: SourceFileInfo)
-
-    func walk<SyntaxType: SyntaxProtocol>(_ node: SyntaxType)
+extension MutationOperator.Snapshot {
+    static var null: MutationOperator.Snapshot {
+        MutationOperator.Snapshot(
+            before: "",
+            after: "",
+            description: ""
+        )
+    }
 }

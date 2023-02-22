@@ -35,11 +35,11 @@ private extension RunCommandHandler {
         CopyProjectToTempDirectory(),
         DiscoverProjectCoverage(),
         DiscoverSourceFiles(),
-        DiscoverSchemataMutationMapping(),
+        DiscoverMutationPoints(),
         GenerateSwapFilePaths(),
         ApplySchemata(),
         BuildForTesting(),
-        PerformMutationSchemataTesting(),
+        PerformMutationTesting(),
     ]
 }
 

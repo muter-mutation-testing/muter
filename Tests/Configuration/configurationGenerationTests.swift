@@ -2,7 +2,7 @@ import XCTest
 
 @testable import muterCore
 
-final class ConfigurationGenerationTests: XCTestCase {
+final class ConfigurationGenerationTests: MuterTestCase {
     func test_swiftPackageManagerProject() {
         let projectDirectoryContents = ["/some/path/Package.swift",
                                         "/some/path/main.swift"]

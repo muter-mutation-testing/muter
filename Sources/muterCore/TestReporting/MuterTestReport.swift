@@ -9,7 +9,7 @@ struct MuterTestReport {
     let numberOfKilledMutants: Int
     let projectCodeCoverage: Int?
     let fileReports: [FileReport]
-    let timeElapsed: String
+    private(set) var timeElapsed: String = ""
 
     init(
         from outcome: MutationTestOutcome = .init()
@@ -89,7 +89,7 @@ extension MuterTestReport.FileReport: Comparable {
 extension MuterTestReport {
     struct AppliedMutationOperator: Codable, Equatable {
         let mutationPoint: MutationPoint
-        let mutationSnapshot: MutationOperatorSnapshot
+        let mutationSnapshot: MutationOperator.Snapshot
         let testSuiteOutcome: TestSuiteOutcome
 
         enum CodingKeys: String, CodingKey {
@@ -99,7 +99,7 @@ extension MuterTestReport {
 
         init(
             mutationPoint: MutationPoint,
-            mutationSnapshot: MutationOperatorSnapshot,
+            mutationSnapshot: MutationOperator.Snapshot,
             testSuiteOutcome: TestSuiteOutcome
         ) {
             self.mutationPoint = mutationPoint
@@ -166,4 +166,12 @@ private func ascendingFilenameOrder(
 }
 
 extension MuterTestReport: Equatable {}
-extension MuterTestReport: Codable {}
+extension MuterTestReport: Codable {
+    enum CodingKeys: String, CodingKey {
+        case globalMutationScore
+        case totalAppliedMutationOperators 
+        case numberOfKilledMutants 
+        case projectCodeCoverage 
+        case fileReports
+    }
+}

@@ -3,21 +3,14 @@ import TestingExtensions
 
 @testable import muterCore
 
-final class BuildForTestingTests: XCTestCase {
+final class BuildForTestingTests: MuterTestCase {
     private let state = RunCommandState()
-    private let fileManager = FileManagerSpy()
-    private let notificationCenter = NotificationCenter()
-    private let process = LaunchableSpy()
 
     var buildDescriptionPath: String {
         fixturesDirectory + "/BuildForTesting"
     }
 
-    private lazy var sut = BuildForTesting(
-        process: self.process,
-        fileManager: fileManager,
-        notificationCenter: notificationCenter
-    )
+    private lazy var sut = BuildForTesting()
 
     func test_whenBuildSystemIsSwift_thenIgnoreStep() throws {
         state.muterConfiguration = MuterConfiguration(
@@ -28,7 +21,6 @@ final class BuildForTestingTests: XCTestCase {
 
         XCTAssertEqual(result, [])
     }
-    
 
     // MARK: xcodebuild
 
@@ -72,6 +64,8 @@ final class BuildForTestingTests: XCTestCase {
             arguments: ["some", "commands", "test"]
         )
 
+        process.stdoutToBeReturned = " "
+        
         _ = sut.run(with: state)
 
         XCTAssertEqual(process.executableURL?.absoluteString, "file:///path/to/xcodebuild")

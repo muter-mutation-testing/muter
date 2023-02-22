@@ -6,11 +6,10 @@ enum TestingError: String, Error {
     case stub
 }
 
-final class CopyProjectToTempDirectoryTests: XCTestCase {
-    private let fileManagerSpy = FileManagerSpy()
+final class CopyProjectToTempDirectoryTests: MuterTestCase {
     private let state = RunCommandState()
     private var result: Result<[RunCommandState.Change], MuterError> = .success([])
-    private lazy var sut = CopyProjectToTempDirectory(fileManager: fileManagerSpy)
+    private lazy var sut = CopyProjectToTempDirectory()
     
     func test_whenItsAbleToCopyAProjectIntoATempDirectory() {
         state.projectDirectoryURL = URL(string: "/some/projectName")!
@@ -32,17 +31,17 @@ final class CopyProjectToTempDirectoryTests: XCTestCase {
     }
     
     func assertThatCopiesTheProjectToTheTempDirectory() {
-        XCTAssertEqual(self.fileManagerSpy.copyPaths.first?.source, "/some/projectName")
-        XCTAssertEqual(self.fileManagerSpy.copyPaths.first?.dest, "/tmp/projectName")
-        XCTAssertEqual(self.fileManagerSpy.copyPaths.count, 1)
+        XCTAssertEqual(fileManager.copyPaths.first?.source, "/some/projectName")
+        XCTAssertEqual(fileManager.copyPaths.first?.dest, "/tmp/projectName")
+        XCTAssertEqual(fileManager.copyPaths.count, 1)
     }
     
     func assertThatCopiesTheProjectAfterCreatingTheTempDirectory() {
-        XCTAssertEqual(self.fileManagerSpy.methodCalls, ["copyItem(atPath:toPath:)"])
+        XCTAssertEqual(fileManager.methodCalls, ["copyItem(atPath:toPath:)"])
     }
     
     func test_whenItsUnableToCopyAProjectIntoATempDirectory() {
-        fileManagerSpy.errorToThrow = TestingError.stub
+        fileManager.errorToThrow = TestingError.stub
         state.projectDirectoryURL = URL(string: "/some/projectName")!
         state.tempDirectoryURL = URL(string: "/tmp/projectName")!
         

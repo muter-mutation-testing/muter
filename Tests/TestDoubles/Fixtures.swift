@@ -16,7 +16,7 @@ extension MuterTestReport {
 extension MuterTestReport.AppliedMutationOperator {
     static func make(
         mutationPoint: MutationPoint = .make(),
-        mutationSnapshot: MutationOperatorSnapshot = .make(),
+        mutationSnapshot: MutationOperator.Snapshot = .make(),
         testSuiteOutcome: TestSuiteOutcome = .passed
     ) -> Self {
         Self(
@@ -27,7 +27,7 @@ extension MuterTestReport.AppliedMutationOperator {
     }
 }
 
-extension MutationOperatorSnapshot {
+extension MutationOperator.Snapshot {
     static func make(
         before: String = "",
         after: String = "",
@@ -57,7 +57,7 @@ extension MutationTestOutcome.Mutation {
     static func make(
         testSuiteOutcome: TestSuiteOutcome = .passed,
         point: MutationPoint = .make(),
-        snapshot: MutationOperatorSnapshot = .null,
+        snapshot: MutationOperator.Snapshot = .null,
         originalProjectDirectoryUrl: URL = URL(fileURLWithPath: ""),
         tempDirectoryURL: URL = URL(fileURLWithPath: "")
     ) -> Self {
@@ -91,7 +91,7 @@ extension MuterTestReport.AppliedMutationOperator {
     static func make(
         mutationOperator: MutationOperator.Id = .logicalOperator,
         position: SwiftSyntax.SourceLocation = .init(integerLiteral: 0),
-        mutationSnapshot: MutationOperatorSnapshot = .null,
+        mutationSnapshot: MutationOperator.Snapshot = .null,
         testOutcome: TestSuiteOutcome = .passed
     ) -> Self {
         Self(
@@ -168,32 +168,31 @@ extension RunOptions {
         filesToMutate: [String] = [],
         reportFormat: ReportFormat = .plain,
         reportURL: URL? = nil,
-        skipCoverage: Bool = false,
-        logger: Logger = .init()
+        skipCoverage: Bool = false
     ) -> Self {
         .init(
             filesToMutate: filesToMutate,
             reportFormat: reportFormat,
             reportURL: reportURL,
-            skipCoverage: skipCoverage,
-            logger: logger
+            skipCoverage: skipCoverage
         )
     }
 }
 
-typealias SchemataMutationMappings = (source: String, schematas: [Schemata])
+typealias SchemataMutationMappings = (source: String, schemata: MutationSchemata)
 
 extension SchemataMutationMapping {
     static func make(
+        filePath: String = "",
         _ mappings: SchemataMutationMappings...
     ) throws -> SchemataMutationMapping {
-        let schemataMutationMapping = SchemataMutationMapping()
+        let schemataMutationMapping = SchemataMutationMapping(filePath: filePath)
 
-        for (source, schematas) in mappings {
+        for (source, schemata) in mappings {
             let codeBlockSyntax = try sourceCode(source).statements
 
-            schematas.forEach { schemata in
-                schemataMutationMapping.add(codeBlockSyntax, schemata)
+            schemata.forEach { schema in
+                schemataMutationMapping.add(codeBlockSyntax, schema)
             }
         }
 
@@ -201,21 +200,19 @@ extension SchemataMutationMapping {
     }
 }
 
-extension Schemata {
+extension MutationSchema {
     static func make(
-        id: String = "",
         filePath: String = "",
         mutationOperatorId: MutationOperator.Id = .ror,
         syntaxMutation: String = "",
-        positionInSourceCode: MutationPosition = .null,
-        snapshot: MutationOperatorSnapshot = .null
-    ) throws -> Schemata {
-        Schemata(
-            id: id,
+        position: MutationPosition = .null,
+        snapshot: MutationOperator.Snapshot = .null
+    ) throws -> MutationSchema {
+        MutationSchema(
             filePath: filePath,
             mutationOperatorId: mutationOperatorId,
             syntaxMutation: try sourceCode(syntaxMutation).statements,
-            positionInSourceCode: positionInSourceCode,
+            position: position,
             snapshot: snapshot
         )
     }
@@ -225,4 +222,21 @@ func sourceCode(
     _ source: String
 ) throws -> SourceFileSyntax {
     try SyntaxParser.parse(source: source)
+}
+
+extension MuterConfiguration {
+    static func fromFixture(at path: String) -> MuterConfiguration? {
+
+        guard let data = FileManager.default.contents(atPath: path),
+            let configuration = try? MuterConfiguration(from: data) else {
+                fatalError("Unable to load a valid Muter configuration file from \(path)")
+        }
+        return configuration
+    }
+}
+
+extension MutationPosition {
+    static var firstPosition: MutationPosition {
+        return MutationPosition(utf8Offset: 0, line: 0, column: 0)
+    }
 }
