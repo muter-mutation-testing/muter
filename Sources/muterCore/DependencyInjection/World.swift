@@ -4,7 +4,7 @@ import Progress
 #if DEBUG
 var current = World()
 #else
-let curent = World()
+let current = World()
 #endif
 
 typealias ProgressBarInitializer = (
