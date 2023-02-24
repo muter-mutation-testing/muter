@@ -34,7 +34,9 @@ final class SwiftCoverage: BuildSystemCoverage {
         return process().runProcess(
             url: configuration.testCommandExecutable,
             arguments: ["build", "--show-bin-path"]
-        )?.trimmed
+        )
+        .flatMap(\.nilIfEmpty)
+        .map(\.trimmed)
     }
     
     private func findTestArtifact(
@@ -43,7 +45,9 @@ final class SwiftCoverage: BuildSystemCoverage {
         return process().runProcess(
             url: "/usr/bin/find",
             arguments: [binaryPath, "-name", "*.xctest"]
-        )?.trimmed
+        )
+        .flatMap(\.nilIfEmpty)
+        .map(\.trimmed)
     }
     
     private func coverageReport(
@@ -64,6 +68,8 @@ final class SwiftCoverage: BuildSystemCoverage {
                 "--ignore-filename-regex=.build|Tests"
             ]
         )
+        .flatMap(\.nilIfEmpty)
+        .map(\.trimmed)
     }
 }
 
