@@ -118,6 +118,7 @@ private class SkipMutations: SyntaxAnyVisitor {
         sourceFileInfo: SourceFileInfo
     ) {
         self.sourceFileInfo = sourceFileInfo
+        super.init(viewMode: .all)
     }
 
     override func visitAnyPost(_ node: Syntax) {

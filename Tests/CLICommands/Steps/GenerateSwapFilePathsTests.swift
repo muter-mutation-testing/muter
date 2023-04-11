@@ -8,8 +8,10 @@ final class GenerateSwapFilePathsTests: MuterTestCase {
     private lazy var sut = GenerateSwapFilePaths()
 
     func test_muterTempDirectoryCreation() {
-        state.sourceCodeByFilePath = ["/folder/file1.swift": SyntaxFactory.makeBlankSourceFile(),
-                                      "/folder/file2.swift": SyntaxFactory.makeBlankSourceFile(),]
+        state.sourceCodeByFilePath = [
+            "/folder/file1.swift": SourceFileSyntax(statements: CodeBlockItemListSyntax([]), eofToken: .eof()),
+            "/folder/file2.swift": SourceFileSyntax(statements: CodeBlockItemListSyntax([]), eofToken: .eof()),
+        ]
         state.tempDirectoryURL = URL(fileURLWithPath: "/workspace")
 
         _ = sut.run(with: state)
@@ -23,8 +25,10 @@ final class GenerateSwapFilePathsTests: MuterTestCase {
     }
 
     func test_swapMappingGeneration() throws {
-        state.sourceCodeByFilePath = ["/folder/file1.swift": SyntaxFactory.makeBlankSourceFile(),
-                                      "/folder/file2.swift": SyntaxFactory.makeBlankSourceFile(),]
+        state.sourceCodeByFilePath = [
+            "/folder/file1.swift": SourceFileSyntax(statements: CodeBlockItemListSyntax([]), eofToken: .eof()),
+            "/folder/file2.swift": SourceFileSyntax(statements: CodeBlockItemListSyntax([]), eofToken: .eof()),
+        ]
         state.tempDirectoryURL = URL(fileURLWithPath: "/workspace")
 
         let result = try XCTUnwrap(sut.run(with: state).get())

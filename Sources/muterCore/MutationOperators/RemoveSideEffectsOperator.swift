@@ -50,7 +50,7 @@ enum RemoveSideEffectsOperator {
             let statements = body.statements
             for statement in body.statements where statementContainsMutableToken(statement) {
                 let mutatedFunctionStatements = body.statements.exclude { $0.description == statement.description }
-                let newCodeBlockItemList = SyntaxFactory.makeCodeBlockItemList(mutatedFunctionStatements)
+                let newCodeBlockItemList = CodeBlockItemListSyntax(mutatedFunctionStatements)
                 
                 let position = endLocation(for: statement)
                 let snapshot = MutationOperator.Snapshot(
@@ -71,7 +71,7 @@ enum RemoveSideEffectsOperator {
         }
         
         private func mutated(_ node: FunctionDeclSyntax, with body: CodeBlockSyntax) -> DeclSyntax {
-            let functionDecl = SyntaxFactory.makeFunctionDecl(
+            let functionDecl = FunctionDeclSyntax(
                 attributes: node.attributes,
                 modifiers: node.modifiers,
                 funcKeyword: node.funcKeyword,
@@ -86,15 +86,15 @@ enum RemoveSideEffectsOperator {
         }
         
         private func statementContainsMutableToken(_ statement: CodeBlockItemListSyntax.Element) -> Bool {
-            let doesntContainVariableAssignment = statement.children.count(variableAssignmentStatements) == 0
+            let doesntContainVariableAssignment = statement.children(viewMode: .all).count(variableAssignmentStatements) == 0
             let containsDiscardedResult = statement.description.contains("_ = ")
             
-            let containsFunctionCall = statement.children
+            let containsFunctionCall = statement.children(viewMode: .all)
                 .include(functionCallStatements)
                 .exclude(untestedFunctionCallStatements)
                 .count >= 1
             
-            let doesntContainPossibleDeadlock = !statement.children
+            let doesntContainPossibleDeadlock = !statement.children(viewMode: .all)
                 .exclude(concurrencyStatements).isEmpty
             
             return doesntContainVariableAssignment &&

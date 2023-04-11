@@ -5,7 +5,7 @@ final class AddImportRewriter: SyntaxRewriter {
     
     private(set) var newLinesAddedToFile = 0
 
-    override func visit(_ node: SourceFileSyntax) -> Syntax {
+    override func visit(_ node: SourceFileSyntax) -> SourceFileSyntax {
         guard visitor.shouldAddImportStatement(node) else {
             return super.visit(node)
         }
@@ -13,7 +13,7 @@ final class AddImportRewriter: SyntaxRewriter {
         newLinesAddedToFile = 2
         
         return super.visit(
-            SyntaxFactory.makeSourceFile(
+            SourceFileSyntax(
                 statements: insertImportFoundation(in: node.statements),
                 eofToken: node.eofToken
             )
@@ -24,16 +24,16 @@ final class AddImportRewriter: SyntaxRewriter {
         in node: CodeBlockItemListSyntax
     ) -> CodeBlockItemListSyntax {
         node.prepending(
-            SyntaxFactory.makeCodeBlockItem(
-                item: Syntax(
-                    SyntaxFactory.makeImportDecl(
+            CodeBlockItemSyntax(
+                item: CodeBlockItemSyntax.Item(
+                    ImportDeclSyntax(
                         attributes: nil,
                         modifiers: nil,
-                        importTok: SyntaxFactory.makeImportKeyword(),
+                        importTok: .importKeyword(),
                         importKind: nil,
-                        path: SyntaxFactory.makeAccessPath([
-                            SyntaxFactory.makeAccessPathComponent(
-                                name: SyntaxFactory.makeIdentifier("Foundation")
+                        path: AccessPathSyntax([
+                            AccessPathComponentSyntax(
+                                name: .identifier("Foundation")
                                     .appendingLeadingTrivia(.spaces(1))
                                     .appendingTrailingTrivia(.newlines(2)),
                                 trailingDot: nil

@@ -7,7 +7,7 @@ final class MuterRewriter: SyntaxRewriter {
         self.schemataMappings = schemataMappings
     }
 
-    override func visit(_ node: CodeBlockItemListSyntax) -> Syntax {
+    override func visit(_ node: CodeBlockItemListSyntax) -> CodeBlockItemListSyntax {
         guard let mutationSchemata = schemataMappings.schemata(node) else {
             return super.visit(node)
         }
