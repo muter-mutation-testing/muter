@@ -18,6 +18,7 @@ enum RemoveSideEffectsOperator {
         init(configuration: MuterConfiguration? = nil, sourceFileInfo: SourceFileInfo) {
             untestedFunctionNames = ["print", "fatalError", "exit", "abort"] + (configuration?.excludeCallList ?? [])
             self.sourceFileInfo = sourceFileInfo
+            super.init(viewMode: .all)
         }
 
         override func visit(_ node: PatternBindingListSyntax) -> SyntaxVisitorContinueKind {
@@ -54,15 +55,15 @@ enum RemoveSideEffectsOperator {
         }
 
         private func statementContainsMutableToken(_ statement: CodeBlockItemListSyntax.Element) -> Bool {
-            let doesntContainVariableAssignment = statement.children.count(variableAssignmentStatements) == 0
+            let doesntContainVariableAssignment = statement.children(viewMode: .all).count(variableAssignmentStatements) == 0
             let containsDiscardedResult = statement.description.contains("_ = ")
 
-            let containsFunctionCall = statement.children
+            let containsFunctionCall = statement.children(viewMode: .all)
                 .include(functionCallStatements)
                 .exclude(untestedFunctionCallStatements)
                 .count >= 1
 
-            let doesntContainPossibleDeadlock = !statement.children
+            let doesntContainPossibleDeadlock = !statement.children(viewMode: .all)
                 .exclude(concurrencyStatements).isEmpty
 
             return doesntContainVariableAssignment &&
@@ -148,7 +149,7 @@ extension RemoveSideEffectsOperator {
 
             let mutatedFunctionStatements = statements.exclude { $0.description == statementToExclude.description }
 
-            let newCodeBlockItemList = SyntaxFactory.makeCodeBlockItemList(mutatedFunctionStatements)
+            let newCodeBlockItemList = CodeBlockItemListSyntax(mutatedFunctionStatements)
             let newFunctionBody = node.body!.withStatements(newCodeBlockItemList)
 
             operatorSnapshot = MutationOperatorSnapshot(
@@ -165,7 +166,7 @@ extension RemoveSideEffectsOperator {
         }
 
         private func mutated(_ node: FunctionDeclSyntax, with body: CodeBlockSyntax) -> DeclSyntax {
-            let functionDecl = SyntaxFactory.makeFunctionDecl(
+            let functionDecl = FunctionDeclSyntax(
                 attributes: node.attributes,
                 modifiers: node.modifiers,
                 funcKeyword: node.funcKeyword,

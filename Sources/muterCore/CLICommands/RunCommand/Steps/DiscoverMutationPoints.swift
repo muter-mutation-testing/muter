@@ -97,8 +97,13 @@ private class ExcludedMutationPointsDetector: SyntaxAnyVisitor, PositionDiscover
     
     private let sourceFileInfo: SourceFileInfo
     
-    required init(configuration: MuterConfiguration?, sourceFileInfo: SourceFileInfo) {
+    required init(
+        configuration: MuterConfiguration?,
+        sourceFileInfo: SourceFileInfo
+    ) {
         self.sourceFileInfo = sourceFileInfo
+        
+        super.init(viewMode: .all)
     }
     
     override func visitAnyPost(_ node: Syntax) {
