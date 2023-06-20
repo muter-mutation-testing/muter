@@ -85,46 +85,4 @@ final class TernaryOperatorTests: XCTestCase {
             changedNestedCode.code.description
         )
     }
-    
-    func test_a() {
-        let sourceFile = Parser.parse(source: "a ? true : false")
-        let result = V().visit(sourceFile)
-        
-        XCTAssertNotNil(result)
-    }
-}
-
-class V: SyntaxRewriter {
-    override func visit(_ node: ExprListSyntax) -> ExprListSyntax {
-        let children = cast(node)
-        guard children.contains(where: { $0.is(UnresolvedTernaryExprSyntax.self) }),
-              let index = ternaryIndex(node) else {
-            return super.visit(node)
-        }
-        
-        let condition = children.first!
-        let ternary = TernaryExprSyntax(
-            conditionExpression: condition,
-            firstChoice: children[index],
-            secondChoice: children[index + 1]
-        )
-        
-        return ExprListSyntax([ExprSyntax(ternary)])
-    }
-    
-    func ternaryIndex(_ node: ExprListSyntax) -> Int? {
-        for (index, child) in node.children(viewMode: .all).enumerated() {
-            if child.is(UnresolvedTernaryExprSyntax.self) {
-                return index
-            }
-        }
-        
-        return nil
-    }
-    
-    func cast(_ node: ExprListSyntax) -> [ExprSyntax] {
-        node.children(viewMode: .all).compactMap {
-            $0.as(ExprSyntax.self)
-        }
-    }
 }
