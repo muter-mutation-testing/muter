@@ -106,24 +106,20 @@ private class ExcludedMutationPointsDetector: SyntaxAnyVisitor, PositionDiscover
         super.init(viewMode: .all)
     }
     
-    override func visit(_ node: SourceFileSyntax) -> SyntaxVisitorContinueKind {
-        
-        print(dump(node))
-        return super.visit(node)
-    }
-    
     override func visitAnyPost(_ node: Syntax) {
         node.trailingTrivia.map { leadingTrivia in
             if leadingTrivia.containsLineComment(muterSkipMarker) {
                 positionsOfToken.append(
-                    node.endLocation(
-                        converter: SourceLocationConverter(
-                            file: sourceFileInfo.path,
-                            source: sourceFileInfo.source
-                        ),
-                        afterTrailingTrivia: true
+                    MutationPosition(
+                        sourceLocation:
+                            node.endLocation(
+                                converter: SourceLocationConverter(
+                                    file: sourceFileInfo.path,
+                                    source: sourceFileInfo.source
+                                ),
+                                afterTrailingTrivia: true
+                            )
                     )
-                    node.mutationPosition(with: sourceFileInfo)
                 )
             }
         }
