@@ -55,15 +55,15 @@ enum RemoveSideEffectsOperator {
         }
 
         private func statementContainsMutableToken(_ statement: CodeBlockItemListSyntax.Element) -> Bool {
-            let doesntContainVariableAssignment = statement.children(viewMode: .all).count(variableAssignmentStatements) == 0
+            let doesntContainVariableAssignment = statement.allChildren.count(variableAssignmentStatements) == 0
             let containsDiscardedResult = statement.description.contains("_ = ")
 
-            let containsFunctionCall = statement.children(viewMode: .all)
+            let containsFunctionCall = statement.allChildren
                 .include(functionCallStatements)
                 .exclude(untestedFunctionCallStatements)
                 .count >= 1
 
-            let doesntContainPossibleDeadlock = !statement.children(viewMode: .all)
+            let doesntContainPossibleDeadlock = !statement.allChildren
                 .exclude(concurrencyStatements).isEmpty
 
             return doesntContainVariableAssignment &&

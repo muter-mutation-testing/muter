@@ -17,7 +17,7 @@ final class PerformMutationTestingTests: XCTestCase {
         super.setUp()
         
         state.projectDirectoryURL = URL(fileURLWithPath: "/project")
-        state.sourceCodeByFilePath["/tmp/project/file.swift"] = SyntaxFactory.makeBlankSourceFile()
+        state.sourceCodeByFilePath["/tmp/project/file.swift"] = SourceFileSyntax.makeBlankSourceFile()
         state.mutationPoints = [expectedMutationPoint, expectedMutationPoint]
     }
 
@@ -46,7 +46,7 @@ final class PerformMutationTestingTests: XCTestCase {
         XCTAssertEqual(delegate.backedUpFilePaths, delegate.restoredFilePaths)
         XCTAssertEqual(
             delegate.mutatedFileContents.first,
-            SyntaxFactory.makeBlankSourceFile().description
+            SourceFileSyntax.makeBlankSourceFile().description
         )
         XCTAssertEqual(delegate.mutatedFilePaths.first, "/tmp/project/file.swift")
         
@@ -161,7 +161,7 @@ final class PerformMutationTestingTests: XCTestCase {
         XCTAssertEqual(delegate.backedUpFilePaths, delegate.restoredFilePaths)
         XCTAssertEqual(
             delegate.mutatedFileContents.first,
-            SyntaxFactory.makeBlankSourceFile().description
+            SourceFileSyntax.makeBlankSourceFile().description
         )
         XCTAssertEqual(delegate.mutatedFilePaths.first, "/tmp/project/file.swift")
         
@@ -209,7 +209,7 @@ final class PerformMutationTestingTests: XCTestCase {
         XCTAssertEqual(delegate.backedUpFilePaths, delegate.restoredFilePaths)
         XCTAssertEqual(
             delegate.mutatedFileContents.first,
-            SyntaxFactory.makeBlankSourceFile().description
+            SourceFileSyntax.makeBlankSourceFile().description
         )
         XCTAssertEqual(delegate.mutatedFilePaths.first, "/tmp/project/file.swift")
         

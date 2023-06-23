@@ -43,7 +43,7 @@ enum TernaryOperator {
         
         private func containsTernayExpression(_ node: ExprListSyntax) -> Bool {
             return node
-                .children(viewMode: .all)
+                .allChildren
                 .contains { $0.is(UnresolvedTernaryExprSyntax.self) }
         }
     }
@@ -83,7 +83,7 @@ extension TernaryOperator {
         }
         
         func ternaryIndex(_ node: ExprListSyntax) -> Int? {
-            for (index, child) in node.children(viewMode: .all).enumerated() {
+            for (index, child) in node.allChildren.enumerated() {
                 if child.is(UnresolvedTernaryExprSyntax.self) {
                     return index
                 }
@@ -93,7 +93,7 @@ extension TernaryOperator {
         }
         
         func cast(_ node: ExprListSyntax) -> [ExprSyntax] {
-            node.children(viewMode: .all).compactMap {
+            node.allChildren.compactMap {
                 $0.as(ExprSyntax.self)
             }
         }
