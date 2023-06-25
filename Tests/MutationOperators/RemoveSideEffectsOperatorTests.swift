@@ -15,7 +15,7 @@ final class RemoveSideEffectsOperatortests: XCTestCase {
         let rewriter = RemoveSideEffectsOperator.Rewriter(positionToMutate: positionToMutate)
 
         return (
-            mutatedSource: rewriter.visit(sourceCode(fromFileAt: path)!.code),
+            mutatedSource: Syntax(rewriter.visit(sourceCode(fromFileAt: path)!.code)),
             expectedSource: sourceCode(fromFileAt: expectedOutcome)!.code,
             rewriter
         )

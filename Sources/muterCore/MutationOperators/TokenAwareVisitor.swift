@@ -8,6 +8,7 @@ class TokenAwareVisitor: SyntaxAnyVisitor, PositionDiscoveringVisitor {
 
     required init(configuration: MuterConfiguration?, sourceFileInfo: SourceFileInfo) {
         self.sourceFileInfo = sourceFileInfo
+        super.init(viewMode: .all)
     }
     
     override func visitAny(_ node: Syntax) -> SyntaxVisitorContinueKind {
