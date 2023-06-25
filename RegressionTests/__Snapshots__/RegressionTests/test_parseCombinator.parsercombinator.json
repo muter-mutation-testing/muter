@@ -116,7 +116,7 @@
               "utf8Offset" : 6430
             }
           },
-          "testSuiteOutcome" : "failed"
+          "testSuiteOutcome" : "buildError"
         },
         {
           "mutationPoint" : {
@@ -127,7 +127,7 @@
               "utf8Offset" : 7199
             }
           },
-          "testSuiteOutcome" : "failed"
+          "testSuiteOutcome" : "buildError"
         },
         {
           "mutationPoint" : {
@@ -157,6 +157,6 @@
     }
   ],
   "globalMutationScore" : 100,
-  "numberOfKilledMutants" : 13,
+  "numberOfKilledMutants" : 11,
   "totalAppliedMutationOperators" : 13
 }
