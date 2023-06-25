@@ -163,14 +163,14 @@ class XMLTagStyleBuilderTests: XCTestCase {
             return (0, 0)
         }
         XCTAssertEqual(errorLocation(forXML: "Text <a ").line, 1)
-        XCTAssertEqual(errorLocation(forXML: "Text <a ").column, 7)
+        XCTAssertEqual(errorLocation(forXML: "Text <a ").column, 35)
         XCTAssertEqual(errorLocation(forXML: "Text \r\n <a ").line, 2)
-        XCTAssertEqual(errorLocation(forXML: "Text \r\n <a ").column, 3)
+        XCTAssertEqual(errorLocation(forXML: "Text \r\n <a ").column, 31)
 
         XCTAssertEqual(errorLocation(forXML: "<ex> <a ", [.doNotWrapXML]).line, 1)
-        XCTAssertEqual(errorLocation(forXML: "<ex> <a ", [.doNotWrapXML]).column, 7)
+        XCTAssertEqual(errorLocation(forXML: "<ex> <a ", [.doNotWrapXML]).column, 35)
         XCTAssertEqual(errorLocation(forXML: "<ex> \r\n <a ", [.doNotWrapXML]).line, 2)
-        XCTAssertEqual(errorLocation(forXML: "<ex> \r\n <a ", [.doNotWrapXML]).column, 3)
+        XCTAssertEqual(errorLocation(forXML: "<ex> \r\n <a ", [.doNotWrapXML]).column, 31)
     }
 
     func testBONXML() {
