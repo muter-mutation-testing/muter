@@ -27,7 +27,7 @@ extension MutationSchema: Nullable {
         MutationSchema(
             filePath: "",
             mutationOperatorId: .ror,
-            syntaxMutation: SyntaxFactory.makeBlankCodeBlockItemList(),
+            syntaxMutation: CodeBlockItemListSyntax([]),
             position: .null,
             snapshot: .null
         )

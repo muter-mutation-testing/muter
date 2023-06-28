@@ -118,11 +118,20 @@ private class SkipMutations: SyntaxAnyVisitor {
         sourceFileInfo: SourceFileInfo
     ) {
         self.sourceFileInfo = sourceFileInfo
+        
+        super.init(viewMode: .all)
     }
 
     override func visitAnyPost(_ node: Syntax) {
         node.leadingTrivia.map { leadingTrivia in
             if leadingTrivia.containsLineComment(muterSkipMarker) {
+                skipPositions.append(
+                    mutationPosition(for: node)
+                )
+            }
+        }
+        node.trailingTrivia.map { trailingTrivia in
+            if trailingTrivia.containsLineComment(muterSkipMarker) {
                 skipPositions.append(
                     mutationPosition(for: node)
                 )

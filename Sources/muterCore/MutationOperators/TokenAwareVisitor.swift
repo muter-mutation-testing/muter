@@ -54,11 +54,11 @@ class TokenAwareVisitor: MuterVisitor {
         _ token: TokenSyntax,
         using `operator`: String
     ) -> Syntax {
-        let tokenSyntax = SyntaxFactory.makeToken(
+        let tokenSyntax = TokenSyntax(
             .spacedBinaryOperator(`operator`),
-            presence: .present,
             leadingTrivia: token.leadingTrivia,
-            trailingTrivia: token.trailingTrivia
+            trailingTrivia: token.trailingTrivia,
+            presence: .present
         )
 
         return Syntax(tokenSyntax)

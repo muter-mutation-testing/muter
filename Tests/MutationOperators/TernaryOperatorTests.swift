@@ -1,6 +1,5 @@
-import XCTest
-
 @testable import muterCore
+import XCTest
 
 final class TernaryOperatorTests: MuterTestCase {
     private lazy var sampleCode = sourceCode(
@@ -10,23 +9,24 @@ final class TernaryOperatorTests: MuterTestCase {
     private lazy var sampleNestedCode = sourceCode(
         fromFileAt: "\(mutationExamplesDirectory)/TernaryOperator/sampleWithNestedTernaryOperator.swift"
     )!
-    
+
     func test_visitor() throws {
         let visitor = TernaryOperator.Visitor(
-            sourceFileInfo: sampleCode.asSourceFileInfo
+            sourceFileInfo: self.sampleCode.asSourceFileInfo
         )
 
-        visitor.walk(sampleCode.code)
+        visitor.walk(self.sampleCode.code)
 
         let actualMappings = visitor.schemataMappings
         let expectedMappings = try SchemataMutationMapping.make(
+            filePath: self.sampleCode.path,
             (
                 source: "\n    return a ? \"true\" : \"false\"",
                 schemata: [
-                    try .make(
-                        filePath: sampleCode.path,
+                    .make(
+                        filePath: self.sampleCode.path,
                         mutationOperatorId: .ternaryOperator,
-                        syntaxMutation: "\n    return a ? \"false\" : \"true\"",
+                        syntaxMutation: "\n    return a ? \"false\" : \"true\" ",
                         position: MutationPosition(
                             utf8Offset: 199,
                             line: 10,
@@ -43,10 +43,10 @@ final class TernaryOperatorTests: MuterTestCase {
             (
                 source: "\n    return a ? true : false",
                 schemata: [
-                    try .make(
-                        filePath: sampleCode.path,
+                    .make(
+                        filePath: self.sampleCode.path,
                         mutationOperatorId: .ternaryOperator,
-                        syntaxMutation: "\n    return a ? false : true",
+                        syntaxMutation: "\n    return a ? false : true ",
                         position: MutationPosition(
                             utf8Offset: 120,
                             line: 6,
@@ -64,23 +64,23 @@ final class TernaryOperatorTests: MuterTestCase {
 
         XCTAssertEqual(actualMappings, expectedMappings)
     }
-    
+
     func test_visitor_nestedTernaryOperator() throws {
         let visitor = TernaryOperator.Visitor(
             sourceFileInfo: sampleNestedCode.asSourceFileInfo
         )
-        
+
         visitor.walk(sampleNestedCode.code)
-        
+
         let actualMappings = visitor.schemataMappings
         let expectedMappings = try SchemataMutationMapping.make(
             (
                 source: "\n    return a ? b ? true : false : false",
                 schemata: [
-                    try .make(
+                    .make(
                         filePath: sampleNestedCode.path,
                         mutationOperatorId: .ternaryOperator,
-                        syntaxMutation: "\n    return a ? false : b ? true : false",
+                        syntaxMutation: "\n    return a ? false : b ? true : false ",
                         position: MutationPosition(
                             utf8Offset: 143,
                             line: 6,
@@ -92,10 +92,10 @@ final class TernaryOperatorTests: MuterTestCase {
                             description: "swapped ternary operator"
                         )
                     ),
-                    try .make(
+                    .make(
                         filePath: sampleNestedCode.path,
                         mutationOperatorId: .ternaryOperator,
-                        syntaxMutation: "\n    return a ? b ? false : true: false",
+                        syntaxMutation: "\n    return a ? b ? false : true : false",
                         position: MutationPosition(
                             utf8Offset: 136,
                             line: 6,
@@ -113,17 +113,17 @@ final class TernaryOperatorTests: MuterTestCase {
 
         XCTAssertEqual(actualMappings, expectedMappings)
     }
-    
+
     func test_rewriter() {
         let visitor = TernaryOperator.Visitor(
-            sourceFileInfo: sampleNestedCode.asSourceFileInfo
+            sourceFileInfo: self.sampleNestedCode.asSourceFileInfo
         )
-        
-        visitor.walk(sampleNestedCode.code)
-        
+
+        visitor.walk(self.sampleNestedCode.code)
+
         let rewriter = MuterRewriter(visitor.schemataMappings)
-            .visit(sampleNestedCode.code)
-        
+            .visit(self.sampleNestedCode.code)
+
         XCTAssertEqual(
             rewriter.description,
             """
@@ -131,10 +131,10 @@ final class TernaryOperatorTests: MuterTestCase {
             print("please ignore me")
             #endif
 
-            func someCode(_ a: Bool, _ b: Bool) -> Bool { if ProcessInfo.processInfo.environment["sampleWithNestedTernaryOperator_6_40_143"] != nil {
-                return a ? false : b ? true : false
+            func someCode(_ a: Bool, _ b: Bool) -> Bool { if ProcessInfo.processInfo.environment["sampleWithNestedTernaryOperator_6_40_143"] != nil { 
+                return a ? false : b ? true : false 
             } else if ProcessInfo.processInfo.environment["sampleWithNestedTernaryOperator_6_33_136"] != nil {
-                return a ? b ? false : true: false
+                return a ? b ? false : true : false
             } else {
                 return a ? b ? true : false : false
             }

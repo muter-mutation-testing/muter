@@ -1,5 +1,6 @@
-// swift-tools-version:5.7
+// swift-tools-version:5.8
 
+import Foundation
 import PackageDescription
 
 let package = Package(
@@ -14,9 +15,9 @@ let package = Package(
         .package(url: "https://github.com/apple/swift-argument-parser.git", from: "1.2.2"),
         .package(url: "https://github.com/onevcat/Rainbow.git", from: "4.0.1"),
         .package(url: "https://github.com/dduan/Pathos.git", from: "0.4.2"),
-        .package(url: "https://github.com/apple/swift-syntax.git", exact: "0.50700.1"),
+        .package(url: "https://github.com/apple/swift-syntax.git", branch: "508.0.0"),
         .package(url: "https://github.com/jkandzi/Progress.swift.git", from: "0.4.0"),
-        .package(url: "https://github.com/johnsundell/plot.git", from: "0.12.0"),
+        .package(url: "https://github.com/johnsundell/plot.git", from: "0.14.0"),
         .package(url: "https://github.com/krzysztofzablocki/Difference.git", from: "1.0.2"),
         .package(url: "https://github.com/jpsim/Yams.git", from: "5.0.5"),
         .package(url: "https://github.com/pointfreeco/swift-snapshot-testing.git", from: "1.11.0")

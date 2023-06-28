@@ -46,6 +46,8 @@ class MuterVisitor: SyntaxAnyVisitor {
         self.schemataMappings = SchemataMutationMapping(
             filePath: sourceFileInfo.path
         )
+        
+        super.init(viewMode: .all)
     }
 
     func location(

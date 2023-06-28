@@ -14,39 +14,36 @@ struct MutationSwitch {
 
         var schemata = mutationSchemata
         let firstSchema = schemata.removeFirst()
-        var outterIfStatement = SyntaxFactory.makeIfStmt(
-            labelName: nil,
-            labelColon: nil,
-            ifKeyword: SyntaxFactory
-                .makeIfKeyword()
+        var outterIfStatement = IfStmtSyntax(
+            ifKeyword: .ifKeyword()
                 .withTrailingTrivia(.spaces(1)),
             conditions: buildSchemataCondition(
                 withId: firstSchema.id
             ),
-            body: SyntaxFactory.makeCodeBlock(
-                leftBrace: SyntaxFactory.makeLeftBraceToken()
+            body: CodeBlockSyntax(
+                leftBrace: .leftBraceToken()
                     .withTrailingTrivia(
                         firstSchema.syntaxMutation.trailingTrivia ?? .spaces(0)
                     ),
                 statements: needsImplicitReturn
                     ? firstSchema.syntaxMutation.withReturnStatement()
                     : firstSchema.syntaxMutation,
-                rightBrace: SyntaxFactory.makeRightBraceToken()
+                rightBrace: .rightBraceToken()
                     .withLeadingTrivia(.newlines(1))
             ),
-            elseKeyword: SyntaxFactory.makeElseKeyword()
+            elseKeyword: .elseKeyword()
                 .withTrailingTrivia(.spaces(1))
                 .withLeadingTrivia(.spaces(1)),
-            elseBody: Syntax(
-                SyntaxFactory.makeCodeBlock(
-                    leftBrace: SyntaxFactory.makeLeftBraceToken()
+            elseBody: IfStmtSyntax.ElseBody(
+                CodeBlockSyntax(
+                    leftBrace: .leftBraceToken()
                         .withTrailingTrivia(
                             originalSyntax.trailingTrivia ?? .spaces(0)
                         ),
                     statements: needsImplicitReturn
                         ? originalSyntax.withReturnStatement()
                         : originalSyntax,
-                    rightBrace: SyntaxFactory.makeRightBraceToken()
+                    rightBrace: .rightBraceToken()
                         .withLeadingTrivia(.newlines(1))
                 )
             )
@@ -54,105 +51,99 @@ struct MutationSwitch {
 
         for schema in schemata {
             outterIfStatement = outterIfStatement.withElseBody(
-                Syntax(
-                    SyntaxFactory.makeIfStmt(
-                        labelName: nil,
-                        labelColon: nil,
-                        ifKeyword: SyntaxFactory
-                            .makeIfKeyword()
-                            .withTrailingTrivia(.spaces(1)),
+                IfStmtSyntax.ElseBody(
+                    IfStmtSyntax(
+                        ifKeyword: .ifKeyword().withTrailingTrivia(.spaces(1)),
                         conditions: buildSchemataCondition(
                             withId: schema.id
                         ),
-                        body: SyntaxFactory.makeCodeBlock(
-                            leftBrace: SyntaxFactory.makeLeftBraceToken()
+                        body: CodeBlockSyntax(
+                            leftBrace: .leftBraceToken()
                                 .withTrailingTrivia(
                                     schema.syntaxMutation.trailingTrivia ?? .spaces(0)
                                 ),
                             statements: needsImplicitReturn
                                 ? schema.syntaxMutation.withReturnStatement()
                                 : schema.syntaxMutation,
-                            rightBrace: SyntaxFactory.makeRightBraceToken()
+                            rightBrace: .rightBraceToken()
                                 .withLeadingTrivia(.newlines(1))
                         ),
-                        elseKeyword: SyntaxFactory.makeElseKeyword()
+                        elseKeyword: .elseKeyword()
                             .withTrailingTrivia(.spaces(1))
                             .withLeadingTrivia(.spaces(1)),
-                        elseBody: outterIfStatement.elseBody.map(Syntax.init)
+                        elseBody: outterIfStatement.elseBody.flatMap(IfStmtSyntax.ElseBody.init)
                     )
                 )
             )
         }
 
-        return SyntaxFactory.makeCodeBlockItemList([
-            SyntaxFactory.makeCodeBlockItem(
-                item: Syntax(outterIfStatement),
-                semicolon: nil,
-                errorTokens: nil
-            )
+        return CodeBlockItemListSyntax([
+            CodeBlockItemSyntax(item: .init(outterIfStatement))
         ])
     }
     
     private static func buildSchemataCondition(
         withId id: String
     ) -> ConditionElementListSyntax {
-        return SyntaxFactory.makeConditionElementList([
-            SyntaxFactory.makeConditionElement(
-                condition: Syntax(
-                    SyntaxFactory.makeSequenceExpr(
-                        elements: SyntaxFactory.makeExprList([
+        return ConditionElementListSyntax([
+            ConditionElementSyntax(
+                condition: ConditionElementSyntax.Condition(
+                    SequenceExprSyntax(
+                        elements: ExprListSyntax([
                             ExprSyntax(
-                                SyntaxFactory.makeSubscriptExpr(
+                                SubscriptExprSyntax(
                                     calledExpression:
                                         ExprSyntax(
-                                            SyntaxFactory.makeMemberAccessExpr(
+                                            MemberAccessExprSyntax(
                                                 base:
                                                     ExprSyntax(
-                                                        SyntaxFactory.makeMemberAccessExpr(
+                                                        MemberAccessExprSyntax(
                                                             base: ExprSyntax(
-                                                                SyntaxFactory.makeIdentifierExpr(
-                                                                    identifier:
-                                                                        SyntaxFactory.makeIdentifier("ProcessInfo"),
+                                                                IdentifierExprSyntax(
+                                                                    identifier: .identifier("ProcessInfo"),
                                                                     declNameArguments: nil
                                                                 )
                                                             ),
-                                                            dot: SyntaxFactory.makePeriodToken(),
-                                                            name: SyntaxFactory.makeIdentifier("processInfo"),
+                                                            dot: .periodToken(),
+                                                            name: .identifier("processInfo"),
                                                             declNameArguments: nil
                                                         )),
-                                                dot: SyntaxFactory.makePeriodToken(),
-                                                name: SyntaxFactory.makeIdentifier("environment"),
+                                                dot: .periodToken(),
+                                                name: .identifier("environment"),
                                                 declNameArguments: nil
                                             )
                                         ),
-                                    leftBracket: SyntaxFactory.makeLeftSquareBracketToken(),
+                                    leftBracket: .leftSquareBracketToken(),
                                     argumentList:
-                                        SyntaxFactory.makeTupleExprElementList([
-                                            SyntaxFactory.makeTupleExprElement(
+                                        TupleExprElementListSyntax([
+                                            TupleExprElementSyntax(
                                                 label: nil,
                                                 colon: nil,
                                                 expression: ExprSyntax(
-                                                    SyntaxFactory.makeStringLiteralExpr(id)
+                                                    StringLiteralExprSyntax(
+                                                        openQuote: .stringQuoteToken(),
+                                                        segments: StringLiteralSegmentsSyntax([.stringSegment(StringSegmentSyntax(content: TokenSyntax.stringSegment(id)))]),
+                                                        closeQuote: .stringQuoteToken()
+                                                    )
                                                 ),
                                                 trailingComma: nil
                                             )
                                         ]),
-                                    rightBracket: SyntaxFactory.makeRightSquareBracketToken(),
+                                    rightBracket: .rightSquareBracketToken(),
                                     trailingClosure: nil,
                                     additionalTrailingClosures: nil
                                 )
                             ),
                             ExprSyntax(
-                                SyntaxFactory.makeBinaryOperatorExpr(
-                                    operatorToken: SyntaxFactory.makeSpacedBinaryOperator("!=")
+                                BinaryOperatorExprSyntax(
+                                    operatorToken: .spacedBinaryOperator("!=")
                                         .withLeadingTrivia(.spaces(1))
                                         .withTrailingTrivia(.spaces(1))
                                 )
                             ),
                             ExprSyntax(
-                                SyntaxFactory.makeNilLiteralExpr(
-                                    nilKeyword: SyntaxFactory
-                                        .makeNilKeyword()
+                                NilLiteralExprSyntax(
+                                    nilKeyword: .nilKeyword()
                                         .withTrailingTrivia(.spaces(1))
                                 )
                             )
@@ -175,11 +166,11 @@ private extension CodeBlockItemListSyntax {
         
         let item = codeBlockItem.item.withoutTrivia()
         
-        return SyntaxFactory.makeCodeBlockItemList([
+        return CodeBlockItemListSyntax([
             codeBlockItem.withItem(
-                Syntax(
-                    SyntaxFactory.makeReturnStmt(
-                        returnKeyword: SyntaxFactory.makeReturnKeyword()
+                CodeBlockItemSyntax.Item(
+                    ReturnStmtSyntax(
+                        returnKeyword: .returnKeyword()
                             .appendingLeadingTrivia(.newlines(1))
                             .appendingTrailingTrivia(.spaces(1)),
                         expression: ExprSyntax(

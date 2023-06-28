@@ -3,9 +3,9 @@ import SwiftSyntax
 final class DisableLintersRewriter: SyntaxRewriter {
     private(set) var newLinesAddedToFile = 3
 
-    override func visit(_ node: SourceFileSyntax) -> Syntax {
+    override func visit(_ node: SourceFileSyntax) -> SourceFileSyntax {
         return super.visit(
-            SyntaxFactory.makeSourceFile(
+            SourceFileSyntax(
                 statements: disableLinters(in: node.statements),
                 eofToken: node.eofToken
             )

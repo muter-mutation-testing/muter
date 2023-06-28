@@ -86,7 +86,7 @@
               "line" : 204
             }
           },
-          "testSuiteOutcome" : "failed"
+          "testSuiteOutcome" : "buildError"
         },
         {
           "mutationPoint" : {
@@ -96,7 +96,7 @@
               "line" : 204
             }
           },
-          "testSuiteOutcome" : "failed"
+          "testSuiteOutcome" : "buildError"
         },
         {
           "mutationPoint" : {
@@ -144,6 +144,6 @@
     }
   ],
   "globalMutationScore" : 100,
-  "numberOfKilledMutants" : 13,
+  "numberOfKilledMutants" : 11,
   "totalAppliedMutationOperators" : 13
 }

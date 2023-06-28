@@ -63,7 +63,6 @@ final class RewriterTests: MuterTestCase {
         XCTAssertEqual(
             mutatedSourceCode,
             try loadSampleWithAllOperatorsApplied()
-            
         )
     }
     

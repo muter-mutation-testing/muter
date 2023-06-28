@@ -4,14 +4,13 @@ libdir = $(prefix)/lib
 
 repodir = $(shell pwd)
 builddir = $(repodir)/.build
-flags=-Xlinker -weak-l_InternalSwiftSyntaxParser -Xswiftc -suppress-warnings
 
 build:
 	@swift package clean
 	@swift build -c debug $(flags)
 
-build-release:
-	@swift build -c release --product muter --disable-sandbox $(flags)
+build-release: 
+	@swift build -c release --product muter --disable-sandbox
 
 project:
 	@xed .
@@ -22,8 +21,6 @@ release:
 install: build-release
 	@install -d "$(bindir)" "$(libdir)"
 	@install "$(builddir)/release/muter" "$(bindir)"
-	@cp -r "$(builddir)/release/lib_InternalSwiftSyntaxParser.dylib" "$(bindir)/lib_InternalSwiftSyntaxParser.dylib"
-	@install_name_tool -change @rpath/lib_InternalSwiftSyntaxParser.dylib @executable_path/lib_InternalSwiftSyntaxParser.dylib "$(bindir)/muter"
 
 uninstall:
 	@rm -rf "$(bindir)/muter"

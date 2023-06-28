@@ -21,7 +21,7 @@ struct ConditionalOperators {
         }
 
         return a == 9 ? "goodbye" : "what"
-} else if ProcessInfo.processInfo.environment["sampleWithAllOperators_18_43_444"] != nil {
+} else if ProcessInfo.processInfo.environment["sampleWithAllOperators_18_43_444"] != nil { 
         let b = a == 5
         let e = a != 1
         let c = a >= 4
@@ -33,7 +33,7 @@ struct ConditionalOperators {
             return "hello"
         }
 
-        return a == 9 ? "what" : "goodbye"
+        return a == 9 ? "what" : "goodbye" 
 } else if ProcessInfo.processInfo.environment["sampleWithAllOperators_18_18_419"] != nil {
         let b = a == 5
         let e = a != 1
@@ -280,24 +280,24 @@ struct Concurrency {
 }
 
 struct TernayOperators {
-    func someCode(_ a: Bool) -> Bool { if ProcessInfo.processInfo.environment["sampleWithAllOperators_125_32_2896"] != nil {
-        return a ? false : true
+    func someCode(_ a: Bool) -> Bool { if ProcessInfo.processInfo.environment["sampleWithAllOperators_125_32_2896"] != nil { 
+        return a ? false : true 
 } else {
         return a ? true : false
 }
     }
 
-    func someAnotherCode(_ a: Bool) -> String { if ProcessInfo.processInfo.environment["sampleWithAllOperators_129_36_2987"] != nil {
-        return a ? "false" : "true"
+    func someAnotherCode(_ a: Bool) -> String { if ProcessInfo.processInfo.environment["sampleWithAllOperators_129_36_2987"] != nil { 
+        return a ? "false" : "true" 
 } else {
         return a ? "true" : "false"
 }
     }
 
-    func someCode(_ a: Bool, _ b: Bool) -> Bool { if ProcessInfo.processInfo.environment["sampleWithAllOperators_133_44_3088"] != nil {
-        return a ? false : b ? true : false
+    func someCode(_ a: Bool, _ b: Bool) -> Bool { if ProcessInfo.processInfo.environment["sampleWithAllOperators_133_44_3088"] != nil { 
+        return a ? false : b ? true : false 
 } else if ProcessInfo.processInfo.environment["sampleWithAllOperators_133_37_3081"] != nil {
-        return a ? b ? false : true: false
+        return a ? b ? false : true : false
 } else {
         return a ? b ? true : false : false
 }
