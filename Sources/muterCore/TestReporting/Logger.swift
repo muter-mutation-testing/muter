@@ -9,27 +9,29 @@ final class Logger {
         print(
             """
             \(
-            """
-                               -:::-.
-                               -=--::-:
-                              :+---=-.-:
-                              .:.:+++.-:
-                             =-:--:-=.-:
-                              :-:.:=..-:
-                                .=:...-:
-                                  :-:.-:
-            """.green)
+                """
+                                   -:::-.
+                                   -=--::-:
+                                  :+---=-.-:
+                                  .:.:+++.-:
+                                 =-:--:-=.-:
+                                  :-:.:=..-:
+                                    .=:...-:
+                                      :-:.-:
+                """.green
+            )
                                \("... =".lightBlack)\("..".green)\("-+++".lightBlack)
                               \("++==#=".lightBlack)\("..".green)\("-**%-".lightBlack)
             \("::::::::::::::::+**#==**--**==+##*::::::::::::::::".lightBlack)
             \("..................................................".lightBlack)
             \(
-            """
-                        __ __  _ _  ___  ___  ___
-                       |  \\  \\| | ||_ _|| __>| . \\
-                       |     || ' | | | | _> |   /
-                       |_|_|_|`___' |_| |___>|_\\_\\
-            """.red)
+                """
+                            __ __  _ _  ___  ___  ___
+                           |  \\  \\| | ||_ _|| __>| . \\
+                           |     || ' | | | | _> |   /
+                           |_|_|_|`___' |_| |___>|_\\_\\
+                """.red
+            )
 
             Automated mutation testing for Swift
 
@@ -65,7 +67,9 @@ final class Logger {
     }
 
     func projectCoverageDiscoveryFinished(success: Bool) {
-        guard success == false else { return }
+        guard success == false else {
+            return
+        }
 
         print(
             """
@@ -110,12 +114,15 @@ final class Logger {
     }
 
     func mutationTestingStarted() {
-        printMessage("Mutation testing will now begin\nRunning your test suite to determine a baseline for mutation testing...")
+        printMessage(
+            "Mutation testing will now begin\nRunning your test suite to determine a baseline for mutation testing..."
+        )
     }
 
     func newMutationTestLogAvailable(mutationTestLog: MutationTestLog) {
         if mutationTestLog.mutationPoint == nil {
-            print("""
+            print(
+                """
                 📊 Determined baseline for mutation testing.
                 🧟 Muter is now going to apply each mutant one at a time and run your test suite for each mutant.
                 📃 After this step, Muter will generate a report detailing the efficacy of your test suite.
@@ -133,7 +140,9 @@ final class Logger {
                     ProgressPercent(),
                     ColoredProgressBarLine(barLength: 50),
                     SimpleTimeEstimate(
-                        initialEstimate: Double(mutationTestLog.remainingMutationPointsCount!) * mutationTestLog.timePerBuildTestCycle!),
+                        initialEstimate: Double(mutationTestLog.remainingMutationPointsCount!) * mutationTestLog
+                            .timePerBuildTestCycle!
+                    ),
                 ],
                 printer: ProgressBarMultilineTerminalPrinter(numberOfLines: 2)
             )

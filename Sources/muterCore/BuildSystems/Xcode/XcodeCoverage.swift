@@ -8,7 +8,8 @@ final class XcodeCoverage: BuildSystemCoverage {
         with configuration: MuterConfiguration
     ) -> Result<Coverage, CoverageError> {
         guard let resultPath = runTestsWithCoverageEnabled(using: configuration),
-              let report = runXccov(with: resultPath) else {
+              let report = runXccov(with: resultPath)
+        else {
 
             return .failure(.build)
         }
@@ -19,14 +20,14 @@ final class XcodeCoverage: BuildSystemCoverage {
             percent: percent,
             filesWithoutCoverage: untested
         )
-        
+
         return .success(projectCoverage)
     }
-    
+
     private func runTestsWithCoverageEnabled(
         using configuration: MuterConfiguration
     ) -> String? {
-        return process().runProcess(
+        process().runProcess(
             url: configuration.testCommandExecutable,
             arguments: configuration.enableCoverageArguments
         )
@@ -34,28 +35,29 @@ final class XcodeCoverage: BuildSystemCoverage {
         .map(\.trimmed)
         .flatMap(\.nilIfEmpty)
     }
-    
+
     private func runXccov(with result: String) -> CoverageReport? {
         guard let output: Data = process().runProcess(
             url: "/usr/bin/xcrun",
             arguments: ["xccov", "view", "--report", "--json", result]
-        ) else {
+        )
+        else {
             return nil
         }
 
         return try? JSONDecoder().decode(CoverageReport.self, from: output)
     }
-    
+
     private func extractUntested(from report: CoverageReport) -> [String] {
-        return report.targets
+        report.targets
             .excludeTestTargets()
             .flatMap(\.files)
             .filter { $0.coveredLines == 0 }
             .map(\.path)
     }
-    
+
     private func extractCoverage(from report: CoverageReport) -> Int {
-        return report.targets
+        report.targets
             .excludeTestTargets()
             .map(\.lineCoverage)
             .map { Int($0 * 100) }
@@ -82,7 +84,7 @@ private extension CoverageReport.Target {
     }
 }
 
-private extension Array where Element == CoverageReport.Target {
+private extension [CoverageReport.Target] {
     func excludeTestTargets() -> [Element] {
         exclude { $0.name.contains("xctest") }
     }

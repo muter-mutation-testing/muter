@@ -6,10 +6,10 @@ struct RunOptions {
     let reportOptions: ReportOptions
     let filesToMutate: [String]
     let skipCoverage: Bool
-    
+
     @Dependency(\.logger)
     private var logger: Logger
-    
+
     init(
         filesToMutate: [String],
         reportFormat: ReportFormat,
@@ -18,7 +18,7 @@ struct RunOptions {
     ) {
         self.filesToMutate = filesToMutate
         self.skipCoverage = skipCoverage
-        self.reportOptions = ReportOptions(
+        reportOptions = ReportOptions(
             reporter: reportFormat.reporter,
             path: reportPath(reportURL)
         )
@@ -26,7 +26,7 @@ struct RunOptions {
 }
 
 private func reportPath(_ reportURL: URL?) -> String? {
-    guard let reportURL = reportURL else {
+    guard let reportURL else {
         return nil
     }
 
@@ -39,12 +39,15 @@ private func reportPath(_ reportURL: URL?) -> String? {
 }
 
 enum ReportFormat: String, CaseIterable {
-    case plain, json, html, xcode
-    
+    case plain
+    case json
+    case html
+    case xcode
+
     static var description: String {
         allCases.map(\.rawValue).joined(separator: ", ")
     }
-    
+
     var reporter: Reporter {
         switch self {
         case .plain:

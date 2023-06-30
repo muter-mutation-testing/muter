@@ -5,7 +5,7 @@ struct LoadConfiguration: RunCommandStep {
     private var fileManager: FileSystemManager
     @Dependency(\.fileManager.currentDirectoryPath)
     private var currentDirectory: String
-    
+
     func run(with state: AnyRunCommandState) -> Result<[RunCommandState.Change], MuterError> {
         do {
             let hasJSON = hasJsonInProject()
@@ -13,7 +13,8 @@ struct LoadConfiguration: RunCommandStep {
             let canLoadConfiguration = hasJSON || hasYAML
 
             guard canLoadConfiguration,
-                  let configurationData = loadConfigurationData(legacy: hasJSON) else {
+                  let configurationData = loadConfigurationData(legacy: hasJSON)
+            else {
                 return .failure(
                     .configurationParsingError(
                         reason: "Could not find \(MuterConfiguration.fileName) at path \(currentDirectory)"
@@ -34,10 +35,10 @@ struct LoadConfiguration: RunCommandStep {
                     )
                 )
             }
-            
+
             return .success([
-                    .projectDirectoryUrlDiscovered(URL(fileURLWithPath: currentDirectory)),
-                    .configurationParsed(configuration),
+                .projectDirectoryUrlDiscovered(URL(fileURLWithPath: currentDirectory)),
+                .configurationParsed(configuration),
             ])
         } catch {
             return .failure(.configurationParsingError(reason: error.localizedDescription))
@@ -63,7 +64,7 @@ struct LoadConfiguration: RunCommandStep {
 
         return configuration.testCommandArguments.contains("-destination")
     }
-    
+
     private func loadConfigurationData(legacy: Bool) -> Data? {
         var path = currentDirectory
         path += legacy
@@ -72,12 +73,12 @@ struct LoadConfiguration: RunCommandStep {
 
         return fileManager.contents(atPath: path)
     }
-    
+
     private func migrateToYAML(_ configurationData: Data) throws {
         let configuration = try JSONDecoder().decode(MuterConfiguration.self, from: configurationData)
 
         try fileManager.removeItem(atPath: currentDirectory + "/\(MuterConfiguration.legacyFileNameWithExtension)")
-        
+
         _ = fileManager.createFile(
             atPath: "\(currentDirectory)/\(MuterConfiguration.fileNameWithExtension)",
             contents: configuration.asData,

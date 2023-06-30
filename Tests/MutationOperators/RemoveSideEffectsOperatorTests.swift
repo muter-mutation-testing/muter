@@ -1,8 +1,7 @@
-import XCTest
+@testable import muterCore
 import SwiftSyntax
 import TestingExtensions
-
-@testable import muterCore
+import XCTest
 
 final class RemoveSideEffectsOperatorTests: MuterTestCase {
     private lazy var sourceWithSideEffects = sourceCode(
@@ -21,7 +20,7 @@ final class RemoveSideEffectsOperatorTests: MuterTestCase {
             (
                 source: "\n        functionCall(\"some argument\",\n                     anArgumentLabel: \"some argument that\'s different\",\n                     anotherArgumentLabel: 5)",
                 schemata: [
-                    try .make(
+                    .make(
                         filePath: sourceWithSideEffects.path,
                         mutationOperatorId: .removeSideEffects,
                         syntaxMutation: "",
@@ -41,7 +40,7 @@ final class RemoveSideEffectsOperatorTests: MuterTestCase {
             (
                 source: "\n        _ = causesSideEffect()\n        return 1",
                 schemata: [
-                    try .make(
+                    .make(
                         filePath: sourceWithSideEffects.path,
                         mutationOperatorId: .removeSideEffects,
                         syntaxMutation: "\n        return 1",
@@ -61,10 +60,10 @@ final class RemoveSideEffectsOperatorTests: MuterTestCase {
             (
                 source: "\n        let key = \"some key\"\n        let value = aFunctionThatReturnsAValue()\n        someFunctionThatWritesToADatabase(key: key, value: value)",
                 schemata: [
-                    try .make(
+                    .make(
                         filePath: sourceWithSideEffects.path,
                         mutationOperatorId: .removeSideEffects,
-                        syntaxMutation:  "\n        let key = \"some key\"\n        let value = aFunctionThatReturnsAValue()",
+                        syntaxMutation: "\n        let key = \"some key\"\n        let value = aFunctionThatReturnsAValue()",
                         position: MutationPosition(
                             utf8Offset: 480,
                             line: 21,
@@ -81,7 +80,7 @@ final class RemoveSideEffectsOperatorTests: MuterTestCase {
             (
                 source: "\n        print(\"something\")\n\n        _ = causesSideEffect()",
                 schemata: [
-                    try .make(
+                    .make(
                         filePath: sourceWithSideEffects.path,
                         mutationOperatorId: .removeSideEffects,
                         syntaxMutation: "\n        print(\"something\")",

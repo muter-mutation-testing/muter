@@ -1,14 +1,13 @@
-import XCTest
+@testable import muterCore
 import SwiftSyntax
 import SwiftSyntaxParser
 import TestingExtensions
-
-@testable import muterCore
+import XCTest
 
 final class SchemataBuilderTests: MuterTestCase {
     override func setUp() {
         super.setUp()
-        
+
         fileManager.currentDirectoryPathToReturn = "/path/fileName"
     }
 
@@ -16,19 +15,19 @@ final class SchemataBuilderTests: MuterTestCase {
         let codeBlock = try sourceCode("return 1").statements
 
         let x = SchemataMutationMapping()
-        x.add(codeBlock, try .make(filePath: ""))
-        x.add(codeBlock, try .make())
-        
+        try x.add(codeBlock, .make(filePath: ""))
+        try x.add(codeBlock, .make())
+
         let y = SchemataMutationMapping()
-        y.add(codeBlock, try .make())
-        y.add(codeBlock, try .make())
-        
+        try y.add(codeBlock, .make())
+        try y.add(codeBlock, .make())
+
         let actualMappings = x + y
-        
+
         XCTAssertEqual(actualMappings.codeBlocks, ["return 1"])
         XCTAssertEqual(actualMappings.mutationSchemata.count, 4)
     }
-    
+
     func test_mutationSwitch() throws {
         let originalSyntax = try sourceCode("\n  a != b\n").statements
         let mutationSchemata = try makeMutationSchemata([
@@ -41,7 +40,7 @@ final class SchemataBuilderTests: MuterTestCase {
             mutationSchemata: mutationSchemata,
             with: originalSyntax
         )
-        
+
         XCTAssertEqual(
             actualMutationSwitch.description,
             """
@@ -57,7 +56,7 @@ final class SchemataBuilderTests: MuterTestCase {
             """
         )
     }
-    
+
     func test_mutationsThatRequiredImplicitReturn() throws {
         let originalSyntax = try sourceCode("\n  a != b\n").statements
         let mutationSchemata = try makeMutationSchemata([
@@ -70,7 +69,7 @@ final class SchemataBuilderTests: MuterTestCase {
             mutationSchemata: mutationSchemata,
             with: originalSyntax
         )
-        
+
         XCTAssertEqual(
             actualMutationSwitch.description,
             """

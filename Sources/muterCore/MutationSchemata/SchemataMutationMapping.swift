@@ -14,8 +14,7 @@ final class SchemataMutationMapping: Equatable {
     var isEmpty: Bool {
         mappings.isEmpty
     }
-    
-    
+
     var mutationSchemata: MutationSchemata {
         Array(mappings.values).reduce([], +).sorted()
     }
@@ -23,9 +22,9 @@ final class SchemataMutationMapping: Equatable {
     var codeBlocks: [String] {
         mappings.keys.map(\.description).sorted()
     }
-    
+
     var fileName: String {
-        return URL(fileURLWithPath: filePath).lastPathComponent
+        URL(fileURLWithPath: filePath).lastPathComponent
     }
 
     convenience init(
@@ -36,7 +35,7 @@ final class SchemataMutationMapping: Equatable {
             mappings: [:]
         )
     }
-    
+
     fileprivate init(
         filePath: String = "",
         mappings: [CodeBlockItemListSyntax: MutationSchemata]
@@ -51,7 +50,7 @@ final class SchemataMutationMapping: Equatable {
     ) {
         mappings[codeBlockSyntax, default: []].append(schemata)
     }
-    
+
     func add(
         _ codeBlockSyntax: CodeBlockItemListSyntax,
         _ schemata: MutationSchemata
@@ -64,14 +63,14 @@ final class SchemataMutationMapping: Equatable {
     ) -> MutationSchemata? {
         mappings[codeBlockSyntax]
     }
-    
+
     func skipMutations(_ mutationPoints: [MutationPosition]) -> Self {
         for (codeBlock, schemata) in mappings {
             mappings[codeBlock] = schemata.exclude {
                 mutationPoints.contains($0.position)
             }
         }
-        
+
         return self
     }
 }
@@ -83,13 +82,13 @@ func + (
     let result = SchemataMutationMapping(
         filePath: lhs.filePath
     )
-    
+
     let mergedMappgins = lhs.mappings.merging(rhs.mappings) { $0 + $1 }
-    
-    mergedMappgins.forEach { (codeBlock, schemata) in
+
+    mergedMappgins.forEach { codeBlock, schemata in
         result.add(codeBlock, schemata)
     }
-    
+
     return result
 }
 
@@ -98,10 +97,10 @@ func == (
     rhs: SchemataMutationMapping
 ) -> Bool {
     lhs.codeBlocks == rhs.codeBlocks &&
-    lhs.mutationSchemata == rhs.mutationSchemata
+        lhs.mutationSchemata == rhs.mutationSchemata
 }
 
-extension Array where Element == SchemataMutationMapping {
+extension [SchemataMutationMapping] {
     func mergeByFileName() -> Self {
         var result = [FileName: SchemataMutationMapping]()
 
@@ -112,7 +111,7 @@ extension Array where Element == SchemataMutationMapping {
                 result[map.fileName] = map
             }
         }
-        
+
         return Array(result.values)
     }
 }
@@ -120,14 +119,14 @@ extension Array where Element == SchemataMutationMapping {
 // Pretty print for testing assertions description
 extension SchemataMutationMapping: CustomStringConvertible, CustomDebugStringConvertible {
     var debugDescription: String { description }
-    
+
     var description: String {
-        let description = mappings.reduce(into: "") { (accum, pair) in
+        let description = mappings.reduce(into: "") { accum, pair in
             accum +=
-            """
-            source: "\(pair.key.scapedDescription)",
-            schemata: \(pair.value)
-            """
+                """
+                source: "\(pair.key.scapedDescription)",
+                schemata: \(pair.value)
+                """
         }
         return """
         SchemataMutationMapping(

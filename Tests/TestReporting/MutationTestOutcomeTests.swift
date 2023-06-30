@@ -1,6 +1,5 @@
-import XCTest
-
 @testable import muterCore
+import XCTest
 
 final class MutationTestOutcomeTests: MuterTestCase {
     func test_pathMappingWhenPathsAreDeeplyNested() {

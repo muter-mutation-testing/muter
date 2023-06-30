@@ -1,6 +1,5 @@
-import XCTest
-
 @testable import muterCore
+import XCTest
 
 final class RunCommandStateTests: MuterTestCase {
     private let sut = RunCommandState(
@@ -10,7 +9,7 @@ final class RunCommandStateTests: MuterTestCase {
             ]
         )
     )
-    
+
     func test_shouldParseFilesToMutate() {
         XCTAssertEqual(sut.filesToMutate.count, 3)
         XCTAssertEqual(sut.filesToMutate[safe: 0], "/path/to/file1.swift")

@@ -12,6 +12,7 @@ func sourceCode(fromFileAt path: String) -> SourceCodeInfo? {
 }
 
 // MARK: - Logging Directory
+
 func createLoggingDirectory(
     in directory: String,
     fileManager: FileSystemManager = FileManager.default,
@@ -22,7 +23,7 @@ func createLoggingDirectory(
     formatter.locale = locale
     formatter.dateStyle = .medium
     formatter.timeStyle = .short
-    
+
     let loggingDirectory = "\(directory)/muter_logs/\(formatter.string(from: timestamp()))"
     try! fileManager.createDirectory(atPath: loggingDirectory, withIntermediateDirectories: true, attributes: nil)
     return loggingDirectory

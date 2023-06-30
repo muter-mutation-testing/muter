@@ -1,5 +1,5 @@
-import XCTest
 import TestingExtensions
+import XCTest
 
 final class DictionaryExtensionTests: XCTestCase {
     func test_filtersOutKeysNotMatchingAPredicateOnAnyNestedDictionaries() {
@@ -14,13 +14,13 @@ final class DictionaryExtensionTests: XCTestCase {
                 "keep": 5,
                 "yup": ["toss": "yuppppp"],
                 "toss": "get wrekt, son",
-            ] as [String : Any]
+            ] as [String: Any]
         ]
-        
+
         let results = dictionary.recursivelyFiltered(includingKeysMatching: { $0 != "toss" })
-        
+
         XCTAssertTrue(results.keys.sorted().elementsEqual(["anotherKey", "key", "so"]))
-        
+
         let array = results["so"] as? [[String: Any]]
         XCTAssertEqual(array?.count, 2)
         XCTAssertTrue(array?.first?.keys.sorted().elementsEqual(["keep"]))
@@ -28,7 +28,7 @@ final class DictionaryExtensionTests: XCTestCase {
 
         let nestedDictionary = results["anotherKey"] as? [String: Any]
         XCTAssertTrue(nestedDictionary?.keys.sorted().elementsEqual(["keep", "yup"]))
-        
+
         let anotherNestedDictionary = nestedDictionary?["yup"] as? [String: Any]
         XCTAssertTrue(anotherNestedDictionary?.keys.isEmpty)
     }

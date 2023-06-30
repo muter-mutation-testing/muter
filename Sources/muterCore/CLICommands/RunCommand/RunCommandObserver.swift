@@ -1,15 +1,15 @@
-import Foundation
 import Darwin.C
-import SwiftSyntax
+import Foundation
 import Progress
 import Rainbow
+import SwiftSyntax
 
 extension Notification.Name {
     static let muterLaunched = Notification.Name("muterLaunched")
-    
+
     static let projectCopyStarted = Notification.Name("projectCopyStarted")
     static let projectCopyFinished = Notification.Name("projectCopyFinished")
-    
+
     static let projectCoverageDiscoveryStarted = Notification.Name("projectCoverageDiscoveryStarted")
     static let projectCoverageDiscoveryFinished = Notification.Name("projectCoverageDiscoveryFinished")
 
@@ -37,41 +37,41 @@ final class RunCommandObserver {
     private var flushStdOut: () -> Void
     @Dependency(\.notificationCenter)
     private var notificationCenter: NotificationCenter
-    
+
     private var numberOfMutationPoints: Int = 0
     private var loggingDirectory: String = ""
     private let runOptions: RunOptions
 
     private var notificationHandlerMappings: [(name: Notification.Name, handler: (Notification) -> Void)] {
-        return [
+        [
             (name: .muterLaunched, handler: handleMuterLaunched),
-            
+
             (name: .projectCopyStarted, handler: handleProjectCopyStarted),
             (name: .projectCopyFinished, handler: handleProjectCopyFinished),
-            
+
             (name: .projectCoverageDiscoveryStarted, handler: handleProjectCoverageDiscoveryStarted),
             (name: .projectCoverageDiscoveryFinished, handler: handleProjectCoverageDiscoveryFinished),
-            
+
             (name: .sourceFileDiscoveryStarted, handler: handleSourceFileDiscoveryStarted),
             (name: .sourceFileDiscoveryFinished, handler: handleSourceFileDiscoveryFinished),
-            
+
             (name: .mutationsDiscoveryStarted, handler: handleMutationsDiscoveryStarted),
             (name: .mutationsDiscoveryFinished, handler: handleMutationsDiscoveryFinished),
-            
+
             (name: .mutationTestingStarted, handler: handleMutationTestingStarted),
-            
+
             (name: .newMutationTestOutcomeAvailable, handler: handleNewMutationTestOutcomeAvailable),
             (name: .newTestLogAvailable, handler: handleNewTestLogAvailable),
-            
+
             (name: .mutationTestingFinished, handler: handleMutationTestingFinished),
         ]
     }
-    
+
     init(
         runOptions: RunOptions
     ) {
         self.runOptions = runOptions
-        self.loggingDirectory = createLoggingDirectory(
+        loggingDirectory = createLoggingDirectory(
             in: fileManager.currentDirectoryPath,
             fileManager: fileManager
         )
@@ -96,7 +96,7 @@ extension RunCommandObserver {
     func handleMuterLaunched(notification: Notification) {
         logger.launched()
     }
-    
+
     func handleProjectCopyStarted(notification: Notification) {
         logger.projectCopyStarted()
     }
@@ -104,7 +104,7 @@ extension RunCommandObserver {
     func handleProjectCopyFinished(notification: Notification) {
         logger.projectCopyFinished(destinationPath: notification.object as! String)
     }
-    
+
     func handleProjectCoverageDiscoveryStarted(notification: Notification) {
         logger.projectCoverageDiscoveryStarted()
     }
@@ -148,19 +148,19 @@ extension RunCommandObserver {
         let mutationTestLog = notification.object as! MutationTestLog
 
         logger.newMutationTestLogAvailable(mutationTestLog: mutationTestLog)
-        
+
         _ = fileManager.createFile(
             atPath: "\(loggingDirectory)/\(logFileName(from: mutationTestLog.mutationPoint))",
             contents: mutationTestLog.testLog.data(using: .utf8),
             attributes: nil
         )
     }
-    
+
     func logFileName(from mutationPoint: MutationPoint?) -> String {
-        guard let mutationPoint = mutationPoint else {
+        guard let mutationPoint else {
             return "baseline run.log"
         }
-                
+
         return "\(mutationPoint.mutationOperatorId.rawValue) @ \(mutationPoint.fileName)-\(mutationPoint.position.line)-\(mutationPoint.position.column).log"
     }
 
@@ -171,17 +171,17 @@ extension RunCommandObserver {
         let reporter = runOptions.reportOptions.reporter
         let reportPath = runOptions.reportOptions.path ?? ""
         let report = reporter.report(from: notification.object as! MutationTestOutcome)
-        
+
         guard !reportPath.isEmpty else {
             return Logger.print(
                 """
                 Muter's report
-                
+
                 \(report)
                 """
             )
         }
-        
+
         if fileManager.fileExists(atPath: reportPath) {
             try? fileManager.removeItem(atPath: reportPath)
         }
@@ -191,7 +191,7 @@ extension RunCommandObserver {
             contents: report.data(using: .utf8),
             attributes: nil
         )
-        
+
         if didSave {
             Logger.print("Report generated: \(reportPath.bold)")
         } else {

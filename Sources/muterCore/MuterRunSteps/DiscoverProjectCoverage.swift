@@ -11,7 +11,8 @@ final class DiscoverProjectCoverage: RunCommandStep {
     func run(with state: AnyRunCommandState) -> Result<[RunCommandState.Change], MuterError> {
         guard let coverage = projectCoverage(
             state.muterConfiguration.buildSystem
-        ) else {
+        )
+        else {
             return .success([
                 .projectCoverage(.null),
             ])
@@ -30,7 +31,7 @@ final class DiscoverProjectCoverage: RunCommandStep {
         }
 
         switch coverage.run(with: state.muterConfiguration) {
-        case .success(let coverage):
+        case let .success(coverage):
             notificationCenter.post(
                 name: .projectCoverageDiscoveryFinished,
                 object: true
@@ -42,7 +43,7 @@ final class DiscoverProjectCoverage: RunCommandStep {
                 name: .projectCoverageDiscoveryFinished,
                 object: false
             )
-            
+
             return .success([.projectCoverage(.null)])
         }
     }

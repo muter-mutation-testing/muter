@@ -21,14 +21,14 @@ enum TernaryOperator {
                 after: mutatedSyntax.description.trimmed.inlined,
                 description: "swapped ternary operator"
             )
-            
+
             add(
                 mutation: mutated(node),
                 with: node,
                 at: position,
                 snapshot: snapshot
             )
-            
+
             return super.visit(node)
         }
 
@@ -65,7 +65,7 @@ enum TernaryOperator {
                 )
             )
         }
-        
+
         private func mutated(_ node: ExprListSyntax) -> ExprListSyntax {
             var children = cast(node)
             guard children.contains(where: { $0.is(UnresolvedTernaryExprSyntax.self) }),
@@ -74,14 +74,14 @@ enum TernaryOperator {
             else {
                 return node
             }
-            
+
             let secondChoice = children[index + 1]
                 .withTrailingTrivia(.spaces(1))
                 .withLeadingTrivia(.spaces(1))
             let firstChoice = ternary.firstChoice
                 .withTrailingTrivia(.spaces(1))
                 .withLeadingTrivia(.spaces(1))
-            
+
             children[index] = ExprSyntax(
                 UnresolvedTernaryExprSyntax(firstChoice: secondChoice)
             )
@@ -89,7 +89,7 @@ enum TernaryOperator {
 
             return ExprListSyntax(children)
         }
-        
+
         private func ternaryIndex(_ node: ExprListSyntax) -> Int? {
             for (index, child) in node.allChildren.enumerated() {
                 if child.is(UnresolvedTernaryExprSyntax.self) {
@@ -107,14 +107,14 @@ enum TernaryOperator {
         }
 
         private func containsTernayExpression(_ node: ExprListSyntax) -> Bool {
-            return node
+            node
                 .allChildren
                 .contains { $0.is(UnresolvedTernaryExprSyntax.self) }
         }
     }
 }
 
-//extension TernaryOperator {
+// extension TernaryOperator {
 //    final class Rewriter: SyntaxRewriter, PositionSpecificRewriter {
 //        var operatorSnapshot: MutationOperatorSnapshot = .null
 //        let positionToMutate: MutationPosition
@@ -175,4 +175,4 @@ enum TernaryOperator {
 //            return super.visit(newNode)
 //        }
 //    }
-//}
+// }

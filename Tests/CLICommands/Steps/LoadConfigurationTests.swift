@@ -1,11 +1,10 @@
-import XCTest
-
 @testable import muterCore
+import XCTest
 
 final class LoadConfigurationTests: MuterTestCase {
     private lazy var currentDirectory = fixturesDirectory
     private lazy var sut = LoadConfiguration()
-    
+
     override func setUp() {
         super.setUp()
 
@@ -20,7 +19,7 @@ final class LoadConfigurationTests: MuterTestCase {
 
         let expectedUrl = URL(fileURLWithPath: fixturesDirectory)
         let expectedConfiguration = try XCTUnwrap(MuterConfiguration.fromFixture(
-            at: "\(self.fixturesDirectory)/\(MuterConfiguration.legacyFileNameWithExtension)"
+            at: "\(fixturesDirectory)/\(MuterConfiguration.legacyFileNameWithExtension)"
         ))
 
         XCTAssertEqual(result, [
@@ -68,19 +67,19 @@ final class LoadConfigurationTests: MuterTestCase {
 
     private func loadJSONConfiguration() -> Data? {
         FileManager.default.contents(
-            atPath: "\(self.fixturesDirectory)/\(MuterConfiguration.legacyFileNameWithExtension)"
+            atPath: "\(fixturesDirectory)/\(MuterConfiguration.legacyFileNameWithExtension)"
         )
     }
 
     private func loadYAMLConfiguration() -> Data? {
         FileManager.default.contents(
-            atPath: "\(self.fixturesDirectory)/\(MuterConfiguration.fileNameWithExtension)"
+            atPath: "\(fixturesDirectory)/\(MuterConfiguration.fileNameWithExtension)"
         )
     }
 
     private func loadYAMLConfigurationWithoutDestination() -> Data? {
         FileManager.default.contents(
-            atPath: "\(self.fixturesDirectory)/muter.conf.withoutDestination.yml"
+            atPath: "\(fixturesDirectory)/muter.conf.withoutDestination.yml"
         )
     }
 }

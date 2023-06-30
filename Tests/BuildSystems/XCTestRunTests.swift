@@ -1,7 +1,6 @@
-import XCTest
-import TestingExtensions
-
 @testable import muterCore
+import TestingExtensions
+import XCTest
 
 final class XCTestRunTests: MuterTestCase {
     private var sut: muterCore.XCTestRun!
@@ -24,7 +23,10 @@ final class XCTestRunTests: MuterTestCase {
     }
 
     private func loadPlist() throws -> [String: AnyHashable] {
-        let data = try XCTUnwrap(FileManager.default.contents(atPath: fixturesDirectory + "/BuildForTesting/project.xctestrun"))
+        let data = try XCTUnwrap(
+            FileManager.default
+                .contents(atPath: fixturesDirectory + "/BuildForTesting/project.xctestrun")
+        )
 
         return try PropertyListSerialization.propertyList(from: data, format: nil) as? [String: AnyHashable] ?? [:]
     }

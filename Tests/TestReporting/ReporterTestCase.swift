@@ -1,7 +1,6 @@
-import XCTest
-import TestingExtensions
-
 @testable import muterCore
+import TestingExtensions
+import XCTest
 
 class ReporterTestCase: MuterTestCase {
     var outcomes = [

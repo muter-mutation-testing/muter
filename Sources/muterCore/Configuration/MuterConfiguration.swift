@@ -30,9 +30,9 @@ struct MuterConfiguration: Equatable, Codable {
         excludeList: [String] = [],
         excludeCallList: [String] = []
     ) {
-        self.testCommandExecutable = executable
-        self.testCommandArguments = arguments
-        self.excludeFileList = excludeList
+        testCommandExecutable = executable
+        testCommandArguments = arguments
+        excludeFileList = excludeList
         self.excludeCallList = excludeCallList
     }
 
@@ -43,12 +43,12 @@ struct MuterConfiguration: Equatable, Codable {
         testCommandArguments = try container.decode([String].self, forKey: .testCommandArguments)
 
         let excludeList = try? container.decode([String].self, forKey: .excludeFileList)
-        self.excludeFileList = excludeList ?? []
+        excludeFileList = excludeList ?? []
 
         let excludeCallList = try? container.decode([String].self, forKey: .excludeCallList)
         self.excludeCallList = excludeCallList ?? []
     }
-    
+
     init(from data: Data) throws {
         do {
             self = try YAMLDecoder().decode(MuterConfiguration.self, from: data)
@@ -80,35 +80,38 @@ extension MuterConfiguration {
             return arguments + ["-enableCodeCoverage", "YES"]
         case .swift:
             return arguments + ["--enable-code-coverage"]
-            
+
         case .unknown:
             return arguments
         }
     }
-    
+
     var buildForTestingArguments: [String] {
         let arguments = testCommandArguments
 
         switch buildSystem {
         case .xcodebuild:
             return arguments.dropLast() + ["clean", "build-for-testing"]
-        case .swift, .unknown:
+        case .swift,
+             .unknown:
             return arguments
         }
     }
-    
+
     func testWithoutBuildArguments(with testRunFile: String) -> [String] {
         let arguments = testCommandArguments
         switch buildSystem {
         case .xcodebuild:
-            guard let destinationIndex = arguments.firstIndex(of: "-destination") else { return arguments }
-                return [
-                    "test-without-building",
-                    testCommandArguments[destinationIndex],
-                    testCommandArguments[destinationIndex.advanced(by: 1)],
-                    "-xctestrun",
-                    testRunFile
-                ]
+            guard let destinationIndex = arguments.firstIndex(of: "-destination") else {
+                return arguments
+            }
+            return [
+                "test-without-building",
+                testCommandArguments[destinationIndex],
+                testCommandArguments[destinationIndex.advanced(by: 1)],
+                "-xctestrun",
+                testRunFile
+            ]
         case .swift:
             return arguments + ["--skip-build"]
         case .unknown:

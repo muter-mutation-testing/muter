@@ -10,7 +10,8 @@ final class SwiftCoverage: BuildSystemCoverage {
         guard runWithCoverageEnabled(using: configuration) != nil,
               let binaryPath = binaryPath(configuration),
               let testArtifact = findTestArtifact(binaryPath),
-              let coverageReport = coverageReport(testArtifact) else {
+              let coverageReport = coverageReport(testArtifact)
+        else {
             return .failure(.build)
         }
 
@@ -18,45 +19,45 @@ final class SwiftCoverage: BuildSystemCoverage {
 
         return .success(projectCoverage)
     }
-    
+
     private func runWithCoverageEnabled(
         using configuration: MuterConfiguration
     ) -> String? {
-        return process().runProcess(
+        process().runProcess(
             url: configuration.testCommandExecutable,
             arguments: configuration.enableCoverageArguments
         ).map(\.trimmed)
     }
-    
+
     private func binaryPath(
         _ configuration: MuterConfiguration
     ) -> String? {
-        return process().runProcess(
+        process().runProcess(
             url: configuration.testCommandExecutable,
             arguments: ["build", "--show-bin-path"]
         )
         .flatMap(\.nilIfEmpty)
         .map(\.trimmed)
     }
-    
+
     private func findTestArtifact(
         _ binaryPath: String
     ) -> String? {
-        return process().runProcess(
+        process().runProcess(
             url: "/usr/bin/find",
             arguments: [binaryPath, "-name", "*.xctest"]
         )
         .flatMap(\.nilIfEmpty)
         .map(\.trimmed)
     }
-    
+
     private func coverageReport(
         _ testArtifactPath: String
     ) -> String? {
         let packageTests = URL(fileURLWithPath: testArtifactPath)
             .deletingPathExtension()
             .lastPathComponent
-        
+
         return process().runProcess(
             url: "/usr/bin/xcrun",
             arguments: [
@@ -82,12 +83,12 @@ private extension Coverage {
                 .last?
                 .replacingOccurrences(of: "%", with: "")
         }.compactMap { Double($0) }
-        
+
         let percent = percents.removeLast()
         let filesWithoutCoverage = zip(files, percents)
-                .include { (_, coverage) in coverage == 0 }
-                .map (\.0)
-        
+            .include { _, coverage in coverage == 0 }
+            .map(\.0)
+
         return Coverage(
             percent: Int(percent),
             filesWithoutCoverage: filesWithoutCoverage

@@ -13,7 +13,6 @@ class FileManagerSpy: Spy, FileSystemManager {
     private(set) var contentsAtPathSortedOrder: [ComparisonResult] = []
     private(set) var contents: Data?
 
-
     private var fileContentsQueue: Queue<Data> = .init()
     var fileContentsToReturn: Data? {
         set {
@@ -24,7 +23,7 @@ class FileManagerSpy: Spy, FileSystemManager {
         }
     }
 
-    var temporaryDirectory: URL = URL(fileURLWithPath: "")
+    var temporaryDirectory: URL = .init(fileURLWithPath: "")
     var currentDirectoryPathToReturn: String = ""
     var changeCurrentDirectoryPath: [String] = []
     var errorToThrow: Error?
@@ -33,11 +32,10 @@ class FileManagerSpy: Spy, FileSystemManager {
     var contentsAtPathSortedToReturn: [String] = []
 
     var currentDirectoryPath: String {
-        return currentDirectoryPathToReturn
+        currentDirectoryPathToReturn
     }
-    
-    @discardableResult
-    func changeCurrentDirectoryPath(
+
+    @discardableResult func changeCurrentDirectoryPath(
         _ path: String
     ) -> Bool {
         methodCalls.append(#function)
@@ -76,7 +74,9 @@ class FileManagerSpy: Spy, FileSystemManager {
     ) throws {
         methodCalls.append(#function)
         copyPaths.append((source: srcPath, dest: dstPath))
-        if let error = errorToThrow { throw error }
+        if let error = errorToThrow {
+            throw error
+        }
     }
 
     func contents(
@@ -85,14 +85,14 @@ class FileManagerSpy: Spy, FileSystemManager {
         methodCalls.append(#function)
         return fileContentsToReturn
     }
-    
+
     func subpaths(
         atPath path: String
     ) -> [String]? {
         methodCalls.append(#function)
         return subpathsToReturn
     }
-    
+
     func fileExists(
         atPath path: String
     ) -> Bool {
@@ -105,7 +105,9 @@ class FileManagerSpy: Spy, FileSystemManager {
     ) throws {
         methodCalls.append(#function)
         paths.append(path)
-        if let error = errorToThrow { throw error }
+        if let error = errorToThrow {
+            throw error
+        }
     }
 
     func contents(

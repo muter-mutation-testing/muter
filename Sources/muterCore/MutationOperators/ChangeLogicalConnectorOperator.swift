@@ -11,12 +11,12 @@ enum ChangeLogicalConnectorOperator {
                 sourceFileInfo: sourceFileInfo,
                 mutationOperatorId: .logicalOperator
             )
-            
+
             tokensToDiscover = [
                 .spacedBinaryOperator("||"),
                 .spacedBinaryOperator("&&"),
             ]
-            
+
             oppositeOperatorMapping = [
                 "||": "&&",
                 "&&": "||",

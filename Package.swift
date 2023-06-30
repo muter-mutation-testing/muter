@@ -48,18 +48,26 @@ let package = Package(
                 "Difference",
                 .product(name: "SwiftSyntax", package: "swift-syntax"),
                 .product(name: "SwiftSyntaxParser", package: "swift-syntax"),
+                .product(name: "SnapshotTesting", package: "swift-snapshot-testing"),
             ],
             path: "Tests/Extensions"
         ),
         .testTarget(
             name: "muterTests",
-            dependencies: ["muterCore", "TestingExtensions"],
+            dependencies: [
+                "muterCore",
+                "TestingExtensions"
+            ],
             path: "Tests",
             exclude: ["fixtures", "Extensions"]
         ),
         .testTarget(
             name: "muterAcceptanceTests",
-            dependencies: ["muterCore", "TestingExtensions"],
+            dependencies: [
+                "muterCore",
+                "TestingExtensions",
+                .product(name: "SnapshotTesting", package: "swift-snapshot-testing"),
+            ],
             path: "AcceptanceTests",
             exclude: ["runAcceptanceTests.sh"]
         ),

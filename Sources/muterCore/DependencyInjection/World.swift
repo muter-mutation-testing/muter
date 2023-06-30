@@ -29,7 +29,7 @@ struct World {
     var notificationCenter: NotificationCenter = .default
     var fileManager: FileSystemManager = FileManager.default
     var flushStandardOut: Flush = { fflush(stdout) }
-    var logger: Logger = Logger()
+    var logger: Logger = .init()
     var printer: Printer = { print($0) }
     var progressBar: ProgressBarInitializer = {
         ProgressBar(

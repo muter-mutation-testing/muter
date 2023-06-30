@@ -5,7 +5,7 @@ struct CopyProjectToTempDirectory: RunCommandStep {
     private var fileManager: FileSystemManager
     @Dependency(\.notificationCenter)
     private var notificationCenter: NotificationCenter
-    
+
     func run(
         with state: AnyRunCommandState
     ) -> Result<[RunCommandState.Change], MuterError> {
@@ -14,17 +14,17 @@ struct CopyProjectToTempDirectory: RunCommandStep {
                 name: .projectCopyStarted,
                 object: nil
             )
-                        
+
             try fileManager.copyItem(
                 atPath: state.projectDirectoryURL.path,
                 toPath: state.tempDirectoryURL.path
             )
-            
+
             notificationCenter.post(
                 name: .projectCopyFinished,
                 object: state.tempDirectoryURL.path
             )
-            
+
             return .success([
                 .copyToTempDirectoryCompleted,
             ])

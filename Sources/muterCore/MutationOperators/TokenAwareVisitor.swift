@@ -3,21 +3,22 @@ import SwiftSyntax
 class TokenAwareVisitor: MuterVisitor {
     var tokensToDiscover = [TokenKind]()
     var oppositeOperatorMapping: [String: String] = [:]
-    
+
     override func visitAny(_ node: Syntax) -> SyntaxVisitorContinueKind {
         guard let node = node.as(TokenSyntax.self),
               canMutateToken(node),
-              let oppositeOperator = oppositeOperator(for: node.tokenKind) else {
+              let oppositeOperator = oppositeOperator(for: node.tokenKind)
+        else {
             return .visitChildren
         }
-        
+
         let position = location(for: node)
         let snapshot = MutationOperator.Snapshot(
             before: node.description.trimmed,
             after: oppositeOperator,
             description: "changed \(node.description.trimmed) to \(oppositeOperator)"
         )
-        
+
         add(
             mutation: mutated(
                 node,
@@ -27,32 +28,32 @@ class TokenAwareVisitor: MuterVisitor {
             at: position,
             snapshot: snapshot
         )
-        
+
         return .visitChildren
     }
-    
+
     override func visit(_ node: SequenceExprSyntax) -> SyntaxVisitorContinueKind {
         node.isInsideCompilerDirective
             ? .skipChildren
             : .visitChildren
     }
-    
+
     private func oppositeOperator(for tokenKind: TokenKind) -> String? {
-        guard case .spacedBinaryOperator(let `operator`) = tokenKind else {
+        guard case let .spacedBinaryOperator(`operator`) = tokenKind else {
             return nil
         }
-        
+
         return oppositeOperatorMapping[`operator`]
     }
 
     private func canMutateToken(_ token: TokenSyntax) -> Bool {
         tokensToDiscover.contains(token.tokenKind) &&
-        token.parent?.is(BinaryOperatorExprSyntax.self) == true
+            token.parent?.is(BinaryOperatorExprSyntax.self) == true
     }
 
     private func mutated(
         _ token: TokenSyntax,
-        using `operator`: String
+        using operator: String
     ) -> Syntax {
         let tokenSyntax = TokenSyntax(
             .spacedBinaryOperator(`operator`),
@@ -63,7 +64,7 @@ class TokenAwareVisitor: MuterVisitor {
 
         return Syntax(tokenSyntax)
     }
-    
+
     override func transform(
         node: SyntaxProtocol,
         mutatedSyntax: SyntaxProtocol,
@@ -73,9 +74,12 @@ class TokenAwareVisitor: MuterVisitor {
         let codeBlockDescription = codeBlockItemListSyntax.description
         let nodePosition = node.offsetInCodeBlockItemListSyntax(sourceFileInfo)
         let nodeStartRange = codeBlockDescription.index(codeBlockDescription.startIndex, offsetBy: nodePosition)
-        let nodeEndRange = codeBlockDescription.index(codeBlockDescription.startIndex, offsetBy: nodePosition + mutatedSyntax.description.count)
-        let mutationRangeInCodeBlock = nodeStartRange..<nodeEndRange
-        
+        let nodeEndRange = codeBlockDescription.index(
+            codeBlockDescription.startIndex,
+            offsetBy: nodePosition + mutatedSyntax.description.count
+        )
+        let mutationRangeInCodeBlock = nodeStartRange ..< nodeEndRange
+
         return super.transform(
             node: node,
             mutatedSyntax: mutatedSyntax,
@@ -93,7 +97,7 @@ private extension SyntaxProtocol {
         let codeBlockItemListSyntax = codeBlockItemListSyntax.mutationPosition(
             with: sourceCode
         )
-        
+
         return nodePosition.utf8Offset - codeBlockItemListSyntax.utf8Offset
     }
 }

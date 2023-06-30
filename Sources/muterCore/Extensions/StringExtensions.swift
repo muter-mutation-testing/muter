@@ -1,10 +1,12 @@
 import Foundation
 
 extension String {
-    func repeated(_ times: Int) -> String { (0 ..< times).reduce("") { current, _ in current + "\(self)"} }
-    
+    func repeated(_ times: Int) -> String { (0 ..< times).reduce("") { current, _ in current + "\(self)" } }
+
     func removingSubrange(_ bounds: Range<String.Index>?) -> String {
-        guard let bounds = bounds else { return self }
+        guard let bounds else {
+            return self
+        }
         var result = self
         result.removeSubrange(bounds)
         return result
@@ -17,7 +19,7 @@ extension String {
             .map { $0.trimmed }
             .joined(separator: " ")
     }
-    
+
     func distance(to index: Index) -> Int {
         distance(from: startIndex, to: index)
     }
@@ -43,7 +45,7 @@ extension String {
             )
             .map { String(substring(with: $0.range)) }
     }
-    
+
     func firstMatchOf(
         _ pattern: String,
         options: NSRegularExpression.Options = []
@@ -59,7 +61,9 @@ extension String {
     }
 
     private func substring(with nsrange: NSRange) -> String {
-        guard let range = Range(nsrange, in: self) else { return self }
+        guard let range = Range(nsrange, in: self) else {
+            return self
+        }
         return String(self[range])
     }
 }

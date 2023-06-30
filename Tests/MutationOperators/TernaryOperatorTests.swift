@@ -12,19 +12,19 @@ final class TernaryOperatorTests: MuterTestCase {
 
     func test_visitor() throws {
         let visitor = TernaryOperator.Visitor(
-            sourceFileInfo: self.sampleCode.asSourceFileInfo
+            sourceFileInfo: sampleCode.asSourceFileInfo
         )
 
-        visitor.walk(self.sampleCode.code)
+        visitor.walk(sampleCode.code)
 
         let actualMappings = visitor.schemataMappings
         let expectedMappings = try SchemataMutationMapping.make(
-            filePath: self.sampleCode.path,
+            filePath: sampleCode.path,
             (
                 source: "\n    return a ? \"true\" : \"false\"",
                 schemata: [
                     .make(
-                        filePath: self.sampleCode.path,
+                        filePath: sampleCode.path,
                         mutationOperatorId: .ternaryOperator,
                         syntaxMutation: "\n    return a ? \"false\" : \"true\" ",
                         position: MutationPosition(
@@ -44,7 +44,7 @@ final class TernaryOperatorTests: MuterTestCase {
                 source: "\n    return a ? true : false",
                 schemata: [
                     .make(
-                        filePath: self.sampleCode.path,
+                        filePath: sampleCode.path,
                         mutationOperatorId: .ternaryOperator,
                         syntaxMutation: "\n    return a ? false : true ",
                         position: MutationPosition(
@@ -116,13 +116,13 @@ final class TernaryOperatorTests: MuterTestCase {
 
     func test_rewriter() {
         let visitor = TernaryOperator.Visitor(
-            sourceFileInfo: self.sampleNestedCode.asSourceFileInfo
+            sourceFileInfo: sampleNestedCode.asSourceFileInfo
         )
 
-        visitor.walk(self.sampleNestedCode.code)
+        visitor.walk(sampleNestedCode.code)
 
         let rewriter = MuterRewriter(visitor.schemataMappings)
-            .visit(self.sampleNestedCode.code)
+            .visit(sampleNestedCode.code)
 
         XCTAssertEqual(
             rewriter.description,

@@ -5,26 +5,31 @@ public protocol FileSystemManager {
 
     var temporaryDirectory: URL { get }
 
-    func createDirectory(atPath path: String,
-                         withIntermediateDirectories createIntermediates: Bool,
-                         attributes: [FileAttributeKey: Any]?) throws
+    func createDirectory(
+        atPath path: String,
+        withIntermediateDirectories createIntermediates: Bool,
+        attributes: [FileAttributeKey: Any]?
+    ) throws
 
-    func createFile(atPath path: String,
-                    contents data: Data?,
-                    attributes attr: [FileAttributeKey: Any]?) -> Bool
+    func createFile(
+        atPath path: String,
+        contents data: Data?,
+        attributes attr: [FileAttributeKey: Any]?
+    ) -> Bool
 
-    func copyItem(atPath srcPath: String,
-                  toPath dstPath: String) throws
-    
-    @discardableResult
-    func changeCurrentDirectoryPath(_ path: String) -> Bool
+    func copyItem(
+        atPath srcPath: String,
+        toPath dstPath: String
+    ) throws
+
+    @discardableResult func changeCurrentDirectoryPath(_ path: String) -> Bool
 
     func contents(atPath path: String) -> Data?
-    
+
     func subpaths(atPath path: String) -> [String]?
-    
+
     func fileExists(atPath path: String) -> Bool
-    
+
     func removeItem(atPath path: String) throws
 
     func contents(atPath path: String, sortedByDate order: ComparisonResult) throws -> [String]

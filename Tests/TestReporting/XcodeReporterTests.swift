@@ -1,7 +1,6 @@
-import XCTest
-import TestingExtensions
-
 @testable import muterCore
+import TestingExtensions
+import XCTest
 
 final class XcodeReporterTests: ReporterTestCase {
     override func setUp() {
@@ -55,4 +54,3 @@ final class XcodeReporterTests: ReporterTestCase {
         )
     }
 }
-

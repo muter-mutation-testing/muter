@@ -1,29 +1,28 @@
-import XCTest
-import TestingExtensions
-
 @testable import muterCore
+import TestingExtensions
+import XCTest
 
 final class MutationTestingDelegateTests: MuterTestCase {
     private lazy var outputFolder = fixturesDirectory + "/MutationTestingDelegateTests"
     private lazy var outputFolderURL = URL(fileURLWithPath: outputFolder)
-    
+
     private let sut = MutationTestingDelegate()
-    
+
     override func setUpWithError() throws {
         try super.setUpWithError()
-        
+
         try FileManager.default.createDirectory(
             at: URL(fileURLWithPath: outputFolder),
             withIntermediateDirectories: true
         )
     }
-    
+
     override func tearDownWithError() throws {
         try super.tearDownWithError()
-        
+
         try FileManager.default.removeItem(atPath: outputFolder)
     }
-    
+
     func test_testProcessForXcodeBuild() throws {
         current.process = Process.Factory.makeProcess
 
@@ -39,13 +38,13 @@ final class MutationTestingDelegateTests: MuterTestCase {
             filePath: "/path/fileName",
             position: .init(line: 1)
         )
-        
+
         let testProcess = try sut.testProcess(
             with: configuration,
             schemata: schemata,
             and: FileHandle()
         )
-        
+
         XCTAssertEqual(testProcess.arguments, [
             "test-without-building",
             "-destination",
@@ -57,7 +56,7 @@ final class MutationTestingDelegateTests: MuterTestCase {
         XCTAssertEqual(testProcess.executableURL?.path, "/tmp/xcodebuild")
         XCTAssertEqual(testProcess.qualityOfService, .userInitiated)
     }
-    
+
     func test_testProcessForSwiftBuild() throws {
         current.process = Process.Factory.makeProcess
 
@@ -70,13 +69,13 @@ final class MutationTestingDelegateTests: MuterTestCase {
             filePath: "/path/fileName",
             position: .init(line: 1)
         )
-        
+
         let testProcess = try sut.testProcess(
             with: configuration,
             schemata: schemata,
             and: FileHandle()
         )
-        
+
         XCTAssertEqual(
             testProcess.environment,
             [
@@ -88,24 +87,24 @@ final class MutationTestingDelegateTests: MuterTestCase {
         XCTAssertEqual(testProcess.executableURL?.path, "/tmp/swift")
         XCTAssertEqual(testProcess.qualityOfService, .userInitiated)
     }
-    
+
     func test_switchOn() throws {
         let schemata = try MutationSchema.make()
-        let testRun = XCTestRun.init()
-        
+        let testRun = XCTestRun()
+
         try sut.switchOn(
             schemata: schemata,
             for: testRun,
             at: outputFolderURL
         )
-        
+
         XCTAssertTrue(
             FileManager.default.fileExists(
                 atPath: outputFolderURL.appendingPathComponent("muter.xctestrun").path
             )
         )
     }
-    
+
     func test_fileHandle() throws {
         let currentDirectoryPath = fileManager.currentDirectoryPath
         fileManager.changeCurrentDirectoryPath(outputFolder)

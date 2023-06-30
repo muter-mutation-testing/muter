@@ -7,7 +7,7 @@ struct CreateTempDirectoryURL: RunCommandStep {
         let destinationPath = destinationPath(
             with: state.projectDirectoryURL
         )
-        
+
         return .success([
             .tempDirectoryUrlCreated(URL(fileURLWithPath: destinationPath)),
         ])

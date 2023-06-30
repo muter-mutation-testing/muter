@@ -9,7 +9,7 @@ struct MutationSwitch {
         guard !mutationSchemata.isEmpty else {
             return originalSyntax
         }
-        
+
         let needsImplicitReturn = originalSyntax.needsImplicitReturn
 
         var schemata = mutationSchemata
@@ -81,11 +81,11 @@ struct MutationSwitch {
             CodeBlockItemSyntax(item: .init(outterIfStatement))
         ])
     }
-    
+
     private static func buildSchemataCondition(
         withId id: String
     ) -> ConditionElementListSyntax {
-        return ConditionElementListSyntax([
+        ConditionElementListSyntax([
             ConditionElementSyntax(
                 condition: ConditionElementSyntax.Condition(
                     SequenceExprSyntax(
@@ -93,42 +93,48 @@ struct MutationSwitch {
                             ExprSyntax(
                                 SubscriptExprSyntax(
                                     calledExpression:
-                                        ExprSyntax(
-                                            MemberAccessExprSyntax(
-                                                base:
-                                                    ExprSyntax(
-                                                        MemberAccessExprSyntax(
-                                                            base: ExprSyntax(
-                                                                IdentifierExprSyntax(
-                                                                    identifier: .identifier("ProcessInfo"),
-                                                                    declNameArguments: nil
-                                                                )
-                                                            ),
-                                                            dot: .periodToken(),
-                                                            name: .identifier("processInfo"),
+                                    ExprSyntax(
+                                        MemberAccessExprSyntax(
+                                            base:
+                                            ExprSyntax(
+                                                MemberAccessExprSyntax(
+                                                    base: ExprSyntax(
+                                                        IdentifierExprSyntax(
+                                                            identifier: .identifier("ProcessInfo"),
                                                             declNameArguments: nil
-                                                        )),
-                                                dot: .periodToken(),
-                                                name: .identifier("environment"),
-                                                declNameArguments: nil
-                                            )
-                                        ),
+                                                        )
+                                                    ),
+                                                    dot: .periodToken(),
+                                                    name: .identifier("processInfo"),
+                                                    declNameArguments: nil
+                                                )
+                                            ),
+                                            dot: .periodToken(),
+                                            name: .identifier("environment"),
+                                            declNameArguments: nil
+                                        )
+                                    ),
                                     leftBracket: .leftSquareBracketToken(),
                                     argumentList:
-                                        TupleExprElementListSyntax([
-                                            TupleExprElementSyntax(
-                                                label: nil,
-                                                colon: nil,
-                                                expression: ExprSyntax(
-                                                    StringLiteralExprSyntax(
-                                                        openQuote: .stringQuoteToken(),
-                                                        segments: StringLiteralSegmentsSyntax([.stringSegment(StringSegmentSyntax(content: TokenSyntax.stringSegment(id)))]),
-                                                        closeQuote: .stringQuoteToken()
-                                                    )
-                                                ),
-                                                trailingComma: nil
-                                            )
-                                        ]),
+                                    TupleExprElementListSyntax([
+                                        TupleExprElementSyntax(
+                                            label: nil,
+                                            colon: nil,
+                                            expression: ExprSyntax(
+                                                StringLiteralExprSyntax(
+                                                    openQuote: .stringQuoteToken(),
+                                                    segments: StringLiteralSegmentsSyntax(
+                                                        [.stringSegment(StringSegmentSyntax(
+                                                            content: TokenSyntax
+                                                                .stringSegment(id)
+                                                        ))]
+                                                    ),
+                                                    closeQuote: .stringQuoteToken()
+                                                )
+                                            ),
+                                            trailingComma: nil
+                                        )
+                                    ]),
                                     rightBracket: .rightSquareBracketToken(),
                                     trailingClosure: nil,
                                     additionalTrailingClosures: nil
@@ -160,12 +166,13 @@ private extension CodeBlockItemListSyntax {
     func withReturnStatement() -> CodeBlockItemListSyntax {
         guard let codeBlockItem = first,
               !codeBlockItem.item.is(ReturnStmtSyntax.self),
-              !codeBlockItem.item.is(SwitchStmtSyntax.self) else {
+              !codeBlockItem.item.is(SwitchStmtSyntax.self)
+        else {
             return self
         }
-        
+
         let item = codeBlockItem.item.withoutTrivia()
-        
+
         return CodeBlockItemListSyntax([
             codeBlockItem.withItem(
                 CodeBlockItemSyntax.Item(
@@ -181,38 +188,38 @@ private extension CodeBlockItemListSyntax {
             )
         ])
     }
-    
+
     var needsImplicitReturn: Bool {
-        return count == 1 &&
-        functionDeclarationSyntax?.needsImplicitReturn == true ||
-        accessorDeclGetSyntax?.needsImplicitReturn == true ||
-        patternBindingSyntax?.needsImplicitReturn == true ||
-        closureExprSyntax?.needsImplicitReturn == true
+        count == 1 &&
+            functionDeclarationSyntax?.needsImplicitReturn == true ||
+            accessorDeclGetSyntax?.needsImplicitReturn == true ||
+            patternBindingSyntax?.needsImplicitReturn == true ||
+            closureExprSyntax?.needsImplicitReturn == true
     }
 }
 
 private extension CodeBlockItemListSyntax {
     var functionDeclarationSyntax: FunctionDeclSyntax? {
-        return findInParent(FunctionDeclSyntax.self)
+        findInParent(FunctionDeclSyntax.self)
     }
-    
+
     var accessorDeclGetSyntax: AccessorDeclSyntax? {
         if let accessor = findInParent(AccessorDeclSyntax.self),
            accessor.accessorKind.tokenKind == .contextualKeyword("get") {
             return accessor
         }
-        
+
         return nil
     }
-    
+
     var patternBindingSyntax: PatternBindingSyntax? {
-        return findInParent(PatternBindingSyntax.self)
+        findInParent(PatternBindingSyntax.self)
     }
-    
+
     var closureExprSyntax: ClosureExprSyntax? {
-        return findInParent(ClosureExprSyntax.self)
+        findInParent(ClosureExprSyntax.self)
     }
-    
+
     private func findInParent<T: SyntaxProtocol>(
         _ syntaxNodeType: T.Type
     ) -> T? {
@@ -220,43 +227,43 @@ private extension CodeBlockItemListSyntax {
         if let found = syntax.as(T.self) {
             return found
         }
-        
+
         var parent = parent
-        
+
         while parent?.is(T.self) == false {
             parent = parent?.parent
         }
-        
+
         return parent?.as(T.self)
     }
 }
 
 extension ClosureExprSyntax {
     var needsImplicitReturn: Bool {
-        return statements.count == 1
+        statements.count == 1
     }
 }
 
 private extension FunctionDeclSyntax {
     var needsImplicitReturn: Bool {
-        return body?.statements.count == 1
+        body?.statements.count == 1
     }
 }
 
 private extension CodeBlockSyntax {
     var needsImplicitReturn: Bool {
-        return statements.count == 1
+        statements.count == 1
     }
 }
 
 private extension AccessorDeclSyntax {
     var needsImplicitReturn: Bool {
-        return body?.needsImplicitReturn == true
+        body?.needsImplicitReturn == true
     }
 }
 
 private extension PatternBindingSyntax {
     var needsImplicitReturn: Bool {
-        return accessor?.as(CodeBlockSyntax.self)?.needsImplicitReturn == true
+        accessor?.as(CodeBlockSyntax.self)?.needsImplicitReturn == true
     }
 }

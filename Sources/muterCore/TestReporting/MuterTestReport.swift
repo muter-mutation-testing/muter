@@ -24,14 +24,14 @@ struct MuterTestReport {
     }
 }
 
-private extension TimeInterval{
+private extension TimeInterval {
     func formatted() -> String {
         let time = NSInteger(self)
         let ms = Int(truncatingRemainder(dividingBy: 1) * 1000)
         let seconds = time % 60
         let minutes = (time / 60) % 60
         let hours = (time / 3600)
-        
+
         return String(
             format: "%0.2d:%0.2d:%0.2d.%0.3d",
             hours,
@@ -39,7 +39,7 @@ private extension TimeInterval{
             seconds,
             ms
         )
-        
+
     }
 }
 
@@ -132,13 +132,14 @@ private extension MuterTestReport {
                     .map { AppliedMutationOperator(
                         mutationPoint: $0.point,
                         mutationSnapshot: $0.snapshot,
-                        testSuiteOutcome: $0.testSuiteOutcome)
+                        testSuiteOutcome: $0.testSuiteOutcome
+                    )
                     }
 
                 return (fileName, filePath, mutationScore, appliedOperators)
             }
             .map(FileReport.init(fileName:path:mutationScore:appliedOperators:))
-        
+
         let scoreOfFilesWithoutCoverage = filesWithoutCoverage.map { filePath in
             FileReport(
                 fileName: URL(fileURLWithPath: filePath).lastPathComponent,
@@ -153,7 +154,7 @@ private extension MuterTestReport {
                 ]
             )
         }
-        
+
         return scoreOfFiles + scoreOfFilesWithoutCoverage
     }
 }
@@ -162,16 +163,16 @@ private func ascendingFilenameOrder(
     lhs: (key: String, value: Int),
     rhs: (key: String, value: Int)
 ) -> Bool {
-    return lhs.key < rhs.key
+    lhs.key < rhs.key
 }
 
 extension MuterTestReport: Equatable {}
 extension MuterTestReport: Codable {
     enum CodingKeys: String, CodingKey {
         case globalMutationScore
-        case totalAppliedMutationOperators 
-        case numberOfKilledMutants 
-        case projectCodeCoverage 
+        case totalAppliedMutationOperators
+        case numberOfKilledMutants
+        case projectCodeCoverage
         case fileReports
     }
 }

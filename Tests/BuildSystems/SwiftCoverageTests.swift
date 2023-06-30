@@ -1,7 +1,6 @@
-import XCTest
-import TestingExtensions
-
 @testable import muterCore
+import TestingExtensions
+import XCTest
 
 final class SwiftCoverageTests: MuterTestCase {
     private let sut = SwiftCoverage()
@@ -10,10 +9,10 @@ final class SwiftCoverageTests: MuterTestCase {
         executable: "/path/to/swift",
         arguments: []
     )
-    
+
     func test_runWithCoverageEnable() {
         _ = sut.run(with: muterConfiguration)
-        
+
         XCTAssertEqual(
             process.executableURL?.path,
             "/path/to/swift"
@@ -25,12 +24,12 @@ final class SwiftCoverageTests: MuterTestCase {
             ]
         )
     }
-    
+
     func test_whenCoverageCommandSucceeds_thenFindBinaryPath() {
         process.stdoutToBeReturned = ""
 
         _ = sut.run(with: muterConfiguration)
-        
+
         XCTAssertEqual(
             process.executableURL?.path,
             "/path/to/swift"
@@ -43,13 +42,13 @@ final class SwiftCoverageTests: MuterTestCase {
             ]
         )
     }
-    
+
     func test_whenBinaryPathCommandSucceeds_thenFindTestArtifacts() {
         process.stdoutToBeReturned = ""
         process.stdoutToBeReturned = "/path/to/binary"
 
         _ = sut.run(with: muterConfiguration)
-        
+
         XCTAssertEqual(
             process.executableURL?.path,
             "/usr/bin/find"
@@ -63,14 +62,14 @@ final class SwiftCoverageTests: MuterTestCase {
             ]
         )
     }
-    
+
     func test_whenFindTestArtifactsCommandSucceeds_thenGenerateCoverageTable() {
         process.stdoutToBeReturned = ""
         process.stdoutToBeReturned = "/path/to/binary"
         process.stdoutToBeReturned = "/path/to/testArtifact"
 
         _ = sut.run(with: muterConfiguration)
-        
+
         XCTAssertEqual(
             process.executableURL?.path,
             "/usr/bin/xcrun"
@@ -87,7 +86,7 @@ final class SwiftCoverageTests: MuterTestCase {
             ]
         )
     }
-    
+
     func test_whenGenerateCoverageTableCommandSucceeds_thenParseProjectCoverage() throws {
         process.stdoutToBeReturned = ""
         process.stdoutToBeReturned = "/path/to/binary"
@@ -95,7 +94,7 @@ final class SwiftCoverageTests: MuterTestCase {
         process.stdoutToBeReturned = loadLLVMCovLog()
 
         let coverage = try XCTUnwrap(sut.run(with: muterConfiguration).get())
-        
+
         XCTAssertEqual(
             coverage,
             .make(
@@ -110,13 +109,15 @@ final class SwiftCoverageTests: MuterTestCase {
             )
         )
     }
-    
+
     private func loadLLVMCovLog() -> String {
-        guard let data = FileManager.default.contents(atPath: "\(SwiftCoverageTests().fixturesDirectory)/logFromllvm-cov.txt"),
-              let string = String(data: data, encoding: .utf8) else {
+        guard let data = FileManager.default
+            .contents(atPath: "\(SwiftCoverageTests().fixturesDirectory)/logFromllvm-cov.txt"),
+            let string = String(data: data, encoding: .utf8)
+        else {
             fatalError("Unable to load reportfor testing")
         }
-        
+
         return string
     }
 }

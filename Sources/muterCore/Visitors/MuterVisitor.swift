@@ -8,9 +8,9 @@ final class MutationSourceCodePreparationChange: Equatable {
     ) -> Bool {
         lhs.newLines == rhs.newLines
     }
-    
+
     let newLines: Int
-    
+
     init(
         newLines: Int
     ) {
@@ -43,10 +43,10 @@ class MuterVisitor: SyntaxAnyVisitor {
         self.configuration = configuration
         self.sourceFileInfo = sourceFileInfo
         self.mutationOperatorId = mutationOperatorId
-        self.schemataMappings = SchemataMutationMapping(
+        schemataMappings = SchemataMutationMapping(
             filePath: sourceFileInfo.path
         )
-        
+
         super.init(viewMode: .all)
     }
 
@@ -67,7 +67,7 @@ class MuterVisitor: SyntaxAnyVisitor {
             for: sourceLocation
         )
     }
-    
+
     func endLocation(
         for node: SyntaxProtocol
     ) -> MutationPosition {
@@ -83,17 +83,17 @@ class MuterVisitor: SyntaxAnyVisitor {
             for: sourceLocation
         )
     }
-    
+
     private func mutationPosition(
         for sourceLocation: SourceLocation
     ) -> MutationPosition {
-        return MutationPosition(
+        MutationPosition(
             utf8Offset: sourceLocation.offset,
             line: (sourceLocation.line ?? 0) - sourceCodePreparationChange.newLines,
             column: sourceLocation.column ?? 0
         )
     }
-    
+
     func transform(
         node: SyntaxProtocol,
         mutatedSyntax: SyntaxProtocol,
@@ -104,7 +104,8 @@ class MuterVisitor: SyntaxAnyVisitor {
         let mutationDescription = mutatedSyntax.description
         let range = mutationRange ?? codeBlockDescription.range(of: node.description)
         guard let codeBlockTree = try? SyntaxParser.parse(source: codeBlockDescription),
-              let mutationRangeInCodeBlock = range else {
+              let mutationRangeInCodeBlock = range
+        else {
             return codeBlockItemListSyntax
         }
 
@@ -131,13 +132,14 @@ class MuterVisitor: SyntaxAnyVisitor {
         guard let mutationParsed = try? SyntaxParser.parse(
             source: codeBlockWithMutation,
             parseTransition: parseTransition
-        ) else {
+        )
+        else {
             return codeBlockItemListSyntax
         }
 
         return mutationParsed.statements
     }
-    
+
     func add(
         mutation: SyntaxProtocol,
         with syntax: SyntaxProtocol,
@@ -156,7 +158,7 @@ class MuterVisitor: SyntaxAnyVisitor {
             schemata
         )
     }
-    
+
     func makeSchemata(
         with syntax: SyntaxProtocol,
         mutation: SyntaxProtocol,

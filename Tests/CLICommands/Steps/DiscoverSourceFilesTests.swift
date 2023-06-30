@@ -1,14 +1,13 @@
+@testable import muterCore
 import XCTest
 
-@testable import muterCore
-
-final class DiscoverSourceFilesTests: MuterTestCase {    
+final class DiscoverSourceFilesTests: MuterTestCase {
     private lazy var sut = DiscoverSourceFiles()
 
     private var state = RunCommandState()
     private lazy var filesToMutatePath = "\(self.fixturesDirectory)/FilesToMutate"
     private lazy var filsToDiscoverPath = "\(self.fixturesDirectory)/FilesToDiscover"
-    
+
     func test_discoveredFilesShouldBeSortedAlphabetically() throws {
         current.fileManager = FileManager.default
 
@@ -16,9 +15,9 @@ final class DiscoverSourceFilesTests: MuterTestCase {
             fileURLWithPath: filsToDiscoverPath,
             isDirectory: true
         )
-        
+
         let result = try XCTUnwrap(sut.run(with: state).get())
-        
+
         XCTAssertEqual(result, [
             .sourceFileCandidatesDiscovered([
                 "\(filsToDiscoverPath)/Directory1/file3.swift",
@@ -29,7 +28,7 @@ final class DiscoverSourceFilesTests: MuterTestCase {
             ])
         ])
     }
-    
+
     func test_exclusionList() throws {
         current.fileManager = FileManager.default
 
@@ -38,14 +37,14 @@ final class DiscoverSourceFilesTests: MuterTestCase {
             arguments: [],
             excludeList: ["ExampleApp"]
         )
-    
+
         state.tempDirectoryURL = URL(
             fileURLWithPath: filsToDiscoverPath,
             isDirectory: true
         )
 
         let result = try XCTUnwrap(sut.run(with: state).get())
-        
+
         XCTAssertEqual(result, [
             .sourceFileCandidatesDiscovered([
                 "\(filsToDiscoverPath)/Directory1/file3.swift",
@@ -55,7 +54,7 @@ final class DiscoverSourceFilesTests: MuterTestCase {
             ])
         ])
     }
-    
+
     func test_exclusionListWithGlobExpression() throws {
         current.fileManager = FileManager.default
 
@@ -66,9 +65,10 @@ final class DiscoverSourceFilesTests: MuterTestCase {
             excludeList: [
                 "/Directory2/**/*.swift",
                 "file1.swift",
-                "/ProjectName/**/*.swift",]
+                "/ProjectName/**/*.swift",
+            ]
         )
-        
+
         let result = try XCTUnwrap(sut.run(with: state).get())
 
         XCTAssertEqual(result, [
@@ -99,9 +99,9 @@ final class DiscoverSourceFilesTests: MuterTestCase {
                 "\(filsToDiscoverPath)/Directory2/Directory3/file6.swift",
             ]
         )
-        
+
         let result = try XCTUnwrap(sut.run(with: state).get())
-        
+
         XCTAssertEqual(result, [
             .sourceFileCandidatesDiscovered([
                 "\(filsToDiscoverPath)/Directory1/file3.swift",
@@ -110,21 +110,21 @@ final class DiscoverSourceFilesTests: MuterTestCase {
             ])
         ])
     }
-    
+
     func test_whenDoesntDiscoverFilesInProjectDirectory() {
         state.tempDirectoryURL = URL(
             fileURLWithPath: "\(filsToDiscoverPath)/Directory4",
             isDirectory: true
         )
-        
+
         let result = sut.run(with: state)
-        
+
         XCTAssertEqual(result, .failure(.noSourceFilesDiscovered))
     }
-    
+
     func test_listOfFilesToMutate() throws {
         fileManager.subpathsToReturn = []
-    
+
         state.filesToMutate = [
             "file1.swift",
             "file2.swift",
@@ -133,11 +133,11 @@ final class DiscoverSourceFilesTests: MuterTestCase {
 
         state.tempDirectoryURL = URL(fileURLWithPath: filesToMutatePath, isDirectory: true)
         fileManager.fileExistsToReturn = state.filesToMutate.compactMap { _ in true }
-        
+
         sut = DiscoverSourceFiles()
 
         let result = try XCTUnwrap(sut.run(with: state).get())
-        
+
         XCTAssertEqual(result, [
             .sourceFileCandidatesDiscovered([
                 "\(filesToMutatePath)/Directory2/Directory3/file6.swift",
@@ -146,7 +146,7 @@ final class DiscoverSourceFilesTests: MuterTestCase {
             ]),
         ])
     }
-    
+
     func test_listOfFileToMutateWithGlobExpression() throws {
         current.fileManager = FileManager.default
 
@@ -159,7 +159,7 @@ final class DiscoverSourceFilesTests: MuterTestCase {
         state.tempDirectoryURL = URL(fileURLWithPath: filesToMutatePath, isDirectory: true)
 
         let result = try XCTUnwrap(sut.run(with: state).get())
-        
+
         XCTAssertEqual(result, [
             .sourceFileCandidatesDiscovered([
                 "\(filesToMutatePath)/Directory2/Directory3/file6.swift",
@@ -183,7 +183,7 @@ final class DiscoverSourceFilesTests: MuterTestCase {
             "./ProjectName/ProjectName/Models/*.swift",
             "./**/*.swift",
         ]
-        
+
         let result = try XCTUnwrap(sut.run(with: state).get())
 
         XCTAssertEqual(result, [
@@ -203,7 +203,7 @@ final class DiscoverSourceFilesTests: MuterTestCase {
                 "\(filesToMutatePath)/file1.swift",
             ])
         ])
-        
+
         FileManager.default.changeCurrentDirectoryPath(currentDirectoryPath)
     }
 

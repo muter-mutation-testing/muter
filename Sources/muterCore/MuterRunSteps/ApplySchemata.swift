@@ -5,7 +5,7 @@ struct ApplySchemata: RunCommandStep {
     private var writeFile: WriteFile
     @Dependency(\.notificationCenter)
     private var notificationCenter: NotificationCenter
-    
+
     func run(
         with state: AnyRunCommandState
     ) -> Result<[RunCommandState.Change], MuterError> {
@@ -16,9 +16,9 @@ struct ApplySchemata: RunCommandStep {
             }
 
             let rewriter = MuterRewriter(mutationMap)
-            
+
             let newFile = rewriter.visit(sourceCode)
-            
+
             do {
                 try writeFile(
                     newFile.description,
@@ -29,7 +29,7 @@ struct ApplySchemata: RunCommandStep {
                 continue
             }
         }
-        
+
         return .success([])
     }
 }

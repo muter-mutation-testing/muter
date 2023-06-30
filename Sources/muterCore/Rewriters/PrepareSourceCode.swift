@@ -5,7 +5,7 @@ struct PrepareSourceCode {
     private var writeFile: WriteFile
     @Dependency(\.loadSourceCode)
     private var loadSourceCode: LoadSourceCode
-    
+
     func prepareSourceCode(
         _ path: String
     ) -> PreparedSourceCode? {
@@ -15,12 +15,12 @@ struct PrepareSourceCode {
 
         let addImport = AddImportRewriter()
         let addImportSource = addImport.visit(source.code)
-        
+
         let disableLinters = DisableLintersRewriter()
         let disableLintersSource = disableLinters.visit(addImportSource)
-        
+
         let newSourceCode = disableLintersSource.description
-        
+
         let numberOfNewLines = addImport.newLinesAddedToFile + disableLinters.newLinesAddedToFile
         let changes = MutationSourceCodePreparationChange(
             newLines: numberOfNewLines
@@ -31,10 +31,10 @@ struct PrepareSourceCode {
                 newSourceCode,
                 path
             )
-            
+
             return loadSourceCode(path)
                 .map { sourceCode in
-                    return PreparedSourceCode(
+                    PreparedSourceCode(
                         source: sourceCode,
                         changes: changes
                     )
@@ -44,4 +44,3 @@ struct PrepareSourceCode {
         }
     }
 }
-

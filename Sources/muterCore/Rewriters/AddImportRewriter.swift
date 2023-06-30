@@ -2,7 +2,7 @@ import SwiftSyntax
 
 final class AddImportRewriter: SyntaxRewriter {
     private let visitor = AddImportVisitior()
-    
+
     private(set) var newLinesAddedToFile = 0
 
     override func visit(_ node: SourceFileSyntax) -> SourceFileSyntax {
@@ -11,7 +11,7 @@ final class AddImportRewriter: SyntaxRewriter {
         }
 
         newLinesAddedToFile = 2
-        
+
         return super.visit(
             SourceFileSyntax(
                 statements: insertImportFoundation(in: node.statements),
@@ -19,7 +19,7 @@ final class AddImportRewriter: SyntaxRewriter {
             )
         )
     }
-    
+
     private func insertImportFoundation(
         in node: CodeBlockItemListSyntax
     ) -> CodeBlockItemListSyntax {
@@ -43,6 +43,6 @@ final class AddImportRewriter: SyntaxRewriter {
 
 final class AddImportVisitior {
     func shouldAddImportStatement(_ node: SourceFileSyntax) -> Bool {
-        return !node.description.contains("import Foundation")
+        !node.description.contains("import Foundation")
     }
 }

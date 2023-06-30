@@ -1,5 +1,5 @@
-import SwiftSyntax
 import Foundation
+import SwiftSyntax
 
 struct DiscoverMutationPoints: RunCommandStep {
     @Dependency(\.notificationCenter)
@@ -10,28 +10,28 @@ struct DiscoverMutationPoints: RunCommandStep {
     func run(
         with state: AnyRunCommandState
     ) -> Result<[RunCommandState.Change], MuterError> {
-        
+
         notificationCenter.post(
             name: .mutationsDiscoveryStarted,
             object: nil
         )
-        
+
         let discovered = discoverMutationPoints(
             inFilesAt: state.sourceFileCandidates,
             configuration: state.muterConfiguration
         )
-        
+
         guard discovered.mappings.count >= 1 else {
             return .failure(.noMutationPointsDiscovered)
         }
-       
+
         let mappings = discovered.mappings.mergeByFileName()
 
         notificationCenter.post(
             name: .mutationsDiscoveryFinished,
             object: mappings
         )
-        
+
         return .success([
             .mutationMappingsDiscovered(mappings),
             .sourceCodeParsed(discovered.sourceCodeByFilePath)
@@ -40,32 +40,34 @@ struct DiscoverMutationPoints: RunCommandStep {
 }
 
 private extension DiscoverMutationPoints {
-    
+
     func discoverMutationPoints(
         inFilesAt filePaths: [String],
         configuration: MuterConfiguration
     ) -> DiscoveredFiles {
-        return filePaths.accumulate(into: DiscoveredFiles()) { discoveredFiles, path in
+        filePaths.accumulate(into: DiscoveredFiles()) { discoveredFiles, path in
             guard
                 pathContainsDotSwift(path),
                 let sourceCode = prepareSourceCode(path)
-            else { return discoveredFiles }
-            
+            else {
+                return discoveredFiles
+            }
+
             let schemataMappings = discoverNewSchemataMappings(
                 inFile: sourceCode,
                 configuration: configuration
             )
-            
+
             if !schemataMappings.isEmpty {
                 discoveredFiles.sourceCodeByFilePath[path] = sourceCode.source.code
             }
 
             discoveredFiles.mappings.append(contentsOf: schemataMappings)
-            
+
             return discoveredFiles
         }
     }
-    
+
     func discoverNewSchemataMappings(
         inFile sourceCode: PreparedSourceCode,
         configuration: MuterConfiguration
@@ -75,7 +77,7 @@ private extension DiscoverMutationPoints {
         let skipMutations = SkipMutations(
             sourceFileInfo: sourceFileInfo
         )
-        
+
         skipMutations.walk(source)
 
         return MutationOperator.Id.allCases.accumulate(into: []) { newSchemataMappings, mutationOperatorId in
@@ -91,7 +93,7 @@ private extension DiscoverMutationPoints {
             let schemataMapping = visitor
                 .schemataMappings
                 .skipMutations(skipMutations.skipPositions)
-            
+
             if !schemataMapping.isEmpty {
                 return newSchemataMappings + [schemataMapping]
             } else {
@@ -99,26 +101,27 @@ private extension DiscoverMutationPoints {
             }
         }
     }
-    
+
     func pathContainsDotSwift(_ filePath: String) -> Bool {
         let url = URL(fileURLWithPath: filePath)
         return url.lastPathComponent.contains(".swift")
     }
 }
 
-// Currently supports only line comments (in block comments, would need to detect in which actual line the skip marker appears - and if it isn't the first or last line, it won't contain code anyway)
+// Currently supports only line comments (in block comments, would need to detect in which actual line the skip marker
+// appears - and if it isn't the first or last line, it won't contain code anyway)
 private class SkipMutations: SyntaxAnyVisitor {
     private(set) var skipPositions: [MutationPosition] = []
-    
+
     private let muterSkipMarker = "muter:skip"
-    
+
     private let sourceFileInfo: SourceFileInfo
-    
+
     required init(
         sourceFileInfo: SourceFileInfo
     ) {
         self.sourceFileInfo = sourceFileInfo
-        
+
         super.init(viewMode: .all)
     }
 
@@ -138,7 +141,7 @@ private class SkipMutations: SyntaxAnyVisitor {
             }
         }
     }
-    
+
     func mutationPosition(for node: Syntax) -> MutationPosition {
         let converter = SourceLocationConverter(
             file: sourceFileInfo.path,
@@ -158,8 +161,8 @@ private class SkipMutations: SyntaxAnyVisitor {
 
 private extension SwiftSyntax.Trivia {
     func containsLineComment(_ comment: String) -> Bool {
-        return contains { piece in
-            if case .lineComment(let commentText) = piece {
+        contains { piece in
+            if case let .lineComment(commentText) = piece {
                 return commentText.contains(comment)
             } else {
                 return false

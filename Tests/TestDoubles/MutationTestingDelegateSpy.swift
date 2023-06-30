@@ -1,7 +1,6 @@
 import Foundation
-import SwiftSyntax
-
 @testable import muterCore
+import SwiftSyntax
 
 class MutationTestingDelegateSpy: Spy, MutationTestingIODelegate {
     private(set) var methodCalls: [String] = []
@@ -9,7 +8,7 @@ class MutationTestingDelegateSpy: Spy, MutationTestingIODelegate {
     private(set) var mutatedFileContents: [String] = []
     private(set) var mutatedFilePaths: [String] = []
     private(set) var restoredFilePaths: [String] = []
-    
+
     private(set) var schematas: MutationSchemata = []
     private(set) var testRuns: [XCTestRun] = []
     private(set) var testRunPaths: [URL] = []
@@ -28,11 +27,14 @@ class MutationTestingDelegateSpy: Spy, MutationTestingIODelegate {
         mutatedFileContents.append(contents)
     }
 
-    func runTestSuite(using configuration: MuterConfiguration, savingResultsIntoFileNamed fileName: String) -> (outcome: TestSuiteOutcome, testLog: String) {
+    func runTestSuite(
+        using configuration: MuterConfiguration,
+        savingResultsIntoFileNamed fileName: String
+    ) -> (outcome: TestSuiteOutcome, testLog: String) {
         methodCalls.append(#function)
         return (testSuiteOutcomes.remove(at: 0), "testLog")
     }
-    
+
     func runTestSuite(
         withSchemata schemata: MutationSchema,
         using configuration: MuterConfiguration,
@@ -45,14 +47,14 @@ class MutationTestingDelegateSpy: Spy, MutationTestingIODelegate {
         testLogs.append(fileName)
         return (testSuiteOutcomes.remove(at: 0), "testLog")
     }
-    
+
     func switchOn(schemata: MutationSchema, for testRun: XCTestRun, at path: URL) throws {
         methodCalls.append(#function)
         schematas.append(schemata)
         testRuns.append(testRun)
         testRunPaths.append(path)
     }
-    
+
     func restoreFile(at path: String, using swapFilePaths: [FilePath: FilePath]) {
         methodCalls.append(#function)
         restoredFilePaths.append(path)

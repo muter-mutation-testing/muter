@@ -1,6 +1,5 @@
-import XCTest
-
 @testable import muterCore
+import XCTest
 
 enum RemoveTempDirectorySpecError: String, Error {
     case stub

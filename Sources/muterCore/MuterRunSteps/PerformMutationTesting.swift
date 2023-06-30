@@ -10,16 +10,16 @@ struct PerformMutationTesting: RunCommandStep {
     private var fileManager: FileSystemManager
 
     private let buildErrorsThreshold: Int = 5
-    
+
     func run(
         with state: AnyRunCommandState
     ) -> Result<[RunCommandState.Change], MuterError> {
-        
+
         fileManager.changeCurrentDirectoryPath(state.tempDirectoryURL.path)
 
         let result = performMutationTesting(using: state)
         switch result {
-        case .success(let outcomes):
+        case let .success(outcomes):
             let mutationTestOutcome = state.mutationTestOutcome
             mutationTestOutcome.mutations = outcomes
             mutationTestOutcome.coverage = state.projectCoverage
@@ -32,7 +32,7 @@ struct PerformMutationTesting: RunCommandStep {
             return .success([
                 .mutationTestOutcomeGenerated(mutationTestOutcome)
             ])
-        case .failure(let reason):
+        case let .failure(reason):
             return .failure(reason)
         }
     }
@@ -76,17 +76,17 @@ private extension PerformMutationTesting {
             name: .newTestLogAvailable,
             object: mutationLog
         )
-        
+
         return insertMutants(using: state)
     }
-    
+
     func insertMutants(
         using state: AnyRunCommandState
     ) -> Result<[MutationTestOutcome.Mutation], MuterError> {
         var outcomes: [MutationTestOutcome.Mutation] = []
         outcomes.reserveCapacity(state.mutationPoints.count)
         var buildErrors = 0
-        
+
         for mutationMap in state.mutationMapping {
             for mutationSchema in mutationMap.mutationSchemata {
 
@@ -95,7 +95,7 @@ private extension PerformMutationTesting {
                     for: state.projectXCTestRun,
                     at: state.tempDirectoryURL
                 )
-                
+
                 let (testSuiteOutcome, testLog) = ioDelegate.runTestSuite(
                     withSchemata: mutationSchema,
                     using: state.muterConfiguration,
@@ -104,7 +104,7 @@ private extension PerformMutationTesting {
                         schemata: mutationSchema
                     )
                 )
-                
+
                 let mutationPoint = MutationPoint(
                     mutationOperatorId: mutationSchema.mutationOperatorId,
                     filePath: mutationSchema.filePath,
@@ -120,38 +120,38 @@ private extension PerformMutationTesting {
                 )
 
                 outcomes.append(outcome)
-                
+
                 let mutationLog = MutationTestLog(
                     mutationPoint: mutationPoint,
                     testLog: testLog,
                     timePerBuildTestCycle: .none,
                     remainingMutationPointsCount: .none
                 )
-                
+
                 notificationCenter.post(
                     name: .newMutationTestOutcomeAvailable,
                     object: outcome
                 )
-                
+
                 notificationCenter.post(
                     name: .newTestLogAvailable,
                     object: mutationLog
                 )
-                
+
                 buildErrors = testSuiteOutcome == .buildError ? (buildErrors + 1) : 0
                 if buildErrors >= buildErrorsThreshold {
                     return .failure(.mutationTestingAborted(reason: .tooManyBuildErrors))
                 }
             }
         }
-        
+
         return .success(outcomes)
     }
-    
+
     func logFileName(
         for fileName: FileName,
         schemata: MutationSchema
     ) -> String {
-        return "\(fileName)_\(schemata.mutationOperatorId.rawValue)_\(schemata.position).log"
+        "\(fileName)_\(schemata.mutationOperatorId.rawValue)_\(schemata.position).log"
     }
 }

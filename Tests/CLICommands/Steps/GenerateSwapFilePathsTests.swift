@@ -1,15 +1,16 @@
-import XCTest
-import SwiftSyntax
-
 @testable import muterCore
+import SwiftSyntax
+import XCTest
 
 final class GenerateSwapFilePathsTests: MuterTestCase {
     private let state = RunCommandState()
     private lazy var sut = GenerateSwapFilePaths()
 
     func test_muterTempDirectoryCreation() {
-        state.sourceCodeByFilePath = ["/folder/file1.swift": SourceFileSyntax.makeBlankSourceFile(),
-                                      "/folder/file2.swift": SourceFileSyntax.makeBlankSourceFile(),]
+        state.sourceCodeByFilePath = [
+            "/folder/file1.swift": SourceFileSyntax.makeBlankSourceFile(),
+            "/folder/file2.swift": SourceFileSyntax.makeBlankSourceFile(),
+        ]
         state.tempDirectoryURL = URL(fileURLWithPath: "/workspace")
 
         _ = sut.run(with: state)
@@ -23,8 +24,10 @@ final class GenerateSwapFilePathsTests: MuterTestCase {
     }
 
     func test_swapMappingGeneration() throws {
-        state.sourceCodeByFilePath = ["/folder/file1.swift": SourceFileSyntax.makeBlankSourceFile(),
-                                      "/folder/file2.swift": SourceFileSyntax.makeBlankSourceFile(),]
+        state.sourceCodeByFilePath = [
+            "/folder/file1.swift": SourceFileSyntax.makeBlankSourceFile(),
+            "/folder/file2.swift": SourceFileSyntax.makeBlankSourceFile(),
+        ]
         state.tempDirectoryURL = URL(fileURLWithPath: "/workspace")
 
         let result = try XCTUnwrap(sut.run(with: state).get())
@@ -53,8 +56,10 @@ final class GenerateSwapFilePathsTests: MuterTestCase {
     func test_swapFilesPathGeneratesMapping() {
         let paths = ["some/path/to/aFile", "some/path/to/anotherFile"]
         let swapFileDirectory = "~"
-        let expectedMapping = ["some/path/to/aFile": "~/aFile",
-                               "some/path/to/anotherFile": "~/anotherFile",]
+        let expectedMapping = [
+            "some/path/to/aFile": "~/aFile",
+            "some/path/to/anotherFile": "~/anotherFile",
+        ]
 
         let actualMapping = sut.swapFilePaths(forFilesAt: paths, using: swapFileDirectory)
 

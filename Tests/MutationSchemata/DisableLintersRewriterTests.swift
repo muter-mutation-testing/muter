@@ -1,6 +1,5 @@
-import XCTest
-
 @testable import muterCore
+import XCTest
 
 final class DisableLintersRewriterTests: MuterTestCase {
     func test_disableLinters() throws {
@@ -20,7 +19,7 @@ final class DisableLintersRewriterTests: MuterTestCase {
         )
 
         let sut = DisableLintersRewriter().visit(code)
-        
+
         XCTAssertEqual(
             sut.description,
             """

@@ -1,5 +1,5 @@
-import SwiftSyntax
 import Foundation
+import SwiftSyntax
 
 enum RemoveSideEffectsOperator {
     final class Visitor: MuterVisitor {
@@ -10,14 +10,14 @@ enum RemoveSideEffectsOperator {
             "NSCondition",
             "NSConditionLock",
         ]
-        
+
         private lazy var untestedFunctionNames: [String] = [
             "print",
             "fatalError",
             "exit",
             "abort"
         ] + (configuration?.excludeCallList ?? [])
-        
+
         convenience init(
             configuration: MuterConfiguration? = nil,
             sourceFileInfo: SourceFileInfo
@@ -28,37 +28,37 @@ enum RemoveSideEffectsOperator {
                 mutationOperatorId: .removeSideEffects
             )
         }
-        
+
         override func visit(_ node: PatternBindingListSyntax) -> SyntaxVisitorContinueKind {
             for statement in node where statementsContainsConcurrencyTypes(statement) {
                 let property = propertyName(from: statement)
                 concurrencyPropertiesInFile.append(property)
             }
-            
+
             return super.visit(node)
         }
-        
+
         override func visitAny(_ node: Syntax) -> SyntaxVisitorContinueKind {
             guard let node = node.as(FunctionDeclSyntax.self) else {
                 return .visitChildren
             }
-            
+
             guard let body = node.body, !node.hasImplicitReturn else {
                 return .visitChildren
             }
-            
+
             let statements = body.statements
             for statement in body.statements where statementContainsMutableToken(statement) {
                 let mutatedFunctionStatements = body.statements.exclude { $0.description == statement.description }
                 let newCodeBlockItemList = CodeBlockItemListSyntax(mutatedFunctionStatements)
-                
+
                 let position = endLocation(for: statement)
                 let snapshot = MutationOperator.Snapshot(
                     before: statement.description.trimmed.inlined,
                     after: "removed line",
                     description: "removed line"
                 )
-                
+
                 add(
                     mutation: newCodeBlockItemList,
                     with: statements,
@@ -66,10 +66,10 @@ enum RemoveSideEffectsOperator {
                     snapshot: snapshot
                 )
             }
-            
+
             return .visitChildren
         }
-        
+
         private func mutated(_ node: FunctionDeclSyntax, with body: CodeBlockSyntax) -> DeclSyntax {
             let functionDecl = FunctionDeclSyntax(
                 attributes: node.attributes,
@@ -81,58 +81,59 @@ enum RemoveSideEffectsOperator {
                 genericWhereClause: node.genericWhereClause,
                 body: body
             )
-            
+
             return DeclSyntax(functionDecl)
         }
-        
+
         private func statementContainsMutableToken(_ statement: CodeBlockItemListSyntax.Element) -> Bool {
             let doesntContainVariableAssignment = statement.allChildren.count(variableAssignmentStatements) == 0
             let containsDiscardedResult = statement.description.contains("_ = ")
-            
+
             let containsFunctionCall = statement.allChildren
                 .include(functionCallStatements)
                 .exclude(untestedFunctionCallStatements)
                 .count >= 1
-            
+
             let doesntContainPossibleDeadlock = !statement.allChildren
                 .exclude(concurrencyStatements).isEmpty
-            
+
             return doesntContainVariableAssignment &&
-            doesntContainPossibleDeadlock && (containsDiscardedResult || containsFunctionCall)
+                doesntContainPossibleDeadlock && (containsDiscardedResult || containsFunctionCall)
         }
-        
+
         private func variableAssignmentStatements(_ node: Syntax) -> Bool {
-            return node.is(VariableDeclSyntax.self)
+            node.is(VariableDeclSyntax.self)
         }
-        
+
         private func functionCallStatements(_ node: Syntax) -> Bool {
-            return node.is(FunctionCallExprSyntax.self)
+            node.is(FunctionCallExprSyntax.self)
         }
-        
+
         private func concurrencyStatements(_ node: Syntax) -> Bool {
             guard let functionCallSyntax = node.as(FunctionCallExprSyntax.self),
                   let calledExpression = functionCallSyntax.calledExpression.as(MemberAccessExprSyntax.self),
-                  let variableName = calledExpression.base?.description.trimmed else {
+                  let variableName = calledExpression.base?.description.trimmed
+            else {
                 return false
             }
-            
+
             return concurrencyPropertiesInFile.contains(variableName)
         }
-        
+
         private func untestedFunctionCallStatements(_ node: Syntax) -> Bool {
-            return untestedFunctionNames.contains { name in node.description.contains(name) }
+            untestedFunctionNames.contains { name in node.description.contains(name) }
         }
-        
+
         private func statementsContainsConcurrencyTypes(_ statement: PatternBindingSyntax) -> Bool {
             guard let functionCallSyntax = statement.initializer?.value.as(FunctionCallExprSyntax.self) else {
                 return false
             }
-            
+
             let expressionSyntax = functionCallSyntax.calledExpression
-            
+
             return concurrencyTypes.contains(expressionSyntax.description.trimmed)
         }
-        
+
         private func propertyName(from patternSyntax: PatternBindingSyntax) -> String {
             patternSyntax.pattern.description.trimmed
         }

@@ -1,13 +1,12 @@
-import XCTest
-import TestingExtensions
-
 @testable import muterCore
+import TestingExtensions
+import XCTest
 
 final class ChangeLogicalConnectorOperatorTests: MuterTestCase {
     private lazy var sourceWithLogicalOperators = sourceCode(
         fromFileAt: "\(fixturesDirectory)/MutationExamples/LogicalOperator/sampleWithLogicalOperators.swift"
     )!
-    
+
     func test_rewriter() throws {
         let visitor = ChangeLogicalConnectorOperator.Visitor(
             sourceFileInfo: sourceWithLogicalOperators.asSourceFileInfo
@@ -42,7 +41,7 @@ final class ChangeLogicalConnectorOperatorTests: MuterTestCase {
             """
         )
     }
-    
+
     func test_visitor() throws {
         let visitor = ChangeLogicalConnectorOperator.Visitor(
             sourceFileInfo: sourceWithLogicalOperators.asSourceFileInfo
@@ -55,7 +54,7 @@ final class ChangeLogicalConnectorOperatorTests: MuterTestCase {
             (
                 source: "\n    return false && false",
                 schemata: [
-                    try .make(
+                    .make(
                         filePath: sourceWithLogicalOperators.path,
                         mutationOperatorId: .logicalOperator,
                         syntaxMutation: "\n    return true && true",
@@ -75,7 +74,7 @@ final class ChangeLogicalConnectorOperatorTests: MuterTestCase {
             (
                 source: "\n    return true || true",
                 schemata: [
-                    try .make(
+                    .make(
                         filePath: sourceWithLogicalOperators.path,
                         mutationOperatorId: .logicalOperator,
                         syntaxMutation: "\n    return false || false",

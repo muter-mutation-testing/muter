@@ -1,5 +1,5 @@
-import SwiftSyntax
 import Foundation
+import SwiftSyntax
 
 protocol AnyRunCommandState: AnyObject {
     var mutationTestingStartTime: Date { get }
@@ -15,15 +15,15 @@ protocol AnyRunCommandState: AnyObject {
     var filesToMutate: [String] { get }
     var swapFilePathsByOriginalPath: [FilePath: FilePath] { get }
     var mutationTestOutcome: MutationTestOutcome { get }
-    
+
     func apply(_ stateChanges: [RunCommandState.Change])
 }
 
 final class RunCommandState: AnyRunCommandState {
     var mutationTestingStartTime: Date = .init()
     var muterConfiguration: MuterConfiguration = .init()
-    var projectDirectoryURL: URL = URL(fileURLWithPath: "path")
-    var tempDirectoryURL: URL = URL(fileURLWithPath: "path")
+    var projectDirectoryURL: URL = .init(fileURLWithPath: "path")
+    var tempDirectoryURL: URL = .init(fileURLWithPath: "path")
     var projectXCTestRun: XCTestRun = .init()
     var projectCoverage: Coverage = .null
     var sourceFileCandidates: [FilePath] = []
@@ -34,10 +34,10 @@ final class RunCommandState: AnyRunCommandState {
     var swapFilePathsByOriginalPath: [FilePath: FilePath] = [:]
     var mutationTestOutcome: MutationTestOutcome = .init()
 
-    init() { }
+    init() {}
 
     init(from options: RunOptions) {
-        self.filesToMutate = options.filesToMutate
+        filesToMutate = options.filesToMutate
             .reduce(into: []) { accum, next in
                 accum.append(
                     contentsOf: next.components(separatedBy: ",")
@@ -68,27 +68,27 @@ extension RunCommandState {
     func apply(_ stateChanges: [RunCommandState.Change]) {
         for change in stateChanges {
             switch change {
-            case .configurationParsed(let configuration):
-                self.muterConfiguration = configuration
-            case .projectDirectoryUrlDiscovered(let projectDirectoryURL):
+            case let .configurationParsed(configuration):
+                muterConfiguration = configuration
+            case let .projectDirectoryUrlDiscovered(projectDirectoryURL):
                 self.projectDirectoryURL = projectDirectoryURL
-            case .tempDirectoryUrlCreated(let tempDirectoryURL):
+            case let .tempDirectoryUrlCreated(tempDirectoryURL):
                 self.tempDirectoryURL = tempDirectoryURL
-            case .projectXCTestRun(let projectXCTestRun):
+            case let .projectXCTestRun(projectXCTestRun):
                 self.projectXCTestRun = projectXCTestRun
-            case .projectCoverage(let projectCoverage):
+            case let .projectCoverage(projectCoverage):
                 self.projectCoverage = projectCoverage
-            case .sourceFileCandidatesDiscovered(let sourceFileCandidates):
+            case let .sourceFileCandidatesDiscovered(sourceFileCandidates):
                 self.sourceFileCandidates = sourceFileCandidates
-            case .mutationPointsDiscovered(let mutationPoints):
+            case let .mutationPointsDiscovered(mutationPoints):
                 self.mutationPoints = mutationPoints
-            case .mutationMappingsDiscovered(let mutationMappings):
-                self.mutationMapping = mutationMappings
-            case .sourceCodeParsed(let sourceCodeByFilePath):
+            case let .mutationMappingsDiscovered(mutationMappings):
+                mutationMapping = mutationMappings
+            case let .sourceCodeParsed(sourceCodeByFilePath):
                 self.sourceCodeByFilePath = sourceCodeByFilePath
-            case .swapFilePathGenerated(let swapFilePathsByOriginalPath):
+            case let .swapFilePathGenerated(swapFilePathsByOriginalPath):
                 self.swapFilePathsByOriginalPath = swapFilePathsByOriginalPath
-            case .mutationTestOutcomeGenerated(let mutationTestOutcome):
+            case let .mutationTestOutcomeGenerated(mutationTestOutcome):
                 self.mutationTestOutcome = mutationTestOutcome
             case .copyToTempDirectoryCompleted:
                 break

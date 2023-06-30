@@ -54,7 +54,7 @@ extension SyntaxProtocol {
     func withTrailingTrivia(
         _ trivia: Trivia?
     ) -> Self {
-        if let trivia = trivia {
+        if let trivia {
             return withTrailingTrivia(trivia)
         } else {
             return self
@@ -64,7 +64,7 @@ extension SyntaxProtocol {
     func withLeadingTrivia(
         _ trivia: Trivia?
     ) -> Self {
-        if let trivia = trivia {
+        if let trivia {
             return withLeadingTrivia(trivia)
         } else {
             return self
@@ -94,7 +94,7 @@ extension SyntaxProtocol {
 
 extension FunctionDeclSyntax {
     var hasImplicitReturn: Bool {
-        guard let body = body else {
+        guard let body else {
             return false
         }
 

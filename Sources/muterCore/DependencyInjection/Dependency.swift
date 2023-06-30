@@ -5,10 +5,10 @@ struct Dependency<T> {
     private var dependency: (World) -> T
     var wrappedValue: T {
         get { dependency(current) }
-        set { }
+        set {}
     }
-    
+
     init(_ keyPath: KeyPath<World, T>) {
-        self.dependency = { $0[keyPath: keyPath] }
+        dependency = { $0[keyPath: keyPath] }
     }
 }

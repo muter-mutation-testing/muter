@@ -18,7 +18,7 @@ struct MutationSchema {
     let snapshot: MutationOperator.Snapshot
 
     var fileName: String {
-        return URL(fileURLWithPath: filePath).lastPathComponent
+        URL(fileURLWithPath: filePath).lastPathComponent
     }
 }
 
@@ -37,17 +37,17 @@ extension MutationSchema: Nullable {
 extension MutationSchema: Equatable {
     static func == (lhs: MutationSchema, rhs: MutationSchema) -> Bool {
         lhs.id == rhs.id &&
-        lhs.filePath == rhs.filePath &&
-        lhs.mutationOperatorId == rhs.mutationOperatorId &&
-        lhs.syntaxMutation.description == rhs.syntaxMutation.description &&
-        lhs.position == rhs.position &&
-        lhs.snapshot == rhs.snapshot
+            lhs.filePath == rhs.filePath &&
+            lhs.mutationOperatorId == rhs.mutationOperatorId &&
+            lhs.syntaxMutation.description == rhs.syntaxMutation.description &&
+            lhs.position == rhs.position &&
+            lhs.snapshot == rhs.snapshot
     }
 }
 
 extension MutationSchema: CustomStringConvertible, CustomDebugStringConvertible {
     var debugDescription: String { description }
-    
+
     var description: String {
         """
         Schemata(
@@ -75,9 +75,9 @@ struct MutationPoint: Equatable, Codable {
     let mutationOperatorId: MutationOperator.Id
     let filePath: String
     let position: MutationPosition
-    
+
     var fileName: String {
-        return URL(fileURLWithPath: self.filePath).lastPathComponent
+        URL(fileURLWithPath: filePath).lastPathComponent
     }
 }
 

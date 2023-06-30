@@ -1,6 +1,5 @@
-import XCTest
-
 @testable import muterCore
+import XCTest
 
 final class AddImportRewriterTests: MuterTestCase {
     func test_addImport() throws {
@@ -19,7 +18,7 @@ final class AddImportRewriterTests: MuterTestCase {
         )
 
         let sut = AddImportRewriter().visit(code)
-        
+
         XCTAssertEqual(
             sut.description,
             """
@@ -37,7 +36,7 @@ final class AddImportRewriterTests: MuterTestCase {
             """
         )
     }
-    
+
     func test_doNotAddImport() throws {
         let code = try sourceCode(
             """
@@ -55,7 +54,7 @@ final class AddImportRewriterTests: MuterTestCase {
         )
 
         let sut = AddImportRewriter().visit(code)
-        
+
         XCTAssertEqual(
             sut.description,
             """

@@ -3,13 +3,14 @@ import Foundation
 struct RemoveProjectFromPreviousRun: RunCommandStep {
     @Dependency(\.fileManager)
     private var fileManager: FileSystemManager
-    
+
     func run(
         with state: AnyRunCommandState
     ) -> Result<[RunCommandState.Change], MuterError> {
         guard fileManager.fileExists(
             atPath: state.tempDirectoryURL.path
-        ) else {
+        )
+        else {
             return .success([])
         }
 

@@ -21,7 +21,7 @@ struct MutationPosition: Codable, Equatable {
         self.line = line
         self.column = column
     }
-    
+
     init(sourceLocation: SourceLocation) {
         self.init(
             utf8Offset: sourceLocation.offset,
@@ -62,10 +62,10 @@ extension SyntaxProtocol {
             offset: position.utf8Offset,
             converter: converter
         )
-        
+
         return MutationPosition(sourceLocation: sourceLocation)
     }
-    
+
     func line(with sourceFileInfo: SourceFileInfo) -> Int {
         let converter = SourceLocationConverter(
             file: sourceFileInfo.path,
@@ -76,7 +76,7 @@ extension SyntaxProtocol {
             offset: position.utf8Offset,
             converter: converter
         )
-        
+
         return MutationPosition(sourceLocation: sourceLocation).line
     }
 }

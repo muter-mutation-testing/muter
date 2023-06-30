@@ -1,9 +1,8 @@
-import TestingExtensions
 import Foundation
+@testable import muterCore
 import SwiftSyntax
 import SwiftSyntaxParser
-
-@testable import muterCore
+import TestingExtensions
 
 extension MuterTestReport {
     static func make(
@@ -208,10 +207,10 @@ extension MutationSchema {
         position: MutationPosition = .null,
         snapshot: MutationOperator.Snapshot = .null
     ) throws -> MutationSchema {
-        MutationSchema(
+        try MutationSchema(
             filePath: filePath,
             mutationOperatorId: mutationOperatorId,
-            syntaxMutation: try sourceCode(syntaxMutation).statements,
+            syntaxMutation: sourceCode(syntaxMutation).statements,
             position: position,
             snapshot: snapshot
         )
@@ -228,8 +227,9 @@ extension MuterConfiguration {
     static func fromFixture(at path: String) -> MuterConfiguration? {
 
         guard let data = FileManager.default.contents(atPath: path),
-            let configuration = try? MuterConfiguration(from: data) else {
-                fatalError("Unable to load a valid Muter configuration file from \(path)")
+              let configuration = try? MuterConfiguration(from: data)
+        else {
+            fatalError("Unable to load a valid Muter configuration file from \(path)")
         }
         return configuration
     }
@@ -237,6 +237,6 @@ extension MuterConfiguration {
 
 extension MutationPosition {
     static var firstPosition: MutationPosition {
-        return MutationPosition(utf8Offset: 0, line: 0, column: 0)
+        MutationPosition(utf8Offset: 0, line: 0, column: 0)
     }
 }

@@ -1,5 +1,5 @@
-import Foundation
 import ArgumentParser
+import Foundation
 
 public struct Init: ParsableCommand {
 
@@ -48,6 +48,9 @@ public struct Init: ParsableCommand {
             attributes: nil
         )
 
-        notificationCenter.post(name: .configurationFileCreated, object: "\(self.directory)/\(MuterConfiguration.fileNameWithExtension)")
+        notificationCenter.post(
+            name: .configurationFileCreated,
+            object: "\(directory)/\(MuterConfiguration.fileNameWithExtension)"
+        )
     }
 }

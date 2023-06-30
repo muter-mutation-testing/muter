@@ -1,6 +1,5 @@
-import XCTest
-
 @testable import muterCore
+import XCTest
 
 final class ConfigurationParsingTests: MuterTestCase {
     func test_parse() {
@@ -20,7 +19,7 @@ final class ConfigurationParsingTests: MuterTestCase {
             "test",
         ])
     }
-    
+
     func test_parseExcludeList() {
         let configuration = MuterConfiguration.fromFixture(at: "\(fixturesDirectory)/muter.conf.withExcludeList.yml")
 

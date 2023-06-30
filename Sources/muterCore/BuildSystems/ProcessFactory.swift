@@ -4,7 +4,7 @@ let isMuterRunningKey = "IS_MUTER_RUNNING"
 let isMuterRunningValue = "YES"
 
 extension Process {
-    struct Factory {
+    enum Factory {
         static func makeProcess() -> Process {
             let process = Process()
             process.qualityOfService = .userInitiated
@@ -12,7 +12,7 @@ extension Process {
             process.environment = [
                 isMuterRunningKey: isMuterRunningValue
             ]
-            
+
             return process
         }
     }
@@ -21,7 +21,7 @@ extension Process {
     var processData: Data? {
         (standardOutput as? Pipe)?.readStringToEndOfFile()
     }
-    
+
     func runProcess(
         url: String,
         arguments args: [String]
@@ -35,12 +35,12 @@ extension Process {
         try? run()
 
         let output = processData
-        
+
         waitUntilExit()
-        
+
         return output
     }
-    
+
     func runProcess(
         url: String,
         arguments: [String]

@@ -9,7 +9,7 @@ protocol MutationTestingIODelegate {
         outcome: TestSuiteOutcome,
         testLog: String
     )
-    
+
     func switchOn(
         schemata: MutationSchema,
         for testRun: XCTestRun,
@@ -22,9 +22,9 @@ struct MutationTestingDelegate: MutationTestingIODelegate {
     private var notificationCenter: NotificationCenter
     @Dependency(\.process)
     private var process: ProcessFactory
-    
+
     private let muterTestRunFileName = "muter.xctestrun"
-    
+
     func runTestSuite(
         withSchemata schemata: MutationSchema,
         using configuration: MuterConfiguration,
@@ -58,7 +58,7 @@ struct MutationTestingDelegate: MutationTestingIODelegate {
             return (.buildError, "") // this should never be executed
         }
     }
-    
+
     func switchOn(
         schemata: MutationSchema,
         for testRun: XCTestRun,
@@ -67,18 +67,18 @@ struct MutationTestingDelegate: MutationTestingIODelegate {
         let updated = testRun.updateEnvironmentVariable(
             setting: schemata.id
         )
-        
+
         let data = try PropertyListSerialization.data(
             fromPropertyList: updated,
             format: .xml,
             options: 0
         )
-        
+
         try data.write(
             to: path.appendingPathComponent(muterTestRunFileName)
         )
     }
-    
+
     func testProcess(
         with configuration: MuterConfiguration,
         schemata: MutationSchema,
@@ -102,7 +102,7 @@ struct MutationTestingDelegate: MutationTestingIODelegate {
 
         return process
     }
-    
+
     func fileHandle(
         for logFileName: String
     ) throws -> (
@@ -111,9 +111,9 @@ struct MutationTestingDelegate: MutationTestingIODelegate {
     ) {
         let testLogUrl = URL(fileURLWithPath: FileManager.default.currentDirectoryPath + "/" + logFileName)
         try Data().write(to: testLogUrl)
-        
-        return (
-            handle: try FileHandle(forWritingTo: testLogUrl),
+
+        return try (
+            handle: FileHandle(forWritingTo: testLogUrl),
             logFileUrl: testLogUrl
         )
     }

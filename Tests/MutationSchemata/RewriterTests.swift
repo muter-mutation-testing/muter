@@ -1,77 +1,68 @@
-import XCTest
-
 @testable import muterCore
+import XCTest
+import TestingExtensions
 
 final class RewriterTests: MuterTestCase {
     private lazy var sourceCode = "\(fixturesDirectory)/MutationExamples/sampleWithAllOperators.swift"
-    private lazy var expectedSourceCode = "\(fixturesDirectory)/MutationExamples/sampleWithAllOperatorsWithImplicitReturn.swift"
-    
+
     override func setUpWithError() throws {
         try super.setUpWithError()
-        
+
         FileManager.default.createFile(
             atPath: sourceCode,
             contents: allOperatorsSourceCode.data(using: .utf8)
         )
     }
-    
+
     override func tearDownWithError() throws {
         try super.tearDownWithError()
-        
+
         try FileManager.default.removeItem(atPath: sourceCode)
     }
-    
+
     func test_allOperatorsWithImplicitReturn() throws {
         let code = try XCTUnwrap(PrepareSourceCode().prepareSourceCode(sourceCode))
-        
-        let all: [SchemataMutationMapping] = MutationOperator.Id.allCases.accumulate(into: []) { newSchemataMappings, mutationOperatorId in
-            let visitor = mutationOperatorId.visitor(
-                .init(),
-                code.source.asSourceFileInfo
-            )
-            
-            visitor.sourceCodePreparationChange = code.changes
-            
-            visitor.walk(code.source.code)
-            
-            let schemataMapping = visitor.schemataMappings
-            
-            if !schemataMapping.isEmpty {
-                return newSchemataMappings + [schemataMapping]
-            } else {
-                return newSchemataMappings
-            }
-        }.mergeByFileName()
-        
+
+        let all: [SchemataMutationMapping] = MutationOperator.Id.allCases
+            .accumulate(into: []) { newSchemataMappings, mutationOperatorId in
+                let visitor = mutationOperatorId.visitor(
+                    .init(),
+                    code.source.asSourceFileInfo
+                )
+
+                visitor.sourceCodePreparationChange = code.changes
+
+                visitor.walk(code.source.code)
+
+                let schemataMapping = visitor.schemataMappings
+
+                if !schemataMapping.isEmpty {
+                    return newSchemataMappings + [schemataMapping]
+                } else {
+                    return newSchemataMappings
+                }
+            }.mergeByFileName()
+
         XCTAssertEqual(all.count, 1)
-        
+
         let mapping = try XCTUnwrap(all.first)
-        
+
         let sut = MuterRewriter(mapping)
-        
+
         let mutatedSourceCode = sut.visit(code.source.code).description
-        
+
         let positions = mapping.mutationSchemata
             .map { ($0.mutationOperatorId, $0.position) }
             .map(OperatorIdAndPositionAssert.init)
-        
+
         XCTAssertEqual(
             positions,
             expectedMutationPositions
         )
-        
-        XCTAssertEqual(
-            mutatedSourceCode,
-            try loadSampleWithAllOperatorsApplied()
-        )
+
+        AssertSnapshot(mutatedSourceCode)
     }
-    
-    private func loadSampleWithAllOperatorsApplied() throws -> String {
-        let contents = try XCTUnwrap(FileManager.default.contents(atPath: expectedSourceCode))
-        
-        return try XCTUnwrap(String(data: contents, encoding: .utf8))
-    }
-    
+
     private lazy var expectedMutationPositions: [OperatorIdAndPositionAssert] = [
         OperatorIdAndPositionAssert(
             id: .removeSideEffects,
@@ -288,7 +279,8 @@ final class RewriterTests: MuterTestCase {
                 line: 9,
                 column: 19
             )
-        )]
+        )
+    ]
 }
 
 private let allOperatorsSourceCode =
@@ -296,7 +288,7 @@ private let allOperatorsSourceCode =
     #if os(iOS) || os(tvOS)
         print("please ignore me")
     #endif
-    
+
     struct ConditionalOperators {
         func something(_ a: Int) -> String {
             let b = a == 5
@@ -305,67 +297,67 @@ private let allOperatorsSourceCode =
             let d = a <= 10
             let f = a < 5
             let g = a > 5
-    
+
             if a == 10 {
                 return "hello"
             }
-    
+
             return a == 9 ? "goodbye" : "what"
         }
-    
+
         func < (_: String, _: String) -> Bool {
             return false
         }
-    
+
         func baz() {
             _ = foo(bar: { $0 == char })
         }
     }
-    
+
     struct LogicalConnectors {
         func someCode() -> Bool {
             return false && false
         }
-    
+
         func someOtherCode() -> Bool {
             return true || true
         }
     }
-    
+
     struct SideEffects {
         func containsSideEffect() -> Int {
             _ = causesSideEffect()
             return 1
         }
-    
+
         func containsSideEffect() -> Int {
             print("something")
-    
+
             _ = causesSideEffect()
         }
-    
+
         @discardableResult
         func causesSideEffect() -> Int {
             return 0
         }
-    
+
         func causesAnotherSideEffect() {
             let key = "some key"
             let value = aFunctionThatReturnsAValue()
             someFunctionThatWritesToADatabase(key: key, value: value)
         }
-    
+
         func containsSpecialCases() {
             fatalError("this should never be deleted!")
             exit(1)
             abort()
         }
-    
+
         func containsADeepMethodCall() {
             let containsIgnoredResult = statement.description.contains("_ = ")
             var anotherIgnoredResult = statement.description.contains("_ = ")
         }
-    
+
         func containsAVoidFunctionCallThatSpansManyLine() {
             functionCall(
                 "some argument",
@@ -374,65 +366,65 @@ private let allOperatorsSourceCode =
             )
         }
     }
-    
+
     struct Concurrency {
         private let semaphore = DispatchSemaphore(value: 1)
         private let conditionLock = NSConditionLock(condition: 0)
         private let lock = NSRecursiveLock()
         private let condition = NSCondition()
-    
+
         private func semaphoreLock(block: () -> Void) {
             defer { semaphore.signal() }
             semaphore.wait()
             block()
         }
-    
+
         private func recursiveLock(block: () -> Void) {
             defer { lock.unlock() }
             lock.lock()
             block()
         }
-    
+
         private func nsCondition(block: () -> Void) {
             defer { condition.signal() }
             condition.wait()
             block()
         }
-    
+
         private func nsConditionLock(block: () -> Void) {
             defer { conditionLock.unlock(withCondition: 1) }
             conditionLock.lock(whenCondition: 1)
             block()
         }
-    
+
         private func sync(block: () -> Int) -> Int {
             let semaphore = DispatchSemaphore(value: 2)
             semaphore.wait()
             let value = block()
             semaphore.signal()
-    
+
             return value
         }
     }
-    
+
     struct TernayOperators {
         func someCode(_ a: Bool) -> Bool {
             return a ? true : false
         }
-    
+
         func someAnotherCode(_ a: Bool) -> String {
             return a ? "true" : "false"
         }
-    
+
         func someCode(_ a: Bool, _ b: Bool) -> Bool {
             return a ? b ? true : false : false
         }
     }
-    
+
     public enum Enum {
         case a(CGFloat)
         case b(CGFloat)
-    
+
         public func kerning(for something: String?) -> CGFloat {
             switch self {
             case let .a(value):
@@ -445,7 +437,7 @@ private let allOperatorsSourceCode =
             }
         }
     }
-    
+
     extension String {
         private func bar() -> (String, String) {
             return Something { value in
@@ -454,14 +446,14 @@ private let allOperatorsSourceCode =
                     guard let (_, newRemainder) = doSomething(condition: { $0 == char }) else {
                         return nil
                     }
-    
+
                     remainder = newRemainder
                 }
                 return (self, remainder)
             }
         }
     }
-    
+
     """
 
 private struct OperatorIdAndPositionAssert: Equatable {
@@ -472,7 +464,7 @@ private struct OperatorIdAndPositionAssert: Equatable {
 extension OperatorIdAndPositionAssert: CustomStringConvertible {
     var description: String {
         """
-        
+
         OperatorIdAndPositionAssert(
             id: .\(id),
             position: MutationPosition(

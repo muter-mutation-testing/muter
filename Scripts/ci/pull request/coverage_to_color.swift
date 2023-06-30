@@ -5,10 +5,10 @@ let value = (Double(coverage.replacingOccurrences(of: "%", with: "")) ?? 0).roun
 let rounded = Int(value)
 var color = "red"
 switch rounded {
-case 91...Int.max: color = "brightgreen"
-case 76...90: color = "green"
-case 61...75: color = "yellowgreen"
-case 41...60: color = "yellow"
+case 91 ... Int.max: color = "brightgreen"
+case 76 ... 90: color = "green"
+case 61 ... 75: color = "yellowgreen"
+case 41 ... 60: color = "yellow"
 default: color = "red"
 }
 

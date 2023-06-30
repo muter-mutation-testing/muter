@@ -1,9 +1,9 @@
 @testable import muterCore
 
 class FileReportProvider {
-    
+
     static var expectedFileReport1: MuterTestReport.FileReport {
-        return .init(fileName: "a module.swift", path: "/tmp/a module.swift", mutationScore: 100, appliedOperators: [
+        .init(fileName: "a module.swift", path: "/tmp/a module.swift", mutationScore: 100, appliedOperators: [
             MuterTestReport.AppliedMutationOperator.make(
                 mutationPoint: MutationPoint.make(
                     mutationOperatorId: .ror,
@@ -19,9 +19,9 @@ class FileReportProvider {
             ),
         ])
     }
-    
+
     static var expectedFileReport2: MuterTestReport.FileReport {
-        return .init(fileName: "file 4.swift", path: "/tmp/file 4.swift", mutationScore: 0, appliedOperators: [
+        .init(fileName: "file 4.swift", path: "/tmp/file 4.swift", mutationScore: 0, appliedOperators: [
             MuterTestReport.AppliedMutationOperator.make(
                 mutationPoint: MutationPoint.make(
                     mutationOperatorId: .ror,
@@ -37,9 +37,9 @@ class FileReportProvider {
             ),
         ])
     }
-    
+
     static var expectedFileReport3: MuterTestReport.FileReport {
-        return .init(fileName: "file1.swift", path: "/tmp/file1.swift", mutationScore: 66, appliedOperators: [
+        .init(fileName: "file1.swift", path: "/tmp/file1.swift", mutationScore: 66, appliedOperators: [
             MuterTestReport.AppliedMutationOperator.make(
                 mutationPoint: MutationPoint.make(
                     mutationOperatorId: .ror,
@@ -81,9 +81,9 @@ class FileReportProvider {
             ),
         ])
     }
-    
+
     static var expectedFileReport4: MuterTestReport.FileReport {
-        return .init(fileName: "file2.swift", path: "/tmp/file2.swift", mutationScore: 100, appliedOperators: [
+        .init(fileName: "file2.swift", path: "/tmp/file2.swift", mutationScore: 100, appliedOperators: [
             MuterTestReport.AppliedMutationOperator.make(
                 mutationPoint: MutationPoint.make(
                     mutationOperatorId: .removeSideEffects,
@@ -112,9 +112,9 @@ class FileReportProvider {
             ),
         ])
     }
-    
+
     static var expectedFileReport5: MuterTestReport.FileReport {
-        return .init(fileName: "file3.swift", path: "/tmp/file3.swift", mutationScore: 33, appliedOperators: [
+        .init(fileName: "file3.swift", path: "/tmp/file3.swift", mutationScore: 33, appliedOperators: [
             MuterTestReport.AppliedMutationOperator.make(
                 mutationPoint: MutationPoint.make(
                     mutationOperatorId: .ror,

@@ -1,7 +1,6 @@
-import XCTest
-import TestingExtensions
-
 @testable import muterCore
+import TestingExtensions
+import XCTest
 
 final class BuildForTestingTests: MuterTestCase {
     private let state = RunCommandState()
@@ -30,27 +29,27 @@ final class BuildForTestingTests: MuterTestCase {
         state.muterConfiguration = MuterConfiguration(
             executable: "/path/to/xcodebuild"
         )
-        
+
         state.tempDirectoryURL = URL(fileURLWithPath: "/path/to/temp")
-        
+
         _ = sut.run(with: state)
-        
+
         XCTAssertTrue(fileManager.methodCalls.contains("changeCurrentDirectoryPath(_:)"))
         XCTAssertEqual(
             fileManager.changeCurrentDirectoryPath.first,
             state.tempDirectoryURL.path
         )
     }
-    
+
     func test_resetCurrentPath() {
         fileManager.currentDirectoryPathToReturn = "/path/to/project"
 
         state.muterConfiguration = MuterConfiguration(
             executable: "/path/to/xcodebuild"
         )
-        
+
         state.tempDirectoryURL = URL(fileURLWithPath: "/path/to/temp")
-        
+
         XCTAssertEqual(fileManager.methodCalls, [])
         XCTAssertEqual(
             fileManager.currentDirectoryPath,
@@ -65,7 +64,7 @@ final class BuildForTestingTests: MuterTestCase {
         )
 
         process.stdoutToBeReturned = " "
-        
+
         _ = sut.run(with: state)
 
         XCTAssertEqual(process.executableURL?.absoluteString, "file:///path/to/xcodebuild")
@@ -347,7 +346,7 @@ final class BuildForTestingTests: MuterTestCase {
     private func loadXCTestRun() -> Data {
         FileManager.default.contents(atPath: buildDescriptionPath + "/project.xctestrun") ?? .init()
     }
-    
+
     private func loadXCTestRunWithDebugFolder() -> Data {
         FileManager.default.contents(atPath: buildDescriptionPath + "/projectWithDebugPath.xctestrun") ?? .init()
     }
