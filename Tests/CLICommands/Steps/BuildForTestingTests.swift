@@ -69,7 +69,7 @@ final class BuildForTestingTests: MuterTestCase {
         _ = sut.run(with: state)
 
         XCTAssertEqual(process.executableURL?.absoluteString, "file:///path/to/xcodebuild")
-        XCTAssertEqual(process.arguments, ["some", "commands", "build-for-testing"])
+        XCTAssertEqual(process.arguments, ["some", "commands", "clean", "build-for-testing"])
         XCTAssertTrue(process.runCalled)
         XCTAssertTrue(process.waitUntilExitCalled)
     }
@@ -85,7 +85,7 @@ final class BuildForTestingTests: MuterTestCase {
         _ = sut.run(with: state)
 
         XCTAssertEqual(process.executableURL?.absoluteString, "file:///path/to/xcodebuild")
-        XCTAssertEqual(process.arguments, ["some", "commands", "build-for-testing"])
+        XCTAssertEqual(process.arguments, ["some", "commands", "clean", "build-for-testing"])
         XCTAssertTrue(process.runCalled)
         XCTAssertTrue(process.waitUntilExitCalled)
 
@@ -107,7 +107,7 @@ final class BuildForTestingTests: MuterTestCase {
         _ = sut.run(with: state)
 
         XCTAssertEqual(process.executableURL?.absoluteString, "file:///path/to/xcodebuild")
-        XCTAssertEqual(process.arguments, ["some", "commands", "build-for-testing"])
+        XCTAssertEqual(process.arguments, ["some", "commands", "clean", "build-for-testing"])
         XCTAssertTrue(process.runCalled)
         XCTAssertTrue(process.waitUntilExitCalled)
 
