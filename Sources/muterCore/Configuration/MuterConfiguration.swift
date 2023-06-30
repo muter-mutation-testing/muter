@@ -91,7 +91,7 @@ extension MuterConfiguration {
 
         switch buildSystem {
         case .xcodebuild:
-            return arguments.dropLast() + ["build-for-testing"]
+            return arguments.dropLast() + ["clean", "build-for-testing"]
         case .swift, .unknown:
             return arguments
         }

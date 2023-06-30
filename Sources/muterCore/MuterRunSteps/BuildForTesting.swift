@@ -57,14 +57,13 @@ struct BuildForTesting: RunCommandStep {
     }
     
     private func findBuildRequestJsonPath(_ output: String) throws -> String {
-        guard let buildRequestJsonPath = output.firstMatchOf("Build description path: .*(\\n)")?
+        guard let buildRequestFolder = output.firstMatchOf("Build description path: .*(\\n)")?
             .replacingOccurrences(of: "Build description path: ", with: "")
-            .trimmed
-            .replacingOccurrences(of: "desc.xcbuild", with: "buildRequest.json") else {
+            .trimmed else {
             throw MuterError.literal(reason: "Could not parse buildRequest.json from build description path")
         }
         
-        return buildRequestJsonPath
+        return "\(buildRequestFolder)/build-request.json"
     }
     
     private func parseBuildRequest(_ path: String) throws -> XCTestBuildRequest {
