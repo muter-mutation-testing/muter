@@ -1,7 +1,7 @@
 import Difference
 @testable import muterCore
-import XCTest
 import SnapshotTesting
+import XCTest
 
 public func XCTAssertEqual<T: Equatable>(
     _ expected: @autoclosure () throws -> T,

@@ -1,6 +1,6 @@
 @testable import muterCore
-import XCTest
 import TestingExtensions
+import XCTest
 
 final class RewriterTests: MuterTestCase {
     private lazy var sourceCode = "\(fixturesDirectory)/MutationExamples/sampleWithAllOperators.swift"

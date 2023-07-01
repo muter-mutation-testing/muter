@@ -1,8 +1,8 @@
 @testable import muterCore
+import SnapshotTesting
 import SwiftSyntax
 import TestingExtensions
 import XCTest
-import SnapshotTesting
 
 final class HTMLReportTests: MuterTestCase {
     private let dateStub = DateComponents(
@@ -35,7 +35,7 @@ final class HTMLReportTests: MuterTestCase {
             coverage: .make(percent: 78)
         )
         let actual = sut.report(from: outcome)
-        
+
         AssertSnapshot(actual)
     }
 

@@ -1,3 +1,3 @@
-import class muterCore.Muter
+import enum muterCore.Muter
 
 Muter.start()
