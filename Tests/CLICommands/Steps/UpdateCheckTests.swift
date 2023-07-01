@@ -92,7 +92,6 @@ final class UpdateCheckTests: MuterTestCase {
             }
          ]
         """.data(using: .utf8) ?? .init()
-
     }
 }
 
