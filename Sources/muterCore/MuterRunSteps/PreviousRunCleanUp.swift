@@ -1,6 +1,6 @@
 import Foundation
 
-struct RemoveProjectFromPreviousRun: RunCommandStep {
+struct PreviousRunCleanUp: RunCommandStep {
     @Dependency(\.fileManager)
     private var fileManager: FileSystemManager
 

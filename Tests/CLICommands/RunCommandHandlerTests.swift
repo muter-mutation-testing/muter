@@ -88,7 +88,7 @@ final class RunCommandHandlerTests: MuterTestCase {
         XCTAssertTypeEqual(sut.steps[safe: 0], LoadConfiguration.self)
         XCTAssertTypeEqual(sut.steps[safe: 1], CreateTempDirectoryURL.self)
         XCTAssertTypeEqual(sut.steps[safe: 1], CreateTempDirectoryURL.self)
-        XCTAssertTypeEqual(sut.steps[safe: 2], RemoveProjectFromPreviousRun.self)
+        XCTAssertTypeEqual(sut.steps[safe: 2], PreviousRunCleanUp.self)
         XCTAssertTypeEqual(sut.steps[safe: 3], CopyProjectToTempDirectory.self)
         XCTAssertTypeEqual(sut.steps[safe: 4], DiscoverSourceFiles.self)
         XCTAssertTypeEqual(sut.steps[safe: 5], DiscoverMutationPoints.self)
@@ -105,7 +105,7 @@ final class RunCommandHandlerTests: MuterTestCase {
 
         XCTAssertTypeEqual(sut.steps[safe: 0], LoadConfiguration.self)
         XCTAssertTypeEqual(sut.steps[safe: 1], CreateTempDirectoryURL.self)
-        XCTAssertTypeEqual(sut.steps[safe: 2], RemoveProjectFromPreviousRun.self)
+        XCTAssertTypeEqual(sut.steps[safe: 2], PreviousRunCleanUp.self)
         XCTAssertTypeEqual(sut.steps[safe: 3], CopyProjectToTempDirectory.self)
         XCTAssertTypeEqual(sut.steps[safe: 4], DiscoverProjectCoverage.self)
         XCTAssertTypeEqual(sut.steps[safe: 5], DiscoverSourceFiles.self)
