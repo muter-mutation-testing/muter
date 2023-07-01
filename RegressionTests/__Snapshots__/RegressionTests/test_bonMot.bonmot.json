@@ -637,6 +637,6 @@
   ],
   "globalMutationScore" : 16,
   "numberOfKilledMutants" : 9,
-  "projectCodeCoverage" : 80,
+  "projectCodeCoverage" : 81,
   "totalAppliedMutationOperators" : 54
 }
