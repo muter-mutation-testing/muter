@@ -71,7 +71,7 @@ private extension MuterConfiguration {
         ]
 
         let destination = projectFile.contains("SDKROOT = iphoneos") ?
-            ["-destination", "platform=iOS Simulator,name=iPhone SE (3rd generation)"] :
+            ["-destination", "platform=iOS Simulator,name=\(iOSSimulator().name)"] :
             []
 
         return defaultArguments + destination + ["test"]
@@ -90,5 +90,53 @@ private extension MuterConfiguration {
 
     static func generateEmptyConfiguration(from directoryContents: [URL]) -> MuterConfiguration? {
         MuterConfiguration(executable: "", arguments: [], excludeList: [])
+    }
+}
+
+private struct Simulator: Codable, CustomStringConvertible {
+    let isAvailable: Bool
+    let name: String
+    let deviceTypeIdentifier: String
+
+    var description: String { name }
+}
+
+extension Simulator {
+    static var fallback: Simulator {
+        Simulator(
+            isAvailable: true,
+            name: "iPhone SE (3rd generation)",
+            deviceTypeIdentifier: ""
+        )
+    }
+}
+
+private func iOSSimulator() -> Simulator {
+    let process = Process()
+
+    guard let simulatorsListOutput: Data = process.runProcess(
+        url: "/usr/bin/xcrun",
+        arguments: ["simctl", "list", "--json"]
+    )
+    else {
+        return .fallback
+    }
+
+    do {
+        let simulatorsJson = try (JSONSerialization.jsonObject(with: simulatorsListOutput) as? [String: AnyHashable]) ??
+            [:]
+        let devices = (simulatorsJson["devices"] as? [String: AnyHashable]) ?? [:]
+        let newestRuntime = devices.keys.filter { $0.contains("iOS") }.sorted().last ?? ""
+        let devicesForRunTime = (devices[newestRuntime] as? [AnyHashable]) ?? []
+        let device = try devicesForRunTime
+            .compactMap { try JSONSerialization.data(withJSONObject: $0) }
+            .compactMap { try JSONDecoder().decode(Simulator.self, from: $0) }
+            .filter(\.isAvailable)
+            .sorted(by: { $0.deviceTypeIdentifier > $1.deviceTypeIdentifier })
+            .first
+
+        return device ?? .fallback
+    } catch {
+        return .fallback
     }
 }
