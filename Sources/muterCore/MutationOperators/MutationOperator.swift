@@ -67,13 +67,11 @@ struct MutationOperator {
     }
 }
 
-protocol PositionSpecificRewriter {
+protocol PositionSpecificRewriter: SyntaxRewriter {
     var positionToMutate: MutationPosition { get }
     var operatorSnapshot: MutationOperatorSnapshot { get set }
 
     init(positionToMutate: MutationPosition)
-    
-    func visit(_ node: SourceFileSyntax) -> Syntax
 }
 
 protocol PositionDiscoveringVisitor {

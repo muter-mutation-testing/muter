@@ -11,10 +11,10 @@ class OperatorAwareRewriter: SyntaxRewriter, PositionSpecificRewriter {
         self.positionToMutate = positionToMutate
     }
 
-    override func visit(_ token: TokenSyntax) -> Syntax {
+    override func visit(_ token: TokenSyntax) -> TokenSyntax {
         guard token.position == positionToMutate,
             let oppositeOperator = oppositeOperator(for: token.tokenKind) else {
-                return Syntax(token)
+                return token
         }
 
         operatorSnapshot = MutationOperatorSnapshot(
@@ -34,13 +34,12 @@ class OperatorAwareRewriter: SyntaxRewriter, PositionSpecificRewriter {
         return oppositeOperatorMapping[`operator`]
     }
     
-    private func mutated(_ token: TokenSyntax, using `operator`: String) -> Syntax {
-        let tokenSyntax = SyntaxFactory.makeToken(
+    private func mutated(_ token: TokenSyntax, using `operator`: String) -> TokenSyntax {
+        TokenSyntax(
             .spacedBinaryOperator(`operator`),
-            presence: .present,
             leadingTrivia: token.leadingTrivia,
-            trailingTrivia: token.trailingTrivia
+            trailingTrivia: token.trailingTrivia,
+            presence: .present
         )
-        return Syntax(tokenSyntax)
     }
 }

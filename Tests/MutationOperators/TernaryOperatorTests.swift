@@ -1,5 +1,6 @@
 import XCTest
 import SwiftSyntax
+import SwiftParser
 
 @testable import muterCore
 
@@ -55,7 +56,10 @@ final class TernaryOperatorTests: XCTestCase {
 
         let mutatedSource = rewriter.visit(sampleCode.code)
 
-        XCTAssertEqual(mutatedSource.description, changedCode.code.description)
+        XCTAssertEqual(
+            mutatedSource.description,
+            changedCode.code.description
+        )
     }
     
     func test_rewriter_swapWrongPositions() {
@@ -64,7 +68,10 @@ final class TernaryOperatorTests: XCTestCase {
 
         let mutatedSource = rewriter.visit(sampleCode.code)
 
-        XCTAssertEqual(mutatedSource.description, sampleCode.code.description)
+        XCTAssertEqual(
+            mutatedSource.description,
+            sampleCode.code.description
+        )
     }
     
     func test_rewriter_swapNestedWrongPositions() {
@@ -73,6 +80,9 @@ final class TernaryOperatorTests: XCTestCase {
 
         let mutatedSource = rewriter.visit(sampleNestedCode.code)
 
-        XCTAssertEqual(mutatedSource.description, changedNestedCode.code.description)
+        XCTAssertEqual(
+            mutatedSource.description,
+            changedNestedCode.code.description
+        )
     }
 }

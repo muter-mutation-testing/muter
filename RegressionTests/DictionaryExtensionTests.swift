@@ -14,7 +14,7 @@ final class DictionaryExtensionTests: XCTestCase {
                 "keep": 5,
                 "yup": ["toss": "yuppppp"],
                 "toss": "get wrekt, son",
-            ]
+            ] as [String : Any]
         ]
         
         let results = dictionary.recursivelyFiltered(includingKeysMatching: { $0 != "toss" })

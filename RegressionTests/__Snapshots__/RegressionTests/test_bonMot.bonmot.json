@@ -671,27 +671,9 @@
       ],
       "fileName" : "UIKit+Helpers.swift",
       "mutationScore" : 0
-    },
-    {
-      "appliedOperators" : [
-        {
-          "mutationPoint" : {
-            "mutationOperatorId" : "RemoveSideEffects",
-            "position" : {
-              "column" : 0,
-              "line" : 0,
-              "utf8Offset" : -999
-            }
-          },
-          "testSuiteOutcome" : "noCoverage"
-        }
-      ],
-      "fileName" : "Platform.swift",
-      "mutationScore" : 0
     }
   ],
   "globalMutationScore" : 16,
   "numberOfKilledMutants" : 9,
-  "projectCodeCoverage" : 80,
   "totalAppliedMutationOperators" : 54
 }
