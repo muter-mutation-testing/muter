@@ -1,0 +1,14 @@
+OVERVIEW: 🔎 Automated mutation testing for Swift 🕳️
+
+USAGE: muter <subcommand>
+
+OPTIONS:
+  --version               Show the version.
+  -h, --help              Show help information.
+
+SUBCOMMANDS:
+  init                    Creates the configuration file that Muter uses
+  run (default)           Performs mutation testing for the Swift project
+                          contained within the current directory.
+
+  See 'muter help <subcommand>' for detailed help.

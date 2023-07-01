@@ -7,6 +7,9 @@ import SwiftSyntax
 extension Notification.Name {
     static let muterLaunched = Notification.Name("muterLaunched")
 
+    static let updateCheckStarted = Notification.Name("updateCheckStarted")
+    static let updateCheckFinished = Notification.Name("updateCheckFinished")
+
     static let projectCopyStarted = Notification.Name("projectCopyStarted")
     static let projectCopyFinished = Notification.Name("projectCopyFinished")
 
@@ -46,6 +49,9 @@ final class RunCommandObserver {
         [
             (name: .muterLaunched, handler: handleMuterLaunched),
 
+            (name: .updateCheckStarted, handler: handleUpdateCheckStarted),
+            (name: .updateCheckFinished, handler: handleUpdateCheckFinished),
+
             (name: .projectCopyStarted, handler: handleProjectCopyStarted),
             (name: .projectCopyFinished, handler: handleProjectCopyFinished),
 
@@ -84,7 +90,6 @@ final class RunCommandObserver {
                 using: handler
             )
         }
-
     }
 
     deinit {
@@ -95,6 +100,14 @@ final class RunCommandObserver {
 extension RunCommandObserver {
     func handleMuterLaunched(notification: Notification) {
         logger.launched()
+    }
+
+    func handleUpdateCheckStarted(notification: Notification) {
+        logger.updateCheckStarted()
+    }
+
+    func handleUpdateCheckFinished(notification: Notification) {
+        logger.updateCheckFinished(newVersion: notification.object as? String)
     }
 
     func handleProjectCopyStarted(notification: Notification) {

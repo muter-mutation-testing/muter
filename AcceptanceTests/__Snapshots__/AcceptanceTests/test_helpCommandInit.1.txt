@@ -1,0 +1,8 @@
+OVERVIEW: Creates the configuration file that Muter uses
+
+USAGE: muter init
+
+OPTIONS:
+  --version               Show the version.
+  -h, --help              Show help information.
+
