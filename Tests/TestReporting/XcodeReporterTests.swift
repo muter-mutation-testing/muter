@@ -1,7 +1,6 @@
-import XCTest
-import TestingExtensions
-
 @testable import muterCore
+import TestingExtensions
+import XCTest
 
 final class XcodeReporterTests: ReporterTestCase {
     override func setUp() {
@@ -15,7 +14,7 @@ final class XcodeReporterTests: ReporterTestCase {
                     filePath: "/tmp/project/file4.swift",
                     position: .firstPosition
                 ),
-                snapshot: MutationOperatorSnapshot(
+                snapshot: MutationOperator.Snapshot(
                     before: "==",
                     after: "!=",
                     description: "changed from == to !="
@@ -29,7 +28,7 @@ final class XcodeReporterTests: ReporterTestCase {
                     filePath: "/tmp/project/file5.swift",
                     position: .firstPosition
                 ),
-                snapshot: MutationOperatorSnapshot(
+                snapshot: MutationOperator.Snapshot(
                     before: "==",
                     after: "!=",
                     description: "changed from == to !="
@@ -55,4 +54,3 @@ final class XcodeReporterTests: ReporterTestCase {
         )
     }
 }
-

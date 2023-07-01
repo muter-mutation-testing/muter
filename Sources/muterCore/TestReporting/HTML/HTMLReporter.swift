@@ -68,7 +68,7 @@ extension Node where Context == HTML.DocumentContext {
 
 extension Node where Context: HTML.BodyContext {
     static func muterHeader(from testReport: MuterTestReport) -> Self {
-        return .header(
+        .header(
             .div(.class("logo"), .raw(muterLogo)),
             .div(
                 .class("header-item"),
@@ -193,8 +193,14 @@ extension Node where Context: HTML.BodyContext {
             .tbody(
                 .forEach(reports) { report -> Node<HTML.TableContext> in
                     .tr(
-                        .td(.class("left-aligned"), "\(report.fileName):\(report.appliedOperator.mutationPoint.position.line)"),
-                        .td(.class("left-aligned"), .raw("<wbr>\(report.appliedOperator.mutationPoint.mutationOperatorId.friendlyName)<wbr>")),
+                        .td(
+                            .class("left-aligned"),
+                            "\(report.fileName):\(report.appliedOperator.mutationPoint.position.line)"
+                        ),
+                        .td(
+                            .class("left-aligned"),
+                            .raw("<wbr>\(report.appliedOperator.mutationPoint.mutationOperatorId.friendlyName)<wbr>")
+                        ),
                         .td(.class("mutation-snapshot"), .diff(of: report.appliedOperator)),
                         .td(
                             .raw("\(report.appliedOperator.testSuiteOutcome.asIcon)")
@@ -208,24 +214,26 @@ extension Node where Context: HTML.BodyContext {
     static func diff(of appliedOperator: MuterTestReport.AppliedMutationOperator) -> Self {
         .div(
             .class("snapshot-changes"),
-            .if(appliedOperator.testSuiteOutcome == .noCoverage,
+            .if(
+                appliedOperator.testSuiteOutcome == .noCoverage,
                 .span(
                     .class("snapshot-no-coverage"),
                     ""
                 ),
                 else:
-                    .if(appliedOperator.mutationPoint.mutationOperatorId == .removeSideEffects,
-                        .span(
-                            .class("snapshot-before"),
-                            "\(appliedOperator.mutationSnapshot.before)"
-                        ),
-                        else:
-                            .group(
-                                .span(.class("snapshot-before"), "\(appliedOperator.mutationSnapshot.before)"),
-                                .span(.class("snapshot-arrow"), "→"),
-                                .span(.class("snapshot-after"), "\(appliedOperator.mutationSnapshot.after)")
-                            )
+                .if(
+                    appliedOperator.mutationPoint.mutationOperatorId == .removeSideEffects,
+                    .span(
+                        .class("snapshot-before"),
+                        "\(appliedOperator.mutationSnapshot.before)"
+                    ),
+                    else:
+                    .group(
+                        .span(.class("snapshot-before"), "\(appliedOperator.mutationSnapshot.before)"),
+                        .span(.class("snapshot-arrow"), "→"),
+                        .span(.class("snapshot-after"), "\(appliedOperator.mutationSnapshot.after)")
                     )
+                )
             )
         )
     }
@@ -255,7 +263,8 @@ private extension TestSuiteOutcome {
         switch self {
         case .passed:
             icon = testPassed
-        case .failed, .runtimeError:
+        case .failed,
+             .runtimeError:
             icon = testFailed
         case .buildError:
             icon = testBuildError
@@ -277,9 +286,9 @@ private extension MuterTestReport {
 
 private func coloredMutationScore(for score: Int) -> String {
     switch score {
-    case 0...25: return "#f70000"
-    case 26...50: return "#ce9400"
-    case 51...75: return "#92b300"
+    case 0 ... 25: return "#f70000"
+    case 26 ... 50: return "#ce9400"
+    case 51 ... 75: return "#92b300"
     default: return "#51a100"
     }
 }

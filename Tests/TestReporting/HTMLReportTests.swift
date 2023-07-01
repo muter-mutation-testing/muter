@@ -1,22 +1,20 @@
-import XCTest
+@testable import muterCore
+import SnapshotTesting
 import SwiftSyntax
 import TestingExtensions
+import XCTest
 
-@testable import muterCore
+final class HTMLReportTests: MuterTestCase {
+    private let dateStub = DateComponents(
+        calendar: .init(identifier: .gregorian),
+        year: 2021,
+        month: 1,
+        day: 20,
+        hour: 2,
+        minute: 42
+    ).date!
 
-final class HTMLReportTests: XCTestCase {
-    private let dateStub = {
-        DateComponents(
-            calendar: .init(identifier: .gregorian),
-            year: 2021,
-            month: 1,
-            day: 20,
-            hour: 2,
-            minute: 42
-        ).date!
-    }()
-
-    private let mutations: [MutationTestOutcome.Mutation] = (0...50).map {
+    private let mutations: [MutationTestOutcome.Mutation] = (0 ... 50).map {
         MutationTestOutcome.Mutation.make(
             testSuiteOutcome: nextMutationTestOutcome($0),
             point: .make(
@@ -37,9 +35,8 @@ final class HTMLReportTests: XCTestCase {
             coverage: .make(percent: 78)
         )
         let actual = sut.report(from: outcome)
-        let expected = loadReportOfProjectWithCoverage()
 
-        XCTAssertEqual(actual, expected)
+        AssertSnapshot(actual)
     }
 
     func test_reportWhenOutcomeDoesntHaveCoverage() {
@@ -48,26 +45,7 @@ final class HTMLReportTests: XCTestCase {
             coverage: .null
         )
         let actual = sut.report(from: outcome)
-        let expected = loadReportOfProjectWithoutCoverage()
 
-        XCTAssertEqual(actual, expected)
+        AssertSnapshot(actual)
     }
-}
-
-private func loadReportOfProjectWithoutCoverage() -> String {
-    guard let data = FileManager.default.contents(atPath: "\(HTMLReportTests().fixturesDirectory)/TestReporting/testReportOfProjectWithoutCoverage.html"),
-          let string = String(data: data, encoding: .utf8) else {
-        fatalError("Unable to load report for testing")
-    }
-
-    return string
-}
-
-private func loadReportOfProjectWithCoverage() -> String {
-    guard let data = FileManager.default.contents(atPath: "\(HTMLReportTests().fixturesDirectory)/TestReporting/testReportOfProjectWithCoverage.html"),
-          let string = String(data: data, encoding: .utf8) else {
-        fatalError("Unable to load report for testing")
-    }
-
-    return string
 }

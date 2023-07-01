@@ -9,4 +9,3 @@ arguments:
 executable: /usr/bin/xcodebuild
 exclude: []
 excludeCalls: []
-mutateInSiblingFolder: false

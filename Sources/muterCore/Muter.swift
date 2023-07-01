@@ -13,7 +13,7 @@ struct MuterCommand: ParsableCommand {
     )
 }
 
-public class Muter {
+public enum Muter {
     public static func start() {
         MuterCommand.main()
     }

@@ -7,8 +7,7 @@
             "mutationOperatorId" : "RemoveSideEffects",
             "position" : {
               "column" : 41,
-              "line" : 63,
-              "utf8Offset" : 1888
+              "line" : 63
             }
           },
           "testSuiteOutcome" : "passed"
@@ -18,8 +17,7 @@
             "mutationOperatorId" : "SwapTernaryOperator",
             "position" : {
               "column" : 123,
-              "line" : 75,
-              "utf8Offset" : 2289
+              "line" : 75
             }
           },
           "testSuiteOutcome" : "failed"
@@ -29,8 +27,7 @@
             "mutationOperatorId" : "SwapTernaryOperator",
             "position" : {
               "column" : 108,
-              "line" : 78,
-              "utf8Offset" : 2467
+              "line" : 78
             }
           },
           "testSuiteOutcome" : "passed"
@@ -40,8 +37,7 @@
             "mutationOperatorId" : "SwapTernaryOperator",
             "position" : {
               "column" : 138,
-              "line" : 81,
-              "utf8Offset" : 2695
+              "line" : 81
             }
           },
           "testSuiteOutcome" : "passed"
@@ -57,8 +53,7 @@
             "mutationOperatorId" : "RelationalOperatorReplacement",
             "position" : {
               "column" : 42,
-              "line" : 34,
-              "utf8Offset" : 1100
+              "line" : 34
             }
           },
           "testSuiteOutcome" : "failed"
@@ -68,8 +63,7 @@
             "mutationOperatorId" : "RelationalOperatorReplacement",
             "position" : {
               "column" : 37,
-              "line" : 40,
-              "utf8Offset" : 1273
+              "line" : 40
             }
           },
           "testSuiteOutcome" : "failed"
@@ -79,8 +73,7 @@
             "mutationOperatorId" : "RemoveSideEffects",
             "position" : {
               "column" : 53,
-              "line" : 47,
-              "utf8Offset" : 1576
+              "line" : 47
             }
           },
           "testSuiteOutcome" : "failed"
@@ -96,8 +89,7 @@
             "mutationOperatorId" : "ChangeLogicalConnector",
             "position" : {
               "column" : 60,
-              "line" : 72,
-              "utf8Offset" : 2925
+              "line" : 72
             }
           },
           "testSuiteOutcome" : "passed"
@@ -113,8 +105,7 @@
             "mutationOperatorId" : "RemoveSideEffects",
             "position" : {
               "column" : 41,
-              "line" : 204,
-              "utf8Offset" : 6468
+              "line" : 204
             }
           },
           "testSuiteOutcome" : "passed"
@@ -124,8 +115,7 @@
             "mutationOperatorId" : "SwapTernaryOperator",
             "position" : {
               "column" : 96,
-              "line" : 217,
-              "utf8Offset" : 6863
+              "line" : 217
             }
           },
           "testSuiteOutcome" : "passed"
@@ -135,8 +125,7 @@
             "mutationOperatorId" : "SwapTernaryOperator",
             "position" : {
               "column" : 96,
-              "line" : 220,
-              "utf8Offset" : 7005
+              "line" : 220
             }
           },
           "testSuiteOutcome" : "failed"
@@ -146,8 +135,7 @@
             "mutationOperatorId" : "SwapTernaryOperator",
             "position" : {
               "column" : 102,
-              "line" : 223,
-              "utf8Offset" : 7157
+              "line" : 223
             }
           },
           "testSuiteOutcome" : "passed"
@@ -157,8 +145,7 @@
             "mutationOperatorId" : "SwapTernaryOperator",
             "position" : {
               "column" : 99,
-              "line" : 226,
-              "utf8Offset" : 7304
+              "line" : 226
             }
           },
           "testSuiteOutcome" : "passed"
@@ -168,8 +155,7 @@
             "mutationOperatorId" : "SwapTernaryOperator",
             "position" : {
               "column" : 99,
-              "line" : 229,
-              "utf8Offset" : 7451
+              "line" : 229
             }
           },
           "testSuiteOutcome" : "failed"
@@ -179,8 +165,7 @@
             "mutationOperatorId" : "SwapTernaryOperator",
             "position" : {
               "column" : 96,
-              "line" : 232,
-              "utf8Offset" : 7593
+              "line" : 232
             }
           },
           "testSuiteOutcome" : "failed"
@@ -190,8 +175,7 @@
             "mutationOperatorId" : "SwapTernaryOperator",
             "position" : {
               "column" : 102,
-              "line" : 235,
-              "utf8Offset" : 7745
+              "line" : 235
             }
           },
           "testSuiteOutcome" : "passed"
@@ -201,8 +185,7 @@
             "mutationOperatorId" : "SwapTernaryOperator",
             "position" : {
               "column" : 102,
-              "line" : 238,
-              "utf8Offset" : 7897
+              "line" : 238
             }
           },
           "testSuiteOutcome" : "passed"
@@ -212,8 +195,7 @@
             "mutationOperatorId" : "SwapTernaryOperator",
             "position" : {
               "column" : 99,
-              "line" : 241,
-              "utf8Offset" : 8044
+              "line" : 241
             }
           },
           "testSuiteOutcome" : "passed"
@@ -223,8 +205,7 @@
             "mutationOperatorId" : "SwapTernaryOperator",
             "position" : {
               "column" : 96,
-              "line" : 244,
-              "utf8Offset" : 8186
+              "line" : 244
             }
           },
           "testSuiteOutcome" : "passed"
@@ -234,8 +215,7 @@
             "mutationOperatorId" : "SwapTernaryOperator",
             "position" : {
               "column" : 105,
-              "line" : 247,
-              "utf8Offset" : 8343
+              "line" : 247
             }
           },
           "testSuiteOutcome" : "passed"
@@ -245,8 +225,7 @@
             "mutationOperatorId" : "SwapTernaryOperator",
             "position" : {
               "column" : 105,
-              "line" : 250,
-              "utf8Offset" : 8500
+              "line" : 250
             }
           },
           "testSuiteOutcome" : "passed"
@@ -256,8 +235,7 @@
             "mutationOperatorId" : "SwapTernaryOperator",
             "position" : {
               "column" : 111,
-              "line" : 253,
-              "utf8Offset" : 8667
+              "line" : 253
             }
           },
           "testSuiteOutcome" : "passed"
@@ -267,8 +245,7 @@
             "mutationOperatorId" : "SwapTernaryOperator",
             "position" : {
               "column" : 111,
-              "line" : 256,
-              "utf8Offset" : 8834
+              "line" : 256
             }
           },
           "testSuiteOutcome" : "passed"
@@ -278,8 +255,7 @@
             "mutationOperatorId" : "SwapTernaryOperator",
             "position" : {
               "column" : 108,
-              "line" : 259,
-              "utf8Offset" : 8996
+              "line" : 259
             }
           },
           "testSuiteOutcome" : "passed"
@@ -289,8 +265,7 @@
             "mutationOperatorId" : "SwapTernaryOperator",
             "position" : {
               "column" : 108,
-              "line" : 262,
-              "utf8Offset" : 9158
+              "line" : 262
             }
           },
           "testSuiteOutcome" : "passed"
@@ -300,8 +275,7 @@
             "mutationOperatorId" : "SwapTernaryOperator",
             "position" : {
               "column" : 114,
-              "line" : 265,
-              "utf8Offset" : 9330
+              "line" : 265
             }
           },
           "testSuiteOutcome" : "passed"
@@ -311,8 +285,7 @@
             "mutationOperatorId" : "SwapTernaryOperator",
             "position" : {
               "column" : 111,
-              "line" : 268,
-              "utf8Offset" : 9497
+              "line" : 268
             }
           },
           "testSuiteOutcome" : "passed"
@@ -322,8 +295,7 @@
             "mutationOperatorId" : "SwapTernaryOperator",
             "position" : {
               "column" : 111,
-              "line" : 271,
-              "utf8Offset" : 9664
+              "line" : 271
             }
           },
           "testSuiteOutcome" : "passed"
@@ -333,8 +305,7 @@
             "mutationOperatorId" : "SwapTernaryOperator",
             "position" : {
               "column" : 105,
-              "line" : 274,
-              "utf8Offset" : 9821
+              "line" : 274
             }
           },
           "testSuiteOutcome" : "passed"
@@ -350,8 +321,7 @@
             "mutationOperatorId" : "RelationalOperatorReplacement",
             "position" : {
               "column" : 21,
-              "line" : 23,
-              "utf8Offset" : 546
+              "line" : 23
             }
           },
           "testSuiteOutcome" : "passed"
@@ -367,8 +337,7 @@
             "mutationOperatorId" : "RelationalOperatorReplacement",
             "position" : {
               "column" : 38,
-              "line" : 84,
-              "utf8Offset" : 3368
+              "line" : 84
             }
           },
           "testSuiteOutcome" : "passed"
@@ -378,8 +347,7 @@
             "mutationOperatorId" : "RemoveSideEffects",
             "position" : {
               "column" : 26,
-              "line" : 94,
-              "utf8Offset" : 3947
+              "line" : 94
             }
           },
           "testSuiteOutcome" : "passed"
@@ -395,19 +363,7 @@
             "mutationOperatorId" : "RelationalOperatorReplacement",
             "position" : {
               "column" : 30,
-              "line" : 131,
-              "utf8Offset" : 5260
-            }
-          },
-          "testSuiteOutcome" : "passed"
-        },
-        {
-          "mutationPoint" : {
-            "mutationOperatorId" : "RelationalOperatorReplacement",
-            "position" : {
-              "column" : 30,
-              "line" : 133,
-              "utf8Offset" : 5393
+              "line" : 131
             }
           },
           "testSuiteOutcome" : "passed"
@@ -417,8 +373,17 @@
             "mutationOperatorId" : "SwapTernaryOperator",
             "position" : {
               "column" : 90,
-              "line" : 131,
-              "utf8Offset" : 5320
+              "line" : 131
+            }
+          },
+          "testSuiteOutcome" : "passed"
+        },
+        {
+          "mutationPoint" : {
+            "mutationOperatorId" : "RelationalOperatorReplacement",
+            "position" : {
+              "column" : 30,
+              "line" : 133
             }
           },
           "testSuiteOutcome" : "passed"
@@ -428,8 +393,7 @@
             "mutationOperatorId" : "SwapTernaryOperator",
             "position" : {
               "column" : 88,
-              "line" : 133,
-              "utf8Offset" : 5451
+              "line" : 133
             }
           },
           "testSuiteOutcome" : "passed"
@@ -445,8 +409,7 @@
             "mutationOperatorId" : "RelationalOperatorReplacement",
             "position" : {
               "column" : 76,
-              "line" : 50,
-              "utf8Offset" : 2068
+              "line" : 50
             }
           },
           "testSuiteOutcome" : "passed"
@@ -462,8 +425,7 @@
             "mutationOperatorId" : "RemoveSideEffects",
             "position" : {
               "column" : 33,
-              "line" : 39,
-              "utf8Offset" : 1625
+              "line" : 39
             }
           },
           "testSuiteOutcome" : "passed"
@@ -473,8 +435,7 @@
             "mutationOperatorId" : "RemoveSideEffects",
             "position" : {
               "column" : 10,
-              "line" : 54,
-              "utf8Offset" : 2659
+              "line" : 54
             }
           },
           "testSuiteOutcome" : "passed"
@@ -484,8 +445,7 @@
             "mutationOperatorId" : "RemoveSideEffects",
             "position" : {
               "column" : 31,
-              "line" : 55,
-              "utf8Offset" : 2690
+              "line" : 55
             }
           },
           "testSuiteOutcome" : "passed"
@@ -498,22 +458,20 @@
       "appliedOperators" : [
         {
           "mutationPoint" : {
-            "mutationOperatorId" : "RelationalOperatorReplacement",
+            "mutationOperatorId" : "RemoveSideEffects",
             "position" : {
-              "column" : 38,
-              "line" : 81,
-              "utf8Offset" : 3204
+              "column" : 10,
+              "line" : 200
             }
           },
           "testSuiteOutcome" : "passed"
         },
         {
           "mutationPoint" : {
-            "mutationOperatorId" : "RemoveSideEffects",
+            "mutationOperatorId" : "RelationalOperatorReplacement",
             "position" : {
-              "column" : 10,
-              "line" : 200,
-              "utf8Offset" : 7783
+              "column" : 38,
+              "line" : 81
             }
           },
           "testSuiteOutcome" : "passed"
@@ -526,22 +484,10 @@
       "appliedOperators" : [
         {
           "mutationPoint" : {
-            "mutationOperatorId" : "RelationalOperatorReplacement",
-            "position" : {
-              "column" : 23,
-              "line" : 178,
-              "utf8Offset" : 6205
-            }
-          },
-          "testSuiteOutcome" : "passed"
-        },
-        {
-          "mutationPoint" : {
             "mutationOperatorId" : "RemoveSideEffects",
             "position" : {
               "column" : 36,
-              "line" : 135,
-              "utf8Offset" : 4695
+              "line" : 135
             }
           },
           "testSuiteOutcome" : "failed"
@@ -551,8 +497,7 @@
             "mutationOperatorId" : "RemoveSideEffects",
             "position" : {
               "column" : 36,
-              "line" : 136,
-              "utf8Offset" : 4731
+              "line" : 136
             }
           },
           "testSuiteOutcome" : "failed"
@@ -562,8 +507,7 @@
             "mutationOperatorId" : "RemoveSideEffects",
             "position" : {
               "column" : 29,
-              "line" : 146,
-              "utf8Offset" : 4884
+              "line" : 146
             }
           },
           "testSuiteOutcome" : "passed"
@@ -573,8 +517,7 @@
             "mutationOperatorId" : "RemoveSideEffects",
             "position" : {
               "column" : 25,
-              "line" : 147,
-              "utf8Offset" : 4909
+              "line" : 147
             }
           },
           "testSuiteOutcome" : "passed"
@@ -584,8 +527,17 @@
             "mutationOperatorId" : "RemoveSideEffects",
             "position" : {
               "column" : 25,
-              "line" : 148,
-              "utf8Offset" : 4934
+              "line" : 148
+            }
+          },
+          "testSuiteOutcome" : "passed"
+        },
+        {
+          "mutationPoint" : {
+            "mutationOperatorId" : "RelationalOperatorReplacement",
+            "position" : {
+              "column" : 23,
+              "line" : 178
             }
           },
           "testSuiteOutcome" : "passed"
@@ -595,8 +547,7 @@
             "mutationOperatorId" : "RemoveSideEffects",
             "position" : {
               "column" : 25,
-              "line" : 183,
-              "utf8Offset" : 6402
+              "line" : 183
             }
           },
           "testSuiteOutcome" : "passed"
@@ -612,8 +563,7 @@
             "mutationOperatorId" : "RemoveSideEffects",
             "position" : {
               "column" : 25,
-              "line" : 29,
-              "utf8Offset" : 1256
+              "line" : 29
             }
           },
           "testSuiteOutcome" : "passed"
@@ -623,8 +573,7 @@
             "mutationOperatorId" : "RelationalOperatorReplacement",
             "position" : {
               "column" : 28,
-              "line" : 59,
-              "utf8Offset" : 2654
+              "line" : 59
             }
           },
           "testSuiteOutcome" : "passed"
@@ -634,8 +583,7 @@
             "mutationOperatorId" : "RemoveSideEffects",
             "position" : {
               "column" : 80,
-              "line" : 66,
-              "utf8Offset" : 2980
+              "line" : 66
             }
           },
           "testSuiteOutcome" : "passed"
@@ -645,8 +593,7 @@
             "mutationOperatorId" : "RemoveSideEffects",
             "position" : {
               "column" : 55,
-              "line" : 67,
-              "utf8Offset" : 3035
+              "line" : 67
             }
           },
           "testSuiteOutcome" : "passed"
@@ -662,8 +609,7 @@
             "mutationOperatorId" : "RelationalOperatorReplacement",
             "position" : {
               "column" : 41,
-              "line" : 43,
-              "utf8Offset" : 1390
+              "line" : 43
             }
           },
           "testSuiteOutcome" : "passed"
@@ -679,8 +625,7 @@
             "mutationOperatorId" : "RemoveSideEffects",
             "position" : {
               "column" : 0,
-              "line" : 0,
-              "utf8Offset" : -999
+              "line" : 0
             }
           },
           "testSuiteOutcome" : "noCoverage"
@@ -692,6 +637,6 @@
   ],
   "globalMutationScore" : 16,
   "numberOfKilledMutants" : 9,
-  "projectCodeCoverage" : 80,
+  "projectCodeCoverage" : 81,
   "totalAppliedMutationOperators" : 54
 }

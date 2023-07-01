@@ -1,5 +1,7 @@
 arguments:
 - test
+- --filter
+- muterTests
 executable: /usr/bin/swift
 exclude:
 - AcceptanceTests
@@ -7,6 +9,7 @@ exclude:
 - main.swift
 - Package.swift
 - Repositories
+- Scripts
 - RunCommandObserver.swift
 - ProgressExtensions.swift
 - BundleResource.swift

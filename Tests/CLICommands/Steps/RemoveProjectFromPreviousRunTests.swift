@@ -1,15 +1,13 @@
-import XCTest
-
 @testable import muterCore
+import XCTest
 
 enum RemoveTempDirectorySpecError: String, Error {
     case stub
 }
 
-final class RemoveProjectFromPreviousRunTests: XCTestCase {
-    private var fileManager = FileManagerSpy()
+final class RemoveProjectFromPreviousRunTests: MuterTestCase {
     private var state = RunCommandState()
-    private lazy var sut = RemoveProjectFromPreviousRun(fileManager: fileManager)
+    private lazy var sut = RemoveProjectFromPreviousRun()
 
     func test_removeTempDirectorySucceeds() throws {
         fileManager.fileExistsToReturn = [true]
@@ -17,7 +15,7 @@ final class RemoveProjectFromPreviousRunTests: XCTestCase {
 
         let result = try XCTUnwrap(sut.run(with: state).get())
 
-        XCTAssertEqual(result, [.removeProjectFromPreviousRunCompleted])
+        XCTAssertEqual(result, [])
         XCTAssertEqual(fileManager.paths, ["/some/projectName_mutated"])
         XCTAssertEqual(fileManager.methodCalls, ["fileExists(atPath:)", "removeItem(atPath:)"])
     }
@@ -45,6 +43,6 @@ final class RemoveProjectFromPreviousRunTests: XCTestCase {
 
         let result = try XCTUnwrap(sut.run(with: state).get())
 
-        XCTAssertEqual(result, [.removeProjectFromPreviousRunSkipped])
+        XCTAssertEqual(result, [])
     }
 }

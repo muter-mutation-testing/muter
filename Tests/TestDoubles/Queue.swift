@@ -20,8 +20,7 @@ public class Queue<A> {
         count += 1
     }
 
-    @discardableResult
-    public func dequeue() -> A? {
+    @discardableResult public func dequeue() -> A? {
         guard !isEmpty else {
             return nil
         }

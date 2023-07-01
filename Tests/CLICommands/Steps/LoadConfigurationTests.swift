@@ -1,14 +1,15 @@
+@testable import muterCore
 import XCTest
 
-@testable import muterCore
-
-final class LoadConfigurationTests: XCTestCase {
-    private let fileManager = FileManagerSpy()
+final class LoadConfigurationTests: MuterTestCase {
     private lazy var currentDirectory = fixturesDirectory
-    private lazy var sut = LoadConfiguration(
-        fileManager: fileManager,
-        currentDirectory: currentDirectory
-    )
+    private lazy var sut = LoadConfiguration()
+
+    override func setUp() {
+        super.setUp()
+
+        fileManager.currentDirectoryPathToReturn = fixturesDirectory
+    }
 
     func test_loadLJSONConfigurationFromDisk() throws {
         fileManager.fileExistsToReturn = [false, true]
@@ -18,7 +19,7 @@ final class LoadConfigurationTests: XCTestCase {
 
         let expectedUrl = URL(fileURLWithPath: fixturesDirectory)
         let expectedConfiguration = try XCTUnwrap(MuterConfiguration.fromFixture(
-            at: "\(self.fixturesDirectory)/\(MuterConfiguration.legacyFileNameWithExtension)"
+            at: "\(fixturesDirectory)/\(MuterConfiguration.legacyFileNameWithExtension)"
         ))
 
         XCTAssertEqual(result, [
@@ -66,19 +67,19 @@ final class LoadConfigurationTests: XCTestCase {
 
     private func loadJSONConfiguration() -> Data? {
         FileManager.default.contents(
-            atPath: "\(self.fixturesDirectory)/\(MuterConfiguration.legacyFileNameWithExtension)"
+            atPath: "\(fixturesDirectory)/\(MuterConfiguration.legacyFileNameWithExtension)"
         )
     }
 
     private func loadYAMLConfiguration() -> Data? {
         FileManager.default.contents(
-            atPath: "\(self.fixturesDirectory)/\(MuterConfiguration.fileNameWithExtension)"
+            atPath: "\(fixturesDirectory)/\(MuterConfiguration.fileNameWithExtension)"
         )
     }
 
     private func loadYAMLConfigurationWithoutDestination() -> Data? {
         FileManager.default.contents(
-            atPath: "\(self.fixturesDirectory)/muter.conf.withoutDestination.yml"
+            atPath: "\(fixturesDirectory)/muter.conf.withoutDestination.yml"
         )
     }
 }

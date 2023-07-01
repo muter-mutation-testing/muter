@@ -38,7 +38,7 @@ extension TestSuiteOutcome {
         return .passed
     }
 
-    static private func logContainsTestFailure(_ testLog: String) -> Bool {
+    private static func logContainsTestFailure(_ testLog: String) -> Bool {
         let entireTestLog = NSRange(testLog.startIndex..., in: testLog)
         let numberOfFailureMessages = testFailureRegEx.numberOfMatches(in: testLog, options: [], range: entireTestLog)
         return numberOfFailureMessages > 0 ||
@@ -46,23 +46,24 @@ extension TestSuiteOutcome {
             testLog.contains(testFailedMessage(from: .buck))
     }
 
-    static private func testFailedMessage(from binaryType: BinaryType) -> String {
+    private static func testFailedMessage(from binaryType: BinaryType) -> String {
         switch binaryType {
         case .xcodebuild: return "** TEST FAILED **"
         case .buck: return "TESTS FAILED: "
+        case .swift: return " failures "
         }
     }
 
-    static private var testFailureRegEx: NSRegularExpression {
-        return try! NSRegularExpression(pattern: "with ([1-9]{1}[0-9]{0,}) failure", options: [])
+    private static var testFailureRegEx: NSRegularExpression {
+        try! NSRegularExpression(pattern: "with ([1-9]{1}[0-9]{0,}) failure", options: [])
     }
 
-    static private func terminationStatusIsSuccess(_ terminationStatus: Int32) -> Bool {
-        return terminationStatus == 0
+    private static func terminationStatusIsSuccess(_ terminationStatus: Int32) -> Bool {
+        terminationStatus == 0
     }
 
-    static private func logContainsBuildError(_ testLog: String) -> Bool {
-        return testLog.contains("xcodebuild: error:") ||
+    private static func logContainsBuildError(_ testLog: String) -> Bool {
+        testLog.contains("xcodebuild: error:") ||
             testLog.contains("error: terminated") ||
             testLog.contains("failed with a nonzero exit code") ||
             testLog.contains("Testing cancelled because the build failed") ||
@@ -73,4 +74,5 @@ extension TestSuiteOutcome {
 private enum BinaryType {
     case xcodebuild
     case buck
+    case swift
 }

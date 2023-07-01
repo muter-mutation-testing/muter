@@ -1,9 +1,26 @@
 import SwiftSyntax
 
-extension ROROperator {
-    class Rewriter: OperatorAwareRewriter {
-        required init(positionToMutate: MutationPosition) {
-            super.init(positionToMutate: positionToMutate)
+enum ROROperator {
+    class Visitor: TokenAwareVisitor {
+        convenience init(
+            configuration: MuterConfiguration? = nil,
+            sourceFileInfo: SourceFileInfo
+        ) {
+            self.init(
+                configuration: configuration,
+                sourceFileInfo: sourceFileInfo,
+                mutationOperatorId: .ror
+            )
+
+            tokensToDiscover = [
+                .spacedBinaryOperator("=="),
+                .spacedBinaryOperator("!="),
+                .spacedBinaryOperator(">="),
+                .spacedBinaryOperator("<="),
+                .spacedBinaryOperator("<"),
+                .spacedBinaryOperator(">"),
+            ]
+
             oppositeOperatorMapping = [
                 "==": "!=",
                 "!=": "==",

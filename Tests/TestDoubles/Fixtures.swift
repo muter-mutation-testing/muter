@@ -1,8 +1,8 @@
-@testable import muterCore
-
-import TestingExtensions
 import Foundation
+@testable import muterCore
 import SwiftSyntax
+import SwiftSyntaxParser
+import TestingExtensions
 
 extension MuterTestReport {
     static func make(
@@ -15,7 +15,7 @@ extension MuterTestReport {
 extension MuterTestReport.AppliedMutationOperator {
     static func make(
         mutationPoint: MutationPoint = .make(),
-        mutationSnapshot: MutationOperatorSnapshot = .make(),
+        mutationSnapshot: MutationOperator.Snapshot = .make(),
         testSuiteOutcome: TestSuiteOutcome = .passed
     ) -> Self {
         Self(
@@ -26,7 +26,7 @@ extension MuterTestReport.AppliedMutationOperator {
     }
 }
 
-extension MutationOperatorSnapshot {
+extension MutationOperator.Snapshot {
     static func make(
         before: String = "",
         after: String = "",
@@ -56,7 +56,7 @@ extension MutationTestOutcome.Mutation {
     static func make(
         testSuiteOutcome: TestSuiteOutcome = .passed,
         point: MutationPoint = .make(),
-        snapshot: MutationOperatorSnapshot = .null,
+        snapshot: MutationOperator.Snapshot = .null,
         originalProjectDirectoryUrl: URL = URL(fileURLWithPath: ""),
         tempDirectoryURL: URL = URL(fileURLWithPath: "")
     ) -> Self {
@@ -90,7 +90,7 @@ extension MuterTestReport.AppliedMutationOperator {
     static func make(
         mutationOperator: MutationOperator.Id = .logicalOperator,
         position: SwiftSyntax.SourceLocation = .init(integerLiteral: 0),
-        mutationSnapshot: MutationOperatorSnapshot = .null,
+        mutationSnapshot: MutationOperator.Snapshot = .null,
         testOutcome: TestSuiteOutcome = .passed
     ) -> Self {
         Self(
@@ -167,15 +167,76 @@ extension RunOptions {
         filesToMutate: [String] = [],
         reportFormat: ReportFormat = .plain,
         reportURL: URL? = nil,
-        skipCoverage: Bool = false,
-        logger: Logger = .init()
+        skipCoverage: Bool = false
     ) -> Self {
         .init(
             filesToMutate: filesToMutate,
             reportFormat: reportFormat,
             reportURL: reportURL,
-            skipCoverage: skipCoverage,
-            logger: logger
+            skipCoverage: skipCoverage
         )
+    }
+}
+
+typealias SchemataMutationMappings = (source: String, schemata: MutationSchemata)
+
+extension SchemataMutationMapping {
+    static func make(
+        filePath: String = "",
+        _ mappings: SchemataMutationMappings...
+    ) throws -> SchemataMutationMapping {
+        let schemataMutationMapping = SchemataMutationMapping(filePath: filePath)
+
+        for (source, schemata) in mappings {
+            let codeBlockSyntax = try sourceCode(source).statements
+
+            schemata.forEach { schema in
+                schemataMutationMapping.add(codeBlockSyntax, schema)
+            }
+        }
+
+        return schemataMutationMapping
+    }
+}
+
+extension MutationSchema {
+    static func make(
+        filePath: String = "",
+        mutationOperatorId: MutationOperator.Id = .ror,
+        syntaxMutation: String = "",
+        position: MutationPosition = .null,
+        snapshot: MutationOperator.Snapshot = .null
+    ) throws -> MutationSchema {
+        try MutationSchema(
+            filePath: filePath,
+            mutationOperatorId: mutationOperatorId,
+            syntaxMutation: sourceCode(syntaxMutation).statements,
+            position: position,
+            snapshot: snapshot
+        )
+    }
+}
+
+func sourceCode(
+    _ source: String
+) throws -> SourceFileSyntax {
+    try SyntaxParser.parse(source: source)
+}
+
+extension MuterConfiguration {
+    static func fromFixture(at path: String) -> MuterConfiguration? {
+
+        guard let data = FileManager.default.contents(atPath: path),
+              let configuration = try? MuterConfiguration(from: data)
+        else {
+            fatalError("Unable to load a valid Muter configuration file from \(path)")
+        }
+        return configuration
+    }
+}
+
+extension MutationPosition {
+    static var firstPosition: MutationPosition {
+        MutationPosition(utf8Offset: 0, line: 0, column: 0)
     }
 }

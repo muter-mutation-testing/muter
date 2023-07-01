@@ -1,23 +1,15 @@
-import XCTest
-import TestingExtensions
-
 @testable import muterCore
+import TestingExtensions
+import XCTest
 
-final class BuildForTestingTests: XCTestCase {
+final class BuildForTestingTests: MuterTestCase {
     private let state = RunCommandState()
-    private let fileManager = FileManagerSpy()
-    private let notificationCenter = NotificationCenter()
-    private let process = LaunchableSpy()
 
     var buildDescriptionPath: String {
         fixturesDirectory + "/BuildForTesting"
     }
 
-    private lazy var sut = BuildForTesting(
-        process: self.process,
-        fileManager: fileManager,
-        notificationCenter: notificationCenter
-    )
+    private lazy var sut = BuildForTesting()
 
     func test_whenBuildSystemIsSwift_thenIgnoreStep() throws {
         state.muterConfiguration = MuterConfiguration(
@@ -31,16 +23,52 @@ final class BuildForTestingTests: XCTestCase {
 
     // MARK: xcodebuild
 
+    func test_changeCurrentPathToTempDirectory() throws {
+        fileManager.currentDirectoryPathToReturn = "/path/to/project"
+
+        state.muterConfiguration = MuterConfiguration(
+            executable: "/path/to/xcodebuild"
+        )
+
+        state.tempDirectoryURL = URL(fileURLWithPath: "/path/to/temp")
+
+        _ = sut.run(with: state)
+
+        XCTAssertTrue(fileManager.methodCalls.contains("changeCurrentDirectoryPath(_:)"))
+        XCTAssertEqual(
+            fileManager.changeCurrentDirectoryPath.first,
+            state.tempDirectoryURL.path
+        )
+    }
+
+    func test_resetCurrentPath() {
+        fileManager.currentDirectoryPathToReturn = "/path/to/project"
+
+        state.muterConfiguration = MuterConfiguration(
+            executable: "/path/to/xcodebuild"
+        )
+
+        state.tempDirectoryURL = URL(fileURLWithPath: "/path/to/temp")
+
+        XCTAssertEqual(fileManager.methodCalls, [])
+        XCTAssertEqual(
+            fileManager.currentDirectoryPath,
+            "/path/to/project"
+        )
+    }
+
     func test_runBuildWithoutTestCommand() {
         state.muterConfiguration = MuterConfiguration(
             executable: "/path/to/xcodebuild",
             arguments: ["some", "commands", "test"]
         )
 
+        process.stdoutToBeReturned = " "
+
         _ = sut.run(with: state)
 
         XCTAssertEqual(process.executableURL?.absoluteString, "file:///path/to/xcodebuild")
-        XCTAssertEqual(process.arguments, ["some", "commands", "build-for-testing"])
+        XCTAssertEqual(process.arguments, ["some", "commands", "clean", "build-for-testing"])
         XCTAssertTrue(process.runCalled)
         XCTAssertTrue(process.waitUntilExitCalled)
     }
@@ -56,11 +84,11 @@ final class BuildForTestingTests: XCTestCase {
         _ = sut.run(with: state)
 
         XCTAssertEqual(process.executableURL?.absoluteString, "file:///path/to/xcodebuild")
-        XCTAssertEqual(process.arguments, ["some", "commands", "build-for-testing"])
+        XCTAssertEqual(process.arguments, ["some", "commands", "clean", "build-for-testing"])
         XCTAssertTrue(process.runCalled)
         XCTAssertTrue(process.waitUntilExitCalled)
 
-        XCTAssertEqual(fileManager.methodCalls.first, "contents(atPath:)")
+        XCTAssertTrue(fileManager.methodCalls.contains("contents(atPath:)"))
     }
 
     func test_copyBuildProductsPathContents() {
@@ -78,7 +106,7 @@ final class BuildForTestingTests: XCTestCase {
         _ = sut.run(with: state)
 
         XCTAssertEqual(process.executableURL?.absoluteString, "file:///path/to/xcodebuild")
-        XCTAssertEqual(process.arguments, ["some", "commands", "build-for-testing"])
+        XCTAssertEqual(process.arguments, ["some", "commands", "clean", "build-for-testing"])
         XCTAssertTrue(process.runCalled)
         XCTAssertTrue(process.waitUntilExitCalled)
 
@@ -109,7 +137,7 @@ final class BuildForTestingTests: XCTestCase {
         XCTAssertEqual(fileManager.contentsAtPathSorted, ["/path/to/temp/Debug"])
         XCTAssertEqual(fileManager.contentsAtPathSortedOrder, [.orderedDescending])
         XCTAssertEqual(result, [
-            .projectXCTestRun(.from(loadXCTestRun()))
+            .projectXCTestRun(.from(loadXCTestRunWithDebugFolder()))
         ])
     }
 
@@ -317,6 +345,10 @@ final class BuildForTestingTests: XCTestCase {
 
     private func loadXCTestRun() -> Data {
         FileManager.default.contents(atPath: buildDescriptionPath + "/project.xctestrun") ?? .init()
+    }
+
+    private func loadXCTestRunWithDebugFolder() -> Data {
+        FileManager.default.contents(atPath: buildDescriptionPath + "/projectWithDebugPath.xctestrun") ?? .init()
     }
 }
 

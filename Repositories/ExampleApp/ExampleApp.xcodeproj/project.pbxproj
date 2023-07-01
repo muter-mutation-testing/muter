@@ -120,6 +120,7 @@
 				9D13CAC0218FC9F800DB1FDA /* Sources */,
 				9D13CAC1218FC9F800DB1FDA /* Frameworks */,
 				9D13CAC2218FC9F800DB1FDA /* Resources */,
+				D3C621AC29A146BD000ABFC6 /* ShellScript */,
 			);
 			buildRules = (
 			);
@@ -227,6 +228,23 @@
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
 			shellScript = "# Type a script or drag a script file from your workspace to insert its path.\nmuter --output-xcode\n";
+		};
+		D3C621AC29A146BD000ABFC6 /* ShellScript */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+			);
+			outputFileListPaths = (
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "echo \"/Users/rafaelmachado/Developer/muter/Repositories/ExampleApp/ExampleApp/Module2.swift:7:17: warning: Your test suite did not kill this mutant: changed && to ||\";\n";
 		};
 /* End PBXShellScriptBuildPhase section */
 

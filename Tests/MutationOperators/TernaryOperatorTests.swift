@@ -1,78 +1,146 @@
-import XCTest
-import SwiftSyntax
-
 @testable import muterCore
+import XCTest
 
-final class TernaryOperatorTests: XCTestCase {
+final class TernaryOperatorTests: MuterTestCase {
     private lazy var sampleCode = sourceCode(
         fromFileAt: "\(mutationExamplesDirectory)/TernaryOperator/sampleWithTernaryOperator.swift"
     )!
-    private lazy var changedCode = sourceCode(
-        fromFileAt: "\(mutationExamplesDirectory)/TernaryOperator/changedTernaryOperator.swift"
-    )!
+
     private lazy var sampleNestedCode = sourceCode(
         fromFileAt: "\(mutationExamplesDirectory)/TernaryOperator/sampleWithNestedTernaryOperator.swift"
     )!
-    private lazy var changedNestedCode = sourceCode(
-        fromFileAt: "\(mutationExamplesDirectory)/TernaryOperator/changedNestedTernaryOperator.swift"
-    )!
-    
-    func test_visitor() {
-        let visitor = TernaryOperator.Visitor(sourceFileInfo: sampleCode.asSourceFileInfo)
+
+    func test_visitor() throws {
+        let visitor = TernaryOperator.Visitor(
+            sourceFileInfo: sampleCode.asSourceFileInfo
+        )
 
         visitor.walk(sampleCode.code)
 
-        XCTAssertEqual(visitor.positionsOfToken.count, 2)
+        let actualMappings = visitor.schemataMappings
+        let expectedMappings = try SchemataMutationMapping.make(
+            filePath: sampleCode.path,
+            (
+                source: "\n    return a ? \"true\" : \"false\"",
+                schemata: [
+                    .make(
+                        filePath: sampleCode.path,
+                        mutationOperatorId: .ternaryOperator,
+                        syntaxMutation: "\n    return a ? \"false\" : \"true\" ",
+                        position: MutationPosition(
+                            utf8Offset: 199,
+                            line: 10,
+                            column: 32
+                        ),
+                        snapshot: MutationOperator.Snapshot(
+                            before: "a ? \"true\" : \"false\"",
+                            after: "a ? \"false\" : \"true\"",
+                            description: "swapped ternary operator"
+                        )
+                    )
+                ]
+            ),
+            (
+                source: "\n    return a ? true : false",
+                schemata: [
+                    .make(
+                        filePath: sampleCode.path,
+                        mutationOperatorId: .ternaryOperator,
+                        syntaxMutation: "\n    return a ? false : true ",
+                        position: MutationPosition(
+                            utf8Offset: 120,
+                            line: 6,
+                            column: 28
+                        ),
+                        snapshot: MutationOperator.Snapshot(
+                            before: "a ? true : false",
+                            after: "a ? false : true",
+                            description: "swapped ternary operator"
+                        )
+                    )
+                ]
+            )
+        )
 
-        XCTAssertEqual(visitor.positionsOfToken[safe: 0]?.utf8Offset, 120)
-        XCTAssertEqual(visitor.positionsOfToken[safe: 0]?.line, 6)
-        XCTAssertEqual(visitor.positionsOfToken[safe: 0]?.column, 28)
-
-        XCTAssertEqual(visitor.positionsOfToken[safe: 1]?.utf8Offset, 199)
-        XCTAssertEqual(visitor.positionsOfToken[safe: 1]?.line, 10)
-        XCTAssertEqual(visitor.positionsOfToken[safe: 1]?.column, 32)
+        XCTAssertEqual(actualMappings, expectedMappings)
     }
-    
-    func test_visitor_nestedTernaryOperator() {
-        let visitor = TernaryOperator.Visitor(sourceFileInfo: sampleNestedCode.asSourceFileInfo)
+
+    func test_visitor_nestedTernaryOperator() throws {
+        let visitor = TernaryOperator.Visitor(
+            sourceFileInfo: sampleNestedCode.asSourceFileInfo
+        )
 
         visitor.walk(sampleNestedCode.code)
 
-        XCTAssertEqual(visitor.positionsOfToken.count, 2)
+        let actualMappings = visitor.schemataMappings
+        let expectedMappings = try SchemataMutationMapping.make(
+            (
+                source: "\n    return a ? b ? true : false : false",
+                schemata: [
+                    .make(
+                        filePath: sampleNestedCode.path,
+                        mutationOperatorId: .ternaryOperator,
+                        syntaxMutation: "\n    return a ? false : b ? true : false ",
+                        position: MutationPosition(
+                            utf8Offset: 143,
+                            line: 6,
+                            column: 40
+                        ),
+                        snapshot: MutationOperator.Snapshot(
+                            before: "a ? b ? true : false : false",
+                            after: "a ? false : b ? true : false",
+                            description: "swapped ternary operator"
+                        )
+                    ),
+                    .make(
+                        filePath: sampleNestedCode.path,
+                        mutationOperatorId: .ternaryOperator,
+                        syntaxMutation: "\n    return a ? b ? false : true : false",
+                        position: MutationPosition(
+                            utf8Offset: 136,
+                            line: 6,
+                            column: 33
+                        ),
+                        snapshot: MutationOperator.Snapshot(
+                            before: "b ? true : false",
+                            after: "b ? false : true",
+                            description: "swapped ternary operator"
+                        )
+                    )
+                ]
+            )
+        )
 
-        XCTAssertEqual(visitor.positionsOfToken[safe: 0]?.utf8Offset, 143)
-        XCTAssertEqual(visitor.positionsOfToken[safe: 0]?.line, 6)
-        XCTAssertEqual(visitor.positionsOfToken[safe: 0]?.column, 40)
-
-        XCTAssertEqual(visitor.positionsOfToken[safe: 1]?.utf8Offset, 136)
-        XCTAssertEqual(visitor.positionsOfToken[safe: 1]?.line, 6)
-        XCTAssertEqual(visitor.positionsOfToken[safe: 1]?.column, 33)
+        XCTAssertEqual(actualMappings, expectedMappings)
     }
-    
-    func test_rewriter_swapCorrectPositions() {
-        let mutationPos = MutationPosition(utf8Offset: 120, line: 6, column: 28)
-        let rewriter = TernaryOperator.Rewriter(positionToMutate: mutationPos)
 
-        let mutatedSource = rewriter.visit(sampleCode.code)
+    func test_rewriter() {
+        let visitor = TernaryOperator.Visitor(
+            sourceFileInfo: sampleNestedCode.asSourceFileInfo
+        )
 
-        XCTAssertEqual(mutatedSource.description, changedCode.code.description)
-    }
-    
-    func test_rewriter_swapWrongPositions() {
-        let mutationPos = MutationPosition(utf8Offset: 0, line: 0, column: 0)
-        let rewriter = TernaryOperator.Rewriter(positionToMutate: mutationPos)
+        visitor.walk(sampleNestedCode.code)
 
-        let mutatedSource = rewriter.visit(sampleCode.code)
+        let rewriter = MuterRewriter(visitor.schemataMappings)
+            .visit(sampleNestedCode.code)
 
-        XCTAssertEqual(mutatedSource.description, sampleCode.code.description)
-    }
-    
-    func test_rewriter_swapNestedWrongPositions() {
-        let mutationPos = MutationPosition(utf8Offset: 136, line: 6, column: 33)
-        let rewriter = TernaryOperator.Rewriter(positionToMutate: mutationPos)
+        XCTAssertEqual(
+            rewriter.description,
+            """
+            #if os(iOS) || os(tvOS)
+            print("please ignore me")
+            #endif
 
-        let mutatedSource = rewriter.visit(sampleNestedCode.code)
+            func someCode(_ a: Bool, _ b: Bool) -> Bool { if ProcessInfo.processInfo.environment["sampleWithNestedTernaryOperator_6_40_143"] != nil { 
+                return a ? false : b ? true : false 
+            } else if ProcessInfo.processInfo.environment["sampleWithNestedTernaryOperator_6_33_136"] != nil {
+                return a ? b ? false : true : false
+            } else {
+                return a ? b ? true : false : false
+            }
+            }
 
-        XCTAssertEqual(mutatedSource.description, changedNestedCode.code.description)
+            """
+        )
     }
 }

@@ -70,14 +70,6 @@ rm -rf ./muter_logs # don't pollute the staging area
 
 cd ../..
 
-echo "Running Muter on an example with mutateInSiblingFolder configuration..."
-cd ./Repositories/ProjectWithMutateInSiblingFolder
-
-echo " > Running in CLI mode..."
-"$muterdir"/muter > "$samplesdir"/muter_with_mutateInSiblingFolder_output.txt
-rm -rf ./muter_logs
-cd ../..
-
 echo "Running Muter's help command..."
 cd ./Repositories/ExampleApp
 
@@ -100,7 +92,7 @@ swift test --filter 'AcceptanceTests'
 
 exitCode=$?
 
- rm -rf ./AcceptanceTests/samples
+rm -rf ./AcceptanceTests/samples
 
 exit $exitCode
 

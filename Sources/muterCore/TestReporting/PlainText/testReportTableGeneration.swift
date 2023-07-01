@@ -1,7 +1,10 @@
 import Foundation
 import Rainbow
 
-func generateAppliedMutationOperatorsCLITable(from fileReports: [MuterTestReport.FileReport], coloringFunction: ([CLITable.Row]) -> [CLITable.Row] = applyMutationTestResultsColor) -> CLITable {
+func generateAppliedMutationOperatorsCLITable(
+    from fileReports: [MuterTestReport.FileReport],
+    coloringFunction: ([CLITable.Row]) -> [CLITable.Row] = applyMutationTestResultsColor
+) -> CLITable {
     var appliedMutations = [CLITable.Row]()
     var fileNames = [CLITable.Row]()
     var mutationTestResults = [CLITable.Row]()
@@ -21,15 +24,24 @@ func generateAppliedMutationOperatorsCLITable(from fileReports: [MuterTestReport
     ])
 }
 
-private func operatorsToTableRows(fileReport: MuterTestReport.FileReport) -> [(CLITable.Row, CLITable.Row, CLITable.Row)] {
-    return fileReport.appliedOperators.map {
-        (CLITable.Row(value: "\(fileReport.fileName):\($0.mutationPoint.position.line)"),
-         CLITable.Row(value: $0.mutationPoint.mutationOperatorId.rawValue),
-         CLITable.Row(value: $0.testSuiteOutcome.asMutationTestOutcome))
+private func operatorsToTableRows(fileReport: MuterTestReport.FileReport) -> [(
+    CLITable.Row,
+    CLITable.Row,
+    CLITable.Row
+)] {
+    fileReport.appliedOperators.map {
+        (
+            CLITable.Row(value: "\(fileReport.fileName):\($0.mutationPoint.position.line)"),
+            CLITable.Row(value: $0.mutationPoint.mutationOperatorId.rawValue),
+            CLITable.Row(value: $0.testSuiteOutcome.asMutationTestOutcome)
+        )
     }
 }
 
-func generateMutationScoresCLITable(from fileReports: [MuterTestReport.FileReport], coloringFunction: ([CLITable.Row]) -> [CLITable.Row] = applyMutationScoreColor) -> CLITable {
+func generateMutationScoresCLITable(
+    from fileReports: [MuterTestReport.FileReport],
+    coloringFunction: ([CLITable.Row]) -> [CLITable.Row] = applyMutationScoreColor
+) -> CLITable {
     var fileNames = [CLITable.Row]()
     var numberOfInsertedMutants = [CLITable.Row]()
     var mutationScores = [CLITable.Row]()
@@ -50,8 +62,9 @@ func generateMutationScoresCLITable(from fileReports: [MuterTestReport.FileRepor
 }
 
 // MARK: - Coloring Functions
+
 func applyMutationTestResultsColor(to rows: [CLITable.Row]) -> [CLITable.Row] {
-    return rows.map {
+    rows.map {
         let coloredValue = [
             TestSuiteOutcome.passed.asMutationTestOutcome,
             TestSuiteOutcome.buildError.asMutationTestOutcome,
@@ -65,7 +78,7 @@ func applyMutationTestResultsColor(to rows: [CLITable.Row]) -> [CLITable.Row] {
 }
 
 func applyMutationScoreColor(to rows: [CLITable.Row]) -> [CLITable.Row] {
-    return rows.map {
+    rows.map {
         let coloredValue = coloredMutationScore(for: Int($0.value)!, appliedTo: $0.value)
         return CLITable.Row(value: coloredValue)
     }
@@ -73,11 +86,11 @@ func applyMutationScoreColor(to rows: [CLITable.Row]) -> [CLITable.Row] {
 
 func coloredMutationScore(for score: Int, appliedTo text: String) -> String {
     switch score {
-    case 0...25:
+    case 0 ... 25:
         return text.red
-    case 26...50:
+    case 26 ... 50:
         return text.yellow
-    case 51...75:
+    case 51 ... 75:
         return text.lightGreen
     default:
         return text.green

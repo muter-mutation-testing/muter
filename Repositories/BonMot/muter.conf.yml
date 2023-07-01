@@ -10,4 +10,5 @@ exclude:
 - Image+Tinting.swift
 - StringStyle.swift
 - Tab.swift
+- Package.swift
 excludeCalls: []

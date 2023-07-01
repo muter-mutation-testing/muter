@@ -1,6 +1,5 @@
-import XCTest
-
 @testable import muterCore
+import XCTest
 
 final class FileOperationTests: XCTestCase {
     func test_createsALoggingDirectory() {
@@ -14,10 +13,12 @@ final class FileOperationTests: XCTestCase {
             minute: 42
         )
 
-        let loggingDirectory = createLoggingDirectory(in: "~/some/path",
-                                                      fileManager: fileManagerSpy,
-                                                      locale: Locale(identifier: "en_US"),
-                                                      timestamp: { timestamp.date! })
+        let loggingDirectory = createLoggingDirectory(
+            in: "~/some/path",
+            fileManager: fileManagerSpy,
+            locale: Locale(identifier: "en_US"),
+            timestamp: { timestamp.date! }
+        )
 
         XCTAssertEqual(loggingDirectory, "~/some/path/muter_logs/May 10, 2019 at 2:42 AM")
         XCTAssertEqual(fileManagerSpy.methodCalls, ["createDirectory(atPath:withIntermediateDirectories:attributes:)"])

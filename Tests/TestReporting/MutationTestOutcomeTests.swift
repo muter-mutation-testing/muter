@@ -1,8 +1,7 @@
+@testable import muterCore
 import XCTest
 
-@testable import muterCore
-
-final class MutationTestOutcomeTests: XCTestCase {
+final class MutationTestOutcomeTests: MuterTestCase {
     func test_pathMappingWhenPathsAreDeeplyNested() {
         let mutationPoint = MutationPoint(
             mutationOperatorId: .logicalOperator,

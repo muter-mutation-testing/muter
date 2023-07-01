@@ -8,5 +8,5 @@ protocol Reporter {
 }
 
 extension Reporter {
-    func newMutationTestOutcomeAvailable(outcomeWithFlush: MutationOutcomeWithFlush) { }
+    func newMutationTestOutcomeAvailable(outcomeWithFlush: MutationOutcomeWithFlush) {}
 }

@@ -1,5 +1,5 @@
 func mutationScore(from testResults: [TestSuiteOutcome]) -> Int {
-    guard testResults.count > 0 else {
+    guard !testResults.isEmpty else {
         return -1
     }
 

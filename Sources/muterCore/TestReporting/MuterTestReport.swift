@@ -9,6 +9,7 @@ struct MuterTestReport {
     let numberOfKilledMutants: Int
     let projectCodeCoverage: Int?
     let fileReports: [FileReport]
+    private(set) var timeElapsed: String = ""
 
     init(
         from outcome: MutationTestOutcome = .init()
@@ -19,6 +20,26 @@ struct MuterTestReport {
             .count { $0.testSuiteOutcome == .failed || $0.testSuiteOutcome == .runtimeError }
         projectCodeCoverage = outcome.coverage == .null ? nil : outcome.coverage.percent
         fileReports = MuterTestReport.fileReports(from: outcome)
+        timeElapsed = outcome.testDuration.formatted()
+    }
+}
+
+private extension TimeInterval {
+    func formatted() -> String {
+        let time = NSInteger(self)
+        let ms = Int(truncatingRemainder(dividingBy: 1) * 1000)
+        let seconds = time % 60
+        let minutes = (time / 60) % 60
+        let hours = (time / 3600)
+
+        return String(
+            format: "%0.2d:%0.2d:%0.2d.%0.3d",
+            hours,
+            minutes,
+            seconds,
+            ms
+        )
+
     }
 }
 
@@ -68,7 +89,7 @@ extension MuterTestReport.FileReport: Comparable {
 extension MuterTestReport {
     struct AppliedMutationOperator: Codable, Equatable {
         let mutationPoint: MutationPoint
-        let mutationSnapshot: MutationOperatorSnapshot
+        let mutationSnapshot: MutationOperator.Snapshot
         let testSuiteOutcome: TestSuiteOutcome
 
         enum CodingKeys: String, CodingKey {
@@ -78,7 +99,7 @@ extension MuterTestReport {
 
         init(
             mutationPoint: MutationPoint,
-            mutationSnapshot: MutationOperatorSnapshot,
+            mutationSnapshot: MutationOperator.Snapshot,
             testSuiteOutcome: TestSuiteOutcome
         ) {
             self.mutationPoint = mutationPoint
@@ -111,13 +132,14 @@ private extension MuterTestReport {
                     .map { AppliedMutationOperator(
                         mutationPoint: $0.point,
                         mutationSnapshot: $0.snapshot,
-                        testSuiteOutcome: $0.testSuiteOutcome)
+                        testSuiteOutcome: $0.testSuiteOutcome
+                    )
                     }
 
                 return (fileName, filePath, mutationScore, appliedOperators)
             }
             .map(FileReport.init(fileName:path:mutationScore:appliedOperators:))
-        
+
         let scoreOfFilesWithoutCoverage = filesWithoutCoverage.map { filePath in
             FileReport(
                 fileName: URL(fileURLWithPath: filePath).lastPathComponent,
@@ -132,7 +154,7 @@ private extension MuterTestReport {
                 ]
             )
         }
-        
+
         return scoreOfFiles + scoreOfFilesWithoutCoverage
     }
 }
@@ -141,8 +163,16 @@ private func ascendingFilenameOrder(
     lhs: (key: String, value: Int),
     rhs: (key: String, value: Int)
 ) -> Bool {
-    return lhs.key < rhs.key
+    lhs.key < rhs.key
 }
 
 extension MuterTestReport: Equatable {}
-extension MuterTestReport: Codable {}
+extension MuterTestReport: Codable {
+    enum CodingKeys: String, CodingKey {
+        case globalMutationScore
+        case totalAppliedMutationOperators
+        case numberOfKilledMutants
+        case projectCodeCoverage
+        case fileReports
+    }
+}
