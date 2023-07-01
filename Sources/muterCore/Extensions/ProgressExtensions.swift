@@ -19,8 +19,14 @@ public class SimpleTimeEstimate: ProgressElementType {
             Double(progressBar.count - progressBar.index) * timePerItem
         
         lastTime = Date()
+
+        let remainingMinutes = Int(ceil(estimatedTimeRemaining / 60))
+
+        let formattedRemainingMinutes = remainingMinutes == 1
+            ? "1 minute"
+            : "\(remainingMinutes) minutes"
         
-        return "ETC: \(Int(ceil(estimatedTimeRemaining/60))) minute(s)"
+        return "ETC: \(formattedRemainingMinutes)"
     }
 }
 

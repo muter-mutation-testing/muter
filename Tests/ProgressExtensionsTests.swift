@@ -9,25 +9,25 @@ import Progress
 //                let subject = SimpleTimeEstimate(initialEstimate: 300, timePerItem: 10)
 //                var progressBar = ProgressBar(count: 30)
 //                
-//                expect(subject.value(progressBar)) == "ETC: 5 minute(s)"
+//                expect(subject.value(progressBar)) == "ETC: 5 minutes"
 //                
 //                progressBar.next()
 //               
-//                expect(subject.value(progressBar)) == "ETC: 5 minute(s)"
+//                expect(subject.value(progressBar)) == "ETC: 5 minutes"
 //                
 //                for _ in (1...15) {
 //                    progressBar.next()
 //                    
 //                }
 //                
-//                expect(subject.value(progressBar)) == "ETC: 3 minute(s)"
+//                expect(subject.value(progressBar)) == "ETC: 3 minutes"
 //                
 //                for _ in (1...10) {
 //                    progressBar.next()
 //                    
 //                }
 //                
-//                expect(subject.value(progressBar)) == "ETC: 1 minute(s)"
+//                expect(subject.value(progressBar)) == "ETC: 1 minute"
 //            }
 //            
 //            context("when the estimate is a fraction of a minute") {
@@ -35,22 +35,22 @@ import Progress
 //                    let subject = SimpleTimeEstimate(initialEstimate: 325, timePerItem: 10)
 //                    var progressBar = ProgressBar(count: 32)
 //                    
-//                    expect(subject.value(progressBar)) == "ETC: 6 minute(s)"
+//                    expect(subject.value(progressBar)) == "ETC: 6 minutes"
 //                    
 //                    progressBar.next()
 //                    
-//                    expect(subject.value(progressBar)) == "ETC: 6 minute(s)"
+//                    expect(subject.value(progressBar)) == "ETC: 6 minutes"
 //                }
 //            }
 //            context("when the actual estimate differs from the initial estimate") {
 //                it("estimates based on the new information") {
 //                    let subject = SimpleTimeEstimate(initialEstimate: 3, timePerItem: 10)
 //                    var progressBar = ProgressBar(count: 30)
-//                    expect(subject.value(progressBar)) == "ETC: 1 minute(s)"
+//                    expect(subject.value(progressBar)) == "ETC: 1 minute"
 //                    
 //                    progressBar.next()
 //                    
-//                    expect(subject.value(progressBar)) == "ETC: 5 minute(s)"
+//                    expect(subject.value(progressBar)) == "ETC: 5 minutes"
 //                }
 //            }
 //        }
