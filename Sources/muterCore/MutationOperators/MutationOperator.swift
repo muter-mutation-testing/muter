@@ -8,7 +8,7 @@ enum MutationOperator {
         case ror = "RelationalOperatorReplacement"
         case removeSideEffects = "RemoveSideEffects"
         case logicalOperator = "ChangeLogicalConnector"
-        case ternaryOperator = "SwapTernaryOperator"
+        case swapTernary = "SwapTernary"
 
         var visitor: VisitorInitializer {
             switch self {
@@ -18,9 +18,13 @@ enum MutationOperator {
                 return ROROperator.Visitor.init
             case .logicalOperator:
                 return ChangeLogicalConnectorOperator.Visitor.init
-            case .ternaryOperator:
-                return TernaryOperator.Visitor.init
+            case .swapTernary:
+                return SwapTernaryOperator.Visitor.init
             }
+        }
+        
+        static var description: String {
+            allCases.map(\.rawValue).joined(separator: ", ")
         }
     }
 

@@ -39,7 +39,7 @@ final class DiscoverMutationPointsTests: MuterTestCase {
 
         let ternaryOperatorSchemata = sampleForDiscoveringMutations?
             .mutationSchemata
-            .include { $0.mutationOperatorId == .ternaryOperator }
+            .include { $0.mutationOperatorId == .swapTernary }
 
         XCTAssertEqual(ternaryOperatorSchemata?.count, 1)
 
