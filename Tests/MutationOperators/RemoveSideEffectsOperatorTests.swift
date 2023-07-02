@@ -4,7 +4,7 @@ import TestingExtensions
 
 @testable import muterCore
 
-final class RemoveSideEffectsOperatortests: XCTestCase {
+final class RemoveSideEffectsOperatorTests: XCTestCase {
     
     private func applyMutation(
         toFileAt path: String,
