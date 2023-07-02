@@ -22,7 +22,7 @@ enum MutationOperator {
                 return SwapTernaryOperator.Visitor.init
             }
         }
-        
+
         static var description: String {
             allCases.map(\.rawValue).joined(separator: ", ")
         }

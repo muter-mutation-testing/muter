@@ -33,7 +33,7 @@ public struct Run: ParsableCommand {
         help: "Output file for the report to be saved."
     )
     var reportURL: URL?
-    
+
     @Option(
         parsing: .upToNextOption,
         help: "The list of mutant operators to be used: \(MutationOperator.Id.description)",
@@ -41,7 +41,7 @@ public struct Run: ParsableCommand {
             guard let `operator` = MutationOperator.Id(rawValue: $0) else {
                 throw MuterError.literal(reason: MutationOperator.Id.description)
             }
-            
+
             return `operator`
         }
     )
