@@ -202,7 +202,7 @@ public struct Operator: ParsableCommand {
                 \("Mutation a ternary expression".bold)
                 
                 \("""
-                \("func".asKeyword) \("stringify".asDeclaration)(\("_".asDeclaration) a: \("Bool".asTypeDeclaration) \("->".asKeyword) \("String".asTypeDeclaration) {
+                \("func".asKeyword) \("stringify".asDeclaration)(\("_".asDeclaration) a: \("Bool".asTypeDeclaration)) \("->".asKeyword) \("String".asTypeDeclaration) {
                     \("return".asKeyword) a \("?".asKeyword) \("\"true\"".asTypeDeclaration) : \("\"false\"".asTypeDeclaration)
                 }
                 """.onCodeBlock
@@ -211,7 +211,7 @@ public struct Operator: ParsableCommand {
                 becomes
                 
                 \("""
-                \("func".asKeyword) \("stringify".asDeclaration)(\("_".asKeyword) a: \("Bool".asTypeDeclaration) \("->".asKeyword) \("String".asTypeDeclaration) {
+                \("func".asKeyword) \("stringify".asDeclaration)(\("_".asDeclaration) a: \("Bool".asTypeDeclaration)) \("->".asKeyword) \("String".asTypeDeclaration) {
                     \("return".asKeyword) a \("?".asKeyword) \("\"false\"".asTypeDeclaration) : \("\"true\"".asTypeDeclaration)
                 }
                 """.onCodeBlock
