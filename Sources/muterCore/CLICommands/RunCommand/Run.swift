@@ -50,10 +50,15 @@ public struct Run: ParsableCommand {
     public init() {}
 
     public func run() throws {
+        let mutationOperatorsList = !operators.isEmpty
+            ? operators
+            : .allOperators
+
         let options = RunOptions(
             filesToMutate: filesToMutate,
             reportFormat: reportFormat,
             reportURL: reportURL,
+            mutationOperatorsList: mutationOperatorsList,
             skipCoverage: skipCoverage
         )
 

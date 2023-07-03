@@ -9,6 +9,7 @@ final class DiscoverMutationPointsTests: MuterTestCase {
     override func setUp() {
         super.setUp()
 
+        state.mutationOperatorList = .allOperators
         prepareCode.sourceCodeToReturn = {
             muterCore.sourceCode(fromFileAt: $0).map {
                 (

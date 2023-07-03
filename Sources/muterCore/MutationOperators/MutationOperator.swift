@@ -2,6 +2,11 @@ import Foundation
 import SwiftSyntax
 
 typealias VisitorInitializer = (MuterConfiguration?, SourceFileInfo) -> MuterVisitor
+typealias MutationOperatorList = [MutationOperator.Id]
+
+extension [MutationOperator.Id] {
+    static var allOperators = MutationOperator.Id.allCases
+}
 
 enum MutationOperator {
     enum Id: String, Codable, CaseIterable {

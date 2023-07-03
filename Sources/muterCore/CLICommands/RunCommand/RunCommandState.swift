@@ -4,6 +4,7 @@ import SwiftSyntax
 protocol AnyRunCommandState: AnyObject {
     var mutationTestingStartTime: Date { get }
     var muterConfiguration: MuterConfiguration { get }
+    var mutationOperatorList: MutationOperatorList { get }
     var projectDirectoryURL: URL { get }
     var tempDirectoryURL: URL { get }
     var projectXCTestRun: XCTestRun { get }
@@ -22,6 +23,7 @@ protocol AnyRunCommandState: AnyObject {
 final class RunCommandState: AnyRunCommandState {
     var mutationTestingStartTime: Date = .init()
     var muterConfiguration: MuterConfiguration = .init()
+    var mutationOperatorList: MutationOperatorList = []
     var projectDirectoryURL: URL = .init(fileURLWithPath: "path")
     var tempDirectoryURL: URL = .init(fileURLWithPath: "path")
     var projectXCTestRun: XCTestRun = .init()
@@ -50,6 +52,7 @@ final class RunCommandState: AnyRunCommandState {
 extension RunCommandState {
     enum Change: Equatable {
         case configurationParsed(MuterConfiguration)
+        case mutationOperatorList(MutationOperatorList)
         case projectDirectoryUrlDiscovered(URL)
         case tempDirectoryUrlCreated(URL)
         case projectXCTestRun(XCTestRun)
@@ -68,8 +71,10 @@ extension RunCommandState {
     func apply(_ stateChanges: [RunCommandState.Change]) {
         for change in stateChanges {
             switch change {
-            case let .configurationParsed(configuration):
-                muterConfiguration = configuration
+            case let .configurationParsed(muterConfiguration):
+                self.muterConfiguration = muterConfiguration
+            case let .mutationOperatorList(mutationOperatorList):
+                self.mutationOperatorList = mutationOperatorList
             case let .projectDirectoryUrlDiscovered(projectDirectoryURL):
                 self.projectDirectoryURL = projectDirectoryURL
             case let .tempDirectoryUrlCreated(tempDirectoryURL):

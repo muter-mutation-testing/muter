@@ -5,6 +5,7 @@ typealias ReportOptions = (reporter: Reporter, path: String?)
 struct RunOptions {
     let reportOptions: ReportOptions
     let filesToMutate: [String]
+    let mutationOperatorsList: MutationOperatorList
     let skipCoverage: Bool
 
     @Dependency(\.logger)
@@ -14,10 +15,12 @@ struct RunOptions {
         filesToMutate: [String],
         reportFormat: ReportFormat,
         reportURL: URL?,
+        mutationOperatorsList: MutationOperatorList,
         skipCoverage: Bool
     ) {
         self.filesToMutate = filesToMutate
         self.skipCoverage = skipCoverage
+        self.mutationOperatorsList = mutationOperatorsList
         reportOptions = ReportOptions(
             reporter: reportFormat.reporter,
             path: reportPath(reportURL)

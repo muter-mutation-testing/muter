@@ -167,12 +167,14 @@ extension RunOptions {
         filesToMutate: [String] = [],
         reportFormat: ReportFormat = .plain,
         reportURL: URL? = nil,
+        mutationOperatorsList: MutationOperatorList = [],
         skipCoverage: Bool = false
     ) -> Self {
         .init(
             filesToMutate: filesToMutate,
             reportFormat: reportFormat,
             reportURL: reportURL,
+            mutationOperatorsList: mutationOperatorsList,
             skipCoverage: skipCoverage
         )
     }
