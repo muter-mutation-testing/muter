@@ -3,6 +3,7 @@
 import ArgumentParser
 import Foundation
 import Rainbow
+import SyntaxHighlighter
 
 public struct Operator: ParsableCommand {
 
@@ -11,19 +12,30 @@ public struct Operator: ParsableCommand {
         abstract: "Describes a given mutation operator."
     )
     
-    @Argument(help: "Avaiable operators are: \(MutationOperator.Id.description)")
+    @Argument(help: "Avaiable operators are: all, \(MutationOperator.Id.description)")
     var `operator`: String
-    
+        
     public init() {}
     
     public func run() throws {
+        if `operator`.trimmed == "all" {
+            print(MutationOperator.Id.allCases.map(\.documentation).joined())
+            return
+        }
+        
         guard let mutationOperator = MutationOperator.Id(rawValue: `operator`) else {
             throw MuterError.literal(reason: MutationOperator.Id.description)
         }
         
-        switch mutationOperator {
+        print(mutationOperator.documentation)
+    }
+}
+
+extension MutationOperator.Id {
+    var documentation: String {
+        switch self {
         case .logicalOperator:
-            print(
+            return
                 """
                 
                 \("Change Logical Connector".bold)
@@ -47,33 +59,34 @@ public struct Operator: ParsableCommand {
                 \("Mutating a Logical".bold) \("AND".bold.italic)
                 
                 \(
-                """
-                \("func".asKeyword) \("isValidPassword".asDeclaration)(\("_".asDeclaration) text: \("String".asTypeDeclaration), \("_".asDeclaration) repeatedText: \("String".asTypeDeclaration) \("->".asKeyword) \("Bool".asTypeDeclaration) {
-                    \("let".asKeyword) meetsMinimumLength \("=".asKeyword) text.\("count".asTypeDeclaration) \(">=".asKeyword) \("8".asTypeDeclaration)
-                    \("let".asKeyword) passwordsMatch \("=".asKeyword) repeatedText \("==".asKeyword) text
-                    \("return".asKeyword) meetsMinimumLength \("&&".asKeyword) passwordsMatch
-                }
-                """
-                .onCodeBlock
+                    highlightCode(
+                        """
+                        func isValidPassword(_ text: String, _ repeatedText: String) -> Bool {
+                            let meetsMinimumLength = text.count >= 8
+                            let passwordsMatch = repeatedText == text
+                            return meetsMinimumLength && passwordsMatch
+                        }
+                        """
+                    ).onCodeBlock
                 )
                 
                 becomes
 
                 \(
-                """
-                \("func".asKeyword) \("isValidPassword".asDeclaration)(\("_".asDeclaration) text: \("String".asTypeDeclaration), \("_".asDeclaration) repeatedText: \("String".asTypeDeclaration) \("->".asKeyword) \("Bool".asTypeDeclaration) {
-                    \("let".asKeyword) meetsMinimumLength \("=".asKeyword) text.\("count".asTypeDeclaration) \(">=".asKeyword) \("8".asTypeDeclaration)
-                    \("let".asKeyword) passwordsMatch \("=".asKeyword) repeatedText \("==".asKeyword) text
-                    \("return".asKeyword) meetsMinimumLength \("||".asKeyword) passwordsMatch
-                }
-                """
-                .onCodeBlock
+                    highlightCode(
+                        """
+                        func isValidPassword(_ text: String, _ repeatedText: String) -> Bool {
+                            let meetsMinimumLength = text.count >= 8
+                            let passwordsMatch = repeatedText == text
+                            return meetsMinimumLength || passwordsMatch
+                        }
+                        """
+                    ).onCodeBlock
                 )
                 
                 """
-                )
         case .removeSideEffects:
-            print(
+            return
                 """
                 
                 \("Remove Side Effects".bold)
@@ -87,47 +100,58 @@ public struct Operator: ParsableCommand {
 
                 \("Mutating an explicitly discarded return result".bold)
                 
-                \("""
-                \("func".asKeyword) initialize() {
-                    \("_".asTypeDeclaration) \("=".asKeyword) \("self".asTypeDeclaration).view
-                    view.results \("=".asKeyword) \("self".asTypeDeclaration).results
-                }
-                """.onCodeBlock
+                \(
+                    highlightCode(
+                        """
+                        func initialize() {
+                            _ = self.view
+                            view.results = self.results
+                        }
+                        """
+                    ).onCodeBlock
                 )
                 
                 becomes
 
-                \("""
-                \("func".asKeyword) initialize() {
-                    view.results \("=".asKeyword) \("self".asTypeDeclaration).results
-                }
-                """.onCodeBlock
+                \(
+                    highlightCode(
+                        """
+                        func initialize() {
+                            view.results = self.results
+                        }
+                        """
+                    ).onCodeBlock
                 )
                 
                 \("Mutating a void function call".bold)
                 
-                \("""
-                \("func".asKeyword) \("update".asDeclaration)(\("email".asDeclaration): \("String".asTypeDeclaration), \("for".asDeclaration) userId: \("String".asTypeDeclaration) {
-                    \("var".asKeyword) userRecord = \("record".asTypeDeclaration)(\("for".asTypeDeclaration): userId)
-                    userRecord.email \("=".asKeyword) email
-                    database.\("persist".asTypeDeclaration)(userRecord)
-                }
-                """.onCodeBlock
+                \(
+                    highlightCode(
+                        """
+                        func update(email: String, for userId: String) {
+                            var userRecord = record(for: userId)
+                            userRecord.email = email
+                            database.persist(userRecord)
+                        }
+                        """
+                    ).onCodeBlock
                 )
                 
                 becomes
 
-                \("""
-                \("func".asKeyword) \("update".asDeclaration)(\("email".asDeclaration): \("String".asTypeDeclaration), \("for".asDeclaration) userId: \("String".asTypeDeclaration) {
-                    \("var".asKeyword) userRecord = \("record".asTypeDeclaration)(\("for".asTypeDeclaration): userId)
-                    userRecord.email \("=".asKeyword) email
-                }
-                """.onCodeBlock
+                \(
+                    highlightCode(
+                        """
+                        func update(email: String, for userId: String) {
+                            var userRecord = record(for: userId)
+                            userRecord.email = email
+                        }
+                        """
+                    ).onCodeBlock
                 )
                 """
-            )
         case .ror:
-            print(
+            return
                 """
                 
                 \("Relational Operator Replacement".bold)
@@ -162,28 +186,33 @@ public struct Operator: ParsableCommand {
                 
                 The purpose of this operator is to highlight how your tests respond to changes in branching logic.
                 A well-engineered test suite will be able to fail clearly in response to code taking a different branch than it expected.
-
+                
                 \("Mutating an equality check".bold)
                 
-                \("""
-                \("if".asKeyword) myValue == \("50".asTypeDeclaration) {
-                    \("// something happens here".asComment)
-                }
-                """.onCodeBlock
+                \(
+                    highlightCode(
+                        """
+                        if myValue == 50 {
+                            // something happens here
+                        }
+                        """
+                    ).onCodeBlock
                 )
                 
                 becomes
-
-                \("""
-                \("if".asKeyword) myValue != \("50".asTypeDeclaration) {
-                    \("// something happens here".asComment)
-                }
-                """.onCodeBlock
+                
+                \(
+                    highlightCode(
+                        """
+                        if myValue != 50 {
+                            // something happens here
+                        }
+                        """
+                    ).onCodeBlock
                 )
                 """
-            )
         case .swapTernary:
-            print(
+            return
                 """
                 
                 \("Swap Ternary".bold)
@@ -201,27 +230,101 @@ public struct Operator: ParsableCommand {
                 
                 \("Mutation a ternary expression".bold)
                 
-                \("""
-                \("func".asKeyword) \("stringify".asDeclaration)(\("_".asDeclaration) a: \("Bool".asTypeDeclaration)) \("->".asKeyword) \("String".asTypeDeclaration) {
-                    \("return".asKeyword) a \("?".asKeyword) \("\"true\"".asTypeDeclaration) : \("\"false\"".asTypeDeclaration)
-                }
-                """.onCodeBlock
+                \(
+                    highlightCode(
+                        """
+                        func stringify(_ a: Bool) -> String {
+                            return a ? "true" : "false"
+                        }
+                        """
+                    ).onCodeBlock
                 )
                 
                 becomes
                 
-                \("""
-                \("func".asKeyword) \("stringify".asDeclaration)(\("_".asDeclaration) a: \("Bool".asTypeDeclaration)) \("->".asKeyword) \("String".asTypeDeclaration) {
-                    \("return".asKeyword) a \("?".asKeyword) \("\"false\"".asTypeDeclaration) : \("\"true\"".asTypeDeclaration)
-                }
-                """.onCodeBlock
+                \(
+                    highlightCode(
+                        """
+                        func stringify(_ a: Bool) -> String {
+                            return a ? "false" : "true"
+                        }
+                        """
+                    ).onCodeBlock
                 )
                 
                 """
-            )
         }
     }
 }
+
+private func highlightCode(_ code: String) -> String {
+    Visitor.highlightCode(code, theme: highlightTheme)
+}
+
+let highlightTheme = Theme(
+    transformer: [
+        [.classKeyword,
+         .deinitKeyword,
+         .associatedtypeKeyword,
+         .extensionKeyword,
+         .enumKeyword,
+         .funcKeyword,
+         .importKeyword,
+         .initKeyword,
+         .inoutKeyword,
+         .letKeyword,
+         .operatorKeyword,
+         .precedencegroupKeyword,
+         .protocolKeyword,
+         .structKeyword,
+         .returnKeyword,
+         .asKeyword,
+         .varKeyword,
+         .fileprivateKeyword,
+         .internalKeyword,
+         .privateKeyword,
+         .publicKeyword,
+         .staticKeyword,
+         .deferKeyword,
+         .ifKeyword,
+         .guardKeyword,
+         .doKeyword,
+         .repeatKeyword,
+         .elseKeyword,
+         .forKeyword,
+         .inKeyword,
+         .whileKeyword,
+         .breakKeyword,
+         .continueKeyword,
+         .fallthroughKeyword,
+         .switchKeyword,
+         .defaultKeyword,
+         .whereKeyword,
+         .catchKeyword,
+         .throwKeyword,
+         .anyKeyword,
+         .falseKeyword,
+         .isKeyword,
+         .caseKeyword,
+         .nilKeyword,
+         .rethrowsKeyword,
+         .typealiasKeyword,
+         .selfKeyword,
+         .superKeyword,
+         .throwsKeyword,
+         .capitalSelfKeyword,
+         .prefixPeriod,
+         .equal,
+         .arrow
+        ]: { $0.asKeyword },
+        [
+            .trueKeyword,
+            .wildcardKeyword,
+            .integerLiteral
+        ]: { $0.asTypeDeclaration }
+    ],
+    commentsTransformer: { $0.asComment }
+)
 
 private extension String {
     var asKeyword: String {

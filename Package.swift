@@ -30,6 +30,7 @@ let package = Package(
         .target(
             name: "muterCore",
             dependencies: [
+                "SyntaxHighlighter",
                 .product(name: "Pathos", package: "Pathos"),
                 .product(name: "Rainbow", package: "Rainbow"),
                 .product(name: "Plot", package: "plot"),
@@ -40,6 +41,14 @@ let package = Package(
                 .product(name: "Yams", package: "yams"),
             ],
             path: "Sources/muterCore"
+        ),
+        .target(
+            name: "SyntaxHighlighter",
+            dependencies: [
+                .product(name: "SwiftSyntax", package: "swift-syntax"),
+                .product(name: "SwiftSyntaxParser", package: "swift-syntax"),
+            ],
+            path: "Sources/syntaxHighlighter"
         ),
         .target(
             name: "TestingExtensions",
