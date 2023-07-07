@@ -46,52 +46,52 @@ final class MuterVisitorTests: MuterTestCase {
 }
 
 private let sampleWithDisabledMutations =
-"""
-import Foundation
+    """
+    import Foundation
 
-func f() {
-    doSomething(testableSideEffect: true)
-}
-
-// muter:disable
-func f() {
-    doSomething(testableSideEffect: true)
-    doSomething(testableSideEffect: false)
-}
-
-// muter:disable
-struct IgnoreMe {
+    // muter:disable
     func f() {
         doSomething(testableSideEffect: true)
-        doSomething(testableSideEffect: true)
-        doSomething(testableSideEffect: true)
+    }
+
+    func f() {
         doSomething(testableSideEffect: false)
     }
-}
-"""
+
+    struct IgnoreMe {
+
+        // muter:disable
+        func f() {
+            doSomething(testableSideEffect: true)
+            doSomething(testableSideEffect: true)
+            doSomething(testableSideEffect: true)
+            doSomething(testableSideEffect: false)
+        }
+    }
+    """
 
 private let sampleWithTopLevelDisable =
-"""
-// muter:disable
+    """
+    // muter:disable
 
-import Foundation
+    import Foundation
 
-func f() {
-    doSomething(testableSideEffect: true)
-}
-
-func f() {
-    doSomething(testableSideEffect: true)
-    doSomething(testableSideEffect: false)
-}
-
-struct IgnoreMe {
     func f() {
         doSomething(testableSideEffect: true)
-        doSomething(testableSideEffect: true)
+    }
+
+    func f() {
         doSomething(testableSideEffect: true)
         doSomething(testableSideEffect: false)
     }
-}
 
-"""
+    struct IgnoreMe {
+        func f() {
+            doSomething(testableSideEffect: true)
+            doSomething(testableSideEffect: true)
+            doSomething(testableSideEffect: true)
+            doSomething(testableSideEffect: false)
+        }
+    }
+
+    """
