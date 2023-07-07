@@ -37,6 +37,31 @@ class MuterTestCase: XCTestCase {
             prepareCode: prepareCode.prepare
         )
     }
+
+    func generateSchemataMappings(
+        for source: SourceCodeInfo,
+        changes: MutationSourceCodePreparationChange = .null
+    ) -> [SchemataMutationMapping] {
+        MutationOperator.Id.allCases
+            .accumulate(into: []) { newSchemataMappings, mutationOperatorId in
+                let visitor = mutationOperatorId.visitor(
+                    .init(),
+                    source.asSourceFileInfo
+                )
+
+                visitor.sourceCodePreparationChange = changes
+
+                visitor.walk(source.code)
+
+                let schemataMapping = visitor.schemataMappings
+
+                if !schemataMapping.isEmpty {
+                    return newSchemataMappings + [schemataMapping]
+                } else {
+                    return newSchemataMappings
+                }
+            }.mergeByFileName()
+    }
 }
 
 public extension XCTestCase {

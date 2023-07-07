@@ -59,22 +59,6 @@ final class DiscoverMutationPointsTests: MuterTestCase {
         XCTAssertEqual(removeSideEffectsSchemata?.count, 2)
     }
 
-    func test_shouldIgnoreSkippedLines() throws {
-        let samplePath = "\(fixturesDirectory)/sample with mutations marked for skipping.swift"
-        state.sourceFileCandidates = [samplePath]
-
-        let result = try XCTUnwrap(sut.run(with: state).get())
-        let change = try XCTUnwrap(result.first)
-
-        guard case let .mutationMappingsDiscovered(mappings) = change else {
-            return XCTFail("Expected mappings, get \(change)")
-        }
-
-        XCTAssertEqual(mappings.count, 1)
-
-        XCTAssertEqual(mappings.first?.mutationSchemata.count, 1)
-    }
-
     func test_shouldIgnoreUknownOperators() {
         state.sourceFileCandidates = [
             "\(fixturesDirectory)/sourceWithoutMutableCode.swift",

@@ -62,7 +62,7 @@ let package = Package(
             ],
             path: "Tests",
             exclude: [
-                "__Snapshots__",
+                "MutationSchemata/__Snapshots__",
                 "fixtures",
                 "Extensions"
             ]

@@ -38,13 +38,9 @@ enum RemoveSideEffectsOperator {
             return super.visit(node)
         }
 
-        override func visitAny(_ node: Syntax) -> SyntaxVisitorContinueKind {
-            guard let node = node.as(FunctionDeclSyntax.self) else {
-                return .visitChildren
-            }
-
+        override func visit(_ node: FunctionDeclSyntax) -> SyntaxVisitorContinueKind {
             guard let body = node.body, !node.hasImplicitReturn else {
-                return .visitChildren
+                return super.visit(node)
             }
 
             let statements = body.statements
@@ -67,7 +63,7 @@ enum RemoveSideEffectsOperator {
                 )
             }
 
-            return .visitChildren
+            return super.visit(node)
         }
 
         private func mutated(_ node: FunctionDeclSyntax, with body: CodeBlockSyntax) -> DeclSyntax {

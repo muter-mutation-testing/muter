@@ -4,9 +4,8 @@ class TokenAwareVisitor: MuterVisitor {
     var tokensToDiscover = [TokenKind]()
     var oppositeOperatorMapping: [String: String] = [:]
 
-    override func visitAny(_ node: Syntax) -> SyntaxVisitorContinueKind {
-        guard let node = node.as(TokenSyntax.self),
-              canMutateToken(node),
+    override func visit(_ node: TokenSyntax) -> SyntaxVisitorContinueKind {
+        guard canMutateToken(node),
               let oppositeOperator = oppositeOperator(for: node.tokenKind)
         else {
             return .visitChildren
@@ -29,7 +28,7 @@ class TokenAwareVisitor: MuterVisitor {
             snapshot: snapshot
         )
 
-        return .visitChildren
+        return super.visit(node)
     }
 
     override func visit(_ node: SequenceExprSyntax) -> SyntaxVisitorContinueKind {

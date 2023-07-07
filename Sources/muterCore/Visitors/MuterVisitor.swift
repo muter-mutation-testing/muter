@@ -27,6 +27,8 @@ extension MutationSourceCodePreparationChange: Nullable {
 }
 
 class MuterVisitor: SyntaxAnyVisitor {
+    private let muterDisableTag = "muter:disable"
+
     let configuration: MuterConfiguration?
     let sourceFileInfo: SourceFileInfo
     let mutationOperatorId: MutationOperator.Id
@@ -43,11 +45,28 @@ class MuterVisitor: SyntaxAnyVisitor {
         self.configuration = configuration
         self.sourceFileInfo = sourceFileInfo
         self.mutationOperatorId = mutationOperatorId
+
         schemataMappings = SchemataMutationMapping(
             filePath: sourceFileInfo.path
         )
 
         super.init(viewMode: .all)
+    }
+
+    override func visit(_ node: SourceFileSyntax) -> SyntaxVisitorContinueKind {
+        shouldVisitChildren(node)
+    }
+
+    override func visit(_ node: CodeBlockItemSyntax) -> SyntaxVisitorContinueKind {
+        shouldVisitChildren(node)
+    }
+
+    private func shouldVisitChildren(_ node: SyntaxProtocol) -> SyntaxVisitorContinueKind {
+        if node.containsLineComment(muterDisableTag) {
+            return .skipChildren
+        }
+
+        return .visitChildren
     }
 
     func location(

@@ -215,8 +215,17 @@ Note: If you pass `--output` muter will save the report, instead of using stdout
 ### Within Xcode
 Build (Cmd + B) your aggregate build target and let Muter run. The mutants which survive testing will be called out in the issue navigator. Once the target finishes building, testing has completed.
 
-### Skipping Mutations
-You can mark specific lines to skip mutations on, rather than entire files, by adding to them a line comment containing the text `muter:skip` (inspired by a similar feature in Swiftlint). This is mostly useful after the first run, if you conclude that specific uncaught mutants shouldn't be covered by your test suite – e.g. logging-related code, specific lines accessing real network/timers etc. This will prevent Muter from wasting time on testing them on subsequent runs, and reduce the 'noise'.
+### Disable muter in code
+Muter can be disabled with a comment inside a source file with the following format:
+
+```swift
+struct IgnoreMe {
+    func f() {
+// muter:disable
+        doSomething(testableSideEffect: true)
+    }
+}
+```
 
 ## Assumptions
 - Muter assumes you always put spaces around your operators. For example, it expects an equality check to look like
