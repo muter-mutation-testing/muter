@@ -221,7 +221,7 @@ Muter can be disabled with a comment inside a source file with the following for
 ```swift
 struct IgnoreMe {
     func f() {
-// muter:disable
+        // muter:disable
         doSomething(testableSideEffect: true)
     }
 }
