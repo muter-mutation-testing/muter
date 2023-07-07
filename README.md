@@ -194,7 +194,11 @@ Muter defaults to run when you don't specify any subcommands
 **Available Flags**
 
 ```
---files-to-mutate    Only mutate a given list of source code files (Supports glob expressions like Sources/**/*.swift)
+--files-to-mutate           Only mutate a given list of source code files (Supports glob expressions like Sources/**/*.swift)
+-f, --format <format>       The report format for muter: plain, json, html, xcode
+--skip-coverage             Skips the step in which Muter runs your project in order to filter out files without coverage.
+-o, --output <output>       Output file for the report to be saved.
+--skip-update-check         Skips the step in which Muter checks for newer versions.
 ```
 
 **Available Report Formats**

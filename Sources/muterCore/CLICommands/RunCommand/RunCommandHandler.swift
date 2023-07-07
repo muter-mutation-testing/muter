@@ -29,9 +29,10 @@ final class RunCommandHandler {
 
 private extension RunCommandHandler {
     private static let defaultSteps: [RunCommandStep] = [
+        UpdateCheck(),
         LoadConfiguration(),
         CreateTempDirectoryURL(),
-        RemoveProjectFromPreviousRun(),
+        PreviousRunCleanUp(),
         CopyProjectToTempDirectory(),
         DiscoverProjectCoverage(),
         DiscoverSourceFiles(),
@@ -47,6 +48,9 @@ private extension [RunCommandStep] {
     func filter(with options: RunOptions) -> [Element] {
         exclude {
             options.skipCoverage && $0 is DiscoverProjectCoverage
+        }
+        .exclude {
+            options.skipUpdateCheck && $0 is UpdateCheck
         }
     }
 }

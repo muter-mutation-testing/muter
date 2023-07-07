@@ -108,67 +108,15 @@ final class AcceptanceTests: XCTestCase {
     }
 
     func test_helpCommand() throws {
-        XCTAssertEqual(
-            try muterHelpOutput,
-            """
-            OVERVIEW: 🔎 Automated mutation testing for Swift 🕳️
-
-            USAGE: muter <subcommand>
-
-            OPTIONS:
-              --version               Show the version.
-              -h, --help              Show help information.
-
-            SUBCOMMANDS:
-              init                    Creates the configuration file that Muter uses
-              run (default)           Performs mutation testing for the Swift project
-                                      contained within the current directory.
-
-              See 'muter help <subcommand>' for detailed help.
-
-            """
-        )
+        try AssertSnapshot(muterHelpOutput)
     }
 
     func test_helpCommandInit() throws {
-        XCTAssertEqual(
-            try muterInitHelpOutput,
-            """
-            OVERVIEW: Creates the configuration file that Muter uses
-
-            USAGE: muter init
-
-            OPTIONS:
-              --version               Show the version.
-              -h, --help              Show help information.
-
-
-            """
-        )
+        try AssertSnapshot(muterInitHelpOutput)
     }
 
     func test_helpCommandRun() throws {
-        XCTAssertEqual(
-            try muterRunHelpOutput,
-            """
-            OVERVIEW: Performs mutation testing for the Swift project contained within the
-            current directory.
-
-            USAGE: muter run [--files-to-mutate <files-to-mutate> ...] [--format <format>] [--skip-coverage] [--output <output>]
-
-            OPTIONS:
-              --files-to-mutate <files-to-mutate>
-                                      Only mutate a given list of source code files.
-              -f, --format <format>   The report format for muter: plain, json, html, xcode
-              --skip-coverage         Skips the step in which Muter runs your project in
-                                      order to filter out files without coverage.
-              -o, --output <output>   Output file for the report to be saved.
-              --version               Show the version.
-              -h, --help              Show help information.
-
-
-            """
-        )
+        try AssertSnapshot(muterRunHelpOutput)
     }
 }
 

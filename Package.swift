@@ -20,7 +20,8 @@ let package = Package(
         .package(url: "https://github.com/johnsundell/plot.git", from: "0.14.0"),
         .package(url: "https://github.com/krzysztofzablocki/Difference.git", from: "1.0.2"),
         .package(url: "https://github.com/jpsim/Yams.git", from: "5.0.5"),
-        .package(url: "https://github.com/pointfreeco/swift-snapshot-testing.git", from: "1.11.0")
+        .package(url: "https://github.com/pointfreeco/swift-snapshot-testing.git", from: "1.11.0"),
+        .package(url: "https://github.com/mxcl/Version.git", from: "2.0.1")
     ],
     targets: [
         .executableTarget(
@@ -38,6 +39,7 @@ let package = Package(
                 .product(name: "SwiftSyntaxParser", package: "swift-syntax"),
                 .product(name: "ArgumentParser", package: "swift-argument-parser"),
                 .product(name: "Yams", package: "yams"),
+                .product(name: "Version", package: "Version")
             ],
             path: "Sources/muterCore"
         ),
@@ -59,7 +61,11 @@ let package = Package(
                 "TestingExtensions"
             ],
             path: "Tests",
-            exclude: ["fixtures", "Extensions"]
+            exclude: [
+                "__Snapshots__",
+                "fixtures",
+                "Extensions"
+            ]
         ),
         .testTarget(
             name: "muterAcceptanceTests",
@@ -69,7 +75,10 @@ let package = Package(
                 .product(name: "SnapshotTesting", package: "swift-snapshot-testing"),
             ],
             path: "AcceptanceTests",
-            exclude: ["runAcceptanceTests.sh"]
+            exclude: [
+                "__Snapshots__",
+                "runAcceptanceTests.sh"
+            ]
         ),
         .testTarget(
             name: "muterRegressionTests",
@@ -79,7 +88,10 @@ let package = Package(
                 .product(name: "SnapshotTesting", package: "swift-snapshot-testing"),
             ],
             path: "RegressionTests",
-            exclude: ["__Snapshots__", "runRegressionTests.sh"]
+            exclude: [
+                "__Snapshots__",
+                "runRegressionTests.sh"
+            ]
         )
     ]
 )
