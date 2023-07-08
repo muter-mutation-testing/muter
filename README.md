@@ -216,14 +216,17 @@ Note: If you pass `--output` muter will save the report, instead of using stdout
 Build (Cmd + B) your aggregate build target and let Muter run. The mutants which survive testing will be called out in the issue navigator. Once the target finishes building, testing has completed.
 
 ### Disable muter in code
-Muter can be disabled with a comment inside a source file with the following format:
+Muter will ignore code inside a `disable` block, up until you turn it on again by using the `enable` directive.
 
 ```swift
-struct IgnoreMe {
-    func f() {
-        // muter:disable
-        doSomething(testableSideEffect: true)
-    }
+// muter:disable
+func f() {
+    foo(testableSideEffect: true)
+}
+
+// muter:enable
+func f() {
+    bar(testableSideEffect: false)
 }
 ```
 
