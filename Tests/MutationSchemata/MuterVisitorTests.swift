@@ -29,6 +29,27 @@ final class MuterVisitorTests: MuterTestCase {
         XCTAssertEqual(mappings.first?.mutationSchemata.count, 1)
     }
 
+    func test_shouldIgnoreComplexDisablingRules() throws {
+        FileManager.default.createFile(
+            atPath: samplePath,
+            contents: sampleWithComplexDisableRules.data(using: .utf8)
+        )
+
+        let sourceCode = try XCTUnwrap(PrepareSourceCode().prepareSourceCode(samplePath))
+        let mappings = generateSchemataMappings(
+            for: sourceCode.source,
+            changes: sourceCode.changes
+        )
+
+        XCTAssertEqual(mappings.count, 1)
+
+        let ids = mappings.first?.mutationSchemata.map(\.mutationOperatorId)
+        XCTAssertEqual(
+            ids,
+            [.removeSideEffects, .ror, .ternaryOperator]
+        )
+    }
+
     func test_shouldIgnoreTopLevelDisable() throws {
         FileManager.default.createFile(
             atPath: samplePath,
@@ -45,22 +66,49 @@ final class MuterVisitorTests: MuterTestCase {
     }
 }
 
+private let sampleWithComplexDisableRules =
+    """
+        import Foundation
+
+        // muter:disable
+        func f() {
+            doSomething(testableSideEffect: true)
+        }
+
+        // muter:enable
+        func f() {
+            doSomething(testableSideEffect: false)
+        }
+
+        // muter:disable
+        struct IgnoreMe {
+
+            func f() -> Bool {
+                // muter:enable
+                let b = a == 5
+                // muter:disable
+                let e = a != 1
+                // muter:enable
+                return a ? "true" : "false"
+            }
+        }
+    """
+
 private let sampleWithDisabledMutations =
     """
     import Foundation
 
-    // muter:disable
     func f() {
         doSomething(testableSideEffect: true)
     }
 
+    // muter:disable
     func f() {
         doSomething(testableSideEffect: false)
     }
 
     struct IgnoreMe {
 
-        // muter:disable
         func f() {
             doSomething(testableSideEffect: true)
             doSomething(testableSideEffect: true)

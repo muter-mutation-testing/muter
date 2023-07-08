@@ -45,7 +45,10 @@ enum RemoveSideEffectsOperator {
 
             let statements = body.statements
             for statement in body.statements where statementContainsMutableToken(statement) {
-                let mutatedFunctionStatements = body.statements.exclude { $0.description == statement.description }
+                let mutatedFunctionStatements = body
+                    .statements
+                    .exclude { $0.description == statement.description }
+
                 let newCodeBlockItemList = CodeBlockItemListSyntax(mutatedFunctionStatements)
 
                 let position = endLocation(for: statement)
@@ -54,6 +57,8 @@ enum RemoveSideEffectsOperator {
                     after: "removed line",
                     description: "removed line"
                 )
+
+                checkNodeForDisableTag(statement)
 
                 add(
                     mutation: newCodeBlockItemList,
@@ -93,8 +98,9 @@ enum RemoveSideEffectsOperator {
             let doesntContainPossibleDeadlock = !statement.allChildren
                 .exclude(concurrencyStatements).isEmpty
 
-            return doesntContainVariableAssignment &&
-                doesntContainPossibleDeadlock && (containsDiscardedResult || containsFunctionCall)
+            return doesntContainVariableAssignment
+                && doesntContainPossibleDeadlock
+                && (containsDiscardedResult || containsFunctionCall)
         }
 
         private func variableAssignmentStatements(_ node: Syntax) -> Bool {
