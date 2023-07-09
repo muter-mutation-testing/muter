@@ -25,8 +25,11 @@ struct ApplySchemata: RunCommandStep {
                     mutationMap.filePath
                 )
             } catch {
-                // TODO: log?
-                continue
+                return .failure(
+                    .literal(
+                        reason: error.localizedDescription
+                    )
+                )
             }
         }
 

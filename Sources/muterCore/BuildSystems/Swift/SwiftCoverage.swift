@@ -10,7 +10,7 @@ final class SwiftCoverage: BuildSystemCoverage {
         guard runWithCoverageEnabled(using: configuration) != nil,
               let binaryPath = binaryPath(configuration),
               let testArtifact = findTestArtifact(binaryPath),
-              let coverageReport = coverageReport(testArtifact)
+              let coverageReport = coverageReport(binaryPath, testArtifact)
         else {
             return .failure(.build)
         }
@@ -52,6 +52,7 @@ final class SwiftCoverage: BuildSystemCoverage {
     }
 
     private func coverageReport(
+        _ binaryPath: String,
         _ testArtifactPath: String
     ) -> String? {
         let packageTests = URL(fileURLWithPath: testArtifactPath)
@@ -65,7 +66,7 @@ final class SwiftCoverage: BuildSystemCoverage {
                 "report",
                 testArtifactPath + "/Contents/MacOS/\(packageTests)",
                 "-instr-profile",
-                ".build/debug/codecov/default.profdata",
+                binaryPath + "/codecov/default.profdata",
                 "--ignore-filename-regex=.build|Tests"
             ]
         )
