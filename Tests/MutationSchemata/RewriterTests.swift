@@ -1,15 +1,16 @@
 @testable import muterCore
+import SwiftParser
 import TestingExtensions
 import XCTest
 
 final class RewriterTests: MuterTestCase {
-    private lazy var sourceCode = "\(fixturesDirectory)/MutationExamples/sampleWithAllOperators.swift"
+    private lazy var samplePath = "\(fixturesDirectory)/MutationExamples/sampleWithAllOperators.swift"
 
     override func setUpWithError() throws {
         try super.setUpWithError()
 
         FileManager.default.createFile(
-            atPath: sourceCode,
+            atPath: samplePath,
             contents: allOperatorsSourceCode.data(using: .utf8)
         )
     }
@@ -17,31 +18,16 @@ final class RewriterTests: MuterTestCase {
     override func tearDownWithError() throws {
         try super.tearDownWithError()
 
-        try FileManager.default.removeItem(atPath: sourceCode)
+        try FileManager.default.removeItem(atPath: samplePath)
     }
 
     func test_allOperatorsWithImplicitReturn() throws {
-        let code = try XCTUnwrap(PrepareSourceCode().prepareSourceCode(sourceCode))
+        let sourceCode = try XCTUnwrap(PrepareSourceCode().prepareSourceCode(samplePath))
 
-        let all: [SchemataMutationMapping] = MutationOperator.Id.allCases
-            .accumulate(into: []) { newSchemataMappings, mutationOperatorId in
-                let visitor = mutationOperatorId.visitor(
-                    .init(),
-                    code.source.asSourceFileInfo
-                )
-
-                visitor.sourceCodePreparationChange = code.changes
-
-                visitor.walk(code.source.code)
-
-                let schemataMapping = visitor.schemataMappings
-
-                if !schemataMapping.isEmpty {
-                    return newSchemataMappings + [schemataMapping]
-                } else {
-                    return newSchemataMappings
-                }
-            }.mergeByFileName()
+        let all = generateSchemataMappings(
+            for: sourceCode.source,
+            changes: sourceCode.changes
+        )
 
         XCTAssertEqual(all.count, 1)
 
@@ -49,7 +35,7 @@ final class RewriterTests: MuterTestCase {
 
         let sut = MuterRewriter(mapping)
 
-        let mutatedSourceCode = sut.visit(code.source.code).description
+        let mutatedSourceCode = sut.visit(sourceCode.source.code).description
 
         let positions = mapping.mutationSchemata
             .map { ($0.mutationOperatorId, $0.position) }

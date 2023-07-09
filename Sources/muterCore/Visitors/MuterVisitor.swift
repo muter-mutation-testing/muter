@@ -27,6 +27,10 @@ extension MutationSourceCodePreparationChange: Nullable {
 }
 
 class MuterVisitor: SyntaxAnyVisitor {
+    private let muterDisableTag = "muter:disable"
+    private let muterEnabledTag = "muter:enable"
+    private(set) var isDisabled = false
+
     let configuration: MuterConfiguration?
     let sourceFileInfo: SourceFileInfo
     let mutationOperatorId: MutationOperator.Id
@@ -43,11 +47,25 @@ class MuterVisitor: SyntaxAnyVisitor {
         self.configuration = configuration
         self.sourceFileInfo = sourceFileInfo
         self.mutationOperatorId = mutationOperatorId
+
         schemataMappings = SchemataMutationMapping(
             filePath: sourceFileInfo.path
         )
 
         super.init(viewMode: .all)
+    }
+
+    override func visitAny(_ node: Syntax) -> SyntaxVisitorContinueKind {
+        checkNodeForDisableTag(node)
+
+        return super.visitAny(node)
+    }
+
+    func checkNodeForDisableTag(_ node: SyntaxProtocol) {
+        isDisabled = isDisabled
+            && !node.containsLineComment(muterEnabledTag)
+            || !isDisabled
+            && node.containsLineComment(muterDisableTag)
     }
 
     func location(
@@ -146,6 +164,10 @@ class MuterVisitor: SyntaxAnyVisitor {
         at position: MutationPosition,
         snapshot: MutationOperator.Snapshot
     ) {
+        guard !isDisabled else {
+            return
+        }
+
         let schemata = makeSchemata(
             with: syntax,
             mutation: mutation,
