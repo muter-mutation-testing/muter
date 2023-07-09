@@ -13,7 +13,7 @@ struct PerformMutationTesting: RunCommandStep {
 
     func run(
         with state: AnyRunCommandState
-    ) -> Result<[RunCommandState.Change], MuterError> {
+    ) async throws -> [RunCommandState.Change] {
 
         fileManager.changeCurrentDirectoryPath(state.tempDirectoryURL.path)
 
@@ -29,11 +29,9 @@ struct PerformMutationTesting: RunCommandStep {
                 object: mutationTestOutcome
             )
 
-            return .success([
-                .mutationTestOutcomeGenerated(mutationTestOutcome)
-            ])
+            return [.mutationTestOutcomeGenerated(mutationTestOutcome)]
         case let .failure(reason):
-            return .failure(reason)
+            throw reason
         }
     }
 }

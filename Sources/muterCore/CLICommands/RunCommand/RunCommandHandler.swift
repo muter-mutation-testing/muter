@@ -20,9 +20,10 @@ final class RunCommandHandler {
         state = RunCommandState(from: options)
     }
 
-    func run() throws {
-        try steps.forEach { step in
-            try step.run(with: state).map(state.apply(_:)).get()
+    func run() async throws {
+        for step in steps {
+            let changes = try await step.run(with: state)
+            state.apply(changes)
         }
     }
 }

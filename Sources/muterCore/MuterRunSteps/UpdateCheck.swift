@@ -19,9 +19,11 @@ struct UpdateCheck: RunCommandStep {
         self.currentVersion = currentVersion
     }
 
-    func run(with state: AnyRunCommandState) -> Result<[RunCommandState.Change], MuterError> {
+    func run(
+        with state: AnyRunCommandState
+    ) async throws -> [RunCommandState.Change] {
         guard let releaseURL = URL(string: url) else {
-            return .success([])
+            return []
         }
 
         notificationCenter.post(name: .updateCheckStarted, object: nil)
@@ -39,7 +41,7 @@ struct UpdateCheck: RunCommandStep {
 
         notificationCenter.post(name: .updateCheckFinished, object: newVersion)
 
-        return .success([])
+        return []
     }
 
     private func muterLatestVersion(_ data: Data) throws -> Version {

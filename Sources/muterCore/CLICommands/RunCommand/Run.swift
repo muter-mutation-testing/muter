@@ -57,23 +57,25 @@ public struct Run: ParsableCommand {
 
         NotificationCenter.default.post(name: .muterLaunched, object: nil)
 
-        do {
-            try RunCommandHandler(options: options).run()
-        } catch {
-            Logger.print(
+        Task {
+            do {
+                try await RunCommandHandler(options: options).run()
+            } catch {
+                Logger.print(
                 """
                 ⚠️ ⚠️ ⚠️ ⚠️ ⚠️  Muter has encountered an error  ⚠️ ⚠️ ⚠️ ⚠️ ⚠️
                 \(error)
-
-
+                
+                
                 ⚠️ ⚠️ ⚠️ ⚠️ ⚠️  See the Muter error log above this line  ⚠️ ⚠️ ⚠️ ⚠️ ⚠️
-
+                
                 If you think this is a bug, or want help figuring out what could be happening, please open an issue at
                 https://github.com/muter-mutation-testing/muter/issues
                 """
-            )
-
-            Foundation.exit(-1)
+                )
+                
+                Foundation.exit(-1)
+            }
         }
     }
 }

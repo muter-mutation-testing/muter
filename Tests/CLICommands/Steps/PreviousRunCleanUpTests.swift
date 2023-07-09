@@ -9,39 +9,37 @@ final class PreviousRunCleanUpTests: MuterTestCase {
     private var state = RunCommandState()
     private lazy var sut = PreviousRunCleanUp()
 
-    func test_removeTempDirectorySucceeds() throws {
+    func test_removeTempDirectorySucceeds() async throws {
         fileManager.fileExistsToReturn = [true]
         state.tempDirectoryURL = URL(fileURLWithPath: "/some/projectName_mutated")
 
-        let result = try XCTUnwrap(sut.run(with: state).get())
-
+        let result = try await sut.run(with: state)
+        
         XCTAssertEqual(result, [])
         XCTAssertEqual(fileManager.paths, ["/some/projectName_mutated"])
         XCTAssertEqual(fileManager.methodCalls, ["fileExists(atPath:)", "removeItem(atPath:)"])
     }
 
-    func test_failsToRemoveTempDirectory() {
+    func test_failsToRemoveTempDirectory() async throws {
         fileManager.errorToThrow = RemoveTempDirectorySpecError.stub
         fileManager.fileExistsToReturn = [true]
 
         state.tempDirectoryURL = URL(fileURLWithPath: "/some/projectName_mutated")
-
-        let result = sut.run(with: state)
-
-        guard case let .failure(.removeProjectFromPreviousRunFailed(reason)) = result else {
-            return XCTFail("Expected failure, got\(result)")
+        
+        do {
+            _ = try await sut.run(with: state)
+        } catch MuterError.removeProjectFromPreviousRunFailed(let reason) {
+            XCTAssertFalse(reason.isEmpty)
         }
-
-        XCTAssertFalse(reason.isEmpty)
     }
 
-    func test_skipStep() throws {
+    func test_skipStep() async throws {
         fileManager.errorToThrow = RemoveTempDirectorySpecError.stub
         fileManager.fileExistsToReturn = [false]
 
         state.tempDirectoryURL = URL(fileURLWithPath: "/some/projectName_mutated")
 
-        let result = try XCTUnwrap(sut.run(with: state).get())
+        let result = try await sut.run(with: state)
 
         XCTAssertEqual(result, [])
     }

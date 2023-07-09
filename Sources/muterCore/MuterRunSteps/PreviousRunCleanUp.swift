@@ -6,24 +6,22 @@ struct PreviousRunCleanUp: RunCommandStep {
 
     func run(
         with state: AnyRunCommandState
-    ) -> Result<[RunCommandState.Change], MuterError> {
+    ) async throws -> [RunCommandState.Change] {
         guard fileManager.fileExists(
             atPath: state.tempDirectoryURL.path
         )
         else {
-            return .success([])
+            return []
         }
 
         do {
             try fileManager.removeItem(
                 atPath: state.tempDirectoryURL.path
             )
-            return .success([])
+            return []
         } catch {
-            return .failure(
-                .removeProjectFromPreviousRunFailed(
+            throw MuterError.removeProjectFromPreviousRunFailed(
                     reason: error.localizedDescription
-                )
             )
         }
     }

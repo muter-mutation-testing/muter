@@ -8,7 +8,7 @@ struct CopyProjectToTempDirectory: RunCommandStep {
 
     func run(
         with state: AnyRunCommandState
-    ) -> Result<[RunCommandState.Change], MuterError> {
+    ) async throws -> [RunCommandState.Change] {
         do {
             notificationCenter.post(
                 name: .projectCopyStarted,
@@ -25,15 +25,11 @@ struct CopyProjectToTempDirectory: RunCommandStep {
                 object: state.tempDirectoryURL.path
             )
 
-            return .success([
-                .copyToTempDirectoryCompleted,
-            ])
+            return [.copyToTempDirectoryCompleted]
         } catch {
-            return .failure(
-                .projectCopyFailed(
+            throw MuterError.projectCopyFailed(
                     reason: error.localizedDescription
                 )
-            )
         }
     }
 }

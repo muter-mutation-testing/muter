@@ -8,14 +8,14 @@ final class DiscoverProjectCoverage: RunCommandStep {
     @Dependency(\.projectCoverage)
     private var projectCoverage: ProjectCoverage
 
-    func run(with state: AnyRunCommandState) -> Result<[RunCommandState.Change], MuterError> {
+    func run(
+        with state: AnyRunCommandState
+    ) async throws -> [RunCommandState.Change] {
         guard let coverage = projectCoverage(
             state.muterConfiguration.buildSystem
         )
         else {
-            return .success([
-                .projectCoverage(.null),
-            ])
+            return [.projectCoverage(.null)]
         }
 
         notificationCenter.post(
@@ -37,14 +37,14 @@ final class DiscoverProjectCoverage: RunCommandStep {
                 object: true
             )
 
-            return .success([.projectCoverage(coverage)])
+            return [.projectCoverage(coverage)]
         case .failure:
             notificationCenter.post(
                 name: .projectCoverageDiscoveryFinished,
                 object: false
             )
 
-            return .success([.projectCoverage(.null)])
+            return [.projectCoverage(.null)]
         }
     }
 }

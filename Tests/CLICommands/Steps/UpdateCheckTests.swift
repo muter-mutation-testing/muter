@@ -13,20 +13,20 @@ final class UpdateCheckTests: MuterTestCase {
         currentVersion: currentVersion
     )
 
-    func test_notificationStarted() {
+    func test_notificationStarted() async throws {
         let expect = expectation(
             forNotification: .updateCheckStarted,
             object: nil,
             notificationCenter: notificationCenter
         )
 
-        _ = sut.run(with: state)
+        _ = try await sut.run(with: state)
 
         wait(for: [expect], timeout: 2)
     }
 
-    func test_url() {
-        _ = sut.run(with: state)
+    func test_url() async throws {
+        _ = try await sut.run(with: state)
 
         XCTAssertEqual(versionFetcher.methodCalls.count, 1)
         XCTAssertEqual(versionFetcher.optionsPassed, [])
@@ -36,15 +36,15 @@ final class UpdateCheckTests: MuterTestCase {
         )
     }
 
-    func test_parse() throws {
+    func test_parse() async throws {
         versionFetcher.dataToBeReturned = createReleaseJsonData()
 
-        let result = try sut.run(with: state).get()
+        let result = try await sut.run(with: state)
 
         XCTAssertEqual(result, [])
     }
 
-    func test_newVersionAvailable() {
+    func test_newVersionAvailable() async throws {
         versionFetcher.dataToBeReturned = createReleaseJsonData("9.9.9")
 
         var newVersion: String?
@@ -57,14 +57,14 @@ final class UpdateCheckTests: MuterTestCase {
             return true
         }
 
-        _ = sut.run(with: state)
+        _ = try await sut.run(with: state)
 
         wait(for: [expect], timeout: 2)
 
         XCTAssertEqual(newVersion, "9.9.9")
     }
 
-    func test_noNewVersion() {
+    func test_noNewVersion() async throws {
         versionFetcher.dataToBeReturned = createReleaseJsonData("0.0.0")
 
         var newVersion: String?
@@ -77,7 +77,7 @@ final class UpdateCheckTests: MuterTestCase {
             return true
         }
 
-        _ = sut.run(with: state)
+        _ = try await sut.run(with: state)
 
         wait(for: [expect], timeout: 2)
 

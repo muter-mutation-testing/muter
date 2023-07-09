@@ -9,7 +9,7 @@ struct DiscoverSourceFiles: RunCommandStep {
 
     func run(
         with state: AnyRunCommandState
-    ) -> Result<[RunCommandState.Change], MuterError> {
+    ) async throws -> [RunCommandState.Change] {
         notificationCenter.post(
             name: .sourceFileDiscoveryStarted,
             object: nil
@@ -34,10 +34,12 @@ struct DiscoverSourceFiles: RunCommandStep {
             name: .sourceFileDiscoveryFinished,
             object: sourceFileCandidates
         )
-
-        return sourceFileCandidates.count >= 1
-            ? .success([.sourceFileCandidatesDiscovered(sourceFileCandidates)])
-            : .failure(failure)
+        
+        if !sourceFileCandidates.isEmpty {
+            return [.sourceFileCandidatesDiscovered(sourceFileCandidates)]
+        } else {
+            throw failure
+        }
     }
 }
 

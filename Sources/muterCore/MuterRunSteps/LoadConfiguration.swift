@@ -6,7 +6,9 @@ struct LoadConfiguration: RunCommandStep {
     @Dependency(\.fileManager.currentDirectoryPath)
     private var currentDirectory: String
 
-    func run(with state: AnyRunCommandState) -> Result<[RunCommandState.Change], MuterError> {
+    func run(
+        with state: AnyRunCommandState
+    ) async throws -> [RunCommandState.Change] {
         do {
             let hasJSON = hasJsonInProject()
             let hasYAML = hasYamlInProject()
@@ -15,11 +17,9 @@ struct LoadConfiguration: RunCommandStep {
             guard canLoadConfiguration,
                   let configurationData = loadConfigurationData(legacy: hasJSON)
             else {
-                return .failure(
-                    .configurationParsingError(
+                throw MuterError.configurationParsingError(
                         reason: "Could not find \(MuterConfiguration.fileName) at path \(currentDirectory)"
                     )
-                )
             }
 
             let configuration = try MuterConfiguration(from: configurationData)
@@ -29,19 +29,17 @@ struct LoadConfiguration: RunCommandStep {
             }
 
             guard isConfigurationValid(configuration) else {
-                return .failure(
-                    .configurationParsingError(
+                throw MuterError.configurationParsingError(
                         reason: "Please provide a valid `-destination` argument for your project"
                     )
-                )
             }
 
-            return .success([
+            return [
                 .projectDirectoryUrlDiscovered(URL(fileURLWithPath: currentDirectory)),
                 .configurationParsed(configuration),
-            ])
+            ]
         } catch {
-            return .failure(.configurationParsingError(reason: error.localizedDescription))
+            throw MuterError.configurationParsingError(reason: error.localizedDescription)
         }
     }
 
