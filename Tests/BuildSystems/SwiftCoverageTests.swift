@@ -81,7 +81,7 @@ final class SwiftCoverageTests: MuterTestCase {
                 "report",
                 "/path/to/testArtifact/Contents/MacOS/testArtifact",
                 "-instr-profile",
-                ".build/debug/codecov/default.profdata",
+                "/path/to/binary/codecov/default.profdata",
                 "--ignore-filename-regex=.build|Tests"
             ]
         )
