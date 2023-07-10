@@ -9,6 +9,7 @@ class MuterTestCase: XCTestCase {
     private(set) var prepareCode = SourceCodePreparationSub()
     private(set) var process = ProcessSpy()
     private(set) var flushStandardOut = FlushHandlerSpy()
+    private(set) var server = ServerSpy()
 
     override func setUp() {
         super.setUp()
@@ -35,7 +36,8 @@ class MuterTestCase: XCTestCase {
             flushStandardOut: flushStandardOut.flush,
             ioDelegate: ioDelegate,
             process: { self.process },
-            prepareCode: prepareCode.prepare
+            prepareCode: prepareCode.prepare,
+            server: server
         )
     }
 

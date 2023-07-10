@@ -4,14 +4,10 @@ import Version
 import XCTest
 
 final class UpdateCheckTests: MuterTestCase {
-    private let versionFetcher = VersionFetcherSpy()
     private let currentVersion = Version(1, 0, 0)
     private let state = RunCommandState()
 
-    private lazy var sut = UpdateCheck(
-        versionFetcher: versionFetcher.fetch,
-        currentVersion: currentVersion
-    )
+    private lazy var sut = UpdateCheck(currentVersion: currentVersion)
 
     func test_notificationStarted() async throws {
         let expect = expectation(
@@ -28,24 +24,14 @@ final class UpdateCheckTests: MuterTestCase {
     func test_url() async throws {
         _ = try await sut.run(with: state)
 
-        XCTAssertEqual(versionFetcher.methodCalls.count, 1)
-        XCTAssertEqual(versionFetcher.optionsPassed, [])
         XCTAssertEqual(
-            versionFetcher.urlPassed?.absoluteString,
+            server.urlPassed?.absoluteString,
             "https://api.github.com/repos/muter-mutation-testing/muter/releases?per_page=1"
         )
     }
 
-    func test_parse() async throws {
-        versionFetcher.dataToBeReturned = createReleaseJsonData()
-
-        let result = try await sut.run(with: state)
-
-        XCTAssertEqual(result, [])
-    }
-
     func test_newVersionAvailable() async throws {
-        versionFetcher.dataToBeReturned = createReleaseJsonData("9.9.9")
+        server.dataToBeReturned = createReleaseJsonData("9.9.9")
 
         var newVersion: String?
         let expect = expectation(
@@ -57,15 +43,16 @@ final class UpdateCheckTests: MuterTestCase {
             return true
         }
 
-        _ = try await sut.run(with: state)
+        let result = try await sut.run(with: state)
 
         wait(for: [expect], timeout: 2)
 
         XCTAssertEqual(newVersion, "9.9.9")
+        XCTAssertEqual(result, [.newVersionAvaiable("9.9.9")])
     }
 
     func test_noNewVersion() async throws {
-        versionFetcher.dataToBeReturned = createReleaseJsonData("0.0.0")
+        server.dataToBeReturned = createReleaseJsonData("0.0.0")
 
         var newVersion: String?
         let expect = expectation(
@@ -77,10 +64,11 @@ final class UpdateCheckTests: MuterTestCase {
             return true
         }
 
-        _ = try await sut.run(with: state)
+        let result = try await sut.run(with: state)
 
         wait(for: [expect], timeout: 2)
 
+        XCTAssertTrue(result.isEmpty)
         XCTAssertNil(newVersion)
     }
 

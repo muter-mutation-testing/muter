@@ -25,7 +25,7 @@ struct CopyProjectToTempDirectory: RunCommandStep {
                 object: state.tempDirectoryURL.path
             )
 
-            return [.copyToTempDirectoryCompleted]
+            return []
         } catch {
             throw MuterError.projectCopyFailed(
                 reason: error.localizedDescription

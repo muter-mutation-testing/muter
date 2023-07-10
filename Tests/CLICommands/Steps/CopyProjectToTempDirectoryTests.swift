@@ -14,9 +14,7 @@ final class CopyProjectToTempDirectoryTests: MuterTestCase {
         state.projectDirectoryURL = URL(string: "/some/projectName")!
         state.tempDirectoryURL = URL(string: "/tmp/projectName")!
 
-        let result = try await sut.run(with: state)
-
-        XCTAssertEqual(result, [.copyToTempDirectoryCompleted])
+        _ = try await sut.run(with: state)
 
         XCTAssertEqual(fileManager.copyPaths.first?.source, "/some/projectName")
         XCTAssertEqual(fileManager.copyPaths.first?.dest, "/tmp/projectName")

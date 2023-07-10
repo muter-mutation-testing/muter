@@ -45,4 +45,5 @@ struct World {
     var writeFile: WriteFile = { try $0.write(toFile: $1, atomically: true, encoding: .utf8) }
     var loadSourceCode: LoadSourceCode = { sourceCode(fromFileAt: $0) }
     var projectCoverage: ProjectCoverage = BuildSystem.coverage
+    var server: Server = URLSession.shared
 }

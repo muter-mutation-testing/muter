@@ -1,22 +1,24 @@
 import Foundation
 import Version
 
-typealias MuterVersionFecher = (URL, Data.ReadingOptions) throws -> Data
+protocol Server {
+    func data(from url: URL) async throws -> (Data, URLResponse)
+}
+
+extension URLSession: Server {}
 
 private let url = "https://api.github.com/repos/muter-mutation-testing/muter/releases?per_page=1"
 
 struct UpdateCheck: RunCommandStep {
     @Dependency(\.notificationCenter)
     private var notificationCenter: NotificationCenter
-    private let versionFetcher: MuterVersionFecher
+    @Dependency(\.server)
+    private var server: Server
+
     private let currentVersion: Version
 
-    init(
-        versionFetcher: @escaping MuterVersionFecher = Data.init(contentsOf:options:),
-        currentVersion: Version = Version(tolerant: version)!
-    ) {
-        self.versionFetcher = versionFetcher
-        self.currentVersion = currentVersion
+    init(currentVersion: Version? = Version(tolerant: version)) {
+        self.currentVersion = currentVersion ?? .null
     }
 
     func run(
@@ -28,20 +30,22 @@ struct UpdateCheck: RunCommandStep {
 
         notificationCenter.post(name: .updateCheckStarted, object: nil)
 
-        var newVersion: String?
+        let (data, _) = try await server.data(from: releaseURL)
 
-        do {
-            let data = try versionFetcher(releaseURL, [])
-            let latestVersion = try muterLatestVersion(data)
+        guard let newVersion = try? muterLatestVersion(data),
+              currentVersion < newVersion
+        else {
+            notificationCenter.post(name: .updateCheckFinished, object: nil)
+            return []
+        }
 
-            if currentVersion < latestVersion {
-                newVersion = latestVersion.description
-            }
-        } catch {}
+        let latestVersion = newVersion.description
 
-        notificationCenter.post(name: .updateCheckFinished, object: newVersion)
+        notificationCenter.post(name: .updateCheckFinished, object: latestVersion)
 
-        return []
+        return [
+            .newVersionAvaiable(latestVersion)
+        ]
     }
 
     private func muterLatestVersion(_ data: Data) throws -> Version {
