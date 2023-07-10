@@ -1,23 +1,23 @@
-import Progress
 import Foundation
+import Progress
 import Rainbow
 
 public class SimpleTimeEstimate: ProgressElementType {
     private let initialEstimate: TimeInterval
-    private var lastTime: Date = Date()
-    
+    private var lastTime: Date = .init()
+
     public init(initialEstimate: TimeInterval) {
         self.initialEstimate = initialEstimate
     }
-    
+
     public func value(_ progressBar: ProgressBar) -> String {
         let timeSinceLastInvocation = Date()
         let timePerItem = DateInterval(start: lastTime, end: timeSinceLastInvocation).duration
-        
+
         let estimatedTimeRemaining = progressBar.index == 0 ?
             initialEstimate :
             Double(progressBar.count - progressBar.index) * timePerItem
-        
+
         lastTime = Date()
 
         let remainingMinutes = Int(ceil(estimatedTimeRemaining / 60))
@@ -25,14 +25,14 @@ public class SimpleTimeEstimate: ProgressElementType {
         let formattedRemainingMinutes = remainingMinutes == 1
             ? "1 minute"
             : "\(remainingMinutes) minutes"
-        
+
         return "ETC: \(formattedRemainingMinutes)"
     }
 }
 
 public struct ProgressOneIndexed: ProgressElementType {
     public init() {}
-    
+
     public func value(_ progressBar: ProgressBar) -> String {
         let index = progressBar.index + 1 > progressBar.count ?
             progressBar.index :
@@ -43,29 +43,29 @@ public struct ProgressOneIndexed: ProgressElementType {
 
 public struct ColoredProgressBarLine: ProgressElementType {
     let barLength: Int
-    
+
     private func colorMap(_ completedBarElements: Int) -> Color {
         let interval = barLength / 4
         switch completedBarElements {
-        case (0...(interval)): return Color.magenta
-        case ((interval+1)...(2*interval)): return Color.lightRed
-        case ((2*interval+1)...(3*interval)): return Color.yellow
+        case 0 ... interval: return Color.magenta
+        case (interval + 1) ... (2 * interval): return Color.lightRed
+        case (2 * interval + 1) ... (3 * interval): return Color.yellow
         default: return Color.green
         }
     }
-    
+
     public init(barLength: Int = 30) {
         self.barLength = barLength
     }
-    
+
     public func value(_ progressBar: ProgressBar) -> String {
         var completedBarElements = 0
-        if progressBar.count == 0 {
+        if progressBar.isEmpty {
             completedBarElements = barLength
         } else {
             completedBarElements = Int(Double(barLength) * (Double(progressBar.index) / Double(progressBar.count)))
         }
-        
+
         let color = colorMap(completedBarElements)
         var barArray = [String](repeating: "-".applyingColor(color), count: completedBarElements)
         barArray += [String](repeating: " ", count: barLength - completedBarElements)
@@ -81,7 +81,7 @@ struct ProgressBarMultilineTerminalPrinter: ProgressBarPrinter {
         // have to move the cursor down one line initially.
         Logger.print("")
     }
-    
+
     mutating func display(_ progressBar: ProgressBar) {
         let currentTime = getTimeOfDay()
         if currentTime - lastPrintedTime > 0.1 || progressBar.index == progressBar.count {
@@ -97,5 +97,11 @@ private extension ProgressBarMultilineTerminalPrinter {
         var tv = timeval()
         gettimeofday(&tv, nil)
         return Double(tv.tv_sec) + Double(tv.tv_usec) / 1000000
+    }
+}
+
+private extension ProgressBar {
+    var isEmpty: Bool {
+        count <= 0
     }
 }

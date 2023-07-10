@@ -14,7 +14,7 @@ final class PreviousRunCleanUpTests: MuterTestCase {
         state.tempDirectoryURL = URL(fileURLWithPath: "/some/projectName_mutated")
 
         let result = try await sut.run(with: state)
-        
+
         XCTAssertEqual(result, [])
         XCTAssertEqual(fileManager.paths, ["/some/projectName_mutated"])
         XCTAssertEqual(fileManager.methodCalls, ["fileExists(atPath:)", "removeItem(atPath:)"])
@@ -25,10 +25,15 @@ final class PreviousRunCleanUpTests: MuterTestCase {
         fileManager.fileExistsToReturn = [true]
 
         state.tempDirectoryURL = URL(fileURLWithPath: "/some/projectName_mutated")
-        
-        do {
-            _ = try await sut.run(with: state)
-        } catch MuterError.removeProjectFromPreviousRunFailed(let reason) {
+
+        try await assertThrowsMuterError(
+            await sut.run(with: state)
+        ) { error in
+            guard case let .removeProjectFromPreviousRunFailed(reason) = error else {
+                XCTFail("Expected removeProjectFromPreviousRunFailed, got \(error)")
+                return
+            }
+
             XCTAssertFalse(reason.isEmpty)
         }
     }

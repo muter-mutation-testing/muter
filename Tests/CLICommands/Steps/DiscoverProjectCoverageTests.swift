@@ -7,7 +7,7 @@ final class DiscoverProjectCoverageTests: MuterTestCase {
 
     private lazy var sut = DiscoverProjectCoverage()
 
-    func test_whenStepStarts_shouldFireNotification() {
+    func test_whenStepStarts_shouldFireNotification() async throws {
         state.muterConfiguration = MuterConfiguration(
             executable: "/path/to/xcodebuild",
             arguments: ["arg0", "arg1"]
@@ -19,34 +19,32 @@ final class DiscoverProjectCoverageTests: MuterTestCase {
             notificationCenter: notificationCenter
         )
 
-        _ = sut.run(with: state)
+        _ = try await sut.run(with: state)
 
         wait(for: [expectation], timeout: 2)
     }
 
-    func test_shouldReturnNullForUnknownBuildSytem() throws {
+    func test_shouldReturnNullForUnknownBuildSytem() async throws {
         state.muterConfiguration = MuterConfiguration(
             executable: "/path/to/unknown",
             arguments: []
         )
 
-        let result = try XCTUnwrap(sut.run(with: state).get())
+        let result = try await sut.run(with: state)
 
         XCTAssertEqual(
             result,
-            [
-                .projectCoverage(.null)
-            ]
+            [.projectCoverage(.null)]
         )
     }
 
-    func test_shouldChangeCurrentPath() {
+    func test_shouldChangeCurrentPath() async throws {
         state.muterConfiguration = MuterConfiguration(
             executable: "/path/to/xcodebuild",
             arguments: []
         )
 
-        _ = sut.run(with: state)
+        _ = try await sut.run(with: state)
 
         XCTAssertEqual(
             fileManager.methodCalls,
@@ -57,7 +55,7 @@ final class DiscoverProjectCoverageTests: MuterTestCase {
         )
     }
 
-    func test_whenStepFails_thenPostNotification() {
+    func test_whenStepFails_thenPostNotification() async throws {
         state.muterConfiguration = MuterConfiguration(
             executable: "/path/to/xcodebuild",
             arguments: []
@@ -71,7 +69,7 @@ final class DiscoverProjectCoverageTests: MuterTestCase {
             notificationCenter: notificationCenter
         )
 
-        _ = sut.run(with: state)
+        _ = try await sut.run(with: state)
 
         wait(for: [expectation], timeout: 2)
     }

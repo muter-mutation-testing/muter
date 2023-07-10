@@ -18,8 +18,8 @@ struct LoadConfiguration: RunCommandStep {
                   let configurationData = loadConfigurationData(legacy: hasJSON)
             else {
                 throw MuterError.configurationParsingError(
-                        reason: "Could not find \(MuterConfiguration.fileName) at path \(currentDirectory)"
-                    )
+                    reason: "Could not find \(MuterConfiguration.fileName) at path \(currentDirectory)"
+                )
             }
 
             let configuration = try MuterConfiguration(from: configurationData)
@@ -30,8 +30,8 @@ struct LoadConfiguration: RunCommandStep {
 
             guard isConfigurationValid(configuration) else {
                 throw MuterError.configurationParsingError(
-                        reason: "Please provide a valid `-destination` argument for your project"
-                    )
+                    reason: "Please provide a valid `-destination` argument for your project"
+                )
             }
 
             return [

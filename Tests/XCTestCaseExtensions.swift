@@ -1,4 +1,5 @@
 @testable import muterCore
+import TestingExtensions
 import XCTest
 
 class MuterTestCase: XCTestCase {
@@ -61,6 +62,44 @@ class MuterTestCase: XCTestCase {
                     return newSchemataMappings
                 }
             }.mergeByFileName()
+    }
+
+    func assertThrowsMuterError(
+        _ expression: @autoclosure () async throws -> some Any,
+        _ expectedError: MuterError,
+        _ message: @autoclosure () -> String = "",
+        file: StaticString = #filePath,
+        line: UInt = #line
+    ) async {
+        try await assertThrowsMuterError(
+            await expression(),
+            message(),
+            file: file,
+            line: line
+        ) { error in
+            XCTAssertEqual(error, expectedError, file: file, line: line)
+        }
+    }
+
+    func assertThrowsMuterError(
+        _ expression: @autoclosure () async throws -> some Any,
+        _ message: @autoclosure () -> String = "",
+        file: StaticString = #filePath,
+        line: UInt = #line,
+        _ errorHandler: (MuterError) throws -> Void
+    ) async {
+        try await AssertThrowsError(
+            await expression(),
+            message(),
+            file: file,
+            line: line
+        ) { error in
+            if let muterError = error as? MuterError {
+                try errorHandler(muterError)
+            } else {
+                XCTFail("Expected \(MuterError.self), got \(error)", file: file, line: line)
+            }
+        }
     }
 }
 

@@ -21,7 +21,7 @@ struct PreviousRunCleanUp: RunCommandStep {
             return []
         } catch {
             throw MuterError.removeProjectFromPreviousRunFailed(
-                    reason: error.localizedDescription
+                reason: error.localizedDescription
             )
         }
     }

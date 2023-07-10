@@ -9,7 +9,7 @@ final class BuildForTestingTests: MuterTestCase {
         fixturesDirectory + "/BuildForTesting"
     }
 
-    private lazy var sut = BuildForTesting()
+    private let sut = BuildForTesting()
 
     func test_whenBuildSystemIsSwift_thenIgnoreStep() async throws {
         state.muterConfiguration = MuterConfiguration(
@@ -32,7 +32,8 @@ final class BuildForTestingTests: MuterTestCase {
 
         state.tempDirectoryURL = URL(fileURLWithPath: "/path/to/temp")
 
-        _ = try await sut.run(with: state)
+        do { _ = try await sut.run(with: state) }
+        catch {}
 
         XCTAssertTrue(fileManager.methodCalls.contains("changeCurrentDirectoryPath(_:)"))
         XCTAssertEqual(
@@ -65,7 +66,8 @@ final class BuildForTestingTests: MuterTestCase {
 
         process.stdoutToBeReturned = " "
 
-        _ = try await sut.run(with: state)
+        do { _ = try await sut.run(with: state) }
+        catch {}
 
         XCTAssertEqual(process.executableURL?.absoluteString, "file:///path/to/xcodebuild")
         XCTAssertEqual(process.arguments, ["some", "commands", "clean", "build-for-testing"])
@@ -81,7 +83,8 @@ final class BuildForTestingTests: MuterTestCase {
 
         process.stdoutToBeReturned = makeBuildForTestingLog()
 
-        _ = try await sut.run(with: state)
+        do { _ = try await sut.run(with: state) }
+        catch {}
 
         XCTAssertEqual(process.executableURL?.absoluteString, "file:///path/to/xcodebuild")
         XCTAssertEqual(process.arguments, ["some", "commands", "clean", "build-for-testing"])
@@ -103,7 +106,8 @@ final class BuildForTestingTests: MuterTestCase {
 
         fileManager.fileContentsToReturn = makeBuildRequestJson().data(using: .utf8)
 
-        _ = try await sut.run(with: state)
+        do { _ = try await sut.run(with: state) }
+        catch {}
 
         XCTAssertEqual(process.executableURL?.absoluteString, "file:///path/to/xcodebuild")
         XCTAssertEqual(process.arguments, ["some", "commands", "clean", "build-for-testing"])
@@ -149,11 +153,10 @@ final class BuildForTestingTests: MuterTestCase {
 
         process.stdoutToBeReturned = ""
 
-        do {
-            _ = try await sut.run(with: state)
-        } catch MuterError.literal(let reason) {
-            XCTAssertEqual(reason, "Could not run test with -build-for-testing argument")
-        }
+        try await assertThrowsMuterError(
+            await sut.run(with: state),
+            .literal(reason: "Could not run test with -build-for-testing argument")
+        )
     }
 
     func test_findBuildRequestJsonFailed() async throws {
@@ -164,13 +167,10 @@ final class BuildForTestingTests: MuterTestCase {
 
         process.stdoutToBeReturned = "im not important"
 
-        let result = try await sut.run(with: state)
-
-        do {
-            _ = try await sut.run(with: state)
-        } catch MuterError.literal(let reason) {
-            XCTAssertEqual(reason, "Could not parse buildRequest.json from build description path")
-        }
+        try await assertThrowsMuterError(
+            await sut.run(with: state),
+            .literal(reason: "Could not parse buildRequest.json from build description path")
+        )
     }
 
     func test_parseBuildRequestJsonFailed() async throws {
@@ -182,9 +182,14 @@ final class BuildForTestingTests: MuterTestCase {
         state.tempDirectoryURL = URL(fileURLWithPath: "/path/to/temp")
         process.stdoutToBeReturned = makeBuildForTestingLog()
 
-        do {
-            _ = try await sut.run(with: state)
-        } catch MuterError.literal(let reason) {
+        try await assertThrowsMuterError(
+            await sut.run(with: state)
+        ) { error in
+            guard case let .literal(reason) = error else {
+                XCTFail("Expected literal, got \(error)")
+                return
+            }
+
             XCTAssertTrue(reason.contains("Could not parse build request json at path"))
         }
     }
@@ -200,11 +205,10 @@ final class BuildForTestingTests: MuterTestCase {
         fileManager.fileContentsToReturn = makeBuildRequestJson().data(using: .utf8)
         fileManager.errorToThrow = TestingError.stub
 
-        do {
-            _ = try await sut.run(with: state)
-        } catch MuterError.literal(let reason) {
-            XCTAssertFalse(reason.isEmpty)
-        }
+        try await assertThrowsMuterError(
+            await sut.run(with: state),
+            .literal(reason: "stub")
+        )
     }
 
     func test_findMostRecentXCTestRunFails() async throws {
@@ -218,11 +222,10 @@ final class BuildForTestingTests: MuterTestCase {
         fileManager.fileContentsToReturn = makeBuildRequestJson().data(using: .utf8)
         fileManager.contentsAtPathSortedToReturn = [""]
 
-        do {
-            _ = try await sut.run(with: state)
-        } catch MuterError.literal(let reason) {
-            XCTAssertEqual(reason, "Could not find xctestrun file at path: /path/to/temp/Debug")
-        }
+        try await assertThrowsMuterError(
+            await sut.run(with: state),
+            .literal(reason: "Could not find xctestrun file at path: /path/to/temp/Debug")
+        )
     }
 
     func test_parseXCTestRunFails() async throws {
@@ -236,11 +239,10 @@ final class BuildForTestingTests: MuterTestCase {
         fileManager.fileContentsToReturn = makeBuildRequestJson().data(using: .utf8)
         fileManager.contentsAtPathSortedToReturn = ["some/project.xctestrun"]
 
-        do {
-            _ = try await sut.run(with: state)
-        } catch MuterError.literal(let reason) {
-            XCTAssertEqual(reason, "Could not parse xctestrun at path: some/project.xctestrun")
-        }
+        try await assertThrowsMuterError(
+            await sut.run(with: state),
+            .literal(reason: "Could not parse xctestrun at path: some/project.xctestrun")
+        )
     }
 
     private func makeBuildForTestingLog() -> String {

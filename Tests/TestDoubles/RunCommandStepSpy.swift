@@ -8,11 +8,11 @@ class RunCommandStepSpy: Spy, RunCommandStep {
     func run(with state: AnyRunCommandState) async throws -> [RunCommandState.Change] {
         methodCalls.append(#function)
         states.append(state)
-        
+
         switch resultToReturn {
-        case .success(let result):
+        case let .success(result):
             return result
-        case .failure(let failure):
+        case let .failure(failure):
             throw failure
         case .none:
             throw MuterError.literal(reason: #function)

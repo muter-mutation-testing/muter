@@ -28,8 +28,8 @@ struct CopyProjectToTempDirectory: RunCommandStep {
             return [.copyToTempDirectoryCompleted]
         } catch {
             throw MuterError.projectCopyFailed(
-                    reason: error.localizedDescription
-                )
+                reason: error.localizedDescription
+            )
         }
     }
 }

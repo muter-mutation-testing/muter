@@ -34,7 +34,7 @@ struct DiscoverSourceFiles: RunCommandStep {
             name: .sourceFileDiscoveryFinished,
             object: sourceFileCandidates
         )
-        
+
         if !sourceFileCandidates.isEmpty {
             return [.sourceFileCandidatesDiscovered(sourceFileCandidates)]
         } else {
