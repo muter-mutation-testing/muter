@@ -43,7 +43,7 @@ struct UpdateCheck: RunCommandStep {
             let latestVersion = newVersion.description
 
             notificationCenter.post(name: .updateCheckFinished, object: latestVersion)
-            
+
             return [
                 .newVersionAvaiable(latestVersion)
             ]

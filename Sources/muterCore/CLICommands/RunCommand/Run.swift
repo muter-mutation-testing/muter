@@ -61,16 +61,16 @@ public struct Run: AsyncParsableCommand {
             try await RunCommandHandler(options: options).run()
         } catch {
             Logger.print(
-                    """
-                    ⚠️ ⚠️ ⚠️ ⚠️ ⚠️  Muter has encountered an error  ⚠️ ⚠️ ⚠️ ⚠️ ⚠️
-                    \(error)
+                """
+                ⚠️ ⚠️ ⚠️ ⚠️ ⚠️  Muter has encountered an error  ⚠️ ⚠️ ⚠️ ⚠️ ⚠️
+                \(error)
 
 
-                    ⚠️ ⚠️ ⚠️ ⚠️ ⚠️  See the Muter error log above this line  ⚠️ ⚠️ ⚠️ ⚠️ ⚠️
+                ⚠️ ⚠️ ⚠️ ⚠️ ⚠️  See the Muter error log above this line  ⚠️ ⚠️ ⚠️ ⚠️ ⚠️
 
-                    If you think this is a bug, or want help figuring out what could be happening, please open an issue at
-                    https://github.com/muter-mutation-testing/muter/issues
-                    """
+                If you think this is a bug, or want help figuring out what could be happening, please open an issue at
+                https://github.com/muter-mutation-testing/muter/issues
+                """
             )
 
             Foundation.exit(-1)
