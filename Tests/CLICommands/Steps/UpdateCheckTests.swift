@@ -18,7 +18,7 @@ final class UpdateCheckTests: MuterTestCase {
 
         _ = try await sut.run(with: state)
 
-        wait(for: [expect], timeout: 2)
+        await fulfillment(of: [expect], timeout: 2)
     }
 
     func test_url() async throws {
@@ -45,7 +45,7 @@ final class UpdateCheckTests: MuterTestCase {
 
         let result = try await sut.run(with: state)
 
-        wait(for: [expect], timeout: 2)
+        await fulfillment(of: [expect], timeout: 2)
 
         XCTAssertEqual(newVersion, "9.9.9")
         XCTAssertEqual(result, [.newVersionAvaiable("9.9.9")])
@@ -66,7 +66,7 @@ final class UpdateCheckTests: MuterTestCase {
 
         let result = try await sut.run(with: state)
 
-        wait(for: [expect], timeout: 2)
+        await fulfillment(of: [expect], timeout: 2)
 
         XCTAssertTrue(result.isEmpty)
         XCTAssertNil(newVersion)

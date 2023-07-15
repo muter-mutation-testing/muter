@@ -21,7 +21,7 @@ final class DiscoverProjectCoverageTests: MuterTestCase {
 
         _ = try await sut.run(with: state)
 
-        wait(for: [expectation], timeout: 2)
+        await fulfillment(of: [expectation], timeout: 2)
     }
 
     func test_shouldReturnNullForUnknownBuildSytem() async throws {
@@ -71,6 +71,6 @@ final class DiscoverProjectCoverageTests: MuterTestCase {
 
         _ = try await sut.run(with: state)
 
-        wait(for: [expectation], timeout: 2)
+        await fulfillment(of: [expectation], timeout: 2)
     }
 }

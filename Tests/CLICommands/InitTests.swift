@@ -4,8 +4,8 @@ import XCTest
 final class InitTests: MuterTestCase {
     private lazy var sut = Init(directory: rootTestDirectory)
 
-    func test_createsAConfigurationFileNamedMuterConfYmlWithPlaceholderValuesInASpecifiedDirectory() throws {
-        try sut.run()
+    func test_createsAConfigurationFileNamedMuterConfYmlWithPlaceholderValuesInASpecifiedDirectory() async throws {
+        try await sut.run()
         guard let contents = FileManager.default.contents(atPath: "\(rootTestDirectory)/muter.conf.yml"),
               let _ = try? MuterConfiguration(from: contents)
         else {
