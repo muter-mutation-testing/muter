@@ -1,3 +1,4 @@
+import Foundation
 import enum muterCore.Muter
 
 Task {
