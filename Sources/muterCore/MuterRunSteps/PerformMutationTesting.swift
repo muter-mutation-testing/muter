@@ -8,38 +8,53 @@ struct PerformMutationTesting: RunCommandStep {
     private var notificationCenter: NotificationCenter
     @Dependency(\.fileManager)
     private var fileManager: FileSystemManager
+    @Dependency(\.now)
+    private var now: Now
 
     private let buildErrorsThreshold: Int = 5
 
     func run(
         with state: AnyRunCommandState
     ) async throws -> [RunCommandState.Change] {
-
         fileManager.changeCurrentDirectoryPath(state.tempDirectoryURL.path)
 
-        let result = performMutationTesting(using: state)
-        switch result {
-        case let .success(outcomes):
-            let mutationTestOutcome = state.mutationTestOutcome
-            mutationTestOutcome.mutations = outcomes
-            mutationTestOutcome.coverage = state.projectCoverage
-
-            notificationCenter.post(
-                name: .mutationTestingFinished,
-                object: mutationTestOutcome
-            )
-
-            return [.mutationTestOutcomeGenerated(mutationTestOutcome)]
-        case let .failure(reason):
-            throw reason
+        let (mutationOutcome, testDuration) = try await benchmarkMutationTesting {
+            try await performMutationTesting(using: state)
         }
+
+        let mutationTestOutcome = MutationTestOutcome(
+            mutations: mutationOutcome,
+            coverage: state.projectCoverage,
+            testDuration: testDuration,
+            newVersion: state.newVersion
+        )
+
+        notificationCenter.post(
+            name: .mutationTestingFinished,
+            object: mutationTestOutcome
+        )
+
+        return [.mutationTestOutcomeGenerated(mutationTestOutcome)]
+    }
+
+    private func benchmarkMutationTesting<T>(
+        _ work: () async throws -> T
+    ) async throws -> (result: T, duration: TimeInterval) {
+        let initialTime = now()
+        let result = try await work()
+        let duration = DateInterval(
+            start: initialTime,
+            end: now()
+        ).duration
+
+        return (result, duration)
     }
 }
 
 private extension PerformMutationTesting {
     func performMutationTesting(
         using state: AnyRunCommandState
-    ) -> Result<[MutationTestOutcome.Mutation], MuterError> {
+    ) async throws -> [MutationTestOutcome.Mutation] {
         notificationCenter.post(name: .mutationTestingStarted, object: nil)
 
         let initialTime = Date()
@@ -56,10 +71,8 @@ private extension PerformMutationTesting {
         ).duration
 
         guard testSuiteOutcome == .passed else {
-            return .failure(
-                .mutationTestingAborted(
-                    reason: .baselineTestFailed(log: testLog)
-                )
+            throw MuterError.mutationTestingAborted(
+                reason: .baselineTestFailed(log: testLog)
             )
         }
 
@@ -75,12 +88,10 @@ private extension PerformMutationTesting {
             object: mutationLog
         )
 
-        return insertMutants(using: state)
+        return try await insertMutants(using: state)
     }
 
-    func insertMutants(
-        using state: AnyRunCommandState
-    ) -> Result<[MutationTestOutcome.Mutation], MuterError> {
+    func insertMutants(using state: AnyRunCommandState) async throws -> [MutationTestOutcome.Mutation] {
         var outcomes: [MutationTestOutcome.Mutation] = []
         outcomes.reserveCapacity(state.mutationPoints.count)
         var buildErrors = 0
@@ -88,7 +99,7 @@ private extension PerformMutationTesting {
         for mutationMap in state.mutationMapping {
             for mutationSchema in mutationMap.mutationSchemata {
 
-                try! ioDelegate.switchOn(
+                try? ioDelegate.switchOn(
                     schemata: mutationSchema,
                     for: state.projectXCTestRun,
                     at: state.tempDirectoryURL
@@ -138,12 +149,12 @@ private extension PerformMutationTesting {
 
                 buildErrors = testSuiteOutcome == .buildError ? (buildErrors + 1) : 0
                 if buildErrors >= buildErrorsThreshold {
-                    return .failure(.mutationTestingAborted(reason: .tooManyBuildErrors))
+                    throw MuterError.mutationTestingAborted(reason: .tooManyBuildErrors)
                 }
             }
         }
 
-        return .success(outcomes)
+        return outcomes
     }
 
     func logFileName(

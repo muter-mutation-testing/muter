@@ -24,6 +24,7 @@ typealias Printer = (String) -> Void
 typealias WriteFile = (String, String) throws -> Void
 typealias LoadSourceCode = (String) -> SourceCodeInfo?
 typealias ProjectCoverage = (BuildSystem) -> BuildSystemCoverage?
+typealias Now = () -> Date
 
 struct World {
     var notificationCenter: NotificationCenter = .default
@@ -46,4 +47,5 @@ struct World {
     var loadSourceCode: LoadSourceCode = { sourceCode(fromFileAt: $0) }
     var projectCoverage: ProjectCoverage = BuildSystem.coverage
     var server: Server = URLSession.shared
+    var now: Now = Date.init
 }

@@ -10,6 +10,14 @@ class MuterTestCase: XCTestCase {
     private(set) var process = ProcessSpy()
     private(set) var flushStandardOut = FlushHandlerSpy()
     private(set) var server = ServerSpy()
+    private let fixedNow = DateComponents(
+        calendar: .init(identifier: .gregorian),
+        year: 2021,
+        month: 1,
+        day: 20,
+        hour: 2,
+        minute: 42
+    ).date!
 
     override func setUp() {
         super.setUp()
@@ -37,7 +45,8 @@ class MuterTestCase: XCTestCase {
             ioDelegate: ioDelegate,
             process: { self.process },
             prepareCode: prepareCode.prepare,
-            server: server
+            server: server,
+            now: { self.fixedNow }
         )
     }
 

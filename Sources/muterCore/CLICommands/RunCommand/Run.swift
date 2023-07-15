@@ -1,7 +1,7 @@
 import ArgumentParser
 import Foundation
 
-public struct Run: ParsableCommand {
+public struct Run: AsyncParsableCommand {
     public static let configuration = CommandConfiguration(
         commandName: "run",
         abstract: "Performs mutation testing for the Swift project contained within the current directory."
@@ -42,7 +42,7 @@ public struct Run: ParsableCommand {
 
     public init() {}
 
-    public func run() throws {
+    public mutating func run() async throws {
         let options = RunOptions(
             filesToMutate: filesToMutate,
             reportFormat: reportFormat,
@@ -57,11 +57,10 @@ public struct Run: ParsableCommand {
 
         NotificationCenter.default.post(name: .muterLaunched, object: nil)
 
-        Task {
-            do {
-                try await RunCommandHandler(options: options).run()
-            } catch {
-                Logger.print(
+        do {
+            try await RunCommandHandler(options: options).run()
+        } catch {
+            Logger.print(
                     """
                     ⚠️ ⚠️ ⚠️ ⚠️ ⚠️  Muter has encountered an error  ⚠️ ⚠️ ⚠️ ⚠️ ⚠️
                     \(error)
@@ -72,10 +71,9 @@ public struct Run: ParsableCommand {
                     If you think this is a bug, or want help figuring out what could be happening, please open an issue at
                     https://github.com/muter-mutation-testing/muter/issues
                     """
-                )
+            )
 
-                Foundation.exit(-1)
-            }
+            Foundation.exit(-1)
         }
     }
 }

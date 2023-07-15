@@ -30,22 +30,27 @@ struct UpdateCheck: RunCommandStep {
 
         notificationCenter.post(name: .updateCheckStarted, object: nil)
 
-        let (data, _) = try await server.data(from: releaseURL)
+        do {
+            let (data, _) = try await server.data(from: releaseURL)
 
-        guard let newVersion = try? muterLatestVersion(data),
-              currentVersion < newVersion
-        else {
+            guard let newVersion = try? muterLatestVersion(data),
+                  currentVersion < newVersion
+            else {
+                notificationCenter.post(name: .updateCheckFinished, object: nil)
+                return []
+            }
+
+            let latestVersion = newVersion.description
+
+            notificationCenter.post(name: .updateCheckFinished, object: latestVersion)
+            
+            return [
+                .newVersionAvaiable(latestVersion)
+            ]
+        } catch {
             notificationCenter.post(name: .updateCheckFinished, object: nil)
             return []
         }
-
-        let latestVersion = newVersion.description
-
-        notificationCenter.post(name: .updateCheckFinished, object: latestVersion)
-
-        return [
-            .newVersionAvaiable(latestVersion)
-        ]
     }
 
     private func muterLatestVersion(_ data: Data) throws -> Version {

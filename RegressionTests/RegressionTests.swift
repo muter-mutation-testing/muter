@@ -18,11 +18,15 @@ final class RegressionTests: XCTestCase {
             return .failure("Unable to load a valid Muter test report from \(path)")
         }
 
+        let keysToExclude: (String) -> Bool = {
+            $0 == "filePath" || $0 == "utf8Offset" || $0 == "timeElapsed"
+        }
+
         do {
             let testReport = try JSONDecoder().decode(MuterTestReport.self, from: data)
             assertSnapshot(
                 matching: testReport,
-                as: .json(excludingKeysMatching: { $0 == "filePath" || $0 == "utf8Offset" }),
+                as: .json(excludingKeysMatching: keysToExclude),
                 named: fixtureName,
                 file: file,
                 testName: testName,
