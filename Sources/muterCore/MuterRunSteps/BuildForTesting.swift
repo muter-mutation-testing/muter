@@ -10,9 +10,9 @@ struct BuildForTesting: RunCommandStep {
 
     func run(
         with state: AnyRunCommandState
-    ) -> Result<[RunCommandState.Change], MuterError> {
+    ) async throws -> [RunCommandState.Change] {
         guard state.muterConfiguration.buildSystem == .xcodebuild else {
-            return .success([])
+            return []
         }
 
         let currentDirectoryPath = fileManager.currentDirectoryPath
@@ -33,13 +33,9 @@ struct BuildForTesting: RunCommandStep {
 
             let xcTestRun = try parseXCTestRunAt(tempDebugURL)
 
-            return .success([
-                .projectXCTestRun(xcTestRun)
-            ])
+            return [.projectXCTestRun(xcTestRun)]
         } catch {
-            return .failure(
-                .literal(reason: "\(error)")
-            )
+            throw MuterError.literal(reason: "\(error)")
         }
     }
 

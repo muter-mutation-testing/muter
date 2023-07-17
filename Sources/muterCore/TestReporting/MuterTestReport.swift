@@ -9,11 +9,9 @@ struct MuterTestReport {
     let numberOfKilledMutants: Int
     let projectCodeCoverage: Int?
     let fileReports: [FileReport]
-    private(set) var timeElapsed: String = ""
+    let timeElapsed: String
 
-    init(
-        from outcome: MutationTestOutcome = .init()
-    ) {
+    init(from outcome: MutationTestOutcome = .init()) {
         globalMutationScore = mutationScore(from: outcome.mutations.map { $0.testSuiteOutcome })
         totalAppliedMutationOperators = outcome.mutations.count
         numberOfKilledMutants = outcome.mutations
@@ -129,11 +127,12 @@ private extension MuterTestReport {
                 let mutationScore = mutationScoreByFilePath.value
                 let appliedOperators = outcomes
                     .include { $0.point.filePath == mutationScoreByFilePath.key }
-                    .map { AppliedMutationOperator(
-                        mutationPoint: $0.point,
-                        mutationSnapshot: $0.snapshot,
-                        testSuiteOutcome: $0.testSuiteOutcome
-                    )
+                    .map {
+                        AppliedMutationOperator(
+                            mutationPoint: $0.point,
+                            mutationSnapshot: $0.snapshot,
+                            testSuiteOutcome: $0.testSuiteOutcome
+                        )
                     }
 
                 return (fileName, filePath, mutationScore, appliedOperators)
@@ -174,5 +173,6 @@ extension MuterTestReport: Codable {
         case numberOfKilledMutants
         case projectCodeCoverage
         case fileReports
+        case timeElapsed
     }
 }

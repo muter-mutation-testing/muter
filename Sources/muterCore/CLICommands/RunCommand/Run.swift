@@ -1,7 +1,7 @@
 import ArgumentParser
 import Foundation
 
-public struct Run: ParsableCommand {
+public struct Run: AsyncParsableCommand {
     public static let configuration = CommandConfiguration(
         commandName: "run",
         abstract: "Performs mutation testing for the Swift project contained within the current directory."
@@ -42,7 +42,7 @@ public struct Run: ParsableCommand {
 
     public init() {}
 
-    public func run() throws {
+    public mutating func run() async throws {
         let options = RunOptions(
             filesToMutate: filesToMutate,
             reportFormat: reportFormat,
@@ -58,7 +58,7 @@ public struct Run: ParsableCommand {
         NotificationCenter.default.post(name: .muterLaunched, object: nil)
 
         do {
-            try RunCommandHandler(options: options).run()
+            try await RunCommandHandler(options: options).run()
         } catch {
             Logger.print(
                 """

@@ -83,6 +83,6 @@
 
 # rules
 
---disable andOperator,assertionFailures,blankLinesAtEndOfScope,blankLinesAtStartOfScope,blankLinesBetweenScopes,conditionalAssignment,numberFormatting,preferKeyPath,trailingCommas,wrapMultilineStatementBraces
+--disable andOperator,assertionFailures,blankLinesAtEndOfScope,blankLinesAtStartOfScope,blankLinesBetweenScopes,conditionalAssignment,numberFormatting,preferKeyPath,trailingCommas,wrapMultilineStatementBraces,hoistAwait
 
 --enable blankLineAfterImports,blankLinesBetweenImports,isEmpty,sortedSwitchCases,wrapConditionalBodies,wrapEnumCases,wrapSwitchCases

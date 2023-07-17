@@ -6,16 +6,14 @@ final class CreateTempDirectoryURLTests: MuterTestCase {
 
     private let sut = CreateTempDirectoryURL()
 
-    func test_whenItsAbleToCreateATempDirectory() {
+    func test_whenItsAbleToCreateATempDirectory() async throws {
         state.projectDirectoryURL = URL(string: "/tmp/some/projectName")!
 
-        let result = sut.run(with: state)
+        let result = try await sut.run(with: state)
 
-        guard case let .success(stateChanges) = result else {
-            XCTFail("expected success but got \(String(describing: result))")
-            return
-        }
-
-        XCTAssertEqual(stateChanges, [.tempDirectoryUrlCreated(URL(fileURLWithPath: "/tmp/some/projectName_mutated"))])
+        XCTAssertEqual(
+            result,
+            [.tempDirectoryUrlCreated(URL(fileURLWithPath: "/tmp/some/projectName_mutated"))]
+        )
     }
 }

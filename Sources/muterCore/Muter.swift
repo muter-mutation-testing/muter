@@ -1,6 +1,6 @@
 import ArgumentParser
 
-struct MuterCommand: ParsableCommand {
+struct MuterCommand: AsyncParsableCommand {
     static var configuration = CommandConfiguration(
         commandName: "muter",
         abstract: "🔎 Automated mutation testing for Swift 🕳️",
@@ -14,7 +14,7 @@ struct MuterCommand: ParsableCommand {
 }
 
 public enum Muter {
-    public static func start() {
-        MuterCommand.main()
+    public static func start() async {
+        await MuterCommand.main()
     }
 }

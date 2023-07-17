@@ -9,7 +9,7 @@ struct DiscoverMutationPoints: RunCommandStep {
 
     func run(
         with state: AnyRunCommandState
-    ) -> Result<[RunCommandState.Change], MuterError> {
+    ) async throws -> [RunCommandState.Change] {
 
         notificationCenter.post(
             name: .mutationsDiscoveryStarted,
@@ -22,7 +22,7 @@ struct DiscoverMutationPoints: RunCommandStep {
         )
 
         guard discovered.mappings.count >= 1 else {
-            return .failure(.noMutationPointsDiscovered)
+            throw MuterError.noMutationPointsDiscovered
         }
 
         let mappings = discovered.mappings.mergeByFileName()
@@ -32,10 +32,10 @@ struct DiscoverMutationPoints: RunCommandStep {
             object: mappings
         )
 
-        return .success([
+        return [
             .mutationMappingsDiscovered(mappings),
             .sourceCodeParsed(discovered.sourceCodeByFilePath)
-        ])
+        ]
     }
 }
 

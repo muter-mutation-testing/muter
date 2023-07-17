@@ -3,14 +3,14 @@ import Foundation
 struct CreateTempDirectoryURL: RunCommandStep {
     func run(
         with state: AnyRunCommandState
-    ) -> Result<[RunCommandState.Change], MuterError> {
+    ) async throws -> [RunCommandState.Change] {
         let destinationPath = destinationPath(
             with: state.projectDirectoryURL
         )
 
-        return .success([
-            .tempDirectoryUrlCreated(URL(fileURLWithPath: destinationPath)),
-        ])
+        return [
+            .tempDirectoryUrlCreated(URL(fileURLWithPath: destinationPath))
+        ]
     }
 
     private func destinationPath(

@@ -29,7 +29,7 @@ cp -R ./muter_logs "$samplesdir"/
 rm -rf ./muter_logs
 
 echo " > Running with coverage"
-"$muterdir"/muter > "$samplesdir"/muters_with_coverage_output.txt
+"$muterdir"/muter --skip-update-check > "$samplesdir"/muters_with_coverage_output.txt
 rm -rf ./muter_logs
 
 echo " > Running in Xcode mode..."
