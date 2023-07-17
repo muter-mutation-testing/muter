@@ -20,7 +20,13 @@ public class SimpleTimeEstimate: ProgressElementType {
 
         lastTime = Date()
 
-        return "ETC: \(Int(ceil(estimatedTimeRemaining / 60))) minute(s)"
+        let remainingMinutes = Int(ceil(estimatedTimeRemaining / 60))
+
+        let formattedRemainingMinutes = remainingMinutes == 1
+            ? "1 minute"
+            : "\(remainingMinutes) minutes"
+
+        return "ETC: \(formattedRemainingMinutes)"
     }
 }
 
@@ -96,6 +102,6 @@ private extension ProgressBarMultilineTerminalPrinter {
 
 private extension ProgressBar {
     var isEmpty: Bool {
-        count == 0
+        count <= 0
     }
 }

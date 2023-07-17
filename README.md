@@ -12,7 +12,10 @@
 #### Muter can be run within Xcode
 Use this mode to rapidly diagnose areas where you can begin improving your test code
 
-![Muter running inside Xcode](Docs/Images/muter-in-xcode.png) 
+<picture>
+  <source media="(prefers-color-scheme: dark)" srcset="./Docs/Images/muter-in-xcode-dark.png">
+  <img alt="Muter running inside Xcode" src="./Docs/Images/muter-in-xcode-light.png">
+</picture>
 
 #### Muter can be run from the command line
 Use this mode to get detailed information about the health and quality of your entire test suite
@@ -194,7 +197,11 @@ Muter defaults to run when you don't specify any subcommands
 **Available Flags**
 
 ```
---files-to-mutate    Only mutate a given list of source code files (Supports glob expressions like Sources/**/*.swift)
+--files-to-mutate           Only mutate a given list of source code files (Supports glob expressions like Sources/**/*.swift)
+-f, --format <format>       The report format for muter: plain, json, html, xcode
+--skip-coverage             Skips the step in which Muter runs your project in order to filter out files without coverage.
+-o, --output <output>       Output file for the report to be saved.
+--skip-update-check         Skips the step in which Muter checks for newer versions.
 ```
 
 **Available Report Formats**
@@ -211,8 +218,20 @@ Note: If you pass `--output` muter will save the report, instead of using stdout
 ### Within Xcode
 Build (Cmd + B) your aggregate build target and let Muter run. The mutants which survive testing will be called out in the issue navigator. Once the target finishes building, testing has completed.
 
-### Skipping Mutations
-You can mark specific lines to skip mutations on, rather than entire files, by adding to them a line comment containing the text `muter:skip` (inspired by a similar feature in Swiftlint). This is mostly useful after the first run, if you conclude that specific uncaught mutants shouldn't be covered by your test suite – e.g. logging-related code, specific lines accessing real network/timers etc. This will prevent Muter from wasting time on testing them on subsequent runs, and reduce the 'noise'.
+### Disable muter in code
+Muter will ignore code inside a `disable` block, up until you turn it on again by using the `enable` directive.
+
+```swift
+// muter:disable
+func f() {
+    foo(testableSideEffect: true)
+}
+
+// muter:enable
+func f() {
+    bar(testableSideEffect: false)
+}
+```
 
 ## Assumptions
 - Muter assumes you always put spaces around your operators. For example, it expects an equality check to look like

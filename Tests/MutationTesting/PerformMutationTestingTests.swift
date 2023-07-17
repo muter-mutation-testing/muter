@@ -26,10 +26,10 @@ final class PerformMutationTestingTests: MuterTestCase {
         ]
     }
 
-    func test_whenBaselinePasses_thenRunMutationTesting() throws {
+    func test_whenBaselinePasses_thenRunMutationTesting() async throws {
         ioDelegate.testSuiteOutcomes = [.passed, .failed, .failed]
 
-        let result = try XCTUnwrap(sut.run(with: state).get())
+        let result = try await sut.run(with: state)
 
         XCTAssertEqual(ioDelegate.methodCalls, [
             // Base line
@@ -76,10 +76,10 @@ final class PerformMutationTestingTests: MuterTestCase {
         )
     }
 
-    func test_createLogFile() throws {
+    func test_createLogFile() async throws {
         ioDelegate.testSuiteOutcomes = [.passed, .failed, .failed]
 
-        _ = try XCTUnwrap(sut.run(with: state).get())
+        _ = try await sut.run(with: state)
 
         XCTAssertEqual(
             ioDelegate.testLogs,
@@ -91,55 +91,65 @@ final class PerformMutationTestingTests: MuterTestCase {
         )
     }
 
-    func test_whenBaselineFailsDueToTestingFailure() {
+    func test_whenBaselineFailsDueToTestingFailure() async throws {
         ioDelegate.testSuiteOutcomes = [.failed]
 
-        let result = sut.run(with: state)
+        try await assertThrowsMuterError(
+            await sut.run(with: state)
+        ) { error in
+            guard case let .mutationTestingAborted(reason: .baselineTestFailed(log)) = error else {
+                XCTFail("Expected mutationTestingAborted, got \(error)")
+                return
+            }
 
-        XCTAssertEqual(ioDelegate.methodCalls, [
-            "runTestSuite(withSchemata:using:savingResultsIntoFileNamed:)",
-        ])
-
-        guard case let .failure(.mutationTestingAborted(reason: .baselineTestFailed(log))) = result else {
-            return XCTFail("Expected failure, got \(result)")
+            XCTAssertFalse(log.isEmpty)
         }
 
-        XCTAssertFalse(log.isEmpty)
+        XCTAssertEqual(
+            ioDelegate.methodCalls,
+            ["runTestSuite(withSchemata:using:savingResultsIntoFileNamed:)"]
+        )
     }
 
-    func test_whenBaselineFailsDueToBuildError() {
+    func test_whenBaselineFailsDueToBuildError() async throws {
         ioDelegate.testSuiteOutcomes = [.buildError]
 
-        let result = sut.run(with: state)
+        try await assertThrowsMuterError(
+            await sut.run(with: state)
+        ) { error in
+            guard case let .mutationTestingAborted(reason: .baselineTestFailed(log)) = error else {
+                XCTFail("Expected mutationTestingAborted, got \(error)")
+                return
+            }
+
+            XCTAssertFalse(log.isEmpty)
+        }
 
         XCTAssertEqual(ioDelegate.methodCalls, [
             "runTestSuite(withSchemata:using:savingResultsIntoFileNamed:)",
         ])
-
-        guard case let .failure(.mutationTestingAborted(reason: .baselineTestFailed(log))) = result else {
-            return XCTFail("Expected failure, got \(result)")
-        }
-
-        XCTAssertFalse(log.isEmpty)
     }
 
-    func test_whenBaselineFailsDueToRuntimeError() {
+    func test_whenBaselineFailsDueToRuntimeError() async throws {
         ioDelegate.testSuiteOutcomes = [.runtimeError]
 
-        let result = sut.run(with: state)
+        try await assertThrowsMuterError(
+            await sut.run(with: state)
+        ) { error in
+            guard case let .mutationTestingAborted(reason: .baselineTestFailed(log)) = error else {
+                XCTFail("Expected mutationTestingAborted, got \(error)")
+                return
+            }
+
+            XCTAssertFalse(log.isEmpty)
+        }
 
         XCTAssertEqual(ioDelegate.methodCalls, [
             "runTestSuite(withSchemata:using:savingResultsIntoFileNamed:)",
         ])
-
-        guard case let .failure(.mutationTestingAborted(reason: .baselineTestFailed(log))) = result else {
-            return XCTFail("Expected failure, got \(result)")
-        }
-
-        XCTAssertFalse(log.isEmpty)
     }
 
-    func test_whenEncountersFiveConsecutiveBuildErrors_thenCancelMutationTesting() throws {
+    func test_whenEncountersFiveConsecutiveBuildErrors_thenCancelMutationTesting() async throws {
         ioDelegate.testSuiteOutcomes = [
             .passed,
             .buildError,
@@ -151,7 +161,10 @@ final class PerformMutationTestingTests: MuterTestCase {
 
         state.mutationMapping = try Array(repeating: makeSchemataMapping(), count: 5)
 
-        let result = sut.run(with: state)
+        try await assertThrowsMuterError(
+            await sut.run(with: state),
+            .mutationTestingAborted(reason: .tooManyBuildErrors)
+        )
 
         XCTAssertEqual(ioDelegate.methodCalls, [
             "runTestSuite(withSchemata:using:savingResultsIntoFileNamed:)",
@@ -166,11 +179,9 @@ final class PerformMutationTestingTests: MuterTestCase {
             "switchOn(schemata:for:at:)",
             "runTestSuite(withSchemata:using:savingResultsIntoFileNamed:)"
         ])
-
-        XCTAssertEqual(result, .failure(.mutationTestingAborted(reason: .tooManyBuildErrors)))
     }
 
-    func test_whenEncountersFiveNonConsecutiveBuildErrors_thenPerformMutationTesting() throws {
+    func test_whenEncountersFiveNonConsecutiveBuildErrors_thenPerformMutationTesting() async throws {
         ioDelegate.testSuiteOutcomes = [
             .passed,
             .buildError,
@@ -183,7 +194,7 @@ final class PerformMutationTestingTests: MuterTestCase {
 
         state.mutationMapping = try Array(repeating: makeSchemataMapping(), count: 5)
 
-        let result = try XCTUnwrap(sut.run(with: state).get())
+        let result = try await sut.run(with: state)
 
         XCTAssertEqual(ioDelegate.methodCalls, [
             // base line

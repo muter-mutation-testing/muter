@@ -71,24 +71,13 @@ extension SyntaxProtocol {
         }
     }
 
-    func numberOfLeadingSpaces() -> Int {
-        guard let trivia = leadingTrivia else {
-            return 0
-        }
-
-        var result = 0
-
-        for piece in trivia {
-            if case let .spaces(spaces) = piece {
-                result += spaces
-            }
-        }
-
-        return result
-    }
-
     var allChildren: SyntaxChildren {
         children(viewMode: .all)
+    }
+
+    func containsLineComment(_ comment: String) -> Bool {
+        leadingTrivia.containsLineComment(comment)
+            || trailingTrivia.containsLineComment(comment)
     }
 }
 
@@ -107,5 +96,23 @@ extension FunctionDeclSyntax {
 extension ReturnClauseSyntax {
     var isReturningVoid: Bool {
         ["Void", "()"].contains(returnType.withoutTrivia().description.trimmed)
+    }
+}
+
+extension SwiftSyntax.Trivia {
+    func containsLineComment(_ comment: String) -> Bool {
+        contains { piece in
+            if case let .lineComment(commentText) = piece {
+                return commentText.contains(comment)
+            } else {
+                return false
+            }
+        }
+    }
+}
+
+extension Trivia? {
+    func containsLineComment(_ comment: String) -> Bool {
+        map { $0.containsLineComment(comment) } ?? false
     }
 }

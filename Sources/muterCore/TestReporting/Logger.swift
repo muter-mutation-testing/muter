@@ -45,6 +45,18 @@ final class Logger {
         )
     }
 
+    func updateCheckStarted() {
+        print("🔎 Checking for new versions...")
+    }
+
+    func updateCheckFinished(newVersion: String?) {
+        if let newVersion {
+            print("🎉 New version \(newVersion) available!")
+        } else {
+            print("✅ You are already using the latest of Muter")
+        }
+    }
+
     func projectCopyStarted() {
         print("Copying your project to a temporary directory for testing...")
     }

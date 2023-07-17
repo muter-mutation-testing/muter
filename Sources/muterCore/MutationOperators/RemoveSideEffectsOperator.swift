@@ -38,18 +38,17 @@ enum RemoveSideEffectsOperator {
             return super.visit(node)
         }
 
-        override func visitAny(_ node: Syntax) -> SyntaxVisitorContinueKind {
-            guard let node = node.as(FunctionDeclSyntax.self) else {
-                return .visitChildren
-            }
-
+        override func visit(_ node: FunctionDeclSyntax) -> SyntaxVisitorContinueKind {
             guard let body = node.body, !node.hasImplicitReturn else {
-                return .visitChildren
+                return super.visit(node)
             }
 
             let statements = body.statements
             for statement in body.statements where statementContainsMutableToken(statement) {
-                let mutatedFunctionStatements = body.statements.exclude { $0.description == statement.description }
+                let mutatedFunctionStatements = body
+                    .statements
+                    .exclude { $0.description == statement.description }
+
                 let newCodeBlockItemList = CodeBlockItemListSyntax(mutatedFunctionStatements)
 
                 let position = endLocation(for: statement)
@@ -59,6 +58,8 @@ enum RemoveSideEffectsOperator {
                     description: "removed line"
                 )
 
+                checkNodeForDisableTag(statement)
+
                 add(
                     mutation: newCodeBlockItemList,
                     with: statements,
@@ -67,7 +68,7 @@ enum RemoveSideEffectsOperator {
                 )
             }
 
-            return .visitChildren
+            return super.visit(node)
         }
 
         private func mutated(_ node: FunctionDeclSyntax, with body: CodeBlockSyntax) -> DeclSyntax {
@@ -97,8 +98,9 @@ enum RemoveSideEffectsOperator {
             let doesntContainPossibleDeadlock = !statement.allChildren
                 .exclude(concurrencyStatements).isEmpty
 
-            return doesntContainVariableAssignment &&
-                doesntContainPossibleDeadlock && (containsDiscardedResult || containsFunctionCall)
+            return doesntContainVariableAssignment
+                && doesntContainPossibleDeadlock
+                && (containsDiscardedResult || containsFunctionCall)
         }
 
         private func variableAssignmentStatements(_ node: Syntax) -> Bool {

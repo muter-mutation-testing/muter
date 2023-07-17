@@ -23,21 +23,20 @@
 /* Begin PBXBuildFile section */
 		OBJ_28 /* FFCParserCombinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_9 /* FFCParserCombinator.swift */; };
 		OBJ_29 /* StringParsing.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_10 /* StringParsing.swift */; };
-		OBJ_36 /* Package.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_6 /* Package.swift */; };
 		OBJ_47 /* FFCParserCombinatorTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_13 /* FFCParserCombinatorTests.swift */; };
 		OBJ_48 /* StringParsing.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_14 /* StringParsing.swift */; };
 		OBJ_50 /* FFCParserCombinator.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = "FFCParserCombinator::FFCParserCombinator::Product" /* FFCParserCombinator.framework */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
-		D3C753CC298EDCA3002D8F1A /* PBXContainerItemProxy */ = {
+		D3716C8B2A4728830030A2AB /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = OBJ_1 /* Project object */;
 			proxyType = 1;
 			remoteGlobalIDString = "FFCParserCombinator::FFCParserCombinator";
 			remoteInfo = FFCParserCombinator;
 		};
-		D3C753CD298EDCA3002D8F1A /* PBXContainerItemProxy */ = {
+		D3716C8C2A4728840030A2AB /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = OBJ_1 /* Project object */;
 			proxyType = 1;
@@ -48,16 +47,13 @@
 
 /* Begin PBXFileReference section */
 		"FFCParserCombinator::FFCParserCombinator::Product" /* FFCParserCombinator.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = FFCParserCombinator.framework; sourceTree = BUILT_PRODUCTS_DIR; };
-		"FFCParserCombinator::FFCParserCombinatorTests::Product" /* FFCParserCombinatorTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; path = FFCParserCombinatorTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		"FFCParserCombinator::FFCParserCombinatorTests::Product" /* FFCParserCombinatorTests.xctest */ = {isa = PBXFileReference; lastKnownFileType = file; path = FFCParserCombinatorTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		OBJ_10 /* StringParsing.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StringParsing.swift; sourceTree = "<group>"; };
 		OBJ_13 /* FFCParserCombinatorTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FFCParserCombinatorTests.swift; sourceTree = "<group>"; };
 		OBJ_14 /* StringParsing.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StringParsing.swift; sourceTree = "<group>"; };
 		OBJ_18 /* docs */ = {isa = PBXFileReference; lastKnownFileType = folder; path = docs; sourceTree = SOURCE_ROOT; };
-		OBJ_19 /* muter_logs */ = {isa = PBXFileReference; lastKnownFileType = folder; path = muter_logs; sourceTree = SOURCE_ROOT; };
-		OBJ_20 /* muter.conf.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = muter.conf.json; sourceTree = "<group>"; };
 		OBJ_21 /* LICENSE */ = {isa = PBXFileReference; lastKnownFileType = text; path = LICENSE; sourceTree = "<group>"; };
 		OBJ_22 /* README.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = "<group>"; };
-		OBJ_6 /* Package.swift */ = {isa = PBXFileReference; explicitFileType = sourcecode.swift; path = Package.swift; sourceTree = "<group>"; };
 		OBJ_9 /* FFCParserCombinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FFCParserCombinator.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -107,20 +103,16 @@
 			name = Products;
 			sourceTree = BUILT_PRODUCTS_DIR;
 		};
-		OBJ_5 /*  */ = {
+		OBJ_5 = {
 			isa = PBXGroup;
 			children = (
-				OBJ_6 /* Package.swift */,
 				OBJ_7 /* Sources */,
 				OBJ_11 /* Tests */,
 				OBJ_15 /* Products */,
 				OBJ_18 /* docs */,
-				OBJ_19 /* muter_logs */,
-				OBJ_20 /* muter.conf.json */,
 				OBJ_21 /* LICENSE */,
 				OBJ_22 /* README.md */,
 			);
-			name = "";
 			sourceTree = "<group>";
 		};
 		OBJ_7 /* Sources */ = {
@@ -207,7 +199,7 @@
 			knownRegions = (
 				en,
 			);
-			mainGroup = OBJ_5 /*  */;
+			mainGroup = OBJ_5;
 			productRefGroup = OBJ_15 /* Products */;
 			projectDirPath = "";
 			projectRoot = "";
@@ -234,7 +226,6 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 0;
 			files = (
-				OBJ_36 /* Package.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -253,12 +244,12 @@
 		OBJ_41 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
 			target = "FFCParserCombinator::FFCParserCombinatorTests" /* FFCParserCombinatorTests */;
-			targetProxy = D3C753CD298EDCA3002D8F1A /* PBXContainerItemProxy */;
+			targetProxy = D3716C8C2A4728840030A2AB /* PBXContainerItemProxy */;
 		};
 		OBJ_51 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
 			target = "FFCParserCombinator::FFCParserCombinator" /* FFCParserCombinator */;
-			targetProxy = D3C753CC298EDCA3002D8F1A /* PBXContainerItemProxy */;
+			targetProxy = D3716C8B2A4728830030A2AB /* PBXContainerItemProxy */;
 		};
 /* End PBXTargetDependency section */
 
@@ -317,6 +308,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				CLANG_ENABLE_OBJC_ARC = YES;
+				CODE_SIGN_IDENTITY = "-";
 				COMBINE_HIDPI_IMAGES = YES;
 				COPY_PHASE_STRIP = NO;
 				DEBUG_INFORMATION_FORMAT = dwarf;
@@ -328,7 +320,7 @@
 					"SWIFT_PACKAGE=1",
 					"DEBUG=1",
 				);
-				MACOSX_DEPLOYMENT_TARGET = 10.10;
+				MACOSX_DEPLOYMENT_TARGET = 12.4;
 				ONLY_ACTIVE_ARCH = YES;
 				OTHER_SWIFT_FLAGS = "$(inherited) -DXcode";
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -369,6 +361,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				CLANG_ENABLE_OBJC_ARC = YES;
+				CODE_SIGN_IDENTITY = "-";
 				COMBINE_HIDPI_IMAGES = YES;
 				COPY_PHASE_STRIP = YES;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
@@ -378,7 +371,7 @@
 					"$(inherited)",
 					"SWIFT_PACKAGE=1",
 				);
-				MACOSX_DEPLOYMENT_TARGET = 10.10;
+				MACOSX_DEPLOYMENT_TARGET = 12.4;
 				OTHER_SWIFT_FLAGS = "$(inherited) -DXcode";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SDKROOT = macosx;
@@ -400,7 +393,6 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				CLANG_ENABLE_MODULES = YES;
-				"CODE_SIGN_IDENTITY[sdk=macosx*]" = "-";
 				CURRENT_PROJECT_VERSION = 1;
 				EMBEDDED_CONTENT_CONTAINS_SWIFT = YES;
 				FRAMEWORK_SEARCH_PATHS = (
@@ -423,7 +415,6 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				CLANG_ENABLE_MODULES = YES;
-				"CODE_SIGN_IDENTITY[sdk=macosx*]" = "-";
 				CURRENT_PROJECT_VERSION = 1;
 				EMBEDDED_CONTENT_CONTAINS_SWIFT = YES;
 				FRAMEWORK_SEARCH_PATHS = (

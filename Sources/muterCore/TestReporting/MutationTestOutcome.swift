@@ -1,29 +1,25 @@
 import Foundation
 
-final class MutationTestOutcome {
-    var mutations: [Mutation]
-    var coverage: Coverage
-    var testDuration: TimeInterval
+struct MutationTestOutcome {
+    let mutations: [Mutation]
+    let coverage: Coverage
+    let testDuration: TimeInterval
+    let newVersion: String
 
     init(
         mutations: [Mutation] = [],
         coverage: Coverage = .null,
-        testDuration: TimeInterval = 0
+        testDuration: TimeInterval = 0,
+        newVersion: String = ""
     ) {
         self.mutations = mutations
         self.coverage = coverage
-        self.testDuration = 0
+        self.testDuration = testDuration
+        self.newVersion = newVersion
     }
 }
 
-extension MutationTestOutcome: Equatable {
-    static func == (
-        lhs: MutationTestOutcome,
-        rhs: MutationTestOutcome
-    ) -> Bool {
-        lhs === rhs || (lhs.coverage == rhs.coverage && lhs.mutations == rhs.mutations)
-    }
-}
+extension MutationTestOutcome: Equatable {}
 
 extension MutationTestOutcome {
     struct Mutation: Equatable {

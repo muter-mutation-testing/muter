@@ -8,7 +8,7 @@ struct ApplySchemata: RunCommandStep {
 
     func run(
         with state: AnyRunCommandState
-    ) -> Result<[RunCommandState.Change], MuterError> {
+    ) async throws -> [RunCommandState.Change] {
         for mutationMap in state.mutationMapping {
             guard let sourceCode = state.sourceCodeByFilePath[mutationMap.filePath] else {
                 // TODO: log?
@@ -25,11 +25,10 @@ struct ApplySchemata: RunCommandStep {
                     mutationMap.filePath
                 )
             } catch {
-                // TODO: log?
-                continue
+                throw MuterError.literal(reason: error.localizedDescription)
             }
         }
 
-        return .success([])
+        return []
     }
 }

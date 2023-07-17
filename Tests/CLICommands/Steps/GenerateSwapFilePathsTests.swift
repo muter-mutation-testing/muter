@@ -6,14 +6,14 @@ final class GenerateSwapFilePathsTests: MuterTestCase {
     private let state = RunCommandState()
     private lazy var sut = GenerateSwapFilePaths()
 
-    func test_muterTempDirectoryCreation() {
+    func test_muterTempDirectoryCreation() async throws {
         state.sourceCodeByFilePath = [
             "/folder/file1.swift": SourceFileSyntax.makeBlankSourceFile(),
             "/folder/file2.swift": SourceFileSyntax.makeBlankSourceFile(),
         ]
         state.tempDirectoryURL = URL(fileURLWithPath: "/workspace")
 
-        _ = sut.run(with: state)
+        _ = try await sut.run(with: state)
 
         XCTAssertEqual(fileManager.methodCalls, [
             "createDirectory(atPath:withIntermediateDirectories:attributes:)"
@@ -23,14 +23,14 @@ final class GenerateSwapFilePathsTests: MuterTestCase {
         XCTAssertEqual(fileManager.paths, ["/workspace/muter_tmp"])
     }
 
-    func test_swapMappingGeneration() throws {
+    func test_swapMappingGeneration() async throws {
         state.sourceCodeByFilePath = [
             "/folder/file1.swift": SourceFileSyntax.makeBlankSourceFile(),
             "/folder/file2.swift": SourceFileSyntax.makeBlankSourceFile(),
         ]
         state.tempDirectoryURL = URL(fileURLWithPath: "/workspace")
 
-        let result = try XCTUnwrap(sut.run(with: state).get())
+        let result = try await sut.run(with: state)
 
         XCTAssertEqual(result, [
             .swapFilePathGenerated([
@@ -40,17 +40,20 @@ final class GenerateSwapFilePathsTests: MuterTestCase {
         ])
     }
 
-    func test_failure() {
+    func test_failure() async throws {
         fileManager.errorToThrow = TestingError.stub
         state.tempDirectoryURL = URL(fileURLWithPath: "~/workspace")
 
-        let result = sut.run(with: state)
+        try await assertThrowsMuterError(
+            await sut.run(with: state)
+        ) { error in
+            guard case let .unableToCreateSwapFileDirectory(reason) = error else {
+                XCTFail("Expected unableToCreateSwapFileDirectory, got \(error)")
+                return
+            }
 
-        guard case let .failure(.unableToCreateSwapFileDirectory(reason: reason)) = result else {
-            return XCTFail("Expected failure, got \(result)")
+            XCTAssertFalse(reason.isEmpty)
         }
-
-        XCTAssertFalse(reason.isEmpty)
     }
 
     func test_swapFilesPathGeneratesMapping() {

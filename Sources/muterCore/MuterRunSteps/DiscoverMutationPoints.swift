@@ -9,7 +9,7 @@ struct DiscoverMutationPoints: RunCommandStep {
 
     func run(
         with state: AnyRunCommandState
-    ) -> Result<[RunCommandState.Change], MuterError> {
+    ) async throws -> [RunCommandState.Change] {
 
         notificationCenter.post(
             name: .mutationsDiscoveryStarted,
@@ -23,7 +23,7 @@ struct DiscoverMutationPoints: RunCommandStep {
         )
 
         guard discovered.mappings.count >= 1 else {
-            return .failure(.noMutationPointsDiscovered)
+            throw MuterError.noMutationPointsDiscovered
         }
 
         let mappings = discovered.mappings.mergeByFileName()
@@ -33,10 +33,10 @@ struct DiscoverMutationPoints: RunCommandStep {
             object: mappings
         )
 
-        return .success([
+        return [
             .mutationMappingsDiscovered(mappings),
             .sourceCodeParsed(discovered.sourceCodeByFilePath)
-        ])
+        ]
     }
 }
 
@@ -78,11 +78,6 @@ private extension DiscoverMutationPoints {
     ) -> [SchemataMutationMapping] {
         let source = sourceCode.source.code
         let sourceFileInfo = sourceCode.source.asSourceFileInfo
-        let skipMutations = SkipMutations(
-            sourceFileInfo: sourceFileInfo
-        )
-
-        skipMutations.walk(source)
 
         return operators.accumulate(into: []) { newSchemataMappings, mutationOperatorId in
             let visitor = mutationOperatorId.visitor(
@@ -94,9 +89,7 @@ private extension DiscoverMutationPoints {
 
             visitor.walk(source)
 
-            let schemataMapping = visitor
-                .schemataMappings
-                .skipMutations(skipMutations.skipPositions)
+            let schemataMapping = visitor.schemataMappings
 
             if !schemataMapping.isEmpty {
                 return newSchemataMappings + [schemataMapping]
@@ -109,69 +102,6 @@ private extension DiscoverMutationPoints {
     func pathContainsDotSwift(_ filePath: String) -> Bool {
         let url = URL(fileURLWithPath: filePath)
         return url.lastPathComponent.contains(".swift")
-    }
-}
-
-// Currently supports only line comments (in block comments, would need to detect in which actual line the skip marker
-// appears - and if it isn't the first or last line, it won't contain code anyway)
-private class SkipMutations: SyntaxAnyVisitor {
-    private(set) var skipPositions: [MutationPosition] = []
-
-    private let muterSkipMarker = "muter:skip"
-
-    private let sourceFileInfo: SourceFileInfo
-
-    required init(
-        sourceFileInfo: SourceFileInfo
-    ) {
-        self.sourceFileInfo = sourceFileInfo
-
-        super.init(viewMode: .all)
-    }
-
-    override func visitAnyPost(_ node: Syntax) {
-        node.leadingTrivia.map { leadingTrivia in
-            if leadingTrivia.containsLineComment(muterSkipMarker) {
-                skipPositions.append(
-                    mutationPosition(for: node)
-                )
-            }
-        }
-        node.trailingTrivia.map { trailingTrivia in
-            if trailingTrivia.containsLineComment(muterSkipMarker) {
-                skipPositions.append(
-                    mutationPosition(for: node)
-                )
-            }
-        }
-    }
-
-    func mutationPosition(for node: Syntax) -> MutationPosition {
-        let converter = SourceLocationConverter(
-            file: sourceFileInfo.path,
-            source: sourceFileInfo.source
-        )
-
-        let sourceLocation = SourceLocation(
-            offset: node.position.utf8Offset,
-            converter: converter
-        )
-
-        return MutationPosition(
-            sourceLocation: sourceLocation
-        )
-    }
-}
-
-private extension SwiftSyntax.Trivia {
-    func containsLineComment(_ comment: String) -> Bool {
-        contains { piece in
-            if case let .lineComment(commentText) = piece {
-                return commentText.contains(comment)
-            } else {
-                return false
-            }
-        }
     }
 }
 

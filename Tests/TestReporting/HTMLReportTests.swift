@@ -5,15 +5,6 @@ import TestingExtensions
 import XCTest
 
 final class HTMLReportTests: MuterTestCase {
-    private let dateStub = DateComponents(
-        calendar: .init(identifier: .gregorian),
-        year: 2021,
-        month: 1,
-        day: 20,
-        hour: 2,
-        minute: 42
-    ).date!
-
     private let mutations: [MutationTestOutcome.Mutation] = (0 ... 50).map {
         MutationTestOutcome.Mutation.make(
             testSuiteOutcome: nextMutationTestOutcome($0),
@@ -27,7 +18,7 @@ final class HTMLReportTests: MuterTestCase {
         )
     }
 
-    private lazy var sut = HTMLReporter(now: { self.dateStub })
+    private lazy var sut = HTMLReporter()
 
     func test_reportWhenOutcomeHasCoverage() {
         let outcome = MutationTestOutcome.make(

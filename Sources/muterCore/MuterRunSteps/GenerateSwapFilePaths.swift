@@ -4,7 +4,9 @@ struct GenerateSwapFilePaths: RunCommandStep {
     @Dependency(\.fileManager)
     private var fileManager: FileSystemManager
 
-    func run(with state: AnyRunCommandState) -> Result<[RunCommandState.Change], MuterError> {
+    func run(
+        with state: AnyRunCommandState
+    ) async throws -> [RunCommandState.Change] {
         let result = createSwapFileDirectory(in: state.tempDirectoryURL.path)
 
         switch result {
@@ -16,10 +18,10 @@ struct GenerateSwapFilePaths: RunCommandStep {
                 using: swapFileDirectoryPath
             )
 
-            return .success([.swapFilePathGenerated(swapFilePathsByOriginalPath)])
+            return [.swapFilePathGenerated(swapFilePathsByOriginalPath)]
 
         case let .failure(error):
-            return .failure(.unableToCreateSwapFileDirectory(reason: error.localizedDescription))
+            throw MuterError.unableToCreateSwapFileDirectory(reason: error.localizedDescription)
         }
     }
 }

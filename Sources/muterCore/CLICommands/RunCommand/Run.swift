@@ -1,7 +1,7 @@
 import ArgumentParser
 import Foundation
 
-public struct Run: ParsableCommand {
+public struct Run: AsyncParsableCommand {
     public static let configuration = CommandConfiguration(
         commandName: "run",
         abstract: "Performs mutation testing for the Swift project contained within the current directory."
@@ -47,19 +47,25 @@ public struct Run: ParsableCommand {
     )
     var operators: [MutationOperator.Id] = MutationOperator.Id.allCases
 
+    @Flag(
+        name: [.customLong("skip-update-check")],
+        help: "Skips the step in which Muter checks for newer versions."
+    )
+    var skipUpdateCheck: Bool = false
+
     public init() {}
 
-    public func run() throws {
+    public mutating func run() async throws {
         let mutationOperatorsList = !operators.isEmpty
             ? operators
             : .allOperators
-
         let options = RunOptions(
             filesToMutate: filesToMutate,
             reportFormat: reportFormat,
             reportURL: reportURL,
             mutationOperatorsList: mutationOperatorsList,
-            skipCoverage: skipCoverage
+            skipCoverage: skipCoverage,
+            skipUpdateCheck: skipUpdateCheck
         )
 
         _ = RunCommandObserver(
@@ -69,7 +75,7 @@ public struct Run: ParsableCommand {
         NotificationCenter.default.post(name: .muterLaunched, object: nil)
 
         do {
-            try RunCommandHandler(options: options).run()
+            try await RunCommandHandler(options: options).run()
         } catch {
             Logger.print(
                 """
@@ -79,7 +85,7 @@ public struct Run: ParsableCommand {
 
                 ⚠️ ⚠️ ⚠️ ⚠️ ⚠️  See the Muter error log above this line  ⚠️ ⚠️ ⚠️ ⚠️ ⚠️
 
-                If you feel like this is a bug, or want help figuring out what could be happening, please open an issue at
+                If you think this is a bug, or want help figuring out what could be happening, please open an issue at
                 https://github.com/muter-mutation-testing/muter/issues
                 """
             )

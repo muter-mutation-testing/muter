@@ -1,28 +1,25 @@
 import Foundation
 import Plot
 
-typealias Now = () -> Date
-
 final class HTMLReporter: Reporter {
-    private let now: Now
-
-    init(now: @escaping Now = Date.init) {
-        self.now = now
-    }
+    @Dependency(\.now)
+    private var now: Now
 
     func report(from outcome: MutationTestOutcome) -> String {
         htmlReport(
-            MuterTestReport(from: outcome),
+            outcome,
             now
         )
     }
 }
 
 private func htmlReport(
-    _ testReport: MuterTestReport,
+    _ outcome: MutationTestOutcome,
     _ now: Now
 ) -> String {
-    HTML(
+    let testReport = MuterTestReport(from: outcome)
+
+    return HTML(
         .muterHeader(),
         .body(
             .div(
@@ -30,7 +27,10 @@ private func htmlReport(
                 .muterHeader(from: testReport),
                 .main(
                     .class("summary"),
-                    .summary(from: testReport),
+                    .summary(
+                        from: testReport,
+                        newVersion: outcome.newVersion
+                    ),
                     .divider("Mutation Operators per File"),
                     .mutationOperatorsPerFile(from: testReport),
                     .divider("Applied Mutation Operators"),
@@ -102,13 +102,23 @@ extension Node where Context: HTML.BodyContext {
         )
     }
 
-    static func summary(from testReport: MuterTestReport) -> Self {
-        .p(
-            "In total, Muter introduced ",
-            .span(.class("strong"), "\(testReport.totalAppliedMutationOperators)"),
-            " mutants in ",
-            .span(.class("strong"), "\(testReport.fileReports.count)"),
-            " files."
+    static func summary(
+        from testReport: MuterTestReport,
+        newVersion: String
+    ) -> Self {
+        .div(
+            .p(
+                "In total, Muter introduced ",
+                .span(.class("strong"), "\(testReport.totalAppliedMutationOperators)"),
+                " mutants in ",
+                .span(.class("strong"), "\(testReport.fileReports.count)"),
+                " files."
+            ),
+            .p("Muter took \(testReport.timeElapsed) to run."),
+            .if(
+                !newVersion.isEmpty,
+                .p("The version \(newVersion) of Muter is available")
+            )
         )
     }
 

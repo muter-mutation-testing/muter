@@ -5,43 +5,46 @@ enum RemoveTempDirectorySpecError: String, Error {
     case stub
 }
 
-final class RemoveProjectFromPreviousRunTests: MuterTestCase {
+final class PreviousRunCleanUpTests: MuterTestCase {
     private var state = RunCommandState()
-    private lazy var sut = RemoveProjectFromPreviousRun()
+    private lazy var sut = PreviousRunCleanUp()
 
-    func test_removeTempDirectorySucceeds() throws {
+    func test_removeTempDirectorySucceeds() async throws {
         fileManager.fileExistsToReturn = [true]
         state.tempDirectoryURL = URL(fileURLWithPath: "/some/projectName_mutated")
 
-        let result = try XCTUnwrap(sut.run(with: state).get())
+        let result = try await sut.run(with: state)
 
         XCTAssertEqual(result, [])
         XCTAssertEqual(fileManager.paths, ["/some/projectName_mutated"])
         XCTAssertEqual(fileManager.methodCalls, ["fileExists(atPath:)", "removeItem(atPath:)"])
     }
 
-    func test_failsToRemoveTempDirectory() {
+    func test_failsToRemoveTempDirectory() async throws {
         fileManager.errorToThrow = RemoveTempDirectorySpecError.stub
         fileManager.fileExistsToReturn = [true]
 
         state.tempDirectoryURL = URL(fileURLWithPath: "/some/projectName_mutated")
 
-        let result = sut.run(with: state)
+        try await assertThrowsMuterError(
+            await sut.run(with: state)
+        ) { error in
+            guard case let .removeProjectFromPreviousRunFailed(reason) = error else {
+                XCTFail("Expected removeProjectFromPreviousRunFailed, got \(error)")
+                return
+            }
 
-        guard case let .failure(.removeProjectFromPreviousRunFailed(reason)) = result else {
-            return XCTFail("Expected failure, got\(result)")
+            XCTAssertFalse(reason.isEmpty)
         }
-
-        XCTAssertFalse(reason.isEmpty)
     }
 
-    func test_skipStep() throws {
+    func test_skipStep() async throws {
         fileManager.errorToThrow = RemoveTempDirectorySpecError.stub
         fileManager.fileExistsToReturn = [false]
 
         state.tempDirectoryURL = URL(fileURLWithPath: "/some/projectName_mutated")
 
-        let result = try XCTUnwrap(sut.run(with: state).get())
+        let result = try await sut.run(with: state)
 
         XCTAssertEqual(result, [])
     }

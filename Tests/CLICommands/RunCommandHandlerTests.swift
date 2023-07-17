@@ -13,12 +13,12 @@ final class RunCommandHandlerTests: MuterTestCase {
         state: state
     )
 
-    func test_whenThereAreNoFailuresInAnyOfItSteps() throws {
+    func test_whenThereAreNoFailuresInAnyOfItSteps() async throws {
         givenThereAreNoFailuresInAnyOfItSteps()
 
         let expectedState = state
 
-        try sut.run()
+        try await sut.run()
 
         let assertThatRunsAllItsSteps = {
             XCTAssertEqual(self.stepSpy1.methodCalls, ["run(with:)"])
@@ -48,14 +48,18 @@ final class RunCommandHandlerTests: MuterTestCase {
         stepSpy3.resultToReturn = .success([])
     }
 
-    func test_whenThereIsAFailureInOneOfItsSteps() {
+    func test_whenThereIsAFailureInOneOfItsSteps() async throws {
         givenThereIsAFailureInOneOfItsSteps()
 
-        XCTAssertThrowsError(try sut.run()) { error in
-            guard case .configurationParsingError = error as? MuterError else {
-                XCTFail("expected a configuration failure but got \(String(describing: error))")
+        try await assertThrowsMuterError(
+            await sut.run()
+        ) { error in
+            guard case let .configurationParsingError(reason) = error else {
+                XCTFail("Expected configurationParsingError, got \(error)")
                 return
             }
+
+            XCTAssertFalse(reason.isEmpty)
         }
 
         let assertThatWontRunAnySubsequentStepsAfterTheFailingStep = {
@@ -76,43 +80,51 @@ final class RunCommandHandlerTests: MuterTestCase {
 
     private func givenThereIsAFailureInOneOfItsSteps() {
         stepSpy1.resultToReturn = .success([])
-        stepSpy2.resultToReturn = .failure(.configurationParsingError(reason: ""))
+        stepSpy2.resultToReturn = .failure(.configurationParsingError(reason: "some reason"))
         stepSpy3.resultToReturn = .success([])
+    }
+
+    func test_allSteps() {
+        sut = RunCommandHandler(options: .make())
+
+        XCTAssertEqual(sut.steps.count, 12)
+
+        XCTAssertTypeEqual(sut.steps[safe: 0], UpdateCheck.self)
+        XCTAssertTypeEqual(sut.steps[safe: 1], LoadConfiguration.self)
+        XCTAssertTypeEqual(sut.steps[safe: 2], CreateTempDirectoryURL.self)
+        XCTAssertTypeEqual(sut.steps[safe: 3], PreviousRunCleanUp.self)
+        XCTAssertTypeEqual(sut.steps[safe: 4], CopyProjectToTempDirectory.self)
+        XCTAssertTypeEqual(sut.steps[safe: 5], DiscoverProjectCoverage.self)
+        XCTAssertTypeEqual(sut.steps[safe: 6], DiscoverSourceFiles.self)
+        XCTAssertTypeEqual(sut.steps[safe: 7], DiscoverMutationPoints.self)
+        XCTAssertTypeEqual(sut.steps[safe: 8], GenerateSwapFilePaths.self)
+        XCTAssertTypeEqual(sut.steps[safe: 9], ApplySchemata.self)
+        XCTAssertTypeEqual(sut.steps[safe: 10], BuildForTesting.self)
+        XCTAssertTypeEqual(sut.steps[safe: 11], PerformMutationTesting.self)
     }
 
     func test_steps_whenSkipsCoverage() {
         sut = RunCommandHandler(options: .make(skipCoverage: true))
 
-        XCTAssertEqual(sut.steps.count, 10)
-
-        XCTAssertTypeEqual(sut.steps[safe: 0], LoadConfiguration.self)
-        XCTAssertTypeEqual(sut.steps[safe: 1], CreateTempDirectoryURL.self)
-        XCTAssertTypeEqual(sut.steps[safe: 1], CreateTempDirectoryURL.self)
-        XCTAssertTypeEqual(sut.steps[safe: 2], RemoveProjectFromPreviousRun.self)
-        XCTAssertTypeEqual(sut.steps[safe: 3], CopyProjectToTempDirectory.self)
-        XCTAssertTypeEqual(sut.steps[safe: 4], DiscoverSourceFiles.self)
-        XCTAssertTypeEqual(sut.steps[safe: 5], DiscoverMutationPoints.self)
-        XCTAssertTypeEqual(sut.steps[safe: 6], GenerateSwapFilePaths.self)
-        XCTAssertTypeEqual(sut.steps[safe: 7], ApplySchemata.self)
-        XCTAssertTypeEqual(sut.steps[safe: 8], BuildForTesting.self)
-        XCTAssertTypeEqual(sut.steps[safe: 9], PerformMutationTesting.self)
+        assertStepsDoesNotContain(sut.steps, DiscoverProjectCoverage.self)
     }
 
-    func test_steps_whenDontSkipCoverage() {
-        sut = RunCommandHandler(options: .make(skipCoverage: false))
+    func test_steps_whenSkipUpdateCheck() {
+        sut = RunCommandHandler(options: .make(skipUpdateCheck: true))
 
-        XCTAssertEqual(sut.steps.count, 11)
+        assertStepsDoesNotContain(sut.steps, UpdateCheck.self)
+    }
 
-        XCTAssertTypeEqual(sut.steps[safe: 0], LoadConfiguration.self)
-        XCTAssertTypeEqual(sut.steps[safe: 1], CreateTempDirectoryURL.self)
-        XCTAssertTypeEqual(sut.steps[safe: 2], RemoveProjectFromPreviousRun.self)
-        XCTAssertTypeEqual(sut.steps[safe: 3], CopyProjectToTempDirectory.self)
-        XCTAssertTypeEqual(sut.steps[safe: 4], DiscoverProjectCoverage.self)
-        XCTAssertTypeEqual(sut.steps[safe: 5], DiscoverSourceFiles.self)
-        XCTAssertTypeEqual(sut.steps[safe: 6], DiscoverMutationPoints.self)
-        XCTAssertTypeEqual(sut.steps[safe: 7], GenerateSwapFilePaths.self)
-        XCTAssertTypeEqual(sut.steps[safe: 8], ApplySchemata.self)
-        XCTAssertTypeEqual(sut.steps[safe: 9], BuildForTesting.self)
-        XCTAssertTypeEqual(sut.steps[safe: 10], PerformMutationTesting.self)
+    private func assertStepsDoesNotContain(
+        _ steps: [RunCommandStep],
+        _ step: RunCommandStep.Type,
+        file: StaticString = #file,
+        line: UInt = #line
+    ) {
+        XCTAssertFalse(
+            steps.contains { type(of: $0) == step },
+            file: file,
+            line: line
+        )
     }
 }

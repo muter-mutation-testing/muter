@@ -2,6 +2,7 @@ import Foundation
 import SwiftSyntax
 
 protocol AnyRunCommandState: AnyObject {
+    var newVersion: String { get }
     var mutationTestingStartTime: Date { get }
     var muterConfiguration: MuterConfiguration { get }
     var mutationOperatorList: MutationOperatorList { get }
@@ -21,6 +22,7 @@ protocol AnyRunCommandState: AnyObject {
 }
 
 final class RunCommandState: AnyRunCommandState {
+    var newVersion: String = ""
     var mutationTestingStartTime: Date = .init()
     var muterConfiguration: MuterConfiguration = .init()
     var mutationOperatorList: MutationOperatorList = []
@@ -51,12 +53,12 @@ final class RunCommandState: AnyRunCommandState {
 
 extension RunCommandState {
     enum Change: Equatable {
+        case newVersionAvaiable(String)
         case configurationParsed(MuterConfiguration)
         case mutationOperatorList(MutationOperatorList)
         case projectDirectoryUrlDiscovered(URL)
         case tempDirectoryUrlCreated(URL)
         case projectXCTestRun(XCTestRun)
-        case copyToTempDirectoryCompleted
         case projectCoverage(Coverage)
         case sourceFileCandidatesDiscovered([FilePath])
         case mutationPointsDiscovered([MutationPoint])
@@ -71,10 +73,12 @@ extension RunCommandState {
     func apply(_ stateChanges: [RunCommandState.Change]) {
         for change in stateChanges {
             switch change {
-            case let .configurationParsed(muterConfiguration):
-                self.muterConfiguration = muterConfiguration
             case let .mutationOperatorList(mutationOperatorList):
                 self.mutationOperatorList = mutationOperatorList
+            case let .newVersionAvaiable(newVersion):
+                self.newVersion = newVersion
+            case let .configurationParsed(muterConfiguration):
+                self.muterConfiguration = muterConfiguration
             case let .projectDirectoryUrlDiscovered(projectDirectoryURL):
                 self.projectDirectoryURL = projectDirectoryURL
             case let .tempDirectoryUrlCreated(tempDirectoryURL):
@@ -87,16 +91,14 @@ extension RunCommandState {
                 self.sourceFileCandidates = sourceFileCandidates
             case let .mutationPointsDiscovered(mutationPoints):
                 self.mutationPoints = mutationPoints
-            case let .mutationMappingsDiscovered(mutationMappings):
-                mutationMapping = mutationMappings
+            case let .mutationMappingsDiscovered(mutationMapping):
+                self.mutationMapping = mutationMapping
             case let .sourceCodeParsed(sourceCodeByFilePath):
                 self.sourceCodeByFilePath = sourceCodeByFilePath
             case let .swapFilePathGenerated(swapFilePathsByOriginalPath):
                 self.swapFilePathsByOriginalPath = swapFilePathsByOriginalPath
             case let .mutationTestOutcomeGenerated(mutationTestOutcome):
                 self.mutationTestOutcome = mutationTestOutcome
-            case .copyToTempDirectoryCompleted:
-                break
             }
         }
     }

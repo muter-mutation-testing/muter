@@ -63,16 +63,6 @@ final class SchemataMutationMapping: Equatable {
     ) -> MutationSchemata? {
         mappings[codeBlockSyntax]
     }
-
-    func skipMutations(_ mutationPoints: [MutationPosition]) -> Self {
-        for (codeBlock, schemata) in mappings {
-            mappings[codeBlock] = schemata.exclude {
-                mutationPoints.contains($0.position)
-            }
-        }
-
-        return self
-    }
 }
 
 func + (
