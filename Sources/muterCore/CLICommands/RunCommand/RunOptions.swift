@@ -18,11 +18,12 @@ struct RunOptions {
         reportURL: URL?,
         mutationOperatorsList: MutationOperatorList,
         skipCoverage: Bool,
-        skipUpdateCheck _: Bool
+        skipUpdateCheck: Bool
     ) {
         self.filesToMutate = filesToMutate
         self.skipCoverage = skipCoverage
         self.mutationOperatorsList = mutationOperatorsList
+        self.skipUpdateCheck = skipUpdateCheck
 
         reportOptions = ReportOptions(
             reporter: reportFormat.reporter,

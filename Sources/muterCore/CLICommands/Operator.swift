@@ -1,28 +1,29 @@
-// swiftformat:disable all
-
 import ArgumentParser
 import Foundation
 import Rainbow
-import SyntaxHighlighter
 
-public struct Operator: ParsableCommand {
+public struct Operator: AsyncParsableCommand {
 
     public static let configuration = CommandConfiguration(
         commandName: "operator",
         abstract: "Describes a given mutation operator."
     )
     
-    @Argument(help: "Avaiable operators are: all, \(MutationOperator.Id.description)")
+    @Argument(
+        help: """
+            Avaiable operators are: \(MutationOperator.Id.description)
+            For all operators use: \("all".italic)
+        """
+    )
     var `operator`: String
-        
+    
     public init() {}
     
-    public func run() throws {
+    public mutating func run() async throws {
         if `operator`.trimmed == "all" {
-            print(MutationOperator.Id.allCases.map(\.documentation).joined())
-            return
+            return print(MutationOperator.Id.allCases.map(\.documentation).joined(separator: "\n\n"))
         }
-        
+
         guard let mutationOperator = MutationOperator.Id(rawValue: `operator`) else {
             throw MuterError.literal(reason: MutationOperator.Id.description)
         }
@@ -31,12 +32,11 @@ public struct Operator: ParsableCommand {
     }
 }
 
-extension MutationOperator.Id {
+private extension MutationOperator.Id {
     var documentation: String {
         switch self {
         case .logicalOperator:
-            return
-                """
+            return """
                 
                 \("Change Logical Connector".bold)
                 
@@ -59,35 +59,32 @@ extension MutationOperator.Id {
                 \("Mutating a Logical".bold) \("AND".bold.italic)
                 
                 \(
-                    highlightCode(
-                        """
-                        func isValidPassword(_ text: String, _ repeatedText: String) -> Bool {
-                            let meetsMinimumLength = text.count >= 8
-                            let passwordsMatch = repeatedText == text
-                            return meetsMinimumLength && passwordsMatch
-                        }
-                        """
-                    ).onCodeBlock
+                """
+                \("func".asKeyword) \("isValidPassword".asDeclaration)(\("_".asDeclaration) text: \("String".asTypeDeclaration), \("_".asDeclaration) repeatedText: \("String".asTypeDeclaration) \("->".asKeyword) \("Bool".asTypeDeclaration) {
+                    \("let".asKeyword) meetsMinimumLength \("=".asKeyword) text.\("count".asTypeDeclaration) \(">=".asKeyword) \("8".asTypeDeclaration)
+                    \("let".asKeyword) passwordsMatch \("=".asKeyword) repeatedText \("==".asKeyword) text
+                    \("return".asKeyword) meetsMinimumLength \("&&".asKeyword) passwordsMatch
+                }
+                """
+                .onCodeBlock
                 )
                 
                 becomes
 
                 \(
-                    highlightCode(
-                        """
-                        func isValidPassword(_ text: String, _ repeatedText: String) -> Bool {
-                            let meetsMinimumLength = text.count >= 8
-                            let passwordsMatch = repeatedText == text
-                            return meetsMinimumLength || passwordsMatch
-                        }
-                        """
-                    ).onCodeBlock
+                """
+                \("func".asKeyword) \("isValidPassword".asDeclaration)(\("_".asDeclaration) text: \("String".asTypeDeclaration), \("_".asDeclaration) repeatedText: \("String".asTypeDeclaration) \("->".asKeyword) \("Bool".asTypeDeclaration) {
+                    \("let".asKeyword) meetsMinimumLength \("=".asKeyword) text.\("count".asTypeDeclaration) \(">=".asKeyword) \("8".asTypeDeclaration)
+                    \("let".asKeyword) passwordsMatch \("=".asKeyword) repeatedText \("==".asKeyword) text
+                    \("return".asKeyword) meetsMinimumLength \("||".asKeyword) passwordsMatch
+                }
+                """
+                .onCodeBlock
                 )
                 
                 """
         case .removeSideEffects:
-            return
-                """
+            return """
                 
                 \("Remove Side Effects".bold)
                 
@@ -100,59 +97,46 @@ extension MutationOperator.Id {
 
                 \("Mutating an explicitly discarded return result".bold)
                 
-                \(
-                    highlightCode(
-                        """
-                        func initialize() {
-                            _ = self.view
-                            view.results = self.results
-                        }
-                        """
-                    ).onCodeBlock
+                \("""
+                \("func".asKeyword) initialize() {
+                    \("_".asTypeDeclaration) \("=".asKeyword) \("self".asTypeDeclaration).view
+                    view.results \("=".asKeyword) \("self".asTypeDeclaration).results
+                }
+                """.onCodeBlock
                 )
                 
                 becomes
 
-                \(
-                    highlightCode(
-                        """
-                        func initialize() {
-                            view.results = self.results
-                        }
-                        """
-                    ).onCodeBlock
+                \("""
+                \("func".asKeyword) initialize() {
+                    view.results \("=".asKeyword) \("self".asTypeDeclaration).results
+                }
+                """.onCodeBlock
                 )
                 
                 \("Mutating a void function call".bold)
                 
-                \(
-                    highlightCode(
-                        """
-                        func update(email: String, for userId: String) {
-                            var userRecord = record(for: userId)
-                            userRecord.email = email
-                            database.persist(userRecord)
-                        }
-                        """
-                    ).onCodeBlock
+                \("""
+                \("func".asKeyword) \("update".asDeclaration)(\("email".asDeclaration): \("String".asTypeDeclaration), \("for".asDeclaration) userId: \("String".asTypeDeclaration) {
+                    \("var".asKeyword) userRecord = \("record".asTypeDeclaration)(\("for".asTypeDeclaration): userId)
+                    userRecord.email \("=".asKeyword) email
+                    database.\("persist".asTypeDeclaration)(userRecord)
+                }
+                """.onCodeBlock
                 )
                 
                 becomes
 
-                \(
-                    highlightCode(
-                        """
-                        func update(email: String, for userId: String) {
-                            var userRecord = record(for: userId)
-                            userRecord.email = email
-                        }
-                        """
-                    ).onCodeBlock
+                \("""
+                \("func".asKeyword) \("update".asDeclaration)(\("email".asDeclaration): \("String".asTypeDeclaration), \("for".asDeclaration) userId: \("String".asTypeDeclaration) {
+                    \("var".asKeyword) userRecord = \("record".asTypeDeclaration)(\("for".asTypeDeclaration): userId)
+                    userRecord.email \("=".asKeyword) email
+                }
+                """.onCodeBlock
                 )
                 """
         case .ror:
-            return
-                """
+            return """
                 
                 \("Relational Operator Replacement".bold)
                 
@@ -186,34 +170,27 @@ extension MutationOperator.Id {
                 
                 The purpose of this operator is to highlight how your tests respond to changes in branching logic.
                 A well-engineered test suite will be able to fail clearly in response to code taking a different branch than it expected.
-                
+
                 \("Mutating an equality check".bold)
                 
-                \(
-                    highlightCode(
-                        """
-                        if myValue == 50 {
-                            // something happens here
-                        }
-                        """
-                    ).onCodeBlock
+                \("""
+                \("if".asKeyword) myValue == \("50".asTypeDeclaration) {
+                    \("// something happens here".asComment)
+                }
+                """.onCodeBlock
                 )
                 
                 becomes
-                
-                \(
-                    highlightCode(
-                        """
-                        if myValue != 50 {
-                            // something happens here
-                        }
-                        """
-                    ).onCodeBlock
+
+                \("""
+                \("if".asKeyword) myValue != \("50".asTypeDeclaration) {
+                    \("// something happens here".asComment)
+                }
+                """.onCodeBlock
                 )
                 """
         case .swapTernary:
-            return
-                """
+            return """
                 
                 \("Swap Ternary".bold)
                 
@@ -230,101 +207,26 @@ extension MutationOperator.Id {
                 
                 \("Mutation a ternary expression".bold)
                 
-                \(
-                    highlightCode(
-                        """
-                        func stringify(_ a: Bool) -> String {
-                            return a ? "true" : "false"
-                        }
-                        """
-                    ).onCodeBlock
+                \("""
+                \("func".asKeyword) \("stringify".asDeclaration)(\("_".asDeclaration) a: \("Bool".asTypeDeclaration) \("->".asKeyword) \("String".asTypeDeclaration) {
+                    \("return".asKeyword) a \("?".asKeyword) \("\"true\"".asTypeDeclaration) : \("\"false\"".asTypeDeclaration)
+                }
+                """.onCodeBlock
                 )
                 
                 becomes
                 
-                \(
-                    highlightCode(
-                        """
-                        func stringify(_ a: Bool) -> String {
-                            return a ? "false" : "true"
-                        }
-                        """
-                    ).onCodeBlock
+                \("""
+                \("func".asKeyword) \("stringify".asDeclaration)(\("_".asKeyword) a: \("Bool".asTypeDeclaration) \("->".asKeyword) \("String".asTypeDeclaration) {
+                    \("return".asKeyword) a \("?".asKeyword) \("\"false\"".asTypeDeclaration) : \("\"true\"".asTypeDeclaration)
+                }
+                """.onCodeBlock
                 )
                 
                 """
         }
     }
 }
-
-private func highlightCode(_ code: String) -> String {
-    Visitor.highlightCode(code, theme: highlightTheme)
-}
-
-let highlightTheme = Theme(
-    transformer: [
-        [.classKeyword,
-         .deinitKeyword,
-         .associatedtypeKeyword,
-         .extensionKeyword,
-         .enumKeyword,
-         .funcKeyword,
-         .importKeyword,
-         .initKeyword,
-         .inoutKeyword,
-         .letKeyword,
-         .operatorKeyword,
-         .precedencegroupKeyword,
-         .protocolKeyword,
-         .structKeyword,
-         .returnKeyword,
-         .asKeyword,
-         .varKeyword,
-         .fileprivateKeyword,
-         .internalKeyword,
-         .privateKeyword,
-         .publicKeyword,
-         .staticKeyword,
-         .deferKeyword,
-         .ifKeyword,
-         .guardKeyword,
-         .doKeyword,
-         .repeatKeyword,
-         .elseKeyword,
-         .forKeyword,
-         .inKeyword,
-         .whileKeyword,
-         .breakKeyword,
-         .continueKeyword,
-         .fallthroughKeyword,
-         .switchKeyword,
-         .defaultKeyword,
-         .whereKeyword,
-         .catchKeyword,
-         .throwKeyword,
-         .anyKeyword,
-         .falseKeyword,
-         .isKeyword,
-         .caseKeyword,
-         .nilKeyword,
-         .rethrowsKeyword,
-         .typealiasKeyword,
-         .selfKeyword,
-         .superKeyword,
-         .throwsKeyword,
-         .capitalSelfKeyword,
-         .prefixPeriod,
-         .equal,
-         .arrow
-        ]: { $0.asKeyword },
-        [
-            .trueKeyword,
-            .wildcardKeyword,
-            .integerLiteral
-        ]: { $0.asTypeDeclaration }
-    ],
-    commentsTransformer: { $0.asComment }
-)
 
 private extension String {
     var asKeyword: String {
