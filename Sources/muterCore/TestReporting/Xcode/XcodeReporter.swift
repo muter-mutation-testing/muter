@@ -1,4 +1,6 @@
 final class XcodeReporter: Reporter {
+    @Dependency(\.logger)
+    private var logger: Logger
 
     func newMutationTestOutcomeAvailable(outcomeWithFlush: MutationOutcomeWithFlush) {
         let outcome = outcomeWithFlush.mutation
@@ -7,7 +9,7 @@ final class XcodeReporter: Reporter {
             return
         }
 
-        Logger.print(outcomeIntoXcodeString(outcome: outcome))
+        logger.print(outcomeIntoXcodeString(outcome: outcome))
 
         outcomeWithFlush.fflush()
     }

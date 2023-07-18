@@ -2,6 +2,8 @@ import Foundation
 import Progress
 
 final class Logger {
+    @Dependency(\.printer)
+    private var print: Printer
     private var numberOfMutationPoints: Int = 0
     private var progressBar: ProgressBar!
 
@@ -163,19 +165,11 @@ final class Logger {
         progressBar.next()
     }
 
-    private func print(_ message: String) {
-        type(of: self).print(message)
-    }
-
-    private func printMessage(_ message: String) {
-        type(of: self).printMessage(message)
-    }
-
-    static func print(_ message: String) {
+    func print(_ message: String) {
         Swift.print(message)
     }
 
-    static func printMessage(_ message: String) {
+    private func printMessage(_ message: String) {
         print("+-----------------+")
         print(message)
     }

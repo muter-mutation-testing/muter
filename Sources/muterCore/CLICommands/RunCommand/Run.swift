@@ -59,6 +59,7 @@ public struct Run: AsyncParsableCommand {
         let mutationOperatorsList = !operators.isEmpty
             ? operators
             : .allOperators
+
         let options = RunOptions(
             filesToMutate: filesToMutate,
             reportFormat: reportFormat,
@@ -77,7 +78,7 @@ public struct Run: AsyncParsableCommand {
         do {
             try await RunCommandHandler(options: options).run()
         } catch {
-            Logger.print(
+            print(
                 """
                 ⚠️ ⚠️ ⚠️ ⚠️ ⚠️  Muter has encountered an error  ⚠️ ⚠️ ⚠️ ⚠️ ⚠️
                 \(error)

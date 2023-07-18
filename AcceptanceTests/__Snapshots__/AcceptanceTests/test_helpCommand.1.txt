@@ -10,5 +10,6 @@ SUBCOMMANDS:
   init                    Creates the configuration file that Muter uses
   run (default)           Performs mutation testing for the Swift project
                           contained within the current directory.
+  operator                Describes a given mutation operator.
 
   See 'muter help <subcommand>' for detailed help.

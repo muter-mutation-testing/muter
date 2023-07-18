@@ -10,7 +10,6 @@ struct DiscoverMutationPoints: RunCommandStep {
     func run(
         with state: AnyRunCommandState
     ) async throws -> [RunCommandState.Change] {
-
         notificationCenter.post(
             name: .mutationsDiscoveryStarted,
             object: nil

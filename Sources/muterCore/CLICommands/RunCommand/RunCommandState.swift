@@ -41,6 +41,7 @@ final class RunCommandState: AnyRunCommandState {
     init() {}
 
     init(from options: RunOptions) {
+        mutationOperatorList = options.mutationOperatorsList
         filesToMutate = options.filesToMutate
             .reduce(into: []) { accum, next in
                 accum.append(
@@ -55,7 +56,6 @@ extension RunCommandState {
     enum Change: Equatable {
         case newVersionAvaiable(String)
         case configurationParsed(MuterConfiguration)
-        case mutationOperatorList(MutationOperatorList)
         case projectDirectoryUrlDiscovered(URL)
         case tempDirectoryUrlCreated(URL)
         case projectXCTestRun(XCTestRun)
@@ -73,8 +73,6 @@ extension RunCommandState {
     func apply(_ stateChanges: [RunCommandState.Change]) {
         for change in stateChanges {
             switch change {
-            case let .mutationOperatorList(mutationOperatorList):
-                self.mutationOperatorList = mutationOperatorList
             case let .newVersionAvaiable(newVersion):
                 self.newVersion = newVersion
             case let .configurationParsed(muterConfiguration):
