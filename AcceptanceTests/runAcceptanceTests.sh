@@ -98,7 +98,7 @@ swift test --filter 'AcceptanceTests'
 
 exitCode=$?
 
-#rm -rf ./AcceptanceTests/samples
+rm -rf ./AcceptanceTests/samples
 
 exit $exitCode
 
