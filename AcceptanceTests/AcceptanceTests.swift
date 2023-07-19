@@ -63,6 +63,7 @@ final class AcceptanceTests: XCTestCase {
     func test_withCoverage() throws {
         let output = try muterWithCoverageOutput
 
+        print(output)
         XCTAssertTrue(output.contains("Code Coverage of your project: "))
     }
 
