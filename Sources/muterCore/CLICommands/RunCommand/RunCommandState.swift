@@ -5,6 +5,7 @@ protocol AnyRunCommandState: AnyObject {
     var newVersion: String { get }
     var mutationTestingStartTime: Date { get }
     var muterConfiguration: MuterConfiguration { get }
+    var mutationOperatorList: MutationOperatorList { get }
     var projectDirectoryURL: URL { get }
     var tempDirectoryURL: URL { get }
     var projectXCTestRun: XCTestRun { get }
@@ -24,6 +25,7 @@ final class RunCommandState: AnyRunCommandState {
     var newVersion: String = ""
     var mutationTestingStartTime: Date = .init()
     var muterConfiguration: MuterConfiguration = .init()
+    var mutationOperatorList: MutationOperatorList = []
     var projectDirectoryURL: URL = .init(fileURLWithPath: "path")
     var tempDirectoryURL: URL = .init(fileURLWithPath: "path")
     var projectXCTestRun: XCTestRun = .init()
@@ -39,6 +41,7 @@ final class RunCommandState: AnyRunCommandState {
     init() {}
 
     init(from options: RunOptions) {
+        mutationOperatorList = options.mutationOperatorsList
         filesToMutate = options.filesToMutate
             .reduce(into: []) { accum, next in
                 accum.append(

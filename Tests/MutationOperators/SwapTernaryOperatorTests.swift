@@ -1,7 +1,7 @@
 @testable import muterCore
 import XCTest
 
-final class TernaryOperatorTests: MuterTestCase {
+final class SwapTernaryOperatorTests: MuterTestCase {
     private lazy var sampleCode = sourceCode(
         fromFileAt: "\(mutationExamplesDirectory)/TernaryOperator/sampleWithTernaryOperator.swift"
     )!
@@ -11,7 +11,7 @@ final class TernaryOperatorTests: MuterTestCase {
     )!
 
     func test_visitor() throws {
-        let visitor = TernaryOperator.Visitor(
+        let visitor = SwapTernaryOperator.Visitor(
             sourceFileInfo: sampleCode.asSourceFileInfo
         )
 
@@ -25,7 +25,7 @@ final class TernaryOperatorTests: MuterTestCase {
                 schemata: [
                     .make(
                         filePath: sampleCode.path,
-                        mutationOperatorId: .ternaryOperator,
+                        mutationOperatorId: .swapTernary,
                         syntaxMutation: "\n    return a ? \"false\" : \"true\" ",
                         position: MutationPosition(
                             utf8Offset: 199,
@@ -45,7 +45,7 @@ final class TernaryOperatorTests: MuterTestCase {
                 schemata: [
                     .make(
                         filePath: sampleCode.path,
-                        mutationOperatorId: .ternaryOperator,
+                        mutationOperatorId: .swapTernary,
                         syntaxMutation: "\n    return a ? false : true ",
                         position: MutationPosition(
                             utf8Offset: 120,
@@ -66,7 +66,7 @@ final class TernaryOperatorTests: MuterTestCase {
     }
 
     func test_visitor_nestedTernaryOperator() throws {
-        let visitor = TernaryOperator.Visitor(
+        let visitor = SwapTernaryOperator.Visitor(
             sourceFileInfo: sampleNestedCode.asSourceFileInfo
         )
 
@@ -79,7 +79,7 @@ final class TernaryOperatorTests: MuterTestCase {
                 schemata: [
                     .make(
                         filePath: sampleNestedCode.path,
-                        mutationOperatorId: .ternaryOperator,
+                        mutationOperatorId: .swapTernary,
                         syntaxMutation: "\n    return a ? false : b ? true : false ",
                         position: MutationPosition(
                             utf8Offset: 143,
@@ -94,7 +94,7 @@ final class TernaryOperatorTests: MuterTestCase {
                     ),
                     .make(
                         filePath: sampleNestedCode.path,
-                        mutationOperatorId: .ternaryOperator,
+                        mutationOperatorId: .swapTernary,
                         syntaxMutation: "\n    return a ? b ? false : true : false",
                         position: MutationPosition(
                             utf8Offset: 136,
@@ -115,7 +115,7 @@ final class TernaryOperatorTests: MuterTestCase {
     }
 
     func test_rewriter() {
-        let visitor = TernaryOperator.Visitor(
+        let visitor = SwapTernaryOperator.Visitor(
             sourceFileInfo: sampleNestedCode.asSourceFileInfo
         )
 

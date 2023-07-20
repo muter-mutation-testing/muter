@@ -19,8 +19,8 @@ let package = Package(
         .package(url: "https://github.com/jkandzi/Progress.swift.git", from: "0.4.0"),
         .package(url: "https://github.com/johnsundell/plot.git", from: "0.14.0"),
         .package(url: "https://github.com/krzysztofzablocki/Difference.git", from: "1.0.2"),
-        .package(url: "https://github.com/jpsim/Yams.git", from: "5.0.5"),
-        .package(url: "https://github.com/pointfreeco/swift-snapshot-testing.git", from: "1.11.0"),
+        .package(url: "https://github.com/jpsim/Yams.git", from: "5.0.6"),
+        .package(url: "https://github.com/pointfreeco/swift-snapshot-testing.git", from: "1.11.1"),
         .package(url: "https://github.com/mxcl/Version.git", from: "2.0.1")
     ],
     targets: [
@@ -63,6 +63,7 @@ let package = Package(
             path: "Tests",
             exclude: [
                 "MutationSchemata/__Snapshots__",
+                "TestReporting/__Snapshots__",
                 "fixtures",
                 "Extensions"
             ]

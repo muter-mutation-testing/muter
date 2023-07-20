@@ -12,12 +12,14 @@ final class RunCommandHandler {
         self.state = state
     }
 
-    init(
+    convenience init(
         options: RunOptions,
         steps: [RunCommandStep] = RunCommandHandler.defaultSteps
     ) {
-        self.steps = steps.filter(with: options)
-        state = RunCommandState(from: options)
+        self.init(
+            steps: steps.filter(with: options),
+            state: RunCommandState(from: options)
+        )
     }
 
     func run() async throws {

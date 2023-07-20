@@ -167,6 +167,7 @@ extension RunOptions {
         filesToMutate: [String] = [],
         reportFormat: ReportFormat = .plain,
         reportURL: URL? = nil,
+        mutationOperatorsList: MutationOperatorList = [],
         skipCoverage: Bool = false,
         skipUpdateCheck: Bool = false
     ) -> Self {
@@ -174,6 +175,7 @@ extension RunOptions {
             filesToMutate: filesToMutate,
             reportFormat: reportFormat,
             reportURL: reportURL,
+            mutationOperatorsList: mutationOperatorsList,
             skipCoverage: skipCoverage,
             skipUpdateCheck: skipUpdateCheck
         )
@@ -227,7 +229,6 @@ func sourceCode(
 
 extension MuterConfiguration {
     static func fromFixture(at path: String) -> MuterConfiguration? {
-
         guard let data = FileManager.default.contents(atPath: path),
               let configuration = try? MuterConfiguration(from: data)
         else {

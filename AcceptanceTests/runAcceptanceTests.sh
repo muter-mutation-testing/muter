@@ -82,6 +82,12 @@ echo " > Running init help command..."
 echo " > Running run help command..."
 "$muterdir"/muter help run > "$samplesdir"/muters_run_help_output.txt
 
+echo " > Running operators help command..."
+"$muterdir"/muter help operator > "$samplesdir"/muters_operator_help_output.txt
+
+echo " > Running all operators command..."
+"$muterdir"/muter operator all > "$samplesdir"/muters_operator_all_output.txt
+
 cd ../../..
 
 rm -rf ./AcceptanceTests/Repositories

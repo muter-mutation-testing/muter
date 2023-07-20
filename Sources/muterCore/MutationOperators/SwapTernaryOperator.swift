@@ -1,6 +1,6 @@
 import SwiftSyntax
 
-enum TernaryOperator {
+enum SwapTernaryOperator {
     final class Visitor: MuterVisitor {
         convenience init(
             configuration: MuterConfiguration? = nil,
@@ -9,7 +9,7 @@ enum TernaryOperator {
             self.init(
                 configuration: configuration,
                 sourceFileInfo: sourceFileInfo,
-                mutationOperatorId: .ternaryOperator
+                mutationOperatorId: .swapTernary
             )
         }
 

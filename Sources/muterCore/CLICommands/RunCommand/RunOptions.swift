@@ -5,6 +5,7 @@ typealias ReportOptions = (reporter: Reporter, path: String?)
 struct RunOptions {
     let reportOptions: ReportOptions
     let filesToMutate: [String]
+    let mutationOperatorsList: MutationOperatorList
     let skipCoverage: Bool
     let skipUpdateCheck: Bool
 
@@ -15,11 +16,13 @@ struct RunOptions {
         filesToMutate: [String],
         reportFormat: ReportFormat,
         reportURL: URL?,
+        mutationOperatorsList: MutationOperatorList,
         skipCoverage: Bool,
         skipUpdateCheck: Bool
     ) {
         self.filesToMutate = filesToMutate
         self.skipCoverage = skipCoverage
+        self.mutationOperatorsList = mutationOperatorsList
         self.skipUpdateCheck = skipUpdateCheck
 
         reportOptions = ReportOptions(

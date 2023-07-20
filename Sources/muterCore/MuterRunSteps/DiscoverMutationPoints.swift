@@ -10,13 +10,13 @@ struct DiscoverMutationPoints: RunCommandStep {
     func run(
         with state: AnyRunCommandState
     ) async throws -> [RunCommandState.Change] {
-
         notificationCenter.post(
             name: .mutationsDiscoveryStarted,
             object: nil
         )
 
         let discovered = discoverMutationPoints(
+            forOperators: state.mutationOperatorList,
             inFilesAt: state.sourceFileCandidates,
             configuration: state.muterConfiguration
         )
@@ -42,6 +42,7 @@ struct DiscoverMutationPoints: RunCommandStep {
 private extension DiscoverMutationPoints {
 
     func discoverMutationPoints(
+        forOperators operators: MutationOperatorList,
         inFilesAt filePaths: [String],
         configuration: MuterConfiguration
     ) -> DiscoveredFiles {
@@ -54,6 +55,7 @@ private extension DiscoverMutationPoints {
             }
 
             let schemataMappings = discoverNewSchemataMappings(
+                forOperators: operators,
                 inFile: sourceCode,
                 configuration: configuration
             )
@@ -69,13 +71,14 @@ private extension DiscoverMutationPoints {
     }
 
     func discoverNewSchemataMappings(
+        forOperators operators: MutationOperatorList,
         inFile sourceCode: PreparedSourceCode,
         configuration: MuterConfiguration
     ) -> [SchemataMutationMapping] {
         let source = sourceCode.source.code
         let sourceFileInfo = sourceCode.source.asSourceFileInfo
 
-        return MutationOperator.Id.allCases.accumulate(into: []) { newSchemataMappings, mutationOperatorId in
+        return operators.accumulate(into: []) { newSchemataMappings, mutationOperatorId in
             let visitor = mutationOperatorId.visitor(
                 configuration,
                 sourceFileInfo

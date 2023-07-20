@@ -178,15 +178,15 @@ extension RunCommandObserver {
     }
 
     func handleMutationTestingFinished(notification: Notification) {
-        Logger.print("Muter finished running!")
-        Logger.print("\n")
+        logger.print("Muter finished running!")
+        logger.print("\n")
 
         let reporter = runOptions.reportOptions.reporter
         let reportPath = runOptions.reportOptions.path ?? ""
         let report = reporter.report(from: notification.object as! MutationTestOutcome)
 
         guard !reportPath.isEmpty else {
-            return Logger.print(
+            return logger.print(
                 """
                 Muter's report
 
@@ -206,11 +206,11 @@ extension RunCommandObserver {
         )
 
         if didSave {
-            Logger.print("Report generated: \(reportPath.bold)")
+            logger.print("Report generated: \(reportPath.bold)")
         } else {
-            Logger.print(report)
-            Logger.print("\n")
-            Logger.print("Could not save report!")
+            logger.print(report)
+            logger.print("\n")
+            logger.print("Could not save report!")
         }
     }
 }

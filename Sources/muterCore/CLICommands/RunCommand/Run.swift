@@ -34,6 +34,19 @@ public struct Run: AsyncParsableCommand {
     )
     var reportURL: URL?
 
+    @Option(
+        parsing: .upToNextOption,
+        help: "The list of mutant operators to be used: \(MutationOperator.Id.description)",
+        transform: {
+            guard let `operator` = MutationOperator.Id(rawValue: $0) else {
+                throw MuterError.literal(reason: MutationOperator.Id.description)
+            }
+
+            return `operator`
+        }
+    )
+    var operators: [MutationOperator.Id] = MutationOperator.Id.allCases
+
     @Flag(
         name: [.customLong("skip-update-check")],
         help: "Skips the step in which Muter checks for newer versions."
@@ -43,10 +56,15 @@ public struct Run: AsyncParsableCommand {
     public init() {}
 
     public mutating func run() async throws {
+        let mutationOperatorsList = !operators.isEmpty
+            ? operators
+            : .allOperators
+
         let options = RunOptions(
             filesToMutate: filesToMutate,
             reportFormat: reportFormat,
             reportURL: reportURL,
+            mutationOperatorsList: mutationOperatorsList,
             skipCoverage: skipCoverage,
             skipUpdateCheck: skipUpdateCheck
         )
@@ -60,7 +78,7 @@ public struct Run: AsyncParsableCommand {
         do {
             try await RunCommandHandler(options: options).run()
         } catch {
-            Logger.print(
+            print(
                 """
                 ⚠️ ⚠️ ⚠️ ⚠️ ⚠️  Muter has encountered an error  ⚠️ ⚠️ ⚠️ ⚠️ ⚠️
                 \(error)

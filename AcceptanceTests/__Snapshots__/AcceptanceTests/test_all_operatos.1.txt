@@ -1,0 +1,134 @@
+
+Relational Operator Replacement
+
+The relational operator replacement operator will invert conditional operators in your code based on this table:
+
++-------------------+------------------+
+| Original Operator | Changed Operator |
++-------------------+------------------+
+|        ==         |        !=       |
++-------------------+-----------------+
+|        !=         |        ==       |
++-------------------+-----------------+
+|        >=         |        <=       |
++-------------------+-----------------+
+|        <=         |        >=       |
++-------------------+-----------------+
+|        >          |        <        |
++-------------------+-----------------+
+|        <          |        >        |
++-------------------+-----------------+
+
+
+The purpose of this operator is to highlight how your tests respond to changes in branching logic.
+A well-engineered test suite will be able to fail clearly in response to code taking a different branch than it expected.
+
+Mutating an equality check
+
+if myValue == 50 {
+    // something happens here
+}
+
+becomes
+
+if myValue != 50 {
+    // something happens here
+}
+
+
+Remove Side Effects
+
+The remove side effects operator will remove code it determines is causing a side effect.
+It will determine your code is causing a side effect based on a few rules:
+    • A line contains a function call which is explicitly discarding a return result.
+    • A line contains a function call and doesn't save the result of the function call into a named variable or constant (i.e. a line implicitly discards a return result or doesn't produce one).
+    • A line does not contain a call to print, exit, fatalError,abort, or any function listed in muter.conf.yml under the excludeCalls key.
+The purpose of this operator is to highlight how your tests respond to the absence of expected side effects.
+
+Mutating an explicitly discarded return result
+
+func initialize() {
+    _ = self.view
+    view.results = self.results
+}
+
+becomes
+
+func initialize() {
+    view.results = self.results
+}
+
+Mutating a void function call
+
+func update(email: String, for userId: String {
+    var userRecord = record(for: userId)
+    userRecord.email = email
+    database.persist(userRecord)
+}
+
+becomes
+
+func update(email: String, for userId: String {
+    var userRecord = record(for: userId)
+    userRecord.email = email
+}
+
+
+Change Logical Connector
+
+The change logical connector operator will change conditional operators in your code based on this table:
+
++-------------------+------------------+
+| Original Operator | Changed Operator |
++-------------------+------------------+
+|         &&        |        ||        |
++-------------------+------------------+
+|         ||        |        &&        |
++-------------------+------------------+
+
+The purpose of this operator is to highlight how your tests respond to changes in logic.
+A well-engineered test suite will be able to fail clearly in response to different logical constraints.
+
+Mutating a Logical AND
+
+func isValidPassword(_ text: String, _ repeatedText: String -> Bool {
+    let meetsMinimumLength = text.count >= 8
+    let passwordsMatch = repeatedText == text
+    return meetsMinimumLength && passwordsMatch
+}
+
+becomes
+
+func isValidPassword(_ text: String, _ repeatedText: String -> Bool {
+    let meetsMinimumLength = text.count >= 8
+    let passwordsMatch = repeatedText == text
+    return meetsMinimumLength || passwordsMatch
+}
+
+
+
+Swap Ternary
+
+The swap ternary operator will swap ternary operators in your code based on this table:
+
++---------------------------------------------+---------------------------------------------+
+|              Original Operator              |               Changed Operator              |
++---------------------------------------------+---------------------------------------------+
+| <condition> ? <expression1> : <expression2> | <condition> ? <expression2> : <expression1> |
++---------------------------------------------+---------------------------------------------+
+
+The purpose of this operator is to highlight how your tests respond to changes in logic.
+A well-engineered test suite will be able to fail clearly in response to different logical constraints.
+
+Mutation a ternary expression
+
+func stringify(_ a: Bool -> String {
+    return a ? "true" : "false"
+}
+
+becomes
+
+func stringify(_ a: Bool -> String {
+    return a ? "false" : "true"
+}
+

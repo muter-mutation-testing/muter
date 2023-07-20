@@ -83,7 +83,7 @@ final class RewriterTests: MuterTestCase {
             )
         ),
         OperatorIdAndPositionAssert(
-            id: .ternaryOperator,
+            id: .swapTernary,
             position: MutationPosition(
                 utf8Offset: 2896,
                 line: 125,
@@ -91,7 +91,7 @@ final class RewriterTests: MuterTestCase {
             )
         ),
         OperatorIdAndPositionAssert(
-            id: .ternaryOperator,
+            id: .swapTernary,
             position: MutationPosition(
                 utf8Offset: 2987,
                 line: 129,
@@ -107,7 +107,7 @@ final class RewriterTests: MuterTestCase {
             )
         ),
         OperatorIdAndPositionAssert(
-            id: .ternaryOperator,
+            id: .swapTernary,
             position: MutationPosition(
                 utf8Offset: 3081,
                 line: 133,
@@ -115,7 +115,7 @@ final class RewriterTests: MuterTestCase {
             )
         ),
         OperatorIdAndPositionAssert(
-            id: .ternaryOperator,
+            id: .swapTernary,
             position: MutationPosition(
                 utf8Offset: 3088,
                 line: 133,
@@ -155,7 +155,7 @@ final class RewriterTests: MuterTestCase {
             )
         ),
         OperatorIdAndPositionAssert(
-            id: .ternaryOperator,
+            id: .swapTernary,
             position: MutationPosition(
                 utf8Offset: 444,
                 line: 18,

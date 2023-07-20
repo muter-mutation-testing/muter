@@ -75,18 +75,21 @@ public struct ColoredProgressBarLine: ProgressElementType {
 struct ProgressBarMultilineTerminalPrinter: ProgressBarPrinter {
     var lastPrintedTime = 0.0
     private let numberOfLines: Int
+    @Dependency(\.logger)
+    private var logger: Logger
+
     init(numberOfLines: Int) {
         self.numberOfLines = numberOfLines
         // the cursor is moved up before printing the progress bar.
         // have to move the cursor down one line initially.
-        Logger.print("")
+        logger.print("")
     }
 
     mutating func display(_ progressBar: ProgressBar) {
         let currentTime = getTimeOfDay()
         if currentTime - lastPrintedTime > 0.1 || progressBar.index == progressBar.count {
             let lines = "\u{1B}[1A\u{1B}".repeated(numberOfLines)
-            Logger.print("\(lines)[K\(progressBar.value)")
+            logger.print("\(lines)[K\(progressBar.value)")
             lastPrintedTime = currentTime
         }
     }

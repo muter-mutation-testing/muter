@@ -9,6 +9,7 @@ final class DiscoverMutationPointsTests: MuterTestCase {
     override func setUp() {
         super.setUp()
 
+        state.mutationOperatorList = .allOperators
         prepareCode.sourceCodeToReturn = {
             muterCore.sourceCode(fromFileAt: $0).map {
                 (
@@ -39,7 +40,7 @@ final class DiscoverMutationPointsTests: MuterTestCase {
 
         let ternaryOperatorSchemata = sampleForDiscoveringMutations?
             .mutationSchemata
-            .include { $0.mutationOperatorId == .ternaryOperator }
+            .include { $0.mutationOperatorId == .swapTernary }
 
         XCTAssertEqual(ternaryOperatorSchemata?.count, 1)
 

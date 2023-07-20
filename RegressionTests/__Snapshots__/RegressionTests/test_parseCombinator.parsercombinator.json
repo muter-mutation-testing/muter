@@ -70,7 +70,7 @@
         },
         {
           "mutationPoint" : {
-            "mutationOperatorId" : "SwapTernaryOperator",
+            "mutationOperatorId" : "SwapTernary",
             "position" : {
               "column" : 73,
               "line" : 180
@@ -90,7 +90,7 @@
         },
         {
           "mutationPoint" : {
-            "mutationOperatorId" : "SwapTernaryOperator",
+            "mutationOperatorId" : "SwapTernary",
             "position" : {
               "column" : 52,
               "line" : 204

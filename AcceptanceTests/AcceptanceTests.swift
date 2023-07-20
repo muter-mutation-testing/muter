@@ -60,10 +60,10 @@ final class AcceptanceTests: XCTestCase {
         XCTAssertEqual(numberOfEmptyLogFiles, 0)
     }
 
-    func test_skipCoverage() throws {
+    func test_withCoverage() throws {
         let output = try muterWithCoverageOutput
 
-        XCTAssertTrue(output.contains("Code Coverage of your project: "))
+        XCTAssertTrue(output.contains("Code Coverage of your project:"))
     }
 
     func test_xcodeFormat() throws {
@@ -107,6 +107,10 @@ final class AcceptanceTests: XCTestCase {
         )
     }
 
+    func test_all_operatos() throws {
+        try AssertSnapshot(muterOperatorAllOutput)
+    }
+
     func test_helpCommand() throws {
         try AssertSnapshot(muterHelpOutput)
     }
@@ -117,6 +121,10 @@ final class AcceptanceTests: XCTestCase {
 
     func test_helpCommandRun() throws {
         try AssertSnapshot(muterRunHelpOutput)
+    }
+
+    func test_helpCommandOperator() throws {
+        try AssertSnapshot(muterOperatorHelpOutput)
     }
 }
 
@@ -182,6 +190,18 @@ extension AcceptanceTests {
     var muterRunHelpOutput: String {
         get throws {
             try contentsOfFileAsString("\(AcceptanceTests().rootTestDirectory)/samples/muters_run_help_output.txt")
+        }
+    }
+
+    var muterOperatorHelpOutput: String {
+        get throws {
+            try contentsOfFileAsString("\(AcceptanceTests().rootTestDirectory)/samples/muters_operator_help_output.txt")
+        }
+    }
+
+    var muterOperatorAllOutput: String {
+        get throws {
+            try contentsOfFileAsString("\(AcceptanceTests().rootTestDirectory)/samples/muters_operator_all_output.txt")
         }
     }
 
