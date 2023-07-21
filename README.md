@@ -188,9 +188,10 @@ Once you've created your configuration file, simply run `muter` in your terminal
 **Available Subcommands**
 
 ```
-help   Display general or subcommand-specific help
-init   Creates the configuration file that Muter uses
-run    Performs mutation testing for the Swift project contained within the current directory
+help        Display general or subcommand-specific help
+init        Creates the configuration file that Muter uses
+run         Performs mutation testing for the Swift project contained within the current directory
+operator    Describes a given mutation operator
 ```
 Muter defaults to run when you don't specify any subcommands
 
@@ -198,10 +199,10 @@ Muter defaults to run when you don't specify any subcommands
 
 ```
 --files-to-mutate           Only mutate a given list of source code files (Supports glob expressions like Sources/**/*.swift)
--f, --format <format>       The report format for muter: plain, json, html, xcode
---skip-coverage             Skips the step in which Muter runs your project in order to filter out files without coverage.
--o, --output <output>       Output file for the report to be saved.
---skip-update-check         Skips the step in which Muter checks for newer versions.
+--skip-coverage         Skips the step in which Muter runs your project in order to filter out files without coverage.
+-o, --output <output>   Output file for the report to be saved.
+--operators <operators> The list of mutant operators to be used: RelationalOperatorReplacement, RemoveSideEffects, ChangeLogicalConnector, SwapTernary
+--skip-update-check     Skips the step in which Muter checks for newer versions.
 ```
 
 **Available Report Formats**
@@ -214,6 +215,11 @@ xcode: prints mutation test results in real-time, as they are produced, in a for
 ```
 Note: If you pass `--output` muter will save the report, instead of using stdout.
 
+**Operators documentation**
+
+For more details on how any mutation operator works, use the `muter operator` command.
+
+To print all of the avaiable operators, use `muter operator all`.
 
 ### Within Xcode
 Build (Cmd + B) your aggregate build target and let Muter run. The mutants which survive testing will be called out in the issue navigator. Once the target finishes building, testing has completed.
