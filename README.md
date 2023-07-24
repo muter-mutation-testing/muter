@@ -169,7 +169,7 @@ exclude:
 Check out the `muter.conf.yml` in the root directory of this repository for another example.
 
 ### Xcode Setup
-Setting up Muter to run within Xcode is simple. After creating your configuation:
+After creating your configuation:
 
 1) **Create a new Aggregate Build Target** in the Xcode project of the codebase you're mutation testing. We suggest calling it "Mutation Test"
 2) **Add a run script step** to the newly created aggregate build target.
@@ -183,7 +183,7 @@ muter --format xcode
 
 ### From the command line
 
-Once you've created your configuration file, simply run `muter` in your terminal from any directory of the project you're mutation testing. Muter will take it from there. 
+Once you've created your configuration file, run `muter` in your terminal from any directory of the project you're mutation testing. Muter will take it from there. 
 
 **Available Subcommands**
 
@@ -198,7 +198,7 @@ Muter defaults to run when you don't specify any subcommands
 **Available Flags**
 
 ```
---files-to-mutate           Only mutate a given list of source code files (Supports glob expressions like Sources/**/*.swift)
+--files-to-mutate       Only mutate a given list of source code files (Supports glob expressions like Sources/**/*.swift)
 --skip-coverage         Skips the step in which Muter runs your project in order to filter out files without coverage.
 -o, --output <output>   Output file for the report to be saved.
 --operators <operators> The list of mutant operators to be used: RelationalOperatorReplacement, RemoveSideEffects, ChangeLogicalConnector, SwapTernary
@@ -225,17 +225,17 @@ To print all of the avaiable operators, use `muter operator all`.
 Build (Cmd + B) your aggregate build target and let Muter run. The mutants which survive testing will be called out in the issue navigator. Once the target finishes building, testing has completed.
 
 ### Disable muter in code
-Muter will ignore code inside a `disable` block, up until you turn it on again by using the `enable` directive.
+Muter will ignore code inside a `disable` block, up until you turn it on again by using the `enable` directive or EOF (end-of-file).
 
 ```swift
 // muter:disable
 func f() {
-    foo(testableSideEffect: true)
+    functionA()
 }
 
 // muter:enable
 func f() {
-    bar(testableSideEffect: false)
+    functionB()
 }
 ```
 
