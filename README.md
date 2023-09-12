@@ -260,6 +260,8 @@ Because result builders do not require an implicit return statement, when Muter 
 
 To circumvent this, you can either ignore the whole file using an `exclude` entry on the [muter configuration file](#configuration-options), or [temporarily disable Muter in code](#disable-muter-in-code).
 
+In case Muter fails to run due to a compilation error, you can assess the mutated project under the `_mutated` folder in the root folder of the project.
+
 ## Assumptions
 
 - Muter assumes you always put spaces around your operators. For example, it expects an equality check to look like
