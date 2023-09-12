@@ -125,7 +125,7 @@ After running `muter init`, you should look at the generated configuration and e
 
 Should you need to modify any of the options, you can use the list below to understand what each configuration option does.
 
-### Configuration Options
+### [Configuration Options](#configuration-options)
 - `executable` - the absolute path to the program which can run your test suite (like `xcodebuild`, `swift`, `fastlane`, `make`, etc.)
 - `arguments` - any command line arguments the executable needs to run your test suite
 - `exclude` - a list of paths, file extensions, or names you want Muter to ignore. By default, Muter ignores all non-Swift files, and any files or paths containing the following phrases:
@@ -224,7 +224,7 @@ To print all of the avaiable operators, use `muter operator all`.
 ### Within Xcode
 Build (Cmd + B) your aggregate build target and let Muter run. The mutants which survive testing will be called out in the issue navigator. Once the target finishes building, testing has completed.
 
-### Disable muter in code
+### [Disable muter in code](#disable-muter-in-code)
 Muter will ignore code inside a `disable` block, up until you turn it on again by using the `enable` directive or EOF (end-of-file).
 
 ```swift
@@ -239,7 +239,29 @@ func f() {
 }
 ```
 
+## Mutant Schemata
+
+Muter uses a technique called mutant schemata. This builds a copy of your code with all known mutations inserted at once, but they are disabled by flags. Then your tests are run repeatedly, activating a different mutant each time via environment variables. This is a huge win performance, but comes with a caveat:
+
+Mutations cannot be applied in methods that are annotated with the `@resultBuilder` because some requires an implicit return statement, for example:
+
+```swift
+@ViewBuilder
+func computeView() -> some View {
+    if ProcessInfo.processInfo.environment["id"] != nil {
+        return a && b ? Color.blue : Color.red
+    } else {
+        return a && b ? Color.red : Color.blue
+    }
+}
+```
+
+Because result builders do not require an implicit return statement, when Muter tries to add it, the code does not compile.
+
+To circumvent this, you can either ignore the whole file using an `exclude` entry on the [muter configuration file](#configuration-options), or [temporarily disable Muter in code](#disable-muter-in-code).
+
 ## Assumptions
+
 - Muter assumes you always put spaces around your operators. For example, it expects an equality check to look like
 
     `a == b (Muter will mutate this)`
