@@ -285,7 +285,7 @@ In case Muter fails to run due to a compilation error, you can assess the mutate
 - Don’t be dogmatic about your mutation score - in practice, 100% is not always possible.
 
 ## Example Test Report
-There's an example of [the test report that Muter generates](https://github.com/muter-mutation-testing/muter/blob/master/Docs/test_report_json_example.md) hosted in this repository.
+There's an example of [the test report that Muter generates](./Docs/test_report_json_example.md) hosted in this repository.
 
 Check out this example to familiarize yourself with what a report looks like.
 
