@@ -22,7 +22,7 @@ Use this mode to get detailed information about the health and quality of your e
 
 <picture>
   <source media="(prefers-color-scheme: dark)" srcset="./Docs/Images/muter-cli-output-dark.gif">
-  <img alt="Muter running inside Xcode" src="./Docs/Images/muter-cli-output-light.gif">
+  <img alt="Muter running on the terminal" src="./Docs/Images/muter-cli-output-light.gif">
 </picture>
 
 
