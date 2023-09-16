@@ -1,28 +1,25 @@
 import Foundation
 import Plot
 
-typealias Now = () -> Date
-
 final class HTMLReporter: Reporter {
-    private let now: Now
-
-    init(now: @escaping Now = Date.init) {
-        self.now = now
-    }
+    @Dependency(\.now)
+    private var now: Now
 
     func report(from outcome: MutationTestOutcome) -> String {
         htmlReport(
-            MuterTestReport(from: outcome),
+            outcome,
             now
         )
     }
 }
 
 private func htmlReport(
-    _ testReport: MuterTestReport,
+    _ outcome: MutationTestOutcome,
     _ now: Now
 ) -> String {
-    HTML(
+    let testReport = MuterTestReport(from: outcome)
+
+    return HTML(
         .muterHeader(),
         .body(
             .div(
@@ -30,7 +27,10 @@ private func htmlReport(
                 .muterHeader(from: testReport),
                 .main(
                     .class("summary"),
-                    .summary(from: testReport),
+                    .summary(
+                        from: testReport,
+                        newVersion: outcome.newVersion
+                    ),
                     .divider("Mutation Operators per File"),
                     .mutationOperatorsPerFile(from: testReport),
                     .divider("Applied Mutation Operators"),
@@ -68,7 +68,7 @@ extension Node where Context == HTML.DocumentContext {
 
 extension Node where Context: HTML.BodyContext {
     static func muterHeader(from testReport: MuterTestReport) -> Self {
-        return .header(
+        .header(
             .div(.class("logo"), .raw(muterLogo)),
             .div(
                 .class("header-item"),
@@ -102,13 +102,23 @@ extension Node where Context: HTML.BodyContext {
         )
     }
 
-    static func summary(from testReport: MuterTestReport) -> Self {
-        .p(
-            "In total, Muter introduced ",
-            .span(.class("strong"), "\(testReport.totalAppliedMutationOperators)"),
-            " mutants in ",
-            .span(.class("strong"), "\(testReport.fileReports.count)"),
-            " files."
+    static func summary(
+        from testReport: MuterTestReport,
+        newVersion: String
+    ) -> Self {
+        .div(
+            .p(
+                "In total, Muter introduced ",
+                .span(.class("strong"), "\(testReport.totalAppliedMutationOperators)"),
+                " mutants in ",
+                .span(.class("strong"), "\(testReport.fileReports.count)"),
+                " files."
+            ),
+            .p("Muter took \(testReport.timeElapsed) to run."),
+            .if(
+                !newVersion.isEmpty,
+                .p("The version \(newVersion) of Muter is available")
+            )
         )
     }
 
@@ -193,8 +203,14 @@ extension Node where Context: HTML.BodyContext {
             .tbody(
                 .forEach(reports) { report -> Node<HTML.TableContext> in
                     .tr(
-                        .td(.class("left-aligned"), "\(report.fileName):\(report.appliedOperator.mutationPoint.position.line)"),
-                        .td(.class("left-aligned"), .raw("<wbr>\(report.appliedOperator.mutationPoint.mutationOperatorId.friendlyName)<wbr>")),
+                        .td(
+                            .class("left-aligned"),
+                            "\(report.fileName):\(report.appliedOperator.mutationPoint.position.line)"
+                        ),
+                        .td(
+                            .class("left-aligned"),
+                            .raw("<wbr>\(report.appliedOperator.mutationPoint.mutationOperatorId.friendlyName)<wbr>")
+                        ),
                         .td(.class("mutation-snapshot"), .diff(of: report.appliedOperator)),
                         .td(
                             .raw("\(report.appliedOperator.testSuiteOutcome.asIcon)")
@@ -208,24 +224,26 @@ extension Node where Context: HTML.BodyContext {
     static func diff(of appliedOperator: MuterTestReport.AppliedMutationOperator) -> Self {
         .div(
             .class("snapshot-changes"),
-            .if(appliedOperator.testSuiteOutcome == .noCoverage,
+            .if(
+                appliedOperator.testSuiteOutcome == .noCoverage,
                 .span(
                     .class("snapshot-no-coverage"),
                     ""
                 ),
                 else:
-                    .if(appliedOperator.mutationPoint.mutationOperatorId == .removeSideEffects,
-                        .span(
-                            .class("snapshot-before"),
-                            "\(appliedOperator.mutationSnapshot.before)"
-                        ),
-                        else:
-                            .group(
-                                .span(.class("snapshot-before"), "\(appliedOperator.mutationSnapshot.before)"),
-                                .span(.class("snapshot-arrow"), "→"),
-                                .span(.class("snapshot-after"), "\(appliedOperator.mutationSnapshot.after)")
-                            )
+                .if(
+                    appliedOperator.mutationPoint.mutationOperatorId == .removeSideEffects,
+                    .span(
+                        .class("snapshot-before"),
+                        "\(appliedOperator.mutationSnapshot.before)"
+                    ),
+                    else:
+                    .group(
+                        .span(.class("snapshot-before"), "\(appliedOperator.mutationSnapshot.before)"),
+                        .span(.class("snapshot-arrow"), "→"),
+                        .span(.class("snapshot-after"), "\(appliedOperator.mutationSnapshot.after)")
                     )
+                )
             )
         )
     }
@@ -244,7 +262,7 @@ private extension MutationOperator.Id {
         case .ror: return "Relational Operator Replacement"
         case .removeSideEffects: return "Remove Side Effects"
         case .logicalOperator: return "Change Logical Connector"
-        case .ternaryOperator: return "Change Ternary Operator"
+        case .swapTernary: return "Swap Ternary"
         }
     }
 }
@@ -255,7 +273,8 @@ private extension TestSuiteOutcome {
         switch self {
         case .passed:
             icon = testPassed
-        case .failed, .runtimeError:
+        case .failed,
+             .runtimeError:
             icon = testFailed
         case .buildError:
             icon = testBuildError
@@ -277,9 +296,9 @@ private extension MuterTestReport {
 
 private func coloredMutationScore(for score: Int) -> String {
     switch score {
-    case 0...25: return "#f70000"
-    case 26...50: return "#ce9400"
-    case 51...75: return "#92b300"
+    case 0 ... 25: return "#f70000"
+    case 26 ... 50: return "#ce9400"
+    case 51 ... 75: return "#92b300"
     default: return "#51a100"
     }
 }

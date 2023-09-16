@@ -1,0 +1,10 @@
+arguments:
+- -project
+- ExampleApp.xcodeproj
+- -scheme
+- ExampleApp
+- test
+executable: /usr/bin/xcodebuild
+exclude:
+- AppDelegate.swift
+excludeCalls: []

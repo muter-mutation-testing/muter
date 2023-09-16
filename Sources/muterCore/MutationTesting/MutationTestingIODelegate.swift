@@ -1,32 +1,50 @@
 import Foundation
 
 protocol MutationTestingIODelegate {
-    func backupFile(at path: String, using swapFilePaths: [FilePath: FilePath])
-    func writeFile(to path: String, contents: String) throws
-    func runTestSuite(using configuration: MuterConfiguration, savingResultsIntoFileNamed fileName: String) -> (outcome: TestSuiteOutcome, testLog: String)
-    func restoreFile(at path: String, using swapFilePaths: [FilePath: FilePath])
+    func runTestSuite(
+        withSchemata schemata: MutationSchema,
+        using configuration: MuterConfiguration,
+        savingResultsIntoFileNamed fileName: String
+    ) -> (
+        outcome: TestSuiteOutcome,
+        testLog: String
+    )
+
+    func switchOn(
+        schemata: MutationSchema,
+        for testRun: XCTestRun,
+        at path: URL
+    ) throws
 }
 
 struct MutationTestingDelegate: MutationTestingIODelegate {
-    private let notificationCenter: NotificationCenter = .default
+    @Dependency(\.notificationCenter)
+    private var notificationCenter: NotificationCenter
+    @Dependency(\.process)
+    private var process: ProcessFactory
 
-    func backupFile(at path: String, using swapFilePaths: [FilePath: FilePath]) {
-        let swapFilePath = swapFilePaths[path]!
-        copySourceCode(fromFileAt: path, to: swapFilePath)
-    }
+    private let muterTestRunFileName = "muter.xctestrun"
 
-    func writeFile(to path: String, contents: String) throws {
-        try contents.write(toFile: path, atomically: true, encoding: .utf8)
-    }
-
-    func runTestSuite(using configuration: MuterConfiguration,
-                      savingResultsIntoFileNamed fileName: String) -> (outcome: TestSuiteOutcome, testLog: String) {
+    func runTestSuite(
+        withSchemata schemata: MutationSchema,
+        using configuration: MuterConfiguration,
+        savingResultsIntoFileNamed fileName: String
+    ) -> (
+        outcome: TestSuiteOutcome,
+        testLog: String
+    ) {
         do {
             let (testProcessFileHandle, testLogUrl) = try fileHandle(for: fileName)
             defer { testProcessFileHandle.closeFile() }
 
-            let process = try testProcess(with: configuration, and: testProcessFileHandle)
+            let process = try testProcess(
+                with: configuration,
+                schemata: schemata,
+                and: testProcessFileHandle
+            )
+
             try process.run()
+
             process.waitUntilExit()
 
             let contents = try String(contentsOf: testLogUrl)
@@ -41,35 +59,62 @@ struct MutationTestingDelegate: MutationTestingIODelegate {
         }
     }
 
-    func restoreFile(at path: String, using swapFilePaths: [FilePath: FilePath]) {
-        let swapFilePath = swapFilePaths[path]!
-        copySourceCode(fromFileAt: swapFilePath, to: path)
-    }
-}
+    func switchOn(
+        schemata: MutationSchema,
+        for testRun: XCTestRun,
+        at path: URL
+    ) throws {
+        let updated = testRun.updateEnvironmentVariable(
+            setting: schemata.id
+        )
 
-private extension MutationTestingDelegate {
-    func copySourceCode(fromFileAt sourcePath: String, to destinationPath: String) {
-        let source = sourceCode(fromFileAt: sourcePath)
-        try? source?.code.description.write(toFile: destinationPath, atomically: true, encoding: .utf8)
-    }
+        let data = try PropertyListSerialization.data(
+            fromPropertyList: updated,
+            format: .xml,
+            options: 0
+        )
 
-    func fileHandle(for logFileName: String) throws -> (handle: FileHandle, logFileUrl: URL) {
-        let testLogUrl = URL(fileURLWithPath: FileManager.default.currentDirectoryPath + "/" + logFileName)
-        try Data().write(to: testLogUrl)
-
-        return (
-            handle: try FileHandle(forWritingTo: testLogUrl),
-            logFileUrl: testLogUrl
+        try data.write(
+            to: path.appendingPathComponent(muterTestRunFileName)
         )
     }
 
-    func testProcess(with configuration: MuterConfiguration, and fileHandle: FileHandle) throws -> Process {
-        let process = Process()
-        process.arguments = configuration.testCommandArguments
+    func testProcess(
+        with configuration: MuterConfiguration,
+        schemata: MutationSchema,
+        and fileHandle: FileHandle
+    ) throws -> Process {
+        let testCommandArguments = schemata == .null
+            ? configuration.testCommandArguments
+            : configuration.testWithoutBuildArguments(with: muterTestRunFileName)
+
+        let process = process()
+
+        if schemata != .null {
+            process.environment?[schemata.id] = "YES"
+        }
+
+        process.arguments = testCommandArguments
         process.executableURL = URL(fileURLWithPath: configuration.testCommandExecutable)
+        process.qualityOfService = .userInitiated
         process.standardOutput = fileHandle
         process.standardError = fileHandle
 
         return process
+    }
+
+    func fileHandle(
+        for logFileName: String
+    ) throws -> (
+        handle: FileHandle,
+        logFileUrl: URL
+    ) {
+        let testLogUrl = URL(fileURLWithPath: FileManager.default.currentDirectoryPath + "/" + logFileName)
+        try Data().write(to: testLogUrl)
+
+        return try (
+            handle: FileHandle(forWritingTo: testLogUrl),
+            logFileUrl: testLogUrl
+        )
     }
 }

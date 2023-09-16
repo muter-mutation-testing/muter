@@ -1,24 +1,25 @@
+@testable import muterCore
 import XCTest
 
-@testable import muterCore
-
-final class LoadConfigurationTests: XCTestCase {
-    private let fileManager = FileManagerSpy()
+final class LoadConfigurationTests: MuterTestCase {
     private lazy var currentDirectory = fixturesDirectory
-    private lazy var sut = LoadConfiguration(
-        fileManager: fileManager,
-        currentDirectory: currentDirectory
-    )
+    private lazy var sut = LoadConfiguration()
 
-    func test_loadLJSONConfigurationFromDisk() throws {
+    override func setUp() {
+        super.setUp()
+
+        fileManager.currentDirectoryPathToReturn = fixturesDirectory
+    }
+
+    func test_loadLJSONConfigurationFromDisk() async throws {
         fileManager.fileExistsToReturn = [false, true]
         fileManager.fileContentsToReturn = loadYAMLConfiguration()
 
-        let result = try XCTUnwrap(sut.run(with: RunCommandState()).get())
+        let result = try await sut.run(with: RunCommandState())
 
         let expectedUrl = URL(fileURLWithPath: fixturesDirectory)
         let expectedConfiguration = try XCTUnwrap(MuterConfiguration.fromFixture(
-            at: "\(self.fixturesDirectory)/\(MuterConfiguration.legacyFileNameWithExtension)"
+            at: "\(fixturesDirectory)/\(MuterConfiguration.legacyFileNameWithExtension)"
         ))
 
         XCTAssertEqual(result, [
@@ -27,39 +28,64 @@ final class LoadConfigurationTests: XCTestCase {
         ])
     }
 
-    func test_migrationToYaml() {
+    func test_migrationToYaml() async throws {
         fileManager.fileExistsToReturn = [true, false]
         fileManager.fileContentsToReturn = loadJSONConfiguration()
 
-        _ = sut.run(with: RunCommandState())
+        _ = try await sut.run(with: RunCommandState())
 
         XCTAssertTrue(fileManager.methodCalls.contains("removeItem(atPath:)"))
         XCTAssertTrue(fileManager.methodCalls.contains("createFile(atPath:contents:attributes:)"))
         XCTAssertEqual(fileManager.contents, loadYAMLConfiguration())
     }
 
-    func test_failure() {
+    func test_failure() async throws {
         currentDirectory = "/some/projectName"
         fileManager.fileExistsToReturn = [false, false]
 
-        let result = sut.run(with: RunCommandState())
+        try await assertThrowsMuterError(
+            await sut.run(with: RunCommandState())
+        ) { error in
+            guard case let .configurationParsingError(reason) = error else {
+                XCTFail("Expected configurationParsingError, got \(error)")
+                return
+            }
 
-        guard case let .failure(.configurationParsingError(reason: reason)) = result else {
-            return XCTFail("Expected failure, got \(result)")
+            XCTAssertFalse(reason.isEmpty)
         }
+    }
 
-        XCTAssertFalse(reason.isEmpty)
+    func test_whenUsingXcodeBuildSystem_shouldRequireDestinationInTestArguments() async throws {
+        fileManager.fileExistsToReturn = [false, true]
+        fileManager.fileContentsToReturn = loadYAMLConfigurationWithoutDestination()
+
+        try await assertThrowsMuterError(
+            await sut.run(with: RunCommandState())
+        ) { error in
+            guard case let .configurationParsingError(reason) = error else {
+                XCTFail("Expected configurationParsingError, got \(error)")
+                return
+            }
+
+            XCTAssertFalse(reason.isEmpty)
+        }
     }
 
     private func loadJSONConfiguration() -> Data? {
         FileManager.default.contents(
-            atPath: "\(self.fixturesDirectory)/\(MuterConfiguration.legacyFileNameWithExtension)"
+            atPath: "\(fixturesDirectory)/\(MuterConfiguration.legacyFileNameWithExtension)"
         )
     }
 
     private func loadYAMLConfiguration() -> Data? {
         FileManager.default.contents(
-            atPath: "\(self.fixturesDirectory)/\(MuterConfiguration.fileNameWithExtension)"
+            atPath: "\(fixturesDirectory)/\(MuterConfiguration.fileNameWithExtension)"
+        )
+    }
+
+    private func loadYAMLConfigurationWithoutDestination() -> Data? {
+        FileManager.default.contents(
+            atPath: "\(fixturesDirectory)/muter.conf.withoutDestination.yml"
         )
     }
 }

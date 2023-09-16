@@ -10,7 +10,7 @@ final class FileManagerCanaryTests: XCTestCase {
                 appropriateFor: volumeRoot,
                 create: true
             )
-            
+
             XCTAssertTrue(temporaryDirectory.absoluteString.contains("/var/folders"))
             XCTAssertTrue(temporaryDirectory.absoluteString.contains("/T/TemporaryItems/"))
         } catch {

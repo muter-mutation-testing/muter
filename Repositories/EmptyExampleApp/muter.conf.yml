@@ -3,6 +3,8 @@ arguments:
 - EmptyExampleApp.xcodeproj
 - -scheme
 - EmptyExampleApp
+- -destination
+- platform=macos,arch=x86_64
 - test
 executable: /usr/bin/xcodebuild
 exclude: []

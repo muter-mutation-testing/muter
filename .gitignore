@@ -23,7 +23,9 @@ ExampleApp/muterReport.json
 RegressionTests/bonmot_regression_test_output.json
 RegressionTests/parsercombinator_regression_test_output.json
 Repositories/UninitializedApp/muter.conf.json
+*_mutated
 .swiftpm
+
 
 ### macOS ###
 # General

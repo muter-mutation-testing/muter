@@ -1,0 +1,88 @@
+# file options
+
+--exclude Repositories,Tests/fixtures
+
+# format options
+
+--acronyms ID,URL,UUID
+--allman false
+--assetliterals actual-width
+--asynccapturing 
+--beforemarks 
+--binarygrouping 4,8
+--classthreshold 0
+--closingparen balanced
+--closurevoid remove
+--commas always
+--conflictmarkers reject
+--decimalgrouping 3,6
+--elseposition same-line
+--emptybraces no-space
+--enumnamespaces always
+--enumthreshold 0
+--exponentcase lowercase
+--exponentgrouping disabled
+--extensionacl on-extension
+--extensionlength 0
+--fractiongrouping disabled
+--fragment false
+--funcattributes same-line
+--generictypes 
+--guardelse next-line
+--header ignore
+--hexgrouping 4,8
+--hexliteralcase uppercase
+--ifdef no-indent
+--importgrouping alpha
+--indent 4
+--indentcase false
+--indentstrings false
+--lifecycle 
+--lineaftermarks true
+--linebreaks lf
+--markcategories true
+--markextensions always
+--marktypes always
+--maxwidth 120
+--modifierorder 
+--nevertrailing 
+--nospaceoperators 
+--nowrapoperators 
+--octalgrouping 4,8
+--operatorfunc spaced
+--organizetypes actor,class,enum,struct
+--patternlet hoist
+--ranges spaced
+--redundanttype infer-locals-only
+--selfrequired 
+--semicolons inline
+--shortoptionals always
+--smarttabs enabled
+--someAny true
+--stripunusedargs closure-only
+--structthreshold 0
+--swiftversion 5.8
+--tabwidth 120
+--throwcapturing 
+--trailingclosures 
+--trimwhitespace always
+--typeattributes preserve
+--varattributes preserve
+--voidtype void
+--wraparguments before-first
+--wrapcollections before-first
+--wrapconditions default
+--wrapeffects preserve
+--wrapenumcases always
+--wrapparameters before-first
+--wrapreturntype preserve
+--wrapternary default
+--wraptypealiases preserve
+--xcodeindentation enabled
+--yodaswap literals-only
+
+# rules
+
+--disable andOperator,assertionFailures,blankLinesAtEndOfScope,blankLinesAtStartOfScope,blankLinesBetweenScopes,conditionalAssignment,numberFormatting,preferKeyPath,trailingCommas,wrapMultilineStatementBraces,hoistAwait
+
+--enable blankLineAfterImports,blankLinesBetweenImports,isEmpty,sortedSwitchCases,wrapConditionalBodies,wrapEnumCases,wrapSwitchCases

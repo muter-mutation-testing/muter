@@ -1,0 +1,14 @@
+OVERVIEW: Describes a given mutation operator.
+
+USAGE: muter operator <operator>
+
+ARGUMENTS:
+  <operator>                  Avaiable operators are:
+                          RelationalOperatorReplacement, RemoveSideEffects,
+                          ChangeLogicalConnector, SwapTernary
+                              For all operators use: all
+
+OPTIONS:
+  --version               Show the version.
+  -h, --help              Show help information.
+

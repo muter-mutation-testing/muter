@@ -5,20 +5,27 @@ typealias ReportOptions = (reporter: Reporter, path: String?)
 struct RunOptions {
     let reportOptions: ReportOptions
     let filesToMutate: [String]
+    let mutationOperatorsList: MutationOperatorList
     let skipCoverage: Bool
-    let logger: Logger
-    
+    let skipUpdateCheck: Bool
+
+    @Dependency(\.logger)
+    private var logger: Logger
+
     init(
         filesToMutate: [String],
         reportFormat: ReportFormat,
         reportURL: URL?,
+        mutationOperatorsList: MutationOperatorList,
         skipCoverage: Bool,
-        logger: Logger
+        skipUpdateCheck: Bool
     ) {
         self.filesToMutate = filesToMutate
         self.skipCoverage = skipCoverage
-        self.logger = logger
-        self.reportOptions = ReportOptions(
+        self.mutationOperatorsList = mutationOperatorsList
+        self.skipUpdateCheck = skipUpdateCheck
+
+        reportOptions = ReportOptions(
             reporter: reportFormat.reporter,
             path: reportPath(reportURL)
         )
@@ -26,7 +33,7 @@ struct RunOptions {
 }
 
 private func reportPath(_ reportURL: URL?) -> String? {
-    guard let reportURL = reportURL else {
+    guard let reportURL else {
         return nil
     }
 
@@ -39,12 +46,15 @@ private func reportPath(_ reportURL: URL?) -> String? {
 }
 
 enum ReportFormat: String, CaseIterable {
-    case plain, json, html, xcode
-    
+    case plain
+    case json
+    case html
+    case xcode
+
     static var description: String {
         allCases.map(\.rawValue).joined(separator: ", ")
     }
-    
+
     var reporter: Reporter {
         switch self {
         case .plain:

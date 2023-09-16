@@ -1,9 +1,22 @@
 import SwiftSyntax
 
-extension ChangeLogicalConnectorOperator {
-    class Rewriter: OperatorAwareRewriter {
-        required init(positionToMutate: MutationPosition) {
-            super.init(positionToMutate: positionToMutate)
+enum ChangeLogicalConnectorOperator {
+    class Visitor: TokenAwareVisitor {
+        convenience init(
+            configuration: MuterConfiguration? = nil,
+            sourceFileInfo: SourceFileInfo
+        ) {
+            self.init(
+                configuration: configuration,
+                sourceFileInfo: sourceFileInfo,
+                mutationOperatorId: .logicalOperator
+            )
+
+            tokensToDiscover = [
+                .spacedBinaryOperator("||"),
+                .spacedBinaryOperator("&&"),
+            ]
+
             oppositeOperatorMapping = [
                 "||": "&&",
                 "&&": "||",

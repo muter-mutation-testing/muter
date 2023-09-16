@@ -1,7 +1,7 @@
-import Foundation
 import ArgumentParser
+import Foundation
 
-public struct Init: ParsableCommand {
+public struct Init: AsyncParsableCommand {
 
     public static let configuration = CommandConfiguration(
         commandName: "init",
@@ -38,7 +38,7 @@ public struct Init: ParsableCommand {
         )
     }
 
-    public func run() throws {
+    public mutating func run() async throws {
         notificationCenter.post(name: .muterLaunched, object: nil)
 
         let directoryContents = fileManager.subpaths(atPath: directory) ?? []
@@ -48,6 +48,9 @@ public struct Init: ParsableCommand {
             attributes: nil
         )
 
-        notificationCenter.post(name: .configurationFileCreated, object: "\(self.directory)/\(MuterConfiguration.fileNameWithExtension)")
+        notificationCenter.post(
+            name: .configurationFileCreated,
+            object: "\(directory)/\(MuterConfiguration.fileNameWithExtension)"
+        )
     }
 }

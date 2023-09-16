@@ -1,27 +1,26 @@
+@testable import muterCore
 import XCTest
 
-@testable import muterCore
-
-final class MuterTestReportTests: XCTestCase {
+final class MuterTestReportTests: MuterTestCase {
     func test_calculatingNonEmptyTestOutcomes() {
         let outcome =
             MutationTestOutcome.make(
                 mutations:
-                    exampleMutationTestResults + [
-                        MutationTestOutcome.Mutation.make(
-                            testSuiteOutcome: .failed,
-                            point: MutationPoint(
-                                mutationOperatorId: .ror,
-                                filePath: "/tmp/a module.swift",
-                                position: .firstPosition
-                            ),
-                            snapshot: .make(
-                                before: "==",
-                                after: "!=",
-                                description: "changed from == to !="
-                            )
+                exampleMutationTestResults + [
+                    MutationTestOutcome.Mutation.make(
+                        testSuiteOutcome: .failed,
+                        point: MutationPoint(
+                            mutationOperatorId: .ror,
+                            filePath: "/tmp/a module.swift",
+                            position: .firstPosition
                         ),
-                    ]
+                        snapshot: .make(
+                            before: "==",
+                            after: "!=",
+                            description: "changed from == to !="
+                        )
+                    ),
+                ]
             )
 
         let report = MuterTestReport(from: outcome)
@@ -57,5 +56,129 @@ final class MuterTestReportTests: XCTestCase {
         let actualMutationScores = mutationScoresOfFiles(from: exampleMutationTestResults)
 
         XCTAssertEqual(actualMutationScores, expectedMutationScores)
+    }
+}
+
+extension MuterTestReportTests {
+    var exampleMutationTestResults: [MutationTestOutcome.Mutation] {
+        [
+            .make(
+                testSuiteOutcome: .failed,
+                point: MutationPoint(
+                    mutationOperatorId: .ror,
+                    filePath: "/tmp/file1.swift",
+                    position: .firstPosition
+                ),
+                snapshot: MutationOperator.Snapshot(
+                    before: "==",
+                    after: "!=",
+                    description: "changed from == to !="
+                )
+            ),
+            .make(
+                testSuiteOutcome: .failed,
+                point: MutationPoint(
+                    mutationOperatorId: .ror,
+                    filePath: "/tmp/file1.swift",
+                    position: .firstPosition
+                ),
+                snapshot: MutationOperator.Snapshot(
+                    before: "==",
+                    after: "!=",
+                    description: "changed from == to !="
+                )
+            ),
+            .make(
+                testSuiteOutcome: .passed,
+                point: MutationPoint(
+                    mutationOperatorId: .ror,
+                    filePath: "/tmp/file1.swift",
+                    position: .firstPosition
+                ),
+                snapshot: MutationOperator.Snapshot(
+                    before: "==",
+                    after: "!=",
+                    description: "changed from == to !="
+                )
+            ),
+            .make(
+                testSuiteOutcome: .failed,
+                point: MutationPoint(
+                    mutationOperatorId: .removeSideEffects,
+                    filePath: "/tmp/file2.swift",
+                    position: .firstPosition
+                ),
+                snapshot: MutationOperator.Snapshot(
+                    before: "==",
+                    after: "!=",
+                    description: "changed from == to !="
+                )
+            ),
+            .make(
+                testSuiteOutcome: .failed,
+                point: MutationPoint(
+                    mutationOperatorId: .removeSideEffects,
+                    filePath: "/tmp/file2.swift",
+                    position: .firstPosition
+                ),
+                snapshot: MutationOperator.Snapshot(
+                    before: "==",
+                    after: "!=",
+                    description: "changed from == to !="
+                )
+            ),
+            .make(
+                testSuiteOutcome: .failed,
+                point: MutationPoint(
+                    mutationOperatorId: .ror,
+                    filePath: "/tmp/file3.swift",
+                    position: .firstPosition
+                ),
+                snapshot: MutationOperator.Snapshot(
+                    before: "==",
+                    after: "!=",
+                    description: "changed from == to !="
+                )
+            ),
+            .make(
+                testSuiteOutcome: .passed,
+                point: MutationPoint(
+                    mutationOperatorId: .ror,
+                    filePath: "/tmp/file3.swift",
+                    position: .firstPosition
+                ),
+                snapshot: MutationOperator.Snapshot(
+                    before: "==",
+                    after: "!=",
+                    description: "changed from == to !="
+                )
+            ),
+            .make(
+                testSuiteOutcome: .passed,
+                point: MutationPoint(
+                    mutationOperatorId: .ror,
+                    filePath: "/tmp/file3.swift",
+                    position: .firstPosition
+                ),
+                snapshot: MutationOperator.Snapshot(
+                    before: "==",
+                    after: "!=",
+                    description: "changed from == to !="
+                )
+            ),
+            .make(
+                testSuiteOutcome: .passed,
+                point: MutationPoint(
+                    mutationOperatorId: .ror,
+                    filePath: "/tmp/file 4.swift", // this file name intentionally has a space in it
+                    position: .firstPosition
+                ),
+                snapshot: MutationOperator.Snapshot(
+                    before: "==",
+                    after: "!=",
+                    description: "changed from == to !="
+                )
+            ),
+        ]
     }
 }

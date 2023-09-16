@@ -105,9 +105,9 @@ func update(email: String, for userId: String) {
 }
 ```
 
-## Change Ternary Operator
+## Swap Ternary
 
-The change ternary operator will swap ternary operators in your code based on this table:
+The Swap Ternary operator will swap ternary operators in your code based on this table:
 
 | Original Operator                             | Changed Operator                              |
 | --------------------------------------------- | --------------------------------------------- |

@@ -5,7 +5,7 @@ struct CLITable: Equatable {
     let columns: [Column]
 
     var description: String {
-        return columns.enumerated().accumulate(into: "") {
+        columns.enumerated().accumulate(into: "") {
             let columnIndex = $1.offset
             let column = $1.element
             let previousColumn = columns[max(0, columnIndex - 1)]
@@ -22,9 +22,11 @@ struct CLITable: Equatable {
                 let nextLineThatsBeenRendered = alreadyRenderedCLITableSplitByLine.first ?? ""
                 alreadyRenderedCLITableSplitByLine = Array(alreadyRenderedCLITableSplitByLine.dropFirst())
 
-                let padding = paddingForColumn(at: columnIndex,
-                                               previousColumnWidth: previousColumn.width,
-                                               previousRowWidth: previousRowWidth)
+                let padding = paddingForColumn(
+                    at: columnIndex,
+                    previousColumnWidth: previousColumn.width,
+                    previousRowWidth: previousRowWidth
+                )
 
                 return workingValue + "\(nextLineThatsBeenRendered)" + padding + newRow + "\n"
             }
@@ -33,7 +35,7 @@ struct CLITable: Equatable {
 
     private func paddingForColumn(at index: Int, previousColumnWidth: Int, previousRowWidth: Int) -> String {
         let lengthOfPadding = previousColumnWidth - previousRowWidth
-        return index == 0 ? "" : " ".repeated(lengthOfPadding + self.padding)
+        return index == 0 ? "" : " ".repeated(lengthOfPadding + padding)
     }
 }
 

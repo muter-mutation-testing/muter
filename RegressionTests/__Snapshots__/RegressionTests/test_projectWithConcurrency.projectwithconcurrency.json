@@ -7,8 +7,7 @@
             "mutationOperatorId" : "RemoveSideEffects",
             "position" : {
               "column" : 12,
-              "line" : 11,
-              "utf8Offset" : 317
+              "line" : 11
             }
           },
           "testSuiteOutcome" : "passed"
@@ -18,8 +17,7 @@
             "mutationOperatorId" : "RemoveSideEffects",
             "position" : {
               "column" : 12,
-              "line" : 17,
-              "utf8Offset" : 424
+              "line" : 17
             }
           },
           "testSuiteOutcome" : "passed"
@@ -29,8 +27,7 @@
             "mutationOperatorId" : "RemoveSideEffects",
             "position" : {
               "column" : 12,
-              "line" : 23,
-              "utf8Offset" : 539
+              "line" : 23
             }
           },
           "testSuiteOutcome" : "passed"
@@ -40,8 +37,7 @@
             "mutationOperatorId" : "RemoveSideEffects",
             "position" : {
               "column" : 12,
-              "line" : 29,
-              "utf8Offset" : 698
+              "line" : 29
             }
           },
           "testSuiteOutcome" : "passed"

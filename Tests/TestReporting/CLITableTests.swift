@@ -1,8 +1,7 @@
+@testable import muterCore
 import XCTest
 
-@testable import muterCore
-
-final class CLITableTests: XCTestCase {
+final class CLITableTests: MuterTestCase {
     private let fileColumn = CLITable.Column(title: "File name", rows: [
         CLITable.Row(value: "file 1.swift"),
         CLITable.Row(value: "file2.swift"),
@@ -32,26 +31,26 @@ final class CLITableTests: XCTestCase {
 
     func test_cliTableWithPaddingOfThree() {
         let expectedCLITable = """
-            File name      # of Generated Mutants   Mutation Score
-            ---------      ----------------------   --------------
-            file 1.swift   1                        60
-            file2.swift    2                        0
-            file 3.swift   3                        100
-            file4.swift    4                        55
-            """
+        File name      # of Generated Mutants   Mutation Score
+        ---------      ----------------------   --------------
+        file 1.swift   1                        60
+        file2.swift    2                        0
+        file 3.swift   3                        100
+        file4.swift    4                        55
+        """
 
         XCTAssertTrue(CLITable(padding: 3, columns: columns).description.contains(expectedCLITable))
     }
 
     func test_cliTableWithPaddingOfSix() {
         let expectedCLITable = """
-            File name         # of Generated Mutants      Mutation Score
-            ---------         ----------------------      --------------
-            file 1.swift      1                           60
-            file2.swift       2                           0
-            file 3.swift      3                           100
-            file4.swift       4                           55
-            """
+        File name         # of Generated Mutants      Mutation Score
+        ---------         ----------------------      --------------
+        file 1.swift      1                           60
+        file2.swift       2                           0
+        file 3.swift      3                           100
+        file4.swift       4                           55
+        """
 
         XCTAssertTrue(CLITable(padding: 6, columns: columns).description.contains(expectedCLITable))
     }

@@ -1,9 +1,8 @@
-import XCTest
-import TestingExtensions
-
 @testable import muterCore
+import TestingExtensions
+import XCTest
 
-class ReporterTestCase: XCTestCase {
+class ReporterTestCase: MuterTestCase {
     var outcomes = [
         MutationTestOutcome.Mutation.make(
             testSuiteOutcome: .passed,
@@ -12,7 +11,7 @@ class ReporterTestCase: XCTestCase {
                 filePath: "/tmp/project/file3.swift",
                 position: .firstPosition
             ),
-            snapshot: MutationOperatorSnapshot(before: "!=", after: "==", description: "from != to =="),
+            snapshot: MutationOperator.Snapshot(before: "!=", after: "==", description: "from != to =="),
             originalProjectDirectoryUrl: URL(string: "/user/project")!
         ),
     ]

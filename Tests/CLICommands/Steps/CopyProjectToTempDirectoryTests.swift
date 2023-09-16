@@ -1,58 +1,41 @@
-import XCTest
-
 @testable import muterCore
+import XCTest
 
 enum TestingError: String, Error {
     case stub
 }
 
-final class CopyProjectToTempDirectoryTests: XCTestCase {
-    private let fileManagerSpy = FileManagerSpy()
+final class CopyProjectToTempDirectoryTests: MuterTestCase {
     private let state = RunCommandState()
-    private var result: Result<[RunCommandState.Change], MuterError> = .success([])
-    private lazy var sut = CopyProjectToTempDirectory(fileManager: fileManagerSpy)
-    
-    func test_whenItsAbleToCopyAProjectIntoATempDirectory() {
+
+    private lazy var sut = CopyProjectToTempDirectory()
+
+    func test_whenItsAbleToCopyAProjectIntoATempDirectory() async throws {
         state.projectDirectoryURL = URL(string: "/some/projectName")!
         state.tempDirectoryURL = URL(string: "/tmp/projectName")!
-        
-        result = sut.run(with: state)
-        
-        assertThatReturnsTheCopyToTempDirectoryCompleted()
-        assertThatCopiesTheProjectToTheTempDirectory()
-        assertThatCopiesTheProjectAfterCreatingTheTempDirectory()
+
+        _ = try await sut.run(with: state)
+
+        XCTAssertEqual(fileManager.copyPaths.first?.source, "/some/projectName")
+        XCTAssertEqual(fileManager.copyPaths.first?.dest, "/tmp/projectName")
+        XCTAssertEqual(fileManager.copyPaths.count, 1)
+        XCTAssertEqual(fileManager.methodCalls, ["copyItem(atPath:toPath:)"])
     }
-    
-    func assertThatReturnsTheCopyToTempDirectoryCompleted() {
-        guard case .success(let stateChanges) = result else {
-            return XCTFail("expected success but got \(String(describing: result))")
-        }
-        
-        XCTAssertEqual(stateChanges, [.copyToTempDirectoryCompleted])
-    }
-    
-    func assertThatCopiesTheProjectToTheTempDirectory() {
-        XCTAssertEqual(self.fileManagerSpy.copyPaths.first?.source, "/some/projectName")
-        XCTAssertEqual(self.fileManagerSpy.copyPaths.first?.dest, "/tmp/projectName")
-        XCTAssertEqual(self.fileManagerSpy.copyPaths.count, 1)
-    }
-    
-    func assertThatCopiesTheProjectAfterCreatingTheTempDirectory() {
-        XCTAssertEqual(self.fileManagerSpy.methodCalls, ["copyItem(atPath:toPath:)"])
-    }
-    
-    func test_whenItsUnableToCopyAProjectIntoATempDirectory() {
-        fileManagerSpy.errorToThrow = TestingError.stub
+
+    func test_whenItsUnableToCopyAProjectIntoATempDirectory() async throws {
+        fileManager.errorToThrow = TestingError.stub
         state.projectDirectoryURL = URL(string: "/some/projectName")!
         state.tempDirectoryURL = URL(string: "/tmp/projectName")!
-        
-        result = sut.run(with: state)
-        
-        guard case .failure(.projectCopyFailed(let reason)) = result else {
-            XCTFail("expected success but got \(String(describing: result))")
-            return
+
+        try await assertThrowsMuterError(
+            await sut.run(with: state)
+        ) { error in
+            guard case let .projectCopyFailed(reason) = error else {
+                XCTFail("Expected projectCopyFailed, got \(error)")
+                return
+            }
+
+            XCTAssertFalse(reason.isEmpty)
         }
-        
-        XCTAssertFalse(reason.isEmpty)
     }
 }

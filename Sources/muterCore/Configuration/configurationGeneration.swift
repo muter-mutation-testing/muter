@@ -1,87 +1,142 @@
 import Foundation
 
 extension MuterConfiguration {
-    private static let generators = [generateXcodeProjectConfiguration,
-                                     generateXcodeWorkspaceConfiguration,
-                                     generateSPMConfiguration,
-                                     generateEmptyConfiguration,]
-    
+    private static let generators = [
+        generateXcodeProjectConfiguration,
+        generateXcodeWorkspaceConfiguration,
+        generateSPMConfiguration,
+        generateEmptyConfiguration,
+    ]
+
     init(from directoryContents: [FilePath]) {
         let directoryContents = directoryContents.map(URL.init(fileURLWithPath:))
         let generatedConfiguration = MuterConfiguration
             .generators
             .compactMap { $0(directoryContents) }
             .first!
-        
+
         self = generatedConfiguration
     }
 }
 
 private extension MuterConfiguration {
-    
     static func generateXcodeProjectConfiguration(from directoryContents: [URL]) -> MuterConfiguration? {
         guard !directoryContainsXcodeWorkspace(directoryContents),
-            let index = directoryContents.firstIndex(where: { $0.lastPathComponent.contains(".xcodeproj") }),
-            let arguments = arguments(forProjectFileAt: directoryContents[index], isWorkSpace: false) else {
+              let index = directoryContents.firstIndex(where: { $0.lastPathComponent.contains(".xcodeproj") }),
+              let arguments = arguments(forProjectFileAt: directoryContents[index], isWorkSpace: false)
+        else {
             return nil
         }
-        
-        return MuterConfiguration(executable: "/usr/bin/xcodebuild",
-                                  arguments: arguments)
+
+        return MuterConfiguration(
+            executable: "/usr/bin/xcodebuild",
+            arguments: arguments
+        )
     }
-    
+
     static func generateXcodeWorkspaceConfiguration(from directoryContents: [URL]) -> MuterConfiguration? {
         guard directoryContainsXcodeWorkspace(directoryContents),
-            let index = directoryContents.firstIndex(where: { $0.lastPathComponent.contains(".xcodeproj") }),
-            let arguments = arguments(forProjectFileAt: directoryContents[index], isWorkSpace: true) else {
+              let index = directoryContents.firstIndex(where: { $0.lastPathComponent.contains(".xcodeproj") }),
+              let arguments = arguments(forProjectFileAt: directoryContents[index], isWorkSpace: true)
+        else {
             return nil
         }
-        
-        return MuterConfiguration(executable: "/usr/bin/xcodebuild",
-                                  arguments: arguments)
+
+        return MuterConfiguration(
+            executable: "/usr/bin/xcodebuild",
+            arguments: arguments
+        )
     }
 
     static func directoryContainsXcodeWorkspace(_ directoryContents: [URL]) -> Bool {
-        
         let indexOfUserGeneratedWorkSpace = directoryContents
             .exclude { $0.absoluteString.contains("project.xcworkspace") }
             .firstIndex { $0.lastPathComponent.contains(".xcworkspace") }
-        
+
         return indexOfUserGeneratedWorkSpace != nil
     }
-    
+
     static func arguments(forProjectFileAt url: URL, isWorkSpace: Bool) -> [String]? {
         guard let projectFile = try? String(contentsOf: url.appendingPathComponent("project.pbxproj"), encoding: .utf8),
-            let projectName = url.lastPathComponent.split(separator: ".").first else {
+              let projectName = url.lastPathComponent.split(separator: ".").first
+        else {
             return nil
         }
-        
+
         let defaultArguments = [
             isWorkSpace ? "-workspace" : "-project",
             isWorkSpace ? "\(projectName).xcworkspace" : "\(projectName).xcodeproj",
             "-scheme",
             "\(projectName)",
         ]
-        
+
         let destination = projectFile.contains("SDKROOT = iphoneos") ?
-            ["-destination", "platform=iOS Simulator,name=iPhone SE (3rd generation)"] :
+            ["-destination", "platform=iOS Simulator,name=\(iOSSimulator().name)"] :
             []
-        
+
         return defaultArguments + destination + ["test"]
     }
 }
 
 private extension MuterConfiguration {
-    
+
     static func generateSPMConfiguration(from directoryContents: [URL]) -> MuterConfiguration? {
         if directoryContents.contains(where: { $0.lastPathComponent == "Package.swift" }) {
             return MuterConfiguration(executable: "/usr/bin/swift", arguments: ["test"], excludeList: ["Package.swift"])
         }
-        
+
         return nil
     }
-    
+
     static func generateEmptyConfiguration(from directoryContents: [URL]) -> MuterConfiguration? {
-        return MuterConfiguration(executable: "", arguments: [], excludeList: [])
+        MuterConfiguration(executable: "", arguments: [], excludeList: [])
+    }
+}
+
+private struct Simulator: Codable, CustomStringConvertible {
+    let isAvailable: Bool
+    let name: String
+    let deviceTypeIdentifier: String
+
+    var description: String { name }
+}
+
+extension Simulator {
+    static var fallback: Simulator {
+        Simulator(
+            isAvailable: true,
+            name: "iPhone SE (3rd generation)",
+            deviceTypeIdentifier: ""
+        )
+    }
+}
+
+private func iOSSimulator() -> Simulator {
+    let process = Process()
+
+    guard let simulatorsListOutput: Data = process.runProcess(
+        url: "/usr/bin/xcrun",
+        arguments: ["simctl", "list", "--json"]
+    )
+    else {
+        return .fallback
+    }
+
+    do {
+        let simulatorsJson = try (JSONSerialization.jsonObject(with: simulatorsListOutput) as? [String: AnyHashable]) ??
+            [:]
+        let devices = (simulatorsJson["devices"] as? [String: AnyHashable]) ?? [:]
+        let newestRuntime = devices.keys.filter { $0.contains("iOS") }.sorted().last ?? ""
+        let devicesForRunTime = (devices[newestRuntime] as? [AnyHashable]) ?? []
+        let device = try devicesForRunTime
+            .compactMap { try JSONSerialization.data(withJSONObject: $0) }
+            .compactMap { try JSONDecoder().decode(Simulator.self, from: $0) }
+            .filter(\.isAvailable)
+            .sorted(by: { $0.deviceTypeIdentifier > $1.deviceTypeIdentifier })
+            .first
+
+        return device ?? .fallback
+    } catch {
+        return .fallback
     }
 }

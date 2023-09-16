@@ -20,11 +20,14 @@ Use this mode to rapidly diagnose areas where you can begin improving your test 
 #### Muter can be run from the command line
 Use this mode to get detailed information about the health and quality of your entire test suite
 
-![Muter running from the commandline](Docs/Images/muter-cli-output-v2.gif)
+<picture>
+  <source media="(prefers-color-scheme: dark)" srcset="./Docs/Images/muter-cli-output-dark.gif">
+  <img alt="Muter running on the terminal" src="./Docs/Images/muter-cli-output-light.gif">
+</picture>
 
 
 #### Muter can be run in your CI
-Use this script to easily mutation test your projects incrementally, enabling you to have per-commit updates on how code changes impact the quality of your test suite. Seemlessly connect the output of this CI step into your dashboard or communication channel of choice, or use it as a starting point for thinking about how you want to incrementally test your code.
+Use this script to easily mutation test your projects incrementally, enabling you to have per-commit updates on how code changes impact the quality of your test suite. Seamlessly connect the output of this CI step into your dashboard or communication channel of choice, or use it as a starting point for thinking about how you want to incrementally test your code.
 
 ```sh
 muter --files-to-mutate $(echo \"$(git diff --name-only HEAD HEAD~1 | tr '\n' ',')\")
@@ -61,7 +64,7 @@ Specifically, a mutation score can help you:
 - Assess how many tests fail as a result of one code change
 
 ## How Does It Work?
-Muter will introduce changes into your source code based on the logic contained in your app. The changes introduced by Muter are called **mutants** which it generates using **mutation operators**.
+Muter will introduce changes to your source code based on the logic contained in your app. The changes introduced by Muter are called **mutants** which it generates using **mutation operators**.
 
 You can view the list of available mutation operators [here](https://github.com/muter-mutation-testing/muter/blob/master/Docs/mutation_operators.md). 
 
@@ -125,7 +128,7 @@ After running `muter init`, you should look at the generated configuration and e
 
 Should you need to modify any of the options, you can use the list below to understand what each configuration option does.
 
-### Configuration Options
+### [Configuration Options](#configuration-options)
 - `executable` - the absolute path to the program which can run your test suite (like `xcodebuild`, `swift`, `fastlane`, `make`, etc.)
 - `arguments` - any command line arguments the executable needs to run your test suite
 - `exclude` - a list of paths, file extensions, or names you want Muter to ignore. By default, Muter ignores all non-Swift files, and any files or paths containing the following phrases:
@@ -169,7 +172,7 @@ exclude:
 Check out the `muter.conf.yml` in the root directory of this repository for another example.
 
 ### Xcode Setup
-Setting up Muter to run within Xcode is simple. After creating your configuation:
+After creating your configuration:
 
 1) **Create a new Aggregate Build Target** in the Xcode project of the codebase you're mutation testing. We suggest calling it "Mutation Test"
 2) **Add a run script step** to the newly created aggregate build target.
@@ -183,21 +186,26 @@ muter --format xcode
 
 ### From the command line
 
-Once you've created your configuration file, simply run `muter` in your terminal from any directory of the project you're mutation testing. Muter will take it from there. 
+Once you've created your configuration file, run `muter` in your terminal from any directory of the project you're mutation testing. Muter will take it from there. 
 
 **Available Subcommands**
 
 ```
-help   Display general or subcommand-specific help
-init   Creates the configuration file that Muter uses
-run    Performs mutation testing for the Swift project contained within the current directory
+help        Display general or subcommand-specific help
+init        Creates the configuration file that Muter uses
+run         Performs mutation testing for the Swift project contained within the current directory
+operator    Describes a given mutation operator
 ```
 Muter defaults to run when you don't specify any subcommands
 
 **Available Flags**
 
 ```
---files-to-mutate    Only mutate a given list of source code files (Supports glob expressions like Sources/**/*.swift)
+--files-to-mutate       Only mutate a given list of source code files (Supports glob expressions like Sources/**/*.swift)
+--skip-coverage         Skips the step in which Muter runs your project in order to filter out files without coverage.
+-o, --output <output>   Output file for the report to be saved.
+--operators <operators> The list of mutant operators to be used: RelationalOperatorReplacement, RemoveSideEffects, ChangeLogicalConnector, SwapTernary
+--skip-update-check     Skips the step in which Muter checks for newer versions.
 ```
 
 **Available Report Formats**
@@ -210,14 +218,55 @@ xcode: prints mutation test results in real-time, as they are produced, in a for
 ```
 Note: If you pass `--output` muter will save the report, instead of using stdout.
 
+**Operators documentation**
+
+For more details on how any mutation operator works, use the `muter operator` command.
+
+To print all of the available operators, use `muter operator all`.
 
 ### Within Xcode
-Build (Cmd + B) your aggregate build target and let Muter run. The mutants which survive testing will be called out in the issue navigator. Once the target finishes building, testing has completed.
+Build (Cmd + B) your aggregate build target and let Muter run. The mutants that survive testing will be called out in the issue navigator. Once the target finishes building, testing is completed.
 
-### Skipping Mutations
-You can mark specific lines to skip mutations on, rather than entire files, by adding to them a line comment containing the text `muter:skip` (inspired by a similar feature in Swiftlint). This is mostly useful after the first run, if you conclude that specific uncaught mutants shouldn't be covered by your test suite – e.g. logging-related code, specific lines accessing real network/timers etc. This will prevent Muter from wasting time on testing them on subsequent runs, and reduce the 'noise'.
+### [Disable muter in code](#disable-muter-in-code)
+Muter will ignore code inside a `disable` block, up until you turn it on again by using the `enable` directive or EOF (end-of-file).
+
+```swift
+// muter:disable
+func f() {
+    functionA()
+}
+
+// muter:enable
+func f() {
+    functionB()
+}
+```
+
+## Mutant Schemata
+
+Muter uses a technique called mutant schemata. This builds a copy of your code with all known mutations inserted at once, but they are disabled by flags. Then your tests are run repeatedly, activating a different mutant each time via environment variables. This is a huge win performance, but comes with a caveat:
+
+Mutations cannot be applied in methods that are annotated with the `@resultBuilder` because some require an implicit return statement, for example:
+
+```swift
+@ViewBuilder
+func computeView() -> some View {
+    if ProcessInfo.processInfo.environment["id"] != nil {
+        return a && b ? Color.blue : Color.red
+    } else {
+        return a && b ? Color.red : Color.blue
+    }
+}
+```
+
+Because result builders do not require an implicit return statement, when Muter tries to add it, the code does not compile.
+
+To circumvent this, you can either ignore the whole file using an `exclude` entry on the [muter configuration file](#configuration-options), or [temporarily disable Muter in code](#disable-muter-in-code).
+
+In case Muter fails to run due to a compilation error, you can assess the mutated project under the `_mutated` folder in the root folder of the project.
 
 ## Assumptions
+
 - Muter assumes you always put spaces around your operators. For example, it expects an equality check to look like
 
     `a == b (Muter will mutate this)`
@@ -232,11 +281,11 @@ You can mark specific lines to skip mutations on, rather than entire files, by a
 - It's possible for Muter to cause compile time warnings. As a result of this, we recommend you don't treat Swift warnings as errors while mutation testing by adding the argument `SWIFT_TREAT_WARNINGS_AS_ERRORS=NO` to your `muter.conf.yml` if you're using `xcodebuild`.
 - Disable or relax linting rules that would cause a build error as a consequence of a code change not matching your project's style. Muter operates on your source code and then rebuilds it, and the change it introduces could trigger your linter if it's part of your build process.
 - Running Muter can be a lengthy process, so be sure to allocate enough time for the test to finish.
-- Because Muter can take a while to run, it is recommend to exclude UI or journey tests from your test suite. We recommend creating a separate schemes or targets for mutation testing. However, you should feel free to run these kinds of tests if you're okay with the longer feedback cycle.
+- Because Muter can take a while to run, it is recommended to exclude UI or journey tests from your test suite. We recommend creating separate schemes or targets for mutation testing. However, you should feel free to run these kinds of tests if you're okay with the longer feedback cycle.
 - Don’t be dogmatic about your mutation score - in practice, 100% is not always possible.
 
 ## Example Test Report
-There's an example of [the test report that Muter generates](https://github.com/muter-mutation-testing/muter/blob/master/Docs/test_report_example.md) hosted in this repository.
+There's an example of [the test report that Muter generates](./Docs/test_report_json_example.md) hosted in this repository.
 
 Check out this example to familiarize yourself with what a report looks like.
 

@@ -11,40 +11,49 @@ final class RunCommandHandler {
         self.steps = steps
         self.state = state
     }
-    
-    init(
+
+    convenience init(
         options: RunOptions,
         steps: [RunCommandStep] = RunCommandHandler.defaultSteps
     ) {
-        self.steps = steps.filter(with: options)
-        self.state = RunCommandState(from: options)
+        self.init(
+            steps: steps.filter(with: options),
+            state: RunCommandState(from: options)
+        )
     }
-    
-    func run() throws {
-        try steps.forEach { step in
-            try step.run(with: state).map(state.apply(_:)).get()
+
+    func run() async throws {
+        for step in steps {
+            let changes = try await step.run(with: state)
+            state.apply(changes)
         }
     }
 }
 
 private extension RunCommandHandler {
     private static let defaultSteps: [RunCommandStep] = [
+        UpdateCheck(),
         LoadConfiguration(),
         CreateTempDirectoryURL(),
-        RemoveProjectFromPreviousRun(),
+        PreviousRunCleanUp(),
         CopyProjectToTempDirectory(),
         DiscoverProjectCoverage(),
         DiscoverSourceFiles(),
         DiscoverMutationPoints(),
         GenerateSwapFilePaths(),
+        ApplySchemata(),
+        BuildForTesting(),
         PerformMutationTesting(),
     ]
 }
 
-private extension Array where Element == RunCommandStep {
+private extension [RunCommandStep] {
     func filter(with options: RunOptions) -> [Element] {
         exclude {
             options.skipCoverage && $0 is DiscoverProjectCoverage
+        }
+        .exclude {
+            options.skipUpdateCheck && $0 is UpdateCheck
         }
     }
 }

@@ -5,7 +5,8 @@ libdir = $(prefix)/lib
 repodir = $(shell pwd)
 builddir = $(repodir)/.build
 
-build: 
+build:
+	@swift package clean
 	@swift build -c debug $(flags)
 
 build-release: 
