@@ -19,9 +19,8 @@ def replace(file_path, new_url, new_sha):
 
 
 if len(sys.argv) == 3:
-    
     replace("./homebrew-formulae/Formula/muter.rb", 
-            "https://github.com/muter-mutation-testing/muter/archive/%s.zip" % (sys.argv[1]),
+            "https://github.com/muter-mutation-testing/muter/archive/refs/tags/%s.zip" % (sys.argv[1]),
             sys.argv[2])
 
 else:
