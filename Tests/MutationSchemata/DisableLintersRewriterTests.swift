@@ -1,4 +1,5 @@
 @testable import muterCore
+import TestingExtensions
 import XCTest
 
 final class DisableLintersRewriterTests: MuterTestCase {
@@ -18,25 +19,7 @@ final class DisableLintersRewriterTests: MuterTestCase {
             """
         )
 
-        let sut = DisableLintersRewriter().visit(code)
-
-        XCTAssertEqual(
-            sut.description,
-            """
-            // a comment
-            // swiftformat:disable all
-            // swiftlint:disable all
-
-            #if os(iOS) || os(tvOS)
-                import Foo
-            #else
-                import Bar
-            #endif
-
-            func foo() {
-              return true && false
-            }
-            """
-        )
+        let sut = DisableLintersRewriter().rewrite(code)
+        AssertSnapshot(sut.description)
     }
 }

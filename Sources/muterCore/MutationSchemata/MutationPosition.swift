@@ -25,8 +25,8 @@ struct MutationPosition: Codable, Equatable {
     init(sourceLocation: SourceLocation) {
         self.init(
             utf8Offset: sourceLocation.offset,
-            line: sourceLocation.line ?? 0,
-            column: sourceLocation.column ?? 0
+            line: sourceLocation.line,
+            column: sourceLocation.column
         )
     }
 }
@@ -52,28 +52,24 @@ func == (lhs: AbsolutePosition, rhs: MutationPosition) -> Bool {
 }
 
 extension SyntaxProtocol {
-    func mutationPosition(with sourceFileInfo: SourceFileInfo) -> MutationPosition {
+    func mutationPosition(with sourceCodeInfo: SourceCodeInfo) -> MutationPosition {
         let converter = SourceLocationConverter(
-            file: sourceFileInfo.path,
-            source: sourceFileInfo.source
+            fileName: sourceCodeInfo.path,
+            tree: sourceCodeInfo.code
         )
 
-        let sourceLocation = SourceLocation(
-            offset: position.utf8Offset,
-            converter: converter
-        )
+        let sourceLocation = converter.location(for: position)
 
         return MutationPosition(sourceLocation: sourceLocation)
     }
 
-    func line(with sourceFileInfo: SourceFileInfo) -> Int {
+    func line(with sourceCodeInfo: SourceCodeInfo) -> Int {
         let converter = SourceLocationConverter(
-            file: sourceFileInfo.path,
-            source: sourceFileInfo.source
+            fileName: sourceCodeInfo.path,
+            tree: sourceCodeInfo.code
         )
 
-        let sourceLocation = SourceLocation(
-            offset: position.utf8Offset,
+        let sourceLocation = startLocation(
             converter: converter
         )
 

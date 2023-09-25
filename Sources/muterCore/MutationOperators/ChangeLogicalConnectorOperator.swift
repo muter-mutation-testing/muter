@@ -4,17 +4,17 @@ enum ChangeLogicalConnectorOperator {
     class Visitor: TokenAwareVisitor {
         convenience init(
             configuration: MuterConfiguration? = nil,
-            sourceFileInfo: SourceFileInfo
+            sourceCodeInfo: SourceCodeInfo
         ) {
             self.init(
                 configuration: configuration,
-                sourceFileInfo: sourceFileInfo,
+                sourceCodeInfo: sourceCodeInfo,
                 mutationOperatorId: .logicalOperator
             )
 
             tokensToDiscover = [
-                .spacedBinaryOperator("||"),
-                .spacedBinaryOperator("&&"),
+                .binaryOperator("||"),
+                .binaryOperator("&&"),
             ]
 
             oppositeOperatorMapping = [

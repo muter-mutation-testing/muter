@@ -4,21 +4,21 @@ enum ROROperator {
     class Visitor: TokenAwareVisitor {
         convenience init(
             configuration: MuterConfiguration? = nil,
-            sourceFileInfo: SourceFileInfo
+            sourceCodeInfo: SourceCodeInfo
         ) {
             self.init(
                 configuration: configuration,
-                sourceFileInfo: sourceFileInfo,
+                sourceCodeInfo: sourceCodeInfo,
                 mutationOperatorId: .ror
             )
 
             tokensToDiscover = [
-                .spacedBinaryOperator("=="),
-                .spacedBinaryOperator("!="),
-                .spacedBinaryOperator(">="),
-                .spacedBinaryOperator("<="),
-                .spacedBinaryOperator("<"),
-                .spacedBinaryOperator(">"),
+                .binaryOperator("=="),
+                .binaryOperator("!="),
+                .binaryOperator(">="),
+                .binaryOperator("<="),
+                .binaryOperator("<"),
+                .binaryOperator(">"),
             ]
 
             oppositeOperatorMapping = [

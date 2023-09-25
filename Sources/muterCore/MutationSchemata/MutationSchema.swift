@@ -1,6 +1,6 @@
 import Foundation
+import SwiftParser
 import SwiftSyntax
-import SwiftSyntaxParser
 
 struct MutationSchema {
     var id: String {

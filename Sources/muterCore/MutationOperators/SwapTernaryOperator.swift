@@ -4,11 +4,11 @@ enum SwapTernaryOperator {
     final class Visitor: MuterVisitor {
         convenience init(
             configuration: MuterConfiguration? = nil,
-            sourceFileInfo: SourceFileInfo
+            sourceCodeInfo: SourceCodeInfo
         ) {
             self.init(
                 configuration: configuration,
-                sourceFileInfo: sourceFileInfo,
+                sourceCodeInfo: sourceCodeInfo,
                 mutationOperatorId: .swapTernary
             )
         }
@@ -57,11 +57,15 @@ enum SwapTernaryOperator {
 
         private func mutated(_ node: TernaryExprSyntax) -> ExprSyntax {
             ExprSyntax(
-                node.withFirstChoice(
-                    node.secondChoice.withTrailingTrivia(.spaces(1))
-                )
-                .withSecondChoice(
-                    node.firstChoice.withoutTrailingTrivia()
+                TernaryExprSyntax(
+                    leadingTrivia: node.leadingTrivia,
+                    condition: node.condition,
+                    questionMark: node.questionMark,
+                    thenExpression: node.elseExpression,
+                    colon: node.colon,
+                    elseExpression: node.thenExpression,
+                    trailingTrivia: node.trailingTrivia
+
                 )
             )
         }
@@ -78,12 +82,12 @@ enum SwapTernaryOperator {
             let secondChoice = children[index + 1]
                 .withTrailingTrivia(.spaces(1))
                 .withLeadingTrivia(.spaces(1))
-            let firstChoice = ternary.firstChoice
+            let firstChoice = ternary.thenExpression
                 .withTrailingTrivia(.spaces(1))
                 .withLeadingTrivia(.spaces(1))
 
             children[index] = ExprSyntax(
-                UnresolvedTernaryExprSyntax(firstChoice: secondChoice)
+                UnresolvedTernaryExprSyntax(thenExpression: secondChoice)
             )
             children[index + 1] = firstChoice
 
@@ -113,66 +117,3 @@ enum SwapTernaryOperator {
         }
     }
 }
-
-// extension TernaryOperator {
-//    final class Rewriter: SyntaxRewriter, PositionSpecificRewriter {
-//        var operatorSnapshot: MutationOperatorSnapshot = .null
-//        let positionToMutate: MutationPosition
-//
-//        init(positionToMutate: MutationPosition) {
-//            self.positionToMutate = positionToMutate
-//        }
-//
-//        override func visit(_ node: ExprListSyntax) -> ExprListSyntax {
-//            guard node.endPosition == positionToMutate else { return super.visit(node) }
-//            let children = cast(node)
-//            guard children.contains(where: { $0.is(UnresolvedTernaryExprSyntax.self) }),
-//                  let index = ternaryIndex(node)
-//            else {
-//                return super.visit(node)
-//            }
-//
-//            let condition = children.first!
-//            let ternary = TernaryExprSyntax(
-//                conditionExpression: condition,
-//                firstChoice: children[index + 1]
-//                    .withLeadingTrivia(.spaces(1))
-//                    .withTrailingTrivia(.spaces(1)),
-//                secondChoice: children[index]
-//                    .as(UnresolvedTernaryExprSyntax.self)!
-//                    .firstChoice
-//                    .withLeadingTrivia(.spaces(1))
-//                    .withoutTrailingTrivia()
-//            )
-//
-//            return ExprListSyntax([ExprSyntax(ternary)])
-//        }
-//
-//        func ternaryIndex(_ node: ExprListSyntax) -> Int? {
-//            for (index, child) in node.allChildren.enumerated() {
-//                if child.is(UnresolvedTernaryExprSyntax.self) {
-//                    return index
-//                }
-//            }
-//
-//            return nil
-//        }
-//
-//        func cast(_ node: ExprListSyntax) -> [ExprSyntax] {
-//            node.allChildren.compactMap {
-//                $0.as(ExprSyntax.self)
-//            }
-//        }
-//
-//        override func visit(_ node: TernaryExprSyntax) -> ExprSyntax {
-//            guard node.endPosition == positionToMutate else { return super.visit(node) }
-//            let newNode = node.withFirstChoice(
-//                node.secondChoice.withTrailingTrivia(.spaces(1))
-//            )
-//            .withSecondChoice(
-//                node.firstChoice.withoutTrailingTrivia()
-//            )
-//            return super.visit(newNode)
-//        }
-//    }
-// }

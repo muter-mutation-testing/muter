@@ -147,6 +147,7 @@ struct ConditionalOperators {
 
     func baz() { if ProcessInfo.processInfo.environment["sampleWithAllOperators_26_37_577"] != nil {
 } else {
+        
 return _ = foo(bar: { $0 == char })
 }
     }
@@ -214,6 +215,7 @@ struct SideEffects {
 
     func containsAVoidFunctionCallThatSpansManyLine() { if ProcessInfo.processInfo.environment["sampleWithAllOperators_79_10_1778"] != nil {
 } else {
+        
 return functionCall(
             "some argument",
             anArgumentLabel: "some argument that's different",
@@ -333,9 +335,9 @@ extension String {
             var remainder = value
             for char in self {
                 guard let (_, newRemainder) = doSomething(condition: {  if ProcessInfo.processInfo.environment["sampleWithAllOperators_159_75_3675"] != nil { 
-return $0 != char
+return $0 != char 
 } else { 
-return $0 == char
+return $0 == char 
 }}) else {
                     return nil
                 }

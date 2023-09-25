@@ -14,8 +14,51 @@ struct MutationSwitch {
 
         var schemata = mutationSchemata
         let firstSchema = schemata.removeFirst()
-        var outterIfStatement = IfStmtSyntax(
-            ifKeyword: .ifKeyword()
+
+        var previousElseBody = IfExprSyntax.ElseBody(
+            CodeBlockSyntax(
+                leftBrace: .leftBraceToken()
+                    .withTrailingTrivia(
+                        originalSyntax.trailingTrivia
+                    ),
+                statements: needsImplicitReturn
+                    ? originalSyntax.withReturnStatement()
+                    : originalSyntax,
+                rightBrace: .rightBraceToken()
+                    .withLeadingTrivia(.newlines(1))
+            )
+        )
+
+        for schema in schemata {
+            let elseBody = IfExprSyntax.ElseBody(
+                IfExprSyntax(
+                    ifKeyword: .keyword(.if).withTrailingTrivia(.spaces(1)),
+                    conditions: buildSchemataCondition(
+                        withId: schema.id
+                    ),
+                    body: CodeBlockSyntax(
+                        leftBrace: .leftBraceToken()
+                            .withTrailingTrivia(
+                                schema.syntaxMutation.trailingTrivia
+                            ),
+                        statements: needsImplicitReturn
+                            ? schema.syntaxMutation.withReturnStatement()
+                            : schema.syntaxMutation,
+                        rightBrace: .rightBraceToken()
+                            .withLeadingTrivia(.newlines(1))
+                    ),
+                    elseKeyword: .keyword(.else)
+                        .withTrailingTrivia(.spaces(1))
+                        .withLeadingTrivia(.spaces(1)),
+                    elseBody: previousElseBody
+                )
+            )
+
+            previousElseBody = elseBody
+        }
+
+        let outterIfStatement = IfExprSyntax(
+            ifKeyword: .keyword(.if)
                 .withTrailingTrivia(.spaces(1)),
             conditions: buildSchemataCondition(
                 withId: firstSchema.id
@@ -23,7 +66,7 @@ struct MutationSwitch {
             body: CodeBlockSyntax(
                 leftBrace: .leftBraceToken()
                     .withTrailingTrivia(
-                        firstSchema.syntaxMutation.trailingTrivia ?? .spaces(0)
+                        firstSchema.syntaxMutation.trailingTrivia
                     ),
                 statements: needsImplicitReturn
                     ? firstSchema.syntaxMutation.withReturnStatement()
@@ -31,51 +74,11 @@ struct MutationSwitch {
                 rightBrace: .rightBraceToken()
                     .withLeadingTrivia(.newlines(1))
             ),
-            elseKeyword: .elseKeyword()
+            elseKeyword: .keyword(.else)
                 .withTrailingTrivia(.spaces(1))
                 .withLeadingTrivia(.spaces(1)),
-            elseBody: IfStmtSyntax.ElseBody(
-                CodeBlockSyntax(
-                    leftBrace: .leftBraceToken()
-                        .withTrailingTrivia(
-                            originalSyntax.trailingTrivia ?? .spaces(0)
-                        ),
-                    statements: needsImplicitReturn
-                        ? originalSyntax.withReturnStatement()
-                        : originalSyntax,
-                    rightBrace: .rightBraceToken()
-                        .withLeadingTrivia(.newlines(1))
-                )
-            )
+            elseBody: previousElseBody
         )
-
-        for schema in schemata {
-            outterIfStatement = outterIfStatement.withElseBody(
-                IfStmtSyntax.ElseBody(
-                    IfStmtSyntax(
-                        ifKeyword: .ifKeyword().withTrailingTrivia(.spaces(1)),
-                        conditions: buildSchemataCondition(
-                            withId: schema.id
-                        ),
-                        body: CodeBlockSyntax(
-                            leftBrace: .leftBraceToken()
-                                .withTrailingTrivia(
-                                    schema.syntaxMutation.trailingTrivia ?? .spaces(0)
-                                ),
-                            statements: needsImplicitReturn
-                                ? schema.syntaxMutation.withReturnStatement()
-                                : schema.syntaxMutation,
-                            rightBrace: .rightBraceToken()
-                                .withLeadingTrivia(.newlines(1))
-                        ),
-                        elseKeyword: .elseKeyword()
-                            .withTrailingTrivia(.spaces(1))
-                            .withLeadingTrivia(.spaces(1)),
-                        elseBody: outterIfStatement.elseBody.flatMap(IfStmtSyntax.ElseBody.init)
-                    )
-                )
-            )
-        }
 
         return CodeBlockItemListSyntax([
             CodeBlockItemSyntax(item: .init(outterIfStatement))
@@ -91,7 +94,7 @@ struct MutationSwitch {
                     SequenceExprSyntax(
                         elements: ExprListSyntax([
                             ExprSyntax(
-                                SubscriptExprSyntax(
+                                SubscriptCallExprSyntax(
                                     calledExpression:
                                     ExprSyntax(
                                         MemberAccessExprSyntax(
@@ -99,9 +102,9 @@ struct MutationSwitch {
                                             ExprSyntax(
                                                 MemberAccessExprSyntax(
                                                     base: ExprSyntax(
-                                                        IdentifierExprSyntax(
-                                                            identifier: .identifier("ProcessInfo"),
-                                                            declNameArguments: nil
+                                                        DeclReferenceExprSyntax(
+                                                            baseName: .identifier("ProcessInfo"),
+                                                            argumentNames: nil
                                                         )
                                                     ),
                                                     dot: .periodToken(),
@@ -114,42 +117,43 @@ struct MutationSwitch {
                                             declNameArguments: nil
                                         )
                                     ),
-                                    leftBracket: .leftSquareBracketToken(),
-                                    argumentList:
-                                    TupleExprElementListSyntax([
-                                        TupleExprElementSyntax(
+                                    leftSquare: .leftSquareToken(),
+                                    arguments:
+                                    LabeledExprListSyntax([
+                                        LabeledExprSyntax(
                                             label: nil,
                                             colon: nil,
-                                            expression: ExprSyntax(
-                                                StringLiteralExprSyntax(
-                                                    openQuote: .stringQuoteToken(),
-                                                    segments: StringLiteralSegmentsSyntax(
-                                                        [.stringSegment(StringSegmentSyntax(
-                                                            content: TokenSyntax
+                                            expression: StringLiteralExprSyntax(
+                                                openingQuote: .stringQuoteToken(),
+                                                segments: StringLiteralSegmentListSyntax(
+                                                    [
+                                                        .stringSegment(
+                                                            StringSegmentSyntax(
+                                                                content:
                                                                 .stringSegment(id)
-                                                        ))]
-                                                    ),
-                                                    closeQuote: .stringQuoteToken()
-                                                )
-                                            ),
-                                            trailingComma: nil
+                                                            )
+                                                        )
+                                                    ]
+                                                ),
+                                                closingQuote: .stringQuoteToken()
+                                            )
                                         )
                                     ]),
-                                    rightBracket: .rightSquareBracketToken(),
+                                    rightSquare: .rightSquareToken(),
                                     trailingClosure: nil,
-                                    additionalTrailingClosures: nil
+                                    additionalTrailingClosures: []
                                 )
                             ),
                             ExprSyntax(
                                 BinaryOperatorExprSyntax(
-                                    operatorToken: .spacedBinaryOperator("!=")
+                                    operator: .binaryOperator("!=")
                                         .withLeadingTrivia(.spaces(1))
                                         .withTrailingTrivia(.spaces(1))
                                 )
                             ),
                             ExprSyntax(
                                 NilLiteralExprSyntax(
-                                    nilKeyword: .nilKeyword()
+                                    nilKeyword: .keyword(.nil)
                                         .withTrailingTrivia(.spaces(1))
                                 )
                             )
@@ -166,7 +170,7 @@ private extension CodeBlockItemListSyntax {
     func withReturnStatement() -> CodeBlockItemListSyntax {
         guard let codeBlockItem = first,
               !codeBlockItem.item.is(ReturnStmtSyntax.self),
-              !codeBlockItem.item.is(SwitchStmtSyntax.self)
+              !codeBlockItem.item.is(SwitchExprSyntax.self)
         else {
             return self
         }
@@ -174,17 +178,20 @@ private extension CodeBlockItemListSyntax {
         let item = codeBlockItem.item.withoutTrivia()
 
         return CodeBlockItemListSyntax([
-            codeBlockItem.withItem(
-                CodeBlockItemSyntax.Item(
+            CodeBlockItemSyntax(
+                leadingTrivia: codeBlockItem.leadingTrivia,
+                item: CodeBlockItemSyntax.Item(
                     ReturnStmtSyntax(
-                        returnKeyword: .returnKeyword()
+                        returnKeyword: .keyword(.return)
                             .appendingLeadingTrivia(.newlines(1))
                             .appendingTrailingTrivia(.spaces(1)),
                         expression: ExprSyntax(
                             item
                         )
                     )
-                )
+                ),
+                semicolon: codeBlockItem.semicolon,
+                trailingTrivia: codeBlockItem.trailingTrivia
             )
         ])
     }
@@ -205,7 +212,7 @@ private extension CodeBlockItemListSyntax {
 
     var accessorDeclGetSyntax: AccessorDeclSyntax? {
         if let accessor = findInParent(AccessorDeclSyntax.self),
-           accessor.accessorKind.tokenKind == .contextualKeyword("get") {
+           accessor.accessorSpecifier.tokenKind == .keyword(.get) {
             return accessor
         }
 
@@ -264,6 +271,6 @@ private extension AccessorDeclSyntax {
 
 private extension PatternBindingSyntax {
     var needsImplicitReturn: Bool {
-        accessor?.as(CodeBlockSyntax.self)?.needsImplicitReturn == true
+        accessorBlock?.as(CodeBlockSyntax.self)?.needsImplicitReturn == true
     }
 }

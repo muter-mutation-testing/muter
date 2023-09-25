@@ -1,14 +1,21 @@
 import Foundation
+import SwiftParser
 import SwiftSyntax
-import SwiftSyntaxParser
 
 // MARK: - Source Code
 
 func sourceCode(fromFileAt path: String) -> SourceCodeInfo? {
-    let url = URL(fileURLWithPath: path)
-    return (try? SyntaxParser.parse(url))
-        .map { (path: url.path, code: $0) }
-        .map(SourceCodeInfo.init)
+    guard let data = try? Data(contentsOf: URL(fileURLWithPath: path)),
+          let source = String(data: data, encoding: .utf8)
+    else {
+        return nil
+    }
+
+    let code = Parser.parse(source: source)
+    return SourceCodeInfo(
+        path: path,
+        code: code
+    )
 }
 
 // MARK: - Logging Directory

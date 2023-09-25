@@ -38,7 +38,7 @@ class TokenAwareVisitor: MuterVisitor {
     }
 
     private func oppositeOperator(for tokenKind: TokenKind) -> String? {
-        guard case let .spacedBinaryOperator(`operator`) = tokenKind else {
+        guard case let .binaryOperator(`operator`) = tokenKind else {
             return nil
         }
 
@@ -55,7 +55,7 @@ class TokenAwareVisitor: MuterVisitor {
         using operator: String
     ) -> Syntax {
         let tokenSyntax = TokenSyntax(
-            .spacedBinaryOperator(`operator`),
+            .binaryOperator(`operator`),
             leadingTrivia: token.leadingTrivia,
             trailingTrivia: token.trailingTrivia,
             presence: .present
@@ -71,8 +71,11 @@ class TokenAwareVisitor: MuterVisitor {
     ) -> CodeBlockItemListSyntax {
         let codeBlockItemListSyntax = node.codeBlockItemListSyntax
         let codeBlockDescription = codeBlockItemListSyntax.description
-        let nodePosition = node.offsetInCodeBlockItemListSyntax(sourceFileInfo)
-        let nodeStartRange = codeBlockDescription.index(codeBlockDescription.startIndex, offsetBy: nodePosition)
+        let nodePosition = node.offsetInCodeBlockItemListSyntax(sourceCodeInfo)
+        let nodeStartRange = codeBlockDescription.index(
+            codeBlockDescription.startIndex,
+            offsetBy: nodePosition
+        )
         let nodeEndRange = codeBlockDescription.index(
             codeBlockDescription.startIndex,
             offsetBy: nodePosition + mutatedSyntax.description.count
@@ -88,14 +91,10 @@ class TokenAwareVisitor: MuterVisitor {
 }
 
 private extension SyntaxProtocol {
-    func offsetInCodeBlockItemListSyntax(_ sourceCode: SourceFileInfo) -> Int {
-        let nodePosition = mutationPosition(
-            with: sourceCode
-        )
+    func offsetInCodeBlockItemListSyntax(_ sourceCode: SourceCodeInfo) -> Int {
+        let nodePosition = mutationPosition(with: sourceCode)
 
-        let codeBlockItemListSyntax = codeBlockItemListSyntax.mutationPosition(
-            with: sourceCode
-        )
+        let codeBlockItemListSyntax = codeBlockItemListSyntax.mutationPosition(with: sourceCode)
 
         return nodePosition.utf8Offset - codeBlockItemListSyntax.utf8Offset
     }

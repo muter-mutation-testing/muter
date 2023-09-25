@@ -42,7 +42,7 @@ private extension GenerateSwapFilePaths {
     }
 }
 
-internal extension GenerateSwapFilePaths { // this is internal to simplify testing
+extension GenerateSwapFilePaths { // this is internal to simplify testing
 
     func swapFilePaths(
         forFilesAt paths: [FilePath],

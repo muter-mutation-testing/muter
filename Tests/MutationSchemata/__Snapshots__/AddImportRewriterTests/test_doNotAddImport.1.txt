@@ -1,0 +1,10 @@
+#if os(iOS) || os(tvOS)
+    import Foo
+#else
+    import Bar
+#endif
+import Foundation
+
+func foo() {
+  return true && false
+}

@@ -1,0 +1,12 @@
+#if os(iOS) || os(tvOS)
+print("please ignore me")
+#endif
+
+func someCode(_ a: Bool, _ b: Bool) -> Bool { if ProcessInfo.processInfo.environment["sampleWithNestedTernaryOperator_6_40_143"] != nil { 
+    return a ? false : b ? true : false 
+} else if ProcessInfo.processInfo.environment["sampleWithNestedTernaryOperator_6_33_136"] != nil {
+    return a ? b ? false : true : false
+} else {
+    return a ? b ? true : false : false
+}
+}

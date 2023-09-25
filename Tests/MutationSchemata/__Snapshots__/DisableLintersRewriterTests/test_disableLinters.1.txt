@@ -1,0 +1,13 @@
+// a comment
+// swiftformat:disable all
+// swiftlint:disable all
+
+#if os(iOS) || os(tvOS)
+    import Foo
+#else
+    import Bar
+#endif
+
+func foo() {
+  return true && false
+}
