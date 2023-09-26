@@ -96,25 +96,20 @@ struct MutationSwitch {
                             ExprSyntax(
                                 SubscriptCallExprSyntax(
                                     calledExpression:
-                                    ExprSyntax(
-                                        MemberAccessExprSyntax(
-                                            base:
-                                            ExprSyntax(
-                                                MemberAccessExprSyntax(
-                                                    base: ExprSyntax(
-                                                        DeclReferenceExprSyntax(
-                                                            baseName: .identifier("ProcessInfo"),
-                                                            argumentNames: nil
-                                                        )
-                                                    ),
-                                                    dot: .periodToken(),
-                                                    name: .identifier("processInfo"),
-                                                    declNameArguments: nil
+                                    MemberAccessExprSyntax(
+                                        base: MemberAccessExprSyntax(
+                                            base: MemberAccessExprSyntax(
+                                                period: .periodToken(presence: .missing),
+                                                declName: DeclReferenceExprSyntax(
+                                                    baseName: .identifier("ProcessInfo")
                                                 )
                                             ),
-                                            dot: .periodToken(),
-                                            name: .identifier("environment"),
-                                            declNameArguments: nil
+                                            declName: DeclReferenceExprSyntax(
+                                                baseName: .identifier("processInfo")
+                                            )
+                                        ),
+                                        declName: DeclReferenceExprSyntax(
+                                            baseName: .identifier("environment")
                                         )
                                     ),
                                     leftSquare: .leftSquareToken(),
