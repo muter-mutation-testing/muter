@@ -9,7 +9,7 @@ final class RewriterTests: MuterTestCase {
 
     override func setUpWithError() throws {
         try super.setUpWithError()
-        SnapshotTesting.diffTool = "ksdiff"
+
         FileManager.default.createFile(
             atPath: samplePath,
             contents: allOperatorsSourceCode.data(using: .utf8)

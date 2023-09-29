@@ -10,8 +10,6 @@ struct MutationSwitch {
             return originalSyntax
         }
 
-        let needsImplicitReturn = originalSyntax.needsImplicitReturn
-
         var schemata = mutationSchemata
         let firstSchema = schemata.removeFirst()
 
@@ -21,9 +19,7 @@ struct MutationSwitch {
                     .withTrailingTrivia(
                         originalSyntax.trailingTrivia
                     ),
-                statements: needsImplicitReturn
-                    ? originalSyntax.withReturnStatement()
-                    : originalSyntax,
+                statements: originalSyntax,
                 rightBrace: .rightBraceToken()
                     .withLeadingTrivia(.newlines(1))
             )
@@ -41,9 +37,7 @@ struct MutationSwitch {
                             .withTrailingTrivia(
                                 schema.syntaxMutation.trailingTrivia
                             ),
-                        statements: needsImplicitReturn
-                            ? schema.syntaxMutation.withReturnStatement()
-                            : schema.syntaxMutation,
+                        statements: schema.syntaxMutation,
                         rightBrace: .rightBraceToken()
                             .withLeadingTrivia(.newlines(1))
                     ),
@@ -68,9 +62,7 @@ struct MutationSwitch {
                     .withTrailingTrivia(
                         firstSchema.syntaxMutation.trailingTrivia
                     ),
-                statements: needsImplicitReturn
-                    ? firstSchema.syntaxMutation.withReturnStatement()
-                    : firstSchema.syntaxMutation,
+                statements: firstSchema.syntaxMutation,
                 rightBrace: .rightBraceToken()
                     .withLeadingTrivia(.newlines(1))
             ),
@@ -158,114 +150,5 @@ struct MutationSwitch {
                 trailingComma: nil
             )
         ])
-    }
-}
-
-private extension CodeBlockItemListSyntax {
-    func withReturnStatement() -> CodeBlockItemListSyntax {
-        guard let codeBlockItem = first,
-              !codeBlockItem.item.is(ReturnStmtSyntax.self),
-              !codeBlockItem.item.is(SwitchExprSyntax.self)
-        else {
-            return self
-        }
-
-        let item = codeBlockItem.item.withoutTrivia()
-
-        return CodeBlockItemListSyntax([
-            CodeBlockItemSyntax(
-                leadingTrivia: codeBlockItem.leadingTrivia,
-                item: CodeBlockItemSyntax.Item(
-                    ReturnStmtSyntax(
-                        returnKeyword: .keyword(.return)
-                            .appendingLeadingTrivia(.newlines(1))
-                            .appendingTrailingTrivia(.spaces(1)),
-                        expression: ExprSyntax(
-                            item
-                        )
-                    )
-                ),
-                semicolon: codeBlockItem.semicolon,
-                trailingTrivia: codeBlockItem.trailingTrivia
-            )
-        ])
-    }
-
-    var needsImplicitReturn: Bool {
-        count == 1 &&
-            functionDeclarationSyntax?.needsImplicitReturn == true ||
-            accessorDeclGetSyntax?.needsImplicitReturn == true ||
-            patternBindingSyntax?.needsImplicitReturn == true ||
-            closureExprSyntax?.needsImplicitReturn == true
-    }
-}
-
-private extension CodeBlockItemListSyntax {
-    var functionDeclarationSyntax: FunctionDeclSyntax? {
-        findInParent(FunctionDeclSyntax.self)
-    }
-
-    var accessorDeclGetSyntax: AccessorDeclSyntax? {
-        if let accessor = findInParent(AccessorDeclSyntax.self),
-           accessor.accessorSpecifier.tokenKind == .keyword(.get) {
-            return accessor
-        }
-
-        return nil
-    }
-
-    var patternBindingSyntax: PatternBindingSyntax? {
-        findInParent(PatternBindingSyntax.self)
-    }
-
-    var closureExprSyntax: ClosureExprSyntax? {
-        findInParent(ClosureExprSyntax.self)
-    }
-
-    private func findInParent<T: SyntaxProtocol>(
-        _ syntaxNodeType: T.Type
-    ) -> T? {
-        let syntax = Syntax(self)
-        if let found = syntax.as(T.self) {
-            return found
-        }
-
-        var parent = parent
-
-        while parent?.is(T.self) == false {
-            parent = parent?.parent
-        }
-
-        return parent?.as(T.self)
-    }
-}
-
-extension ClosureExprSyntax {
-    var needsImplicitReturn: Bool {
-        statements.count == 1
-    }
-}
-
-private extension FunctionDeclSyntax {
-    var needsImplicitReturn: Bool {
-        body?.statements.count == 1
-    }
-}
-
-private extension CodeBlockSyntax {
-    var needsImplicitReturn: Bool {
-        statements.count == 1
-    }
-}
-
-private extension AccessorDeclSyntax {
-    var needsImplicitReturn: Bool {
-        body?.needsImplicitReturn == true
-    }
-}
-
-private extension PatternBindingSyntax {
-    var needsImplicitReturn: Bool {
-        accessorBlock?.as(CodeBlockSyntax.self)?.needsImplicitReturn == true
     }
 }

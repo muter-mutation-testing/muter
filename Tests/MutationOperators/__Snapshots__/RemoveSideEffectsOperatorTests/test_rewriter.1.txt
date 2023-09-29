@@ -44,8 +44,7 @@ struct Example {
 
     func containsAVoidFunctionCallThatSpansManyLine() { if ProcessInfo.processInfo.environment["sampleWithSideEffects_38_46_1017"] != nil {
 } else {
-        
-return functionCall("some argument",
+        functionCall("some argument",
                      anArgumentLabel: "some argument that's different",
                      anotherArgumentLabel: 5)
 }
