@@ -69,8 +69,6 @@ final class AcceptanceTests: XCTestCase {
     func test_xcodeFormat() throws {
         let output = try muterXcodeOutput
 
-        print(output)
-
         XCTAssertEqual(try numberOfXcodeFormattedMessages(in: output), 1)
     }
 
