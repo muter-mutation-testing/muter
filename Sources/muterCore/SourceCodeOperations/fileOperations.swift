@@ -28,8 +28,7 @@ func createLoggingDirectory(
 ) -> String {
     let formatter = DateFormatter()
     formatter.locale = locale
-    formatter.dateStyle = .medium
-    formatter.timeStyle = .short
+    formatter.dateFormat = "MMM d, yyyy 'at' h:mm a"
 
     let loggingDirectory = "\(directory)/muter_logs/\(formatter.string(from: timestamp()))"
     try! fileManager.createDirectory(atPath: loggingDirectory, withIntermediateDirectories: true, attributes: nil)

@@ -20,9 +20,9 @@ final class FileOperationTests: XCTestCase {
             timestamp: { timestamp.date! }
         )
 
-        XCTAssertEqual(loggingDirectory, "~/some/path/muter_logs/May 10, 2019 at 2:42 AM")
+        XCTAssertEqual(loggingDirectory, "~/some/path/muter_logs/May 10, 2019 at 2:42 AM")
         XCTAssertEqual(fileManagerSpy.methodCalls, ["createDirectory(atPath:withIntermediateDirectories:attributes:)"])
         XCTAssertEqual(fileManagerSpy.createsIntermediates, [true])
-        XCTAssertEqual(fileManagerSpy.paths, ["~/some/path/muter_logs/May 10, 2019 at 2:42 AM"])
+        XCTAssertEqual(fileManagerSpy.paths, ["~/some/path/muter_logs/May 10, 2019 at 2:42 AM"])
     }
 }
