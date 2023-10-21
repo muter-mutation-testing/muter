@@ -30,9 +30,9 @@ extension SyntaxProtocol {
     func appendingLeadingTrivia(
         _ pieces: TriviaPiece...
     ) -> Self {
-        if var trivia = leadingTrivia {
+        var trivia = leadingTrivia
+        if !trivia.isEmpty {
             pieces.forEach { trivia = trivia.appending($0) }
-
             return withLeadingTrivia(trivia)
         } else {
             return withLeadingTrivia(Trivia(pieces: pieces))
@@ -42,9 +42,9 @@ extension SyntaxProtocol {
     func appendingTrailingTrivia(
         _ pieces: TriviaPiece...
     ) -> Self {
-        if var trivia = trailingTrivia {
+        var trivia = trailingTrivia
+        if !trivia.isEmpty {
             pieces.forEach { trivia = trivia.appending($0) }
-
             return withTrailingTrivia(trivia)
         } else {
             return withTrailingTrivia(Trivia(pieces: pieces))
@@ -54,21 +54,23 @@ extension SyntaxProtocol {
     func withTrailingTrivia(
         _ trivia: Trivia?
     ) -> Self {
+        var copy = self
         if let trivia {
-            return withTrailingTrivia(trivia)
-        } else {
-            return self
+            copy.trailingTrivia = trivia
         }
+
+        return copy
     }
 
     func withLeadingTrivia(
         _ trivia: Trivia?
     ) -> Self {
+        var copy = self
         if let trivia {
-            return withLeadingTrivia(trivia)
-        } else {
-            return self
+            copy.leadingTrivia = trivia
         }
+
+        return copy
     }
 
     var allChildren: SyntaxChildren {
@@ -81,6 +83,18 @@ extension SyntaxProtocol {
     }
 }
 
+extension SyntaxChildren {
+    var asArray: [Element] {
+        var result: [Element] = []
+
+        for el in self {
+            result.append(el)
+        }
+
+        return result
+    }
+}
+
 extension FunctionDeclSyntax {
     var hasImplicitReturn: Bool {
         guard let body else {
@@ -88,14 +102,14 @@ extension FunctionDeclSyntax {
         }
 
         return body.statements.count == 1 &&
-            signature.output != nil &&
-            signature.output?.isReturningVoid == false
+            signature.returnClause != nil &&
+            signature.returnClause?.isReturningVoid == false
     }
 }
 
 extension ReturnClauseSyntax {
     var isReturningVoid: Bool {
-        ["Void", "()"].contains(returnType.withoutTrivia().description.trimmed)
+        ["Void", "()"].contains(type.withoutTrivia().description.trimmed)
     }
 }
 

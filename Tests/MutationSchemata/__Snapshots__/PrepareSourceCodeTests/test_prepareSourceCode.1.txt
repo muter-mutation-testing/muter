@@ -1,0 +1,8 @@
+// swiftformat:disable all
+// swiftlint:disable all
+
+import Foundation
+
+func foo() {
+    true && false
+}

@@ -1,4 +1,5 @@
 @testable import muterCore
+import TestingExtensions
 import XCTest
 
 final class AddImportRewriterTests: MuterTestCase {
@@ -17,24 +18,9 @@ final class AddImportRewriterTests: MuterTestCase {
             """
         )
 
-        let sut = AddImportRewriter().visit(code)
+        let sut = AddImportRewriter().rewrite(code)
 
-        XCTAssertEqual(
-            sut.description,
-            """
-            import Foundation
-
-            #if os(iOS) || os(tvOS)
-                import Foo
-            #else
-                import Bar
-            #endif
-
-            func foo() {
-              return true && false
-            }
-            """
-        )
+        AssertSnapshot(sut.description)
     }
 
     func test_doNotAddImport() throws {
@@ -54,21 +40,6 @@ final class AddImportRewriterTests: MuterTestCase {
         )
 
         let sut = AddImportRewriter().visit(code)
-
-        XCTAssertEqual(
-            sut.description,
-            """
-            #if os(iOS) || os(tvOS)
-                import Foo
-            #else
-                import Bar
-            #endif
-            import Foundation
-
-            func foo() {
-              return true && false
-            }
-            """
-        )
+        AssertSnapshot(sut.description)
     }
 }

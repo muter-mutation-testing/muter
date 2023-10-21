@@ -1,4 +1,5 @@
 @testable import muterCore
+import TestingExtensions
 import XCTest
 
 final class ROROperatorTests: MuterTestCase {
@@ -16,7 +17,7 @@ final class ROROperatorTests: MuterTestCase {
 
     func test_visitor() throws {
         let visitor = ROROperator.Visitor(
-            sourceFileInfo: sourceWithConditionalLogic.asSourceFileInfo
+            sourceCodeInfo: sourceWithConditionalLogic
         )
 
         visitor.walk(sourceWithConditionalLogic.code)
@@ -155,7 +156,7 @@ final class ROROperatorTests: MuterTestCase {
 
     func test_visitorOnFileWithoutOperator() {
         let visitor = ROROperator.Visitor(
-            sourceFileInfo: sourceWithoutMutableCode.asSourceFileInfo
+            sourceCodeInfo: sourceWithoutMutableCode
         )
 
         visitor.walk(sourceWithoutMutableCode.code)
@@ -165,7 +166,7 @@ final class ROROperatorTests: MuterTestCase {
 
     func test_ignoresFunctionDeclarations() throws {
         let visitor = ROROperator.Visitor(
-            sourceFileInfo: sourceWithConditionalLogic.asSourceFileInfo
+            sourceCodeInfo: sourceWithConditionalLogic
         )
 
         visitor.walk(sourceWithConditionalLogic.code)
@@ -176,7 +177,7 @@ final class ROROperatorTests: MuterTestCase {
 
     func test_ignoresConditionalConformancesConstraints() {
         let visitor = ROROperator.Visitor(
-            sourceFileInfo: conditionalConformanceConstraints.asSourceFileInfo
+            sourceCodeInfo: conditionalConformanceConstraints
         )
 
         visitor.walk(conditionalConformanceConstraints.code)
@@ -186,144 +187,14 @@ final class ROROperatorTests: MuterTestCase {
 
     func test_rewriter() {
         let visitor = ROROperator.Visitor(
-            sourceFileInfo: sourceWithConditionalLogic.asSourceFileInfo
+            sourceCodeInfo: sourceWithConditionalLogic
         )
 
         visitor.walk(sourceWithConditionalLogic.code)
 
         let actualSchematas = visitor.schemataMappings
-        let rewriter = MuterRewriter(actualSchematas).visit(sourceWithConditionalLogic.code)
+        let rewriter = MuterRewriter(actualSchematas).rewrite(sourceWithConditionalLogic.code)
 
-        XCTAssertEqual(
-            rewriter.description,
-            """
-            struct Example {
-                func something(_ a: Int) -> String { if ProcessInfo.processInfo.environment["sampleWithConditionalOperators_3_19_76"] != nil {
-                    let b = a != 5
-                    let e = a != 1
-                    let c = a >= 4
-                    let d = a <= 10
-                    let f = a < 5
-                    let g = a > 5
-
-                    if a == 10 {
-                        return "hello"
-                    }
-
-                    return a == 9 ? "goodbye" : "what"
-            } else if ProcessInfo.processInfo.environment["sampleWithConditionalOperators_14_18_272"] != nil {
-                    let b = a == 5
-                    let e = a != 1
-                    let c = a >= 4
-                    let d = a <= 10
-                    let f = a < 5
-                    let g = a > 5
-
-                    if a == 10 {
-                        return "hello"
-                    }
-
-                    return a != 9 ? "goodbye" : "what"
-            } else if ProcessInfo.processInfo.environment["sampleWithConditionalOperators_10_14_209"] != nil {
-                    let b = a == 5
-                    let e = a != 1
-                    let c = a >= 4
-                    let d = a <= 10
-                    let f = a < 5
-                    let g = a > 5
-
-                    if a != 10 {
-                        return "hello"
-                    }
-
-                    return a == 9 ? "goodbye" : "what"
-            } else if ProcessInfo.processInfo.environment["sampleWithConditionalOperators_8_19_191"] != nil {
-                    let b = a == 5
-                    let e = a != 1
-                    let c = a >= 4
-                    let d = a <= 10
-                    let f = a < 5
-                    let g = a < 5
-
-                    if a == 10 {
-                        return "hello"
-                    }
-
-                    return a == 9 ? "goodbye" : "what"
-            } else if ProcessInfo.processInfo.environment["sampleWithConditionalOperators_7_19_169"] != nil {
-                    let b = a == 5
-                    let e = a != 1
-                    let c = a >= 4
-                    let d = a <= 10
-                    let f = a > 5
-                    let g = a > 5
-
-                    if a == 10 {
-                        return "hello"
-                    }
-
-                    return a == 9 ? "goodbye" : "what"
-            } else if ProcessInfo.processInfo.environment["sampleWithConditionalOperators_6_19_145"] != nil {
-                    let b = a == 5
-                    let e = a != 1
-                    let c = a >= 4
-                    let d = a >= 10
-                    let f = a < 5
-                    let g = a > 5
-
-                    if a == 10 {
-                        return "hello"
-                    }
-
-                    return a == 9 ? "goodbye" : "what"
-            } else if ProcessInfo.processInfo.environment["sampleWithConditionalOperators_5_19_122"] != nil {
-                    let b = a == 5
-                    let e = a != 1
-                    let c = a <= 4
-                    let d = a <= 10
-                    let f = a < 5
-                    let g = a > 5
-
-                    if a == 10 {
-                        return "hello"
-                    }
-
-                    return a == 9 ? "goodbye" : "what"
-            } else if ProcessInfo.processInfo.environment["sampleWithConditionalOperators_4_19_99"] != nil {
-                    let b = a == 5
-                    let e = a == 1
-                    let c = a >= 4
-                    let d = a <= 10
-                    let f = a < 5
-                    let g = a > 5
-
-                    if a == 10 {
-                        return "hello"
-                    }
-
-                    return a == 9 ? "goodbye" : "what"
-            } else {
-                    let b = a == 5
-                    let e = a != 1
-                    let c = a >= 4
-                    let d = a <= 10
-                    let f = a < 5
-                    let g = a > 5
-
-                    if a == 10 {
-                        return "hello"
-                    }
-
-                    return a == 9 ? "goodbye" : "what"
-            }
-                }
-            }
-
-            func < (lhs: String, rhs: String) -> Bool {
-                return false
-            }
-
-            """
-        )
+        AssertSnapshot(rewriter.description)
     }
 }

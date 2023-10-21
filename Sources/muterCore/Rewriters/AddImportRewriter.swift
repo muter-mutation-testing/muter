@@ -15,7 +15,7 @@ final class AddImportRewriter: SyntaxRewriter {
         return super.visit(
             SourceFileSyntax(
                 statements: insertImportFoundation(in: node.statements),
-                eofToken: node.eofToken
+                endOfFileToken: node.endOfFileToken
             )
         )
     }
@@ -23,12 +23,12 @@ final class AddImportRewriter: SyntaxRewriter {
     private func insertImportFoundation(
         in node: CodeBlockItemListSyntax
     ) -> CodeBlockItemListSyntax {
-        node.prepending(
+        var items: [CodeBlockItemSyntax] = [
             CodeBlockItemSyntax(
                 item: CodeBlockItemSyntax.Item(
                     ImportDeclSyntax(
-                        path: AccessPathSyntax([
-                            AccessPathComponentSyntax(
+                        path: ImportPathComponentListSyntax([
+                            ImportPathComponentSyntax(
                                 name: .identifier("Foundation")
                                     .appendingLeadingTrivia(.spaces(1))
                                     .appendingTrailingTrivia(.newlines(2))
@@ -37,7 +37,13 @@ final class AddImportRewriter: SyntaxRewriter {
                     )
                 )
             )
-        )
+        ]
+
+        for item in node {
+            items.append(item)
+        }
+
+        return CodeBlockItemListSyntax(items)
     }
 }
 

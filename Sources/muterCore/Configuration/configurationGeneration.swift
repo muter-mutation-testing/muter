@@ -56,9 +56,15 @@ private extension MuterConfiguration {
         return indexOfUserGeneratedWorkSpace != nil
     }
 
-    static func arguments(forProjectFileAt url: URL, isWorkSpace: Bool) -> [String]? {
-        guard let projectFile = try? String(contentsOf: url.appendingPathComponent("project.pbxproj"), encoding: .utf8),
-              let projectName = url.lastPathComponent.split(separator: ".").first
+    static func arguments(
+        forProjectFileAt url: URL,
+        isWorkSpace: Bool
+    ) -> [String]? {
+        guard let projectFile = try? String(
+            contentsOf: url.appendingPathComponent("project.pbxproj"),
+            encoding: .utf8
+        ),
+            let projectName = url.lastPathComponent.split(separator: ".").first
         else {
             return nil
         }
@@ -133,7 +139,7 @@ private func iOSSimulator() -> Simulator {
             .compactMap { try JSONDecoder().decode(Simulator.self, from: $0) }
             .filter(\.isAvailable)
             .sorted(by: { $0.deviceTypeIdentifier > $1.deviceTypeIdentifier })
-            .first
+            .first { $0.name.contains("iPhone SE") }
 
         return device ?? .fallback
     } catch {

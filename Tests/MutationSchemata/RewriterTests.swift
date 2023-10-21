@@ -1,4 +1,5 @@
 @testable import muterCore
+import SnapshotTesting
 import SwiftParser
 import TestingExtensions
 import XCTest
@@ -35,7 +36,7 @@ final class RewriterTests: MuterTestCase {
 
         let sut = MuterRewriter(mapping)
 
-        let mutatedSourceCode = sut.visit(sourceCode.source.code).description
+        let mutatedSourceCode = sut.rewrite(sourceCode.source.code).description
 
         let positions = mapping.mutationSchemata
             .map { ($0.mutationOperatorId, $0.position) }

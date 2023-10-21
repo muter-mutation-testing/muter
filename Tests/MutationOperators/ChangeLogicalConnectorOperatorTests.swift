@@ -9,42 +9,20 @@ final class ChangeLogicalConnectorOperatorTests: MuterTestCase {
 
     func test_rewriter() throws {
         let visitor = ChangeLogicalConnectorOperator.Visitor(
-            sourceFileInfo: sourceWithLogicalOperators.asSourceFileInfo
+            sourceCodeInfo: sourceWithLogicalOperators
         )
 
         visitor.walk(sourceWithLogicalOperators.code)
 
         let rewritten = MuterRewriter(visitor.schemataMappings)
-            .visit(sourceWithLogicalOperators.code)
+            .rewrite(sourceWithLogicalOperators.code)
 
-        XCTAssertEqual(
-            rewritten.description,
-            """
-            #if os(iOS) || os(tvOS)
-            print("please ignore me")
-            #endif
-
-            func someCode() -> Bool { if ProcessInfo.processInfo.environment["sampleWithLogicalOperators_6_18_101"] != nil {
-                return false || false
-            } else {
-                return false && false
-            }
-            }
-
-            func someOtherCode() -> Bool { if ProcessInfo.processInfo.environment["sampleWithLogicalOperators_10_17_160"] != nil {
-                return true && true
-            } else {
-                return true || true
-            }
-            }
-
-            """
-        )
+        AssertSnapshot(rewritten.description)
     }
 
     func test_visitor() throws {
         let visitor = ChangeLogicalConnectorOperator.Visitor(
-            sourceFileInfo: sourceWithLogicalOperators.asSourceFileInfo
+            sourceCodeInfo: sourceWithLogicalOperators
         )
 
         visitor.walk(sourceWithLogicalOperators.code)

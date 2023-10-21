@@ -76,12 +76,11 @@ private extension DiscoverMutationPoints {
         configuration: MuterConfiguration
     ) -> [SchemataMutationMapping] {
         let source = sourceCode.source.code
-        let sourceFileInfo = sourceCode.source.asSourceFileInfo
 
         return operators.accumulate(into: []) { newSchemataMappings, mutationOperatorId in
             let visitor = mutationOperatorId.visitor(
                 configuration,
-                sourceFileInfo
+                sourceCode.source
             )
 
             visitor.sourceCodePreparationChange = sourceCode.changes

@@ -1,5 +1,5 @@
+import SwiftParser
 import SwiftSyntax
-import SwiftSyntaxParser
 
 final class MutationSourceCodePreparationChange: Equatable {
     static func == (
@@ -32,7 +32,7 @@ class MuterVisitor: SyntaxAnyVisitor {
     private(set) var isDisabled = false
 
     let configuration: MuterConfiguration?
-    let sourceFileInfo: SourceFileInfo
+    let sourceCodeInfo: SourceCodeInfo
     let mutationOperatorId: MutationOperator.Id
 
     var sourceCodePreparationChange: MutationSourceCodePreparationChange = .null
@@ -41,15 +41,15 @@ class MuterVisitor: SyntaxAnyVisitor {
 
     required init(
         configuration: MuterConfiguration? = nil,
-        sourceFileInfo: SourceFileInfo,
+        sourceCodeInfo: SourceCodeInfo,
         mutationOperatorId: MutationOperator.Id
     ) {
         self.configuration = configuration
-        self.sourceFileInfo = sourceFileInfo
+        self.sourceCodeInfo = sourceCodeInfo
         self.mutationOperatorId = mutationOperatorId
 
         schemataMappings = SchemataMutationMapping(
-            filePath: sourceFileInfo.path
+            filePath: sourceCodeInfo.path
         )
 
         super.init(viewMode: .all)
@@ -72,12 +72,11 @@ class MuterVisitor: SyntaxAnyVisitor {
         for node: SyntaxProtocol
     ) -> MutationPosition {
         let converter = SourceLocationConverter(
-            file: sourceFileInfo.path,
-            source: sourceFileInfo.source
+            fileName: sourceCodeInfo.path,
+            tree: sourceCodeInfo.code
         )
 
-        let sourceLocation = SourceLocation(
-            offset: node.position.utf8Offset,
+        let sourceLocation = node.startLocation(
             converter: converter
         )
 
@@ -91,8 +90,8 @@ class MuterVisitor: SyntaxAnyVisitor {
     ) -> MutationPosition {
         let sourceLocation = node.endLocation(
             converter: SourceLocationConverter(
-                file: sourceFileInfo.path,
-                source: sourceFileInfo.source
+                fileName: sourceCodeInfo.path,
+                tree: sourceCodeInfo.code
             ),
             afterTrailingTrivia: true
         )
@@ -107,8 +106,8 @@ class MuterVisitor: SyntaxAnyVisitor {
     ) -> MutationPosition {
         MutationPosition(
             utf8Offset: sourceLocation.offset,
-            line: (sourceLocation.line ?? 0) - sourceCodePreparationChange.newLines,
-            column: sourceLocation.column ?? 0
+            line: sourceLocation.line - sourceCodePreparationChange.newLines,
+            column: sourceLocation.column
         )
     }
 
@@ -121,8 +120,8 @@ class MuterVisitor: SyntaxAnyVisitor {
         let codeBlockDescription = codeBlockItemListSyntax.description
         let mutationDescription = mutatedSyntax.description
         let range = mutationRange ?? codeBlockDescription.range(of: node.description)
-        guard let codeBlockTree = try? SyntaxParser.parse(source: codeBlockDescription),
-              let mutationRangeInCodeBlock = range
+        let codeBlockTree = Parser.parse(source: codeBlockDescription)
+        guard let mutationRangeInCodeBlock = range
         else {
             return codeBlockItemListSyntax
         }
@@ -131,7 +130,7 @@ class MuterVisitor: SyntaxAnyVisitor {
             to: mutationRangeInCodeBlock.lowerBound
         )
 
-        let edit = SourceEdit(
+        let edit = IncrementalEdit(
             offset: mutationPositionInCodeBlock,
             length: mutatedSyntax.description.utf8.count,
             replacementLength: mutatedSyntax.description.utf8.count
@@ -144,18 +143,16 @@ class MuterVisitor: SyntaxAnyVisitor {
 
         let parseTransition = IncrementalParseTransition(
             previousTree: codeBlockTree,
-            edits: ConcurrentEdits(edit)
+            edits: ConcurrentEdits(edit),
+            lookaheadRanges: .init()
         )
 
-        guard let mutationParsed = try? SyntaxParser.parse(
+        let mutationParsed = Parser.parseIncrementally(
             source: codeBlockWithMutation,
             parseTransition: parseTransition
         )
-        else {
-            return codeBlockItemListSyntax
-        }
 
-        return mutationParsed.statements
+        return mutationParsed.tree.statements
     }
 
     func add(
@@ -188,7 +185,7 @@ class MuterVisitor: SyntaxAnyVisitor {
         for snapshot: MutationOperator.Snapshot
     ) -> MutationSchema {
         MutationSchema(
-            filePath: sourceFileInfo.path,
+            filePath: sourceCodeInfo.path,
             mutationOperatorId: mutationOperatorId,
             syntaxMutation: transform(
                 node: syntax,

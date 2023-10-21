@@ -7,7 +7,7 @@ final class DisableLintersRewriter: SyntaxRewriter {
         super.visit(
             SourceFileSyntax(
                 statements: disableLinters(in: node.statements),
-                eofToken: node.eofToken
+                endOfFileToken: node.endOfFileToken
             )
         )
     }

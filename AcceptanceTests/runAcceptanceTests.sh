@@ -23,6 +23,7 @@ echo " > Creating a configuration file..."
 cp ./muter.conf.yml "$samplesdir"/created_iOS_config.yml
 
 echo " > Running in CLI mode..."
+rm -rf ./muter_logs 2>/dev/null
 "$muterdir"/muter --skip-coverage --skip-update-check > "$samplesdir"/muters_output.txt
 echo " > Copying logs..."
 cp -R ./muter_logs "$samplesdir"/
@@ -33,12 +34,12 @@ echo " > Running with coverage"
 rm -rf ./muter_logs
 
 echo " > Running in Xcode mode..."
-"$muterdir"/muter --format xcode --skip-coverage --skip-update-check > "$samplesdir"/muters_xcode_output.txt
-rm -rf ./muter_logs # don't pollute the staging area
+"$muterdir"/muter --skip-coverage --skip-update-check --format xcode > "$samplesdir"/muters_xcode_output.txt
+rm -rf ./muter_logs
 
 echo " > Running with --filesToMutate flag"
 "$muterdir"/muter --skip-coverage --skip-update-check --files-to-mutate "/ExampleApp/Module.swift" > "$samplesdir"/muters_files_to_mutate_output.txt
-rm -rf ./muter_logs # don't pollute the staging area
+rm -rf ./muter_logs
 
 rm muter.conf.yml # cleanup the created configuration file for the next test run
 cd ../..
@@ -65,8 +66,9 @@ echo "Running Muter on an example test suite that fails..."
 cd ./Repositories/ProjectWithFailures
 
 echo " > Running in CLI mode..."
+rm -rf ./muter_logs 2>/dev/null
 "$muterdir"/muter --skip-coverage --skip-update-check > "$samplesdir"/muters_aborted_testing_output.txt
-rm -rf ./muter_logs # don't pollute the staging area
+rm -rf ./muter_logs
 
 cd ../..
 

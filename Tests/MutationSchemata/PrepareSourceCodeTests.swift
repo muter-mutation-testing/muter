@@ -1,5 +1,6 @@
 @testable import muterCore
-import SwiftSyntaxParser
+import SwiftParser
+import TestingExtensions
 import XCTest
 
 final class PrepareSourceCodeTests: MuterTestCase {
@@ -29,18 +30,6 @@ final class PrepareSourceCodeTests: MuterTestCase {
     func test_prepareSourceCode() throws {
         let sut = try XCTUnwrap(PrepareSourceCode().prepareSourceCode(outputFilePath))
 
-        XCTAssertEqual(
-            sut.source.code.description,
-            """
-            // swiftformat:disable all
-            // swiftlint:disable all
-
-            import Foundation
-
-            func foo() {
-                true && false
-            }
-            """
-        )
+        AssertSnapshot(sut.source.code.description)
     }
 }

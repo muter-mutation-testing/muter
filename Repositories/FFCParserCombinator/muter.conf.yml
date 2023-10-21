@@ -4,7 +4,7 @@ arguments:
 - -scheme
 - FFCParserCombinator-Package
 - -destination
-- platform=macOS,arch=x86_64,variant=Mac Catalyst
+- platform=macOS,arch=x86_64
 - test
 executable: /usr/bin/xcodebuild
 exclude: []

@@ -85,4 +85,4 @@
 
 --disable andOperator,assertionFailures,blankLinesAtEndOfScope,blankLinesAtStartOfScope,blankLinesBetweenScopes,conditionalAssignment,numberFormatting,preferKeyPath,trailingCommas,wrapMultilineStatementBraces,hoistAwait
 
---enable blankLineAfterImports,blankLinesBetweenImports,isEmpty,sortedSwitchCases,wrapConditionalBodies,wrapEnumCases,wrapSwitchCases
+--enable blankLineAfterImports,blankLinesBetweenImports,isEmpty,sortSwitchCases,wrapConditionalBodies,wrapEnumCases,wrapSwitchCases

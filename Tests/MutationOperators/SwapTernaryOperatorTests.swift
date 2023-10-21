@@ -1,4 +1,5 @@
 @testable import muterCore
+import TestingExtensions
 import XCTest
 
 final class SwapTernaryOperatorTests: MuterTestCase {
@@ -12,7 +13,7 @@ final class SwapTernaryOperatorTests: MuterTestCase {
 
     func test_visitor() throws {
         let visitor = SwapTernaryOperator.Visitor(
-            sourceFileInfo: sampleCode.asSourceFileInfo
+            sourceCodeInfo: sampleCode
         )
 
         visitor.walk(sampleCode.code)
@@ -67,7 +68,7 @@ final class SwapTernaryOperatorTests: MuterTestCase {
 
     func test_visitor_nestedTernaryOperator() throws {
         let visitor = SwapTernaryOperator.Visitor(
-            sourceFileInfo: sampleNestedCode.asSourceFileInfo
+            sourceCodeInfo: sampleNestedCode
         )
 
         visitor.walk(sampleNestedCode.code)
@@ -116,31 +117,13 @@ final class SwapTernaryOperatorTests: MuterTestCase {
 
     func test_rewriter() {
         let visitor = SwapTernaryOperator.Visitor(
-            sourceFileInfo: sampleNestedCode.asSourceFileInfo
+            sourceCodeInfo: sampleNestedCode
         )
 
         visitor.walk(sampleNestedCode.code)
 
-        let rewriter = MuterRewriter(visitor.schemataMappings)
-            .visit(sampleNestedCode.code)
+        let rewriter = MuterRewriter(visitor.schemataMappings).rewrite(sampleNestedCode.code)
 
-        XCTAssertEqual(
-            rewriter.description,
-            """
-            #if os(iOS) || os(tvOS)
-            print("please ignore me")
-            #endif
-
-            func someCode(_ a: Bool, _ b: Bool) -> Bool { if ProcessInfo.processInfo.environment["sampleWithNestedTernaryOperator_6_40_143"] != nil { 
-                return a ? false : b ? true : false 
-            } else if ProcessInfo.processInfo.environment["sampleWithNestedTernaryOperator_6_33_136"] != nil {
-                return a ? b ? false : true : false
-            } else {
-                return a ? b ? true : false : false
-            }
-            }
-
-            """
-        )
+        AssertSnapshot(rewriter.description)
     }
 }

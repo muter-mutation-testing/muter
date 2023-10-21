@@ -36,11 +36,11 @@ public class Queue<A> {
 }
 
 extension Queue {
-    private class Node<A> {
-        var value: A
-        var next: Node<A>?
+    private class Node<B> {
+        var value: B
+        var next: Node<B>?
 
-        init(_ value: A) {
+        init(_ value: B) {
             self.value = value
         }
     }

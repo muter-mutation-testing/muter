@@ -1,6 +1,6 @@
 @testable import muterCore
+import SwiftParser
 import SwiftSyntax
-import SwiftSyntaxParser
 import TestingExtensions
 import XCTest
 
@@ -41,20 +41,7 @@ final class SchemataBuilderTests: MuterTestCase {
             with: originalSyntax
         )
 
-        XCTAssertEqual(
-            actualMutationSwitch.description,
-            """
-            if ProcessInfo.processInfo.environment[\"file_0_0_0\"] != nil {
-              a >= b
-            } else if ProcessInfo.processInfo.environment[\"file_2_0_0\"] != nil {
-              a == b
-            } else if ProcessInfo.processInfo.environment[\"file_1_0_0\"] != nil {
-              a <= b
-            } else {
-              a != b
-            }
-            """
-        )
+        AssertSnapshot(actualMutationSwitch.description)
     }
 
     private func makeMutationSchemata(

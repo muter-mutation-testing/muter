@@ -1,7 +1,7 @@
 import Foundation
 @testable import muterCore
+import SwiftParser
 import SwiftSyntax
-import SwiftSyntaxParser
 import TestingExtensions
 
 extension MuterTestReport {
@@ -224,7 +224,7 @@ extension MutationSchema {
 func sourceCode(
     _ source: String
 ) throws -> SourceFileSyntax {
-    try SyntaxParser.parse(source: source)
+    Parser.parse(source: source)
 }
 
 extension MuterConfiguration {

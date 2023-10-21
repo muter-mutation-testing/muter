@@ -1,4 +1,5 @@
 @testable import muterCore
+import SnapshotTesting
 import SwiftSyntax
 import TestingExtensions
 import XCTest
@@ -10,7 +11,7 @@ final class RemoveSideEffectsOperatorTests: MuterTestCase {
 
     func test_visitor() throws {
         let visitor = RemoveSideEffectsOperator.Visitor(
-            sourceFileInfo: sourceWithSideEffects.asSourceFileInfo
+            sourceCodeInfo: sourceWithSideEffects
         )
 
         visitor.walk(sourceWithSideEffects.code)
@@ -34,7 +35,7 @@ final class RemoveSideEffectsOperatorTests: MuterTestCase {
                             after: "removed line",
                             description: "removed line"
                         )
-                    )
+                    ),
                 ]
             ),
             (
@@ -54,7 +55,7 @@ final class RemoveSideEffectsOperatorTests: MuterTestCase {
                             after: "removed line",
                             description: "removed line"
                         )
-                    )
+                    ),
                 ]
             ),
             (
@@ -74,7 +75,7 @@ final class RemoveSideEffectsOperatorTests: MuterTestCase {
                             after: "removed line",
                             description: "removed line"
                         )
-                    )
+                    ),
                 ]
             ),
             (
@@ -94,7 +95,7 @@ final class RemoveSideEffectsOperatorTests: MuterTestCase {
                             after: "removed line",
                             description: "removed line"
                         )
-                    )
+                    ),
                 ]
             )
         )
@@ -104,70 +105,13 @@ final class RemoveSideEffectsOperatorTests: MuterTestCase {
 
     func test_rewriter() throws {
         let visitor = RemoveSideEffectsOperator.Visitor(
-            sourceFileInfo: sourceWithSideEffects.asSourceFileInfo
+            sourceCodeInfo: sourceWithSideEffects
         )
 
         visitor.walk(sourceWithSideEffects.code)
 
-        let rewriter = MuterRewriter(visitor.schemataMappings).visit(sourceWithSideEffects.code)
+        let rewriter = MuterRewriter(visitor.schemataMappings).rewrite(sourceWithSideEffects.code)
 
-        XCTAssertEqual(
-            rewriter.description,
-            """
-            struct Example {
-                func containsSideEffect() -> Int { if ProcessInfo.processInfo.environment["sampleWithSideEffects_3_31_86"] != nil {
-                    return 1
-            } else {
-                    _ = causesSideEffect()
-                    return 1
-            }
-                }
-
-                func containsSideEffect() -> Int { if ProcessInfo.processInfo.environment["sampleWithSideEffects_10_31_208"] != nil {
-                    print("something")
-            } else {
-                    print("something")
-
-                    _ = causesSideEffect()
-            }
-                }
-
-                @discardableResult
-                func causesSideEffect() -> Int {
-                    return 0
-                }
-
-                func causesAnotherSideEffect() { if ProcessInfo.processInfo.environment["sampleWithSideEffects_21_66_480"] != nil {
-                    let key = "some key"
-                    let value = aFunctionThatReturnsAValue()
-            } else {
-                    let key = "some key"
-                    let value = aFunctionThatReturnsAValue()
-                    someFunctionThatWritesToADatabase(key: key, value: value)
-            }
-                }
-
-                func containsSpecialCases() {
-                    fatalError("this should never be deleted!")
-                    exit(1)
-                    abort()
-                }
-
-                func containsADeepMethodCall() {
-                    let containsIgnoredResult = statement.description.contains("_ = ")
-                    var anotherIgnoredResult = statement.description.contains("_ = ")
-                }
-
-                func containsAVoidFunctionCallThatSpansManyLine() { if ProcessInfo.processInfo.environment["sampleWithSideEffects_38_46_1017"] != nil {
-            } else {
-            return functionCall("some argument",
-                                 anArgumentLabel: "some argument that's different",
-                                 anotherArgumentLabel: 5)
-            }
-                }
-            }
-
-            """
-        )
+        AssertSnapshot(rewriter.description)
     }
 }

@@ -20,11 +20,11 @@ enum RemoveSideEffectsOperator {
 
         convenience init(
             configuration: MuterConfiguration? = nil,
-            sourceFileInfo: SourceFileInfo
+            sourceCodeInfo: SourceCodeInfo
         ) {
             self.init(
                 configuration: configuration,
-                sourceFileInfo: sourceFileInfo,
+                sourceCodeInfo: sourceCodeInfo,
                 mutationOperatorId: .removeSideEffects
             )
         }
@@ -76,7 +76,7 @@ enum RemoveSideEffectsOperator {
                 attributes: node.attributes,
                 modifiers: node.modifiers,
                 funcKeyword: node.funcKeyword,
-                identifier: node.identifier,
+                name: node.name,
                 genericParameterClause: node.genericParameterClause,
                 signature: node.signature,
                 genericWhereClause: node.genericWhereClause,
@@ -142,9 +142,8 @@ enum RemoveSideEffectsOperator {
     }
 }
 
-private extension SyntaxProtocol {
+extension SyntaxProtocol {
     func withoutTrivia() -> Self {
-        withoutLeadingTrivia()
-            .withoutTrailingTrivia()
+        withLeadingTrivia([]).withTrailingTrivia([])
     }
 }

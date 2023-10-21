@@ -58,7 +58,7 @@ class MuterTestCase: XCTestCase {
             .accumulate(into: []) { newSchemataMappings, mutationOperatorId in
                 let visitor = mutationOperatorId.visitor(
                     .init(),
-                    source.asSourceFileInfo
+                    source
                 )
 
                 visitor.sourceCodePreparationChange = changes
