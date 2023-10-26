@@ -9,9 +9,6 @@ struct RunOptions {
     let skipCoverage: Bool
     let skipUpdateCheck: Bool
 
-    @Dependency(\.logger)
-    private var logger: Logger
-
     init(
         filesToMutate: [String],
         reportFormat: ReportFormat,
@@ -24,10 +21,33 @@ struct RunOptions {
         self.skipCoverage = skipCoverage
         self.mutationOperatorsList = mutationOperatorsList
         self.skipUpdateCheck = skipUpdateCheck
-
         reportOptions = ReportOptions(
             reporter: reportFormat.reporter,
             path: reportPath(reportURL)
+        )
+    }
+}
+
+extension RunOptions: Equatable {
+    static func == (lhs: RunOptions, rhs: RunOptions) -> Bool {
+        lhs.filesToMutate == rhs.filesToMutate &&
+            lhs.mutationOperatorsList == rhs.mutationOperatorsList &&
+            lhs.skipCoverage == rhs.skipCoverage &&
+            lhs.skipUpdateCheck == rhs.skipUpdateCheck &&
+            lhs.reportOptions.path == rhs.reportOptions.path &&
+            "\(lhs.reportOptions.reporter)" == "\(rhs.reportOptions.reporter)"
+    }
+}
+
+extension RunOptions: Nullable {
+    static var null: RunOptions {
+        .init(
+            filesToMutate: [],
+            reportFormat: .plain,
+            reportURL: nil,
+            mutationOperatorsList: [],
+            skipCoverage: false,
+            skipUpdateCheck: false
         )
     }
 }

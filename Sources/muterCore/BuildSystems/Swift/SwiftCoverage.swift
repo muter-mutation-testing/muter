@@ -15,7 +15,10 @@ final class SwiftCoverage: BuildSystemCoverage {
             return .failure(.build)
         }
 
-        let projectCoverage = Coverage.from(report: coverageReport)
+        let projectCoverage: Coverage = .from(
+            report: coverageReport,
+            coverageThreshold: configuration.coverageThreshold
+        )
 
         return .success(projectCoverage)
     }
@@ -76,7 +79,10 @@ final class SwiftCoverage: BuildSystemCoverage {
 }
 
 private extension Coverage {
-    static func from(report: String) -> Coverage {
+    static func from(
+        report: String,
+        coverageThreshold: Double = 0
+    ) -> Coverage {
         let files = report.stringsMatchingRegex("^(.)*.swift", options: .anchorsMatchLines)
         var percents = report.split(separator: "\n").compactMap { line in
             String(line)
@@ -87,7 +93,7 @@ private extension Coverage {
 
         let percent = percents.removeLast()
         let filesWithoutCoverage = zip(files, percents)
-            .include { _, coverage in coverage == 0 }
+            .include { _, coverage in coverage <= coverageThreshold }
             .map(\.0)
 
         return Coverage(

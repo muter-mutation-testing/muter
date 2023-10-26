@@ -8,6 +8,11 @@ struct MuterConfiguration: Equatable, Codable {
     let excludeFileList: [String]
     /// Exclusion list of functions for Remove Side Effects.
     let excludeCallList: [String]
+    let coverageThreshold: Double
+
+    var isCoverageThresholdEnabled: Bool {
+        coverageThreshold > 0
+    }
 
     var buildSystem: BuildSystem {
         guard let buildSystem = testCommandExecutable.components(separatedBy: "/").last?.trimmed else {
@@ -22,18 +27,21 @@ struct MuterConfiguration: Equatable, Codable {
         case testCommandExecutable = "executable"
         case excludeFileList = "exclude"
         case excludeCallList = "excludeCalls"
+        case coverageThreshold
     }
 
     init(
         executable: String = "",
         arguments: [String] = [],
         excludeList: [String] = [],
-        excludeCallList: [String] = []
+        excludeCallList callList: [String] = [],
+        coverageThreshold threshold: Double = 0
     ) {
         testCommandExecutable = executable
         testCommandArguments = arguments
         excludeFileList = excludeList
-        self.excludeCallList = excludeCallList
+        excludeCallList = callList
+        coverageThreshold = threshold
     }
 
     init(from decoder: Decoder) throws {
@@ -42,11 +50,9 @@ struct MuterConfiguration: Equatable, Codable {
         testCommandExecutable = try container.decode(String.self, forKey: .testCommandExecutable)
         testCommandArguments = try container.decode([String].self, forKey: .testCommandArguments)
 
-        let excludeList = try? container.decode([String].self, forKey: .excludeFileList)
-        excludeFileList = excludeList ?? []
-
-        let excludeCallList = try? container.decode([String].self, forKey: .excludeCallList)
-        self.excludeCallList = excludeCallList ?? []
+        excludeFileList = container.decode([String].self, default: [], forKey: .excludeFileList)
+        excludeCallList = container.decode([String].self, default: [], forKey: .excludeCallList)
+        coverageThreshold = container.decode(Double.self, default: 0, forKey: .coverageThreshold)
     }
 
     init(from data: Data) throws {
@@ -117,5 +123,11 @@ extension MuterConfiguration {
         case .unknown:
             return arguments
         }
+    }
+}
+
+private extension KeyedDecodingContainerProtocol {
+    func decode<A: Decodable>(_ type: A.Type, default: A, forKey key: KeyedDecodingContainer<Key>.Key) -> A {
+        (try? decode(A.self, forKey: key)) ?? `default`
     }
 }
