@@ -1,3 +1,6 @@
+#if os(Linux)
+import FoundationNetworking
+#endif
 import Foundation
 import Version
 
