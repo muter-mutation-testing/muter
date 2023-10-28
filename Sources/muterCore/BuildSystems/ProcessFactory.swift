@@ -3,10 +3,10 @@ import Foundation
 let isMuterRunningKey = "IS_MUTER_RUNNING"
 let isMuterRunningValue = "YES"
 
-extension Process {
+extension ProcessWrapper {
     enum Factory {
-        static func makeProcess() -> Process {
-            let process = Process()
+        static func makeProcess() -> ProcessWrapper {
+            let process = ProcessWrapper()
             process.qualityOfService = .userInitiated
 
             process.environment = [
@@ -15,11 +15,6 @@ extension Process {
 
             return process
         }
-    }
-
-    @objc
-    var processData: Data? {
-        (standardOutput as? Pipe)?.readStringToEndOfFile()
     }
 
     func runProcess(
@@ -50,18 +45,5 @@ extension Process {
         }
 
         return String(data: output, encoding: .utf8)
-    }
-}
-
-extension Pipe {
-    func readStringToEndOfFile() -> Data? {
-        let data: Data
-        if #available(OSX 10.15.4, *) {
-            data = (try? fileHandleForReading.readToEnd()) ?? Data()
-        } else {
-            data = fileHandleForReading.readDataToEndOfFile()
-        }
-
-        return data
     }
 }

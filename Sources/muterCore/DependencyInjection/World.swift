@@ -18,7 +18,7 @@ typealias PreparedSourceCode = (
     changes: MutationSourceCodePreparationChange
 )
 typealias SourceCodePreparation = (String) -> PreparedSourceCode?
-typealias ProcessFactory = () -> Process
+typealias ProcessFactory = () -> ProcessWrapper
 typealias Flush = () -> Void
 typealias Printer = (String) -> Void
 typealias WriteFile = (String, String) throws -> Void
@@ -41,7 +41,7 @@ struct World {
     }
 
     var ioDelegate: MutationTestingIODelegate = MutationTestingDelegate()
-    var process: ProcessFactory = Process.Factory.makeProcess
+    var process: ProcessFactory = ProcessWrapper.Factory.makeProcess
     var prepareCode: SourceCodePreparation = PrepareSourceCode().prepareSourceCode
     var writeFile: WriteFile = { try $0.write(toFile: $1, atomically: true, encoding: .utf8) }
     var loadSourceCode: LoadSourceCode = { sourceCode(fromFileAt: $0) }

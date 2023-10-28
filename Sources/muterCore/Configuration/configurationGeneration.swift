@@ -118,7 +118,7 @@ extension Simulator {
 }
 
 private func iOSSimulator() -> Simulator {
-    let process = Process()
+    let process = ProcessWrapper()
 
     guard let simulatorsListOutput: Data = process.runProcess(
         url: "/usr/bin/xcrun",
