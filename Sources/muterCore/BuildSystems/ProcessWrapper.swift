@@ -3,11 +3,6 @@ import Foundation
 class ProcessWrapper {
     private(set) var process = Process()
 
-    var launchPath: String {
-        get { process.launchPath ?? "" }
-        set { process.launchPath = newValue }
-    }
-
     var executableURL: URL? {
         get { process.executableURL }
         set { process.executableURL = newValue }
