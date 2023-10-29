@@ -34,8 +34,6 @@ struct LoadConfiguration: RunCommandStep {
                 )
             }
 
-//            if configuration.isCoverageThresholdEnabled &&
-
             return [
                 .projectDirectoryUrlDiscovered(URL(fileURLWithPath: currentDirectory)),
                 .configurationParsed(configuration),

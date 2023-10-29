@@ -29,8 +29,6 @@ extension Notification.Name {
     static let newTestLogAvailable = Notification.Name("newTestLogAvailable")
 
     static let configurationFileCreated = Notification.Name("configurationFileCreated")
-
-    static let warningMessage = Notification.Name("warningMessage")
 }
 
 final class RunCommandObserver {
@@ -50,8 +48,6 @@ final class RunCommandObserver {
     private var notificationHandlerMappings: [(name: Notification.Name, handler: (Notification) -> Void)] {
         [
             (name: .muterLaunched, handler: handleMuterLaunched),
-
-            (name: .warningMessage, handler: handleWarningMessage),
 
             (name: .updateCheckStarted, handler: handleUpdateCheckStarted),
             (name: .updateCheckFinished, handler: handleUpdateCheckFinished),
@@ -104,16 +100,6 @@ final class RunCommandObserver {
 extension RunCommandObserver {
     func handleMuterLaunched(notification: Notification) {
         logger.launched()
-    }
-
-    func handleWarningMessage(notification: Notification) {
-        guard let message = notification.object as? String,
-              !message.isEmpty
-        else {
-            return
-        }
-
-        logger.print("⚠️ \(message)".bold.yellow)
     }
 
     func handleUpdateCheckStarted(notification: Notification) {
