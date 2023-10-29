@@ -114,4 +114,25 @@ final class RemoveSideEffectsOperatorTests: MuterTestCase {
 
         AssertSnapshot(rewriter.description)
     }
+    
+    func test_a() throws {
+        let source = try sourceCode(
+            """
+            while false {
+                sideEffect()
+                print("This is false")
+            }
+            """
+        )
+        
+        let visitor = RemoveSideEffectsOperator.Visitor(
+            sourceCodeInfo: .init(path: "path", code: source)
+        )
+
+        visitor.walk(source)
+
+        let rewriter = MuterRewriter(visitor.schemataMappings).rewrite(source)
+
+        print(rewriter.description)
+    }
 }

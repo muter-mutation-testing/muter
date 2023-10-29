@@ -37,12 +37,42 @@ enum RemoveSideEffectsOperator {
 
             return super.visit(node)
         }
+        
+        override func visit(_ node: ForStmtSyntax) -> SyntaxVisitorContinueKind {
+            removeSideEffectAt(node.body)
+
+            return super.visit(node)
+        }
+        
+        override func visit(_ node: GuardStmtSyntax) -> SyntaxVisitorContinueKind {
+            removeSideEffectAt(node.body)
+
+            return super.visit(node)
+        }
+        
+        override func visit(_ node: WhileStmtSyntax) -> SyntaxVisitorContinueKind {
+            removeSideEffectAt(node.body)
+
+            return super.visit(node)
+        }
+        
+        override func visit(_ node: RepeatStmtSyntax) -> SyntaxVisitorContinueKind {
+            removeSideEffectAt(node.body)
+            
+            return super.visit(node)
+        }
 
         override func visit(_ node: FunctionDeclSyntax) -> SyntaxVisitorContinueKind {
-            guard let body = node.body, !node.hasImplicitReturn else {
+            guard let body = node.body else {
                 return super.visit(node)
             }
 
+            removeSideEffectAt(body)
+
+            return super.visit(node)
+        }
+        
+        private func removeSideEffectAt(_ body: CodeBlockSyntax) {
             let statements = body.statements
             for statement in body.statements where statementContainsMutableToken(statement) {
                 let mutatedFunctionStatements = body
@@ -67,8 +97,6 @@ enum RemoveSideEffectsOperator {
                     snapshot: snapshot
                 )
             }
-
-            return super.visit(node)
         }
 
         private func mutated(_ node: FunctionDeclSyntax, with body: CodeBlockSyntax) -> DeclSyntax {
@@ -139,11 +167,5 @@ enum RemoveSideEffectsOperator {
         private func propertyName(from patternSyntax: PatternBindingSyntax) -> String {
             patternSyntax.pattern.description.trimmed
         }
-    }
-}
-
-extension SyntaxProtocol {
-    func withoutTrivia() -> Self {
-        withLeadingTrivia([]).withTrailingTrivia([])
     }
 }

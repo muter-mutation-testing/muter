@@ -72,6 +72,10 @@ extension SyntaxProtocol {
 
         return copy
     }
+    
+    func withoutTrivia() -> Self {
+        withLeadingTrivia([]).withTrailingTrivia([])
+    }
 
     var allChildren: SyntaxChildren {
         children(viewMode: .all)
