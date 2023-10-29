@@ -10,10 +10,6 @@ struct MuterConfiguration: Equatable, Codable {
     let excludeCallList: [String]
     let coverageThreshold: Double
 
-    var isCoverageThresholdEnabled: Bool {
-        coverageThreshold > 0
-    }
-
     var buildSystem: BuildSystem {
         guard let buildSystem = testCommandExecutable.components(separatedBy: "/").last?.trimmed else {
             return .unknown
