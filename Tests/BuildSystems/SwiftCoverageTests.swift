@@ -5,9 +5,11 @@ import XCTest
 final class SwiftCoverageTests: MuterTestCase {
     private let sut = SwiftCoverage()
 
-    private let muterConfiguration = MuterConfiguration(
+    private var coverageThreshold: Double = 0
+    private lazy var muterConfiguration = MuterConfiguration(
         executable: "/path/to/swift",
-        arguments: []
+        arguments: [],
+        coverageThreshold: coverageThreshold
     )
 
     func test_runWithCoverageEnable() {
@@ -105,6 +107,34 @@ final class SwiftCoverageTests: MuterTestCase {
                     "Extensions/ProgressExtensions.swift",
                     "MutationTesting/MutationTestingAbortReason.swift",
                     "Muter.swift",
+                ]
+            )
+        )
+    }
+
+    func test_ignoreFilesLessThanCoverageThreshold() throws {
+        process.stdoutToBeReturned = ""
+        process.stdoutToBeReturned = "/path/to/binary"
+        process.stdoutToBeReturned = "/path/to/testArtifact"
+        process.stdoutToBeReturned = loadLLVMCovLog()
+        coverageThreshold = 50
+
+        let coverage = try XCTUnwrap(sut.run(with: muterConfiguration).get())
+
+        XCTAssertEqual(
+            coverage,
+            .make(
+                percent: 78,
+                filesWithoutCoverage: [
+                    "CLICommands/MuterError.swift",
+                    "CLICommands/RunCommand/Run.swift",
+                    "Extensions/Nullable.swift",
+                    "Extensions/ProgressExtensions.swift",
+                    "MutationTesting/MutationTestingAbortReason.swift",
+                    "MutationTesting/MutationTestingIODelegate.swift",
+                    "Muter.swift",
+                    "TestReporting/PlainText/PlainTextReporter.swift",
+                    "TestReporting/Reporter.swift",
                 ]
             )
         )

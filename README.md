@@ -150,6 +150,8 @@ Should you need to modify any of the options, you can use the list below to unde
 - `excludeCalls` - a list of function names you want Muter to ignore in the [Remove Side Effects](https://github.com/muter-mutation-testing/muter/blob/master/Docs/mutation_operators.md) mutation operator, such as custom logging functions. Mutants in which these functions aren't called will not be created (note that mutations within the functions themselves are *not* skipped, only calls to those functions).
 
     **NOTE**: Doesn't support overloading currently - all function calls with a matching name will be skipped. 
+    
+- `coverageThreshold` - when present Muter will ignore files that have a coverage value less than this option.
 
 Below is an example pulled directly from the `ExampleApp` project.
 The configuration file will end up looking something like this:
@@ -264,6 +266,8 @@ Because result builders do not require an implicit return statement, when Muter 
 To circumvent this, you can either ignore the whole file using an `exclude` entry on the [muter configuration file](#configuration-options), or [temporarily disable Muter in code](#disable-muter-in-code).
 
 In case Muter fails to run due to a compilation error, you can assess the mutated project under the `_mutated` folder in the root folder of the project.
+
+**NOTE**: This limitation may not affect you if you are using Swift 5.9+.
 
 ## Assumptions
 

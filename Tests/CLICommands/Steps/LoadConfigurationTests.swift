@@ -1,5 +1,6 @@
 @testable import muterCore
 import XCTest
+import Yams
 
 final class LoadConfigurationTests: MuterTestCase {
     private lazy var currentDirectory = fixturesDirectory
@@ -36,7 +37,32 @@ final class LoadConfigurationTests: MuterTestCase {
 
         XCTAssertTrue(fileManager.methodCalls.contains("removeItem(atPath:)"))
         XCTAssertTrue(fileManager.methodCalls.contains("createFile(atPath:contents:attributes:)"))
-        XCTAssertEqual(fileManager.contents, loadYAMLConfiguration())
+        assertConfigurationsEquals(
+            fileManager.contents,
+            loadYAMLConfiguration()
+        )
+    }
+
+    private func assertConfigurationsEquals(
+        _ actual: Data?,
+        _ expected: Data?
+    ) {
+        guard let actual,
+              let expected
+        else {
+            return XCTFail("Could not assert configurations")
+        }
+
+        let actualConfig = try? YAMLDecoder().decode(
+            MuterConfiguration.self,
+            from: actual
+        )
+        let expectedConfig = try? YAMLDecoder().decode(
+            MuterConfiguration.self,
+            from: expected
+        )
+
+        XCTAssertEqual(actualConfig, expectedConfig)
     }
 
     func test_failure() async throws {

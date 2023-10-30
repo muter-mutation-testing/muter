@@ -2,6 +2,7 @@ import Foundation
 import SwiftSyntax
 
 protocol AnyRunCommandState: AnyObject {
+    var runOptions: RunOptions { get }
     var newVersion: String { get }
     var mutationTestingStartTime: Date { get }
     var muterConfiguration: MuterConfiguration { get }
@@ -22,10 +23,13 @@ protocol AnyRunCommandState: AnyObject {
 }
 
 final class RunCommandState: AnyRunCommandState {
+    var runOptions: RunOptions = .null
+    var mutationOperatorList: MutationOperatorList = []
+    var filesToMutate: [String] = []
+
     var newVersion: String = ""
     var mutationTestingStartTime: Date = .init()
     var muterConfiguration: MuterConfiguration = .init()
-    var mutationOperatorList: MutationOperatorList = []
     var projectDirectoryURL: URL = .init(fileURLWithPath: "path")
     var tempDirectoryURL: URL = .init(fileURLWithPath: "path")
     var projectXCTestRun: XCTestRun = .init()
@@ -34,13 +38,13 @@ final class RunCommandState: AnyRunCommandState {
     var mutationPoints: [MutationPoint] = []
     var mutationMapping: [SchemataMutationMapping] = []
     var sourceCodeByFilePath: [FilePath: SourceFileSyntax] = [:]
-    var filesToMutate: [String] = []
     var swapFilePathsByOriginalPath: [FilePath: FilePath] = [:]
     var mutationTestOutcome: MutationTestOutcome = .init()
 
     init() {}
 
     init(from options: RunOptions) {
+        runOptions = options
         mutationOperatorList = options.mutationOperatorsList
         filesToMutate = options.filesToMutate
             .reduce(into: []) { accum, next in

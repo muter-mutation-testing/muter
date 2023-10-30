@@ -5,9 +5,11 @@ import XCTest
 final class XcodeCoverageTests: MuterTestCase {
     private let sut = XcodeCoverage()
 
-    private let muterConfiguration = MuterConfiguration(
+    private var coverageThreshold: Double = 0
+    private lazy var muterConfiguration = MuterConfiguration(
         executable: "/path/to/xcodebuild",
-        arguments: []
+        arguments: [],
+        coverageThreshold: coverageThreshold
     )
 
     func test_whenUsesSupportedBuildSystem_shouldRunWithCoverage() {
@@ -44,6 +46,26 @@ final class XcodeCoverageTests: MuterTestCase {
         )
     }
 
+    func test_ignoreFilesLessThanCoverageThreshold() throws {
+        process.stdoutToBeReturned = "something\nsomething\npath/to/testResult.xcresult"
+        process.stdoutToBeReturned = coverageData
+        coverageThreshold = 10
+
+        let coverage = try XCTUnwrap(sut.run(with: muterConfiguration).get())
+
+        XCTAssertEqual(
+            coverage,
+            .make(
+                percent: 81,
+                filesWithoutCoverage: [
+                    "/path/to/file1.swift",
+                    "/path/to/file2.swift",
+                    "/path/to/file3.swift"
+                ]
+            )
+        )
+    }
+
     func test_whenXcodeSelectFails_shouldNotRunXccov() {
         process.stdoutToBeReturned = "something\nsomething\npath/to/testResult.xcresult"
         process.stdoutToBeReturned = ""
@@ -72,15 +94,15 @@ let coverageData =
           "lineCoverage": 0.81051478641840091,
           "files": [
             {
-              "coveredLines": 0,
+              "lineCoverage": 0,
               "path": "/path/to/file1.swift"
             },
             {
-              "coveredLines": 10,
+              "lineCoverage": 0.10,
               "path": "/path/to/file2.swift"
             },
             {
-              "coveredLines": 20,
+              "lineCoverage": 0.20,
               "path": "/path/to/file3.swift"
             }
           ],
@@ -90,15 +112,15 @@ let coverageData =
           "lineCoverage": 0.86051478641840091,
           "files": [
             {
-              "coveredLines": 0,
+              "lineCoverage": 0,
               "path": "/path/to/file4.swift"
             },
             {
-              "coveredLines": 10,
+              "lineCoverage": 0.10,
               "path": "/path/to/file5.swift"
             },
             {
-              "coveredLines": 20,
+              "lineCoverage": 0.20,
               "path": "/path/to/file6.swift"
             }
           ],
