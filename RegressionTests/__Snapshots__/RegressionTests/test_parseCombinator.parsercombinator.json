@@ -34,6 +34,16 @@
         },
         {
           "mutationPoint" : {
+            "mutationOperatorId" : "RemoveSideEffects",
+            "position" : {
+              "column" : 39,
+              "line" : 90
+            }
+          },
+          "testSuiteOutcome" : "passed"
+        },
+        {
+          "mutationPoint" : {
             "mutationOperatorId" : "RelationalOperatorReplacement",
             "position" : {
               "column" : 29,
@@ -44,7 +54,7 @@
         }
       ],
       "fileName" : "FFCParserCombinator.swift",
-      "mutationScore" : 100
+      "mutationScore" : 80
     },
     {
       "appliedOperators" : [
@@ -143,7 +153,7 @@
       "mutationScore" : 100
     }
   ],
-  "globalMutationScore" : 100,
+  "globalMutationScore" : 92,
   "numberOfKilledMutants" : 13,
-  "totalAppliedMutationOperators" : 13
+  "totalAppliedMutationOperators" : 14
 }

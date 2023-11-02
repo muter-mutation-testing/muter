@@ -124,7 +124,8 @@ enum RemoveSideEffectsOperator {
                 .count >= 1
 
             let doesntContainPossibleDeadlock = !statement.allChildren
-                .exclude(concurrencyStatements).isEmpty
+                .exclude(concurrencyStatements)
+                .isEmpty
 
             return doesntContainVariableAssignment
                 && doesntContainPossibleDeadlock
