@@ -58,8 +58,8 @@ cd ../..
 echo "Running Muter on an empty example codebase..."
 cd ./Repositories/EmptyExampleApp
 
-echo " > Running in CLI mode..."
-"$muterdir"/muter --skip-coverage --skip-update-check > "$samplesdir"/muters_empty_state_output.txt
+echo " > Running in CLI mode with custom configuration path..."
+"$muterdir"/muter --skip-coverage --skip-update-check --configuration "$(pwd)/configuration/muter.conf.yml" > "$samplesdir"/muters_empty_state_output.txt
 cd ../..
 
 echo "Running Muter on an example test suite that fails..."
@@ -99,8 +99,6 @@ echo "Running tests..."
 swift test --filter 'AcceptanceTests'
 
 exitCode=$?
-
-rm -rf ./AcceptanceTests/samples
 
 exit $exitCode
 
