@@ -55,7 +55,7 @@ public struct Run: AsyncParsableCommand {
 
     @Option(
         name: [.customShort("c"), .customLong("configuration")],
-        help: "The path to the muter configuration file"
+        help: "The path to the muter configuration file."
     )
     var configurationURL: URL? = nil
 

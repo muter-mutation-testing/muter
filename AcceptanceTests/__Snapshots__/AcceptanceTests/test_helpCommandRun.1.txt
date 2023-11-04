@@ -16,7 +16,7 @@ OPTIONS:
   --skip-update-check     Skips the step in which Muter checks for newer
                           versions.
   -c, --configuration <configuration>
-                          The path to the muter configuration file
+                          The path to the muter configuration file.
   --version               Show the version.
   -h, --help              Show help information.
 
