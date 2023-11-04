@@ -37,28 +37,28 @@ enum RemoveSideEffectsOperator {
 
             return super.visit(node)
         }
-        
+
         override func visit(_ node: ForStmtSyntax) -> SyntaxVisitorContinueKind {
             removeSideEffectAt(node.body)
 
             return super.visit(node)
         }
-        
+
         override func visit(_ node: GuardStmtSyntax) -> SyntaxVisitorContinueKind {
             removeSideEffectAt(node.body)
 
             return super.visit(node)
         }
-        
+
         override func visit(_ node: WhileStmtSyntax) -> SyntaxVisitorContinueKind {
             removeSideEffectAt(node.body)
 
             return super.visit(node)
         }
-        
+
         override func visit(_ node: RepeatStmtSyntax) -> SyntaxVisitorContinueKind {
             removeSideEffectAt(node.body)
-            
+
             return super.visit(node)
         }
 
@@ -71,7 +71,7 @@ enum RemoveSideEffectsOperator {
 
             return super.visit(node)
         }
-        
+
         private func removeSideEffectAt(_ body: CodeBlockSyntax) {
             let statements = body.statements
             for statement in body.statements where statementContainsMutableToken(statement) {

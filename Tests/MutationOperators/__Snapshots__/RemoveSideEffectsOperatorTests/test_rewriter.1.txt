@@ -1,52 +1,88 @@
 struct Example {
-    func containsSideEffect() -> Int { if ProcessInfo.processInfo.environment["sampleWithSideEffects_3_31_86"] != nil {
-        return 1
-} else {
-        _ = causesSideEffect()
-        return 1
-}
+  func containsSideEffect() -> Int {
+    if ProcessInfo.processInfo.environment["sampleWithSideEffects_3_27_80"] != nil {
+      return 1
+    } else {
+      _ = causesSideEffect()
+      return 1
+    }
+  }
+
+  func containsSideEffect() -> Int {
+    if ProcessInfo.processInfo.environment["sampleWithSideEffects_10_27_186"] != nil {
+      print("something")
+    } else {
+      print("something")
+
+      _ = causesSideEffect()
+    }
+  }
+
+  @discardableResult func causesSideEffect() -> Int {
+    0
+  }
+
+  func causesAnotherSideEffect() {
+    if ProcessInfo.processInfo.environment["sampleWithSideEffects_20_62_423"] != nil {
+      let key = "some key"
+      let value = aFunctionThatReturnsAValue()
+    } else {
+      let key = "some key"
+      let value = aFunctionThatReturnsAValue()
+      someFunctionThatWritesToADatabase(key: key, value: value)
+    }
+  }
+
+  func containsSpecialCases() {
+    fatalError("this should never be deleted!")
+    exit(1)
+    abort()
+  }
+
+  func containsADeepMethodCall() {
+    let containsIgnoredResult = statement.description.contains("_ = ")
+    var anotherIgnoredResult = statement.description.contains("_ = ")
+  }
+
+  func containsAVoidFunctionCallThatSpansManyLine() {
+    if ProcessInfo.processInfo.environment["sampleWithSideEffects_39_6_906"] != nil {
+    } else {
+      functionCall(
+        "some argument",
+        anArgumentLabel: "some argument that's different",
+        anotherArgumentLabel: 5
+      )
+    }
+  }
+
+  func sideEffectsInsideLoopsAndGuard() {
+    guard true else {
+      if ProcessInfo.processInfo.environment["sampleWithSideEffects_44_19_994"] != nil {
+        return
+      } else {
+        sideEffect()
+        return
+      }
+    }
+    while true {
+      if ProcessInfo.processInfo.environment["sampleWithSideEffects_48_19_1049"] != nil {
+      } else {
+        sideEffect()
+      }
     }
 
-    func containsSideEffect() -> Int { if ProcessInfo.processInfo.environment["sampleWithSideEffects_10_31_208"] != nil {
-        print("something")
-} else {
-        print("something")
-
-        _ = causesSideEffect()
-}
+    for item in items {
+      if ProcessInfo.processInfo.environment["sampleWithSideEffects_52_19_1099"] != nil {
+      } else {
+        sideEffect()
+      }
     }
 
-    @discardableResult
-    func causesSideEffect() -> Int {
-        return 0
-    }
-
-    func causesAnotherSideEffect() { if ProcessInfo.processInfo.environment["sampleWithSideEffects_21_66_480"] != nil {
-        let key = "some key"
-        let value = aFunctionThatReturnsAValue()
-} else {
-        let key = "some key"
-        let value = aFunctionThatReturnsAValue()
-        someFunctionThatWritesToADatabase(key: key, value: value)
-}
-    }
-
-    func containsSpecialCases() {
-        fatalError("this should never be deleted!")
-        exit(1)
-        abort()
-    }
-
-    func containsADeepMethodCall() {
-        let containsIgnoredResult = statement.description.contains("_ = ")
-        var anotherIgnoredResult = statement.description.contains("_ = ")
-    }
-
-    func containsAVoidFunctionCallThatSpansManyLine() { if ProcessInfo.processInfo.environment["sampleWithSideEffects_38_46_1017"] != nil {
-} else {
-        functionCall("some argument",
-                     anArgumentLabel: "some argument that's different",
-                     anotherArgumentLabel: 5)
-}
-    }
+    repeat {
+      if ProcessInfo.processInfo.environment["sampleWithSideEffects_56_19_1138"] != nil {
+      } else {
+        sideEffect()
+      }
+    } while true
+  }
 }

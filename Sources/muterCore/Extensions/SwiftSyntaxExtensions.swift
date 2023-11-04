@@ -72,7 +72,7 @@ extension SyntaxProtocol {
 
         return copy
     }
-    
+
     func withoutTrivia() -> Self {
         withLeadingTrivia([]).withTrailingTrivia([])
     }
