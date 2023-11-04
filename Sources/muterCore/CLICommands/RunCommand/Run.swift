@@ -53,6 +53,12 @@ public struct Run: AsyncParsableCommand {
     )
     var skipUpdateCheck: Bool = false
 
+    @Option(
+        name: [.customShort("c"), .customLong("configuration")],
+        help: "The path to the muter configuration file"
+    )
+    var configurationURL: URL? = nil
+
     public init() {}
 
     public mutating func run() async throws {
@@ -66,7 +72,8 @@ public struct Run: AsyncParsableCommand {
             reportURL: reportURL,
             mutationOperatorsList: mutationOperatorsList,
             skipCoverage: skipCoverage,
-            skipUpdateCheck: skipUpdateCheck
+            skipUpdateCheck: skipUpdateCheck,
+            configurationURL: configurationURL
         )
 
         _ = RunCommandObserver(
