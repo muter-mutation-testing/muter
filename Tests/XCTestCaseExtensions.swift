@@ -31,12 +31,6 @@ class MuterTestCase: XCTestCase {
         setup()
     }
 
-    override func setUp(completion: @escaping (Error?) -> Void) {
-        super.setUp(completion: completion)
-
-        setup()
-    }
-
     private func setup() {
         current = World(
             notificationCenter: notificationCenter,
@@ -115,17 +109,6 @@ class MuterTestCase: XCTestCase {
 }
 
 public extension XCTestCase {
-    var productsDirectory: URL {
-        #if os(macOS)
-        for bundle in Bundle.allBundles where bundle.bundlePath.hasSuffix(".xctest") {
-            return bundle.bundleURL.deletingLastPathComponent()
-        }
-        fatalError("couldn't find the products directory")
-        #else
-        return Bundle.main.bundleURL
-        #endif
-    }
-
     var rootTestDirectory: String {
         String(
             URL(fileURLWithPath: #filePath)

@@ -112,7 +112,7 @@ final class SwiftCoverageTests: MuterTestCase {
 
     private func loadLLVMCovLog() -> String {
         guard let data = FileManager.default
-            .contents(atPath: "\(SwiftCoverageTests().fixturesDirectory)/logFromllvm-cov.txt"),
+            .contents(atPath: "\(fixturesDirectory)/logFromllvm-cov.txt"),
             let string = String(data: data, encoding: .utf8)
         else {
             fatalError("Unable to load reportfor testing")

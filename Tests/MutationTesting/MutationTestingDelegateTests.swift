@@ -42,7 +42,7 @@ final class MutationTestingDelegateTests: MuterTestCase {
         let testProcess = try sut.testProcess(
             with: configuration,
             schemata: schemata,
-            and: FileHandle()
+            and: FileHandle(fileDescriptor: 0, closeOnDealloc: true)
         )
 
         XCTAssertEqual(testProcess.arguments, [
@@ -54,7 +54,7 @@ final class MutationTestingDelegateTests: MuterTestCase {
         ])
 
         XCTAssertEqual(testProcess.executableURL?.path, "/tmp/xcodebuild")
-        XCTAssertEqual(testProcess.qualityOfService, .userInitiated)
+        XCTAssertEqual(testProcess.qualityOfService, QualityOfService.userInitiated)
     }
 
     func test_testProcessForSwiftBuild() throws {
@@ -73,7 +73,7 @@ final class MutationTestingDelegateTests: MuterTestCase {
         let testProcess = try sut.testProcess(
             with: configuration,
             schemata: schemata,
-            and: FileHandle()
+            and: FileHandle(fileDescriptor: 0, closeOnDealloc: true)
         )
 
         XCTAssertEqual(
@@ -85,7 +85,7 @@ final class MutationTestingDelegateTests: MuterTestCase {
         )
         XCTAssertEqual(testProcess.arguments, ["test", "--skip-build"])
         XCTAssertEqual(testProcess.executableURL?.path, "/tmp/swift")
-        XCTAssertEqual(testProcess.qualityOfService, .userInitiated)
+        XCTAssertEqual(testProcess.qualityOfService, QualityOfService.userInitiated)
     }
 
     func test_switchOn() throws {

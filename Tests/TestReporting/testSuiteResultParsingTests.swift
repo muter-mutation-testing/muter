@@ -1,5 +1,6 @@
 @testable import muterCore
 import XCTest
+import TestingExtensions
 
 final class TestSuiteResultParsingTests: MuterTestCase {
     func test_logWithoutAnyError() {
@@ -53,15 +54,15 @@ final class TestSuiteResultParsingTests: MuterTestCase {
         contents = loadLogFile(named: "buildError_buckOutput.log")
         XCTAssertEqual(TestSuiteOutcome.from(testLog: contents, terminationStatus: 0), .buildError)
     }
-}
 
-private func loadLogFile(named name: String) -> String {
+    private func loadLogFile(named name: String) -> String {
     guard let data = FileManager.default
-        .contents(atPath: "\(TestSuiteResultParsingTests().fixturesDirectory)/TestLogsForParsing/\(name)"),
+        .contents(atPath: "\(fixturesDirectory)/TestLogsForParsing/\(name)"),
         let string = String(data: data, encoding: .utf8)
     else {
         fatalError("Unable to load a log file named \(name) for testing the XCTest result parser")
     }
 
     return string
+}
 }

@@ -139,69 +139,69 @@ extension AcceptanceTests {
 
     var muterOutput: String {
         get throws {
-            try contentsOfFileAsString("\(AcceptanceTests().rootTestDirectory)/samples/muters_output.txt")
+            try contentsOfFileAsString("\(rootTestDirectory)/samples/muters_output.txt")
         }
     }
     var muterXcodeOutput: String {
         get throws {
-            try contentsOfFileAsString("\(AcceptanceTests().rootTestDirectory)/samples/muters_xcode_output.txt")
+            try contentsOfFileAsString("\(rootTestDirectory)/samples/muters_xcode_output.txt")
         }
     }
 
     var muterFilesToMutateOutput: String {
         get throws {
             try contentsOfFileAsString(
-                "\(AcceptanceTests().rootTestDirectory)/samples/muters_files_to_mutate_output.txt"
+                "\(rootTestDirectory)/samples/muters_files_to_mutate_output.txt"
             )
         }
     }
     var muterWithCoverageOutput: String {
         get throws {
-            try contentsOfFileAsString("\(AcceptanceTests().rootTestDirectory)/samples/muters_with_coverage_output.txt")
+            try contentsOfFileAsString("\(rootTestDirectory)/samples/muters_with_coverage_output.txt")
         }
     }
 
     var muterEmptyStateOutput: String {
         get throws {
-            try contentsOfFileAsString("\(AcceptanceTests().rootTestDirectory)/samples/muters_empty_state_output.txt")
+            try contentsOfFileAsString("\(rootTestDirectory)/samples/muters_empty_state_output.txt")
         }
     }
 
     var muterAbortedTestingOutput: String {
         get throws {
             try contentsOfFileAsString(
-                "\(AcceptanceTests().rootTestDirectory)/samples/muters_aborted_testing_output.txt"
+                "\(rootTestDirectory)/samples/muters_aborted_testing_output.txt"
             )
         }
     }
 
     var muterHelpOutput: String {
         get throws {
-            try contentsOfFileAsString("\(AcceptanceTests().rootTestDirectory)/samples/muters_help_output.txt")
+            try contentsOfFileAsString("\(rootTestDirectory)/samples/muters_help_output.txt")
         }
     }
 
     var muterInitHelpOutput: String {
         get throws {
-            try contentsOfFileAsString("\(AcceptanceTests().rootTestDirectory)/samples/muters_init_help_output.txt")
+            try contentsOfFileAsString("\(rootTestDirectory)/samples/muters_init_help_output.txt")
         }
     }
 
     var muterRunHelpOutput: String {
         get throws {
-            try contentsOfFileAsString("\(AcceptanceTests().rootTestDirectory)/samples/muters_run_help_output.txt")
+            try contentsOfFileAsString("\(rootTestDirectory)/samples/muters_run_help_output.txt")
         }
     }
 
     var muterOperatorHelpOutput: String {
         get throws {
-            try contentsOfFileAsString("\(AcceptanceTests().rootTestDirectory)/samples/muters_operator_help_output.txt")
+            try contentsOfFileAsString("\(rootTestDirectory)/samples/muters_operator_help_output.txt")
         }
     }
 
     var muterOperatorAllOutput: String {
         get throws {
-            try contentsOfFileAsString("\(AcceptanceTests().rootTestDirectory)/samples/muters_operator_all_output.txt")
+            try contentsOfFileAsString("\(rootTestDirectory)/samples/muters_operator_all_output.txt")
         }
     }
 
@@ -215,17 +215,17 @@ extension AcceptanceTests {
 
     var createdIOSConfiguration: Data {
         get throws {
-            try contentsOfFileAsData("\(AcceptanceTests().rootTestDirectory)/samples/created_iOS_config.yml")
+            try contentsOfFileAsData("\(rootTestDirectory)/samples/created_iOS_config.yml")
         }
     }
 
     var createdMacOSConfiguration: Data {
         get throws {
-            try contentsOfFileAsData("\(AcceptanceTests().rootTestDirectory)/samples/created_macOS_config.yml")
+            try contentsOfFileAsData("\(rootTestDirectory)/samples/created_macOS_config.yml")
         }
     }
 
-    var muterLogsRootPath: String { "\(AcceptanceTests().rootTestDirectory)/samples/muter_logs/" }
+    var muterLogsRootPath: String { "\(rootTestDirectory)/samples/muter_logs/" }
 }
 
 extension AcceptanceTests {

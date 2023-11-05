@@ -11,7 +11,7 @@ extension NSRegularExpression {
             return cached
         }
 
-        let regex = (try? NSRegularExpression(pattern: pattern, options: options)) ?? .init()
+        let regex = try! NSRegularExpression(pattern: pattern, options: options)
         currentThread.threadDictionary[cacheKey] = regex
 
         return regex
