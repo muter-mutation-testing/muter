@@ -62,8 +62,9 @@ struct MuterConfiguration: Equatable, Codable {
 
 extension MuterConfiguration {
     static let fileName = "muter.conf"
-    static let fileNameWithExtension = fileName + ".yml"
-    static let legacyFileNameWithExtension = fileName + ".json"
+    static let `extension` = "yml"
+    static let fileNameWithExtension = "\(fileName).\(`extension`)"
+    static let legacyFileNameWithExtension = "\(fileName).json"
 }
 
 extension MuterConfiguration {

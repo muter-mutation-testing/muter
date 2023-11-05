@@ -3,29 +3,31 @@ import Foundation
 struct LoadConfiguration: RunCommandStep {
     @Dependency(\.fileManager)
     private var fileManager: FileSystemManager
-    @Dependency(\.fileManager.currentDirectoryPath)
-    private var currentDirectory: String
 
     func run(
         with state: AnyRunCommandState
     ) async throws -> [RunCommandState.Change] {
+        let configurationPath = configurationPath(state.runOptions)
         do {
-            let hasJSON = hasJsonInProject()
-            let hasYAML = hasYamlInProject()
+            let hasJSON = hasJsonInProjectAtPath(configurationPath)
+            let hasYAML = hasYamlInProjectAtPath(configurationPath)
             let canLoadConfiguration = hasJSON || hasYAML
 
             guard canLoadConfiguration,
-                  let configurationData = loadConfigurationData(legacy: hasJSON)
+                  let configurationData = loadConfigurationDataAtPath(
+                      configurationPath,
+                      legacy: hasJSON
+                  )
             else {
                 throw MuterError.configurationParsingError(
-                    reason: "Could not find \(MuterConfiguration.fileName) at path \(currentDirectory)"
+                    reason: "Could not find \(MuterConfiguration.fileName) at path \(configurationPath)"
                 )
             }
 
             let configuration = try MuterConfiguration(from: configurationData)
 
             if hasJSON {
-                try migrateToYAML(configurationData)
+                try migrateToYAMLAtPath(configurationPath, configurationData)
             }
 
             guard isConfigurationValid(configuration) else {
@@ -34,8 +36,10 @@ struct LoadConfiguration: RunCommandStep {
                 )
             }
 
+            print("Loaded config at path: \(configurationPath)")
+
             return [
-                .projectDirectoryUrlDiscovered(URL(fileURLWithPath: currentDirectory)),
+                .projectDirectoryUrlDiscovered(URL(fileURLWithPath: fileManager.currentDirectoryPath)),
                 .configurationParsed(configuration),
             ]
         } catch {
@@ -43,16 +47,21 @@ struct LoadConfiguration: RunCommandStep {
         }
     }
 
-    private func hasJsonInProject() -> Bool {
-        fileManager.fileExists(
-            atPath: currentDirectory + "/\(MuterConfiguration.legacyFileNameWithExtension)"
-        )
+    private func configurationPath(_ options: RunOptions) -> String {
+        let currentDirectoryPath = options.configurationURL?.path ?? fileManager.currentDirectoryPath
+        if currentDirectoryPath.pathContainsConfigExtension {
+            return currentDirectoryPath
+        }
+
+        return "\(currentDirectoryPath)/\(MuterConfiguration.fileNameWithExtension)"
     }
 
-    private func hasYamlInProject() -> Bool {
-        fileManager.fileExists(
-            atPath: currentDirectory + "/\(MuterConfiguration.fileNameWithExtension)"
-        )
+    private func hasJsonInProjectAtPath(_ path: String) -> Bool {
+        fileManager.fileExists(atPath: "\(path.pathWithoutFileName)/\(MuterConfiguration.legacyFileNameWithExtension)")
+    }
+
+    private func hasYamlInProjectAtPath(_ path: String) -> Bool {
+        fileManager.fileExists(atPath: path)
     }
 
     private func isConfigurationValid(_ configuration: MuterConfiguration) -> Bool {
@@ -63,24 +72,44 @@ struct LoadConfiguration: RunCommandStep {
         return configuration.testCommandArguments.contains("-destination")
     }
 
-    private func loadConfigurationData(legacy: Bool) -> Data? {
-        var path = currentDirectory
-        path += legacy
-            ? "/\(MuterConfiguration.legacyFileNameWithExtension)"
-            : "/\(MuterConfiguration.fileNameWithExtension)"
-
-        return fileManager.contents(atPath: path)
+    private func loadConfigurationDataAtPath(
+        _ currentDirectory: String,
+        legacy: Bool
+    ) -> Data? {
+        fileManager.contents(
+            atPath: legacy
+                ? "/\(MuterConfiguration.legacyFileNameWithExtension)"
+                : currentDirectory
+        )
     }
 
-    private func migrateToYAML(_ configurationData: Data) throws {
+    private func migrateToYAMLAtPath(
+        _ path: String,
+        _ configurationData: Data
+    ) throws {
         let configuration = try JSONDecoder().decode(MuterConfiguration.self, from: configurationData)
 
-        try fileManager.removeItem(atPath: currentDirectory + "/\(MuterConfiguration.legacyFileNameWithExtension)")
+        try fileManager
+            .removeItem(atPath: "\(path.pathWithoutFileName)/\(MuterConfiguration.legacyFileNameWithExtension)")
 
         _ = fileManager.createFile(
-            atPath: "\(currentDirectory)/\(MuterConfiguration.fileNameWithExtension)",
+            atPath: "\(path.pathWithoutFileName)/\(MuterConfiguration.fileNameWithExtension)",
             contents: configuration.asData,
             attributes: nil
         )
+    }
+
+    private func legacyPath(_ path: String) -> String {
+        path
+    }
+}
+
+private extension String {
+    var pathContainsConfigExtension: Bool {
+        hasSuffix(MuterConfiguration.extension)
+    }
+
+    var pathWithoutFileName: String {
+        pathContainsConfigExtension ? NSString(string: self).deletingLastPathComponent : self
     }
 }

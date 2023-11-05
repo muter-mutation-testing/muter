@@ -9,6 +9,7 @@ class FileManagerSpy: Spy, FileSystemManager {
     private(set) var searchPathDirectories: [FileManager.SearchPathDirectory] = []
     private(set) var domains: [FileManager.SearchPathDomainMask] = []
     private(set) var copyPaths: [(source: String, dest: String)] = []
+    private(set) var contentsAtPath: [String] = []
     private(set) var contentsAtPathSorted: [String] = []
     private(set) var contentsAtPathSortedOrder: [ComparisonResult] = []
     private(set) var contents: Data?
@@ -82,6 +83,7 @@ class FileManagerSpy: Spy, FileSystemManager {
     func contents(
         atPath path: String
     ) -> Data? {
+        contentsAtPath.append(path)
         methodCalls.append(#function)
         return fileContentsToReturn
     }

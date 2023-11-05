@@ -5,6 +5,7 @@ import Yams
 final class LoadConfigurationTests: MuterTestCase {
     private lazy var currentDirectory = fixturesDirectory
     private lazy var sut = LoadConfiguration()
+    private var state = RunCommandState()
 
     override func setUp() {
         super.setUp()
@@ -16,7 +17,7 @@ final class LoadConfigurationTests: MuterTestCase {
         fileManager.fileExistsToReturn = [false, true]
         fileManager.fileContentsToReturn = loadYAMLConfiguration()
 
-        let result = try await sut.run(with: RunCommandState())
+        let result = try await sut.run(with: state)
 
         let expectedUrl = URL(fileURLWithPath: fixturesDirectory)
         let expectedConfiguration = try XCTUnwrap(MuterConfiguration.fromFixture(
@@ -33,7 +34,7 @@ final class LoadConfigurationTests: MuterTestCase {
         fileManager.fileExistsToReturn = [true, false]
         fileManager.fileContentsToReturn = loadJSONConfiguration()
 
-        _ = try await sut.run(with: RunCommandState())
+        _ = try await sut.run(with: state)
 
         XCTAssertTrue(fileManager.methodCalls.contains("removeItem(atPath:)"))
         XCTAssertTrue(fileManager.methodCalls.contains("createFile(atPath:contents:attributes:)"))
@@ -70,7 +71,7 @@ final class LoadConfigurationTests: MuterTestCase {
         fileManager.fileExistsToReturn = [false, false]
 
         try await assertThrowsMuterError(
-            await sut.run(with: RunCommandState())
+            await sut.run(with: state)
         ) { error in
             guard case let .configurationParsingError(reason) = error else {
                 XCTFail("Expected configurationParsingError, got \(error)")
@@ -86,7 +87,7 @@ final class LoadConfigurationTests: MuterTestCase {
         fileManager.fileContentsToReturn = loadYAMLConfigurationWithoutDestination()
 
         try await assertThrowsMuterError(
-            await sut.run(with: RunCommandState())
+            await sut.run(with: state)
         ) { error in
             guard case let .configurationParsingError(reason) = error else {
                 XCTFail("Expected configurationParsingError, got \(error)")
@@ -95,6 +96,21 @@ final class LoadConfigurationTests: MuterTestCase {
 
             XCTAssertFalse(reason.isEmpty)
         }
+    }
+
+    func test_loadingConfigurationFromCustomPath() async throws {
+        fileManager.fileContentsToReturn = loadYAMLConfiguration()
+        fileManager.fileExistsToReturn = [false, true]
+
+        let configurationURL = URL(fileURLWithPath: "/some/custom/path")
+        state.runOptions = .make(configurationURL: configurationURL)
+
+        _ = try? await sut.run(with: state)
+
+        XCTAssertEqual(
+            fileManager.contentsAtPath,
+            ["/some/custom/path/muter.conf.yml"]
+        )
     }
 
     private func loadJSONConfiguration() -> Data? {

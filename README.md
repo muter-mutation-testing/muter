@@ -208,6 +208,7 @@ Muter defaults to run when you don't specify any subcommands
 -o, --output <output>   Output file for the report to be saved.
 --operators <operators> The list of mutant operators to be used: RelationalOperatorReplacement, RemoveSideEffects, ChangeLogicalConnector, SwapTernary
 --skip-update-check     Skips the step in which Muter checks for newer versions.
+-c, --configuration     The path to the muter configuration file.
 ```
 
 **Available Report Formats**
