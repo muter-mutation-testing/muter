@@ -101,7 +101,7 @@ public func AssertThrowsError(
 #if os(Linux)
 public extension XCTestCase {
     func fulfillment(of expectations: [XCTestExpectation], timeout: TimeInterval, enforceOrder: Bool = false) async {
-        return await withCheckedContinuation { continuation in
+        await withCheckedContinuation { continuation in
             // This function operates by blocking a background thread instead of one owned by libdispatch or by the
             // Swift runtime (as used by Swift concurrency.) To ensure we use a thread owned by neither subsystem, use
             // Foundation's Thread.detachNewThread(_:).

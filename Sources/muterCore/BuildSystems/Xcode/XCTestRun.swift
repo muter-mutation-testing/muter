@@ -3,8 +3,12 @@ import Foundation
 struct XCTestRun: Equatable {
     private let plist: [String: AnyHashable]
 
-    init(_ plist: [String: AnyHashable] = [:]) {
-        self.plist = plist
+    init(_ plist: [AnyHashable: Any] = [:]) {
+        self.plist = plist.keys
+            .compactMap { $0 as? String }
+            .reduce(into: [:]) { partialResult, key in
+                partialResult[key] = plist[key] as? AnyHashable
+            }
     }
 
     func updateEnvironmentVariable(
