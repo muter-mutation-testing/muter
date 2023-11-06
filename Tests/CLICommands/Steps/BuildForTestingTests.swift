@@ -1,3 +1,4 @@
+#if !os(Linux)
 @testable import muterCore
 import TestingExtensions
 import XCTest
@@ -351,3 +352,4 @@ extension muterCore.XCTestRun {
         return .init(plist ?? [:])
     }
 }
+#endif
