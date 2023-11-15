@@ -26,7 +26,9 @@ final class SwiftCoverage: BuildSystemCoverage {
         process().runProcess(
             url: configuration.testCommandExecutable,
             arguments: configuration.enableCoverageArguments
-        ).map(\.trimmed)
+        )
+        .flatMap(\.nilIfEmpty)
+        .map(\.trimmed)
     }
 
     private func binaryPath(
