@@ -62,14 +62,14 @@ final class ProcessSpy: ProcessWrapper {
     }
 }
 
-private class FakePipe: Pipe {
+private class FakePipe: Pipeable {
     private let fileHandle: FakeFileHandle
 
     init(data: Data) {
         fileHandle = FakeFileHandle(data: data)
     }
 
-    override var fileHandleForReading: FileHandle {
+    var fileHandleForReading: FileHandle {
         fileHandle
     }
 }

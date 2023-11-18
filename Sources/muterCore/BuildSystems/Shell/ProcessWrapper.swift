@@ -49,7 +49,7 @@ class ProcessWrapper {
     }
 
     var processData: Data? {
-        (standardOutput as? Pipe)?.readStringToEndOfFile()
+        (standardOutput as? Pipeable)?.readStringToEndOfFile()
     }
 
     var terminationStatus: Int32 {
@@ -65,7 +65,7 @@ class ProcessWrapper {
     }
 }
 
-extension Pipe {
+extension Pipeable {
     func readStringToEndOfFile() -> Data? {
         let data: Data
         if #available(OSX 10.15.4, *) {
