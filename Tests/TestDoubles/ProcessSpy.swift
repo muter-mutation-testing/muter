@@ -66,21 +66,34 @@ private class FakePipe: Pipe {
     private let fileHandle: FakeFileHandle
 
     init(data: Data) {
+        #if os(Linux)
+        self.fileHandleForReading = FakeFileHandle(data: data)
+        #else
         fileHandle = FakeFileHandle(data: data)
+        #endif
     }
-
+    
+    #if !os(Linux)
     override var fileHandleForReading: FileHandle {
         fileHandle
     }
+    #endif
 }
 
 private class FakeFileHandle: FileHandle {
     private let data: Data
 
+    #if os(Linux)
+    init(data: Data) {
+        self.data = data
+        super.init(fileDescriptor: 0)
+    }
+    #else
     init(data: Data) {
         self.data = data
         super.init()
     }
+    #endif
 
     @available(*, unavailable) required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
