@@ -80,7 +80,7 @@ private class FakeFileHandle: FileHandle {
     #if os(Linux)
     init(data: Data) {
         self.data = data
-        super.init(fileDescriptor: 0)
+        super.init(fileDescriptor: 0, closeOnDealloc: true)
     }
     #else
     init(data: Data) {

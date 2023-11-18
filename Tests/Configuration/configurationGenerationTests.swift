@@ -19,6 +19,7 @@ final class ConfigurationGenerationTests: MuterTestCase {
         )
     }
 
+    #if !os(Linux)
     func test_xcodeProject() {
         let projectDirectoryContents = [
             "/some/path/Package.swift",
@@ -163,6 +164,7 @@ final class ConfigurationGenerationTests: MuterTestCase {
             )
         )
     }
+    #endif
 
     func test_unsupportedProject() {
         let generatedConfiguration = MuterConfiguration(from: ["/some/path/main.swift"])
