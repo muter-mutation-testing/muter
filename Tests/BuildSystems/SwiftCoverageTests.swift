@@ -28,7 +28,7 @@ final class SwiftCoverageTests: MuterTestCase {
     }
 
     func test_whenCoverageCommandSucceeds_thenFindBinaryPath() {
-        process.stdoutToBeReturned = ""
+        process.enqueueStdOut("something")
 
         _ = sut.run(with: muterConfiguration)
 
@@ -46,8 +46,10 @@ final class SwiftCoverageTests: MuterTestCase {
     }
 
     func test_whenBinaryPathCommandSucceeds_thenFindTestArtifacts() {
-        process.stdoutToBeReturned = ""
-        process.stdoutToBeReturned = "/path/to/binary"
+        process.enqueueStdOut(
+            "something",
+            "/path/to/binary"
+        )
 
         _ = sut.run(with: muterConfiguration)
 
@@ -66,9 +68,11 @@ final class SwiftCoverageTests: MuterTestCase {
     }
 
     func test_whenFindTestArtifactsCommandSucceeds_thenGenerateCoverageTable() {
-        process.stdoutToBeReturned = ""
-        process.stdoutToBeReturned = "/path/to/binary"
-        process.stdoutToBeReturned = "/path/to/testArtifact"
+        process.enqueueStdOut(
+            "something",
+            "/path/to/binary",
+            "/path/to/testArtifact"
+        )
 
         _ = sut.run(with: muterConfiguration)
 
@@ -90,11 +94,12 @@ final class SwiftCoverageTests: MuterTestCase {
     }
 
     func test_whenGenerateCoverageTableCommandSucceeds_thenParseProjectCoverage() throws {
-        process.stdoutToBeReturned = ""
-        process.stdoutToBeReturned = "/path/to/binary"
-        process.stdoutToBeReturned = "/path/to/testArtifact"
-        process.stdoutToBeReturned = loadLLVMCovLog()
-
+        process.enqueueStdOut(
+            "something",
+            "/path/to/binary",
+            "/path/to/testArtifact",
+            loadLLVMCovLog()
+        )
         let coverage = try XCTUnwrap(sut.run(with: muterConfiguration).get())
 
         XCTAssertEqual(
@@ -113,10 +118,12 @@ final class SwiftCoverageTests: MuterTestCase {
     }
 
     func test_ignoreFilesLessThanCoverageThreshold() throws {
-        process.stdoutToBeReturned = ""
-        process.stdoutToBeReturned = "/path/to/binary"
-        process.stdoutToBeReturned = "/path/to/testArtifact"
-        process.stdoutToBeReturned = loadLLVMCovLog()
+        process.enqueueStdOut(
+            "something",
+            "/path/to/binary",
+            "/path/to/testArtifact",
+            loadLLVMCovLog()
+        )
         coverageThreshold = 50
 
         let coverage = try XCTUnwrap(sut.run(with: muterConfiguration).get())

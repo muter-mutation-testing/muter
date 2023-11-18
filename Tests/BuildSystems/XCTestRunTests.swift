@@ -20,7 +20,6 @@ final class XCTestRunTests: MuterTestCase {
         let project = actualPlist["iOSProjectTests"] as? [String: AnyHashable]
         let environmentVariables = project?["EnvironmentVariables"] as? [String: AnyHashable]
         XCTAssertNotNil(environmentVariables?["keyToBeSet"])
-        XCTAssertNotNil(environmentVariables?[isMuterRunningKey])
     }
 
     private func loadPlist() throws -> [AnyHashable: Any] {

@@ -65,7 +65,7 @@ final class BuildForTestingTests: MuterTestCase {
             arguments: ["some", "commands", "test"]
         )
 
-        process.stdoutToBeReturned = " "
+        process.enqueueStdOut(" ")
 
         do { _ = try await sut.run(with: state) }
         catch {}
@@ -82,7 +82,7 @@ final class BuildForTestingTests: MuterTestCase {
             arguments: ["some", "commands", "test"]
         )
 
-        process.stdoutToBeReturned = makeBuildForTestingLog()
+        process.enqueueStdOut(makeBuildForTestingLog())
 
         do { _ = try await sut.run(with: state) }
         catch {}
@@ -103,7 +103,7 @@ final class BuildForTestingTests: MuterTestCase {
 
         state.tempDirectoryURL = URL(fileURLWithPath: "/path/to/temp")
 
-        process.stdoutToBeReturned = makeBuildForTestingLog()
+        process.enqueueStdOut(makeBuildForTestingLog())
 
         fileManager.fileContentsToReturn = makeBuildRequestJson().data(using: .utf8)
 
@@ -131,7 +131,7 @@ final class BuildForTestingTests: MuterTestCase {
 
         state.tempDirectoryURL = URL(fileURLWithPath: "/path/to/temp")
 
-        process.stdoutToBeReturned = makeBuildForTestingLog()
+        process.enqueueStdOut(makeBuildForTestingLog())
 
         fileManager.fileContentsToReturn = makeBuildRequestJson().data(using: .utf8)
         fileManager.contentsAtPathSortedToReturn = [buildDescriptionPath + "/project.xctestrun"]
@@ -152,7 +152,7 @@ final class BuildForTestingTests: MuterTestCase {
             arguments: ["some", "commands", "test"]
         )
 
-        process.stdoutToBeReturned = ""
+        process.enqueueStdOut("")
 
         try await assertThrowsMuterError(
             await sut.run(with: state),
@@ -166,7 +166,7 @@ final class BuildForTestingTests: MuterTestCase {
             arguments: ["some", "commands", "test"]
         )
 
-        process.stdoutToBeReturned = "im not important"
+        process.enqueueStdOut("im not important")
 
         try await assertThrowsMuterError(
             await sut.run(with: state),
@@ -181,7 +181,7 @@ final class BuildForTestingTests: MuterTestCase {
         )
 
         state.tempDirectoryURL = URL(fileURLWithPath: "/path/to/temp")
-        process.stdoutToBeReturned = makeBuildForTestingLog()
+        process.enqueueStdOut(makeBuildForTestingLog())
 
         try await assertThrowsMuterError(
             await sut.run(with: state)
@@ -202,7 +202,7 @@ final class BuildForTestingTests: MuterTestCase {
         )
 
         state.tempDirectoryURL = URL(fileURLWithPath: "/path/to/temp")
-        process.stdoutToBeReturned = makeBuildForTestingLog()
+        process.enqueueStdOut(makeBuildForTestingLog())
         fileManager.fileContentsToReturn = makeBuildRequestJson().data(using: .utf8)
         fileManager.errorToThrow = TestingError.stub
 
@@ -219,7 +219,7 @@ final class BuildForTestingTests: MuterTestCase {
         )
 
         state.tempDirectoryURL = URL(fileURLWithPath: "/path/to/temp")
-        process.stdoutToBeReturned = makeBuildForTestingLog()
+        process.enqueueStdOut(makeBuildForTestingLog())
         fileManager.fileContentsToReturn = makeBuildRequestJson().data(using: .utf8)
         fileManager.contentsAtPathSortedToReturn = [""]
 
@@ -236,7 +236,7 @@ final class BuildForTestingTests: MuterTestCase {
         )
 
         state.tempDirectoryURL = URL(fileURLWithPath: "/path/to/temp")
-        process.stdoutToBeReturned = makeBuildForTestingLog()
+        process.enqueueStdOut(makeBuildForTestingLog())
         fileManager.fileContentsToReturn = makeBuildRequestJson().data(using: .utf8)
         fileManager.contentsAtPathSortedToReturn = ["some/project.xctestrun"]
 

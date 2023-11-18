@@ -21,8 +21,7 @@ struct XCTestRun: Equatable {
             if var testConfiguration = plistValue as? [String: AnyHashable],
                testConfiguration.keys.contains(environmentVariablesKey),
                var allEnvironmentVariables = testConfiguration[environmentVariablesKey] as? [String: AnyHashable] {
-                allEnvironmentVariables[key] = isMuterRunningValue
-                allEnvironmentVariables[isMuterRunningKey] = isMuterRunningValue
+                allEnvironmentVariables[key] = "YES"
 
                 testConfiguration[environmentVariablesKey] = allEnvironmentVariables
 

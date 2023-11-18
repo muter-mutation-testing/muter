@@ -9,9 +9,7 @@ extension ProcessWrapper {
             let process = ProcessWrapper()
             process.qualityOfService = .userInitiated
 
-            process.environment = [
-                isMuterRunningKey: isMuterRunningValue
-            ]
+            process.environment = ProcessInfo.processInfo.environment
 
             return process
         }
@@ -23,7 +21,6 @@ extension ProcessWrapper {
     ) -> Data? {
         let pipe = Pipe()
         standardOutput = pipe
-        standardError = FileHandle.nullDevice
         executableURL = URL(fileURLWithPath: url)
         arguments = args
 

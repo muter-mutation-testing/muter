@@ -96,7 +96,6 @@ struct MutationTestingDelegate: MutationTestingIODelegate {
 
         process.arguments = testCommandArguments
         process.executableURL = URL(fileURLWithPath: configuration.testCommandExecutable)
-        process.qualityOfService = .userInitiated
         process.standardOutput = fileHandle
         process.standardError = fileHandle
 

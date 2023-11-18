@@ -2,12 +2,41 @@ import Foundation
 @testable import muterCore
 
 final class ProcessSpy: ProcessWrapper {
-    private let queue = Queue<Data>()
-    var stdoutToBeReturned = "" {
-        didSet {
-            stdoutToBeReturned
-                .data(using: .utf8)
-                .map(queue.enqueue)
+    private var _standardOutput: Any?
+    override var standardOutput: Any? {
+        get {
+            _standardOutput
+        } set {
+            _standardOutput = newValue
+        }
+    }
+
+    private var _standardError: Any?
+    override var standardError: Any? {
+        get {
+            _standardError
+        } set {
+            _standardError = newValue
+        }
+    }
+
+    private var _arguments: [String]?
+    override var arguments: [String]? {
+        get {
+            _arguments
+        }
+        set {
+            _arguments = newValue
+        }
+    }
+
+    private var _environment: [String: String]?
+    override var environment: [String: String]? {
+        get {
+            _environment
+        }
+        set {
+            _environment = newValue
         }
     }
 
@@ -23,5 +52,41 @@ final class ProcessSpy: ProcessWrapper {
     var waitUntilExitCalled = false
     override func waitUntilExit() {
         waitUntilExitCalled = true
+    }
+
+    private let queue = Queue<Data>()
+    public func enqueueStdOut(_ values: String...) {
+        values
+            .compactMap { $0.data(using: .utf8) }
+            .forEach(queue.enqueue)
+    }
+}
+
+private class FakePipe: Pipe {
+    private let fileHandle: FakeFileHandle
+
+    init(data: Data) {
+        fileHandle = FakeFileHandle(data: data)
+    }
+
+    override var fileHandleForReading: FileHandle {
+        fileHandle
+    }
+}
+
+private class FakeFileHandle: FileHandle {
+    private let data: Data
+
+    init(data: Data) {
+        self.data = data
+        super.init()
+    }
+
+    @available(*, unavailable) required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+
+    override func readDataToEndOfFile() -> Data {
+        data
     }
 }

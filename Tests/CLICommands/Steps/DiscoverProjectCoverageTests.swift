@@ -61,7 +61,7 @@ final class DiscoverProjectCoverageTests: MuterTestCase {
             arguments: []
         )
 
-        process.stdoutToBeReturned = ""
+        process.enqueueStdOut("")
 
         let expectation = expectation(
             forNotification: .projectCoverageDiscoveryFinished,
