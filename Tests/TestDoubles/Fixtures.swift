@@ -169,7 +169,8 @@ extension RunOptions {
         reportURL: URL? = nil,
         mutationOperatorsList: MutationOperatorList = [],
         skipCoverage: Bool = false,
-        skipUpdateCheck: Bool = false
+        skipUpdateCheck: Bool = false,
+        configurationURL: URL? = nil
     ) -> Self {
         .init(
             filesToMutate: filesToMutate,
@@ -177,7 +178,8 @@ extension RunOptions {
             reportURL: reportURL,
             mutationOperatorsList: mutationOperatorsList,
             skipCoverage: skipCoverage,
-            skipUpdateCheck: skipUpdateCheck
+            skipUpdateCheck: skipUpdateCheck,
+            configurationURL: configurationURL
         )
     }
 }

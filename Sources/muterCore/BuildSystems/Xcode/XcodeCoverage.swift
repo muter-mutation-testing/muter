@@ -14,7 +14,10 @@ final class XcodeCoverage: BuildSystemCoverage {
             return .failure(.build)
         }
 
-        let untested = extractUntested(from: report)
+        let untested = extractUntested(
+            from: report,
+            coverageThreshold: configuration.coverageThreshold
+        )
         let percent = extractCoverage(from: report)
         let projectCoverage = Coverage(
             percent: percent,
@@ -48,11 +51,14 @@ final class XcodeCoverage: BuildSystemCoverage {
         return try? JSONDecoder().decode(CoverageReport.self, from: output)
     }
 
-    private func extractUntested(from report: CoverageReport) -> [String] {
+    private func extractUntested(
+        from report: CoverageReport,
+        coverageThreshold: Double
+    ) -> [String] {
         report.targets
             .excludeTestTargets()
             .flatMap(\.files)
-            .filter { $0.coveredLines == 0 }
+            .filter { $0.lineCoverage <= coverageThreshold }
             .map(\.path)
     }
 
@@ -79,7 +85,7 @@ private extension CoverageReport {
 
 private extension CoverageReport.Target {
     struct File: Decodable {
-        let coveredLines: Int
+        let lineCoverage: Double
         let path: String
     }
 }

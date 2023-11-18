@@ -32,8 +32,6 @@ swift test --filter 'RegressionTests'
 
 exitCode=$?
 
-rm -rf ./RegressionTests/samples
-
 exit $exitCode
 
 echo "🦖🦖🦖🦖🦖🦖🦖🦖 Regression Testing has finished 🦖🦖🦖🦖🦖🦖🦖🦖"

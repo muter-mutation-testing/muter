@@ -1,7 +1,7 @@
 OVERVIEW: Performs mutation testing for the Swift project contained within the
 current directory.
 
-USAGE: muter run [--files-to-mutate <files-to-mutate> ...] [--format <format>] [--skip-coverage] [--output <output>] [--operators <operators> ...] [--skip-update-check]
+USAGE: muter run [--files-to-mutate <files-to-mutate> ...] [--format <format>] [--skip-coverage] [--output <output>] [--operators <operators> ...] [--skip-update-check] [--configuration <configuration>]
 
 OPTIONS:
   --files-to-mutate <files-to-mutate>
@@ -15,6 +15,8 @@ OPTIONS:
                           ChangeLogicalConnector, SwapTernary
   --skip-update-check     Skips the step in which Muter checks for newer
                           versions.
+  -c, --configuration <configuration>
+                          The path to the muter configuration file.
   --version               Show the version.
   -h, --help              Show help information.
 

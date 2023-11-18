@@ -21,7 +21,8 @@ let package = Package(
         .package(url: "https://github.com/krzysztofzablocki/Difference.git", from: "1.0.2"),
         .package(url: "https://github.com/jpsim/Yams.git", from: "5.0.6"),
         .package(url: "https://github.com/pointfreeco/swift-snapshot-testing.git", from: "1.14.2"),
-        .package(url: "https://github.com/mxcl/Version.git", from: "2.0.1")
+        .package(url: "https://github.com/mxcl/Version.git", from: "2.0.1"),
+        .package(url: "https://github.com/apple/swift-format.git", from: "509.0.0")
     ],
     targets: [
         .executableTarget(
@@ -48,6 +49,7 @@ let package = Package(
             dependencies: [
                 "muterCore",
                 "Difference",
+                .product(name: "SwiftFormat", package: "swift-format"),
                 .product(name: "SwiftSyntax", package: "swift-syntax"),
                 .product(name: "SwiftParser", package: "swift-syntax"),
                 .product(name: "SnapshotTesting", package: "swift-snapshot-testing"),

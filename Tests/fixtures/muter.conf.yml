@@ -11,4 +11,3 @@ arguments:
 executable: /usr/bin/xcodebuild
 exclude:
 - AppDelegate.swift
-excludeCalls: []

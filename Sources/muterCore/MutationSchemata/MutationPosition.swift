@@ -31,6 +31,14 @@ struct MutationPosition: Codable, Equatable {
     }
 }
 
+extension MutationPosition: Comparable {
+    static func < (lhs: MutationPosition, rhs: MutationPosition) -> Bool {
+        lhs.utf8Offset < rhs.utf8Offset &&
+            lhs.line < rhs.line &&
+            lhs.column < rhs.column
+    }
+}
+
 extension MutationPosition: CustomStringConvertible {
     var description: String {
         "\(utf8Offset)_\(line)_\(column)"

@@ -22,9 +22,7 @@ public class SimpleTimeEstimate: ProgressElementType {
 
         let remainingMinutes = Int(ceil(estimatedTimeRemaining / 60))
 
-        let formattedRemainingMinutes = remainingMinutes == 1
-            ? "1 minute"
-            : "\(remainingMinutes) minutes"
+        let formattedRemainingMinutes = "\(remainingMinutes) \(remainingMinutes == 1 ? "minutes" : "minute")"
 
         return "ETC: \(formattedRemainingMinutes)"
     }

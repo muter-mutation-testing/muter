@@ -86,6 +86,16 @@
       "appliedOperators" : [
         {
           "mutationPoint" : {
+            "mutationOperatorId" : "RemoveSideEffects",
+            "position" : {
+              "column" : 97,
+              "line" : 57
+            }
+          },
+          "testSuiteOutcome" : "failed"
+        },
+        {
+          "mutationPoint" : {
             "mutationOperatorId" : "ChangeLogicalConnector",
             "position" : {
               "column" : 60,
@@ -93,10 +103,62 @@
             }
           },
           "testSuiteOutcome" : "passed"
+        },
+        {
+          "mutationPoint" : {
+            "mutationOperatorId" : "RemoveSideEffects",
+            "position" : {
+              "column" : 85,
+              "line" : 83
+            }
+          },
+          "testSuiteOutcome" : "failed"
         }
       ],
       "fileName" : "NSAttributedString+BonMot.swift",
+      "mutationScore" : 66
+    },
+    {
+      "appliedOperators" : [
+        {
+          "mutationPoint" : {
+            "mutationOperatorId" : "RemoveSideEffects",
+            "position" : {
+              "column" : 55,
+              "line" : 72
+            }
+          },
+          "testSuiteOutcome" : "passed"
+        }
+      ],
+      "fileName" : "NamedStyles.swift",
       "mutationScore" : 0
+    },
+    {
+      "appliedOperators" : [
+        {
+          "mutationPoint" : {
+            "mutationOperatorId" : "RemoveSideEffects",
+            "position" : {
+              "column" : 31,
+              "line" : 134
+            }
+          },
+          "testSuiteOutcome" : "failed"
+        },
+        {
+          "mutationPoint" : {
+            "mutationOperatorId" : "RemoveSideEffects",
+            "position" : {
+              "column" : 37,
+              "line" : 155
+            }
+          },
+          "testSuiteOutcome" : "failed"
+        }
+      ],
+      "fileName" : "StringStyle+Part.swift",
+      "mutationScore" : 100
     },
     {
       "appliedOperators" : [
@@ -334,6 +396,76 @@
       "appliedOperators" : [
         {
           "mutationPoint" : {
+            "mutationOperatorId" : "RemoveSideEffects",
+            "position" : {
+              "column" : 59,
+              "line" : 109
+            }
+          },
+          "testSuiteOutcome" : "passed"
+        },
+        {
+          "mutationPoint" : {
+            "mutationOperatorId" : "RemoveSideEffects",
+            "position" : {
+              "column" : 40,
+              "line" : 121
+            }
+          },
+          "testSuiteOutcome" : "passed"
+        },
+        {
+          "mutationPoint" : {
+            "mutationOperatorId" : "RemoveSideEffects",
+            "position" : {
+              "column" : 62,
+              "line" : 132
+            }
+          },
+          "testSuiteOutcome" : "passed"
+        },
+        {
+          "mutationPoint" : {
+            "mutationOperatorId" : "RemoveSideEffects",
+            "position" : {
+              "column" : 64,
+              "line" : 170
+            }
+          },
+          "testSuiteOutcome" : "passed"
+        },
+        {
+          "mutationPoint" : {
+            "mutationOperatorId" : "RemoveSideEffects",
+            "position" : {
+              "column" : 64,
+              "line" : 187
+            }
+          },
+          "testSuiteOutcome" : "passed"
+        },
+        {
+          "mutationPoint" : {
+            "mutationOperatorId" : "RemoveSideEffects",
+            "position" : {
+              "column" : 68,
+              "line" : 192
+            }
+          },
+          "testSuiteOutcome" : "passed"
+        },
+        {
+          "mutationPoint" : {
+            "mutationOperatorId" : "RemoveSideEffects",
+            "position" : {
+              "column" : 62,
+              "line" : 215
+            }
+          },
+          "testSuiteOutcome" : "passed"
+        },
+        {
+          "mutationPoint" : {
             "mutationOperatorId" : "RelationalOperatorReplacement",
             "position" : {
               "column" : 38,
@@ -397,6 +529,36 @@
             }
           },
           "testSuiteOutcome" : "passed"
+        },
+        {
+          "mutationPoint" : {
+            "mutationOperatorId" : "RemoveSideEffects",
+            "position" : {
+              "column" : 96,
+              "line" : 61
+            }
+          },
+          "testSuiteOutcome" : "passed"
+        },
+        {
+          "mutationPoint" : {
+            "mutationOperatorId" : "RemoveSideEffects",
+            "position" : {
+              "column" : 76,
+              "line" : 69
+            }
+          },
+          "testSuiteOutcome" : "passed"
+        },
+        {
+          "mutationPoint" : {
+            "mutationOperatorId" : "RemoveSideEffects",
+            "position" : {
+              "column" : 76,
+              "line" : 77
+            }
+          },
+          "testSuiteOutcome" : "passed"
         }
       ],
       "fileName" : "AdaptiveStyle.swift",
@@ -426,6 +588,16 @@
             "position" : {
               "column" : 33,
               "line" : 39
+            }
+          },
+          "testSuiteOutcome" : "passed"
+        },
+        {
+          "mutationPoint" : {
+            "mutationOperatorId" : "RemoveSideEffects",
+            "position" : {
+              "column" : 68,
+              "line" : 51
             }
           },
           "testSuiteOutcome" : "passed"
@@ -534,10 +706,40 @@
         },
         {
           "mutationPoint" : {
+            "mutationOperatorId" : "RemoveSideEffects",
+            "position" : {
+              "column" : 109,
+              "line" : 153
+            }
+          },
+          "testSuiteOutcome" : "failed"
+        },
+        {
+          "mutationPoint" : {
+            "mutationOperatorId" : "RemoveSideEffects",
+            "position" : {
+              "column" : 99,
+              "line" : 159
+            }
+          },
+          "testSuiteOutcome" : "passed"
+        },
+        {
+          "mutationPoint" : {
             "mutationOperatorId" : "RelationalOperatorReplacement",
             "position" : {
               "column" : 23,
               "line" : 178
+            }
+          },
+          "testSuiteOutcome" : "passed"
+        },
+        {
+          "mutationPoint" : {
+            "mutationOperatorId" : "RemoveSideEffects",
+            "position" : {
+              "column" : 98,
+              "line" : 179
             }
           },
           "testSuiteOutcome" : "passed"
@@ -554,7 +756,7 @@
         }
       ],
       "fileName" : "TextAlignmentConstraint.swift",
-      "mutationScore" : 28
+      "mutationScore" : 30
     },
     {
       "appliedOperators" : [
@@ -570,10 +772,40 @@
         },
         {
           "mutationPoint" : {
+            "mutationOperatorId" : "RemoveSideEffects",
+            "position" : {
+              "column" : 66,
+              "line" : 43
+            }
+          },
+          "testSuiteOutcome" : "passed"
+        },
+        {
+          "mutationPoint" : {
+            "mutationOperatorId" : "RemoveSideEffects",
+            "position" : {
+              "column" : 86,
+              "line" : 45
+            }
+          },
+          "testSuiteOutcome" : "passed"
+        },
+        {
+          "mutationPoint" : {
             "mutationOperatorId" : "RelationalOperatorReplacement",
             "position" : {
               "column" : 28,
               "line" : 59
+            }
+          },
+          "testSuiteOutcome" : "passed"
+        },
+        {
+          "mutationPoint" : {
+            "mutationOperatorId" : "RemoveSideEffects",
+            "position" : {
+              "column" : 74,
+              "line" : 64
             }
           },
           "testSuiteOutcome" : "passed"
@@ -594,6 +826,16 @@
             "position" : {
               "column" : 55,
               "line" : 67
+            }
+          },
+          "testSuiteOutcome" : "passed"
+        },
+        {
+          "mutationPoint" : {
+            "mutationOperatorId" : "RemoveSideEffects",
+            "position" : {
+              "column" : 109,
+              "line" : 77
             }
           },
           "testSuiteOutcome" : "passed"
@@ -635,8 +877,8 @@
       "mutationScore" : 0
     }
   ],
-  "globalMutationScore" : 16,
-  "numberOfKilledMutants" : 9,
+  "globalMutationScore" : 18,
+  "numberOfKilledMutants" : 14,
   "projectCodeCoverage" : 81,
-  "totalAppliedMutationOperators" : 54
+  "totalAppliedMutationOperators" : 77
 }
