@@ -77,10 +77,17 @@ private class FakePipe: Pipeable {
 private class FakeFileHandle: FileHandle {
     private let data: Data
 
+    #if os(Linux)
+    init(data: Data) {
+        self.data = data
+        super.init(fileDescriptor: 0)
+    }
+    #else
     init(data: Data) {
         self.data = data
         super.init()
     }
+    #endif
 
     @available(*, unavailable) required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")

@@ -42,7 +42,7 @@ final class MutationTestingDelegateTests: MuterTestCase {
         let testProcess = try sut.testProcess(
             with: configuration,
             schemata: schemata,
-            and: FileHandle()
+            and: FileHandle(fileDescriptor: 0)
         )
 
         XCTAssertEqual(testProcess.arguments, [
@@ -72,7 +72,7 @@ final class MutationTestingDelegateTests: MuterTestCase {
         let testProcess = try sut.testProcess(
             with: configuration,
             schemata: schemata,
-            and: FileHandle()
+            and: FileHandle(fileDescriptor: 0)
         )
 
         XCTAssertEqual(
