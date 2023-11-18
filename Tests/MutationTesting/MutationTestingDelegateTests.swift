@@ -24,7 +24,7 @@ final class MutationTestingDelegateTests: MuterTestCase {
     }
 
     func test_testProcessForXcodeBuild() throws {
-        current.process = Process.Factory.makeProcess
+        current.process = ProcessWrapper.Factory.makeProcess
 
         let configuration = MuterConfiguration(
             executable: "/tmp/xcodebuild",
@@ -42,7 +42,7 @@ final class MutationTestingDelegateTests: MuterTestCase {
         let testProcess = try sut.testProcess(
             with: configuration,
             schemata: schemata,
-            and: FileHandle(fileDescriptor: 0, closeOnDealloc: true)
+            and: FileHandle()
         )
 
         XCTAssertEqual(testProcess.arguments, [
@@ -54,11 +54,11 @@ final class MutationTestingDelegateTests: MuterTestCase {
         ])
 
         XCTAssertEqual(testProcess.executableURL?.path, "/tmp/xcodebuild")
-        XCTAssertEqual(testProcess.qualityOfService, QualityOfService.userInitiated)
+        XCTAssertEqual(testProcess.qualityOfService, .userInitiated)
     }
 
     func test_testProcessForSwiftBuild() throws {
-        current.process = Process.Factory.makeProcess
+        current.process = ProcessWrapper.Factory.makeProcess
 
         let configuration = MuterConfiguration(
             executable: "/tmp/swift",
@@ -73,7 +73,7 @@ final class MutationTestingDelegateTests: MuterTestCase {
         let testProcess = try sut.testProcess(
             with: configuration,
             schemata: schemata,
-            and: FileHandle(fileDescriptor: 0, closeOnDealloc: true)
+            and: FileHandle()
         )
 
         XCTAssertEqual(
@@ -85,7 +85,7 @@ final class MutationTestingDelegateTests: MuterTestCase {
         )
         XCTAssertEqual(testProcess.arguments, ["test", "--skip-build"])
         XCTAssertEqual(testProcess.executableURL?.path, "/tmp/swift")
-        XCTAssertEqual(testProcess.qualityOfService, QualityOfService.userInitiated)
+        XCTAssertEqual(testProcess.qualityOfService, .userInitiated)
     }
 
     func test_switchOn() throws {
