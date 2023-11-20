@@ -63,13 +63,30 @@ enum RemoveSideEffectsOperator {
         }
 
         override func visit(_ node: FunctionDeclSyntax) -> SyntaxVisitorContinueKind {
-            guard let body = node.body else {
+            guard let body = node.body, canMutate(node) else {
                 return super.visit(node)
             }
 
             removeSideEffectAt(body)
 
             return super.visit(node)
+        }
+
+        private func canMutate(_ node: FunctionDeclSyntax) -> Bool {
+            guard let body = node.body else {
+                return false
+            }
+
+            let numberOfStatements = body.statements.count
+
+            guard numberOfStatements == 1 else {
+                return true
+            }
+
+            let isReturningVoid = node.signature.returnClause == nil ||
+                node.signature.returnClause?.isReturningVoid == true
+
+            return isReturningVoid
         }
 
         private func removeSideEffectAt(_ body: CodeBlockSyntax) {

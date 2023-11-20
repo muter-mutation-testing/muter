@@ -56,4 +56,8 @@ struct Example {
       sideEffect()
     } while true
   }
+
+  func ignoreMe(id: String) -> Int {
+    self._dictionary.index(forKey: id)
+  }
 }

@@ -1,14 +1,10 @@
 import Foundation
 
-let isMuterRunningKey = "IS_MUTER_RUNNING"
-let isMuterRunningValue = "YES"
-
 extension ProcessWrapper {
     enum Factory {
         static func makeProcess() -> ProcessWrapper {
             let process = ProcessWrapper()
             process.qualityOfService = .userInitiated
-
             process.environment = ProcessInfo.processInfo.environment
 
             return process
