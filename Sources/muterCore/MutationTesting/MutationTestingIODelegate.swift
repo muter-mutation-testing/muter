@@ -35,7 +35,7 @@ struct MutationTestingDelegate: MutationTestingIODelegate {
     ) {
         do {
             let (testProcessFileHandle, testLogUrl) = try fileHandle(for: fileName)
-            defer { testProcessFileHandle.closeFile() }
+            defer { try? testProcessFileHandle.close() }
 
             let process = try testProcess(
                 with: configuration,
@@ -50,7 +50,10 @@ struct MutationTestingDelegate: MutationTestingIODelegate {
             let contents = try String(contentsOf: testLogUrl)
 
             return (
-                outcome: TestSuiteOutcome.from(testLog: contents, terminationStatus: process.terminationStatus),
+                outcome: TestSuiteOutcome.from(
+                    testLog: contents,
+                    terminationStatus: process.terminationStatus
+                ),
                 testLog: contents
             )
 
@@ -108,7 +111,9 @@ struct MutationTestingDelegate: MutationTestingIODelegate {
         handle: FileHandle,
         logFileUrl: URL
     ) {
-        let testLogUrl = URL(fileURLWithPath: FileManager.default.currentDirectoryPath + "/" + logFileName)
+        let testLogUrl = URL(
+            fileURLWithPath: FileManager.default.currentDirectoryPath + "/" + logFileName
+        )
         try Data().write(to: testLogUrl)
 
         return try (
