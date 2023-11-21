@@ -10,7 +10,7 @@ build:
 	@swift build -c debug $(flags)
 
 build-release: 
-	@swift build -c release --product muter --disable-sandbox
+	@python ./Scripts/install_build.py "build_release"
 
 project:
 	@xed .
@@ -18,9 +18,8 @@ project:
 release: 
 	@./Scripts/shipIt.sh $(version)
 
-install: build-release
-	@install -d "$(bindir)" "$(libdir)"
-	@install "$(builddir)/release/muter" "$(bindir)"
+install:
+	@python ./Scripts/install_build.py "install"
 
 uninstall:
 	@rm -rf "$(bindir)/muter"
