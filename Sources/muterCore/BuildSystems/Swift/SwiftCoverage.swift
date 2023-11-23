@@ -48,12 +48,14 @@ final class SwiftCoverage: BuildSystemCoverage {
     private func findTestArtifact(
         _ binaryPath: String
     ) -> String? {
-        process().runProcess(
+        let result = process().runProcess(
             url: "/usr/bin/find",
             arguments: [binaryPath, "-name", "*.xctest"]
         )
         .flatMap(\.nilIfEmpty)
         .map(\.trimmed)
+
+        return result
     }
 
     private func coverageReport(
@@ -64,9 +66,18 @@ final class SwiftCoverage: BuildSystemCoverage {
             .deletingPathExtension()
             .lastPathComponent
 
-        return process().runProcess(
-            url: "/usr/bin/xcrun",
-            arguments: [
+        #if os(Linux)
+        let url = "llvm-cov"
+        let arguments = [
+                "report",
+                testArtifactPath,
+                "-instr-profile",
+                binaryPath + "/codecov/default.profdata",
+                "--ignore-filename-regex=.build|Tests"
+            ]
+        #else
+        let url = "/usr/bin/xcrun"
+        let arguments = [
                 "llvm-cov",
                 "report",
                 testArtifactPath + "/Contents/MacOS/\(packageTests)",
@@ -74,6 +85,10 @@ final class SwiftCoverage: BuildSystemCoverage {
                 binaryPath + "/codecov/default.profdata",
                 "--ignore-filename-regex=.build|Tests"
             ]
+        #endif
+        return process().runProcess(
+            url: url,
+            arguments: arguments
         )
         .flatMap(\.nilIfEmpty)
         .map(\.trimmed)

@@ -16,7 +16,7 @@ extension ProcessWrapper {
         arguments args: [String]
     ) -> Data? {
         let pipe = Pipe()
-        standardError = pipe
+        standardError = FileHandle.nullDevice
         standardOutput = pipe
         executableURL = URL(fileURLWithPath: url)
         arguments = args

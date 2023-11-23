@@ -67,6 +67,32 @@ final class SwiftCoverageTests: MuterTestCase {
         )
     }
 
+    #if os(Linux)
+    func test_whenFindTestArtifactsCommandSucceeds_thenGenerateCoverageTable() {
+        process.enqueueStdOut(
+            "something",
+            "/path/to/binary",
+            "/path/to/testArtifact"
+        )
+
+        _ = sut.run(with: muterConfiguration)
+
+        XCTAssertEqual(
+            process.executableURL?.path,
+            "llvm-cov"
+        )
+
+        XCTAssertEqual(
+            process.arguments, [
+                "report",
+                "/path/to/testArtifact",
+                "-instr-profile",
+                "/path/to/binary/codecov/default.profdata",
+                "--ignore-filename-regex=.build|Tests"
+            ]
+        )
+    }
+    #else
     func test_whenFindTestArtifactsCommandSucceeds_thenGenerateCoverageTable() {
         process.enqueueStdOut(
             "something",
@@ -92,6 +118,7 @@ final class SwiftCoverageTests: MuterTestCase {
             ]
         )
     }
+    #endif
 
     func test_whenGenerateCoverageTableCommandSucceeds_thenParseProjectCoverage() throws {
         process.enqueueStdOut(
