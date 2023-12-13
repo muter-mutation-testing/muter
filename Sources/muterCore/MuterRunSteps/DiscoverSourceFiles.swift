@@ -55,6 +55,7 @@ private extension DiscoverSourceFiles {
             "Spec",
             "Test",
             "fastlane",
+            "Package.swift"
         ]
     }
 
