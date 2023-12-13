@@ -131,7 +131,7 @@ Should you need to modify any of the options, you can use the list below to unde
 ### [Configuration Options](#configuration-options)
 - `executable` - the absolute path to the program which can run your test suite (like `xcodebuild`, `swift`, `fastlane`, `make`, etc.)
 - `arguments` - any command line arguments the executable needs to run your test suite
-- `exclude` - a list of paths, file extensions, or names you want Muter to ignore. By default, Muter ignores all non-Swift files, and any files or paths containing the following phrases:
+- `exclude` - a list of paths, file extensions, or names you want Muter to ignore. By default, Muter ignores `Package.swift` files, all non-Swift files, and any files or paths containing the following phrases:
     * `.build`
     * `.framework`
     * `.swiftdep`
