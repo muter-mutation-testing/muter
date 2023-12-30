@@ -33,13 +33,13 @@ final class UpdateCheckTests: MuterTestCase {
     func test_newVersionAvailable() async throws {
         server.dataToBeReturned = createReleaseJsonData("9.9.9")
 
-        var newVersion: String?
         let expect = expectation(
             forNotification: .updateCheckFinished,
             object: nil,
             notificationCenter: notificationCenter
         ) { notification in
-            newVersion = notification.object as? String
+            let newVersion = notification.object as? String
+            XCTAssertEqual(newVersion, "9.9.9")
             return true
         }
 
@@ -47,20 +47,19 @@ final class UpdateCheckTests: MuterTestCase {
 
         await fulfillment(of: [expect], timeout: 2)
 
-        XCTAssertEqual(newVersion, "9.9.9")
         XCTAssertEqual(result, [.newVersionAvaiable("9.9.9")])
     }
 
     func test_noNewVersion() async throws {
         server.dataToBeReturned = createReleaseJsonData("0.0.0")
 
-        var newVersion: String?
         let expect = expectation(
             forNotification: .updateCheckFinished,
             object: nil,
             notificationCenter: notificationCenter
         ) { notification in
-            newVersion = notification.object as? String
+            let newVersion = notification.object as? String
+            XCTAssertNil(newVersion)
             return true
         }
 
@@ -69,7 +68,6 @@ final class UpdateCheckTests: MuterTestCase {
         await fulfillment(of: [expect], timeout: 2)
 
         XCTAssertTrue(result.isEmpty)
-        XCTAssertNil(newVersion)
     }
 
     private func createReleaseJsonData(_ version: String = "") -> Data {
