@@ -65,17 +65,6 @@ struct BuildForTesting: RunCommandStep {
     }
 
     private func parseBuildRequest(_ path: String) throws -> XCTestBuildRequest {
-        guard fileManager.fileExists(atPath: path) else {
-            let path = URL(fileURLWithPath: path).deletingLastPathComponent().path
-            let contents = try? fileManager.contents(atPath: path, sortedByDate: .orderedAscending)
-            throw MuterError.literal(
-                reason: """
-                Build request does not exist at path: \(path)
-                Contents: \((contents ?? []).joined(separator: "\n"))
-                """
-            )
-        }
-
         guard let jsonContent = fileManager.contents(atPath: path) else {
             throw MuterError.literal(reason: "Could not parse build request json at path: \(path)")
         }
