@@ -67,6 +67,10 @@ enum RemoveSideEffectsOperator {
                 return super.visit(node)
             }
 
+            guard !node.hasImplicitReturn else {
+                return super.visit(node)
+            }
+
             removeSideEffectAt(body)
 
             return super.visit(node)
