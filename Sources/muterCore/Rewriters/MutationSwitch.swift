@@ -15,31 +15,26 @@ struct MutationSwitch {
 
         var previousElseBody = IfExprSyntax.ElseBody(
             CodeBlockSyntax(
-                leftBrace: .leftBraceToken()
-                    .withTrailingTrivia(
-                        originalSyntax.trailingTrivia
-                    ),
-                statements: originalSyntax,
+                statements: originalSyntax.appendingLeadingTrivia(.tabs(1)),
                 rightBrace: .rightBraceToken()
-                    .withLeadingTrivia(.newlines(1))
+                    .withLeadingTrivia(originalSyntax.leadingTrivia)
             )
         )
 
         for schema in schemata {
             let elseBody = IfExprSyntax.ElseBody(
                 IfExprSyntax(
-                    ifKeyword: .keyword(.if).withTrailingTrivia(.spaces(1)),
+                    ifKeyword: .keyword(.if)
+                        .withTrailingTrivia(.spaces(1))
+                        .withLeadingTrivia(previousElseBody.leadingTrivia),
                     conditions: buildSchemataCondition(
                         withId: schema.id
                     ),
                     body: CodeBlockSyntax(
-                        leftBrace: .leftBraceToken()
-                            .withTrailingTrivia(
-                                schema.syntaxMutation.trailingTrivia
-                            ),
-                        statements: schema.syntaxMutation,
+                        statements: schema.syntaxMutation
+                            .appendingLeadingTrivia(.tabs(1)),
                         rightBrace: .rightBraceToken()
-                            .withLeadingTrivia(.newlines(1))
+                            .withLeadingTrivia(schema.syntaxMutation.leadingTrivia)
                     ),
                     elseKeyword: .keyword(.else)
                         .withTrailingTrivia(.spaces(1))
@@ -53,18 +48,16 @@ struct MutationSwitch {
 
         let outterIfStatement = IfExprSyntax(
             ifKeyword: .keyword(.if)
-                .withTrailingTrivia(.spaces(1)),
+                .withTrailingTrivia(.spaces(1))
+                .withLeadingTrivia(originalSyntax.leadingTrivia),
             conditions: buildSchemataCondition(
                 withId: firstSchema.id
             ),
             body: CodeBlockSyntax(
-                leftBrace: .leftBraceToken()
-                    .withTrailingTrivia(
-                        firstSchema.syntaxMutation.trailingTrivia
-                    ),
-                statements: firstSchema.syntaxMutation,
+                statements: firstSchema.syntaxMutation
+                    .appendingLeadingTrivia(.tabs(1)),
                 rightBrace: .rightBraceToken()
-                    .withLeadingTrivia(.newlines(1))
+                    .withLeadingTrivia(originalSyntax.leadingTrivia)
             ),
             elseKeyword: .keyword(.else)
                 .withTrailingTrivia(.spaces(1))
