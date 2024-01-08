@@ -56,4 +56,8 @@ struct Example {
       sideEffect()
     } while true
   }
+
+  func implicitReturnFunction() -> Int {
+    containsSideEffect()
+  }
 }

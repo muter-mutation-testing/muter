@@ -85,4 +85,8 @@ struct Example {
       }
     } while true
   }
+
+  func implicitReturnFunction() -> Int {
+    containsSideEffect()
+  }
 }
