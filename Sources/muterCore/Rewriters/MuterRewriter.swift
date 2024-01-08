@@ -2,9 +2,14 @@ import SwiftSyntax
 
 final class MuterRewriter: SyntaxRewriter {
     private let schemataMappings: SchemataMutationMapping
+    private let configuration: MuterConfiguration
 
-    required init(_ schemataMappings: SchemataMutationMapping) {
+    required init(
+        _ schemataMappings: SchemataMutationMapping, 
+        configuration: MuterConfiguration
+    ) {
         self.schemataMappings = schemataMappings
+        self.configuration = configuration
     }
 
     override func visit(_ node: CodeBlockItemListSyntax) -> CodeBlockItemListSyntax {
@@ -14,8 +19,9 @@ final class MuterRewriter: SyntaxRewriter {
 
         let newNode = MutationSwitch.apply(
             mutationSchemata: mutationSchemata,
+            configuration: configuration,
             with: node
-        ).withLeadingTrivia(.spaces(1))
+        )
 
         return super.visit(newNode)
     }

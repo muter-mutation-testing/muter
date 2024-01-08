@@ -15,7 +15,7 @@ struct ApplySchemata: RunCommandStep {
                 continue
             }
 
-            let rewriter = MuterRewriter(mutationMap)
+            let rewriter = MuterRewriter(mutationMap, configuration: state.muterConfiguration)
 
             let newFile = rewriter.visit(sourceCode)
 

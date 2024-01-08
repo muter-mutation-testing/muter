@@ -193,7 +193,7 @@ final class ROROperatorTests: MuterTestCase {
         visitor.walk(sourceWithConditionalLogic.code)
 
         let actualSchematas = visitor.schemataMappings
-        let rewriter = MuterRewriter(actualSchematas).rewrite(sourceWithConditionalLogic.code)
+        let rewriter = MuterRewriter(actualSchematas, configuration: .init()).rewrite(sourceWithConditionalLogic.code)
 
         AssertSnapshot(rewriter.description)
     }

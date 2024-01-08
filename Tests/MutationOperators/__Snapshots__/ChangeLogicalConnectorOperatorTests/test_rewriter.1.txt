@@ -2,16 +2,18 @@
 print("please ignore me")
 #endif
 
-func someCode() -> Bool { if ProcessInfo.processInfo.environment["sampleWithLogicalOperators_6_18_101"] != nil {
-    return false || false
-} else {
-    return false && false
-}
+func someCode() -> Bool {
+    if ProcessInfo.processInfo.environment["sampleWithLogicalOperators_6_18_101"] != nil {
+        return false || false
+    } else {
+        return false && false
+    }
 }
 
-func someOtherCode() -> Bool { if ProcessInfo.processInfo.environment["sampleWithLogicalOperators_10_17_160"] != nil {
-    return true && true
-} else {
-    return true || true
-}
+func someOtherCode() -> Bool {
+    if ProcessInfo.processInfo.environment["sampleWithLogicalOperators_10_17_160"] != nil {
+        return true && true
+    } else {
+        return true || true
+    }
 }
