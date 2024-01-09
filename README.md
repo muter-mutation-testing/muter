@@ -154,9 +154,11 @@ Should you need to modify any of the options, you can use the list below to unde
     **NOTE**: Doesn't support overloading currently - all function calls with a matching name will be skipped. 
     
 - `coverageThreshold` - when present Muter will ignore files that have a coverage value less than this option.
-- `indentation` - A object that represent kind and amount of whitespace that should be added when indenting one level. The object value of this property should have exactly one of the following properties:
+- `indentation` - An object that represents the kind and amount of whitespace that should be added when indenting one level. The object value of this property should have exactly one of the following properties:
     - `spaces` *(number)*: One level of indentation is the given number of spaces.
     - `tabs` *(number)*: One level of indentation is the given number of tabs.
+    
+    **NOTE**: The default value for indentation setting is `spaces(4)`.
 
 Below is an example pulled directly from the `ExampleApp` project.
 The configuration file will end up looking something like this:
