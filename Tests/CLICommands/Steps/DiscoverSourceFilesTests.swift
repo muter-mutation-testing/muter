@@ -1,4 +1,5 @@
 @testable import muterCore
+import TestingExtensions
 import XCTest
 
 final class DiscoverSourceFilesTests: MuterTestCase {
@@ -23,6 +24,7 @@ final class DiscoverSourceFilesTests: MuterTestCase {
                 "\(filsToDiscoverPath)/Directory1/file3.swift",
                 "\(filsToDiscoverPath)/Directory2/Directory3/file6.swift",
                 "\(filsToDiscoverPath)/ExampleApp/ExampleAppCode.swift",
+                "\(filsToDiscoverPath)/ExampleSpec.swift",
                 "\(filsToDiscoverPath)/file1.swift",
                 "\(filsToDiscoverPath)/file2.swift",
             ])
@@ -49,6 +51,7 @@ final class DiscoverSourceFilesTests: MuterTestCase {
             .sourceFileCandidatesDiscovered([
                 "\(filsToDiscoverPath)/Directory1/file3.swift",
                 "\(filsToDiscoverPath)/Directory2/Directory3/file6.swift",
+                "\(filsToDiscoverPath)/ExampleSpec.swift",
                 "\(filsToDiscoverPath)/file1.swift",
                 "\(filsToDiscoverPath)/file2.swift",
             ])
@@ -105,6 +108,7 @@ final class DiscoverSourceFilesTests: MuterTestCase {
         XCTAssertEqual(result, [
             .sourceFileCandidatesDiscovered([
                 "\(filsToDiscoverPath)/Directory1/file3.swift",
+                "\(filsToDiscoverPath)/ExampleSpec.swift",
                 "\(filsToDiscoverPath)/file1.swift",
                 "\(filsToDiscoverPath)/file2.swift",
             ])

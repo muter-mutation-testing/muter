@@ -58,94 +58,23 @@ final class BuildForTestingTests: MuterTestCase {
         )
     }
 
-    func test_runBuildWithoutTestCommand() async throws {
+    func test_runShowBuildSettings() async throws {
         state.muterConfiguration = MuterConfiguration(
             executable: "/path/to/xcodebuild",
             arguments: ["some", "commands", "test"]
         )
 
-        process.stdoutToBeReturned = " "
+        process.stdoutToBeReturned = ""
 
-        do { _ = try await sut.run(with: state) }
-        catch {}
+        _ = try? await sut.run(with: state)
 
         XCTAssertEqual(process.executableURL?.absoluteString, "file:///path/to/xcodebuild")
-        XCTAssertEqual(process.arguments, ["some", "commands", "clean", "build-for-testing"])
+        XCTAssertEqual(process.arguments, ["-showBuildSettings"])
         XCTAssertTrue(process.runCalled)
         XCTAssertTrue(process.waitUntilExitCalled)
     }
 
-    func test_parseBuildDescriptionPath() async throws {
-        state.muterConfiguration = MuterConfiguration(
-            executable: "/path/to/xcodebuild",
-            arguments: ["some", "commands", "test"]
-        )
-
-        process.stdoutToBeReturned = makeBuildForTestingLog()
-
-        do { _ = try await sut.run(with: state) }
-        catch {}
-
-        XCTAssertEqual(process.executableURL?.absoluteString, "file:///path/to/xcodebuild")
-        XCTAssertEqual(process.arguments, ["some", "commands", "clean", "build-for-testing"])
-        XCTAssertTrue(process.runCalled)
-        XCTAssertTrue(process.waitUntilExitCalled)
-
-        XCTAssertTrue(fileManager.methodCalls.contains("contents(atPath:)"))
-    }
-
-    func test_copyBuildProductsPathContents() async throws {
-        state.muterConfiguration = MuterConfiguration(
-            executable: "/path/to/xcodebuild",
-            arguments: ["some", "commands", "test"]
-        )
-
-        state.tempDirectoryURL = URL(fileURLWithPath: "/path/to/temp")
-
-        process.stdoutToBeReturned = makeBuildForTestingLog()
-
-        fileManager.fileContentsToReturn = makeBuildRequestJson().data(using: .utf8)
-
-        do { _ = try await sut.run(with: state) }
-        catch {}
-
-        XCTAssertEqual(process.executableURL?.absoluteString, "file:///path/to/xcodebuild")
-        XCTAssertEqual(process.arguments, ["some", "commands", "clean", "build-for-testing"])
-        XCTAssertTrue(process.runCalled)
-        XCTAssertTrue(process.waitUntilExitCalled)
-
-        XCTAssertTrue(fileManager.methodCalls.contains("removeItem(atPath:)"))
-        XCTAssertEqual(fileManager.paths, ["/path/to/temp/Debug"])
-
-        XCTAssertTrue(fileManager.methodCalls.contains("copyItem(atPath:toPath:)"))
-        XCTAssertEqual(fileManager.copyPaths.first?.source, buildDescriptionPath)
-        XCTAssertEqual(fileManager.copyPaths.first?.dest, "/path/to/temp/Debug")
-    }
-
-    func test_parseXCTestRun() async throws {
-        state.muterConfiguration = MuterConfiguration(
-            executable: "/path/to/xcodebuild",
-            arguments: ["some", "commands", "test"]
-        )
-
-        state.tempDirectoryURL = URL(fileURLWithPath: "/path/to/temp")
-
-        process.stdoutToBeReturned = makeBuildForTestingLog()
-
-        fileManager.fileContentsToReturn = makeBuildRequestJson().data(using: .utf8)
-        fileManager.contentsAtPathSortedToReturn = [buildDescriptionPath + "/project.xctestrun"]
-        fileManager.fileContentsToReturn = loadXCTestRun()
-
-        let result = try await sut.run(with: state)
-
-        XCTAssertEqual(fileManager.contentsAtPathSorted, ["/path/to/temp/Debug"])
-        XCTAssertEqual(fileManager.contentsAtPathSortedOrder, [.orderedDescending])
-        XCTAssertEqual(result, [
-            .projectXCTestRun(.from(loadXCTestRunWithDebugFolder()))
-        ])
-    }
-
-    func test_buildForTestingFailed() async throws {
+    func test_whenCannotParseBuildDirectoryThenThrowError() async throws {
         state.muterConfiguration = MuterConfiguration(
             executable: "/path/to/xcodebuild",
             arguments: ["some", "commands", "test"]
@@ -155,43 +84,8 @@ final class BuildForTestingTests: MuterTestCase {
 
         try await assertThrowsMuterError(
             await sut.run(with: state),
-            .literal(reason: "Could not run test with -build-for-testing argument")
+            .literal(reason: "Could not find `BUILD_DIR`")
         )
-    }
-
-    func test_findBuildRequestJsonFailed() async throws {
-        state.muterConfiguration = MuterConfiguration(
-            executable: "/path/to/xcodebuild",
-            arguments: ["some", "commands", "test"]
-        )
-
-        process.stdoutToBeReturned = "im not important"
-
-        try await assertThrowsMuterError(
-            await sut.run(with: state),
-            .literal(reason: "Could not parse buildRequest.json from build description path")
-        )
-    }
-
-    func test_parseBuildRequestJsonFailed() async throws {
-        state.muterConfiguration = MuterConfiguration(
-            executable: "/path/to/xcodebuild",
-            arguments: ["some", "commands", "test"]
-        )
-
-        state.tempDirectoryURL = URL(fileURLWithPath: "/path/to/temp")
-        process.stdoutToBeReturned = makeBuildForTestingLog()
-
-        try await assertThrowsMuterError(
-            await sut.run(with: state)
-        ) { error in
-            guard case let .literal(reason) = error else {
-                XCTFail("Expected literal, got \(error)")
-                return
-            }
-
-            XCTAssertTrue(reason.contains("Could not parse build request json at path"))
-        }
     }
 
     func test_copyBuildArtifactsFailed() async throws {
@@ -201,8 +95,8 @@ final class BuildForTestingTests: MuterTestCase {
         )
 
         state.tempDirectoryURL = URL(fileURLWithPath: "/path/to/temp")
-        process.stdoutToBeReturned = makeBuildForTestingLog()
-        fileManager.fileContentsToReturn = makeBuildRequestJson().data(using: .utf8)
+        process.stdoutToBeReturned = xcodebuildShowBuildSettingsOutput()
+        process.stdoutToBeReturned = xcodebuildBuildForTestingOutput()
         fileManager.errorToThrow = TestingError.stub
 
         try await assertThrowsMuterError(
@@ -218,8 +112,8 @@ final class BuildForTestingTests: MuterTestCase {
         )
 
         state.tempDirectoryURL = URL(fileURLWithPath: "/path/to/temp")
-        process.stdoutToBeReturned = makeBuildForTestingLog()
-        fileManager.fileContentsToReturn = makeBuildRequestJson().data(using: .utf8)
+        process.stdoutToBeReturned = xcodebuildShowBuildSettingsOutput()
+        process.stdoutToBeReturned = xcodebuildBuildForTestingOutput()
         fileManager.contentsAtPathSortedToReturn = [""]
 
         try await assertThrowsMuterError(
@@ -235,8 +129,8 @@ final class BuildForTestingTests: MuterTestCase {
         )
 
         state.tempDirectoryURL = URL(fileURLWithPath: "/path/to/temp")
-        process.stdoutToBeReturned = makeBuildForTestingLog()
-        fileManager.fileContentsToReturn = makeBuildRequestJson().data(using: .utf8)
+        process.stdoutToBeReturned = xcodebuildShowBuildSettingsOutput()
+        process.stdoutToBeReturned = xcodebuildBuildForTestingOutput()
         fileManager.contentsAtPathSortedToReturn = ["some/project.xctestrun"]
 
         try await assertThrowsMuterError(
@@ -245,7 +139,7 @@ final class BuildForTestingTests: MuterTestCase {
         )
     }
 
-    private func makeBuildForTestingLog() -> String {
+    private func xcodebuildBuildForTestingOutput() -> String {
         """
         Command line invocation:
             /Applications/Xcode.app/Contents/Developer/usr/bin/xcodebuild -project iOSProject.xcodeproj -scheme iOSProject -destination "platform=iOS Simulator,name=iPhone SE (3rd generation)" build-for-testing
@@ -266,72 +160,27 @@ final class BuildForTestingTests: MuterTestCase {
         """
     }
 
-    private func makeBuildRequestJson() -> String {
+    private func xcodebuildShowBuildSettingsOutput() -> String {
         """
-        {
-          "_buildCommand2" : {
-            "command" : "build",
-            "skipDependencies" : false,
-            "style" : "buildOnly"
-          },
-          "buildCommand" : "build",
-          "configuredTargets" : [
-            {
-              "guid" : "d40d24f2f9d993f710521f28a51248b77847c6fdfdb308788f5cd5ad7eab5cb3"
-            }
-          ],
-          "containerPath" : "/path/to/project/iOSProject/iOSProject.xcodeproj",
-          "continueBuildingAfterErrors" : false,
-          "enableIndexBuildArena" : false,
-          "hideShellScriptEnvironment" : false,
-          "parameters" : {
-            "action" : "build",
-            "activeArchitecture" : "arm64",
-            "activeRunDestination" : {
-              "disableOnlyActiveArch" : false,
-              "platform" : "iphonesimulator",
-              "sdk" : "iphonesimulator16.1",
-              "sdkVariant" : "iphonesimulator",
-              "supportedArchitectures" : [
-                "arm64",
-                "x86_64"
-              ],
-              "targetArchitecture" : "arm64"
-            },
-            "arenaInfo" : {
-              "buildIntermediatesPath" : "/path/to/Library/Developer/Xcode/DerivedData/iOSProject-cimyyvjteyjtkmazpzxttpvpzcnp/Build/Intermediates.noindex",
-              "buildProductsPath" : "\(buildDescriptionPath)",
-              "derivedDataPath" : "/path/to/Library/Developer/Xcode/DerivedData",
-              "indexDataStoreFolderPath" : "/path/to/Library/Developer/Xcode/DerivedData/iOSProject-cimyyvjteyjtkmazpzxttpvpzcnp/Index.noindex/DataStore",
-              "indexEnableDataStore" : true,
-              "indexPCHPath" : "/path/to/Library/Developer/Xcode/DerivedData/iOSProject-cimyyvjteyjtkmazpzxttpvpzcnp/Index.noindex/PrecompiledHeaders",
-              "pchPath" : "/path/to/Library/Developer/Xcode/DerivedData/iOSProject-cimyyvjteyjtkmazpzxttpvpzcnp/Build/Intermediates.noindex/PrecompiledHeaders"
-            },
-            "configurationName" : "Debug",
-            "overrides" : {
-              "synthesized" : {
-                "table" : {
-                  "ASSETCATALOG_FILTER_FOR_DEVICE_MODEL" : "iPhone14,6",
-                  "ASSETCATALOG_FILTER_FOR_DEVICE_OS_VERSION" : "16.1",
-                  "ASSETCATALOG_FILTER_FOR_THINNING_DEVICE_CONFIGURATION" : "iPhone14,6",
-                  "BUILD_ACTIVE_RESOURCES_ONLY" : "YES",
-                  "ENABLE_PREVIEWS" : "NO",
-                  "TARGET_DEVICE_IDENTIFIER" : "FDA1B2B9-B6CC-4B38-B8DF-DE452FD8EF18",
-                  "TARGET_DEVICE_MODEL" : "iPhone14,6",
-                  "TARGET_DEVICE_OS_VERSION" : "16.1",
-                  "TARGET_DEVICE_PLATFORM_NAME" : "iphonesimulator"
-                }
-              }
-            }
-          },
-          "schemeCommand" : "launch",
-          "schemeCommand2" : "launch",
-          "showNonLoggedProgress" : true,
-          "useDryRun" : false,
-          "useImplicitDependencies" : true,
-          "useLegacyBuildLocations" : false,
-          "useParallelTargets" : true
-        }
+        AUTOMATICALLY_MERGE_DEPENDENCIES = NO
+            AVAILABLE_PLATFORMS = appletvos appletvsimulator driverkit iphoneos iphonesimulator macosx watchos watchsimulator
+            BITCODE_GENERATION_MODE = marker
+            BUILD_ACTIVE_RESOURCES_ONLY = NO
+            BUILD_COMPONENTS = headers build
+            BUILD_DIR = /user/Library/Developer/Xcode/DerivedData/App-gkbxrvayhpqhtperezjiwgahsiuy/Build/Products
+            BUILD_LIBRARY_FOR_DISTRIBUTION = NO
+            BUILD_ROOT = /user/Library/Developer/Xcode/DerivedData/App-gkbxrvayhpqhtperezjiwgahsiuy/Build/Products
+            BUILD_STYLE =
+            BUILD_VARIANTS = normal
+            BUILT_PRODUCTS_DIR = /user/Library/Developer/Xcode/DerivedData/App-gkbxrvayhpqhtperezjiwgahsiuy/Build/Products/Release-iphoneos
+            BUNDLE_CONTENTS_FOLDER_PATH_deep = Contents/
+            BUNDLE_EXECUTABLE_FOLDER_NAME_deep = MacOS
+            BUNDLE_EXTENSIONS_FOLDER_PATH = Extensions
+            BUNDLE_FORMAT = shallow
+            BUNDLE_FRAMEWORKS_FOLDER_PATH = Frameworks
+            BUNDLE_PLUGINS_FOLDER_PATH = PlugIns
+            BUNDLE_PRIVATE_HEADERS_FOLDER_PATH = PrivateHeaders
+            BUNDLE_PUBLIC_HEADERS_FOLDER_PATH = Headers
         """
     }
 
