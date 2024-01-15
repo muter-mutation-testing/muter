@@ -63,7 +63,7 @@ enum RemoveSideEffectsOperator {
         }
 
         override func visit(_ node: FunctionDeclSyntax) -> SyntaxVisitorContinueKind {
-            guard let body = node.body else {
+            guard let body = node.body, !node.hasImplicitReturn else {
                 return super.visit(node)
             }
 
