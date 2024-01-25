@@ -5,13 +5,9 @@ import XCTest
 final class XCTestRunTests: MuterTestCase {
     private var sut: muterCore.XCTestRun!
 
-    override func setUpWithError() throws {
-        try super.setUpWithError()
+    func test_updateEnvironmentVariable() throws {
+        sut = try muterCore.XCTestRun(loadPlist(for: "project"))
 
-        sut = try muterCore.XCTestRun(loadPlist())
-    }
-
-    func test_updateEnvironmentVariable() {
         let actualPlist = sut.updateEnvironmentVariable(
             setting: "keyToBeSet"
         )
@@ -22,10 +18,27 @@ final class XCTestRunTests: MuterTestCase {
         XCTAssertNotNil(environmentVariables?[isMuterRunningKey])
     }
 
-    private func loadPlist() throws -> [String: AnyHashable] {
+    func test_updateEnvironmentVariable_forTestPlan() throws {
+        sut = try muterCore.XCTestRun(loadPlist(for: "projectWithTestPlan"))
+
+        let actualPlist = sut.updateEnvironmentVariable(
+            setting: "keyToBeSet"
+        )
+
+        let testConfigurations = actualPlist["TestConfigurations"] as? [AnyHashable]
+        let testConfiguration = testConfigurations?.first as? [String: AnyHashable]
+        let testTargets = testConfiguration?["TestTargets"] as? [AnyHashable]
+        let testTarget = testTargets?.first as? [String: AnyHashable]
+        let environmentVariables = testTarget?["EnvironmentVariables"] as? [String: AnyHashable]
+        
+        XCTAssertNotNil(environmentVariables?["keyToBeSet"])
+        XCTAssertNotNil(environmentVariables?[isMuterRunningKey])
+    }
+
+    private func loadPlist(for fileName: String) throws -> [String: AnyHashable] {
         let data = try XCTUnwrap(
             FileManager.default
-                .contents(atPath: fixturesDirectory + "/BuildForTesting/project.xctestrun")
+                .contents(atPath: fixturesDirectory + "/BuildForTesting/\(fileName).xctestrun")
         )
 
         return try PropertyListSerialization.propertyList(from: data, format: nil) as? [String: AnyHashable] ?? [:]
