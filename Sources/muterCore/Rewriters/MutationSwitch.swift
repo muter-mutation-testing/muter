@@ -4,20 +4,18 @@ import SwiftSyntax
 struct MutationSwitch {
     static func apply(
         mutationSchemata: MutationSchemata,
-        configuration: MuterConfiguration,
         with originalSyntax: CodeBlockItemListSyntax
     ) -> CodeBlockItemListSyntax {
         guard !mutationSchemata.isEmpty else {
             return originalSyntax
         }
 
-        let rewriter = CodeIndentingRewriter(style: configuration.indentation, isFirstToken: false)
         var schemata = mutationSchemata
         let firstSchema = schemata.removeFirst()
 
         var previousElseBody = IfExprSyntax.ElseBody(
             CodeBlockSyntax(
-                statements: rewriter.visit(originalSyntax),
+                statements: originalSyntax,
                 rightBrace: .rightBraceToken()
                     .withLeadingTrivia(originalSyntax.leadingTrivia)
             )
@@ -33,7 +31,7 @@ struct MutationSwitch {
                         withId: schema.id
                     ),
                     body: CodeBlockSyntax(
-                        statements: rewriter.visit(schema.syntaxMutation),
+                        statements: schema.syntaxMutation,
                         rightBrace: .rightBraceToken()
                             .withLeadingTrivia(schema.syntaxMutation.leadingTrivia)
                     ),
@@ -55,7 +53,7 @@ struct MutationSwitch {
                 withId: firstSchema.id
             ),
             body: CodeBlockSyntax(
-                statements: rewriter.visit(firstSchema.syntaxMutation),
+                statements: firstSchema.syntaxMutation,
                 rightBrace: .rightBraceToken()
                     .withLeadingTrivia(originalSyntax.leadingTrivia)
             ),

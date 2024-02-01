@@ -51,7 +51,7 @@ final class RemoveSideEffectsOperatorTests: MuterTestCase {
 
         visitor.walk(sourceWithSideEffects.code)
 
-        let rewriter = MuterRewriter(visitor.schemataMappings, configuration: .init()).rewrite(sourceWithSideEffects.code)
+        let rewriter = MuterRewriter(visitor.schemataMappings).rewrite(sourceWithSideEffects.code)
 
         AssertSnapshot(formatCode(rewriter.description))
     }

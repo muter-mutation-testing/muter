@@ -9,7 +9,6 @@ struct MuterConfiguration: Equatable, Codable {
     /// Exclusion list of functions for Remove Side Effects.
     let excludeCallList: [String]
     let coverageThreshold: Double
-    let indentation: Indent
 
     var buildSystem: BuildSystem {
         guard let buildSystem = testCommandExecutable.components(separatedBy: "/").last?.trimmed else {
@@ -25,7 +24,6 @@ struct MuterConfiguration: Equatable, Codable {
         case excludeFileList = "exclude"
         case excludeCallList = "excludeCalls"
         case coverageThreshold
-        case indentation
     }
 
     init(
@@ -33,15 +31,13 @@ struct MuterConfiguration: Equatable, Codable {
         arguments: [String] = [],
         excludeList: [String] = [],
         excludeCallList callList: [String] = [],
-        coverageThreshold threshold: Double = 0,
-        indent: Indent = .spaces(4)
+        coverageThreshold threshold: Double = 0
     ) {
         testCommandExecutable = executable
         testCommandArguments = arguments
         excludeFileList = excludeList
         excludeCallList = callList
         coverageThreshold = threshold
-        indentation = indent
     }
 
     init(from decoder: Decoder) throws {
@@ -53,7 +49,6 @@ struct MuterConfiguration: Equatable, Codable {
         excludeFileList = container.decode([String].self, default: [], forKey: .excludeFileList)
         excludeCallList = container.decode([String].self, default: [], forKey: .excludeCallList)
         coverageThreshold = container.decode(Double.self, default: 0, forKey: .coverageThreshold)
-        indentation = container.decode(Indent.self, default: .spaces(4), forKey: .indentation) 
     }
 
     init(from data: Data) throws {

@@ -37,8 +37,7 @@ final class SchemataBuilderTests: MuterTestCase {
         ])
 
         let actualMutationSwitch = MutationSwitch.apply(
-            mutationSchemata: mutationSchemata, 
-            configuration: .init(),
+            mutationSchemata: mutationSchemata,
             with: originalSyntax
         )
 

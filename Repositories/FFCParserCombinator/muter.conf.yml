@@ -9,5 +9,3 @@ arguments:
 executable: /usr/bin/xcodebuild
 exclude: []
 excludeCalls: []
-indentation:
-  spaces: 4

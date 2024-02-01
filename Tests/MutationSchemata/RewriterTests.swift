@@ -34,7 +34,7 @@ final class RewriterTests: MuterTestCase {
 
         let mapping = try XCTUnwrap(all.first)
 
-        let sut = MuterRewriter(mapping, configuration: .init())
+        let sut = MuterRewriter(mapping)
 
         let mutatedSourceCode = sut.rewrite(sourceCode.source.code).description
 
