@@ -41,7 +41,7 @@ final class SchemataBuilderTests: MuterTestCase {
             with: originalSyntax
         )
 
-        AssertSnapshot(actualMutationSwitch.description)
+        AssertSnapshot(formatCode(actualMutationSwitch.description))
     }
 
     private func makeMutationSchemata(

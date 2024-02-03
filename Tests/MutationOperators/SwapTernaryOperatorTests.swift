@@ -124,6 +124,6 @@ final class SwapTernaryOperatorTests: MuterTestCase {
 
         let rewriter = MuterRewriter(visitor.schemataMappings).rewrite(sampleNestedCode.code)
 
-        AssertSnapshot(rewriter.description)
+        AssertSnapshot(formatCode(rewriter.description))
     }
 }
