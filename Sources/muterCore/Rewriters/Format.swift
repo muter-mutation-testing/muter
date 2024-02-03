@@ -3,6 +3,7 @@ import SwiftFormat
 public func formatCode(_ code: String) -> String {
     var configuration = Configuration()
     configuration.indentation = .spaces(4)
+    configuration.lineLength = 999
     let formatter = SwiftFormatter(configuration: configuration)
     var stream = OutputStream()
     try? formatter.format(source: code, assumingFileURL: nil, to: &stream)
