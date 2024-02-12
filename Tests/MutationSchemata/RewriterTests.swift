@@ -47,7 +47,7 @@ final class RewriterTests: MuterTestCase {
             expectedMutationPositions
         )
 
-        AssertSnapshot(mutatedSourceCode)
+        AssertSnapshot(formatCode(mutatedSourceCode.description))
     }
 
     private lazy var expectedMutationPositions: [OperatorIdAndPositionAssert] = [

@@ -1,4 +1,5 @@
 import Foundation
+import SwiftFormat
 
 struct ApplySchemata: RunCommandStep {
     @Dependency(\.writeFile)
@@ -18,10 +19,11 @@ struct ApplySchemata: RunCommandStep {
             let rewriter = MuterRewriter(mutationMap)
 
             let newFile = rewriter.visit(sourceCode)
+            let formattedCode = formatCode(newFile.description)
 
             do {
                 try writeFile(
-                    newFile.description,
+                    formattedCode,
                     mutationMap.filePath
                 )
             } catch {

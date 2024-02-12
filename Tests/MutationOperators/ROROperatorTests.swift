@@ -194,7 +194,6 @@ final class ROROperatorTests: MuterTestCase {
 
         let actualSchematas = visitor.schemataMappings
         let rewriter = MuterRewriter(actualSchematas).rewrite(sourceWithConditionalLogic.code)
-
-        AssertSnapshot(rewriter.description)
+        AssertSnapshot(formatCode(rewriter.description))
     }
 }

@@ -16,8 +16,7 @@ final class ChangeLogicalConnectorOperatorTests: MuterTestCase {
 
         let rewritten = MuterRewriter(visitor.schemataMappings)
             .rewrite(sourceWithLogicalOperators.code)
-
-        AssertSnapshot(rewritten.description)
+        AssertSnapshot(formatCode(rewritten.description))
     }
 
     func test_visitor() throws {

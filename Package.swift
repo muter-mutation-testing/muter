@@ -40,7 +40,8 @@ let package = Package(
                 .product(name: "SwiftParser", package: "swift-syntax"),
                 .product(name: "ArgumentParser", package: "swift-argument-parser"),
                 .product(name: "Yams", package: "yams"),
-                .product(name: "Version", package: "Version")
+                .product(name: "Version", package: "Version"),
+                .product(name: "SwiftFormat", package: "swift-format"),
             ],
             path: "Sources/muterCore"
         ),

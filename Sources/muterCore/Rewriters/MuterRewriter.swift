@@ -15,7 +15,7 @@ final class MuterRewriter: SyntaxRewriter {
         let newNode = MutationSwitch.apply(
             mutationSchemata: mutationSchemata,
             with: node
-        ).withLeadingTrivia(.spaces(1))
+        )
 
         return super.visit(newNode)
     }
