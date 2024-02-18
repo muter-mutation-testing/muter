@@ -68,7 +68,7 @@ private extension DiscoverSourceFiles {
         let excludeList = providedExcludeList + defaultExcludeList
         let subpaths = (fileManager.subpaths(atPath: rootPath) ?? [])
             .map { "./" + $0 }
-        
+
         return includeSwiftFiles(
             from: subpaths
                 .exclude(
@@ -94,7 +94,9 @@ private extension DiscoverSourceFiles {
         }
 
         return { path in
-            for item in excludeAlso where path.contains(item) { return true }
+            for item in excludeAlso where path.contains(item) {
+                return true
+            }
             return false
         }
     }

@@ -30,7 +30,7 @@ final class XCTestRunTests: MuterTestCase {
         let testTargets = testConfiguration?["TestTargets"] as? [AnyHashable]
         let testTarget = testTargets?.first as? [String: AnyHashable]
         let environmentVariables = testTarget?["EnvironmentVariables"] as? [String: AnyHashable]
-        
+
         XCTAssertNotNil(environmentVariables?["keyToBeSet"])
         XCTAssertNotNil(environmentVariables?[isMuterRunningKey])
     }

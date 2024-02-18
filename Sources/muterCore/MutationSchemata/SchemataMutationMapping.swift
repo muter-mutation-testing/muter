@@ -75,7 +75,7 @@ func + (
 
     let mergedMappgins = lhs.mappings.merging(rhs.mappings) { $0 + $1 }
 
-    mergedMappgins.forEach { codeBlock, schemata in
+    for (codeBlock, schemata) in mergedMappgins {
         result.add(codeBlock, schemata)
     }
 

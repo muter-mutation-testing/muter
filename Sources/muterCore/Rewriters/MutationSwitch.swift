@@ -1,7 +1,7 @@
 import Foundation
 import SwiftSyntax
 
-struct MutationSwitch {
+enum MutationSwitch {
     static func apply(
         mutationSchemata: MutationSchemata,
         with originalSyntax: CodeBlockItemListSyntax

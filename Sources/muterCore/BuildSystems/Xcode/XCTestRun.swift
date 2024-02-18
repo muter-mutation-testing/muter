@@ -37,7 +37,7 @@ struct XCTestRun: Equatable {
             }
 
             copy[testConfigurationsKey] = newTestConfigurations
-        } else { 
+        } else {
             // Legacy Tests configuration
             for (plistEntry, plistValue) in copy {
                 if let testConfiguration = plistValue as? [String: AnyHashable] {
