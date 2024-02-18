@@ -1,6 +1,6 @@
 @testable import muterCore
 
-class FileReportProvider {
+enum FileReportProvider {
 
     static var expectedFileReport1: MuterTestReport.FileReport {
         .init(fileName: "a module.swift", path: "/tmp/a module.swift", mutationScore: 100, appliedOperators: [

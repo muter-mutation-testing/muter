@@ -13,4 +13,5 @@ exclude:
 - RunCommandObserver.swift
 - ProgressExtensions.swift
 - BundleResource.swift
+- Operator.swift
 excludeCalls: []

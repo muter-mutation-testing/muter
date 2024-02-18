@@ -49,3 +49,15 @@ extension MutationOperator.Snapshot {
         )
     }
 }
+
+extension MutationOperator.Snapshot: CustomDebugStringConvertible {
+    var debugDescription: String {
+        """
+        MutationOperator.Snapshot(
+            before: "\(before)",
+            after: "\(after)",
+            description: "\(description)"
+        )
+        """
+    }
+}

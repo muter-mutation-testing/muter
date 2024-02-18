@@ -45,6 +45,18 @@ extension MutationPosition: CustomStringConvertible {
     }
 }
 
+extension MutationPosition: CustomDebugStringConvertible {
+    var debugDescription: String {
+        """
+        MutationPosition(
+            utf8Offset: \(utf8Offset),
+            line: \(line),
+            column: \(column)
+        )
+        """
+    }
+}
+
 extension MutationPosition: Nullable {
     static var null: MutationPosition {
         MutationPosition(utf8Offset: 0)

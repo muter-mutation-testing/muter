@@ -65,7 +65,6 @@ enum SwapTernaryOperator {
                     colon: node.colon,
                     elseExpression: node.thenExpression,
                     trailingTrivia: node.trailingTrivia
-
                 )
             )
         }
@@ -88,6 +87,8 @@ enum SwapTernaryOperator {
 
             children[index] = ExprSyntax(
                 UnresolvedTernaryExprSyntax(thenExpression: secondChoice)
+                    .withTrailingTrivia(.spaces(1))
+                    .withLeadingTrivia(.spaces(1))
             )
             children[index + 1] = firstChoice
 

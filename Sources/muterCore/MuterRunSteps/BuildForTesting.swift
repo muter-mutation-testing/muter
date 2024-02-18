@@ -48,7 +48,8 @@ struct BuildForTesting: RunCommandStep {
         guard let buildDirectory = buildSettings
             .firstMatchOf("BUILD_DIR = (.+)")?
             .replacingOccurrences(of: "BUILD_DIR = ", with: "")
-            .trimmed else {
+            .trimmed
+        else {
             throw MuterError.literal(reason: "Could not extract `BUILD_DIR` from project settings")
         }
 
