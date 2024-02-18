@@ -1,7 +1,7 @@
 import SwiftSyntax
 
 extension SyntaxProtocol {
-    var scapedDescription: String {
+    var escapedDescription: String {
         description.replacingOccurrences(
             of: "\n",
             with: "\\n"

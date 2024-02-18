@@ -196,7 +196,7 @@ extension SchemataMutationMapping {
         for (source, schemata) in mappings {
             let codeBlockSyntax = try sourceCode(source).statements
 
-            schemata.forEach { schema in
+            for schema in schemata {
                 schemataMutationMapping.add(codeBlockSyntax, schema)
             }
         }

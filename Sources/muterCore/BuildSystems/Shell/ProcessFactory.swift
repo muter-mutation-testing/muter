@@ -1,14 +1,25 @@
 import Foundation
 
-extension ProcessWrapper {
+let isMuterRunningKey = "IS_MUTER_RUNNING"
+let isMuterRunningValue = "YES"
+
+extension Process {
     enum Factory {
-        static func makeProcess() -> ProcessWrapper {
-            let process = ProcessWrapper()
+        static func makeProcess() -> Process {
+            let process = Process()
             process.qualityOfService = .userInitiated
-            process.environment = ProcessInfo.processInfo.environment
+
+            var environment = ProcessInfo.processInfo.environment
+            environment[isMuterRunningKey] = isMuterRunningValue
+            process.environment = environment
 
             return process
         }
+    }
+
+    @objc
+    var processData: Data? {
+        (standardOutput as? Pipe)?.readStringToEndOfFile()
     }
 
     func runProcess(
@@ -16,8 +27,8 @@ extension ProcessWrapper {
         arguments args: [String]
     ) -> Data? {
         let pipe = Pipe()
-        standardError = FileHandle.nullDevice
         standardOutput = pipe
+        standardError = FileHandle.nullDevice
         executableURL = URL(fileURLWithPath: url)
         arguments = args
 
@@ -39,5 +50,18 @@ extension ProcessWrapper {
         }
 
         return String(data: output, encoding: .utf8)
+    }
+}
+
+extension Pipe {
+    func readStringToEndOfFile() -> Data? {
+        let data: Data
+        if #available(OSX 10.15.4, *) {
+            data = (try? fileHandleForReading.readToEnd()) ?? Data()
+        } else {
+            data = fileHandleForReading.readDataToEndOfFile()
+        }
+
+        return data
     }
 }

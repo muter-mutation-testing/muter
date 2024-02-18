@@ -53,10 +53,10 @@ extension MutationSchema: CustomStringConvertible, CustomDebugStringConvertible 
         Schemata(
             id: "\(id)",
             filePath: "\(filePath)",
-            mutationOperatorId: \(mutationOperatorId),
-            syntaxMutation: "\(syntaxMutation.scapedDescription)",
-            position: \(position),
-            snapshot: \(snapshot)
+            mutationOperatorId: .\(mutationOperatorId),
+            syntaxMutation: "\(syntaxMutation.escapedDescription)",
+            position: \(position.debugDescription),
+            snapshot: \(snapshot.debugDescription)
         )
         """
     }

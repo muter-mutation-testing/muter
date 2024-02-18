@@ -75,10 +75,8 @@ final class MutationTestingDelegateTests: MuterTestCase {
             and: FileHandle(fileDescriptor: 0)
         )
 
-        XCTAssertEqual(
-            testProcess.environment?["fileName_1_0_0"],
-            "YES"
-        )
+        XCTAssertEqual(testProcess.environment?["fileName_1_0_0"], "YES")
+        XCTAssertEqual(testProcess.environment?[isMuterRunningKey], isMuterRunningValue)
         XCTAssertEqual(testProcess.arguments, ["test", "--skip-build"])
         XCTAssertEqual(testProcess.executableURL?.path, "/tmp/swift")
     }

@@ -27,7 +27,7 @@ final class SwapTernaryOperatorTests: MuterTestCase {
                     .make(
                         filePath: sampleCode.path,
                         mutationOperatorId: .swapTernary,
-                        syntaxMutation: "\n    return a ? \"false\" : \"true\" ",
+                        syntaxMutation: "\n    return a  ? \"false\" :  \"true\" ",
                         position: MutationPosition(
                             utf8Offset: 199,
                             line: 10,
@@ -35,7 +35,7 @@ final class SwapTernaryOperatorTests: MuterTestCase {
                         ),
                         snapshot: MutationOperator.Snapshot(
                             before: "a ? \"true\" : \"false\"",
-                            after: "a ? \"false\" : \"true\"",
+                            after: "a  ? \"false\" :  \"true\"",
                             description: "swapped ternary operator"
                         )
                     )
@@ -47,7 +47,7 @@ final class SwapTernaryOperatorTests: MuterTestCase {
                     .make(
                         filePath: sampleCode.path,
                         mutationOperatorId: .swapTernary,
-                        syntaxMutation: "\n    return a ? false : true ",
+                        syntaxMutation: "\n    return a  ? false :  true ",
                         position: MutationPosition(
                             utf8Offset: 120,
                             line: 6,
@@ -55,7 +55,7 @@ final class SwapTernaryOperatorTests: MuterTestCase {
                         ),
                         snapshot: MutationOperator.Snapshot(
                             before: "a ? true : false",
-                            after: "a ? false : true",
+                            after: "a  ? false :  true",
                             description: "swapped ternary operator"
                         )
                     )
@@ -81,7 +81,7 @@ final class SwapTernaryOperatorTests: MuterTestCase {
                     .make(
                         filePath: sampleNestedCode.path,
                         mutationOperatorId: .swapTernary,
-                        syntaxMutation: "\n    return a ? false : b ? true : false ",
+                        syntaxMutation: "\n    return a  ? false :  b ? true : false ",
                         position: MutationPosition(
                             utf8Offset: 143,
                             line: 6,
@@ -89,14 +89,14 @@ final class SwapTernaryOperatorTests: MuterTestCase {
                         ),
                         snapshot: MutationOperator.Snapshot(
                             before: "a ? b ? true : false : false",
-                            after: "a ? false : b ? true : false",
+                            after: "a  ? false :  b ? true : false",
                             description: "swapped ternary operator"
                         )
                     ),
                     .make(
                         filePath: sampleNestedCode.path,
                         mutationOperatorId: .swapTernary,
-                        syntaxMutation: "\n    return a ? b ? false : true : false",
+                        syntaxMutation: "\n    return a ? b  ? false :  true : false",
                         position: MutationPosition(
                             utf8Offset: 136,
                             line: 6,
@@ -104,7 +104,7 @@ final class SwapTernaryOperatorTests: MuterTestCase {
                         ),
                         snapshot: MutationOperator.Snapshot(
                             before: "b ? true : false",
-                            after: "b ? false : true",
+                            after: "b  ? false :  true",
                             description: "swapped ternary operator"
                         )
                     )
