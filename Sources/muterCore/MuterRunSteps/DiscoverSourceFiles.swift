@@ -46,15 +46,17 @@ struct DiscoverSourceFiles: RunCommandStep {
 private extension DiscoverSourceFiles {
     private var defaultExcludeList: [FilePath] {
         [
-            ".swiftpm",
-            ".build",
-            "Build",
-            "Carthage",
-            "muter_tmp",
-            "Pods",
-            "Spec",
-            "Test",
-            "fastlane",
+            "/.swiftpm/",
+            "/.build/",
+            "/Build/",
+            "/Carthage/",
+            "/muter_tmp/",
+            "/Pods/",
+            "/Spec/",
+            "/Tests/",
+            "Tests.swift",
+            "/fastlane/",
+            "/Package.swift",
         ]
     }
 
@@ -64,8 +66,9 @@ private extension DiscoverSourceFiles {
         ignoringFilesWithoutCoverage filesWithoutCoverage: [FilePath]
     ) -> [FilePath] {
         let excludeList = providedExcludeList + defaultExcludeList
-        let subpaths = fileManager.subpaths(atPath: rootPath) ?? []
-
+        let subpaths = (fileManager.subpaths(atPath: rootPath) ?? [])
+            .map { "./" + $0 }
+        
         return includeSwiftFiles(
             from: subpaths
                 .exclude(
@@ -74,6 +77,7 @@ private extension DiscoverSourceFiles {
                         root: rootPath
                     )
                 )
+                .map { String($0.dropFirst(2)) }
                 .map { append(root: rootPath, to: $0) }
                 .exclude(filesWithoutCoverageList(filesWithoutCoverage))
         )

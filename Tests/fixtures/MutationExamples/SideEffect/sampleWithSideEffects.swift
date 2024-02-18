@@ -57,7 +57,7 @@ struct Example {
     } while true
   }
 
-  func ignoreMe(id: String) -> Int {
-    self._dictionary.index(forKey: id)
+  func implicitReturnFunction() -> Int {
+    containsSideEffect()
   }
 }

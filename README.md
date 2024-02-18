@@ -131,20 +131,22 @@ Should you need to modify any of the options, you can use the list below to unde
 ### [Configuration Options](#configuration-options)
 - `executable` - the absolute path to the program which can run your test suite (like `xcodebuild`, `swift`, `fastlane`, `make`, etc.)
 - `arguments` - any command line arguments the executable needs to run your test suite
-- `exclude` - a list of paths, file extensions, or names you want Muter to ignore. By default, Muter ignores all non-Swift files, and any files or paths containing the following phrases:
-    * `.build`
-    * `.framework`
-    * `.swiftdep`
-    * `.swiftmodule`
-    * `Build`
-    * `Carthage`
-    * `muter_tmp`
-    * `Pods`
-    * `Spec`
-    * `Test`
+- `exclude` - a list of paths, file extensions, or names you want Muter to ignore. By default, Muter ignores all non-Swift files, and any paths containing the following phrases:
+    * `/.build/`
+    * `/.framework/`
+    * `/.swiftdep/`
+    * `/.swiftmodule/`
+    * `/Build/`
+    * `/Carthage/`
+    * `/muter_tmp/`
+    * `/Pods/`
+    * `/Spec/`
+    * `/Tests/`
+    * `Tests.swift`
+    * `/Package.swift`
 
     The `exclude` option is optional.
-
+    
     **NOTE**: Muter uses a substring match to determine if a file should be excluded from mutation testing. You should not use glob expressions (like `**/*Model.swift`) or regex.
 
 - `excludeCalls` - a list of function names you want Muter to ignore in the [Remove Side Effects](https://github.com/muter-mutation-testing/muter/blob/master/Docs/mutation_operators.md) mutation operator, such as custom logging functions. Mutants in which these functions aren't called will not be created (note that mutations within the functions themselves are *not* skipped, only calls to those functions).

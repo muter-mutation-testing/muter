@@ -24,12 +24,10 @@ struct BuildForTesting: RunCommandStep {
         fileManager.changeCurrentDirectoryPath(state.tempDirectoryURL.path)
 
         do {
-            let buildForTestingOutput = try runBuildForTestingCommand(state.muterConfiguration)
-            let buildRequestJsonPath = try findBuildRequestJsonPath(buildForTestingOutput)
-            let buildRequest = try parseBuildRequest(buildRequestJsonPath)
+            let buildDirectory = try buildDirectory(state.muterConfiguration)
+            try runBuildForTestingCommand(state.muterConfiguration)
             let tempDebugURL = debugURLForTempDirectory(state.tempDirectoryURL)
-
-            try copyBuildArtifactsAtPath(buildRequest.buildProductsPath, to: tempDebugURL.path)
+            try copyBuildArtifactsAtPath(buildDirectory, to: tempDebugURL.path)
 
             let xcTestRun = try parseXCTestRunAt(tempDebugURL)
 
@@ -39,18 +37,34 @@ struct BuildForTesting: RunCommandStep {
         }
     }
 
+    private func buildDirectory(_ configuration: MuterConfiguration) throws -> String {
+        guard let buildSettings = process()
+            .runProcess(url: configuration.testCommandExecutable, arguments: ["-showBuildSettings"])
+            .flatMap(\.nilIfEmpty)
+        else {
+            throw MuterError.literal(reason: "Could not find `BUILD_DIR`")
+        }
+
+        guard let buildDirectory = buildSettings
+            .firstMatchOf("BUILD_DIR = (.+)")?
+            .replacingOccurrences(of: "BUILD_DIR = ", with: "")
+            .trimmed else {
+            throw MuterError.literal(reason: "Could not extract `BUILD_DIR` from project settings")
+        }
+
+        return buildDirectory
+    }
+
     private func runBuildForTestingCommand(
         _ configuration: MuterConfiguration
-    ) throws -> String {
-        guard let output: String = process().runProcess(
+    ) throws {
+        guard let _: String = process().runProcess(
             url: configuration.testCommandExecutable,
             arguments: configuration.buildForTestingArguments
         ).flatMap(\.nilIfEmpty)
         else {
             throw MuterError.literal(reason: "Could not run test with -build-for-testing argument")
         }
-
-        return output
     }
 
     private func findBuildRequestJsonPath(_ output: String) throws -> String {
