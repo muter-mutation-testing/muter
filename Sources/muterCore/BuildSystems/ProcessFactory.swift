@@ -9,9 +9,9 @@ extension Process {
             let process = Process()
             process.qualityOfService = .userInitiated
 
-            process.environment = [
-                isMuterRunningKey: isMuterRunningValue
-            ]
+            var environment = ProcessInfo.processInfo.environment
+            environment[isMuterRunningKey] = isMuterRunningValue
+            process.environment = environment
 
             return process
         }
