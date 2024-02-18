@@ -49,6 +49,10 @@ final class AddImportRewriter: SyntaxRewriter {
 
 final class AddImportVisitior {
     func shouldAddImportStatement(_ node: SourceFileSyntax) -> Bool {
-        !node.description.contains("import Foundation")
+        let allImports = node
+            .description
+            .split(separator: "\n")
+            .filter { $0.contains("import ") }
+        return !allImports.any { $0.contains("Foundation") }
     }
 }

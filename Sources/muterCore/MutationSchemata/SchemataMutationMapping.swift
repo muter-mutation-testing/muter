@@ -114,7 +114,7 @@ extension SchemataMutationMapping: CustomStringConvertible, CustomDebugStringCon
         let description = mappings.reduce(into: "") { accum, pair in
             accum +=
                 """
-                source: "\(pair.key.scapedDescription)",
+                source: "\(pair.key.escapedDescription)",
                 schemata: \(pair.value)
                 """
         }
