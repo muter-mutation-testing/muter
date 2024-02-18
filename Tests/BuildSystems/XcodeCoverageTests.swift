@@ -20,7 +20,7 @@ final class XcodeCoverageTests: MuterTestCase {
     }
 
     func test_whenRunWithCoverageSucceeds_thenRunXcovCommand() {
-        process.enqueueStdOut("something\nsomething\npath/to/testResult.xcresult")
+        process.stdoutToBeReturned = "something\nsomething\npath/to/testResult.xcresult"
 
         _ = sut.run(with: muterConfiguration)
 
@@ -32,10 +32,8 @@ final class XcodeCoverageTests: MuterTestCase {
     }
 
     func test_whenXcovSucceeds_thenReturnFilsWithoutCoverage() throws {
-        process.enqueueStdOut(
-            "something\nsomething\npath/to/testResult.xcresult",
-            coverageData
-        )
+        process.stdoutToBeReturned = "something\nsomething\npath/to/testResult.xcresult"
+        process.stdoutToBeReturned = coverageData
 
         let coverage = try XCTUnwrap(sut.run(with: muterConfiguration).get())
 
@@ -49,10 +47,9 @@ final class XcodeCoverageTests: MuterTestCase {
     }
 
     func test_ignoreFilesLessThanCoverageThreshold() throws {
-        process.enqueueStdOut(
-            "something\nsomething\npath/to/testResult.xcresult",
-            coverageData
-        )
+        process.stdoutToBeReturned = "something\nsomething\npath/to/testResult.xcresult"
+        process.stdoutToBeReturned = coverageData
+
         coverageThreshold = 10
 
         let coverage = try XCTUnwrap(sut.run(with: muterConfiguration).get())
@@ -71,10 +68,8 @@ final class XcodeCoverageTests: MuterTestCase {
     }
 
     func test_whenXcodeSelectFails_shouldNotRunXccov() {
-        process.enqueueStdOut(
-            "something\nsomething\npath/to/testResult.xcresult",
-            ""
-        )
+        process.stdoutToBeReturned = "something\nsomething\npath/to/testResult.xcresult"
+        process.stdoutToBeReturned = ""
 
         _ = sut.run(with: muterConfiguration)
 
@@ -84,7 +79,7 @@ final class XcodeCoverageTests: MuterTestCase {
     }
 
     func test_whenBuildFailes_shouldNotExecuteXcodeSelect() {
-        process.enqueueStdOut("")
+        process.stdoutToBeReturned = ""
 
         _ = sut.run(with: muterConfiguration)
 

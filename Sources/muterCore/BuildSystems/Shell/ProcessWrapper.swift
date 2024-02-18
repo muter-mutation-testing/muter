@@ -63,6 +63,20 @@ class ProcessWrapper {
     func waitUntilExit() {
         process.waitUntilExit()
     }
+
+    func runProcess(
+        url: String,
+        arguments: [String]
+    ) -> Data? {
+        process.runProcess(url: url, arguments: arguments)
+    }
+
+    func runProcess(
+        url: String,
+        arguments: [String]
+    ) -> String? {
+        process.runProcess(url: url, arguments: arguments)
+    }
 }
 
 extension Pipeable {

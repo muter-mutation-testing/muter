@@ -99,6 +99,18 @@ extension SyntaxChildren {
     }
 }
 
+extension FunctionDeclSyntax {
+    var hasImplicitReturn: Bool {
+        guard let body else {
+            return false
+        }
+
+        return body.statements.count == 1 &&
+            signature.returnClause != nil &&
+            signature.returnClause?.isReturningVoid == false
+    }
+}
+
 extension ReturnClauseSyntax {
     var isReturningVoid: Bool {
         ["Void", "()"].contains(type.withoutTrivia().description.trimmed)

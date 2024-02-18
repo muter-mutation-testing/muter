@@ -86,7 +86,7 @@ struct MutationTestingDelegate: MutationTestingIODelegate {
         with configuration: MuterConfiguration,
         schemata: MutationSchema,
         and fileHandle: FileHandle
-    ) throws -> ProcessWrapper {
+    ) throws -> Process {
         let testCommandArguments = schemata == .null
             ? configuration.testCommandArguments
             : configuration.testWithoutBuildArguments(with: muterTestRunFileName)

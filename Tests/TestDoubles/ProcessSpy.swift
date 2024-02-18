@@ -1,7 +1,7 @@
 import Foundation
 @testable import muterCore
 
-final class ProcessSpy: ProcessWrapper {
+final class ProcessSpy: Process {
     private var _standardOutput: Any?
     override var standardOutput: Any? {
         get {
@@ -17,6 +17,16 @@ final class ProcessSpy: ProcessWrapper {
             _standardError
         } set {
             _standardError = newValue
+        }
+    }
+
+    private var _launchPath: String?
+    override var launchPath: String? {
+        get {
+            _launchPath
+        }
+        set {
+            _launchPath = newValue
         }
     }
 
@@ -40,6 +50,15 @@ final class ProcessSpy: ProcessWrapper {
         }
     }
 
+    private let queue = Queue<Data>()
+    var stdoutToBeReturned = "" {
+        didSet {
+            stdoutToBeReturned
+                .data(using: .utf8)
+                .map(queue.enqueue)
+        }
+    }
+
     override var processData: Data? {
         queue.dequeue()
     }
@@ -52,13 +71,6 @@ final class ProcessSpy: ProcessWrapper {
     var waitUntilExitCalled = false
     override func waitUntilExit() {
         waitUntilExitCalled = true
-    }
-
-    private let queue = Queue<Data>()
-    public func enqueueStdOut(_ values: String...) {
-        values
-            .compactMap { $0.data(using: .utf8) }
-            .forEach(queue.enqueue)
     }
 }
 

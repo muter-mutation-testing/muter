@@ -117,7 +117,7 @@ struct BuildForTesting: RunCommandStep {
         guard let plist = try PropertyListSerialization.propertyList(
             from: replaced,
             format: nil
-        ) as? [AnyHashable: Any]
+        ) as? [String: AnyHashable]
         else {
             throw MuterError.literal(reason: "Could not parse xctestrun as plist at path: \(xcTestRunPath)")
         }
