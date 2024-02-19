@@ -1,4 +1,3 @@
-#if !os(Linux)
 import Foundation
 
 struct XCTestRun: Equatable {
@@ -71,4 +70,3 @@ struct XCTestRun: Equatable {
         return configuration
     }
 }
-#endif

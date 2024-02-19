@@ -7,13 +7,32 @@ final class SwiftCoverage: BuildSystemCoverage {
     func run(
         with configuration: MuterConfiguration
     ) -> Result<Coverage, CoverageError> {
-        guard runWithCoverageEnabled(using: configuration) != nil,
-              let binaryPath = binaryPath(configuration),
-              let testArtifact = findTestArtifact(binaryPath),
-              let coverageReport = coverageReport(binaryPath, testArtifact)
-        else {
+        guard runWithCoverageEnabled(using: configuration) != nil else {
             return .failure(.build)
         }
+        
+        guard let binaryPath = binaryPath(configuration) else {
+            return .failure(.build)
+        }
+        
+        guard let testArtifact = findTestArtifact(binaryPath) else {
+            return .failure(.build)
+        }
+        
+        guard let testArtifact = findTestArtifact(binaryPath) else {
+            return .failure(.build)
+        }
+        
+        guard let coverageReport = coverageReport(binaryPath, testArtifact) else {
+            return .failure(.build)
+        }
+//        guard runWithCoverageEnabled(using: configuration) != nil,
+//              let binaryPath = binaryPath(configuration),
+//              let testArtifact = findTestArtifact(binaryPath),
+//              let coverageReport = coverageReport(binaryPath, testArtifact)
+//        else {
+//            return .failure(.build)
+//        }
 
         let projectCoverage: Coverage = .from(
             report: coverageReport,
@@ -26,12 +45,14 @@ final class SwiftCoverage: BuildSystemCoverage {
     private func runWithCoverageEnabled(
         using configuration: MuterConfiguration
     ) -> String? {
-        process().runProcess(
+        let result: String? = process().runProcess(
             url: configuration.testCommandExecutable,
             arguments: configuration.enableCoverageArguments
         )
         .flatMap(\.nilIfEmpty)
         .map(\.trimmed)
+        
+        return result
     }
 
     private func binaryPath(

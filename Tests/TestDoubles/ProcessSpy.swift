@@ -2,13 +2,10 @@ import Foundation
 @testable import muterCore
 
 final class ProcessSpy: Process {
-    private var _standardOutput: Any?
     override var standardOutput: Any? {
         get {
-            _standardOutput
-        } set {
-            _standardOutput = newValue
-        }
+            queue.dequeue()
+        } set { }
     }
 
     private var _standardError: Any?
@@ -50,17 +47,14 @@ final class ProcessSpy: Process {
         }
     }
 
-    private let queue = Queue<Data>()
+    private let queue = Queue<FakePipe>()
     var stdoutToBeReturned = "" {
         didSet {
             stdoutToBeReturned
                 .data(using: .utf8)
+                .map(FakePipe.init(data:))
                 .map(queue.enqueue)
         }
-    }
-
-    override var processData: Data? {
-        queue.dequeue()
     }
 
     var runCalled = false

@@ -17,7 +17,9 @@ extension Process {
         }
     }
 
+    #if !os(Linux)
     @objc
+    #endif
     var processData: Data? {
         (standardOutput as? Pipe)?.readStringToEndOfFile()
     }
