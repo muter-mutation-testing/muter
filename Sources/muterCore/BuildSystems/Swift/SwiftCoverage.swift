@@ -7,32 +7,13 @@ final class SwiftCoverage: BuildSystemCoverage {
     func run(
         with configuration: MuterConfiguration
     ) -> Result<Coverage, CoverageError> {
-        guard runWithCoverageEnabled(using: configuration) != nil else {
+        guard runWithCoverageEnabled(using: configuration) != nil,
+              let binaryPath = binaryPath(configuration),
+              let testArtifact = findTestArtifact(binaryPath),
+              let coverageReport = coverageReport(binaryPath, testArtifact)
+        else {
             return .failure(.build)
         }
-        
-        guard let binaryPath = binaryPath(configuration) else {
-            return .failure(.build)
-        }
-        
-        guard let testArtifact = findTestArtifact(binaryPath) else {
-            return .failure(.build)
-        }
-        
-        guard let testArtifact = findTestArtifact(binaryPath) else {
-            return .failure(.build)
-        }
-        
-        guard let coverageReport = coverageReport(binaryPath, testArtifact) else {
-            return .failure(.build)
-        }
-//        guard runWithCoverageEnabled(using: configuration) != nil,
-//              let binaryPath = binaryPath(configuration),
-//              let testArtifact = findTestArtifact(binaryPath),
-//              let coverageReport = coverageReport(binaryPath, testArtifact)
-//        else {
-//            return .failure(.build)
-//        }
 
         let projectCoverage: Coverage = .from(
             report: coverageReport,
@@ -51,7 +32,7 @@ final class SwiftCoverage: BuildSystemCoverage {
         )
         .flatMap(\.nilIfEmpty)
         .map(\.trimmed)
-        
+
         return result
     }
 
@@ -90,22 +71,22 @@ final class SwiftCoverage: BuildSystemCoverage {
         #if os(Linux)
         let url = "llvm-cov"
         let arguments = [
-                "report",
-                testArtifactPath,
-                "-instr-profile",
-                binaryPath + "/codecov/default.profdata",
-                "--ignore-filename-regex=.build|Tests"
-            ]
+            "report",
+            testArtifactPath,
+            "-instr-profile",
+            binaryPath + "/codecov/default.profdata",
+            "--ignore-filename-regex=.build|Tests"
+        ]
         #else
         let url = "/usr/bin/xcrun"
         let arguments = [
-                "llvm-cov",
-                "report",
-                testArtifactPath + "/Contents/MacOS/\(packageTests)",
-                "-instr-profile",
-                binaryPath + "/codecov/default.profdata",
-                "--ignore-filename-regex=.build|Tests"
-            ]
+            "llvm-cov",
+            "report",
+            testArtifactPath + "/Contents/MacOS/\(packageTests)",
+            "-instr-profile",
+            binaryPath + "/codecov/default.profdata",
+            "--ignore-filename-regex=.build|Tests"
+        ]
         #endif
         return process().runProcess(
             url: url,

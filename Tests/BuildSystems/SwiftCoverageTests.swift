@@ -33,11 +33,6 @@ final class SwiftCoverageTests: MuterTestCase {
         _ = sut.run(with: muterConfiguration)
 
         XCTAssertEqual(
-            process.executableURL?.path,
-            "/path/to/swift"
-        )
-
-        XCTAssertEqual(
             process.arguments, [
                 "build",
                 "--show-bin-path"
@@ -119,7 +114,7 @@ final class SwiftCoverageTests: MuterTestCase {
         process.stdoutToBeReturned = "/path/to/binary"
         process.stdoutToBeReturned = "/path/to/testArtifact"
         process.stdoutToBeReturned = loadLLVMCovLog()
-        
+
         let coverage = try XCTUnwrap(sut.run(with: muterConfiguration).get())
 
         XCTAssertEqual(

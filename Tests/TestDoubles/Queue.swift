@@ -1,6 +1,13 @@
 import Foundation
 
-public class Queue<A> {
+public class Queue<A>: CustomDebugStringConvertible {
+    public var debugDescription: String {
+        """
+        head: \(head)
+        tail: \(tail)
+        """
+    }
+
     private var head: Node<A>?
     private var tail: Node<A>?
 
@@ -33,10 +40,12 @@ public class Queue<A> {
 
         return node?.value
     }
-}
 
-extension Queue {
-    private class Node<B> {
+    class Node<B>: CustomDebugStringConvertible {
+        public var debugDescription: String {
+            "\(value)"
+        }
+
         var value: B
         var next: Node<B>?
 

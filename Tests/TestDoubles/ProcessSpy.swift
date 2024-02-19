@@ -5,7 +5,7 @@ final class ProcessSpy: Process {
     override var standardOutput: Any? {
         get {
             queue.dequeue()
-        } set { }
+        } set {}
     }
 
     private var _standardError: Any?
@@ -68,7 +68,7 @@ final class ProcessSpy: Process {
     }
 }
 
-private class FakePipe: Pipeable {
+private class FakePipe: Pipeable, CustomDebugStringConvertible {
     private let fileHandle: FakeFileHandle
 
     init(data: Data) {
@@ -77,6 +77,10 @@ private class FakePipe: Pipeable {
 
     var fileHandleForReading: FileHandle {
         fileHandle
+    }
+
+    var debugDescription: String {
+        fileHandle.debugDescription
     }
 }
 
@@ -101,5 +105,9 @@ private class FakeFileHandle: FileHandle {
 
     override func readDataToEndOfFile() -> Data {
         data
+    }
+
+    override var debugDescription: String {
+        String(data: data, encoding: .utf8) ?? ""
     }
 }

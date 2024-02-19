@@ -21,7 +21,7 @@ typealias PreparedSourceCode = (
     changes: MutationSourceCodePreparationChange
 )
 typealias SourceCodePreparation = (String) -> PreparedSourceCode?
-typealias ProcessFactory = () -> Process    
+typealias ProcessFactory = () -> Process
 typealias Flush = () -> Void
 typealias Printer = (String) -> Void
 typealias WriteFile = (String, String) throws -> Void
