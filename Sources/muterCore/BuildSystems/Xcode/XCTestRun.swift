@@ -15,29 +15,20 @@ struct XCTestRun: Equatable {
         let testTargetsKey = "TestTargets"
 
         if let testConfigurations = copy[testConfigurationsKey] as? [AnyHashable] {
-            // TestPlan configuration
             let newTestConfigurations = testConfigurations.map { testConfiguration in
-                if var newTestConfiguration = testConfiguration as? [String: AnyHashable],
-                   let testTargets = newTestConfiguration[testTargetsKey] as? [AnyHashable] {
-                    let newTestTargets = testTargets.map { testTarget in
-                        if let newTestTarget = testTarget as? [String: AnyHashable] {
-                            return updateEnvironmentVariables(
-                                forConfiguration: newTestTarget,
-                                key: key
-                            ) as AnyHashable
-                        }
-                        return testTarget
-                    }
-
-                    newTestConfiguration[testTargetsKey] = newTestTargets
-
-                    return newTestConfiguration as AnyHashable
+                guard var newTestConfiguration = testConfiguration as? [String: AnyHashable],
+                      let testTargets = newTestConfiguration[testTargetsKey] as? [[String: AnyHashable]]
+                else {
+                    return testConfiguration
                 }
-                return testConfiguration
+
+                let newTestTargets = testTargets.map { updateEnvironmentVariables(forConfiguration: $0, key: key) }
+                newTestConfiguration[testTargetsKey] = newTestTargets
+                return newTestConfiguration
             }
 
             copy[testConfigurationsKey] = newTestConfigurations
-        } else { 
+        } else {
             // Legacy Tests configuration
             for (plistEntry, plistValue) in copy {
                 if let testConfiguration = plistValue as? [String: AnyHashable] {
