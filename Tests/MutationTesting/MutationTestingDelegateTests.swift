@@ -24,7 +24,7 @@ final class MutationTestingDelegateTests: MuterTestCase {
     }
 
     func test_testProcessForXcodeBuild() throws {
-        current.process = Process.Factory.makeProcess
+        current.process = MuterProcessFactory.makeProcess
 
         let configuration = MuterConfiguration(
             executable: "/tmp/xcodebuild",
@@ -57,7 +57,7 @@ final class MutationTestingDelegateTests: MuterTestCase {
     }
 
     func test_testProcessForSwiftBuild() throws {
-        current.process = Process.Factory.makeProcess
+        current.process = MuterProcessFactory.makeProcess
 
         let configuration = MuterConfiguration(
             executable: "/tmp/swift",

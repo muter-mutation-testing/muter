@@ -3,8 +3,8 @@ import Foundation
 public class Queue<A>: CustomDebugStringConvertible {
     public var debugDescription: String {
         """
-        head: \(head)
-        tail: \(tail)
+        \(head.map { "head: \($0)" } ?? "head is empty")
+        \(tail.map { "head: \($0)" } ?? "tail is empty")
         """
     }
 

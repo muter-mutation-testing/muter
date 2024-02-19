@@ -44,7 +44,7 @@ struct World {
     }
 
     var ioDelegate: MutationTestingIODelegate = MutationTestingDelegate()
-    var process: ProcessFactory = Process.Factory.makeProcess
+    var process: ProcessFactory = MuterProcessFactory.makeProcess
     var prepareCode: SourceCodePreparation = PrepareSourceCode().prepareSourceCode
     var writeFile: WriteFile = { try $0.write(toFile: $1, atomically: true, encoding: .utf8) }
     var loadSourceCode: LoadSourceCode = { sourceCode(fromFileAt: $0) }

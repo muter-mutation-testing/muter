@@ -3,25 +3,60 @@ import Foundation
 let isMuterRunningKey = "IS_MUTER_RUNNING"
 let isMuterRunningValue = "YES"
 
-extension Process {
-    enum Factory {
-        static func makeProcess() -> Process {
-            let process = Process()
-            process.qualityOfService = .userInitiated
+typealias Process = MuterProcess
 
-            var environment = ProcessInfo.processInfo.environment
-            environment[isMuterRunningKey] = isMuterRunningValue
-            process.environment = environment
+protocol MuterProcess: AnyObject {
+    var terminationStatus: Int32 { get }
+    var environment: [String: String]? { get set }
+    var arguments: [String]? { get set }
+    var executableURL: URL? { get set }
+    var standardOutput: Any? { get set }
+    var standardError: Any? { get set }
 
-            return process
+    func runProcess(
+        url: String,
+        arguments args: [String]
+    ) -> Data?
+
+    func run() throws
+
+    func waitUntilExit()
+}
+
+extension MuterProcess {
+    func runProcess(
+        url: String,
+        arguments: [String]
+    ) -> String? {
+        guard let output: Data = runProcess(url: url, arguments: arguments) else {
+            return nil
         }
-    }
 
+        return String(data: output, encoding: .utf8)
+    }
+}
+
+extension Foundation.Process: MuterProcess {}
+
+enum MuterProcessFactory {
+    static func makeProcess() -> MuterProcess {
+        let process = Foundation.Process()
+        process.qualityOfService = .userInitiated
+
+        var environment = ProcessInfo.processInfo.environment
+        environment[isMuterRunningKey] = isMuterRunningValue
+        process.environment = environment
+
+        return process
+    }
+}
+
+extension Foundation.Process {
     #if !os(Linux)
     @objc
     #endif
     var processData: Data? {
-        (standardOutput as? Pipeable)?.readStringToEndOfFile()
+        (standardOutput as? Pipe)?.readStringToEndOfFile()
     }
 
     func runProcess(
@@ -42,17 +77,6 @@ extension Process {
 
         return output
     }
-
-    func runProcess(
-        url: String,
-        arguments: [String]
-    ) -> String? {
-        guard let output: Data = runProcess(url: url, arguments: arguments) else {
-            return nil
-        }
-
-        return String(data: output, encoding: .utf8)
-    }
 }
 
 extension Pipe {
@@ -65,17 +89,5 @@ extension Pipe {
         }
 
         return data
-    }
-}
-
-extension ProcessWrapper {
-    enum Factory {
-        static func makeProcess() -> ProcessWrapper {
-            let process = ProcessWrapper()
-            process.qualityOfService = .userInitiated
-            process.environment = ProcessInfo.processInfo.environment
-
-            return process
-        }
     }
 }

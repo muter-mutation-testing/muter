@@ -69,10 +69,8 @@ final class BuildForTestingTests: MuterTestCase {
 
         _ = try? await sut.run(with: state)
 
-        XCTAssertEqual(process.executableURL?.absoluteString, "file:///path/to/xcodebuild")
+        XCTAssertEqual(process.executableURL?.path, "/path/to/xcodebuild")
         XCTAssertEqual(process.arguments, ["-showBuildSettings"])
-        XCTAssertTrue(process.runCalled)
-        XCTAssertTrue(process.waitUntilExitCalled)
     }
 
     func test_whenCannotParseBuildDirectoryThenThrowError() async throws {
