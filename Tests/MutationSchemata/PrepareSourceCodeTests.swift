@@ -30,6 +30,6 @@ final class PrepareSourceCodeTests: MuterTestCase {
     func test_prepareSourceCode() throws {
         let sut = try XCTUnwrap(PrepareSourceCode().prepareSourceCode(outputFilePath))
 
-        AssertSnapshot(sut.source.code.description)
+        AssertSnapshot(formatCode(sut.source.code.description))
     }
 }

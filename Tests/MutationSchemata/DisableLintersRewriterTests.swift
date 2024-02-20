@@ -20,6 +20,6 @@ final class DisableLintersRewriterTests: MuterTestCase {
         )
 
         let sut = DisableLintersRewriter().rewrite(code)
-        AssertSnapshot(sut.description)
+        AssertSnapshot(formatCode(sut.description))
     }
 }

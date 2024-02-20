@@ -1,4 +1,4 @@
- // swiftformat:disable all
+// swiftformat:disable all
 // swiftlint:disable all
 
 import class Foundation.ProcessInfo
