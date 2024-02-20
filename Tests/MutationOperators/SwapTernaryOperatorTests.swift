@@ -126,4 +126,22 @@ final class SwapTernaryOperatorTests: MuterTestCase {
 
         AssertSnapshot(formatCode(rewriter.description))
     }
+    
+    func test_shouldIgnoreComplexExpressions() throws {
+        let source = try sourceCode(
+            """
+            func complexExpression(_ a: Any, _ b: Any) -> Any? {
+                return a.isEmpty ? nil : a as [String]
+            }
+            """
+        )
+
+        let visitor = SwapTernaryOperator.Visitor(
+            sourceCodeInfo: .init(path: "", code: source)
+        )
+        
+        visitor.walk(source)
+
+        XCTAssertTrue(visitor.schemataMappings.isEmpty)
+    }
 }
