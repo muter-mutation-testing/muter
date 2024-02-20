@@ -97,8 +97,8 @@ extension SyntaxChildren {
 
         return result
     }
-    
-    func containsSyntaxKind<A: SyntaxProtocol>(_ syntax: A.Type) -> Bool {
+
+    func containsSyntaxKind(_ syntax: (some SyntaxProtocol).Type) -> Bool {
         asArray.containsSyntaxKind(syntax)
     }
 }

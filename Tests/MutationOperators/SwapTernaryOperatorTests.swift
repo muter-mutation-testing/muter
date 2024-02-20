@@ -126,7 +126,7 @@ final class SwapTernaryOperatorTests: MuterTestCase {
 
         AssertSnapshot(formatCode(rewriter.description))
     }
-    
+
     func test_shouldIgnoreComplexExpressions() throws {
         let source = try sourceCode(
             """
@@ -139,7 +139,7 @@ final class SwapTernaryOperatorTests: MuterTestCase {
         let visitor = SwapTernaryOperator.Visitor(
             sourceCodeInfo: .init(path: "", code: source)
         )
-        
+
         visitor.walk(source)
 
         XCTAssertTrue(visitor.schemataMappings.isEmpty)

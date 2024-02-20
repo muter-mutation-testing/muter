@@ -27,13 +27,30 @@ final class AddImportRewriter: SyntaxRewriter {
             CodeBlockItemSyntax(
                 item: CodeBlockItemSyntax.Item(
                     ImportDeclSyntax(
+                        leadingTrivia: .space,
+                        modifiers: [
+                            DeclModifierSyntax(
+                                name: TokenSyntax(
+                                    .keyword(.import),
+                                    trailingTrivia: .space,
+                                    presence: .present
+                                )
+                            )
+                        ],
+                        importKeyword: .keyword(.class),
                         path: ImportPathComponentListSyntax([
                             ImportPathComponentSyntax(
+                                leadingTrivia: .space,
                                 name: .identifier("Foundation")
-                                    .appendingLeadingTrivia(.spaces(1))
-                                    .appendingTrailingTrivia(.newlines(2))
+                            ),
+                            ImportPathComponentSyntax(
+                                name: .periodToken()
+                            ),
+                            ImportPathComponentSyntax(
+                                name: .identifier("ProcessInfo")
                             )
-                        ])
+                        ]),
+                        trailingTrivia: .newlines(2)
                     )
                 )
             )
@@ -52,7 +69,7 @@ final class AddImportVisitior {
         let allImports = node
             .description
             .split(separator: "\n")
-            .filter { $0.contains("import ") }
+            .include { $0.contains("import ") }
         return !allImports.any { $0.contains("Foundation") }
     }
 }

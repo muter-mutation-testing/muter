@@ -1,7 +1,7 @@
 // swiftformat:disable all
 // swiftlint:disable all
 
-import Foundation
+import class Foundation.ProcessInfo
 
 #if os(iOS) || os(tvOS)
     print("please ignore me")
@@ -9,7 +9,7 @@ import Foundation
 
 struct ConditionalOperators {
     func something(_ a: Int) -> String {
-        if ProcessInfo.processInfo.environment["sampleWithAllOperators_7_19_223"] != nil {
+        if ProcessInfo.processInfo.environment["sampleWithAllOperators_7_19_242"] != nil {
             let b = a != 5
             let e = a != 1
             let c = a >= 4
@@ -22,7 +22,7 @@ struct ConditionalOperators {
             }
 
             return a == 9 ? "goodbye" : "what"
-        } else if ProcessInfo.processInfo.environment["sampleWithAllOperators_18_43_444"] != nil {
+        } else if ProcessInfo.processInfo.environment["sampleWithAllOperators_18_43_463"] != nil {
             let b = a == 5
             let e = a != 1
             let c = a >= 4
@@ -35,7 +35,7 @@ struct ConditionalOperators {
             }
 
             return a == 9 ? "what" : "goodbye"
-        } else if ProcessInfo.processInfo.environment["sampleWithAllOperators_18_18_419"] != nil {
+        } else if ProcessInfo.processInfo.environment["sampleWithAllOperators_18_18_438"] != nil {
             let b = a == 5
             let e = a != 1
             let c = a >= 4
@@ -48,7 +48,7 @@ struct ConditionalOperators {
             }
 
             return a != 9 ? "goodbye" : "what"
-        } else if ProcessInfo.processInfo.environment["sampleWithAllOperators_14_14_356"] != nil {
+        } else if ProcessInfo.processInfo.environment["sampleWithAllOperators_14_14_375"] != nil {
             let b = a == 5
             let e = a != 1
             let c = a >= 4
@@ -61,7 +61,7 @@ struct ConditionalOperators {
             }
 
             return a == 9 ? "goodbye" : "what"
-        } else if ProcessInfo.processInfo.environment["sampleWithAllOperators_12_19_338"] != nil {
+        } else if ProcessInfo.processInfo.environment["sampleWithAllOperators_12_19_357"] != nil {
             let b = a == 5
             let e = a != 1
             let c = a >= 4
@@ -74,7 +74,7 @@ struct ConditionalOperators {
             }
 
             return a == 9 ? "goodbye" : "what"
-        } else if ProcessInfo.processInfo.environment["sampleWithAllOperators_11_19_316"] != nil {
+        } else if ProcessInfo.processInfo.environment["sampleWithAllOperators_11_19_335"] != nil {
             let b = a == 5
             let e = a != 1
             let c = a >= 4
@@ -87,7 +87,7 @@ struct ConditionalOperators {
             }
 
             return a == 9 ? "goodbye" : "what"
-        } else if ProcessInfo.processInfo.environment["sampleWithAllOperators_10_19_292"] != nil {
+        } else if ProcessInfo.processInfo.environment["sampleWithAllOperators_10_19_311"] != nil {
             let b = a == 5
             let e = a != 1
             let c = a >= 4
@@ -100,7 +100,7 @@ struct ConditionalOperators {
             }
 
             return a == 9 ? "goodbye" : "what"
-        } else if ProcessInfo.processInfo.environment["sampleWithAllOperators_9_19_269"] != nil {
+        } else if ProcessInfo.processInfo.environment["sampleWithAllOperators_9_19_288"] != nil {
             let b = a == 5
             let e = a != 1
             let c = a <= 4
@@ -113,7 +113,7 @@ struct ConditionalOperators {
             }
 
             return a == 9 ? "goodbye" : "what"
-        } else if ProcessInfo.processInfo.environment["sampleWithAllOperators_8_19_246"] != nil {
+        } else if ProcessInfo.processInfo.environment["sampleWithAllOperators_8_19_265"] != nil {
             let b = a == 5
             let e = a == 1
             let c = a >= 4
@@ -147,7 +147,7 @@ struct ConditionalOperators {
     }
 
     func baz() {
-        if ProcessInfo.processInfo.environment["sampleWithAllOperators_26_37_577"] != nil {
+        if ProcessInfo.processInfo.environment["sampleWithAllOperators_26_37_596"] != nil {
         } else {
             _ = foo(bar: { $0 == char })
         }
@@ -156,7 +156,7 @@ struct ConditionalOperators {
 
 struct LogicalConnectors {
     func someCode() -> Bool {
-        if ProcessInfo.processInfo.environment["sampleWithAllOperators_32_22_665"] != nil {
+        if ProcessInfo.processInfo.environment["sampleWithAllOperators_32_22_684"] != nil {
             return false || false
         } else {
             return false && false
@@ -164,7 +164,7 @@ struct LogicalConnectors {
     }
 
     func someOtherCode() -> Bool {
-        if ProcessInfo.processInfo.environment["sampleWithAllOperators_36_21_736"] != nil {
+        if ProcessInfo.processInfo.environment["sampleWithAllOperators_36_21_755"] != nil {
             return true && true
         } else {
             return true || true
@@ -174,7 +174,7 @@ struct LogicalConnectors {
 
 struct SideEffects {
     func containsSideEffect() -> Int {
-        if ProcessInfo.processInfo.environment["sampleWithAllOperators_42_31_843"] != nil {
+        if ProcessInfo.processInfo.environment["sampleWithAllOperators_42_31_862"] != nil {
             return 1
         } else {
             _ = causesSideEffect()
@@ -183,7 +183,7 @@ struct SideEffects {
     }
 
     func containsSideEffect() -> Int {
-        if ProcessInfo.processInfo.environment["sampleWithAllOperators_49_31_965"] != nil {
+        if ProcessInfo.processInfo.environment["sampleWithAllOperators_49_31_984"] != nil {
             print("something")
         } else {
             print("something")
@@ -198,7 +198,7 @@ struct SideEffects {
     }
 
     func causesAnotherSideEffect() {
-        if ProcessInfo.processInfo.environment["sampleWithAllOperators_60_66_1237"] != nil {
+        if ProcessInfo.processInfo.environment["sampleWithAllOperators_60_66_1256"] != nil {
             let key = "some key"
             let value = aFunctionThatReturnsAValue()
         } else {
@@ -220,7 +220,7 @@ struct SideEffects {
     }
 
     func containsAVoidFunctionCallThatSpansManyLine() {
-        if ProcessInfo.processInfo.environment["sampleWithAllOperators_79_10_1778"] != nil {
+        if ProcessInfo.processInfo.environment["sampleWithAllOperators_79_10_1797"] != nil {
         } else {
             functionCall(
                 "some argument",
@@ -238,7 +238,7 @@ struct Concurrency {
     private let condition = NSCondition()
 
     private func semaphoreLock(block: () -> Void) {
-        if ProcessInfo.processInfo.environment["sampleWithAllOperators_92_16_2140"] != nil {
+        if ProcessInfo.processInfo.environment["sampleWithAllOperators_92_16_2159"] != nil {
             defer { semaphore.signal() }
             semaphore.wait()
         } else {
@@ -249,7 +249,7 @@ struct Concurrency {
     }
 
     private func recursiveLock(block: () -> Void) {
-        if ProcessInfo.processInfo.environment["sampleWithAllOperators_98_16_2267"] != nil {
+        if ProcessInfo.processInfo.environment["sampleWithAllOperators_98_16_2286"] != nil {
             defer { lock.unlock() }
             lock.lock()
         } else {
@@ -260,7 +260,7 @@ struct Concurrency {
     }
 
     private func nsCondition(block: () -> Void) {
-        if ProcessInfo.processInfo.environment["sampleWithAllOperators_104_16_2402"] != nil {
+        if ProcessInfo.processInfo.environment["sampleWithAllOperators_104_16_2421"] != nil {
             defer { condition.signal() }
             condition.wait()
         } else {
@@ -271,7 +271,7 @@ struct Concurrency {
     }
 
     private func nsConditionLock(block: () -> Void) {
-        if ProcessInfo.processInfo.environment["sampleWithAllOperators_110_16_2581"] != nil {
+        if ProcessInfo.processInfo.environment["sampleWithAllOperators_110_16_2600"] != nil {
             defer { conditionLock.unlock(withCondition: 1) }
             conditionLock.lock(whenCondition: 1)
         } else {
@@ -293,7 +293,7 @@ struct Concurrency {
 
 struct TernayOperators {
     func someCode(_ a: Bool) -> Bool {
-        if ProcessInfo.processInfo.environment["sampleWithAllOperators_125_32_2896"] != nil {
+        if ProcessInfo.processInfo.environment["sampleWithAllOperators_125_32_2915"] != nil {
             return a ? false : true
         } else {
             return a ? true : false
@@ -301,7 +301,7 @@ struct TernayOperators {
     }
 
     func someAnotherCode(_ a: Bool) -> String {
-        if ProcessInfo.processInfo.environment["sampleWithAllOperators_129_36_2987"] != nil {
+        if ProcessInfo.processInfo.environment["sampleWithAllOperators_129_36_3006"] != nil {
             return a ? "false" : "true"
         } else {
             return a ? "true" : "false"
@@ -309,9 +309,9 @@ struct TernayOperators {
     }
 
     func someCode(_ a: Bool, _ b: Bool) -> Bool {
-        if ProcessInfo.processInfo.environment["sampleWithAllOperators_133_44_3088"] != nil {
+        if ProcessInfo.processInfo.environment["sampleWithAllOperators_133_44_3107"] != nil {
             return a ? false : b ? true : false
-        } else if ProcessInfo.processInfo.environment["sampleWithAllOperators_133_37_3081"] != nil {
+        } else if ProcessInfo.processInfo.environment["sampleWithAllOperators_133_37_3100"] != nil {
             return a ? b ? false : true : false
         } else {
             return a ? b ? true : false : false
@@ -328,7 +328,7 @@ public enum Enum {
         case let .a(value):
             return value
         case let .b(value):
-            if ProcessInfo.processInfo.environment["sampleWithAllOperators_146_26_3347"] != nil {
+            if ProcessInfo.processInfo.environment["sampleWithAllOperators_146_26_3366"] != nil {
                 if something != nil {
                     return 0
                 }
@@ -348,7 +348,7 @@ extension String {
         return Something { value in
             var remainder = value
             for char in self {
-                guard let (_, newRemainder) = doSomething(condition: { if ProcessInfo.processInfo.environment["sampleWithAllOperators_159_75_3675"] != nil { $0 != char } else { $0 == char } }) else {
+                guard let (_, newRemainder) = doSomething(condition: { if ProcessInfo.processInfo.environment["sampleWithAllOperators_159_75_3694"] != nil { $0 != char } else { $0 == char } }) else {
                     return nil
                 }
 
