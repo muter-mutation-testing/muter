@@ -14,6 +14,7 @@ enum RemoveSideEffectsOperator {
         private lazy var untestedFunctionNames: [String] = [
             "print",
             "fatalError",
+            "preconditionFailure",
             "exit",
             "abort"
         ] + (configuration?.excludeCallList ?? [])

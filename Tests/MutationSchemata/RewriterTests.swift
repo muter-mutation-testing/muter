@@ -34,214 +34,31 @@ final class RewriterTests: MuterTestCase {
 
         let mapping = try XCTUnwrap(all.first)
 
-        let sut = MuterRewriter(mapping)
-
-        let mutatedSourceCode = sut.rewrite(sourceCode.source.code).description
-
         let positions = mapping.mutationSchemata
             .map { ($0.mutationOperatorId, $0.position) }
             .map(OperatorIdAndPositionAssert.init)
 
-        XCTAssertEqual(
-            positions,
-            expectedMutationPositions
+        AssertSnapshot(positions.description)
+    }
+
+    func test_allOperatorsWithImplicitReturnSourceCode() throws {
+        let sourceCode = try XCTUnwrap(PrepareSourceCode().prepareSourceCode(samplePath))
+
+        let all = generateSchemataMappings(
+            for: sourceCode.source,
+            changes: sourceCode.changes
         )
+
+        XCTAssertEqual(all.count, 1)
+
+        let mapping = try XCTUnwrap(all.first)
+
+        let sut = MuterRewriter(mapping)
+
+        let mutatedSourceCode = sut.rewrite(sourceCode.source.code).description
 
         AssertSnapshot(formatCode(mutatedSourceCode.description))
     }
-
-    private lazy var expectedMutationPositions: [OperatorIdAndPositionAssert] = [
-        OperatorIdAndPositionAssert(
-            id: .removeSideEffects,
-            position: MutationPosition(
-                utf8Offset: 2421,
-                line: 104,
-                column: 16
-            )
-        ), OperatorIdAndPositionAssert(
-            id: .ror,
-            position: MutationPosition(
-                utf8Offset: 311,
-                line: 10,
-                column: 19
-            )
-        ), OperatorIdAndPositionAssert(
-            id: .removeSideEffects,
-            position: MutationPosition(
-                utf8Offset: 2600,
-                line: 110,
-                column: 16
-            )
-        ), OperatorIdAndPositionAssert(
-            id: .ror,
-            position: MutationPosition(
-                utf8Offset: 335,
-                line: 11,
-                column: 19
-            )
-        ), OperatorIdAndPositionAssert(
-            id: .swapTernary,
-            position: MutationPosition(
-                utf8Offset: 2915,
-                line: 125,
-                column: 32
-            )
-        ), OperatorIdAndPositionAssert(
-            id: .swapTernary,
-            position: MutationPosition(
-                utf8Offset: 3006,
-                line: 129,
-                column: 36
-            )
-        ), OperatorIdAndPositionAssert(
-            id: .ror,
-            position: MutationPosition(
-                utf8Offset: 357,
-                line: 12,
-                column: 19
-            )
-        ), OperatorIdAndPositionAssert(
-            id: .swapTernary,
-            position: MutationPosition(
-                utf8Offset: 3100,
-                line: 133,
-                column: 37
-            )
-        ), OperatorIdAndPositionAssert(
-            id: .swapTernary,
-            position: MutationPosition(
-                utf8Offset: 3107,
-                line: 133,
-                column: 44
-            )
-        ), OperatorIdAndPositionAssert(
-            id: .ror,
-            position: MutationPosition(
-                utf8Offset: 3366,
-                line: 146,
-                column: 26
-            )
-        ), OperatorIdAndPositionAssert(
-            id: .ror,
-            position: MutationPosition(
-                utf8Offset: 375,
-                line: 14,
-                column: 14
-            )
-        ), OperatorIdAndPositionAssert(
-            id: .ror,
-            position: MutationPosition(
-                utf8Offset: 3694,
-                line: 159,
-                column: 75
-            )
-        ), OperatorIdAndPositionAssert(
-            id: .ror,
-            position: MutationPosition(
-                utf8Offset: 438,
-                line: 18,
-                column: 18
-            )
-        ), OperatorIdAndPositionAssert(
-            id: .swapTernary,
-            position: MutationPosition(
-                utf8Offset: 463,
-                line: 18,
-                column: 43
-            )
-        ), OperatorIdAndPositionAssert(
-            id: .ror,
-            position: MutationPosition(
-                utf8Offset: 586,
-                line: 26,
-                column: 27
-            )
-        ), OperatorIdAndPositionAssert(
-            id: .removeSideEffects,
-            position: MutationPosition(
-                utf8Offset: 596,
-                line: 26,
-                column: 37
-            )
-        ), OperatorIdAndPositionAssert(
-            id: .logicalOperator,
-            position: MutationPosition(
-                utf8Offset: 684,
-                line: 32,
-                column: 22
-            )
-        ), OperatorIdAndPositionAssert(
-            id: .logicalOperator,
-            position: MutationPosition(
-                utf8Offset: 755,
-                line: 36,
-                column: 21
-            )
-        ), OperatorIdAndPositionAssert(
-            id: .removeSideEffects,
-            position: MutationPosition(
-                utf8Offset: 862,
-                line: 42,
-                column: 31
-            )
-        ), OperatorIdAndPositionAssert(
-            id: .removeSideEffects,
-            position: MutationPosition(
-                utf8Offset: 984,
-                line: 49,
-                column: 31
-            )
-        ), OperatorIdAndPositionAssert(
-            id: .removeSideEffects,
-            position: MutationPosition(
-                utf8Offset: 1256,
-                line: 60,
-                column: 66
-            )
-        ), OperatorIdAndPositionAssert(
-            id: .removeSideEffects,
-            position: MutationPosition(
-                utf8Offset: 1797,
-                line: 79,
-                column: 10
-            )
-        ), OperatorIdAndPositionAssert(
-            id: .ror,
-            position: MutationPosition(
-                utf8Offset: 242,
-                line: 7,
-                column: 19
-            )
-        ), OperatorIdAndPositionAssert(
-            id: .ror,
-            position: MutationPosition(
-                utf8Offset: 265,
-                line: 8,
-                column: 19
-            )
-        ), OperatorIdAndPositionAssert(
-            id: .removeSideEffects,
-            position: MutationPosition(
-                utf8Offset: 2159,
-                line: 92,
-                column: 16
-            )
-        ), OperatorIdAndPositionAssert(
-            id: .removeSideEffects,
-            position: MutationPosition(
-                utf8Offset: 2286,
-                line: 98,
-                column: 16
-            )
-        ), OperatorIdAndPositionAssert(
-            id: .ror,
-            position: MutationPosition(
-                utf8Offset: 288,
-                line: 9,
-                column: 19
-            )
-        )
-    ]
 }
 
 private let allOperatorsSourceCode =

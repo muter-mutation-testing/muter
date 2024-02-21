@@ -18,3 +18,15 @@ struct Example {
 func < (lhs: String, rhs: String) -> Bool {
     return false
 }
+
+internal func isBare() throws -> Bool {
+    return try self.cachedIsBareRepo.memoize(body: {
+        let output = try callGit(
+            "rev-parse",
+            "--is-bare-repository",
+            failureMessage: "Couldn’t test for bare repository"
+        )
+
+        return output == "true"
+    })
+}

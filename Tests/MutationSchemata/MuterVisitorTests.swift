@@ -46,7 +46,7 @@ final class MuterVisitorTests: MuterTestCase {
         let ids = mappings.first?.mutationSchemata.map(\.mutationOperatorId)
         XCTAssertEqual(
             ids,
-            [.removeSideEffects, .ror, .swapTernary]
+            [.ror, .removeSideEffects, .swapTernary]
         )
     }
 

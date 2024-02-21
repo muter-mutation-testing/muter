@@ -121,13 +121,13 @@ class MuterVisitor: SyntaxAnyVisitor {
         let mutationDescription = mutatedSyntax.description
         let range = mutationRange ?? codeBlockDescription.range(of: node.description)
         let codeBlockTree = Parser.parse(source: codeBlockDescription)
-        guard let mutationRangeInCodeBlock = range
+        guard let range
         else {
             return codeBlockItemListSyntax
         }
 
         let mutationPositionInCodeBlock = codeBlockDescription.distance(
-            to: mutationRangeInCodeBlock.lowerBound
+            to: range.lowerBound
         )
 
         let edit = IncrementalEdit(
@@ -137,7 +137,7 @@ class MuterVisitor: SyntaxAnyVisitor {
         )
 
         let codeBlockWithMutation = codeBlockDescription.replacingCharacters(
-            in: mutationRangeInCodeBlock,
+            in: range,
             with: mutationDescription
         )
 

@@ -60,4 +60,8 @@ struct Example {
   func implicitReturnFunction() -> Int {
     containsSideEffect()
   }
+
+  func containsSpecialCases() {
+    preconditionFailure("this should never be deleted!")
+  }
 }

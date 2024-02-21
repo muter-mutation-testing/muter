@@ -8,7 +8,7 @@ struct MutationSchema {
             .deletingPathExtension()
             .lastPathComponent
 
-        return "\(fileName)_\(position.line)_\(position.column)_\(position.utf8Offset)"
+        return "\(fileName)_\(mutationOperatorId.rawValue)_\(position.line)_\(position.column)_\(position.utf8Offset)"
     }
 
     let filePath: String
