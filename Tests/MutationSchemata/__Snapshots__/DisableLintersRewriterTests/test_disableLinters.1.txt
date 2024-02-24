@@ -9,5 +9,5 @@
 #endif
 
 func foo() {
-    return true && false
+  return true && false
 }

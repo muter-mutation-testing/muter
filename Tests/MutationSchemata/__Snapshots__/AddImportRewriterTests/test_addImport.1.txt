@@ -1,12 +1,12 @@
-import class Foundation.ProcessInfo
-import class Foundation.URL
+ private import class Foundation.ProcessInfo
 
 #if os(iOS) || os(tvOS)
     import Foo
 #else
     import Bar
 #endif
+import class Foundation.URL
 
 func foo() {
-    return true && false
+  return true && false
 }

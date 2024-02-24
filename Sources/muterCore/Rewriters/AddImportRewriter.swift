@@ -33,6 +33,13 @@ final class AddImportRewriter: SyntaxRewriter {
                         modifiers: [
                             DeclModifierSyntax(
                                 name: TokenSyntax(
+                                    .keyword(.private),
+                                    trailingTrivia: .space,
+                                    presence: .present
+                                )
+                            ),
+                            DeclModifierSyntax(
+                                name: TokenSyntax(
                                     .keyword(.import),
                                     trailingTrivia: .space,
                                     presence: .present
