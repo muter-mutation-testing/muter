@@ -4,12 +4,14 @@ enum ChangeLogicalConnectorOperator {
     class Visitor: TokenAwareVisitor {
         convenience init(
             configuration: MuterConfiguration? = nil,
-            sourceCodeInfo: SourceCodeInfo
+            sourceCodeInfo: SourceCodeInfo,
+            regionsWithoutCoverage: [Region] = []
         ) {
             self.init(
                 configuration: configuration,
                 sourceCodeInfo: sourceCodeInfo,
-                mutationOperatorId: .logicalOperator
+                mutationOperatorId: .logicalOperator,
+                regionsWithoutCoverage: regionsWithoutCoverage
             )
 
             tokensToDiscover = [

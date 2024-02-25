@@ -31,4 +31,27 @@ extension MuterProcess {
 
         return String(data: output, encoding: .utf8)
     }
+
+    func find(
+        atPath path: String,
+        byName name: String
+    ) -> String? {
+        runProcess(
+            url: "/usr/bin/find",
+            arguments: [path, "-name", name]
+        )
+        .flatMap(\.nilIfEmpty)
+    }
+
+    func findExecutable(
+        atPath path: String,
+        byName name: String
+    ) -> String? {
+        runProcess(
+            url: "/usr/bin/find",
+            arguments: [path, "-type", "f", "-name", name]
+        )
+        .flatMap(\.nilIfEmpty)
+        .map(\.trimmed)
+    }
 }

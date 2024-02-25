@@ -3,7 +3,7 @@ import SwiftSyntax
 
 typealias MutationSchemata = [MutationSchema]
 
-final class SchemataMutationMapping: Equatable {
+final class SchemataMutationMapping {
     let filePath: String
     fileprivate var mappings: [CodeBlockItemListSyntax: MutationSchemata]
 
@@ -65,6 +65,16 @@ final class SchemataMutationMapping: Equatable {
     }
 }
 
+extension SchemataMutationMapping: Equatable {
+    static func == (
+        lhs: SchemataMutationMapping,
+        rhs: SchemataMutationMapping
+    ) -> Bool {
+        lhs.codeBlocks == rhs.codeBlocks &&
+            lhs.mutationSchemata == rhs.mutationSchemata
+    }
+}
+
 func + (
     lhs: SchemataMutationMapping,
     rhs: SchemataMutationMapping
@@ -80,14 +90,6 @@ func + (
     }
 
     return result
-}
-
-func == (
-    lhs: SchemataMutationMapping,
-    rhs: SchemataMutationMapping
-) -> Bool {
-    lhs.codeBlocks == rhs.codeBlocks &&
-        lhs.mutationSchemata == rhs.mutationSchemata
 }
 
 extension [SchemataMutationMapping] {

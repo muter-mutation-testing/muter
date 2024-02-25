@@ -8,37 +8,30 @@ final class SwiftCoverage: BuildSystemCoverage {
         with configuration: MuterConfiguration
     ) -> Result<Coverage, CoverageError> {
         guard runWithCoverageEnabled(using: configuration) != nil,
-              let binaryPath = binaryPath(configuration),
-              let testArtifact = findTestArtifact(binaryPath),
+              let binaryPath = buildDirectory(configuration),
+              let testArtifact = xctestExecutable(at: binaryPath),
               let coverageReport = coverageReport(binaryPath, testArtifact)
         else {
             return .failure(.build)
         }
 
-        let projectCoverage: Coverage = .from(
+        let projectCoverage = projectCoverage(
             report: coverageReport,
             coverageThreshold: configuration.coverageThreshold
         )
 
-        return .success(projectCoverage)
-    }
+        let functionsCoverage = functionsCoverage(configuration)
 
-    private func runWithCoverageEnabled(
-        using configuration: MuterConfiguration
-    ) -> String? {
-        let result: String? = process().runProcess(
-            url: configuration.testCommandExecutable,
-            arguments: configuration.enableCoverageArguments
+        return .success(
+            Coverage(
+                percent: projectCoverage.percent,
+                filesWithoutCoverage: projectCoverage.filesWithoutCoverage,
+                functionsCoverage: functionsCoverage
+            )
         )
-        .flatMap(\.nilIfEmpty)
-        .map(\.trimmed)
-
-        return result
     }
 
-    private func binaryPath(
-        _ configuration: MuterConfiguration
-    ) -> String? {
+    func buildDirectory(_ configuration: MuterConfiguration) -> String? {
         process().runProcess(
             url: configuration.testCommandExecutable,
             arguments: ["build", "--show-bin-path"]
@@ -47,17 +40,24 @@ final class SwiftCoverage: BuildSystemCoverage {
         .map(\.trimmed)
     }
 
-    private func findTestArtifact(
-        _ binaryPath: String
-    ) -> String? {
-        let result = process().runProcess(
-            url: "/usr/bin/find",
-            arguments: [binaryPath, "-name", "*.xctest"]
-        )
-        .flatMap(\.nilIfEmpty)
-        .map(\.trimmed)
+    private func projectCoverage(
+        report: String,
+        coverageThreshold: Double = 0
+    ) -> (percent: Int, filesWithoutCoverage: [FilePath]) {
+        let files = report.stringsMatchingRegex("^(.)*.swift", options: .anchorsMatchLines)
+        var percents = report.split(separator: "\n").compactMap { line in
+            String(line)
+                .stringsMatchingRegex("\\d{1,3}.\\d{1,2}%")
+                .last?
+                .replacingOccurrences(of: "%", with: "")
+        }.compactMap { Double($0) }
 
-        return result
+        let percent = Int(percents.removeLast())
+        let filesWithoutCoverage = zip(files, percents)
+            .include { _, coverage in coverage <= coverageThreshold }
+            .map(\.0)
+
+        return (percent: percent, filesWithoutCoverage: filesWithoutCoverage)
     }
 
     private func coverageReport(
@@ -94,30 +94,5 @@ final class SwiftCoverage: BuildSystemCoverage {
         )
         .flatMap(\.nilIfEmpty)
         .map(\.trimmed)
-    }
-}
-
-private extension Coverage {
-    static func from(
-        report: String,
-        coverageThreshold: Double = 0
-    ) -> Coverage {
-        let files = report.stringsMatchingRegex("^(.)*.swift", options: .anchorsMatchLines)
-        var percents = report.split(separator: "\n").compactMap { line in
-            String(line)
-                .stringsMatchingRegex("\\d{1,3}.\\d{1,2}%")
-                .last?
-                .replacingOccurrences(of: "%", with: "")
-        }.compactMap { Double($0) }
-
-        let percent = percents.removeLast()
-        let filesWithoutCoverage = zip(files, percents)
-            .include { _, coverage in coverage <= coverageThreshold }
-            .map(\.0)
-
-        return Coverage(
-            percent: Int(percent),
-            filesWithoutCoverage: filesWithoutCoverage
-        )
     }
 }

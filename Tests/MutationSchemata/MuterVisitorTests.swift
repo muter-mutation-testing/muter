@@ -9,7 +9,7 @@ final class MuterVisitorTests: MuterTestCase {
     override func tearDownWithError() throws {
         try super.tearDownWithError()
 
-        try FileManager.default.removeItem(atPath: samplePath)
+        try? FileManager.default.removeItem(atPath: samplePath)
     }
 
     func test_shouldIgnoreSkippedLines() throws {
@@ -60,6 +60,35 @@ final class MuterVisitorTests: MuterTestCase {
         let mappings = generateSchemataMappings(
             for: sourceCode.source,
             changes: sourceCode.changes
+        )
+
+        XCTAssertTrue(mappings.isEmpty)
+    }
+
+    func test_ignoreRegionsWithoutCoverage() throws {
+        let source = try sourceCode("""
+        import Foundation
+
+        public func foo(_ a: Bool, _ b: Bool) -> Bool {
+            if a && b {
+                return a == b
+            }
+
+            return true
+        }
+        """)
+
+        let mappings = generateSchemataMappings(
+            for: .init(path: "", code: source),
+            changes: .null,
+            regionsWithoutCoverage: [
+                .make(
+                    lineStart: 4,
+                    columnStart: 15,
+                    lineEnd: 6,
+                    columnEnd: 6
+                )
+            ]
         )
 
         XCTAssertTrue(mappings.isEmpty)

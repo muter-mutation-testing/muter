@@ -153,11 +153,31 @@ extension Array {
 extension Coverage {
     static func make(
         percent: Int = 0,
-        filesWithoutCoverage: [FilePath] = []
+        filesWithoutCoverage: [FilePath] = [],
+        functionsCoverage: FunctionsCoverage = .null
     ) -> Coverage {
         Coverage(
             percent: percent,
-            filesWithoutCoverage: filesWithoutCoverage
+            filesWithoutCoverage: filesWithoutCoverage,
+            functionsCoverage: functionsCoverage
+        )
+    }
+}
+
+extension Region {
+    static func make(
+        lineStart: Int = 0,
+        columnStart: Int = 0,
+        lineEnd: Int = 0,
+        columnEnd: Int = 0,
+        executionCount: Int = 0
+    ) -> Region {
+        Region(
+            lineStart: lineStart,
+            columnStart: columnStart,
+            lineEnd: lineEnd,
+            columnEnd: columnEnd,
+            executionCount: executionCount
         )
     }
 }

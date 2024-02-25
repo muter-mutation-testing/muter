@@ -11,7 +11,7 @@ class TokenAwareVisitor: MuterVisitor {
             return .visitChildren
         }
 
-        let position = location(for: node)
+        let position = startLocation(for: node)
         let snapshot = MutationOperator.Snapshot(
             before: node.description.trimmed,
             after: oppositeOperator,

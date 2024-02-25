@@ -1,7 +1,7 @@
 import Foundation
 import SwiftSyntax
 
-typealias VisitorInitializer = (MuterConfiguration?, SourceCodeInfo) -> MuterVisitor
+typealias VisitorInitializer = (MuterConfiguration?, SourceCodeInfo, [Region]) -> MuterVisitor
 typealias MutationOperatorList = [MutationOperator.Id]
 
 extension [MutationOperator.Id] {

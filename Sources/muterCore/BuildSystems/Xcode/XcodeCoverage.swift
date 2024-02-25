@@ -21,10 +21,22 @@ final class XcodeCoverage: BuildSystemCoverage {
         let percent = extractCoverage(from: report)
         let projectCoverage = Coverage(
             percent: percent,
-            filesWithoutCoverage: untested
+            filesWithoutCoverage: untested,
+            functionsCoverage: .null // TODO: add
         )
 
         return .success(projectCoverage)
+    }
+
+    func buildDirectory(_ configuration: MuterConfiguration) -> String? {
+        process().runProcess(
+            url: configuration.testCommandExecutable,
+            arguments: configuration.testCommandArguments + ["-showBuildSettings"]
+        )
+        .flatMap { $0.firstMatchOf("BUILD_DIR = (.+)", options: .anchorsMatchLines) }
+        .map(\.trimmed)
+        .flatMap(\.nilIfEmpty)
+        .flatMap { URL(fileURLWithPath: $0).deletingLastPathComponent().path }
     }
 
     private func runTestsWithCoverageEnabled(

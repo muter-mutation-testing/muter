@@ -21,12 +21,14 @@ enum RemoveSideEffectsOperator {
 
         convenience init(
             configuration: MuterConfiguration? = nil,
-            sourceCodeInfo: SourceCodeInfo
+            sourceCodeInfo: SourceCodeInfo,
+            regionsWithoutCoverage: [Region] = []
         ) {
             self.init(
                 configuration: configuration,
                 sourceCodeInfo: sourceCodeInfo,
-                mutationOperatorId: .removeSideEffects
+                mutationOperatorId: .removeSideEffects,
+                regionsWithoutCoverage: regionsWithoutCoverage
             )
         }
 

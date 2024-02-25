@@ -109,12 +109,6 @@ extension [Syntax] {
     }
 }
 
-extension [any SyntaxProtocol] {
-    func containsSyntaxKind<A: SyntaxProtocol>(_ syntax: A.Type) -> Bool {
-        contains { $0.is(A.self) }
-    }
-}
-
 extension FunctionDeclSyntax {
     var hasImplicitReturn: Bool {
         guard let body else {

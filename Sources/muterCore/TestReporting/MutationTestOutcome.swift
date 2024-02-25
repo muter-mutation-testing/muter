@@ -51,25 +51,3 @@ extension MutationTestOutcome {
         }
     }
 }
-
-struct Coverage: Equatable {
-    let percent: Int
-    let filesWithoutCoverage: [FilePath]
-
-    init(
-        percent: Int,
-        filesWithoutCoverage: [FilePath]
-    ) {
-        self.percent = percent
-        self.filesWithoutCoverage = filesWithoutCoverage
-    }
-}
-
-extension Coverage {
-    static var null: Coverage {
-        Coverage(
-            percent: -1,
-            filesWithoutCoverage: []
-        )
-    }
-}

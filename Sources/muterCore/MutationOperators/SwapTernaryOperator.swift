@@ -4,12 +4,14 @@ enum SwapTernaryOperator {
     final class Visitor: MuterVisitor {
         convenience init(
             configuration: MuterConfiguration? = nil,
-            sourceCodeInfo: SourceCodeInfo
+            sourceCodeInfo: SourceCodeInfo,
+            regionsWithoutCoverage: [Region] = []
         ) {
             self.init(
                 configuration: configuration,
                 sourceCodeInfo: sourceCodeInfo,
-                mutationOperatorId: .swapTernary
+                mutationOperatorId: .swapTernary,
+                regionsWithoutCoverage: regionsWithoutCoverage
             )
         }
 

@@ -34,6 +34,7 @@ class MuterVisitor: SyntaxAnyVisitor {
     let configuration: MuterConfiguration?
     let sourceCodeInfo: SourceCodeInfo
     let mutationOperatorId: MutationOperator.Id
+    let regionsWithoutCoverage: [Region]
 
     var sourceCodePreparationChange: MutationSourceCodePreparationChange = .null
 
@@ -42,11 +43,13 @@ class MuterVisitor: SyntaxAnyVisitor {
     required init(
         configuration: MuterConfiguration? = nil,
         sourceCodeInfo: SourceCodeInfo,
-        mutationOperatorId: MutationOperator.Id
+        mutationOperatorId: MutationOperator.Id,
+        regionsWithoutCoverage: [Region]
     ) {
         self.configuration = configuration
         self.sourceCodeInfo = sourceCodeInfo
         self.mutationOperatorId = mutationOperatorId
+        self.regionsWithoutCoverage = regionsWithoutCoverage
 
         schemataMappings = SchemataMutationMapping(
             filePath: sourceCodeInfo.path
@@ -56,6 +59,10 @@ class MuterVisitor: SyntaxAnyVisitor {
     }
 
     override func visitAny(_ node: Syntax) -> SyntaxVisitorContinueKind {
+        guard hasTestCoverage(node) else {
+            return .skipChildren
+        }
+
         checkNodeForDisableTag(node)
 
         return super.visitAny(node)
@@ -68,7 +75,31 @@ class MuterVisitor: SyntaxAnyVisitor {
             && node.containsLineComment(muterDisableTag)
     }
 
-    func location(
+    private func hasTestCoverage(
+        _ node: SyntaxProtocol
+    ) -> Bool {
+        guard !regionsWithoutCoverage.isEmpty else {
+            return true
+        }
+
+        let nodeRegion = nodeRegion(node)
+
+        return regionsWithoutCoverage.include { $0.contains(nodeRegion) }.isEmpty
+    }
+
+    private func nodeRegion(_ node: SyntaxProtocol) -> Region {
+        let start = startLocation(for: node)
+        let end = endLocation(for: node)
+
+        return Region(
+            lineStart: start.line,
+            columnStart: start.column,
+            lineEnd: end.line,
+            columnEnd: end.column
+        )
+    }
+
+    func startLocation(
         for node: SyntaxProtocol
     ) -> MutationPosition {
         let converter = SourceLocationConverter(

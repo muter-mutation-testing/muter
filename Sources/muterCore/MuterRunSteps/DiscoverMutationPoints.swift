@@ -18,7 +18,8 @@ struct DiscoverMutationPoints: RunCommandStep {
         let discovered = discoverMutationPoints(
             forOperators: state.mutationOperatorList,
             inFilesAt: state.sourceFileCandidates,
-            configuration: state.muterConfiguration
+            configuration: state.muterConfiguration,
+            coverage: state.projectCoverage
         )
 
         guard discovered.mappings.count >= 1 else {
@@ -44,7 +45,8 @@ private extension DiscoverMutationPoints {
     func discoverMutationPoints(
         forOperators operators: MutationOperatorList,
         inFilesAt filePaths: [String],
-        configuration: MuterConfiguration
+        configuration: MuterConfiguration,
+        coverage: Coverage
     ) -> DiscoveredFiles {
         filePaths.accumulate(into: DiscoveredFiles()) { discoveredFiles, path in
             guard
@@ -57,7 +59,8 @@ private extension DiscoverMutationPoints {
             let schemataMappings = discoverNewSchemataMappings(
                 forOperators: operators,
                 inFile: sourceCode,
-                configuration: configuration
+                configuration: configuration,
+                regionsWithoutCoverage: coverage.regionsForFile(path)
             )
 
             if !schemataMappings.isEmpty {
@@ -73,14 +76,16 @@ private extension DiscoverMutationPoints {
     func discoverNewSchemataMappings(
         forOperators operators: MutationOperatorList,
         inFile sourceCode: PreparedSourceCode,
-        configuration: MuterConfiguration
+        configuration: MuterConfiguration,
+        regionsWithoutCoverage: [Region]
     ) -> [SchemataMutationMapping] {
         let source = sourceCode.source.code
 
         return operators.accumulate(into: []) { newSchemataMappings, mutationOperatorId in
             let visitor = mutationOperatorId.visitor(
                 configuration,
-                sourceCode.source
+                sourceCode.source,
+                regionsWithoutCoverage
             )
 
             visitor.sourceCodePreparationChange = sourceCode.changes
