@@ -5,6 +5,7 @@ final class ConfigurationGenerationTests: MuterTestCase {
     func test_swiftPackageManagerProject() {
         let projectDirectoryContents = [
             "/some/path/Package.swift",
+            "/some/path/Package@swift-5.11.swift",
             "/some/path/main.swift"
         ]
 
@@ -14,7 +15,7 @@ final class ConfigurationGenerationTests: MuterTestCase {
             MuterConfiguration(
                 executable: "/usr/bin/swift",
                 arguments: ["test"],
-                excludeList: ["Package.swift"]
+                excludeList: ["Package.swift", "Package@swift-5.11.swift"]
             )
         )
     }
