@@ -1,4 +1,5 @@
 @testable import muterCore
+import SnapshotTesting
 import TestingExtensions
 import XCTest
 
@@ -18,6 +19,15 @@ class MuterTestCase: XCTestCase {
         hour: 2,
         minute: 42
     ).date!
+
+    var isRecording: Bool {
+        get {
+            SnapshotTesting.isRecording
+        }
+        set {
+            SnapshotTesting.isRecording = newValue
+        }
+    }
 
     override func setUp() {
         super.setUp()

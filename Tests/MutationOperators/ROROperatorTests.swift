@@ -1,7 +1,7 @@
 @testable import muterCore
+import SnapshotTesting
 import TestingExtensions
 import XCTest
-import SnapshotTesting
 
 final class ROROperatorTests: MuterTestCase {
     private lazy var sourceWithConditionalLogic = sourceCode(

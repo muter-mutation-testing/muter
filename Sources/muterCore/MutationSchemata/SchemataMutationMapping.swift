@@ -113,11 +113,11 @@ extension SchemataMutationMapping: CustomStringConvertible, CustomDebugStringCon
     var debugDescription: String { description }
 
     var description: String {
-        let description = mappings.reduce(into: "") { accum, pair in
+        let description = mappings.keys.sorted().reduce(into: "") { accum, key in
             accum +=
                 """
-                source: "\(pair.key.escapedDescription)",
-                schemata: \(pair.value)
+                source: "\(key.escapedDescription)",
+                schemata: \(mappings[key]!)
                 """
         }
         return """
@@ -125,5 +125,11 @@ extension SchemataMutationMapping: CustomStringConvertible, CustomDebugStringCon
             \(description)
         )
         """
+    }
+}
+
+extension CodeBlockItemListSyntax: Comparable {
+    public static func < (lhs: SwiftSyntax.CodeBlockItemListSyntax, rhs: SwiftSyntax.CodeBlockItemListSyntax) -> Bool {
+        lhs.description < rhs.description
     }
 }

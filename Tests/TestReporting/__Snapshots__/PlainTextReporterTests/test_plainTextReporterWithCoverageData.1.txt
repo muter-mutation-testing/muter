@@ -1,7 +1,3 @@
-
-
-Here's your test report:
-
 --------------------------
 Applied Mutation Operators
 --------------------------
@@ -18,6 +14,8 @@ file3.swift:0   RelationalOperatorReplacement   mutant survived
 --------------------
 Mutation Test Scores
 --------------------
+
+Muter took 00:00:00.000 to run.
 
 These are the mutation scores for your test suite, as well as the files that had mutants introduced into them.
 

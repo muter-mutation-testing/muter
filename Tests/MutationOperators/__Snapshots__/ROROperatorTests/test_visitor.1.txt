@@ -1,21 +1,5 @@
 SchemataMutationMapping(
-    source: "\n        let output = try callGit(\n            \"rev-parse\",\n            \"--is-bare-repository\",\n            failureMessage: \"Couldn’t test for bare repository\"\n        )\n\n        return output == \"true\"",
-schemata: [Schemata(
-    id: "sampleWithConditionalOperators_RelationalOperatorReplacement_30_23_658",
-    filePath: "/Users/rafaelmachado/Developer/muter/Tests/fixtures/MutationExamples/NegateConditionals/sampleWithConditionalOperators.swift",
-    mutationOperatorId: .ror,
-    syntaxMutation: "\n        let output = try callGit(\n            \"rev-parse\",\n            \"--is-bare-repository\",\n            failureMessage: \"Couldn’t test for bare repository\"\n        )\n\n        return output != \"true\"",
-    position: MutationPosition(
-    utf8Offset: 658,
-    line: 30,
-    column: 23
-),
-    snapshot: MutationOperator.Snapshot(
-    before: "==",
-    after: "!=",
-    description: "changed == to !="
-)
-)]source: "\n        let b = a == 5\n        let e = a != 1\n        let c = a >= 4\n        let d = a <= 10\n        let f = a < 5\n        let g = a > 5\n\n        if a == 10 {\n            return \"hello\"\n        }\n\n        return a == 9 ? \"goodbye\" : \"what\"",
+    source: "\n        let b = a == 5\n        let e = a != 1\n        let c = a >= 4\n        let d = a <= 10\n        let f = a < 5\n        let g = a > 5\n\n        if a == 10 {\n            return \"hello\"\n        }\n\n        return a == 9 ? \"goodbye\" : \"what\"",
 schemata: [Schemata(
     id: "sampleWithConditionalOperators_RelationalOperatorReplacement_3_19_76",
     filePath: "/Users/rafaelmachado/Developer/muter/Tests/fixtures/MutationExamples/NegateConditionals/sampleWithConditionalOperators.swift",
@@ -130,6 +114,22 @@ schemata: [Schemata(
     utf8Offset: 272,
     line: 14,
     column: 18
+),
+    snapshot: MutationOperator.Snapshot(
+    before: "==",
+    after: "!=",
+    description: "changed == to !="
+)
+)]source: "\n        let output = try callGit(\n            \"rev-parse\",\n            \"--is-bare-repository\",\n            failureMessage: \"Couldn’t test for bare repository\"\n        )\n\n        return output == \"true\"",
+schemata: [Schemata(
+    id: "sampleWithConditionalOperators_RelationalOperatorReplacement_30_23_658",
+    filePath: "/Users/rafaelmachado/Developer/muter/Tests/fixtures/MutationExamples/NegateConditionals/sampleWithConditionalOperators.swift",
+    mutationOperatorId: .ror,
+    syntaxMutation: "\n        let output = try callGit(\n            \"rev-parse\",\n            \"--is-bare-repository\",\n            failureMessage: \"Couldn’t test for bare repository\"\n        )\n\n        return output != \"true\"",
+    position: MutationPosition(
+    utf8Offset: 658,
+    line: 30,
+    column: 23
 ),
     snapshot: MutationOperator.Snapshot(
     before: "==",
