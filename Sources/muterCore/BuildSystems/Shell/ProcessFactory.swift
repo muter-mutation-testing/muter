@@ -6,7 +6,7 @@ let isMuterRunningValue = "YES"
 enum MuterProcessFactory {
     static func makeProcess() -> MuterProcess {
         let process = Foundation.Process()
-        process.qualityOfService = .userInitiated
+        process.qualityOfService = .userInteractive
 
         var environment = ProcessInfo.processInfo.environment
         environment[isMuterRunningKey] = isMuterRunningValue
