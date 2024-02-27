@@ -65,8 +65,14 @@ enum RemoveSideEffectsOperator {
             return super.visit(node)
         }
 
+        override func visit(_ node: DoStmtSyntax) -> SyntaxVisitorContinueKind {
+            removeSideEffectAt(node.body)
+
+            return super.visit(node)
+        }
+
         override func visit(_ node: FunctionDeclSyntax) -> SyntaxVisitorContinueKind {
-            guard let body = node.body, !node.hasImplicitReturn else {
+            guard let body = node.body, !node.hasImplicitReturn, !containsNodesThatWillBeVisited(body) else {
                 return super.visit(node)
             }
 
@@ -156,6 +162,27 @@ enum RemoveSideEffectsOperator {
 
         private func untestedFunctionCallStatements(_ node: Syntax) -> Bool {
             untestedFunctionNames.contains { name in node.description.contains(name) }
+        }
+
+        // This is to avoid false positives for code block items such as do statement
+        // We are going to visit them individually
+        private func containsNodesThatWillBeVisited(_ node: CodeBlockSyntax) -> Bool {
+            let skippableNodes: [SyntaxProtocol.Type] = [
+                ForStmtSyntax.self,
+                GuardStmtSyntax.self,
+                WhileStmtSyntax.self,
+                RepeatStmtSyntax.self,
+                DoStmtSyntax.self
+            ]
+            for item in node.statements.map(\.item) {
+                for s in skippableNodes {
+                    if item.is(s) {
+                        return true
+                    }
+                }
+            }
+
+            return false
         }
 
         private func statementsContainsConcurrencyTypes(_ statement: PatternBindingSyntax) -> Bool {
