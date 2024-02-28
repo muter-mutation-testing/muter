@@ -56,7 +56,7 @@ final class RemoveSideEffectsOperatorTests: MuterTestCase {
         AssertSnapshot(formatCode(rewriter.description))
     }
 
-    func test_rewriter2() throws {
+    func test_sideEffectsInDoStatement() throws {
         let source = try sourceCode(
             """
             static func validate(_ type: ParsableArguments.Type, parent: InputKey?) -> ParsableArgumentsValidatorError? {
@@ -98,6 +98,6 @@ final class RemoveSideEffectsOperatorTests: MuterTestCase {
 
         let rewriter = MuterRewriter(visitor.schemataMappings).rewrite(source)
 
-        print(formatCode(rewriter.description))
+        AssertSnapshot(formatCode(rewriter.description))
     }
 }
