@@ -16,7 +16,7 @@ enum RemoveSideEffectsOperator {
             "fatalError",
             "preconditionFailure",
             "exit",
-            "abort"
+            "abort",
         ] + (configuration?.excludeCallList ?? [])
 
         convenience init(

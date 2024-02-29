@@ -35,7 +35,7 @@ struct DiscoverMutationPoints: RunCommandStep {
 
         return [
             .mutationMappingsDiscovered(mappings),
-            .sourceCodeParsed(discovered.sourceCodeByFilePath)
+            .sourceCodeParsed(discovered.sourceCodeByFilePath),
         ]
     }
 }

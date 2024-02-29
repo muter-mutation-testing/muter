@@ -37,7 +37,7 @@ final class AddImportRewriter: SyntaxRewriter {
                                     trailingTrivia: .space,
                                     presence: .present
                                 )
-                            )
+                            ),
                         ],
                         importKeyword: .keyword(.class),
                         path: ImportPathComponentListSyntax([
@@ -50,7 +50,7 @@ final class AddImportRewriter: SyntaxRewriter {
                             ),
                             ImportPathComponentSyntax(
                                 name: .identifier("ProcessInfo")
-                            )
+                            ),
                         ]),
                         trailingTrivia: .newlines(2)
                     )
