@@ -1,5 +1,4 @@
 import Foundation
-import Progress
 
 final class Logger {
     @Dependency(\.printer)

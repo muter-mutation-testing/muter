@@ -4,7 +4,6 @@ import Glibc
 import Darwin.C
 #endif
 import Foundation
-import Progress
 import Rainbow
 import SwiftSyntax
 
