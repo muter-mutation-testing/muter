@@ -109,7 +109,7 @@ extension BuildSystemCoverage {
             executablePath,
             "-instr-profile",
             coverageProfile,
-            "--ignore-filename-regex=.build|Tests"
+            "--ignore-filename-regex=.build|Tests",
         ]
         #else
         let url = "/usr/bin/xcrun"
@@ -119,7 +119,7 @@ extension BuildSystemCoverage {
             executablePath,
             "-instr-profile",
             coverageProfile,
-            "--ignore-filename-regex=.build|Tests"
+            "--ignore-filename-regex=.build|Tests",
         ]
         #endif
         return process().runProcess(

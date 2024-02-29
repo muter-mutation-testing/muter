@@ -38,7 +38,7 @@ final class SwapTernaryOperatorTests: MuterTestCase {
                             after: "a  ? \"false\" :  \"true\"",
                             description: "swapped ternary operator"
                         )
-                    )
+                    ),
                 ]
             ),
             (
@@ -58,7 +58,7 @@ final class SwapTernaryOperatorTests: MuterTestCase {
                             after: "a  ? false :  true",
                             description: "swapped ternary operator"
                         )
-                    )
+                    ),
                 ]
             )
         )
@@ -107,7 +107,7 @@ final class SwapTernaryOperatorTests: MuterTestCase {
                             after: "b  ? false :  true",
                             description: "swapped ternary operator"
                         )
-                    )
+                    ),
                 ]
             )
         )

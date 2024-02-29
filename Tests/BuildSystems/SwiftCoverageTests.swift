@@ -35,7 +35,7 @@ final class SwiftCoverageTests: MuterTestCase {
         XCTAssertEqual(
             process.arguments, [
                 "build",
-                "--show-bin-path"
+                "--show-bin-path",
             ]
         )
     }
@@ -55,7 +55,7 @@ final class SwiftCoverageTests: MuterTestCase {
             process.arguments, [
                 "/path/to/binary",
                 "-name",
-                "*.xctest"
+                "*.xctest",
             ]
         )
     }
@@ -79,7 +79,7 @@ final class SwiftCoverageTests: MuterTestCase {
                 "/path/to/testArtifact",
                 "-instr-profile",
                 "/path/to/binary/codecov/default.profdata",
-                "--ignore-filename-regex=.build|Tests"
+                "--ignore-filename-regex=.build|Tests",
             ]
         )
     }
@@ -103,7 +103,7 @@ final class SwiftCoverageTests: MuterTestCase {
                 "/path/to/testArtifact/Contents/MacOS/testArtifact",
                 "-instr-profile",
                 "/path/to/binary/codecov/default.profdata",
-                "--ignore-filename-regex=.build|Tests"
+                "--ignore-filename-regex=.build|Tests",
             ]
         )
     }

@@ -39,7 +39,7 @@ final class PerformMutationTestingTests: MuterTestCase {
             "runTestSuite(withSchemata:using:savingResultsIntoFileNamed:)",
             // Second mutation
             "switchOn(schemata:for:at:)",
-            "runTestSuite(withSchemata:using:savingResultsIntoFileNamed:)"
+            "runTestSuite(withSchemata:using:savingResultsIntoFileNamed:)",
         ])
 
         let expectedTestOutcomes = [
@@ -86,7 +86,7 @@ final class PerformMutationTestingTests: MuterTestCase {
             [
                 "baseline run",
                 "path_RelationalOperatorReplacement_0_0_0.log",
-                "path_RelationalOperatorReplacement_0_0_0.log"
+                "path_RelationalOperatorReplacement_0_0_0.log",
             ]
         )
     }
@@ -156,7 +156,7 @@ final class PerformMutationTestingTests: MuterTestCase {
             .buildError,
             .buildError,
             .buildError,
-            .buildError
+            .buildError,
         ]
 
         state.mutationMapping = try Array(repeating: makeSchemataMapping(), count: 5)
@@ -177,7 +177,7 @@ final class PerformMutationTestingTests: MuterTestCase {
             "switchOn(schemata:for:at:)",
             "runTestSuite(withSchemata:using:savingResultsIntoFileNamed:)",
             "switchOn(schemata:for:at:)",
-            "runTestSuite(withSchemata:using:savingResultsIntoFileNamed:)"
+            "runTestSuite(withSchemata:using:savingResultsIntoFileNamed:)",
         ])
     }
 
@@ -189,7 +189,7 @@ final class PerformMutationTestingTests: MuterTestCase {
             .buildError,
             .buildError,
             .failed,
-            .passed
+            .passed,
         ]
 
         state.mutationMapping = try Array(repeating: makeSchemataMapping(), count: 5)
@@ -213,7 +213,7 @@ final class PerformMutationTestingTests: MuterTestCase {
             "runTestSuite(withSchemata:using:savingResultsIntoFileNamed:)",
             "switchOn(schemata:for:at:)",
 
-            "runTestSuite(withSchemata:using:savingResultsIntoFileNamed:)"
+            "runTestSuite(withSchemata:using:savingResultsIntoFileNamed:)",
         ])
 
         let expectedBuildErrorOutcome = MutationTestOutcome.Mutation.make(
@@ -259,7 +259,7 @@ final class PerformMutationTestingTests: MuterTestCase {
                         syntaxMutation: "",
                         position: .firstPosition,
                         snapshot: .null
-                    )
+                    ),
                 ]
             )
         )

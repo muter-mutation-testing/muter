@@ -6,7 +6,7 @@ final class ConfigurationGenerationTests: MuterTestCase {
         let projectDirectoryContents = [
             "/some/path/Package.swift",
             "/some/path/Package@swift-5.11.swift",
-            "/some/path/main.swift"
+            "/some/path/main.swift",
         ]
 
         let generatedConfiguration = MuterConfiguration(from: projectDirectoryContents)
@@ -40,7 +40,7 @@ final class ConfigurationGenerationTests: MuterTestCase {
                     "iOSApp",
                     "-destination",
                     "platform=iOS Simulator,name=iPhone SE (3rd generation)",
-                    "test"
+                    "test",
                 ]
             )
         )
@@ -64,7 +64,7 @@ final class ConfigurationGenerationTests: MuterTestCase {
                     "iOSApp",
                     "-destination",
                     "platform=iOS Simulator,name=iPhone SE (3rd generation)",
-                    "test"
+                    "test",
                 ]
             )
         )
@@ -75,7 +75,7 @@ final class ConfigurationGenerationTests: MuterTestCase {
             "\(fixturesDirectory)/XcodeProjectFiles/iOSApp.xcodeproj",
             "\(fixturesDirectory)/XcodeProjectFiles/iOSApp.xcodeproj/project.xcworkspace",
             "\(fixturesDirectory)/XcodeProjectFiles/iOSApp.xcodeproj/project.xcworkspace/contents.xcworkspacedata",
-            "/some/path/AppDelegate.swift"
+            "/some/path/AppDelegate.swift",
         ]
 
         let generatedConfiguration = MuterConfiguration(from: projectDirectoryContents)
@@ -90,7 +90,7 @@ final class ConfigurationGenerationTests: MuterTestCase {
                     "iOSApp",
                     "-destination",
                     "platform=iOS Simulator,name=iPhone SE (3rd generation)",
-                    "test"
+                    "test",
                 ]
             )
         )
@@ -112,7 +112,7 @@ final class ConfigurationGenerationTests: MuterTestCase {
                     "CocoaApp.xcodeproj",
                     "-scheme",
                     "CocoaApp",
-                    "test"
+                    "test",
                 ]
             )
         )

@@ -174,7 +174,7 @@ enum RemoveSideEffectsOperator {
                 GuardStmtSyntax.self,
                 WhileStmtSyntax.self,
                 RepeatStmtSyntax.self,
-                DoStmtSyntax.self
+                DoStmtSyntax.self,
             ]
             for item in node.statements.map(\.item) {
                 for s in skippableNodes {

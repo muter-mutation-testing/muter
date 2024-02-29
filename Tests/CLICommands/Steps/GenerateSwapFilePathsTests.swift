@@ -36,7 +36,7 @@ final class GenerateSwapFilePathsTests: MuterTestCase {
             .swapFilePathGenerated([
                 "/folder/file1.swift": "/workspace/muter_tmp/file1.swift",
                 "/folder/file2.swift": "/workspace/muter_tmp/file2.swift",
-            ])
+            ]),
         ])
     }
 

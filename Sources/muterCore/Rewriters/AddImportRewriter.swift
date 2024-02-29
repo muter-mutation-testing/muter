@@ -55,7 +55,7 @@ final class AddImportRewriter: SyntaxRewriter {
                         trailingTrivia: .newlines(2)
                     )
                 )
-            )
+            ),
         ]
 
         for item in node {

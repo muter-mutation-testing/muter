@@ -87,7 +87,7 @@ final class MuterVisitorTests: MuterTestCase {
                     columnStart: 15,
                     lineEnd: 6,
                     columnEnd: 6
-                )
+                ),
             ]
         )
 

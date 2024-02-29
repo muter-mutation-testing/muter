@@ -33,7 +33,7 @@ final class SchemataBuilderTests: MuterTestCase {
         let mutationSchemata = try makeMutationSchemata([
             "\n  a >= b\n",
             "\n  a <= b\n",
-            "\n  a == b\n"
+            "\n  a == b\n",
         ])
 
         let actualMutationSwitch = MutationSwitch.apply(

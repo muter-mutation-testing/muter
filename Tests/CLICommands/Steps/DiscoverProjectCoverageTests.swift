@@ -50,7 +50,7 @@ final class DiscoverProjectCoverageTests: MuterTestCase {
             fileManager.methodCalls,
             [
                 "changeCurrentDirectoryPath(_:)",
-                "changeCurrentDirectoryPath(_:)"
+                "changeCurrentDirectoryPath(_:)",
             ]
         )
     }

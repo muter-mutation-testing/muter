@@ -27,7 +27,7 @@ final class DiscoverSourceFilesTests: MuterTestCase {
                 "\(filsToDiscoverPath)/ExampleSpec.swift",
                 "\(filsToDiscoverPath)/file1.swift",
                 "\(filsToDiscoverPath)/file2.swift",
-            ])
+            ]),
         ])
     }
 
@@ -54,7 +54,7 @@ final class DiscoverSourceFilesTests: MuterTestCase {
                 "\(filsToDiscoverPath)/ExampleSpec.swift",
                 "\(filsToDiscoverPath)/file1.swift",
                 "\(filsToDiscoverPath)/file2.swift",
-            ])
+            ]),
         ])
     }
 
@@ -83,7 +83,7 @@ final class DiscoverSourceFilesTests: MuterTestCase {
                 "\(filesToMutatePath)/ProjectName/ProjectName/Models/file 1.swift",
                 "\(filesToMutatePath)/ProjectName/ProjectName/Models/file 2.swift",
                 "\(filesToMutatePath)/ProjectName/ProjectName/Models/file 3.swift",
-            ])
+            ]),
         ])
     }
 
@@ -111,7 +111,7 @@ final class DiscoverSourceFilesTests: MuterTestCase {
                 "\(filsToDiscoverPath)/ExampleSpec.swift",
                 "\(filsToDiscoverPath)/file1.swift",
                 "\(filsToDiscoverPath)/file2.swift",
-            ])
+            ]),
         ])
     }
 
@@ -133,7 +133,7 @@ final class DiscoverSourceFilesTests: MuterTestCase {
         state.filesToMutate = [
             "file1.swift",
             "file2.swift",
-            "/Directory2/Directory3/file6.swift"
+            "/Directory2/Directory3/file6.swift",
         ]
 
         state.tempDirectoryURL = URL(fileURLWithPath: filesToMutatePath, isDirectory: true)
@@ -158,7 +158,7 @@ final class DiscoverSourceFilesTests: MuterTestCase {
         state.filesToMutate = [
             "/Directory2/**/*.swift",
             "file1.swift",
-            "/ExampleApp/*.swift"
+            "/ExampleApp/*.swift",
         ]
 
         state.tempDirectoryURL = URL(fileURLWithPath: filesToMutatePath, isDirectory: true)
@@ -206,7 +206,7 @@ final class DiscoverSourceFilesTests: MuterTestCase {
                 "\(filesToMutatePath)/ProjectName/ProjectName/Models/file 3.swift",
                 "\(filesToMutatePath)/ProjectName/ProjectName/Models/file 3.swift",
                 "\(filesToMutatePath)/file1.swift",
-            ])
+            ]),
         ])
 
         FileManager.default.changeCurrentDirectoryPath(currentDirectoryPath)
@@ -230,7 +230,7 @@ final class DiscoverSourceFilesTests: MuterTestCase {
                 "\(filesToMutatePath)/Directory2/Directory3/file6.swift",
                 "\(filesToMutatePath)/file1.swift",
                 "\(filesToMutatePath)/file2.swift",
-            ])
+            ]),
         ])
 
         XCTAssertEqual(fileManager.methodCalls, [

@@ -27,7 +27,7 @@ final class RemoveSideEffectsOperatorTests: MuterTestCase {
                 MutationPosition(utf8Offset: 994, line: 44, column: 19),
                 MutationPosition(utf8Offset: 1049, line: 48, column: 19),
                 MutationPosition(utf8Offset: 1099, line: 52, column: 19),
-                MutationPosition(utf8Offset: 1138, line: 56, column: 19)
+                MutationPosition(utf8Offset: 1138, line: 56, column: 19),
             ]
         )
     }

@@ -75,7 +75,7 @@ final class SwiftCoverage: BuildSystemCoverage {
             testArtifactPath,
             "-instr-profile",
             binaryPath + "/codecov/default.profdata",
-            "--ignore-filename-regex=.build|Tests"
+            "--ignore-filename-regex=.build|Tests",
         ]
         #else
         let url = "/usr/bin/xcrun"
@@ -85,7 +85,7 @@ final class SwiftCoverage: BuildSystemCoverage {
             testArtifactPath + "/Contents/MacOS/\(packageTests)",
             "-instr-profile",
             binaryPath + "/codecov/default.profdata",
-            "--ignore-filename-regex=.build|Tests"
+            "--ignore-filename-regex=.build|Tests",
         ]
         #endif
         return process().runProcess(

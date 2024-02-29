@@ -45,7 +45,7 @@ final class ChangeLogicalConnectorOperatorTests: MuterTestCase {
                             after: "&&",
                             description: "changed || to &&"
                         )
-                    )
+                    ),
                 ]
             ),
             (
@@ -65,7 +65,7 @@ final class ChangeLogicalConnectorOperatorTests: MuterTestCase {
                             after: "||",
                             description: "changed && to ||"
                         )
-                    )
+                    ),
                 ]
             )
         )

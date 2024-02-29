@@ -61,7 +61,7 @@ final class XcodeCoverageTests: MuterTestCase {
                 filesWithoutCoverage: [
                     "/path/to/file1.swift",
                     "/path/to/file2.swift",
-                    "/path/to/file3.swift"
+                    "/path/to/file3.swift",
                 ]
             )
         )
