@@ -70,7 +70,7 @@ final class SwiftCoverage: BuildSystemCoverage {
                 testArtifactPath + "/Contents/MacOS/\(packageTests)",
                 "-instr-profile",
                 binaryPath + "/codecov/default.profdata",
-                "--ignore-filename-regex=.build|Tests"
+                "--ignore-filename-regex=.build|Tests",
             ]
         )
         .flatMap(\.nilIfEmpty)

@@ -6,7 +6,7 @@ import PackageDescription
 let package = Package(
     name: "muter",
     platforms: [
-        .macOS(.v10_15),
+        .macOS(.v12),
     ],
     products: [
         .executable(name: "muter", targets: ["muter", "muterCore"]),
@@ -22,7 +22,8 @@ let package = Package(
         .package(url: "https://github.com/jpsim/Yams.git", from: "5.0.6"),
         .package(url: "https://github.com/pointfreeco/swift-snapshot-testing.git", from: "1.15.1"),
         .package(url: "https://github.com/mxcl/Version.git", from: "2.0.1"),
-        .package(url: "https://github.com/apple/swift-format.git", from: "509.0.0")
+        .package(url: "https://github.com/apple/swift-format.git", from: "509.0.0"),
+        .package(url: "https://github.com/realm/SwiftLint.git", from: "0.54.0")
     ],
     targets: [
         .executableTarget(
@@ -43,7 +44,10 @@ let package = Package(
                 .product(name: "Version", package: "Version"),
                 .product(name: "SwiftFormat", package: "swift-format"),
             ],
-            path: "Sources/muterCore"
+            path: "Sources/muterCore",
+            plugins: [
+                .plugin(name: "SwiftLintPlugin", package: "SwiftLint")
+            ]
         ),
         .target(
             name: "TestingExtensions",

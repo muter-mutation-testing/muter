@@ -32,11 +32,11 @@ final class AddImportRewriter: SyntaxRewriter {
                                 name: .identifier("Foundation")
                                     .appendingLeadingTrivia(.spaces(1))
                                     .appendingTrailingTrivia(.newlines(2))
-                            )
+                            ),
                         ])
                     )
                 )
-            )
+            ),
         ]
 
         for item in node {

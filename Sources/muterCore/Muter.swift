@@ -8,7 +8,7 @@ struct MuterCommand: AsyncParsableCommand {
         subcommands: [
             Init.self,
             Run.self,
-            Operator.self
+            Operator.self,
         ],
         defaultSubcommand: Run.self
     )

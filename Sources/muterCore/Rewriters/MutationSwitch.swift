@@ -110,12 +110,12 @@ enum MutationSwitch {
                                                                 content:
                                                                 .stringSegment(id)
                                                             )
-                                                        )
+                                                        ),
                                                     ]
                                                 ),
                                                 closingQuote: .stringQuoteToken()
                                             )
-                                        )
+                                        ),
                                     ]),
                                     rightSquare: .rightSquareToken(),
                                     trailingClosure: nil,
@@ -134,12 +134,12 @@ enum MutationSwitch {
                                     nilKeyword: .keyword(.nil)
                                         .withTrailingTrivia(.spaces(1))
                                 )
-                            )
+                            ),
                         ])
                     )
                 ),
                 trailingComma: nil
-            )
+            ),
         ])
     }
 }

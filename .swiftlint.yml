@@ -5,6 +5,9 @@ included:
   - Sources
   - Tests
 
+# If true, SwiftLint will treat all warnings as errors.
+strict: true
+
 only_rules:
  - trailing_comma
  - vertical_whitespace
