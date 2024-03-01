@@ -16,7 +16,7 @@ final class ConfigurationGenerationTests: MuterTestCase {
         XCTAssertEqual(
             generatedConfiguration,
             MuterConfiguration(
-                executable: "/usr/bin/swift",
+                executable: "/path/to/swift",
                 arguments: ["test"],
                 excludeList: ["Package.swift", "Package@swift-5.11.swift"]
             )
@@ -38,7 +38,7 @@ final class ConfigurationGenerationTests: MuterTestCase {
         XCTAssertEqual(
             generatedConfiguration,
             MuterConfiguration(
-                executable: "/usr/bin/xcodebuild",
+                executable: "/path/to/xcodebuild",
                 arguments: [
                     "-project",
                     "iOSApp.xcodeproj",
@@ -65,7 +65,7 @@ final class ConfigurationGenerationTests: MuterTestCase {
         XCTAssertEqual(
             generatedConfiguration,
             MuterConfiguration(
-                executable: "/usr/bin/xcodebuild",
+                executable: "/path/to/xcodebuild",
                 arguments: [
                     "-project",
                     "iOSApp.xcodeproj",
@@ -94,7 +94,7 @@ final class ConfigurationGenerationTests: MuterTestCase {
         XCTAssertEqual(
             generatedConfiguration,
             MuterConfiguration(
-                executable: "/usr/bin/xcodebuild",
+                executable: "/path/to/xcodebuild",
                 arguments: [
                     "-project",
                     "iOSApp.xcodeproj",
@@ -121,7 +121,7 @@ final class ConfigurationGenerationTests: MuterTestCase {
         XCTAssertEqual(
             generatedConfiguration,
             MuterConfiguration(
-                executable: "/usr/bin/xcodebuild",
+                executable: "/path/to/xcodebuild",
                 arguments: [
                     "-project",
                     "CocoaApp.xcodeproj",
@@ -147,7 +147,7 @@ final class ConfigurationGenerationTests: MuterTestCase {
         XCTAssertEqual(
             generatedConfiguration,
             MuterConfiguration(
-                executable: "/usr/bin/xcodebuild",
+                executable: "/path/to/xcodebuild",
                 arguments: [
                     "-workspace",
                     "iOSApp.xcworkspace",
@@ -175,7 +175,7 @@ final class ConfigurationGenerationTests: MuterTestCase {
         XCTAssertEqual(
             generatedConfiguration,
             MuterConfiguration(
-                executable: "/usr/bin/xcodebuild",
+                executable: "/path/to/xcodebuild",
                 arguments: [
                     "-workspace",
                     "CocoaApp.xcworkspace",
