@@ -54,4 +54,13 @@ extension MuterProcess {
         .flatMap(\.nilIfEmpty)
         .map(\.trimmed)
     }
+
+    func which(_ application: String) -> String? {
+        runProcess(
+            url: "/usr/bin/which",
+            arguments: [application]
+        )
+        .flatMap(\.nilIfEmpty)
+        .map(\.trimmed)
+    }
 }
