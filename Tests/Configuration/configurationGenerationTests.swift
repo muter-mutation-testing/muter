@@ -9,7 +9,10 @@ final class ConfigurationGenerationTests: MuterTestCase {
             "/some/path/main.swift",
         ]
 
+        process.stdoutToBeReturned = "/path/to/swift"
+
         let generatedConfiguration = MuterConfiguration(from: projectDirectoryContents)
+
         XCTAssertEqual(
             generatedConfiguration,
             MuterConfiguration(
@@ -28,7 +31,10 @@ final class ConfigurationGenerationTests: MuterTestCase {
             "\(fixturesDirectory)/XcodeProjectFiles/iOSApp.xcodeproj",
         ]
 
+        process.stdoutToBeReturned = "/path/to/xcodebuild"
+
         let generatedConfiguration = MuterConfiguration(from: projectDirectoryContents)
+
         XCTAssertEqual(
             generatedConfiguration,
             MuterConfiguration(
@@ -52,7 +58,10 @@ final class ConfigurationGenerationTests: MuterTestCase {
             "/some/path/AppDelegate.swift",
         ]
 
+        process.stdoutToBeReturned = "/path/to/xcodebuild"
+
         let generatedConfiguration = MuterConfiguration(from: projectDirectoryContents)
+
         XCTAssertEqual(
             generatedConfiguration,
             MuterConfiguration(
@@ -78,7 +87,10 @@ final class ConfigurationGenerationTests: MuterTestCase {
             "/some/path/AppDelegate.swift",
         ]
 
+        process.stdoutToBeReturned = "/path/to/xcodebuild"
+
         let generatedConfiguration = MuterConfiguration(from: projectDirectoryContents)
+        
         XCTAssertEqual(
             generatedConfiguration,
             MuterConfiguration(
@@ -102,7 +114,10 @@ final class ConfigurationGenerationTests: MuterTestCase {
             "/some/path/AppDelegate.swift",
         ]
 
+        process.stdoutToBeReturned = "/path/to/xcodebuild"
+
         let generatedConfiguration = MuterConfiguration(from: projectDirectoryContents)
+
         XCTAssertEqual(
             generatedConfiguration,
             MuterConfiguration(
@@ -125,7 +140,10 @@ final class ConfigurationGenerationTests: MuterTestCase {
             "/some/path/AppDelegate.swift",
         ]
 
+        process.stdoutToBeReturned = "/path/to/xcodebuild"
+
         let generatedConfiguration = MuterConfiguration(from: projectDirectoryContents)
+
         XCTAssertEqual(
             generatedConfiguration,
             MuterConfiguration(
@@ -150,7 +168,10 @@ final class ConfigurationGenerationTests: MuterTestCase {
             "/some/path/AppDelegate.swift",
         ]
 
+        process.stdoutToBeReturned = "/path/to/xcodebuild"
+
         let generatedConfiguration = MuterConfiguration(from: projectDirectoryContents)
+
         XCTAssertEqual(
             generatedConfiguration,
             MuterConfiguration(

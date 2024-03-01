@@ -29,7 +29,7 @@ private extension MuterConfiguration {
         }
 
         return MuterConfiguration(
-            executable: "/usr/bin/xcodebuild",
+            executable: executablePath("xcodebuild"),
             arguments: arguments
         )
     }
@@ -43,7 +43,7 @@ private extension MuterConfiguration {
         }
 
         return MuterConfiguration(
-            executable: "/usr/bin/xcodebuild",
+            executable: executablePath("xcodebuild"),
             arguments: arguments
         )
     }
@@ -82,6 +82,10 @@ private extension MuterConfiguration {
 
         return defaultArguments + destination + ["test"]
     }
+
+    private static func executablePath(_ exec: String) -> String {
+        current.process().which(exec) ?? ""
+    }
 }
 
 private extension MuterConfiguration {
@@ -89,7 +93,7 @@ private extension MuterConfiguration {
     static func generateSPMConfiguration(from directoryContents: [URL]) -> MuterConfiguration? {
         if directoryContents.contains(where: { $0.lastPathComponent == "Package.swift" }) {
             return MuterConfiguration(
-                executable: "/usr/bin/swift",
+                executable: executablePath("swift"),
                 arguments: ["test"],
                 excludeList: swiftPackageManifestFiles(from: directoryContents)
             )
