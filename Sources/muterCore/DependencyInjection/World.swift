@@ -2,7 +2,6 @@
 import FoundationNetworking
 #endif
 import Foundation
-import Progress
 
 #if DEBUG
 var current = World()
