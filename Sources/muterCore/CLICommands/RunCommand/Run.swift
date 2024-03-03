@@ -22,11 +22,11 @@ public struct Run: AsyncParsableCommand {
     )
     var reportFormat: ReportFormat = .plain
 
-    @Flag(
-        name: [.customLong("skip-coverage")],
-        help: "Skips the step in which Muter runs your project in order to filter out files without coverage."
+    @Option(
+        name: [.customShort("c"), .customLong("configuration")],
+        help: "The path to the muter configuration file."
     )
-    var skipCoverage: Bool = false
+    var configurationURL: URL?
 
     @Option(
         name: [.customShort("o"), .customLong("output")],
@@ -47,17 +47,29 @@ public struct Run: AsyncParsableCommand {
     )
     var operators: [MutationOperator.Id] = MutationOperator.Id.allCases
 
+    @Option(
+        name: [.customShort("m"), .customLong("mappings")],
+        help: "The path for the project schemata mappings."
+    )
+    var mappingsJsonURL: URL?
+
+    @Flag(
+        name: [.customLong("skip-coverage")],
+        help: "Skips the step in which Muter runs your project in order to filter out files without coverage."
+    )
+    var skipCoverage: Bool = false
+
     @Flag(
         name: [.customLong("skip-update-check")],
         help: "Skips the step in which Muter checks for newer versions."
     )
     var skipUpdateCheck: Bool = false
 
-    @Option(
-        name: [.customShort("c"), .customLong("configuration")],
-        help: "The path to the muter configuration file."
+    @Flag(
+        name: [.customLong("generate-mappings")],
+        help: "Run muter to create the mutated source code and save the mappings json for a later execution."
     )
-    var configurationURL: URL? = nil
+    var generateMappings: Bool = false
 
     public init() {}
 
@@ -73,14 +85,16 @@ public struct Run: AsyncParsableCommand {
             mutationOperatorsList: mutationOperatorsList,
             skipCoverage: skipCoverage,
             skipUpdateCheck: skipUpdateCheck,
-            configurationURL: configurationURL
+            configurationURL: configurationURL,
+            mappingsJsonURL: mappingsJsonURL,
+            generateMappings: generateMappings
         )
 
         _ = RunCommandObserver(
             runOptions: options
         )
 
-        NotificationCenter.default.post(name: .muterLaunched, object: nil)
+        current.notificationCenter.post(name: .muterLaunched, object: nil)
 
         do {
             try await RunCommandHandler(options: options).run()
@@ -105,10 +119,9 @@ public struct Run: AsyncParsableCommand {
 
 extension URL: ExpressibleByArgument {
     public init?(argument: String) {
-        guard let url = URL(string: argument) else {
-            return nil
-        }
-        self = url
+        self = argument.contains("/")
+            ? URL(fileURLWithPath: argument)
+            : URL(fileURLWithPath: current.fileManager.currentDirectoryPath + "/" + argument)
     }
 
     public var defaultValueDescription: String {

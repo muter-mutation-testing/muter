@@ -24,7 +24,7 @@ final class DiscoverProjectCoverage: RunCommandStep {
         )
 
         let currentDirectoryPath = fileManager.currentDirectoryPath
-        fileManager.changeCurrentDirectoryPath(state.tempDirectoryURL.path)
+        fileManager.changeCurrentDirectoryPath(state.mutatedProjectDirectoryURL.path)
 
         defer {
             fileManager.changeCurrentDirectoryPath(currentDirectoryPath)

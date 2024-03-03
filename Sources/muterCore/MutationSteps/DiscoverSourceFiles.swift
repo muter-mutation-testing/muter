@@ -17,13 +17,13 @@ struct DiscoverSourceFiles: RunCommandStep {
 
         let sourceFileCandidates = state.filesToMutate.isEmpty
             ? discoverSourceFiles(
-                inDirectoryAt: state.tempDirectoryURL.path,
+                inDirectoryAt: state.mutatedProjectDirectoryURL.path,
                 excludingPathsIn: state.muterConfiguration.excludeFileList,
                 ignoringFilesWithoutCoverage: state.projectCoverage.filesWithoutCoverage
             )
             : findFilesToMutate(
                 files: state.filesToMutate,
-                inDirectoryAt: state.tempDirectoryURL.path
+                inDirectoryAt: state.mutatedProjectDirectoryURL.path
             )
 
         let failure: MuterError = state.filesToMutate.isEmpty

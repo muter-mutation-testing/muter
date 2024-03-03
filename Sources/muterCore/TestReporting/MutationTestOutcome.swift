@@ -33,14 +33,14 @@ extension MutationTestOutcome {
             mutationPoint: MutationPoint,
             mutationSnapshot: MutationOperator.Snapshot,
             originalProjectDirectoryUrl: URL,
-            tempDirectoryURL: URL
+            mutatedProjectDirectoryURL: URL
         ) {
             self.testSuiteOutcome = testSuiteOutcome
             point = mutationPoint
             snapshot = mutationSnapshot
 
             let splitTempFilePath = mutationPoint.filePath.split(separator: "/")
-            let tempProjectDirectoryName = tempDirectoryURL.lastPathComponent
+            let tempProjectDirectoryName = mutatedProjectDirectoryURL.lastPathComponent
             let numberOfDirectoriesToDrop = splitTempFilePath.map(String.init)
                 .firstIndex(of: tempProjectDirectoryName) ?? 0
             let pathSuffix = splitTempFilePath.dropFirst(numberOfDirectoriesToDrop + 1).joined(separator: "/")

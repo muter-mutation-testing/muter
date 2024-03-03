@@ -16,7 +16,7 @@ struct PerformMutationTesting: RunCommandStep {
     func run(
         with state: AnyRunCommandState
     ) async throws -> [RunCommandState.Change] {
-        fileManager.changeCurrentDirectoryPath(state.tempDirectoryURL.path)
+        fileManager.changeCurrentDirectoryPath(state.mutatedProjectDirectoryURL.path)
 
         let (mutationOutcome, testDuration) = try await benchmarkMutationTesting {
             try await performMutationTesting(using: state)
@@ -88,10 +88,10 @@ private extension PerformMutationTesting {
             object: mutationLog
         )
 
-        return try await insertMutants(using: state)
+        return try await testMutation(using: state)
     }
 
-    func insertMutants(using state: AnyRunCommandState) async throws -> [MutationTestOutcome.Mutation] {
+    func testMutation(using state: AnyRunCommandState) async throws -> [MutationTestOutcome.Mutation] {
         var outcomes: [MutationTestOutcome.Mutation] = []
         outcomes.reserveCapacity(state.mutationPoints.count)
         var buildErrors = 0
@@ -102,7 +102,7 @@ private extension PerformMutationTesting {
                 try? ioDelegate.switchOn(
                     schemata: mutationSchema,
                     for: state.projectXCTestRun,
-                    at: state.tempDirectoryURL
+                    at: state.mutatedProjectDirectoryURL
                 )
 
                 let (testSuiteOutcome, testLog) = ioDelegate.runTestSuite(
@@ -125,7 +125,7 @@ private extension PerformMutationTesting {
                     mutationPoint: mutationPoint,
                     mutationSnapshot: mutationSchema.snapshot,
                     originalProjectDirectoryUrl: state.projectDirectoryURL,
-                    tempDirectoryURL: state.tempDirectoryURL
+                    mutatedProjectDirectoryURL: state.mutatedProjectDirectoryURL
                 )
 
                 outcomes.append(outcome)

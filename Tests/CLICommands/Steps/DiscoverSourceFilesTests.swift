@@ -12,7 +12,7 @@ final class DiscoverSourceFilesTests: MuterTestCase {
     func test_discoveredFilesShouldBeSortedAlphabetically() async throws {
         current.fileManager = FileManager.default
 
-        state.tempDirectoryURL = URL(
+        state.mutatedProjectDirectoryURL = URL(
             fileURLWithPath: filsToDiscoverPath,
             isDirectory: true
         )
@@ -40,7 +40,7 @@ final class DiscoverSourceFilesTests: MuterTestCase {
             excludeList: ["ExampleApp"]
         )
 
-        state.tempDirectoryURL = URL(
+        state.mutatedProjectDirectoryURL = URL(
             fileURLWithPath: filsToDiscoverPath,
             isDirectory: true
         )
@@ -61,7 +61,7 @@ final class DiscoverSourceFilesTests: MuterTestCase {
     func test_exclusionListWithGlobExpression() async throws {
         current.fileManager = FileManager.default
 
-        state.tempDirectoryURL = URL(fileURLWithPath: filesToMutatePath, isDirectory: true)
+        state.mutatedProjectDirectoryURL = URL(fileURLWithPath: filesToMutatePath, isDirectory: true)
         state.muterConfiguration = MuterConfiguration(
             executable: "",
             arguments: [],
@@ -91,7 +91,7 @@ final class DiscoverSourceFilesTests: MuterTestCase {
         current.fileManager = FileManager.default
 
         state.muterConfiguration = MuterConfiguration(executable: "", arguments: [])
-        state.tempDirectoryURL = URL(
+        state.mutatedProjectDirectoryURL = URL(
             fileURLWithPath: filsToDiscoverPath,
             isDirectory: true
         )
@@ -116,7 +116,7 @@ final class DiscoverSourceFilesTests: MuterTestCase {
     }
 
     func test_whenDoesntDiscoverFilesInProjectDirectory() async throws {
-        state.tempDirectoryURL = URL(
+        state.mutatedProjectDirectoryURL = URL(
             fileURLWithPath: "\(filsToDiscoverPath)/Directory4",
             isDirectory: true
         )
@@ -136,7 +136,7 @@ final class DiscoverSourceFilesTests: MuterTestCase {
             "/Directory2/Directory3/file6.swift",
         ]
 
-        state.tempDirectoryURL = URL(fileURLWithPath: filesToMutatePath, isDirectory: true)
+        state.mutatedProjectDirectoryURL = URL(fileURLWithPath: filesToMutatePath, isDirectory: true)
         fileManager.fileExistsToReturn = state.filesToMutate.compactMap { _ in true }
 
         sut = DiscoverSourceFiles()
@@ -161,7 +161,7 @@ final class DiscoverSourceFilesTests: MuterTestCase {
             "/ExampleApp/*.swift",
         ]
 
-        state.tempDirectoryURL = URL(fileURLWithPath: filesToMutatePath, isDirectory: true)
+        state.mutatedProjectDirectoryURL = URL(fileURLWithPath: filesToMutatePath, isDirectory: true)
 
         let result = try await sut.run(with: state)
 
@@ -180,7 +180,7 @@ final class DiscoverSourceFilesTests: MuterTestCase {
         let currentDirectoryPath = FileManager.default.currentDirectoryPath
         FileManager.default.changeCurrentDirectoryPath(filesToMutatePath)
 
-        state.tempDirectoryURL = URL(fileURLWithPath: filesToMutatePath, isDirectory: true)
+        state.mutatedProjectDirectoryURL = URL(fileURLWithPath: filesToMutatePath, isDirectory: true)
         state.filesToMutate = [
             "./ProjectName/ProjectName/AppDelegate.swift",
             "../ProjectName/AnotherFolder/Module.swift",
@@ -216,7 +216,7 @@ final class DiscoverSourceFilesTests: MuterTestCase {
         fileManager.subpathsToReturn = []
 
         state.filesToMutate = ["file1.swift", "file2.swift", "/Directory2/Directory3/file6.swift"]
-        state.tempDirectoryURL = URL(
+        state.mutatedProjectDirectoryURL = URL(
             fileURLWithPath: filesToMutatePath,
             isDirectory: true
         )
@@ -242,7 +242,7 @@ final class DiscoverSourceFilesTests: MuterTestCase {
 
     func test_fileNotFoundFailure() async throws {
         state.filesToMutate = ["doesntExist.swift"]
-        state.tempDirectoryURL = URL(
+        state.mutatedProjectDirectoryURL = URL(
             fileURLWithPath: filesToMutatePath,
             isDirectory: true
         )
@@ -255,7 +255,7 @@ final class DiscoverSourceFilesTests: MuterTestCase {
 
     func test_noSwiftFileFailure() async throws {
         state.filesToMutate = ["/Directory2/Directory3/file6"]
-        state.tempDirectoryURL = URL(
+        state.mutatedProjectDirectoryURL = URL(
             fileURLWithPath: filesToMutatePath,
             isDirectory: true
         )

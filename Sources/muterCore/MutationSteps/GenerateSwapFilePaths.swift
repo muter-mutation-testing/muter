@@ -7,7 +7,7 @@ struct GenerateSwapFilePaths: RunCommandStep {
     func run(
         with state: AnyRunCommandState
     ) async throws -> [RunCommandState.Change] {
-        let result = createSwapFileDirectory(in: state.tempDirectoryURL.path)
+        let result = createSwapFileDirectory(in: state.mutatedProjectDirectoryURL.path)
 
         switch result {
         case let .success(swapFileDirectoryPath):

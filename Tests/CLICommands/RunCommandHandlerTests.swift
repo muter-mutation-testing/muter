@@ -33,7 +33,7 @@ final class RunCommandHandlerTests: MuterTestCase {
         }
 
         let assertThatReturnsSuccess = {
-            XCTAssertEqual(expectedState.tempDirectoryURL, URL(string: "/lol/son")!)
+            XCTAssertEqual(expectedState.mutatedProjectDirectoryURL, URL(string: "/lol/son")!)
             XCTAssertEqual(expectedState.projectDirectoryURL, URL(string: "/lol")!)
         }
 
@@ -91,7 +91,7 @@ final class RunCommandHandlerTests: MuterTestCase {
 
         XCTAssertTypeEqual(sut.steps[safe: 0], UpdateCheck.self)
         XCTAssertTypeEqual(sut.steps[safe: 1], LoadConfiguration.self)
-        XCTAssertTypeEqual(sut.steps[safe: 2], CreateTempDirectoryURL.self)
+        XCTAssertTypeEqual(sut.steps[safe: 2], CreateMutatedProjectDirectoryURL.self)
         XCTAssertTypeEqual(sut.steps[safe: 3], PreviousRunCleanUp.self)
         XCTAssertTypeEqual(sut.steps[safe: 4], CopyProjectToTempDirectory.self)
         XCTAssertTypeEqual(sut.steps[safe: 5], DiscoverProjectCoverage.self)

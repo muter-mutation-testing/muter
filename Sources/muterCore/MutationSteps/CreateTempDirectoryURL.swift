@@ -1,6 +1,6 @@
 import Foundation
 
-struct CreateTempDirectoryURL: RunCommandStep {
+struct CreateMutatedProjectDirectoryURL: RunCommandStep {
     func run(
         with state: AnyRunCommandState
     ) async throws -> [RunCommandState.Change] {

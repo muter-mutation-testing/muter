@@ -65,6 +65,32 @@ final class SchemataMutationMapping {
     }
 }
 
+extension SchemataMutationMapping: Codable {
+    enum CodingKeys: String, CodingKey {
+        case filePath, mappings
+    }
+
+    convenience init(from decoder: Decoder) throws {
+        let container = try decoder.container(keyedBy: CodingKeys.self)
+
+        let schematas = try container.decode([MutationSchema].self, forKey: .mappings)
+        let mappings = [CodeBlockItemListSyntax([]): schematas]
+        let filePath = try container.decode(String.self, forKey: .filePath)
+
+        self.init(
+            filePath: filePath,
+            mappings: mappings
+        )
+    }
+
+    func encode(to encoder: Encoder) throws {
+        var container = encoder.container(keyedBy: CodingKeys.self)
+
+        try container.encode(filePath, forKey: .filePath)
+        try container.encode(mutationSchemata, forKey: .mappings)
+    }
+}
+
 extension SchemataMutationMapping: Equatable {
     static func == (
         lhs: SchemataMutationMapping,

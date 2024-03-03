@@ -11,7 +11,7 @@ final class GenerateSwapFilePathsTests: MuterTestCase {
             "/folder/file1.swift": SourceFileSyntax.makeBlankSourceFile(),
             "/folder/file2.swift": SourceFileSyntax.makeBlankSourceFile(),
         ]
-        state.tempDirectoryURL = URL(fileURLWithPath: "/workspace")
+        state.mutatedProjectDirectoryURL = URL(fileURLWithPath: "/workspace")
 
         _ = try await sut.run(with: state)
 
@@ -28,7 +28,7 @@ final class GenerateSwapFilePathsTests: MuterTestCase {
             "/folder/file1.swift": SourceFileSyntax.makeBlankSourceFile(),
             "/folder/file2.swift": SourceFileSyntax.makeBlankSourceFile(),
         ]
-        state.tempDirectoryURL = URL(fileURLWithPath: "/workspace")
+        state.mutatedProjectDirectoryURL = URL(fileURLWithPath: "/workspace")
 
         let result = try await sut.run(with: state)
 
@@ -42,7 +42,7 @@ final class GenerateSwapFilePathsTests: MuterTestCase {
 
     func test_failure() async throws {
         fileManager.errorToThrow = TestingError.stub
-        state.tempDirectoryURL = URL(fileURLWithPath: "~/workspace")
+        state.mutatedProjectDirectoryURL = URL(fileURLWithPath: "~/workspace")
 
         try await assertThrowsMuterError(
             await sut.run(with: state)

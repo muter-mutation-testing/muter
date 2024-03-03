@@ -17,12 +17,12 @@ class CopyProjectToTempDirectory: RunCommandStep {
 
             try fileManager.copyItem(
                 atPath: state.projectDirectoryURL.path,
-                toPath: state.tempDirectoryURL.path
+                toPath: state.mutatedProjectDirectoryURL.path
             )
 
             notificationCenter.post(
                 name: .projectCopyFinished,
-                object: state.tempDirectoryURL.path
+                object: state.mutatedProjectDirectoryURL.path
             )
 
             return []

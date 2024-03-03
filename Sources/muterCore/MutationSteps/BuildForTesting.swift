@@ -21,12 +21,12 @@ struct BuildForTesting: RunCommandStep {
             fileManager.changeCurrentDirectoryPath(currentDirectoryPath)
         }
 
-        fileManager.changeCurrentDirectoryPath(state.tempDirectoryURL.path)
+        fileManager.changeCurrentDirectoryPath(state.mutatedProjectDirectoryURL.path)
 
         do {
             let buildDirectory = try buildDirectory(state.muterConfiguration)
             try runBuildForTestingCommand(state.muterConfiguration)
-            let tempDebugURL = debugURLForTempDirectory(state.tempDirectoryURL)
+            let tempDebugURL = debugURLForTempDirectory(state.mutatedProjectDirectoryURL)
             try copyBuildArtifactsAtPath(buildDirectory, to: tempDebugURL.path)
 
             let xcTestRun = try parseXCTestRunAt(tempDebugURL)

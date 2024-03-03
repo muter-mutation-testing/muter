@@ -8,7 +8,7 @@ struct PreviousRunCleanUp: RunCommandStep {
         with state: AnyRunCommandState
     ) async throws -> [RunCommandState.Change] {
         guard fileManager.fileExists(
-            atPath: state.tempDirectoryURL.path
+            atPath: state.mutatedProjectDirectoryURL.path
         )
         else {
             return []
@@ -16,7 +16,7 @@ struct PreviousRunCleanUp: RunCommandStep {
 
         do {
             try fileManager.removeItem(
-                atPath: state.tempDirectoryURL.path
+                atPath: state.mutatedProjectDirectoryURL.path
             )
             return []
         } catch {

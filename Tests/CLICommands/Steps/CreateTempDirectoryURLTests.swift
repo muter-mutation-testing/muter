@@ -1,10 +1,10 @@
 @testable import muterCore
 import XCTest
 
-final class CreateTempDirectoryURLTests: MuterTestCase {
+final class CreateMutatedProjectDirectoryURLTests: MuterTestCase {
     private var state = RunCommandState()
 
-    private let sut = CreateTempDirectoryURL()
+    private let sut = CreateMutatedProjectDirectoryURL()
 
     func test_whenItsAbleToCreateATempDirectory() async throws {
         state.projectDirectoryURL = URL(string: "/tmp/some/projectName")!

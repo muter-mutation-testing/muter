@@ -11,7 +11,7 @@ final class PreviousRunCleanUpTests: MuterTestCase {
 
     func test_removeTempDirectorySucceeds() async throws {
         fileManager.fileExistsToReturn = [true]
-        state.tempDirectoryURL = URL(fileURLWithPath: "/some/projectName_mutated")
+        state.mutatedProjectDirectoryURL = URL(fileURLWithPath: "/some/projectName_mutated")
 
         let result = try await sut.run(with: state)
 
@@ -24,7 +24,7 @@ final class PreviousRunCleanUpTests: MuterTestCase {
         fileManager.errorToThrow = RemoveTempDirectorySpecError.stub
         fileManager.fileExistsToReturn = [true]
 
-        state.tempDirectoryURL = URL(fileURLWithPath: "/some/projectName_mutated")
+        state.mutatedProjectDirectoryURL = URL(fileURLWithPath: "/some/projectName_mutated")
 
         try await assertThrowsMuterError(
             await sut.run(with: state)
@@ -42,7 +42,7 @@ final class PreviousRunCleanUpTests: MuterTestCase {
         fileManager.errorToThrow = RemoveTempDirectorySpecError.stub
         fileManager.fileExistsToReturn = [false]
 
-        state.tempDirectoryURL = URL(fileURLWithPath: "/some/projectName_mutated")
+        state.mutatedProjectDirectoryURL = URL(fileURLWithPath: "/some/projectName_mutated")
 
         let result = try await sut.run(with: state)
 

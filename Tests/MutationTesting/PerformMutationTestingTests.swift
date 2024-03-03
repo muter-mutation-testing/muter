@@ -18,7 +18,7 @@ final class PerformMutationTestingTests: MuterTestCase {
         try super.setUpWithError()
 
         state.projectDirectoryURL = URL(fileURLWithPath: "/project")
-        state.tempDirectoryURL = URL(fileURLWithPath: "/project_mutated")
+        state.mutatedProjectDirectoryURL = URL(fileURLWithPath: "/project_mutated")
 
         state.mutationMapping = try [
             makeSchemataMapping(),
@@ -52,7 +52,7 @@ final class PerformMutationTestingTests: MuterTestCase {
                 ),
                 snapshot: .null,
                 originalProjectDirectoryUrl: state.projectDirectoryURL,
-                tempDirectoryURL: state.tempDirectoryURL
+                mutatedProjectDirectoryURL: state.mutatedProjectDirectoryURL
             ),
             MutationTestOutcome.Mutation.make(
                 testSuiteOutcome: .failed,
@@ -63,7 +63,7 @@ final class PerformMutationTestingTests: MuterTestCase {
                 ),
                 snapshot: .null,
                 originalProjectDirectoryUrl: state.projectDirectoryURL,
-                tempDirectoryURL: state.tempDirectoryURL
+                mutatedProjectDirectoryURL: state.mutatedProjectDirectoryURL
             ),
         ]
 

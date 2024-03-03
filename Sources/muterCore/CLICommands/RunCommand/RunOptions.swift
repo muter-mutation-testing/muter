@@ -9,6 +9,12 @@ struct RunOptions {
     let skipCoverage: Bool
     let skipUpdateCheck: Bool
     let configurationURL: URL?
+    let projectMappings: ProjectSchemataMappings?
+    let generateMappings: Bool
+
+    var isUsingMappingsJson: Bool {
+        projectMappings != nil
+    }
 
     init(
         filesToMutate: [String],
@@ -17,18 +23,37 @@ struct RunOptions {
         mutationOperatorsList: MutationOperatorList,
         skipCoverage: Bool,
         skipUpdateCheck: Bool,
-        configurationURL: URL?
+        configurationURL: URL?,
+        mappingsJsonURL: URL?,
+        generateMappings: Bool
     ) {
-        self.filesToMutate = filesToMutate
         self.skipCoverage = skipCoverage
-        self.mutationOperatorsList = mutationOperatorsList
         self.skipUpdateCheck = skipUpdateCheck
+        self.generateMappings = generateMappings
+        self.mutationOperatorsList = mutationOperatorsList
         self.configurationURL = configurationURL
+        self.projectMappings = mappingsJsonURL
+            .map(\.path)
+            .flatMap(RunOptions.loadMappingsJson)
 
-        reportOptions = ReportOptions(
+        self.filesToMutate = filesToMutate.reduce(into: []) { accum, next in
+            accum.append(
+                contentsOf: next.components(separatedBy: ",")
+                    .exclude { $0.isEmpty }
+            )
+        }
+
+        self.reportOptions = ReportOptions(
             reporter: reportFormat.reporter,
-            path: reportPath(reportURL)
+            path: reportURL?.path
         )
+    }
+
+    static func loadMappingsJson(atPath path: String) -> ProjectSchemataMappings? {
+        current.fileManager.contents(atPath: path)
+            .flatMap {
+                try? JSONDecoder().decode(ProjectSchemataMappings.self, from: $0)
+            }
     }
 }
 
@@ -39,6 +64,7 @@ extension RunOptions: Equatable {
             lhs.skipCoverage == rhs.skipCoverage &&
             lhs.skipUpdateCheck == rhs.skipUpdateCheck &&
             lhs.configurationURL == rhs.configurationURL &&
+            lhs.projectMappings == rhs.projectMappings &&
             lhs.reportOptions.path == rhs.reportOptions.path &&
             "\(lhs.reportOptions.reporter)" == "\(rhs.reportOptions.reporter)"
     }
@@ -53,21 +79,10 @@ extension RunOptions: Nullable {
             mutationOperatorsList: [],
             skipCoverage: false,
             skipUpdateCheck: false,
-            configurationURL: nil
+            configurationURL: nil,
+            mappingsJsonURL: nil,
+            generateMappings: false
         )
-    }
-}
-
-private func reportPath(_ reportURL: URL?) -> String? {
-    guard let reportURL else {
-        return nil
-    }
-
-    let absoluteString = reportURL.absoluteString
-    if absoluteString.contains("/") {
-        return absoluteString
-    } else {
-        return FileManager.default.currentDirectoryPath + "/" + absoluteString
     }
 }
 

@@ -31,7 +31,7 @@ final class BuildForTestingTests: MuterTestCase {
             executable: "/path/to/xcodebuild"
         )
 
-        state.tempDirectoryURL = URL(fileURLWithPath: "/path/to/temp")
+        state.mutatedProjectDirectoryURL = URL(fileURLWithPath: "/path/to/temp")
 
         do { _ = try await sut.run(with: state) }
         catch {}
@@ -39,7 +39,7 @@ final class BuildForTestingTests: MuterTestCase {
         XCTAssertTrue(fileManager.methodCalls.contains("changeCurrentDirectoryPath(_:)"))
         XCTAssertEqual(
             fileManager.changeCurrentDirectoryPath.first,
-            state.tempDirectoryURL.path
+            state.mutatedProjectDirectoryURL.path
         )
     }
 
@@ -50,7 +50,7 @@ final class BuildForTestingTests: MuterTestCase {
             executable: "/path/to/xcodebuild"
         )
 
-        state.tempDirectoryURL = URL(fileURLWithPath: "/path/to/temp")
+        state.mutatedProjectDirectoryURL = URL(fileURLWithPath: "/path/to/temp")
 
         XCTAssertEqual(fileManager.methodCalls, [])
         XCTAssertEqual(
@@ -93,7 +93,7 @@ final class BuildForTestingTests: MuterTestCase {
             arguments: ["some", "commands", "test"]
         )
 
-        state.tempDirectoryURL = URL(fileURLWithPath: "/path/to/temp")
+        state.mutatedProjectDirectoryURL = URL(fileURLWithPath: "/path/to/temp")
         process.stdoutToBeReturned = xcodebuildShowBuildSettingsOutput()
         process.stdoutToBeReturned = xcodebuildBuildForTestingOutput()
         fileManager.errorToThrow = TestingError.stub
@@ -110,7 +110,7 @@ final class BuildForTestingTests: MuterTestCase {
             arguments: ["some", "commands", "test"]
         )
 
-        state.tempDirectoryURL = URL(fileURLWithPath: "/path/to/temp")
+        state.mutatedProjectDirectoryURL = URL(fileURLWithPath: "/path/to/temp")
         process.stdoutToBeReturned = xcodebuildShowBuildSettingsOutput()
         process.stdoutToBeReturned = xcodebuildBuildForTestingOutput()
         fileManager.contentsAtPathSortedToReturn = [""]
@@ -127,7 +127,7 @@ final class BuildForTestingTests: MuterTestCase {
             arguments: ["some", "commands", "test"]
         )
 
-        state.tempDirectoryURL = URL(fileURLWithPath: "/path/to/temp")
+        state.mutatedProjectDirectoryURL = URL(fileURLWithPath: "/path/to/temp")
         process.stdoutToBeReturned = xcodebuildShowBuildSettingsOutput()
         process.stdoutToBeReturned = xcodebuildBuildForTestingOutput()
         fileManager.contentsAtPathSortedToReturn = ["some/project.xctestrun"]

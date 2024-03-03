@@ -12,7 +12,7 @@ final class CopyProjectToTempDirectoryTests: MuterTestCase {
 
     func test_whenItsAbleToCopyAProjectIntoATempDirectory() async throws {
         state.projectDirectoryURL = URL(string: "/some/projectName")!
-        state.tempDirectoryURL = URL(string: "/tmp/projectName")!
+        state.mutatedProjectDirectoryURL = URL(string: "/tmp/projectName")!
 
         _ = try await sut.run(with: state)
 
@@ -25,7 +25,7 @@ final class CopyProjectToTempDirectoryTests: MuterTestCase {
     func test_whenItsUnableToCopyAProjectIntoATempDirectory() async throws {
         fileManager.errorToThrow = TestingError.stub
         state.projectDirectoryURL = URL(string: "/some/projectName")!
-        state.tempDirectoryURL = URL(string: "/tmp/projectName")!
+        state.mutatedProjectDirectoryURL = URL(string: "/tmp/projectName")!
 
         try await assertThrowsMuterError(
             await sut.run(with: state)

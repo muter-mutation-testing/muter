@@ -58,14 +58,14 @@ extension MutationTestOutcome.Mutation {
         point: MutationPoint = .make(),
         snapshot: MutationOperator.Snapshot = .null,
         originalProjectDirectoryUrl: URL = URL(fileURLWithPath: ""),
-        tempDirectoryURL: URL = URL(fileURLWithPath: "")
+        mutatedProjectDirectoryURL: URL = URL(fileURLWithPath: "")
     ) -> Self {
         Self(
             testSuiteOutcome: testSuiteOutcome,
             mutationPoint: point,
             mutationSnapshot: snapshot,
             originalProjectDirectoryUrl: originalProjectDirectoryUrl,
-            tempDirectoryURL: tempDirectoryURL
+            mutatedProjectDirectoryURL: mutatedProjectDirectoryURL
         )
     }
 }
@@ -190,7 +190,9 @@ extension RunOptions {
         mutationOperatorsList: MutationOperatorList = [],
         skipCoverage: Bool = false,
         skipUpdateCheck: Bool = false,
-        configurationURL: URL? = nil
+        configurationURL: URL? = nil,
+        mappingsJsonURL: URL? = nil,
+        generateMappings: Bool = false
     ) -> Self {
         .init(
             filesToMutate: filesToMutate,
@@ -199,7 +201,9 @@ extension RunOptions {
             mutationOperatorsList: mutationOperatorsList,
             skipCoverage: skipCoverage,
             skipUpdateCheck: skipUpdateCheck,
-            configurationURL: configurationURL
+            configurationURL: configurationURL, 
+            mappingsJsonURL: mappingsJsonURL,
+            generateMappings: generateMappings
         )
     }
 }
