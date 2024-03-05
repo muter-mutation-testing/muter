@@ -29,7 +29,7 @@ extension URLSession: Server {}
 
 private let url = "https://api.github.com/repos/muter-mutation-testing/muter/releases?per_page=1"
 
-struct UpdateCheck: RunCommandStep {
+struct UpdateCheck: MutationStep {
     @Dependency(\.notificationCenter)
     private var notificationCenter: NotificationCenter
     @Dependency(\.server)
@@ -42,8 +42,8 @@ struct UpdateCheck: RunCommandStep {
     }
 
     func run(
-        with state: AnyRunCommandState
-    ) async throws -> [RunCommandState.Change] {
+        with state: AnyMutationTestState
+    ) async throws -> [MutationTestState.Change] {
         guard let releaseURL = URL(string: url) else {
             return []
         }

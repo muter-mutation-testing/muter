@@ -5,7 +5,7 @@ import Yams
 final class LoadConfigurationTests: MuterTestCase {
     private lazy var currentDirectory = fixturesDirectory
     private lazy var sut = LoadConfiguration()
-    private var state = RunCommandState()
+    private var state = MutationTestState()
 
     override func setUp() {
         super.setUp()

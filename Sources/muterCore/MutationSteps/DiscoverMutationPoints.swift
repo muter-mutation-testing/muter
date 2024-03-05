@@ -1,15 +1,15 @@
 import Foundation
 import SwiftSyntax
 
-struct DiscoverMutationPoints: RunCommandStep {
+struct DiscoverMutationPoints: MutationStep {
     @Dependency(\.notificationCenter)
     private var notificationCenter: NotificationCenter
     @Dependency(\.prepareCode)
     var prepareSourceCode: SourceCodePreparation
 
     func run(
-        with state: AnyRunCommandState
-    ) async throws -> [RunCommandState.Change] {
+        with state: AnyMutationTestState
+    ) async throws -> [MutationTestState.Change] {
         notificationCenter.post(
             name: .mutationsDiscoveryStarted,
             object: nil

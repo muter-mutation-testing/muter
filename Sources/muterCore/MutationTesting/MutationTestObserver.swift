@@ -32,9 +32,11 @@ extension Notification.Name {
     static let newTestLogAvailable = Notification.Name("newTestLogAvailable")
 
     static let configurationFileCreated = Notification.Name("configurationFileCreated")
+
+    static let testPlanFileCreated = Notification.Name("testPlanFileCreated")
 }
 
-final class RunCommandObserver {
+final class MutationTestObserver {
     @Dependency(\.logger)
     private var logger: Logger
     @Dependency(\.fileManager)
@@ -46,7 +48,7 @@ final class RunCommandObserver {
 
     private var numberOfMutationPoints: Int = 0
     private var loggingDirectory: String = ""
-    private let runOptions: RunOptions
+    private let runOptions: Run.Options
 
     private var notificationHandlerMappings: [(name: Notification.Name, handler: (Notification) -> Void)] {
         [
@@ -73,13 +75,18 @@ final class RunCommandObserver {
             (name: .newTestLogAvailable, handler: handleNewTestLogAvailable),
 
             (name: .mutationTestingFinished, handler: handleMutationTestingFinished),
+
+            (name: .configurationFileCreated, handler: handleConfigurationFileCreated),
+
+            (name: .testPlanFileCreated, handler: handleTestPlanFileCreated),
         ]
     }
 
-    init(
-        runOptions: RunOptions
-    ) {
+    init(runOptions: Run.Options) {
         self.runOptions = runOptions
+    }
+
+    func start() {
         loggingDirectory = createLoggingDirectory(
             in: fileManager.currentDirectoryPath,
             fileManager: fileManager
@@ -100,7 +107,7 @@ final class RunCommandObserver {
     }
 }
 
-extension RunCommandObserver {
+extension MutationTestObserver {
     func handleMuterLaunched(notification: Notification) {
         logger.launched()
     }
@@ -214,6 +221,20 @@ extension RunCommandObserver {
             logger.print(report)
             logger.print("\n")
             logger.print("Could not save report!")
+        }
+    }
+
+    func handleTestPlanFileCreated(notification: Notification) {
+        if let path = notification.object as? String {
+            logger.print("Mutation test plan created: \(path)")
+        } else {
+            logger.print("Mutation test plan created")
+        }
+    }
+
+    func handleConfigurationFileCreated(notification: Notification) {
+        if let path = notification.object as? String {
+            logger.print("Configuration file created at: \(path)")
         }
     }
 }

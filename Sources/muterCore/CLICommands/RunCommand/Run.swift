@@ -33,7 +33,7 @@ public struct Run: RunCommand {
             ? operators
             : .allOperators
 
-        let options = RunOptions(
+        let options = Run.Options(
             filesToMutate: filesToMutate,
             reportFormat: reportOptions.reportFormat,
             reportURL: reportOptions.reportURL,

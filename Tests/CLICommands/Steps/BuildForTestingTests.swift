@@ -4,7 +4,7 @@ import TestingExtensions
 import XCTest
 
 final class BuildForTestingTests: MuterTestCase {
-    private let state = RunCommandState()
+    private let state = MutationTestState()
 
     var buildDescriptionPath: String {
         fixturesDirectory + "/BuildForTesting"

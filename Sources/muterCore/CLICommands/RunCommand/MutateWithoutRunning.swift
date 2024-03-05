@@ -12,7 +12,7 @@ public struct MutateWithoutRunning: RunCommand {
     public init() {}
 
     public func run() async throws {
-        let options = RunOptions(
+        let options = Run.Options(
             skipCoverage: options.skipCoverage,
             skipUpdateCheck: options.skipUpdateCheck,
             configurationURL: options.configurationURL,

@@ -3,7 +3,7 @@ import SwiftSyntax
 import XCTest
 
 final class GenerateSwapFilePathsTests: MuterTestCase {
-    private let state = RunCommandState()
+    private let state = MutationTestState()
     private lazy var sut = GenerateSwapFilePaths()
 
     func test_muterTempDirectoryCreation() async throws {
@@ -92,6 +92,5 @@ final class GenerateSwapFilePathsTests: MuterTestCase {
         )
 
         XCTAssertEqual(swapFilePathWithSpaces, "/some/path/working_directory/a path with spaces in its name")
-
     }
 }

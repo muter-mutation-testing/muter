@@ -1,7 +1,7 @@
 import Foundation
 import SwiftSyntax
 
-struct PerformMutationTesting: RunCommandStep {
+struct PerformMutationTesting: MutationStep {
     @Dependency(\.ioDelegate)
     private var ioDelegate: MutationTestingIODelegate
     @Dependency(\.notificationCenter)
@@ -14,8 +14,8 @@ struct PerformMutationTesting: RunCommandStep {
     private let buildErrorsThreshold: Int = 5
 
     func run(
-        with state: AnyRunCommandState
-    ) async throws -> [RunCommandState.Change] {
+        with state: AnyMutationTestState
+    ) async throws -> [MutationTestState.Change] {
         fileManager.changeCurrentDirectoryPath(state.mutatedProjectDirectoryURL.path)
 
         let (mutationOutcome, testDuration) = try await benchmarkMutationTesting {
@@ -53,7 +53,7 @@ struct PerformMutationTesting: RunCommandStep {
 
 private extension PerformMutationTesting {
     func performMutationTesting(
-        using state: AnyRunCommandState
+        using state: AnyMutationTestState
     ) async throws -> [MutationTestOutcome.Mutation] {
         notificationCenter.post(name: .mutationTestingStarted, object: nil)
 
@@ -91,7 +91,7 @@ private extension PerformMutationTesting {
         return try await testMutation(using: state)
     }
 
-    func testMutation(using state: AnyRunCommandState) async throws -> [MutationTestOutcome.Mutation] {
+    func testMutation(using state: AnyMutationTestState) async throws -> [MutationTestOutcome.Mutation] {
         var outcomes: [MutationTestOutcome.Mutation] = []
         outcomes.reserveCapacity(state.mutationPoints.count)
         var buildErrors = 0

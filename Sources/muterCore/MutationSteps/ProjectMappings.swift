@@ -1,10 +1,10 @@
 import Foundation
 
-struct ProjectMappings: RunCommandStep {
+struct ProjectMappings: MutationStep {
     @Dependency(\.notificationCenter)
     private var notificationCenter: NotificationCenter
 
-    func run(with state: AnyRunCommandState) async throws -> [RunCommandState.Change] {
+    func run(with state: AnyMutationTestState) async throws -> [MutationTestState.Change] {
         notificationCenter.post(
             name: .mutationsDiscoveryFinished,
             object: state.mutationMapping

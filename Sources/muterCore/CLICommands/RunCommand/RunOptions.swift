@@ -2,63 +2,64 @@ import Foundation
 
 typealias ReportOptions = (reporter: Reporter, path: String?)
 
-struct RunOptions {
-    let reportOptions: ReportOptions
-    let filesToMutate: [String]
-    let mutationOperatorsList: MutationOperatorList
-    let skipCoverage: Bool
-    let skipUpdateCheck: Bool
-    let configurationURL: URL?
-    let testPlan: MuterTestPlan?
-    let createTestPlan: Bool
+extension Run {
+    struct Options {
+        let reportOptions: ReportOptions
+        let filesToMutate: [String]
+        let mutationOperatorsList: MutationOperatorList
+        let skipCoverage: Bool
+        let skipUpdateCheck: Bool
+        let configurationURL: URL?
+        let testPlan: MuterTestPlan?
+        let createTestPlan: Bool
 
-    var isUsingTestPlan: Bool {
-        testPlan != nil
-    }
+        var isUsingTestPlan: Bool {
+            testPlan != nil
+        }
 
-    init(
-        filesToMutate: [String] = [],
-        reportFormat: ReportFormat = .plain,
-        reportURL: URL? = nil,
-        mutationOperatorsList: MutationOperatorList = [],
-        skipCoverage: Bool,
-        skipUpdateCheck: Bool,
-        configurationURL: URL?,
-        testPlanURL: URL? = nil,
-        createTestPlan: Bool = false
-    ) {
-        self.skipCoverage = skipCoverage
-        self.skipUpdateCheck = skipUpdateCheck
-        self.createTestPlan = createTestPlan
-        self.mutationOperatorsList = mutationOperatorsList
-        self.configurationURL = configurationURL
-        testPlan = testPlanURL
-            .map(\.path)
-            .flatMap(RunOptions.loadTestPlan)
+        init(
+            filesToMutate: [String] = [],
+            reportFormat: ReportFormat = .plain,
+            reportURL: URL? = nil,
+            mutationOperatorsList: MutationOperatorList = [],
+            skipCoverage: Bool,
+            skipUpdateCheck: Bool,
+            configurationURL: URL?,
+            testPlanURL: URL? = nil,
+            createTestPlan: Bool = false
+        ) {
+            self.skipCoverage = skipCoverage
+            self.skipUpdateCheck = skipUpdateCheck
+            self.createTestPlan = createTestPlan
+            self.mutationOperatorsList = mutationOperatorsList
+            self.configurationURL = configurationURL
+            testPlan = testPlanURL
+                .map(\.path)
+                .flatMap(Run.Options.loadTestPlan)
 
-        self.filesToMutate = filesToMutate.reduce(into: []) { accum, next in
-            accum.append(
-                contentsOf: next.components(separatedBy: ",")
-                    .exclude { $0.isEmpty }
+            self.filesToMutate = filesToMutate.reduce(into: []) { accum, next in
+                accum.append(
+                    contentsOf: next.components(separatedBy: ",")
+                        .exclude { $0.isEmpty }
+                )
+            }
+
+            reportOptions = ReportOptions(
+                reporter: reportFormat.reporter,
+                path: reportURL?.path
             )
         }
 
-        reportOptions = ReportOptions(
-            reporter: reportFormat.reporter,
-            path: reportURL?.path
-        )
-    }
-
-    static func loadTestPlan(atPath path: String) -> MuterTestPlan? {
-        current.fileManager.contents(atPath: path)
-            .flatMap {
-                try? JSONDecoder().decode(MuterTestPlan.self, from: $0)
-            }
+        static func loadTestPlan(atPath path: String) -> MuterTestPlan? {
+            current.fileManager.contents(atPath: path)
+                .flatMap {
+                    try? JSONDecoder().decode(MuterTestPlan.self, from: $0)
+                }
+        }
     }
 }
-
-extension RunOptions: Equatable {
-    static func == (lhs: RunOptions, rhs: RunOptions) -> Bool {
+extension Run.Options: Equatable {
+    static func == (lhs: Run.Options, rhs: Run.Options) -> Bool {
         lhs.filesToMutate == rhs.filesToMutate &&
             lhs.mutationOperatorsList == rhs.mutationOperatorsList &&
             lhs.skipCoverage == rhs.skipCoverage &&
@@ -70,8 +71,8 @@ extension RunOptions: Equatable {
     }
 }
 
-extension RunOptions: Nullable {
-    static var null: RunOptions {
+extension Run.Options: Nullable {
+    static var null: Run.Options {
         .init(
             filesToMutate: [],
             reportFormat: .plain,
@@ -83,29 +84,5 @@ extension RunOptions: Nullable {
             testPlanURL: nil,
             createTestPlan: false
         )
-    }
-}
-
-enum ReportFormat: String, CaseIterable {
-    case plain
-    case json
-    case html
-    case xcode
-
-    static var description: String {
-        allCases.map(\.rawValue).joined(separator: ", ")
-    }
-
-    var reporter: Reporter {
-        switch self {
-        case .plain:
-            return PlainTextReporter()
-        case .json:
-            return JsonReporter()
-        case .html:
-            return HTMLReporter()
-        case .xcode:
-            return XcodeReporter()
-        }
     }
 }

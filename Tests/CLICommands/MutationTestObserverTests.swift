@@ -1,10 +1,10 @@
 @testable import muterCore
 import XCTest
 
-final class RunCommandObserverTests: MuterTestCase {
-    private var options = RunOptions.make()
+final class MutationTestObserverTests: MuterTestCase {
+    private var options = Run.Options.make()
 
-    private lazy var sut = RunCommandObserver(runOptions: options)
+    private lazy var sut = MutationTestObserver(runOptions: options)
 
     override func setUp() {
         super.setUp()

@@ -1,12 +1,12 @@
 import Foundation
 
-struct GenerateSwapFilePaths: RunCommandStep {
+struct GenerateSwapFilePaths: MutationStep {
     @Dependency(\.fileManager)
     private var fileManager: FileSystemManager
 
     func run(
-        with state: AnyRunCommandState
-    ) async throws -> [RunCommandState.Change] {
+        with state: AnyMutationTestState
+    ) async throws -> [MutationTestState.Change] {
         let result = createSwapFileDirectory(in: state.mutatedProjectDirectoryURL.path)
 
         switch result {

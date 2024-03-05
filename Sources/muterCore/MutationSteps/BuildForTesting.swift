@@ -1,6 +1,6 @@
 import Foundation
 
-struct BuildForTesting: RunCommandStep {
+struct BuildForTesting: MutationStep {
     @Dependency(\.fileManager)
     private var fileManager: FileSystemManager
     @Dependency(\.notificationCenter)
@@ -9,8 +9,8 @@ struct BuildForTesting: RunCommandStep {
     private var process: ProcessFactory
 
     func run(
-        with state: AnyRunCommandState
-    ) async throws -> [RunCommandState.Change] {
+        with state: AnyMutationTestState
+    ) async throws -> [MutationTestState.Change] {
         guard state.muterConfiguration.buildSystem == .xcodebuild else {
             return []
         }

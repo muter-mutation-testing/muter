@@ -2,5 +2,6 @@ import Foundation
 
 struct MuterTestPlan: Equatable, Codable {
     let mutatedProjectPath: String
-    let allMappings: [SchemataMutationMapping]
+    let projectCoverage: Int
+    let mappings: [SchemataMutationMapping]
 }

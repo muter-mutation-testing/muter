@@ -1,14 +1,14 @@
 import Foundation
 
-class CopyProjectToTempDirectory: RunCommandStep {
+class CopyProjectToTempDirectory: MutationStep {
     @Dependency(\.fileManager)
     private var fileManager: FileSystemManager
     @Dependency(\.notificationCenter)
     private var notificationCenter: NotificationCenter
 
     func run(
-        with state: AnyRunCommandState
-    ) async throws -> [RunCommandState.Change] {
+        with state: AnyMutationTestState
+    ) async throws -> [MutationTestState.Change] {
         do {
             notificationCenter.post(
                 name: .projectCopyStarted,

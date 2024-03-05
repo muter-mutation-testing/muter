@@ -6,7 +6,7 @@ enum RemoveTempDirectorySpecError: String, Error {
 }
 
 final class PreviousRunCleanUpTests: MuterTestCase {
-    private var state = RunCommandState()
+    private var state = MutationTestState()
     private lazy var sut = PreviousRunCleanUp()
 
     func test_removeTempDirectorySucceeds() async throws {

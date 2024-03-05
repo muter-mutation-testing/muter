@@ -1,12 +1,12 @@
 import Foundation
 
-struct PreviousRunCleanUp: RunCommandStep {
+struct PreviousRunCleanUp: MutationStep {
     @Dependency(\.fileManager)
     private var fileManager: FileSystemManager
 
     func run(
-        with state: AnyRunCommandState
-    ) async throws -> [RunCommandState.Change] {
+        with state: AnyMutationTestState
+    ) async throws -> [MutationTestState.Change] {
         guard fileManager.fileExists(
             atPath: state.mutatedProjectDirectoryURL.path
         )

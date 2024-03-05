@@ -3,7 +3,7 @@ import TestingExtensions
 import XCTest
 
 final class DiscoverProjectCoverageTests: MuterTestCase {
-    private let state = RunCommandState()
+    private let state = MutationTestState()
 
     private lazy var sut = DiscoverProjectCoverage()
 

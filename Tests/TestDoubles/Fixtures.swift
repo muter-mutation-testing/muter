@@ -182,7 +182,7 @@ extension Region {
     }
 }
 
-extension RunOptions {
+extension Run.Options {
     static func make(
         filesToMutate: [String] = [],
         reportFormat: ReportFormat = .plain,
@@ -267,5 +267,19 @@ extension MuterConfiguration {
 extension MutationPosition {
     static var firstPosition: MutationPosition {
         MutationPosition(utf8Offset: 0, line: 0, column: 0)
+    }
+}
+
+extension MuterTestPlan {
+    static func make(
+        mutatedProjectPath: String = "",
+        projectCoverage: Int = 0,
+        mappings: [SchemataMutationMapping] = []
+    ) -> MuterTestPlan {
+        MuterTestPlan(
+            mutatedProjectPath: mutatedProjectPath,
+            projectCoverage: projectCoverage,
+            mappings: mappings
+        )
     }
 }

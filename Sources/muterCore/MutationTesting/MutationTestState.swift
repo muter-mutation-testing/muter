@@ -1,8 +1,8 @@
 import Foundation
 import SwiftSyntax
 
-protocol AnyRunCommandState: AnyObject {
-    var runOptions: RunOptions { get }
+protocol AnyMutationTestState: AnyObject {
+    var runOptions: Run.Options { get }
     var newVersion: String { get }
     var mutationTestingStartTime: Date { get }
     var muterConfiguration: MuterConfiguration { get }
@@ -19,14 +19,13 @@ protocol AnyRunCommandState: AnyObject {
     var swapFilePathsByOriginalPath: [FilePath: FilePath] { get }
     var mutationTestOutcome: MutationTestOutcome { get }
 
-    func apply(_ stateChanges: [RunCommandState.Change])
+    func apply(_ stateChanges: [MutationTestState.Change])
 }
 
-final class RunCommandState: AnyRunCommandState {
-    var runOptions: RunOptions = .null
+final class MutationTestState: AnyMutationTestState {
+    var runOptions: Run.Options = .null
     var mutationOperatorList: MutationOperatorList = []
     var filesToMutate: [String] = []
-
     var newVersion: String = ""
     var mutationTestingStartTime: Date = .init()
     var muterConfiguration: MuterConfiguration = .init()
@@ -43,19 +42,20 @@ final class RunCommandState: AnyRunCommandState {
 
     init() {}
 
-    init(from options: RunOptions) {
+    init(from options: Run.Options) {
         runOptions = options
         mutationOperatorList = options.mutationOperatorsList
         filesToMutate = options.filesToMutate
 
         if let testPlan = options.testPlan {
             mutatedProjectDirectoryURL = URL(fileURLWithPath: testPlan.mutatedProjectPath)
-            mutationMapping = testPlan.allMappings
+            projectCoverage = .init(percent: testPlan.projectCoverage)
+            mutationMapping = testPlan.mappings
         }
     }
 }
 
-extension RunCommandState {
+extension MutationTestState {
     enum Change: Equatable {
         case newVersionAvaiable(String)
         case configurationParsed(MuterConfiguration)
@@ -72,8 +72,8 @@ extension RunCommandState {
     }
 }
 
-extension RunCommandState {
-    func apply(_ stateChanges: [RunCommandState.Change]) {
+extension MutationTestState {
+    func apply(_ stateChanges: [MutationTestState.Change]) {
         for change in stateChanges {
             switch change {
             case let .newVersionAvaiable(newVersion):

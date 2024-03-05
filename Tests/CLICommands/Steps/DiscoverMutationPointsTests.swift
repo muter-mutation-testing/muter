@@ -3,7 +3,7 @@ import SwiftSyntax
 import XCTest
 
 final class DiscoverMutationPointsTests: MuterTestCase {
-    private let state = RunCommandState()
+    private let state = MutationTestState()
     private let sut = DiscoverMutationPoints()
 
     override func setUp() {

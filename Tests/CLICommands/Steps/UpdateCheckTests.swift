@@ -5,7 +5,7 @@ import XCTest
 
 final class UpdateCheckTests: MuterTestCase {
     private let currentVersion = Version(1, 0, 0)
-    private let state = RunCommandState()
+    private let state = MutationTestState()
 
     private lazy var sut = UpdateCheck(currentVersion: currentVersion)
 

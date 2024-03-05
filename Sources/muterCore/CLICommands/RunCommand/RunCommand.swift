@@ -2,13 +2,13 @@ import ArgumentParser
 import Foundation
 
 protocol RunCommand: AsyncParsableCommand {
-    func run(with options: RunOptions) async throws
+    func run(with options: Run.Options) async throws
 }
 
 extension RunCommand {
-    func run(with options: RunOptions) async throws {
+    func run(with options: Run.Options) async throws {
         do {
-            try await RunCommandHandler(options: options).run()
+            try await MutationTestHandler(options: options).run()
         } catch {
             print(
                 """

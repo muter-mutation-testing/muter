@@ -1,6 +1,6 @@
 import Foundation
 
-final class DiscoverProjectCoverage: RunCommandStep {
+final class DiscoverProjectCoverage: MutationStep {
     @Dependency(\.notificationCenter)
     private var notificationCenter: NotificationCenter
     @Dependency(\.fileManager)
@@ -9,8 +9,8 @@ final class DiscoverProjectCoverage: RunCommandStep {
     private var projectCoverage: ProjectCoverage
 
     func run(
-        with state: AnyRunCommandState
-    ) async throws -> [RunCommandState.Change] {
+        with state: AnyMutationTestState
+    ) async throws -> [MutationTestState.Change] {
         guard let coverage = projectCoverage(
             state.muterConfiguration.buildSystem
         )

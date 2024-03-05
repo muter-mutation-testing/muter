@@ -6,7 +6,7 @@ enum TestingError: String, Error {
 }
 
 final class CopyProjectToTempDirectoryTests: MuterTestCase {
-    private let state = RunCommandState()
+    private let state = MutationTestState()
 
     private lazy var sut = CopyProjectToTempDirectory()
 

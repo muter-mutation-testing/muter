@@ -5,7 +5,7 @@ import XCTest
 final class DiscoverSourceFilesTests: MuterTestCase {
     private lazy var sut = DiscoverSourceFiles()
 
-    private var state = RunCommandState()
+    private var state = MutationTestState()
     private lazy var filesToMutatePath = "\(self.fixturesDirectory)/FilesToMutate"
     private lazy var filsToDiscoverPath = "\(self.fixturesDirectory)/FilesToDiscover"
 

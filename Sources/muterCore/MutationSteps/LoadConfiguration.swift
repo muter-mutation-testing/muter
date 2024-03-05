@@ -1,12 +1,12 @@
 import Foundation
 
-struct LoadConfiguration: RunCommandStep {
+struct LoadConfiguration: MutationStep {
     @Dependency(\.fileManager)
     private var fileManager: FileSystemManager
 
     func run(
-        with state: AnyRunCommandState
-    ) async throws -> [RunCommandState.Change] {
+        with state: AnyMutationTestState
+    ) async throws -> [MutationTestState.Change] {
         let configurationPath = configurationPath(state.runOptions)
         do {
             let hasJSON = hasJsonInProjectAtPath(configurationPath)
@@ -47,7 +47,7 @@ struct LoadConfiguration: RunCommandStep {
         }
     }
 
-    private func configurationPath(_ options: RunOptions) -> String {
+    private func configurationPath(_ options: Run.Options) -> String {
         let currentDirectoryPath = options.configurationURL?.path ?? fileManager.currentDirectoryPath
         if currentDirectoryPath.pathContainsConfigExtension {
             return currentDirectoryPath

@@ -1,18 +1,20 @@
 import Foundation
 
-final class RunCommandHandler {
+final class MutationTestHandler {
     @Dependency(\.notificationCenter)
     private var notificationCenter
 
-    let steps: [RunCommandStep]
-    var state: AnyRunCommandState
+    private lazy var observer: MutationTestObserver = .init(runOptions: options)
 
-    private let options: RunOptions
+    let steps: [MutationStep]
+    var state: AnyMutationTestState
+
+    private let options: Run.Options
 
     init(
-        options: RunOptions = .null,
-        steps: [RunCommandStep] = .allSteps,
-        state: RunCommandState = .init()
+        options: Run.Options = .null,
+        steps: [MutationStep] = .allSteps,
+        state: MutationTestState = .init()
     ) {
         self.steps = steps
         self.state = state
@@ -20,13 +22,13 @@ final class RunCommandHandler {
     }
 
     convenience init(
-        options: RunOptions,
-        steps: [RunCommandStep] = .allSteps
+        options: Run.Options,
+        steps: [MutationStep] = .allSteps
     ) {
         self.init(
             options: options,
             steps: steps.filtering(with: options),
-            state: RunCommandState(from: options)
+            state: MutationTestState(from: options)
         )
     }
 
@@ -37,7 +39,7 @@ final class RunCommandHandler {
     }
 
     private func startObserver() {
-        _ = RunCommandObserver(runOptions: options)
+        observer.start()
     }
 
     private func notifyMuterLaunched() {
@@ -52,8 +54,8 @@ final class RunCommandHandler {
     }
 }
 
-private extension [RunCommandStep] {
-    static let allSteps: [RunCommandStep] = [
+private extension [MutationStep] {
+    static let allSteps: [MutationStep] = [
         UpdateCheck(),
         LoadConfiguration(),
         CreateMutatedProjectDirectoryURL(),
@@ -62,7 +64,7 @@ private extension [RunCommandStep] {
         DiscoverProjectCoverage(),
         DiscoverSourceFiles(),
         DiscoverMutationPoints(),
-        SaveMuterTestPlan(),
+        CreateMuterTestPlan(),
         GenerateSwapFilePaths(),
         ApplySchemata(),
         BuildForTesting(),
@@ -70,16 +72,15 @@ private extension [RunCommandStep] {
         PerformMutationTesting(),
     ]
 
-    static let testPlanSteps: [RunCommandStep] = [
+    static let testPlanSteps: [MutationStep] = [
         UpdateCheck(),
         LoadConfiguration(),
-        DiscoverProjectCoverage(),
         BuildForTesting(),
         ProjectMappings(),
         PerformMutationTesting(),
     ]
 
-    static let createTestPlanSteps: [RunCommandStep] = [
+    static let createTestPlanSteps: [MutationStep] = [
         UpdateCheck(),
         LoadConfiguration(),
         CreateMutatedProjectDirectoryURL(),
@@ -89,27 +90,28 @@ private extension [RunCommandStep] {
         DiscoverSourceFiles(),
         DiscoverMutationPoints(),
         ApplySchemata(),
-        SaveMuterTestPlan(),
+        CreateMuterTestPlan(),
     ]
 
-    func filtering(with options: RunOptions) -> [RunCommandStep] {
-        var copy: [any RunCommandStep] = self
+    func filtering(with options: Run.Options) -> [MutationStep] {
+        var copy: [any MutationStep] = self
 
         if options.isUsingTestPlan {
-            copy = [RunCommandStep].testPlanSteps
+            copy = [MutationStep].testPlanSteps
         } else {
             copy.removeAll { $0 is ProjectMappings }
         }
 
         if options.createTestPlan {
-            copy = [RunCommandStep].createTestPlanSteps
+            copy = [MutationStep].createTestPlanSteps
         } else {
-            copy.removeAll { $0 is SaveMuterTestPlan }
+            copy.removeAll { $0 is CreateMuterTestPlan }
         }
 
         if options.skipCoverage {
             copy.removeAll { $0 is DiscoverProjectCoverage }
         }
+
         if options.skipUpdateCheck {
             copy.removeAll { $0 is UpdateCheck }
         }

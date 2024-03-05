@@ -18,7 +18,7 @@ public struct RunWithoutMutating: RunCommand {
     public init() {}
 
     public func run() async throws {
-        let options = RunOptions(
+        let options = Run.Options(
             reportFormat: reportOptions.reportFormat,
             reportURL: reportOptions.reportURL,
             skipCoverage: options.skipCoverage,

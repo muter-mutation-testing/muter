@@ -1,8 +1,8 @@
 @testable import muterCore
 import XCTest
 
-final class RunCommandStateTests: MuterTestCase {
-    private let sut = RunCommandState(
+final class MutationTestStateTests: MuterTestCase {
+    private let sut = MutationTestState(
         from: .make(
             filesToMutate: [
                 "/path/to/file1.swift,/path/to/file3.swift,/path/to/file3.swift,",

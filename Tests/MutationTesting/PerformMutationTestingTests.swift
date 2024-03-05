@@ -4,7 +4,7 @@ import TestingExtensions
 import XCTest
 
 final class PerformMutationTestingTests: MuterTestCase {
-    private let state = RunCommandState()
+    private let state = MutationTestState()
 
     private let expectedMutationPoint = MutationPoint(
         mutationOperatorId: .ror,

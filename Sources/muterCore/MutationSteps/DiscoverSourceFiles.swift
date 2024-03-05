@@ -1,15 +1,15 @@
 import Foundation
 import Pathos
 
-struct DiscoverSourceFiles: RunCommandStep {
+struct DiscoverSourceFiles: MutationStep {
     @Dependency(\.notificationCenter)
     private var notificationCenter: NotificationCenter
     @Dependency(\.fileManager)
     private var fileManager: FileSystemManager
 
     func run(
-        with state: AnyRunCommandState
-    ) async throws -> [RunCommandState.Change] {
+        with state: AnyMutationTestState
+    ) async throws -> [MutationTestState.Change] {
         notificationCenter.post(
             name: .sourceFileDiscoveryStarted,
             object: nil

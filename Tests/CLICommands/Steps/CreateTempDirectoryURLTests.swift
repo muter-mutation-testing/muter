@@ -2,7 +2,7 @@
 import XCTest
 
 final class CreateMutatedProjectDirectoryURLTests: MuterTestCase {
-    private var state = RunCommandState()
+    private var state = MutationTestState()
 
     private let sut = CreateMutatedProjectDirectoryURL()
 

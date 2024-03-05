@@ -1,9 +1,9 @@
 import Foundation
 
-struct CreateMutatedProjectDirectoryURL: RunCommandStep {
+struct CreateMutatedProjectDirectoryURL: MutationStep {
     func run(
-        with state: AnyRunCommandState
-    ) async throws -> [RunCommandState.Change] {
+        with state: AnyMutationTestState
+    ) async throws -> [MutationTestState.Change] {
         let destinationPath = destinationPath(
             with: state.projectDirectoryURL
         )

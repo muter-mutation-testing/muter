@@ -6,9 +6,9 @@ final class Coverage {
     let functionsCoverage: FunctionsCoverage
 
     init(
-        percent: Int,
-        filesWithoutCoverage: [FilePath],
-        functionsCoverage: FunctionsCoverage
+        percent: Int = 0,
+        filesWithoutCoverage: [FilePath] = [],
+        functionsCoverage: FunctionsCoverage = .null
     ) {
         self.percent = percent
         self.filesWithoutCoverage = filesWithoutCoverage

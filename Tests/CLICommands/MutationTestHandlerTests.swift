@@ -2,13 +2,13 @@
 import TestingExtensions
 import XCTest
 
-final class RunCommandHandlerTests: MuterTestCase {
-    private let stepSpy1 = RunCommandStepSpy()
-    private let stepSpy2 = RunCommandStepSpy()
-    private let stepSpy3 = RunCommandStepSpy()
-    private let state = RunCommandState()
+final class MutationTestHandlerTests: MuterTestCase {
+    private let stepSpy1 = MutationStepSpy()
+    private let stepSpy2 = MutationStepSpy()
+    private let stepSpy3 = MutationStepSpy()
+    private let state = MutationTestState()
 
-    private lazy var sut = RunCommandHandler(
+    private lazy var sut = MutationTestHandler(
         steps: [stepSpy1, stepSpy2, stepSpy3],
         state: state
     )
@@ -85,7 +85,7 @@ final class RunCommandHandlerTests: MuterTestCase {
     }
 
     func test_allSteps() {
-        sut = RunCommandHandler(options: .make())
+        sut = MutationTestHandler(options: .make())
 
         XCTAssertEqual(sut.steps.count, 12)
 
@@ -104,41 +104,36 @@ final class RunCommandHandlerTests: MuterTestCase {
     }
 
     func test_steps_whenSkipsCoverage() {
-        sut = RunCommandHandler(options: .make(skipCoverage: true))
+        sut = MutationTestHandler(options: .make(skipCoverage: true))
 
         assertStepsDoesNotContain(sut.steps, DiscoverProjectCoverage.self)
     }
 
     func test_steps_whenSkipUpdateCheck() {
-        sut = RunCommandHandler(options: .make(skipUpdateCheck: true))
+        sut = MutationTestHandler(options: .make(skipUpdateCheck: true))
 
         assertStepsDoesNotContain(sut.steps, UpdateCheck.self)
     }
 
     func test_steps_whenRunWithouMutating() throws {
-        fileManager.fileContentsToReturn = try JSONEncoder().encode(
-            MuterTestPlan(
-                mutatedProjectPath: "", allMappings: []
-            )
-        )
+        fileManager.fileContentsToReturn = try JSONEncoder().encode(MuterTestPlan.make())
 
-        sut = RunCommandHandler(
+        sut = MutationTestHandler(
             options: .make(
                 testPlanURL: URL(fileURLWithPath: "")
             )
         )
 
-        XCTAssertEqual(sut.steps.count, 6)
+        XCTAssertEqual(sut.steps.count, 5)
         XCTAssertTypeEqual(sut.steps[safe: 0], UpdateCheck.self)
         XCTAssertTypeEqual(sut.steps[safe: 1], LoadConfiguration.self)
-        XCTAssertTypeEqual(sut.steps[safe: 2], DiscoverProjectCoverage.self)
-        XCTAssertTypeEqual(sut.steps[safe: 3], BuildForTesting.self)
-        XCTAssertTypeEqual(sut.steps[safe: 4], ProjectMappings.self)
-        XCTAssertTypeEqual(sut.steps[safe: 5], PerformMutationTesting.self)
+        XCTAssertTypeEqual(sut.steps[safe: 2], BuildForTesting.self)
+        XCTAssertTypeEqual(sut.steps[safe: 3], ProjectMappings.self)
+        XCTAssertTypeEqual(sut.steps[safe: 4], PerformMutationTesting.self)
     }
 
     func test_steps_whenMutateWithoutRunning() {
-        sut = RunCommandHandler(
+        sut = MutationTestHandler(
             options: .make(
                 createTestPlan: true
             )
@@ -154,12 +149,12 @@ final class RunCommandHandlerTests: MuterTestCase {
         XCTAssertTypeEqual(sut.steps[safe: 6], DiscoverSourceFiles.self)
         XCTAssertTypeEqual(sut.steps[safe: 7], DiscoverMutationPoints.self)
         XCTAssertTypeEqual(sut.steps[safe: 8], ApplySchemata.self)
-        XCTAssertTypeEqual(sut.steps[safe: 9], SaveMuterTestPlan.self)
+        XCTAssertTypeEqual(sut.steps[safe: 9], CreateMuterTestPlan.self)
     }
 
     private func assertStepsDoesNotContain(
-        _ steps: [RunCommandStep],
-        _ step: RunCommandStep.Type,
+        _ steps: [MutationStep],
+        _ step: MutationStep.Type,
         file: StaticString = #file,
         line: UInt = #line
     ) {

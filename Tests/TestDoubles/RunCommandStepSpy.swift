@@ -1,11 +1,11 @@
 @testable import muterCore
 
-class RunCommandStepSpy: Spy, RunCommandStep {
+class MutationStepSpy: Spy, MutationStep {
     private(set) var methodCalls: [String] = []
-    private(set) var states: [AnyRunCommandState] = []
-    var resultToReturn: Result<[RunCommandState.Change], MuterError>!
+    private(set) var states: [AnyMutationTestState] = []
+    var resultToReturn: Result<[MutationTestState.Change], MuterError>!
 
-    func run(with state: AnyRunCommandState) async throws -> [RunCommandState.Change] {
+    func run(with state: AnyMutationTestState) async throws -> [MutationTestState.Change] {
         methodCalls.append(#function)
         states.append(state)
 

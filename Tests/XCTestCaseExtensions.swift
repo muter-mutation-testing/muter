@@ -11,6 +11,7 @@ class MuterTestCase: XCTestCase {
     private(set) var process = ProcessSpy()
     private(set) var flushStandardOut = FlushHandlerSpy()
     private(set) var server = ServerSpy()
+    private(set) var writeFile = WriteFileSpy()
     private let fixedNow = DateComponents(
         calendar: .init(identifier: .gregorian),
         year: 2021,
@@ -49,6 +50,7 @@ class MuterTestCase: XCTestCase {
             ioDelegate: ioDelegate,
             process: { self.process },
             prepareCode: prepareCode.prepare,
+            writeFile: writeFile.writeFile,
             server: server,
             now: { self.fixedNow }
         )

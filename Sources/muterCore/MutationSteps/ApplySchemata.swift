@@ -1,15 +1,15 @@
 import Foundation
 import SwiftFormat
 
-struct ApplySchemata: RunCommandStep {
+struct ApplySchemata: MutationStep {
     @Dependency(\.writeFile)
     private var writeFile: WriteFile
     @Dependency(\.notificationCenter)
     private var notificationCenter: NotificationCenter
 
     func run(
-        with state: AnyRunCommandState
-    ) async throws -> [RunCommandState.Change] {
+        with state: AnyMutationTestState
+    ) async throws -> [MutationTestState.Change] {
         for mutationMap in state.mutationMapping {
             guard let sourceCode = state.sourceCodeByFilePath[mutationMap.filePath] else {
                 // TODO: log?
