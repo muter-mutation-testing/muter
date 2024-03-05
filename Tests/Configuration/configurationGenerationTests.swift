@@ -90,7 +90,7 @@ final class ConfigurationGenerationTests: MuterTestCase {
         process.stdoutToBeReturned = "/path/to/xcodebuild"
 
         let generatedConfiguration = MuterConfiguration(from: projectDirectoryContents)
-        
+
         XCTAssertEqual(
             generatedConfiguration,
             MuterConfiguration(

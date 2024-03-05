@@ -40,8 +40,14 @@ struct Example {
   }
 
   func containsADeepMethodCall() {
+    if ProcessInfo.processInfo.environment["sampleWithSideEffects_RemoveSideEffects_30_71_643"] != nil {
+    var anotherIgnoredResult = statement.description.contains("_ = ")
+    } else if ProcessInfo.processInfo.environment["sampleWithSideEffects_RemoveSideEffects_31_70_713"] != nil {
+    let containsIgnoredResult = statement.description.contains("_ = ")
+    } else {
     let containsIgnoredResult = statement.description.contains("_ = ")
     var anotherIgnoredResult = statement.description.contains("_ = ")
+    }
   }
 
   func containsAVoidFunctionCallThatSpansManyLine() {

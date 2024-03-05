@@ -115,6 +115,48 @@ final class RunCommandHandlerTests: MuterTestCase {
         assertStepsDoesNotContain(sut.steps, UpdateCheck.self)
     }
 
+    func test_steps_whenRunWithouMutating() throws {
+        fileManager.fileContentsToReturn = try JSONEncoder().encode(
+            MuterTestPlan(
+                mutatedProjectPath: "", allMappings: []
+            )
+        )
+
+        sut = RunCommandHandler(
+            options: .make(
+                testPlanURL: URL(fileURLWithPath: "")
+            )
+        )
+
+        XCTAssertEqual(sut.steps.count, 6)
+        XCTAssertTypeEqual(sut.steps[safe: 0], UpdateCheck.self)
+        XCTAssertTypeEqual(sut.steps[safe: 1], LoadConfiguration.self)
+        XCTAssertTypeEqual(sut.steps[safe: 2], DiscoverProjectCoverage.self)
+        XCTAssertTypeEqual(sut.steps[safe: 3], BuildForTesting.self)
+        XCTAssertTypeEqual(sut.steps[safe: 4], ProjectMappings.self)
+        XCTAssertTypeEqual(sut.steps[safe: 5], PerformMutationTesting.self)
+    }
+
+    func test_steps_whenMutateWithoutRunning() {
+        sut = RunCommandHandler(
+            options: .make(
+                createTestPlan: true
+            )
+        )
+
+        XCTAssertEqual(sut.steps.count, 10)
+        XCTAssertTypeEqual(sut.steps[safe: 0], UpdateCheck.self)
+        XCTAssertTypeEqual(sut.steps[safe: 1], LoadConfiguration.self)
+        XCTAssertTypeEqual(sut.steps[safe: 2], CreateMutatedProjectDirectoryURL.self)
+        XCTAssertTypeEqual(sut.steps[safe: 3], PreviousRunCleanUp.self)
+        XCTAssertTypeEqual(sut.steps[safe: 4], CopyProjectToTempDirectory.self)
+        XCTAssertTypeEqual(sut.steps[safe: 5], DiscoverProjectCoverage.self)
+        XCTAssertTypeEqual(sut.steps[safe: 6], DiscoverSourceFiles.self)
+        XCTAssertTypeEqual(sut.steps[safe: 7], DiscoverMutationPoints.self)
+        XCTAssertTypeEqual(sut.steps[safe: 8], ApplySchemata.self)
+        XCTAssertTypeEqual(sut.steps[safe: 9], SaveMuterTestPlan.self)
+    }
+
     private func assertStepsDoesNotContain(
         _ steps: [RunCommandStep],
         _ step: RunCommandStep.Type,

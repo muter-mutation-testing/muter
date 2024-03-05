@@ -191,8 +191,8 @@ extension RunOptions {
         skipCoverage: Bool = false,
         skipUpdateCheck: Bool = false,
         configurationURL: URL? = nil,
-        mappingsJsonURL: URL? = nil,
-        generateMappings: Bool = false
+        testPlanURL: URL? = nil,
+        createTestPlan: Bool = false
     ) -> Self {
         .init(
             filesToMutate: filesToMutate,
@@ -201,9 +201,9 @@ extension RunOptions {
             mutationOperatorsList: mutationOperatorsList,
             skipCoverage: skipCoverage,
             skipUpdateCheck: skipUpdateCheck,
-            configurationURL: configurationURL, 
-            mappingsJsonURL: mappingsJsonURL,
-            generateMappings: generateMappings
+            configurationURL: configurationURL,
+            testPlanURL: testPlanURL,
+            createTestPlan: createTestPlan
         )
     }
 }

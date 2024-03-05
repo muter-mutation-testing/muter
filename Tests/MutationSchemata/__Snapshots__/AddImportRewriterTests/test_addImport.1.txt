@@ -1,4 +1,4 @@
- private import class Foundation.ProcessInfo
+ import class Foundation.ProcessInfo
 
 #if os(iOS) || os(tvOS)
     import Foo

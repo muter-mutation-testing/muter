@@ -1,7 +1,7 @@
  // swiftformat:disable all
 // swiftlint:disable all
 
-private import class Foundation.ProcessInfo
+import class Foundation.ProcessInfo
 
 func foo() {
     true && false

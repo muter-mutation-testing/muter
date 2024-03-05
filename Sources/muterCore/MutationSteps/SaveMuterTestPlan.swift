@@ -1,8 +1,8 @@
 import Foundation
 
-struct SaveProjectMappings: RunCommandStep {
+struct SaveMuterTestPlan: RunCommandStep {
     func run(with state: AnyRunCommandState) async throws -> [RunCommandState.Change] {
-        let proj = ProjectSchemataMappings(
+        let proj = MuterTestPlan(
             mutatedProjectPath: state.mutatedProjectDirectoryURL.path,
             allMappings: state.mutationMapping
         )

@@ -25,11 +25,11 @@ struct MutationSchema {
 extension MutationSchema: Codable {
     init(from decoder: Decoder) throws {
         let container = try decoder.container(keyedBy: CodingKeys.self)
-        self.filePath = try container.decode(String.self, forKey: .filePath)
-        self.mutationOperatorId = try container.decode(MutationOperator.Id.self, forKey: .mutationOperatorId)
-        self.syntaxMutation = CodeBlockItemListSyntax([])
-        self.position = try container.decode(MutationPosition.self, forKey: .position)
-        self.snapshot = try container.decode(MutationOperator.Snapshot.self, forKey: .snapshot)
+        filePath = try container.decode(String.self, forKey: .filePath)
+        mutationOperatorId = try container.decode(MutationOperator.Id.self, forKey: .mutationOperatorId)
+        syntaxMutation = CodeBlockItemListSyntax([])
+        position = try container.decode(MutationPosition.self, forKey: .position)
+        snapshot = try container.decode(MutationOperator.Snapshot.self, forKey: .snapshot)
     }
 
     func encode(to encoder: Encoder) throws {
@@ -42,7 +42,10 @@ extension MutationSchema: Codable {
     }
 
     enum CodingKeys: String, CodingKey {
-        case filePath, mutationOperatorId, position, snapshot
+        case filePath
+        case mutationOperatorId
+        case position
+        case snapshot
     }
 }
 

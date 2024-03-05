@@ -48,9 +48,9 @@ final class RunCommandState: AnyRunCommandState {
         mutationOperatorList = options.mutationOperatorsList
         filesToMutate = options.filesToMutate
 
-        if let projectMappings = options.projectMappings {
-            mutatedProjectDirectoryURL = URL(fileURLWithPath: projectMappings.mutatedProjectPath)
-            mutationMapping = projectMappings.allMappings
+        if let testPlan = options.testPlan {
+            mutatedProjectDirectoryURL = URL(fileURLWithPath: testPlan.mutatedProjectPath)
+            mutationMapping = testPlan.allMappings
         }
     }
 }

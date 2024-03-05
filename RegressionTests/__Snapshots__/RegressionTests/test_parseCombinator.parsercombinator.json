@@ -4,9 +4,9 @@
       "appliedOperators" : [
         {
           "mutationPoint" : {
-            "mutationOperatorId" : "RelationalOperatorReplacement",
+            "mutationOperatorId" : "ChangeLogicalConnector",
             "position" : {
-              "column" : 23,
+              "column" : 30,
               "line" : 88
             }
           },
@@ -14,9 +14,9 @@
         },
         {
           "mutationPoint" : {
-            "mutationOperatorId" : "ChangeLogicalConnector",
+            "mutationOperatorId" : "RelationalOperatorReplacement",
             "position" : {
-              "column" : 30,
+              "column" : 23,
               "line" : 88
             }
           },
@@ -34,16 +34,6 @@
         },
         {
           "mutationPoint" : {
-            "mutationOperatorId" : "RemoveSideEffects",
-            "position" : {
-              "column" : 39,
-              "line" : 90
-            }
-          },
-          "testSuiteOutcome" : "passed"
-        },
-        {
-          "mutationPoint" : {
             "mutationOperatorId" : "RelationalOperatorReplacement",
             "position" : {
               "column" : 29,
@@ -51,6 +41,16 @@
             }
           },
           "testSuiteOutcome" : "failed"
+        },
+        {
+          "mutationPoint" : {
+            "mutationOperatorId" : "RemoveSideEffects",
+            "position" : {
+              "column" : 39,
+              "line" : 90
+            }
+          },
+          "testSuiteOutcome" : "passed"
         }
       ],
       "fileName" : "FFCParserCombinator.swift",
@@ -80,29 +80,9 @@
         },
         {
           "mutationPoint" : {
-            "mutationOperatorId" : "SwapTernary",
-            "position" : {
-              "column" : 73,
-              "line" : 180
-            }
-          },
-          "testSuiteOutcome" : "failed"
-        },
-        {
-          "mutationPoint" : {
             "mutationOperatorId" : "RelationalOperatorReplacement",
             "position" : {
               "column" : 38,
-              "line" : 204
-            }
-          },
-          "testSuiteOutcome" : "failed"
-        },
-        {
-          "mutationPoint" : {
-            "mutationOperatorId" : "SwapTernary",
-            "position" : {
-              "column" : 52,
               "line" : 204
             }
           },
@@ -144,6 +124,26 @@
             "position" : {
               "column" : 76,
               "line" : 282
+            }
+          },
+          "testSuiteOutcome" : "failed"
+        },
+        {
+          "mutationPoint" : {
+            "mutationOperatorId" : "SwapTernary",
+            "position" : {
+              "column" : 73,
+              "line" : 180
+            }
+          },
+          "testSuiteOutcome" : "failed"
+        },
+        {
+          "mutationPoint" : {
+            "mutationOperatorId" : "SwapTernary",
+            "position" : {
+              "column" : 52,
+              "line" : 204
             }
           },
           "testSuiteOutcome" : "failed"

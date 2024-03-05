@@ -1,6 +1,6 @@
 import Foundation
 
-struct ProjectSchemataMappings: Equatable, Codable {
+struct MuterTestPlan: Equatable, Codable {
     let mutatedProjectPath: String
     let allMappings: [SchemataMutationMapping]
 }

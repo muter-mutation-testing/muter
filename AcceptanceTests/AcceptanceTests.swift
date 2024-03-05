@@ -34,8 +34,8 @@ final class AcceptanceTests: XCTestCase {
 
         XCTAssertTrue(output.contains("In total, Muter introduced 3 mutants in 3 files."))
 
-        XCTAssertEqual(try numberOfProgressUpdates(in: output), 4)
-        XCTAssertEqual(try numberOfDurationEstimates(in: output), 4)
+        XCTAssertEqual(try numberOfProgressUpdates(in: output), 3)
+        XCTAssertEqual(try numberOfDurationEstimates(in: output), 3)
 
         XCTAssertTrue(output.contains(messages.mutationScoresHeader))
         XCTAssertTrue(output.contains(messages.mutationScoreOfTestSuite))

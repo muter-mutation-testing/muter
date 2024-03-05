@@ -9,32 +9,32 @@ struct RunOptions {
     let skipCoverage: Bool
     let skipUpdateCheck: Bool
     let configurationURL: URL?
-    let projectMappings: ProjectSchemataMappings?
-    let generateMappings: Bool
+    let testPlan: MuterTestPlan?
+    let createTestPlan: Bool
 
-    var isUsingMappingsJson: Bool {
-        projectMappings != nil
+    var isUsingTestPlan: Bool {
+        testPlan != nil
     }
 
     init(
-        filesToMutate: [String],
-        reportFormat: ReportFormat,
-        reportURL: URL?,
-        mutationOperatorsList: MutationOperatorList,
+        filesToMutate: [String] = [],
+        reportFormat: ReportFormat = .plain,
+        reportURL: URL? = nil,
+        mutationOperatorsList: MutationOperatorList = [],
         skipCoverage: Bool,
         skipUpdateCheck: Bool,
         configurationURL: URL?,
-        mappingsJsonURL: URL?,
-        generateMappings: Bool
+        testPlanURL: URL? = nil,
+        createTestPlan: Bool = false
     ) {
         self.skipCoverage = skipCoverage
         self.skipUpdateCheck = skipUpdateCheck
-        self.generateMappings = generateMappings
+        self.createTestPlan = createTestPlan
         self.mutationOperatorsList = mutationOperatorsList
         self.configurationURL = configurationURL
-        self.projectMappings = mappingsJsonURL
+        testPlan = testPlanURL
             .map(\.path)
-            .flatMap(RunOptions.loadMappingsJson)
+            .flatMap(RunOptions.loadTestPlan)
 
         self.filesToMutate = filesToMutate.reduce(into: []) { accum, next in
             accum.append(
@@ -43,16 +43,16 @@ struct RunOptions {
             )
         }
 
-        self.reportOptions = ReportOptions(
+        reportOptions = ReportOptions(
             reporter: reportFormat.reporter,
             path: reportURL?.path
         )
     }
 
-    static func loadMappingsJson(atPath path: String) -> ProjectSchemataMappings? {
+    static func loadTestPlan(atPath path: String) -> MuterTestPlan? {
         current.fileManager.contents(atPath: path)
             .flatMap {
-                try? JSONDecoder().decode(ProjectSchemataMappings.self, from: $0)
+                try? JSONDecoder().decode(MuterTestPlan.self, from: $0)
             }
     }
 }
@@ -64,7 +64,7 @@ extension RunOptions: Equatable {
             lhs.skipCoverage == rhs.skipCoverage &&
             lhs.skipUpdateCheck == rhs.skipUpdateCheck &&
             lhs.configurationURL == rhs.configurationURL &&
-            lhs.projectMappings == rhs.projectMappings &&
+            lhs.testPlan == rhs.testPlan &&
             lhs.reportOptions.path == rhs.reportOptions.path &&
             "\(lhs.reportOptions.reporter)" == "\(rhs.reportOptions.reporter)"
     }
@@ -80,8 +80,8 @@ extension RunOptions: Nullable {
             skipCoverage: false,
             skipUpdateCheck: false,
             configurationURL: nil,
-            mappingsJsonURL: nil,
-            generateMappings: false
+            testPlanURL: nil,
+            createTestPlan: false
         )
     }
 }

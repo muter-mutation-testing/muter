@@ -60,7 +60,7 @@ struct ColoredProgressBarLine: ProgressElementType {
         if progressBar.isEmpty {
             completedBarElements = barLength
         } else {
-            let progress = Double(barLength) * (Double(progressBar.element))
+            let progress = Double(barLength) * Double(progressBar.element)
             completedBarElements = Int(progress / Double(progressBar.count))
         }
 

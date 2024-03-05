@@ -67,7 +67,8 @@ final class SchemataMutationMapping {
 
 extension SchemataMutationMapping: Codable {
     enum CodingKeys: String, CodingKey {
-        case filePath, mappings
+        case filePath
+        case mappings
     }
 
     convenience init(from decoder: Decoder) throws {
@@ -155,7 +156,10 @@ extension SchemataMutationMapping: CustomStringConvertible, CustomDebugStringCon
 }
 
 extension CodeBlockItemListSyntax: Comparable {
-    public static func < (lhs: SwiftSyntax.CodeBlockItemListSyntax, rhs: SwiftSyntax.CodeBlockItemListSyntax) -> Bool {
+    public static func < (
+        lhs: SwiftSyntax.CodeBlockItemListSyntax,
+        rhs: SwiftSyntax.CodeBlockItemListSyntax
+    ) -> Bool {
         lhs.description < rhs.description
     }
 }
