@@ -21,6 +21,12 @@ final class PrepareSourceCodeTests: MuterTestCase {
         )
     }
 
+    override func setUp() {
+        super.setUp()
+
+        current.writeFile = { try $0.write(toFile: $1, atomically: true, encoding: .utf8) }
+    }
+
     override func tearDownWithError() throws {
         try super.tearDownWithError()
 

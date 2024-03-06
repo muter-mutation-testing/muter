@@ -46,12 +46,6 @@ final class MutationTestState: AnyMutationTestState {
         runOptions = options
         mutationOperatorList = options.mutationOperatorsList
         filesToMutate = options.filesToMutate
-
-        if let testPlan = options.testPlan {
-            mutatedProjectDirectoryURL = URL(fileURLWithPath: testPlan.mutatedProjectPath)
-            projectCoverage = .init(percent: testPlan.projectCoverage)
-            mutationMapping = testPlan.mappings
-        }
     }
 }
 

@@ -36,8 +36,6 @@ struct LoadConfiguration: MutationStep {
                 )
             }
 
-            print("Loaded config at path: \(configurationPath)")
-
             return [
                 .projectDirectoryUrlDiscovered(URL(fileURLWithPath: fileManager.currentDirectoryPath)),
                 .configurationParsed(configuration),

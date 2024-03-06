@@ -1,8 +1,8 @@
 import ArgumentParser
 import Foundation
 
-public struct Run: RunCommand {
-    public static let configuration = CommandConfiguration(
+struct Run: RunCommand {
+    static let configuration = CommandConfiguration(
         commandName: "run",
         abstract: "Performs mutation testing for the Swift project contained within the current directory."
     )
@@ -26,9 +26,9 @@ public struct Run: RunCommand {
     @OptionGroup var options: RunArguments
     @OptionGroup var reportOptions: ReportArguments
 
-    public init() {}
+    init() {}
 
-    public func run() async throws {
+    func run() async throws {
         let mutationOperatorsList = !operators.isEmpty
             ? operators
             : .allOperators

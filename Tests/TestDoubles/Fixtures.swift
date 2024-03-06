@@ -282,4 +282,24 @@ extension MuterTestPlan {
             mappings: mappings
         )
     }
+
+    var toData: Data {
+        (try? JSONEncoder().encode(self)) ?? .init()
+    }
+}
+
+extension MutationTestLog {
+    static func make(
+        mutationPoint: MutationPoint? = nil,
+        testLog: String = "",
+        timePerBuildTestCycle: TimeInterval? = nil,
+        remainingMutationPointsCount: Int? = nil
+    ) -> MutationTestLog {
+        MutationTestLog(
+            mutationPoint: mutationPoint,
+            testLog: testLog,
+            timePerBuildTestCycle: timePerBuildTestCycle,
+            remainingMutationPointsCount: remainingMutationPointsCount
+        )
+    }
 }

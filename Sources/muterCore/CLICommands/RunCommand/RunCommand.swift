@@ -3,6 +3,7 @@ import Foundation
 
 protocol RunCommand: AsyncParsableCommand {
     func run(with options: Run.Options) async throws
+    func validate() throws
 }
 
 extension RunCommand {
@@ -26,4 +27,6 @@ extension RunCommand {
             Foundation.exit(-1)
         }
     }
+
+    func validate() throws {}
 }

@@ -34,13 +34,13 @@ final class Logger {
                 """.red
             )
 
-            Automated mutation testing for Swift
+            Automated mutation testing for Swift 🕳️
 
             You are running version \("\(version)".bold)
 
             Want help? Have suggestions? Want to get involved?
              ↳ https://github.com/muter-mutation-testing/muter/issues
-            +------------------------------------------------+
+            +--------------------------------------------------------+
 
             """
         )
@@ -59,13 +59,13 @@ final class Logger {
     }
 
     func projectCopyStarted() {
-        print("Copying your project to a temporary directory for testing...")
+        print("✂️ Copying your project to a temporary directory for testing...")
     }
 
     func projectCopyFinished(destinationPath: String) {
         print(
             """
-            Finished copying your project to a temporary directory for mutation testing.
+            ✅ Finished copying your project to a temporary directory for mutation testing.
             You can find your copied project here:
 
             \(destinationPath.bold)
@@ -76,7 +76,7 @@ final class Logger {
     }
 
     func projectCoverageDiscoveryStarted() {
-        print("Running tests with coverage enabled to determine which files to mutate")
+        print("⚙️ Running tests with coverage enabled to determine which files to mutate")
     }
 
     func projectCoverageDiscoveryFinished(success: Bool) {
@@ -86,15 +86,15 @@ final class Logger {
 
         print(
             """
-            Gathering coverage failed.
+            ❌ Gathering coverage failed.
             Proceeding with mutation testing anyway.
-            Pass --skip-coverage argument to disable this step
+            Pass \("--skip-coverage argument".bold) to disable this step
             """
         )
     }
 
     func sourceFileDiscoveryStarted() {
-        printMessage("Discovering Swift files which Muter will analyze...")
+        printMessage("🔎 Discovering Swift files which Muter will analyze...")
     }
 
     func sourceFileDiscoveryFinished(sourceFileCandidates: [String]) {
@@ -104,11 +104,11 @@ final class Logger {
             .joined(separator: "\n")
             .bold
 
-        print("In total, Muter discovered \(sourceFileCandidates.count) Swift files\n\n\(fileNames)")
+        print("✅ In total, Muter discovered \(sourceFileCandidates.count) Swift files\n\n\(fileNames)")
     }
 
     func mutationsDiscoveryStarted() {
-        printMessage("Analyzing source files to find mutants which can be inserted into your project...")
+        printMessage("🔎 Analyzing source files to find mutants which can be inserted into your project...")
     }
 
     func mutationsDiscoveryFinished(mutations: [SchemataMutationMapping]) {
@@ -120,7 +120,7 @@ final class Logger {
             filesSummary[mutation.fileName] = mutation.mutationSchemata.count
         }
 
-        print("In total, Muter discovered \(numberOfMutationPoints) mutants in \(numberOfFiles) files\n")
+        print("✅ In total, Muter discovered \(numberOfMutationPoints) mutants in \(numberOfFiles) files\n")
         for (fileName, mutantCount) in filesSummary {
             print("\(fileName) (\(mutantCount) mutants)".bold)
         }
@@ -128,7 +128,10 @@ final class Logger {
 
     func mutationTestingStarted() {
         printMessage(
-            "Mutation testing will now begin\nRunning your test suite to determine a baseline for mutation testing..."
+            """
+            🚀 Mutation testing will now begin
+            ⚙️ Running your test suite to determine a baseline for mutation testing...
+            """
         )
     }
 
@@ -162,6 +165,51 @@ final class Logger {
         }
 
         progressBar.next()
+    }
+
+    func mutationTestingFinished(
+        report: String,
+        reportPath: String,
+        isExportingReport: Bool,
+        didSaveReport: Bool
+    ) {
+        print("🏁 Muter finished running!")
+
+        guard isExportingReport else {
+            return print(
+                """
+                📝 Muter's report
+
+                \(report)
+                """
+            )
+        }
+
+        if didSaveReport {
+            print("📝 Report generated: \(reportPath.bold)")
+        } else {
+            print(report)
+            print("\n")
+            print("Could not save report!")
+        }
+    }
+
+    func testPlanFileCreated(atPath path: String?) {
+        if let path {
+            print("💾 Mutation test plan created: \(path)")
+        } else {
+            print("💾 Mutation test plan created")
+        }
+    }
+
+    func configurationFileCreated(atPath path: String?) {
+        if let path {
+            print("💾 Configuration file created at: \(path)")
+        }
+    }
+
+    func muterMutationTestPlanLoaded() {
+        print("⬆️ Muter mutation test plan loaded")
     }
 
     func print(_ message: String) {

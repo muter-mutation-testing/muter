@@ -1,4 +1,5 @@
 @testable import muterCore
+import SnapshotTesting
 import TestingExtensions
 import XCTest
 
@@ -45,7 +46,7 @@ final class AcceptanceTests: XCTestCase {
         let expectedLogFiles = [
             "baseline run.log",
             "ChangeLogicalConnector @ Module2.swift-2-17.log",
-            "RelationalOperatorReplacement @ Module.swift-4-18.log",
+            "RelationalOperatorReplacement @ Module.swift-4-7.log",
             "RemoveSideEffects @ ViewController.swift-5-28.log",
         ]
 
@@ -58,6 +59,12 @@ final class AcceptanceTests: XCTestCase {
             expectedLogFiles.sorted()
         ) // Sort these so it's easier to reason about any erroneous failures
         XCTAssertEqual(numberOfEmptyLogFiles, 0)
+    }
+
+    func test_runWithTestPlanCommand() throws {
+        let output = try mutersOutputWithTestPlan
+
+        XCTAssertTrue(output.contains("Muter mutation test plan loaded"))
     }
 
     func test_withCoverage() throws {
@@ -107,6 +114,13 @@ final class AcceptanceTests: XCTestCase {
         )
     }
 
+    func test_mutationTestPlan() throws {
+        let decodedTestPlan = try JSONDecoder().decode(MuterTestPlan.self, from: createdTestPlan)
+        XCTAssertTrue(decodedTestPlan.mutatedProjectPath.contains("_mutated"))
+        XCTAssertEqual(decodedTestPlan.projectCoverage, 23)
+        XCTAssertEqual(decodedTestPlan.mappings.count, 1)
+    }
+
     func test_all_operatos() throws {
         try AssertSnapshot(muterOperatorAllOutput)
     }
@@ -142,6 +156,13 @@ extension AcceptanceTests {
             try contentsOfFileAsString("\(rootTestDirectory)/samples/muters_output.txt")
         }
     }
+
+    var mutersOutputWithTestPlan: String {
+        get throws {
+            try contentsOfFileAsString("\(rootTestDirectory)/samples/muters_output_with_test_plan.txt")
+        }
+    }
+
     var muterXcodeOutput: String {
         get throws {
             try contentsOfFileAsString("\(rootTestDirectory)/samples/muters_xcode_output.txt")
@@ -222,6 +243,12 @@ extension AcceptanceTests {
     var createdMacOSConfiguration: Data {
         get throws {
             try contentsOfFileAsData("\(rootTestDirectory)/samples/created_macOS_config.yml")
+        }
+    }
+
+    var createdTestPlan: Data {
+        get throws {
+            try contentsOfFileAsData("\(rootTestDirectory)/samples/created_muter-mappings.json")
         }
     }
 

@@ -116,7 +116,7 @@ final class MutationTestHandlerTests: MuterTestCase {
     }
 
     func test_steps_whenRunWithouMutating() throws {
-        fileManager.fileContentsToReturn = try JSONEncoder().encode(MuterTestPlan.make())
+        fileManager.fileContentsToReturn = MuterTestPlan.make().toData
 
         sut = MutationTestHandler(
             options: .make(
@@ -124,12 +124,13 @@ final class MutationTestHandlerTests: MuterTestCase {
             )
         )
 
-        XCTAssertEqual(sut.steps.count, 5)
+        XCTAssertEqual(sut.steps.count, 6)
         XCTAssertTypeEqual(sut.steps[safe: 0], UpdateCheck.self)
         XCTAssertTypeEqual(sut.steps[safe: 1], LoadConfiguration.self)
-        XCTAssertTypeEqual(sut.steps[safe: 2], BuildForTesting.self)
-        XCTAssertTypeEqual(sut.steps[safe: 3], ProjectMappings.self)
-        XCTAssertTypeEqual(sut.steps[safe: 4], PerformMutationTesting.self)
+        XCTAssertTypeEqual(sut.steps[safe: 2], LoadMuterTestPlan.self)
+        XCTAssertTypeEqual(sut.steps[safe: 3], BuildForTesting.self)
+        XCTAssertTypeEqual(sut.steps[safe: 4], ProjectMappings.self)
+        XCTAssertTypeEqual(sut.steps[safe: 5], PerformMutationTesting.self)
     }
 
     func test_steps_whenMutateWithoutRunning() {

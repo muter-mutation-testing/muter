@@ -41,6 +41,16 @@ echo " > Running with --filesToMutate flag"
 "$muterdir"/muter --skip-coverage --skip-update-check --files-to-mutate "/ExampleApp/Module.swift" > "$samplesdir"/muters_files_to_mutate_output.txt 2>/dev/null
 rm -rf ./muter_logs
 
+echo " > Creating muter's test plan"
+"$muterdir"/muter mutate-without-running --skip-update-check > /dev/null
+cp ./muter-mappings.json "$samplesdir"/created_muter-mappings.json
+rm -rf ./muter_logs
+
+echo " > Running with a test plan"
+"$muterdir"/muter run-without-mutating --skip-update-check muter-mappings.json > "$samplesdir"/muters_output_with_test_plan.txt
+rm -rf ./muter_logs
+
+rm muter-mappings.json # cleanup the created mutation test run file for the next test run
 rm muter.conf.yml # cleanup the created configuration file for the next test run
 cd ../..
 
@@ -96,7 +106,7 @@ rm -rf ./AcceptanceTests/Repositories
 
 echo "Running tests..."
 
-swift test --filter 'AcceptanceTests'
+swift test --filter 'AcceptanceTests' 2>/dev/null
 
 exitCode=$?
 

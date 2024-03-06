@@ -10,18 +10,17 @@ extension Run {
         let skipCoverage: Bool
         let skipUpdateCheck: Bool
         let configurationURL: URL?
-        let testPlan: MuterTestPlan?
+        let testPlanURL: URL?
         let createTestPlan: Bool
-
         var isUsingTestPlan: Bool {
-            testPlan != nil
+            testPlanURL != nil
         }
 
         init(
             filesToMutate: [String] = [],
             reportFormat: ReportFormat = .plain,
             reportURL: URL? = nil,
-            mutationOperatorsList: MutationOperatorList = [],
+            mutationOperatorsList: MutationOperatorList = .allOperators,
             skipCoverage: Bool,
             skipUpdateCheck: Bool,
             configurationURL: URL?,
@@ -33,9 +32,7 @@ extension Run {
             self.createTestPlan = createTestPlan
             self.mutationOperatorsList = mutationOperatorsList
             self.configurationURL = configurationURL
-            testPlan = testPlanURL
-                .map(\.path)
-                .flatMap(Run.Options.loadTestPlan)
+            self.testPlanURL = testPlanURL
 
             self.filesToMutate = filesToMutate.reduce(into: []) { accum, next in
                 accum.append(
@@ -49,13 +46,6 @@ extension Run {
                 path: reportURL?.path
             )
         }
-
-        static func loadTestPlan(atPath path: String) -> MuterTestPlan? {
-            current.fileManager.contents(atPath: path)
-                .flatMap {
-                    try? JSONDecoder().decode(MuterTestPlan.self, from: $0)
-                }
-        }
     }
 }
 extension Run.Options: Equatable {
@@ -65,7 +55,7 @@ extension Run.Options: Equatable {
             lhs.skipCoverage == rhs.skipCoverage &&
             lhs.skipUpdateCheck == rhs.skipUpdateCheck &&
             lhs.configurationURL == rhs.configurationURL &&
-            lhs.testPlan == rhs.testPlan &&
+            lhs.testPlanURL == rhs.testPlanURL &&
             lhs.reportOptions.path == rhs.reportOptions.path &&
             "\(lhs.reportOptions.reporter)" == "\(rhs.reportOptions.reporter)"
     }

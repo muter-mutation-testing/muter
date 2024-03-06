@@ -1,7 +1,7 @@
 import ArgumentParser
 import Foundation
 
-public struct MutateWithoutRunning: RunCommand {
+struct MutateWithoutRunning: RunCommand {
     public static let configuration = CommandConfiguration(
         commandName: "mutate-without-running",
         abstract: "Mutates the source code and outputs the test plan as JSON."
@@ -9,9 +9,9 @@ public struct MutateWithoutRunning: RunCommand {
 
     @OptionGroup var options: RunArguments
 
-    public init() {}
+    init() {}
 
-    public func run() async throws {
+    func run() async throws {
         let options = Run.Options(
             skipCoverage: options.skipCoverage,
             skipUpdateCheck: options.skipUpdateCheck,

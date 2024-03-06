@@ -1,8 +1,8 @@
 import ArgumentParser
 import Foundation
 
-public struct RunWithoutMutating: RunCommand {
-    public static let configuration = CommandConfiguration(
+struct RunWithoutMutating: RunCommand {
+    static let configuration = CommandConfiguration(
         commandName: "run-without-mutating",
         abstract: "Performs mutation testing using the test plan."
     )
@@ -15,9 +15,9 @@ public struct RunWithoutMutating: RunCommand {
     )
     var testPlanURL: URL?
 
-    public init() {}
+    init() {}
 
-    public func run() async throws {
+    func run() async throws {
         let options = Run.Options(
             reportFormat: reportOptions.reportFormat,
             reportURL: reportOptions.reportURL,
@@ -28,5 +28,11 @@ public struct RunWithoutMutating: RunCommand {
         )
 
         try await run(with: options)
+    }
+
+    func validate() throws {
+        if testPlanURL == nil {
+            throw MuterError.literal(reason: "Please provide the path to the test plan json.")
+        }
     }
 }

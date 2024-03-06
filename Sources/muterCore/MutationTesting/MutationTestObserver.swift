@@ -34,6 +34,8 @@ extension Notification.Name {
     static let configurationFileCreated = Notification.Name("configurationFileCreated")
 
     static let testPlanFileCreated = Notification.Name("testPlanFileCreated")
+
+    static let muterMutationTestPlanLoaded = Notification.Name("muterMutationTestPlanLoaded")
 }
 
 final class MutationTestObserver {
@@ -79,6 +81,8 @@ final class MutationTestObserver {
             (name: .configurationFileCreated, handler: handleConfigurationFileCreated),
 
             (name: .testPlanFileCreated, handler: handleTestPlanFileCreated),
+
+            (name: .muterMutationTestPlanLoaded, handler: handleMuterMutationTestPlanLoaded),
         ]
     }
 
@@ -188,23 +192,9 @@ extension MutationTestObserver {
     }
 
     func handleMutationTestingFinished(notification: Notification) {
-        logger.print("Muter finished running!")
-        logger.print("\n")
-
         let reporter = runOptions.reportOptions.reporter
         let reportPath = runOptions.reportOptions.path ?? ""
         let report = reporter.report(from: notification.object as! MutationTestOutcome)
-
-        guard !reportPath.isEmpty else {
-            return logger.print(
-                """
-                Muter's report
-
-                \(report)
-                """
-            )
-        }
-
         if fileManager.fileExists(atPath: reportPath) {
             try? fileManager.removeItem(atPath: reportPath)
         }
@@ -215,26 +205,57 @@ extension MutationTestObserver {
             attributes: nil
         )
 
-        if didSave {
-            logger.print("Report generated: \(reportPath.bold)")
-        } else {
-            logger.print(report)
-            logger.print("\n")
-            logger.print("Could not save report!")
-        }
+        logger.mutationTestingFinished(
+            report: report,
+            reportPath: reportPath,
+            isExportingReport: !reportPath.isEmpty,
+            didSaveReport: didSave
+        )
+
+//        logger.print("Muter finished running!\n")
+//
+//        let reporter = runOptions.reportOptions.reporter
+//        let reportPath = runOptions.reportOptions.path ?? ""
+//        let report = reporter.report(from: notification.object as! MutationTestOutcome)
+//
+//        guard !reportPath.isEmpty else {
+//            return logger.print(
+//                """
+//                📝 Muter's report
+//
+//                \(report)
+//                """
+//            )
+//        }
+//
+//        if fileManager.fileExists(atPath: reportPath) {
+//            try? fileManager.removeItem(atPath: reportPath)
+//        }
+//
+//        let didSave = fileManager.createFile(
+//            atPath: reportPath,
+//            contents: report.data(using: .utf8),
+//            attributes: nil
+//        )
+//
+//        if didSave {
+//            logger.print("📝 Report generated: \(reportPath.bold)")
+//        } else {
+//            logger.print(report)
+//            logger.print("\n")
+//            logger.print("Could not save report!")
+//        }
     }
 
     func handleTestPlanFileCreated(notification: Notification) {
-        if let path = notification.object as? String {
-            logger.print("Mutation test plan created: \(path)")
-        } else {
-            logger.print("Mutation test plan created")
-        }
+        logger.testPlanFileCreated(atPath: notification.object as? String)
     }
 
     func handleConfigurationFileCreated(notification: Notification) {
-        if let path = notification.object as? String {
-            logger.print("Configuration file created at: \(path)")
-        }
+        logger.configurationFileCreated(atPath: notification.object as? String)
+    }
+
+    func handleMuterMutationTestPlanLoaded(notification: Notification) {
+        logger.muterMutationTestPlanLoaded()
     }
 }
