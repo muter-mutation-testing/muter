@@ -1,20 +1,23 @@
 struct Example {
   func containsSideEffect() -> Int {
-    if ProcessInfo.processInfo.environment["sampleWithSideEffects_RemoveSideEffects_3_27_80"] != nil {
-    return 1
+    if ProcessInfo.processInfo.environment["sampleWithSideEffects_RemoveSideEffects_3_27_80"] != nil
+    {
+      return 1
     } else {
-    _ = causesSideEffect()
-    return 1
+      _ = causesSideEffect()
+      return 1
     }
   }
 
   func containsSideEffect() -> Int {
-    if ProcessInfo.processInfo.environment["sampleWithSideEffects_RemoveSideEffects_10_27_186"] != nil {
-    print("something")
+    if ProcessInfo.processInfo.environment["sampleWithSideEffects_RemoveSideEffects_10_27_186"]
+      != nil
+    {
+      print("something")
     } else {
-    print("something")
+      print("something")
 
-    _ = causesSideEffect()
+      _ = causesSideEffect()
     }
   }
 
@@ -23,13 +26,15 @@ struct Example {
   }
 
   func causesAnotherSideEffect() {
-    if ProcessInfo.processInfo.environment["sampleWithSideEffects_RemoveSideEffects_20_62_423"] != nil {
-    let key = "some key"
-    let value = aFunctionThatReturnsAValue()
+    if ProcessInfo.processInfo.environment["sampleWithSideEffects_RemoveSideEffects_20_62_423"]
+      != nil
+    {
+      let key = "some key"
+      let value = aFunctionThatReturnsAValue()
     } else {
-    let key = "some key"
-    let value = aFunctionThatReturnsAValue()
-    someFunctionThatWritesToADatabase(key: key, value: value)
+      let key = "some key"
+      let value = aFunctionThatReturnsAValue()
+      someFunctionThatWritesToADatabase(key: key, value: value)
     }
   }
 
@@ -40,54 +45,68 @@ struct Example {
   }
 
   func containsADeepMethodCall() {
-    if ProcessInfo.processInfo.environment["sampleWithSideEffects_RemoveSideEffects_30_71_643"] != nil {
-    var anotherIgnoredResult = statement.description.contains("_ = ")
-    } else if ProcessInfo.processInfo.environment["sampleWithSideEffects_RemoveSideEffects_31_70_713"] != nil {
-    let containsIgnoredResult = statement.description.contains("_ = ")
+    if ProcessInfo.processInfo.environment["sampleWithSideEffects_RemoveSideEffects_30_71_643"]
+      != nil
+    {
+      var anotherIgnoredResult = statement.description.contains("_ = ")
+    } else if ProcessInfo.processInfo.environment[
+      "sampleWithSideEffects_RemoveSideEffects_31_70_713"] != nil
+    {
+      let containsIgnoredResult = statement.description.contains("_ = ")
     } else {
-    let containsIgnoredResult = statement.description.contains("_ = ")
-    var anotherIgnoredResult = statement.description.contains("_ = ")
+      let containsIgnoredResult = statement.description.contains("_ = ")
+      var anotherIgnoredResult = statement.description.contains("_ = ")
     }
   }
 
   func containsAVoidFunctionCallThatSpansManyLine() {
-    if ProcessInfo.processInfo.environment["sampleWithSideEffects_RemoveSideEffects_39_6_906"] != nil {
+    if ProcessInfo.processInfo.environment["sampleWithSideEffects_RemoveSideEffects_39_6_906"]
+      != nil
+    {
     } else {
-    functionCall(
-      "some argument",
-      anArgumentLabel: "some argument that's different",
-      anotherArgumentLabel: 5
-    )
+      functionCall(
+        "some argument",
+        anArgumentLabel: "some argument that's different",
+        anotherArgumentLabel: 5
+      )
     }
   }
 
   func sideEffectsInsideLoopsAndGuard() {
     guard true else {
-      if ProcessInfo.processInfo.environment["sampleWithSideEffects_RemoveSideEffects_44_19_994"] != nil {
-      return
+      if ProcessInfo.processInfo.environment["sampleWithSideEffects_RemoveSideEffects_44_19_994"]
+        != nil
+      {
+        return
       } else {
-      sideEffect()
-      return
+        sideEffect()
+        return
       }
     }
     while true {
-      if ProcessInfo.processInfo.environment["sampleWithSideEffects_RemoveSideEffects_48_19_1049"] != nil {
+      if ProcessInfo.processInfo.environment["sampleWithSideEffects_RemoveSideEffects_48_19_1049"]
+        != nil
+      {
       } else {
-      sideEffect()
+        sideEffect()
       }
     }
 
     for item in items {
-      if ProcessInfo.processInfo.environment["sampleWithSideEffects_RemoveSideEffects_52_19_1099"] != nil {
+      if ProcessInfo.processInfo.environment["sampleWithSideEffects_RemoveSideEffects_52_19_1099"]
+        != nil
+      {
       } else {
-      sideEffect()
+        sideEffect()
       }
     }
 
     repeat {
-      if ProcessInfo.processInfo.environment["sampleWithSideEffects_RemoveSideEffects_56_19_1138"] != nil {
+      if ProcessInfo.processInfo.environment["sampleWithSideEffects_RemoveSideEffects_56_19_1138"]
+        != nil
+      {
       } else {
-      sideEffect()
+        sideEffect()
       }
     } while true
   }

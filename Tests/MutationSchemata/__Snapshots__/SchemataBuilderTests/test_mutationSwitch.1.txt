@@ -1,10 +1,9 @@
-
-  if ProcessInfo.processInfo.environment["file_RelationalOperatorReplacement_0_0_0"] != nil {
+if ProcessInfo.processInfo.environment["file_RelationalOperatorReplacement_0_0_0"] != nil {
   a >= b
-  } else if ProcessInfo.processInfo.environment["file_RelationalOperatorReplacement_2_0_0"] != nil {
+} else if ProcessInfo.processInfo.environment["file_RelationalOperatorReplacement_2_0_0"] != nil {
   a == b
-  } else if ProcessInfo.processInfo.environment["file_RelationalOperatorReplacement_1_0_0"] != nil {
+} else if ProcessInfo.processInfo.environment["file_RelationalOperatorReplacement_1_0_0"] != nil {
   a <= b
-  } else {
+} else {
   a != b
-  }
+}

@@ -22,7 +22,6 @@ let package = Package(
         .package(url: "https://github.com/pointfreeco/swift-snapshot-testing.git", from: "1.15.1"),
         .package(url: "https://github.com/mxcl/Version.git", from: "2.0.1"),
         .package(url: "https://github.com/apple/swift-format.git", from: "509.0.0"),
-        .package(url: "https://github.com/realm/SwiftLint.git", from: "0.54.0")
     ],
     targets: [
         .executableTarget(
@@ -40,12 +39,8 @@ let package = Package(
                 .product(name: "ArgumentParser", package: "swift-argument-parser"),
                 .product(name: "Yams", package: "yams"),
                 .product(name: "Version", package: "Version"),
-                .product(name: "SwiftFormat", package: "swift-format"),
             ],
-            path: "Sources/muterCore",
-            plugins: [
-                .plugin(name: "SwiftLintPlugin", package: "SwiftLint")
-            ]
+            path: "Sources/muterCore"
         ),
         .target(
             name: "TestingExtensions",
