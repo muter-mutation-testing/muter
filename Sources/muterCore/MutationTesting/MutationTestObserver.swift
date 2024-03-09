@@ -211,40 +211,6 @@ extension MutationTestObserver {
             isExportingReport: !reportPath.isEmpty,
             didSaveReport: didSave
         )
-
-//        logger.print("Muter finished running!\n")
-//
-//        let reporter = runOptions.reportOptions.reporter
-//        let reportPath = runOptions.reportOptions.path ?? ""
-//        let report = reporter.report(from: notification.object as! MutationTestOutcome)
-//
-//        guard !reportPath.isEmpty else {
-//            return logger.print(
-//                """
-//                📝 Muter's report
-//
-//                \(report)
-//                """
-//            )
-//        }
-//
-//        if fileManager.fileExists(atPath: reportPath) {
-//            try? fileManager.removeItem(atPath: reportPath)
-//        }
-//
-//        let didSave = fileManager.createFile(
-//            atPath: reportPath,
-//            contents: report.data(using: .utf8),
-//            attributes: nil
-//        )
-//
-//        if didSave {
-//            logger.print("📝 Report generated: \(reportPath.bold)")
-//        } else {
-//            logger.print(report)
-//            logger.print("\n")
-//            logger.print("Could not save report!")
-//        }
     }
 
     func handleTestPlanFileCreated(notification: Notification) {
