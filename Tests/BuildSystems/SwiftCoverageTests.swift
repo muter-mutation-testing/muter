@@ -65,13 +65,13 @@ final class SwiftCoverageTests: MuterTestCase {
         process.stdoutToBeReturned = "something"
         process.stdoutToBeReturned = "/path/to/binary"
         process.stdoutToBeReturned = "/path/to/testArtifact"
-        process.stdoutToBeReturned = "/path/to/xcrun"
+        process.stdoutToBeReturned = "/path/to/llvm-cov"
 
         _ = sut.run(with: muterConfiguration)
 
         XCTAssertEqual(
             process.executableURL?.path,
-            "llvm-cov"
+            "/path/to/llvm-cov"
         )
 
         XCTAssertEqual(
@@ -85,6 +85,7 @@ final class SwiftCoverageTests: MuterTestCase {
         )
     }
     #else
+
     func test_whenFindTestArtifactsCommandSucceeds_thenGenerateCoverageTable() {
         process.stdoutToBeReturned = "something"
         process.stdoutToBeReturned = "/path/to/binary"
