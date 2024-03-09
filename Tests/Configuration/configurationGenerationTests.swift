@@ -7,6 +7,7 @@ final class ConfigurationGenerationTests: MuterTestCase {
             "/some/path/Package.swift",
             "/some/path/Package@swift-5.11.swift",
             "/some/path/main.swift",
+            "/some/path/PackageIgnoreMe.swift",
         ]
 
         process.stdoutToBeReturned = "/path/to/swift"

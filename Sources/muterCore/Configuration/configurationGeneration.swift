@@ -104,9 +104,7 @@ private extension MuterConfiguration {
 
     private static func swiftPackageManifestFiles(from directoryContents: [URL]) -> [String] {
         directoryContents
-            .include {
-                $0.lastPathComponent.matches("Package@?.*.swift")
-            }
+            .include { $0.lastPathComponent.matches("Package@*.swift") }
             .map(\.lastPathComponent)
     }
 
