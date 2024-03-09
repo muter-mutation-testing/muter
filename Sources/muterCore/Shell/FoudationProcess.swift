@@ -24,6 +24,8 @@ extension Foundation.Process {
 
         let output = processData
 
+        pipe.fileHandleForReading.closeFile()
+
         waitUntilExit()
 
         return output

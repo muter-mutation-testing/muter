@@ -69,7 +69,7 @@ final class SwiftCoverage: BuildSystemCoverage {
             .lastPathComponent
 
         #if os(Linux)
-        let url = "llvm-cov"
+        let url = process().which("llvm-cov") ?? ""
         let arguments = [
             "report",
             testArtifactPath,
@@ -78,7 +78,7 @@ final class SwiftCoverage: BuildSystemCoverage {
             "--ignore-filename-regex=.build|Tests",
         ]
         #else
-        let url = "/usr/bin/xcrun"
+        let url = process().which("xcrun") ?? ""
         let arguments = [
             "llvm-cov",
             "report",

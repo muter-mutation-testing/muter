@@ -65,6 +65,7 @@ final class SwiftCoverageTests: MuterTestCase {
         process.stdoutToBeReturned = "something"
         process.stdoutToBeReturned = "/path/to/binary"
         process.stdoutToBeReturned = "/path/to/testArtifact"
+        process.stdoutToBeReturned = "/path/to/xcrun"
 
         _ = sut.run(with: muterConfiguration)
 
@@ -88,12 +89,13 @@ final class SwiftCoverageTests: MuterTestCase {
         process.stdoutToBeReturned = "something"
         process.stdoutToBeReturned = "/path/to/binary"
         process.stdoutToBeReturned = "/path/to/testArtifact"
+        process.stdoutToBeReturned = "/path/to/xcrun"
 
         _ = sut.run(with: muterConfiguration)
 
         XCTAssertEqual(
             process.executableURL?.path,
-            "/usr/bin/xcrun"
+            "/path/to/xcrun"
         )
 
         XCTAssertEqual(
@@ -113,7 +115,8 @@ final class SwiftCoverageTests: MuterTestCase {
         process.stdoutToBeReturned = "something"
         process.stdoutToBeReturned = "/path/to/binary"
         process.stdoutToBeReturned = "/path/to/testArtifact"
-        process.stdoutToBeReturned = loadLLVMCovLog()
+        process.stdoutToBeReturned = "/path/to/xcrun"
+        process.stdoutToBeReturned = loadFixture("logFromllvm-cov.txt")
 
         let coverage = try XCTUnwrap(sut.run(with: muterConfiguration).get())
 
@@ -136,7 +139,8 @@ final class SwiftCoverageTests: MuterTestCase {
         process.stdoutToBeReturned = "something"
         process.stdoutToBeReturned = "/path/to/binary"
         process.stdoutToBeReturned = "/path/to/testArtifact"
-        process.stdoutToBeReturned = loadLLVMCovLog()
+        process.stdoutToBeReturned = "/path/to/xcrun"
+        process.stdoutToBeReturned = loadFixture("logFromllvm-cov.txt")
 
         coverageThreshold = 50
 
@@ -161,14 +165,26 @@ final class SwiftCoverageTests: MuterTestCase {
         )
     }
 
-    private func loadLLVMCovLog() -> String {
-        guard let data = FileManager.default
-            .contents(atPath: "\(fixturesDirectory)/logFromllvm-cov.txt"),
-            let string = String(data: data, encoding: .utf8)
-        else {
-            fatalError("Unable to load reportfor testing")
-        }
+    func test_functionCoverage() throws {
+        process.stdoutToBeReturned = "/build/directory"
+        process.stdoutToBeReturned = "/path/to/testExecutable.xctest"
+        process.stdoutToBeReturned = "/path/to/testBinary"
+        process.stdoutToBeReturned = "/path/to/coverage.profdata"
+        process.stdoutToBeReturned = "/path/to/llvm-cov"
+        process.stdoutToBeReturned = loadFixture("llvmCovExport.json")
 
-        return string
+        let functionsCoverage = sut.functionsCoverage(muterConfiguration)
+
+        XCTAssertEqual(
+            functionsCoverage.regionsForFile("/path/to/file.swift"), [
+                .make(
+                    lineStart: 14,
+                    columnStart: 80,
+                    lineEnd: 24,
+                    columnEnd: 4,
+                    executionCount: 0
+                )
+            ]
+        )
     }
 }

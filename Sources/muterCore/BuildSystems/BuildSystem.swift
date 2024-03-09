@@ -20,7 +20,7 @@ extension BuildSystem {
     ) -> BuildSystemCoverage? {
         switch buildSystem {
         case .swift: return SwiftCoverage()
-        case .xcodebuild: return XcodeCoverage()
+        case .xcodebuild: return XcodeBuildCoverage()
         default: return nil
         }
     }
@@ -103,7 +103,7 @@ extension BuildSystemCoverage {
 
     func llvmCovJsonReport(withExecutableAt executablePath: String, coverageProfile: String) -> String? {
         #if os(Linux)
-        let url = "llvm-cov"
+        let url = process().which("llvm-cov")
         let arguments = [
             "export",
             executablePath,
@@ -112,7 +112,7 @@ extension BuildSystemCoverage {
             "--ignore-filename-regex=.build|Tests",
         ]
         #else
-        let url = "/usr/bin/xcrun"
+        let url = process().which("xcrun")
         let arguments = [
             "llvm-cov",
             "export",
@@ -123,7 +123,7 @@ extension BuildSystemCoverage {
         ]
         #endif
         return process().runProcess(
-            url: url,
+            url: url ?? "",
             arguments: arguments
         )
         .flatMap(\.nilIfEmpty)

@@ -137,7 +137,7 @@ final class SwapTernaryOperatorTests: MuterTestCase {
         )
 
         let visitor = SwapTernaryOperator.Visitor(
-            sourceCodeInfo: .init(path: "", code: source)
+            sourceCodeInfo: .init(path: "/path/to/file", code: source)
         )
 
         visitor.walk(source)

@@ -79,7 +79,7 @@ final class MuterVisitorTests: MuterTestCase {
         """)
 
         let mappings = generateSchemataMappings(
-            for: .init(path: "", code: source),
+            for: .init(path: "/path/to/file", code: source),
             changes: .null,
             regionsWithoutCoverage: [
                 .make(

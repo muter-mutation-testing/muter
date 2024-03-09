@@ -123,6 +123,13 @@ class MuterTestCase: XCTestCase {
             }
         }
     }
+
+    func loadFixture(_ path: String) -> String {
+        FileManager.default
+            .contents(atPath: "\(fixturesDirectory)/\(path)")
+            .flatMap { String(data: $0, encoding: .utf8) }
+            ?? ""
+    }
 }
 
 public extension XCTestCase {

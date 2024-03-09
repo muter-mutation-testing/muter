@@ -97,7 +97,7 @@ final class MutationTestObserver {
         )
 
         for (name, handler) in notificationHandlerMappings {
-            notificationCenter.addObserver(
+            _ = notificationCenter.addObserver(
                 forName: name,
                 object: nil,
                 queue: nil,

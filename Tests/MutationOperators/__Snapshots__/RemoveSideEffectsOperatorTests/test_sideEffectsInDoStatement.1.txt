@@ -16,7 +16,7 @@ static func validate(_ type: ParsableArguments.Type, parent: InputKey?)
     return nil
   }
   do {
-    if ProcessInfo.processInfo.environment["Debug_RemoveSideEffects_17_71_597"] != nil {
+    if ProcessInfo.processInfo.environment["file_RemoveSideEffects_17_71_597"] != nil {
       return InvalidDecoderError(type: type)
     } else {
       let _ = try type.init(from: Validator(argumentKeys: argumentKeys))

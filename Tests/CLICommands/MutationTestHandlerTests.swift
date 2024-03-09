@@ -120,7 +120,7 @@ final class MutationTestHandlerTests: MuterTestCase {
 
         sut = MutationTestHandler(
             options: .make(
-                testPlanURL: URL(fileURLWithPath: "")
+                testPlanURL: URL(fileURLWithPath: "/path/to/testplan")
             )
         )
 

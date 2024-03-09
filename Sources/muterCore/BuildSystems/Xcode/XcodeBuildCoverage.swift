@@ -1,6 +1,6 @@
 import Foundation
 
-final class XcodeCoverage: BuildSystemCoverage {
+final class XcodeBuildCoverage: BuildSystemCoverage {
     @Dependency(\.process)
     var process: ProcessFactory
 
@@ -18,11 +18,14 @@ final class XcodeCoverage: BuildSystemCoverage {
             from: report,
             coverageThreshold: configuration.coverageThreshold
         )
+
         let percent = extractCoverage(from: report)
+        let functionsCoverage = functionsCoverage(configuration)
+        
         let projectCoverage = Coverage(
             percent: percent,
             filesWithoutCoverage: untested,
-            functionsCoverage: .null // TODO: add
+            functionsCoverage: functionsCoverage
         )
 
         return .success(projectCoverage)
@@ -53,7 +56,7 @@ final class XcodeCoverage: BuildSystemCoverage {
 
     private func runXccov(with result: String) -> CoverageReport? {
         guard let output: Data = process().runProcess(
-            url: "/usr/bin/xcrun",
+            url: process().which("xcrun") ?? "",
             arguments: ["xccov", "view", "--report", "--json", result]
         )
         else {

@@ -23,10 +23,10 @@ extension Region: Decodable {
         let data = try container.decode([Int].self)
 
         lineStart = data[safe: 0] ?? 0
-        columnStart = data[1]
-        lineEnd = data[2]
-        columnEnd = data[3]
-        executionCount = data[4]
+        columnStart = data[safe: 1] ?? 0
+        lineEnd = data[safe: 2] ?? 0
+        columnEnd = data[safe: 3] ?? 0
+        executionCount = data[safe: 4] ?? 0
     }
 
     func contains(_ other: Region) -> Bool {

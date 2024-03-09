@@ -93,7 +93,7 @@ final class RemoveSideEffectsOperatorTests: MuterTestCase {
             """
         )
         let visitor = RemoveSideEffectsOperator.Visitor(
-            sourceCodeInfo: .init(path: "", code: source)
+            sourceCodeInfo: .init(path: "/path/to/file", code: source)
         )
 
         visitor.walk(source)

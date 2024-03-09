@@ -18,7 +18,7 @@ final class ROROperatorTests: MuterTestCase {
 
     func test_visitor() throws {
         let visitor = ROROperator.Visitor(
-            sourceCodeInfo: sourceWithConditionalLogic
+            sourceCodeInfo: .init(path: "/path/to/file", code: sourceWithConditionalLogic.code)
         )
 
         visitor.walk(sourceWithConditionalLogic.code)

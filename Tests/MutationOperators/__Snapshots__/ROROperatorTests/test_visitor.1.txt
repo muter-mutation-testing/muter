@@ -1,8 +1,8 @@
 SchemataMutationMapping(
     source: "\n        let b = a == 5\n        let e = a != 1\n        let c = a >= 4\n        let d = a <= 10\n        let f = a < 5\n        let g = a > 5\n\n        if a == 10 {\n            return \"hello\"\n        }\n\n        return a == 9 ? \"goodbye\" : \"what\"",
 schemata: [Schemata(
-    id: "sampleWithConditionalOperators_RelationalOperatorReplacement_3_19_76",
-    filePath: "/Users/rafaelmachado/Developer/muter/Tests/fixtures/MutationExamples/NegateConditionals/sampleWithConditionalOperators.swift",
+    id: "file_RelationalOperatorReplacement_3_19_76",
+    filePath: "/path/to/file",
     mutationOperatorId: .ror,
     syntaxMutation: "\n        let b = a != 5\n        let e = a != 1\n        let c = a >= 4\n        let d = a <= 10\n        let f = a < 5\n        let g = a > 5\n\n        if a == 10 {\n            return \"hello\"\n        }\n\n        return a == 9 ? \"goodbye\" : \"what\"",
     position: MutationPosition(
@@ -16,8 +16,8 @@ schemata: [Schemata(
     description: "changed == to !="
 )
 ), Schemata(
-    id: "sampleWithConditionalOperators_RelationalOperatorReplacement_4_19_99",
-    filePath: "/Users/rafaelmachado/Developer/muter/Tests/fixtures/MutationExamples/NegateConditionals/sampleWithConditionalOperators.swift",
+    id: "file_RelationalOperatorReplacement_4_19_99",
+    filePath: "/path/to/file",
     mutationOperatorId: .ror,
     syntaxMutation: "\n        let b = a == 5\n        let e = a == 1\n        let c = a >= 4\n        let d = a <= 10\n        let f = a < 5\n        let g = a > 5\n\n        if a == 10 {\n            return \"hello\"\n        }\n\n        return a == 9 ? \"goodbye\" : \"what\"",
     position: MutationPosition(
@@ -31,8 +31,8 @@ schemata: [Schemata(
     description: "changed != to =="
 )
 ), Schemata(
-    id: "sampleWithConditionalOperators_RelationalOperatorReplacement_5_19_122",
-    filePath: "/Users/rafaelmachado/Developer/muter/Tests/fixtures/MutationExamples/NegateConditionals/sampleWithConditionalOperators.swift",
+    id: "file_RelationalOperatorReplacement_5_19_122",
+    filePath: "/path/to/file",
     mutationOperatorId: .ror,
     syntaxMutation: "\n        let b = a == 5\n        let e = a != 1\n        let c = a <= 4\n        let d = a <= 10\n        let f = a < 5\n        let g = a > 5\n\n        if a == 10 {\n            return \"hello\"\n        }\n\n        return a == 9 ? \"goodbye\" : \"what\"",
     position: MutationPosition(
@@ -46,8 +46,8 @@ schemata: [Schemata(
     description: "changed >= to <="
 )
 ), Schemata(
-    id: "sampleWithConditionalOperators_RelationalOperatorReplacement_6_19_145",
-    filePath: "/Users/rafaelmachado/Developer/muter/Tests/fixtures/MutationExamples/NegateConditionals/sampleWithConditionalOperators.swift",
+    id: "file_RelationalOperatorReplacement_6_19_145",
+    filePath: "/path/to/file",
     mutationOperatorId: .ror,
     syntaxMutation: "\n        let b = a == 5\n        let e = a != 1\n        let c = a >= 4\n        let d = a >= 10\n        let f = a < 5\n        let g = a > 5\n\n        if a == 10 {\n            return \"hello\"\n        }\n\n        return a == 9 ? \"goodbye\" : \"what\"",
     position: MutationPosition(
@@ -61,8 +61,8 @@ schemata: [Schemata(
     description: "changed <= to >="
 )
 ), Schemata(
-    id: "sampleWithConditionalOperators_RelationalOperatorReplacement_7_19_169",
-    filePath: "/Users/rafaelmachado/Developer/muter/Tests/fixtures/MutationExamples/NegateConditionals/sampleWithConditionalOperators.swift",
+    id: "file_RelationalOperatorReplacement_7_19_169",
+    filePath: "/path/to/file",
     mutationOperatorId: .ror,
     syntaxMutation: "\n        let b = a == 5\n        let e = a != 1\n        let c = a >= 4\n        let d = a <= 10\n        let f = a > 5\n        let g = a > 5\n\n        if a == 10 {\n            return \"hello\"\n        }\n\n        return a == 9 ? \"goodbye\" : \"what\"",
     position: MutationPosition(
@@ -76,8 +76,8 @@ schemata: [Schemata(
     description: "changed < to >"
 )
 ), Schemata(
-    id: "sampleWithConditionalOperators_RelationalOperatorReplacement_8_19_191",
-    filePath: "/Users/rafaelmachado/Developer/muter/Tests/fixtures/MutationExamples/NegateConditionals/sampleWithConditionalOperators.swift",
+    id: "file_RelationalOperatorReplacement_8_19_191",
+    filePath: "/path/to/file",
     mutationOperatorId: .ror,
     syntaxMutation: "\n        let b = a == 5\n        let e = a != 1\n        let c = a >= 4\n        let d = a <= 10\n        let f = a < 5\n        let g = a < 5\n\n        if a == 10 {\n            return \"hello\"\n        }\n\n        return a == 9 ? \"goodbye\" : \"what\"",
     position: MutationPosition(
@@ -91,8 +91,8 @@ schemata: [Schemata(
     description: "changed > to <"
 )
 ), Schemata(
-    id: "sampleWithConditionalOperators_RelationalOperatorReplacement_10_14_209",
-    filePath: "/Users/rafaelmachado/Developer/muter/Tests/fixtures/MutationExamples/NegateConditionals/sampleWithConditionalOperators.swift",
+    id: "file_RelationalOperatorReplacement_10_14_209",
+    filePath: "/path/to/file",
     mutationOperatorId: .ror,
     syntaxMutation: "\n        let b = a == 5\n        let e = a != 1\n        let c = a >= 4\n        let d = a <= 10\n        let f = a < 5\n        let g = a > 5\n\n        if a != 10 {\n            return \"hello\"\n        }\n\n        return a == 9 ? \"goodbye\" : \"what\"",
     position: MutationPosition(
@@ -106,8 +106,8 @@ schemata: [Schemata(
     description: "changed == to !="
 )
 ), Schemata(
-    id: "sampleWithConditionalOperators_RelationalOperatorReplacement_14_18_272",
-    filePath: "/Users/rafaelmachado/Developer/muter/Tests/fixtures/MutationExamples/NegateConditionals/sampleWithConditionalOperators.swift",
+    id: "file_RelationalOperatorReplacement_14_18_272",
+    filePath: "/path/to/file",
     mutationOperatorId: .ror,
     syntaxMutation: "\n        let b = a == 5\n        let e = a != 1\n        let c = a >= 4\n        let d = a <= 10\n        let f = a < 5\n        let g = a > 5\n\n        if a == 10 {\n            return \"hello\"\n        }\n\n        return a != 9 ? \"goodbye\" : \"what\"",
     position: MutationPosition(
@@ -122,8 +122,8 @@ schemata: [Schemata(
 )
 )]source: "\n        let output = try callGit(\n            \"rev-parse\",\n            \"--is-bare-repository\",\n            failureMessage: \"Couldn’t test for bare repository\"\n        )\n\n        return output == \"true\"",
 schemata: [Schemata(
-    id: "sampleWithConditionalOperators_RelationalOperatorReplacement_30_23_658",
-    filePath: "/Users/rafaelmachado/Developer/muter/Tests/fixtures/MutationExamples/NegateConditionals/sampleWithConditionalOperators.swift",
+    id: "file_RelationalOperatorReplacement_30_23_658",
+    filePath: "/path/to/file",
     mutationOperatorId: .ror,
     syntaxMutation: "\n        let output = try callGit(\n            \"rev-parse\",\n            \"--is-bare-repository\",\n            failureMessage: \"Couldn’t test for bare repository\"\n        )\n\n        return output != \"true\"",
     position: MutationPosition(
