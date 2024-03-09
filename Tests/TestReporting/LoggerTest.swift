@@ -16,7 +16,7 @@ final class LoggerTests: MuterTestCase {
         sut.sourceFileDiscoveryStarted()
         sut.sourceFileDiscoveryFinished(sourceFileCandidates: ["file0.swift", "file1.swift", "file2.swift"])
         sut.mutationsDiscoveryStarted()
-        sut.mutationsDiscoveryFinished(mutations: [try makeSchemataMapping()])
+        try sut.mutationsDiscoveryFinished(mutations: [makeSchemataMapping()])
         sut.mutationTestingStarted()
         sut.newMutationTestLogAvailable(
             mutationTestLog: .make(

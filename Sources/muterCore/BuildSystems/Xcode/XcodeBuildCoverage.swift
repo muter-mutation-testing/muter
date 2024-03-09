@@ -21,7 +21,7 @@ final class XcodeBuildCoverage: BuildSystemCoverage {
 
         let percent = extractCoverage(from: report)
         let functionsCoverage = functionsCoverage(configuration)
-        
+
         let projectCoverage = Coverage(
             percent: percent,
             filesWithoutCoverage: untested,
