@@ -105,6 +105,7 @@ class TokenAwareVisitor: MuterVisitor {
         )
     }
 
+    // This is a sliding window to try to find the correct String.Index since sometimes the utf8Offset is wrong.
     private func tryFixOperatorRange(
         for mutatedSyntax: SyntaxProtocol,
         in codeBlockDescription: String,
