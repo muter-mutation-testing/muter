@@ -1,0 +1,245 @@
+Muter's report
+
+
+
+Here's your test report:
+
+--------------------------
+Applied Mutation Operators
+--------------------------
+
+These are all of the ways that Muter introduced changes into your code.
+
+In total, Muter introduced 159 mutants in 44 files.
+
+File                                 Applied Mutation Operator       Mutation Test Result
+----                                 -------------------------       --------------------
+ProcessFactory.swift:39              RemoveSideEffects               mutant killed (test failure)
+SwiftCoverage.swift:10               RelationalOperatorReplacement   mutant killed (test failure)
+SwiftCoverage.swift:96               RelationalOperatorReplacement   mutant killed (test failure)
+XcodeCoverage.swift:61               RelationalOperatorReplacement   mutant killed (test failure)
+Init.swift:42                        RemoveSideEffects               mutant survived
+Init.swift:49                        RemoveSideEffects               mutant killed (test failure)
+Init.swift:54                        RemoveSideEffects               mutant survived
+Run.swift:115                        RelationalOperatorReplacement   mutant survived
+Run.swift:115                        ChangeLogicalConnector          mutant survived
+Run.swift:117                        SwapTernary                     mutant survived
+Run.swift:67                         SwapTernary                     mutant survived
+Run.swift:81                         RemoveSideEffects               mutant survived
+Run.swift:83                         RemoveSideEffects               mutant survived
+RunCommandHandler.swift:28           RemoveSideEffects               mutant killed (test failure)
+RunCommandHandler.swift:53           ChangeLogicalConnector          mutant killed (test failure)
+RunCommandHandler.swift:56           ChangeLogicalConnector          mutant killed (test failure)
+RunOptions.swift:37                  RelationalOperatorReplacement   mutant survived
+RunOptions.swift:37                  ChangeLogicalConnector          mutant survived
+RunOptions.swift:38                  RelationalOperatorReplacement   mutant survived
+RunOptions.swift:38                  ChangeLogicalConnector          mutant survived
+RunOptions.swift:39                  RelationalOperatorReplacement   mutant survived
+RunOptions.swift:39                  ChangeLogicalConnector          mutant survived
+RunOptions.swift:40                  RelationalOperatorReplacement   mutant survived
+RunOptions.swift:40                  ChangeLogicalConnector          mutant survived
+RunOptions.swift:41                  RelationalOperatorReplacement   mutant survived
+RunOptions.swift:41                  ChangeLogicalConnector          mutant survived
+RunOptions.swift:42                  RelationalOperatorReplacement   mutant survived
+RunOptions.swift:42                  ChangeLogicalConnector          mutant survived
+RunOptions.swift:43                  RelationalOperatorReplacement   mutant survived
+configurationGeneration.swift:141    RelationalOperatorReplacement   mutant survived
+configurationGeneration.swift:56     RelationalOperatorReplacement   mutant killed (test failure)
+configurationGeneration.swift:73     SwapTernary                     mutant killed (test failure)
+configurationGeneration.swift:74     SwapTernary                     mutant killed (test failure)
+configurationGeneration.swift:81     SwapTernary                     mutant killed (test failure)
+configurationGeneration.swift:90     RelationalOperatorReplacement   mutant killed (test failure)
+ArrayExtensions.swift:13             SwapTernary                     mutant killed (test failure)
+FileManagerExtensions.swift:56       RelationalOperatorReplacement   mutant survived
+Nullable.swift:9                     RelationalOperatorReplacement   mutant survived
+StringExtensions.swift:11            RemoveSideEffects               mutant survived
+StringExtensions.swift:28            SwapTernary                     mutant killed (test failure)
+SwiftSyntaxExtensions.swift:108      RelationalOperatorReplacement   mutant killed (test failure)
+SwiftSyntaxExtensions.swift:108      ChangeLogicalConnector          mutant killed (test failure)
+SwiftSyntaxExtensions.swift:109      RelationalOperatorReplacement   mutant killed (test failure)
+SwiftSyntaxExtensions.swift:109      ChangeLogicalConnector          mutant killed (test failure)
+SwiftSyntaxExtensions.swift:110      RelationalOperatorReplacement   mutant killed (test failure)
+SwiftSyntaxExtensions.swift:23       RelationalOperatorReplacement   mutant killed (runtime error)
+SwiftSyntaxExtensions.swift:86       ChangeLogicalConnector          mutant killed (test failure)
+SwiftSyntaxExtensions.swift:95       RemoveSideEffects               mutant survived
+TokenAwareVisitor.swift:105          RelationalOperatorReplacement   mutant killed (test failure)
+TokenAwareVisitor.swift:29           RemoveSideEffects               mutant killed (test failure)
+TokenAwareVisitor.swift:37           SwapTernary                     mutant killed (test failure)
+TokenAwareVisitor.swift:49           ChangeLogicalConnector          mutant killed (test failure)
+TokenAwareVisitor.swift:50           RelationalOperatorReplacement   mutant killed (test failure)
+MutationPosition.swift:36            RelationalOperatorReplacement   mutant survived
+MutationPosition.swift:36            ChangeLogicalConnector          mutant survived
+MutationPosition.swift:37            RelationalOperatorReplacement   mutant survived
+MutationPosition.swift:37            ChangeLogicalConnector          mutant survived
+MutationPosition.swift:38            RelationalOperatorReplacement   mutant survived
+MutationPosition.swift:67            RelationalOperatorReplacement   mutant survived
+MutationPosition.swift:71            RelationalOperatorReplacement   mutant survived
+MutationSchema.swift:39              RelationalOperatorReplacement   mutant killed (test failure)
+MutationSchema.swift:39              ChangeLogicalConnector          mutant survived
+MutationSchema.swift:40              RelationalOperatorReplacement   mutant killed (test failure)
+MutationSchema.swift:40              ChangeLogicalConnector          mutant survived
+MutationSchema.swift:41              RelationalOperatorReplacement   mutant killed (test failure)
+MutationSchema.swift:41              ChangeLogicalConnector          mutant survived
+MutationSchema.swift:42              RelationalOperatorReplacement   mutant killed (test failure)
+MutationSchema.swift:42              ChangeLogicalConnector          mutant survived
+MutationSchema.swift:43              RelationalOperatorReplacement   mutant killed (test failure)
+MutationSchema.swift:43              ChangeLogicalConnector          mutant killed (test failure)
+MutationSchema.swift:44              RelationalOperatorReplacement   mutant killed (test failure)
+MutationSchema.swift:70              RelationalOperatorReplacement   mutant killed (test failure)
+SchemataMutationMapping.swift:51     RemoveSideEffects               mutant killed (test failure)
+SchemataMutationMapping.swift:58     RemoveSideEffects               mutant killed (test failure)
+SchemataMutationMapping.swift:79     RemoveSideEffects               mutant killed (test failure)
+SchemataMutationMapping.swift:89     RelationalOperatorReplacement   mutant killed (test failure)
+SchemataMutationMapping.swift:89     ChangeLogicalConnector          mutant survived
+SchemataMutationMapping.swift:90     RelationalOperatorReplacement   mutant killed (test failure)
+MutationTestingIODelegate.swift:87   RelationalOperatorReplacement   mutant killed (test failure)
+MutationTestingIODelegate.swift:89   SwapTernary                     mutant killed (test failure)
+MutationTestingIODelegate.swift:93   RelationalOperatorReplacement   mutant killed (test failure)
+BuildForTesting.swift:14             RelationalOperatorReplacement   mutant killed (test failure)
+BuildForTesting.swift:24             RemoveSideEffects               mutant killed (test failure)
+DiscoverMutationPoints.swift:16      RemoveSideEffects               mutant survived
+DiscoverMutationPoints.swift:24      RelationalOperatorReplacement   mutant killed (test failure)
+DiscoverMutationPoints.swift:33      RemoveSideEffects               mutant survived
+DiscoverProjectCoverage.swift:24     RemoveSideEffects               mutant killed (test failure)
+DiscoverProjectCoverage.swift:27     RemoveSideEffects               mutant killed (test failure)
+DiscoverSourceFiles.swift:147        ChangeLogicalConnector          mutant survived
+DiscoverSourceFiles.swift:16         RemoveSideEffects               mutant survived
+DiscoverSourceFiles.swift:27         SwapTernary                     mutant killed (test failure)
+DiscoverSourceFiles.swift:31         SwapTernary                     mutant killed (test failure)
+DiscoverSourceFiles.swift:36         RemoveSideEffects               mutant survived
+DiscoverSourceFiles.swift:93         SwapTernary                     mutant killed (test failure)
+LoadConfiguration.swift:113          SwapTernary                     mutant survived
+LoadConfiguration.swift:14           ChangeLogicalConnector          mutant killed (test failure)
+LoadConfiguration.swift:82           SwapTernary                     mutant killed (test failure)
+LoadConfiguration.swift:99           RemoveSideEffects               mutant killed (test failure)
+PerformMutationTesting.swift:131     RemoveSideEffects               mutant survived
+PerformMutationTesting.swift:143     RemoveSideEffects               mutant survived
+PerformMutationTesting.swift:148     RemoveSideEffects               mutant survived
+PerformMutationTesting.swift:150     RelationalOperatorReplacement   mutant survived
+PerformMutationTesting.swift:150     SwapTernary                     mutant survived
+PerformMutationTesting.swift:151     RelationalOperatorReplacement   mutant survived
+PerformMutationTesting.swift:19      RemoveSideEffects               mutant survived
+PerformMutationTesting.swift:35      RemoveSideEffects               mutant survived
+PerformMutationTesting.swift:58      RemoveSideEffects               mutant survived
+PerformMutationTesting.swift:73      RelationalOperatorReplacement   mutant killed (runtime error)
+PerformMutationTesting.swift:89      RemoveSideEffects               mutant survived
+PerformMutationTesting.swift:96      RemoveSideEffects               mutant survived
+UpdateCheck.swift:31                 RemoveSideEffects               mutant killed (test failure)
+UpdateCheck.swift:37                 RelationalOperatorReplacement   mutant survived
+UpdateCheck.swift:39                 RemoveSideEffects               mutant survived
+AddImportRewriter.swift:43           RemoveSideEffects               mutant killed (test failure)
+HTMLReporter.swift:228               RelationalOperatorReplacement   mutant killed (test failure)
+HTMLReporter.swift:235               RelationalOperatorReplacement   mutant killed (test failure)
+Logger.swift:137                     RelationalOperatorReplacement   mutant survived
+Logger.swift:165                     RemoveSideEffects               mutant survived
+Logger.swift:84                      RelationalOperatorReplacement   mutant survived
+MuterTestReport.swift:129            RelationalOperatorReplacement   mutant killed (test failure)
+MuterTestReport.swift:165            RelationalOperatorReplacement   mutant killed (test failure)
+MuterTestReport.swift:18             RelationalOperatorReplacement   mutant survived
+MuterTestReport.swift:18             ChangeLogicalConnector          mutant survived
+MuterTestReport.swift:18             RelationalOperatorReplacement   mutant survived
+MuterTestReport.swift:19             RelationalOperatorReplacement   mutant killed (test failure)
+MuterTestReport.swift:19             SwapTernary                     mutant killed (test failure)
+MuterTestReport.swift:83             RelationalOperatorReplacement   mutant killed (test failure)
+CLITable.swift:38                    RelationalOperatorReplacement   mutant killed (test failure)
+CLITable.swift:38                    SwapTernary                     mutant killed (test failure)
+CLITable.swift:54                    RelationalOperatorReplacement   mutant killed (test failure)
+testReportTableGeneration.swift:13   RemoveSideEffects               mutant killed (test failure)
+testReportTableGeneration.swift:14   RemoveSideEffects               mutant killed (test failure)
+testReportTableGeneration.swift:15   RemoveSideEffects               mutant killed (test failure)
+testReportTableGeneration.swift:50   RemoveSideEffects               mutant killed (test failure)
+testReportTableGeneration.swift:51   RemoveSideEffects               mutant killed (test failure)
+testReportTableGeneration.swift:52   RemoveSideEffects               mutant killed (test failure)
+testReportTableGeneration.swift:73   SwapTernary                     mutant survived
+TestSuiteOutcome.swift:44            RelationalOperatorReplacement   mutant killed (test failure)
+TestSuiteOutcome.swift:44            ChangeLogicalConnector          mutant killed (test failure)
+TestSuiteOutcome.swift:45            ChangeLogicalConnector          mutant killed (test failure)
+TestSuiteOutcome.swift:62            RelationalOperatorReplacement   mutant killed (test failure)
+TestSuiteOutcome.swift:66            ChangeLogicalConnector          mutant killed (test failure)
+TestSuiteOutcome.swift:67            ChangeLogicalConnector          mutant killed (test failure)
+TestSuiteOutcome.swift:68            ChangeLogicalConnector          mutant killed (test failure)
+TestSuiteOutcome.swift:69            ChangeLogicalConnector          mutant killed (test failure)
+XcodeReporter.swift:14               RemoveSideEffects               mutant killed (test failure)
+XcodeReporter.swift:8                RelationalOperatorReplacement   mutant killed (test failure)
+mutationScoring.swift:21             RelationalOperatorReplacement   mutant killed (test failure)
+mutationScoring.swift:6              RelationalOperatorReplacement   mutant survived
+mutationScoring.swift:6              ChangeLogicalConnector          mutant survived
+mutationScoring.swift:6              RelationalOperatorReplacement   mutant survived
+mutationScoring.swift:7              RelationalOperatorReplacement   mutant survived
+mutationScoring.swift:9              RelationalOperatorReplacement   mutant killed (test failure)
+MuterVisitor.swift:178               RemoveSideEffects               mutant killed (test failure)
+MuterVisitor.swift:59                RemoveSideEffects               mutant killed (test failure)
+MuterVisitor.swift:66                ChangeLogicalConnector          mutant killed (test failure)
+MuterVisitor.swift:67                ChangeLogicalConnector          mutant killed (test failure)
+MuterVisitor.swift:68                ChangeLogicalConnector          mutant killed (test failure)
+MuterVisitor.swift:9                 RelationalOperatorReplacement   mutant survived
+Operator.swift:0                     RemoveSideEffects               skipped (no coverage)
+Run.swift:0                          RemoveSideEffects               skipped (no coverage)
+FileManagerExtensions.swift:0        RemoveSideEffects               skipped (no coverage)
+Nullable.swift:0                     RemoveSideEffects               skipped (no coverage)
+ProgressExtensions.swift:0           RemoveSideEffects               skipped (no coverage)
+MutationTestingAbortReason.swift:0   RemoveSideEffects               skipped (no coverage)
+Muter.swift:0                        RemoveSideEffects               skipped (no coverage)
+ApplySchemata.swift:0                RemoveSideEffects               skipped (no coverage)
+SourceInfo.swift:0                   RemoveSideEffects               skipped (no coverage)
+
+
+--------------------
+Mutation Test Scores
+--------------------
+
+These are the mutation scores for your test suite, as well as the files that had mutants introduced into them.
+
+Mutation scores ignore build errors.
+
+Of the 159 mutants introduced into your code, your test suite killed 90.
+Mutation Score of Test Suite: 56%
+Code Coverage of your project: 74%
+
+File                               # of Introduced Mutants   Mutation Score
+----                               -----------------------   --------------
+ProcessFactory.swift               1                         100
+SwiftCoverage.swift                2                         100
+XcodeCoverage.swift                1                         100
+Init.swift                         3                         33
+Run.swift                          6                         0
+RunCommandHandler.swift            3                         100
+RunOptions.swift                   13                        0
+configurationGeneration.swift      6                         83
+ArrayExtensions.swift              1                         100
+FileManagerExtensions.swift        1                         0
+Nullable.swift                     1                         0
+StringExtensions.swift             2                         50
+SwiftSyntaxExtensions.swift        8                         87
+TokenAwareVisitor.swift            5                         100
+MutationPosition.swift             7                         0
+MutationSchema.swift               12                        66
+SchemataMutationMapping.swift      6                         83
+MutationTestingIODelegate.swift    3                         100
+BuildForTesting.swift              2                         100
+DiscoverMutationPoints.swift       3                         33
+DiscoverProjectCoverage.swift      2                         100
+DiscoverSourceFiles.swift          6                         50
+LoadConfiguration.swift            4                         75
+PerformMutationTesting.swift       12                        8
+UpdateCheck.swift                  3                         33
+AddImportRewriter.swift            1                         100
+HTMLReporter.swift                 2                         100
+Logger.swift                       3                         0
+MuterTestReport.swift              8                         62
+CLITable.swift                     3                         100
+testReportTableGeneration.swift    7                         85
+TestSuiteOutcome.swift             8                         100
+XcodeReporter.swift                2                         100
+mutationScoring.swift              6                         33
+MuterVisitor.swift                 6                         83
+Operator.swift                     1                         0
+Run.swift                          1                         0
+FileManagerExtensions.swift        1                         0
+Nullable.swift                     1                         0
+ProgressExtensions.swift           1                         0
+MutationTestingAbortReason.swift   1                         0
+Muter.swift                        1                         0
+ApplySchemata.swift                1                         0
+SourceInfo.swift                   1                         0
+

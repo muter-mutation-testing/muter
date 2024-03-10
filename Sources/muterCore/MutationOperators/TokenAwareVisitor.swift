@@ -4,9 +4,10 @@ class TokenAwareVisitor: MuterVisitor {
     var tokensToDiscover = [TokenKind]()
     var oppositeOperatorMapping: [String: String] = [:]
 
-    override func visit(_ node: TokenSyntax) -> SyntaxVisitorContinueKind {
-        guard canMutateToken(node),
-              let oppositeOperator = oppositeOperator(for: node.tokenKind)
+    override func visit(_ node: BinaryOperatorExprSyntax) -> SyntaxVisitorContinueKind {
+        let `operator` = node.operator
+        guard canMutateToken(`operator`),
+              let oppositeOperator = oppositeOperator(for: `operator`.tokenKind)
         else {
             return .visitChildren
         }
@@ -20,7 +21,7 @@ class TokenAwareVisitor: MuterVisitor {
 
         add(
             mutation: mutated(
-                node,
+                `operator`,
                 using: oppositeOperator
             ),
             with: node,
@@ -73,7 +74,7 @@ class TokenAwareVisitor: MuterVisitor {
         let codeBlockDescription = codeBlockItemListSyntax.description
         let mutatedSyntaxDescription = mutatedSyntax.description
         let nodePosition = node.offsetInCodeBlockItemListSyntax(sourceCodeInfo)
-
+        
         var nodeStartRange = codeBlockDescription.index(
             codeBlockDescription.startIndex,
             offsetBy: nodePosition
@@ -82,7 +83,7 @@ class TokenAwareVisitor: MuterVisitor {
             codeBlockDescription.startIndex,
             offsetBy: nodePosition + mutatedSyntaxDescription.count
         )
-
+        
         let operatorInCodeBlock = String(codeBlockDescription[nodeStartRange ..< nodeEndRange])
         let oppositeOperator = oppositeOperatorMapping[operatorInCodeBlock.trimmed]
         if oppositeOperator != mutatedSyntaxDescription.trimmed,
@@ -111,7 +112,7 @@ class TokenAwareVisitor: MuterVisitor {
     ) -> (start: String.Index, end: String.Index)? {
         let mutatedSyntaxDescription = mutatedSyntax.description
         let op = oppositeOperatorMapping[mutatedSyntaxDescription.trimmed]
-        for i in 0 ... mutatedSyntaxDescription.count {
+        for i in 0 ... codeBlockDescription.count {
             let start = codeBlockDescription.index(
                 codeBlockDescription.startIndex,
                 offsetBy: nodePosition - i
