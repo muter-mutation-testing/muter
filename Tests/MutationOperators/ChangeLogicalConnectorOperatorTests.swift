@@ -77,16 +77,15 @@ final class ChangeLogicalConnectorOperatorTests: MuterTestCase {
         XCTAssertEqual(actualSchemata, expectedSchemata)
     }
     
-    func test_a() throws {
+    func test_sampleWithFailuresParsing() throws {
         let visitor = ChangeLogicalConnectorOperator.Visitor(
             sourceCodeInfo: sampleWithFailuresParsing
         )
 
         visitor.walk(sampleWithFailuresParsing.code)
 
-        let actualSchemata = visitor.schemataMappings
         let rewritten = MuterRewriter(visitor.schemataMappings)
             .rewrite(sampleWithFailuresParsing.code)
-        print(rewritten.description)
+        AssertSnapshot(rewritten.description)
     }
 }
