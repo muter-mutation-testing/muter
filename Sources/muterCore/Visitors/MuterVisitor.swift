@@ -55,7 +55,7 @@ class MuterVisitor: SyntaxAnyVisitor {
             filePath: sourceCodeInfo.path
         )
 
-        super.init(viewMode: .all)
+        super.init(viewMode: .sourceAccurate)
     }
 
     override func visitAny(_ node: Syntax) -> SyntaxVisitorContinueKind {

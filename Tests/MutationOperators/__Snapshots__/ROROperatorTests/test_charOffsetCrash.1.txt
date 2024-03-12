@@ -1,0 +1,9 @@
+if ProcessInfo.processInfo.environment["file_RelationalOperatorReplacement_1_10_9"] != nil {
+  if value != "バルーンの表示判定" {
+
+  }
+} else {
+  if value == "バルーンの表示判定" {
+
+  }
+}

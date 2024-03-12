@@ -7,6 +7,10 @@ final class ChangeLogicalConnectorOperatorTests: MuterTestCase {
         fromFileAt: "\(fixturesDirectory)/MutationExamples/LogicalOperator/sampleWithLogicalOperators.swift"
     )!
 
+    private lazy var sampleWithFailuresParsing = sourceCode(
+        fromFileAt: "\(fixturesDirectory)/MutationExamples/LogicalOperator/sampleWithFailuresParsing.swift"
+    )!
+    
     func test_rewriter() throws {
         let visitor = ChangeLogicalConnectorOperator.Visitor(
             sourceCodeInfo: sourceWithLogicalOperators
@@ -71,5 +75,17 @@ final class ChangeLogicalConnectorOperatorTests: MuterTestCase {
         )
 
         XCTAssertEqual(actualSchemata, expectedSchemata)
+    }
+    
+    func test_sampleWithFailuresParsing() throws {
+        let visitor = ChangeLogicalConnectorOperator.Visitor(
+            sourceCodeInfo: sampleWithFailuresParsing
+        )
+
+        visitor.walk(sampleWithFailuresParsing.code)
+
+        let rewritten = MuterRewriter(visitor.schemataMappings)
+            .rewrite(sampleWithFailuresParsing.code)
+        AssertSnapshot(rewritten.description)
     }
 }
