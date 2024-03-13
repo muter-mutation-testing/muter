@@ -30,7 +30,7 @@ Use this mode to get detailed information about the health and quality of your e
 
 <video>
     <source media="(prefers-color-scheme: light)" srcset="https://github.com/muter-mutation-testing/muter/assets/7672056/52aec46d-16a4-4728-bf95-b68b8bec8f32">
-    <source media="(prefers-color-scheme: dark)" srcset=".https://github.com/muter-mutation-testing/muter/assets/7672056/d022fa00-46bd-4b8a-b0d4-53d72c7c73b5">
+    <source media="(prefers-color-scheme: dark)" srcset="https://github.com/muter-mutation-testing/muter/assets/7672056/d022fa00-46bd-4b8a-b0d4-53d72c7c73b5">
 </video>
 
 #### Muter can be run in your CI
