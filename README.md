@@ -20,6 +20,7 @@ Use this mode to rapidly diagnose areas where you can begin improving your test 
 
 #### Muter can be run from the command line
 Use this mode to get detailed information about the health and quality of your entire test suite
+
 <!-- 
     asciinema rec muter-cli-output.cast
     agg --theme solarized-light --font-size 40 --cols 100  --speed 1 muter-cli-output.cast muter-light.gif
@@ -27,10 +28,8 @@ Use this mode to get detailed information about the health and quality of your e
     ffmpeg -i file.gif -pix_fmt yuv420p output.mp4 
 -->
 
-<video controls>
-  <source src="https://github.com/muter-mutation-testing/muter/assets/7672056/52aec46d-16a4-4728-bf95-b68b8bec8f32" type="video/mp4" media="(prefers-color-scheme:light)">
-  <source src="https://github.com/muter-mutation-testing/muter/assets/7672056/d022fa00-46bd-4b8a-b0d4-53d72c7c73b5" type="video/mp4" media="(prefers-color-scheme:dark)">
-</video>
+<video src="https://github.com/muter-mutation-testing/muter/assets/7672056/52aec46d-16a4-4728-bf95-b68b8bec8f32" type="video/mp4" media="(prefers-color-scheme:light)"></video>
+<video src="https://github.com/muter-mutation-testing/muter/assets/7672056/d022fa00-46bd-4b8a-b0d4-53d72c7c73b5" type="video/mp4" media="(prefers-color-scheme:dark)"></video>
 
 
 #### Muter can be run in your CI
