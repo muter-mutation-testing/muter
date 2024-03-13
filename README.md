@@ -28,9 +28,10 @@ Use this mode to get detailed information about the health and quality of your e
     ffmpeg -i file.gif -pix_fmt yuv420p output.mp4 
 -->
 
-<video src="https://github.com/muter-mutation-testing/muter/assets/7672056/52aec46d-16a4-4728-bf95-b68b8bec8f32" type="video/mp4" media="(prefers-color-scheme:light)"></video>
-<video src="https://github.com/muter-mutation-testing/muter/assets/7672056/d022fa00-46bd-4b8a-b0d4-53d72c7c73b5" type="video/mp4" media="(prefers-color-scheme:dark)"></video>
-
+<video>
+    <source media="(prefers-color-scheme: light)" srcset="https://github.com/muter-mutation-testing/muter/assets/7672056/52aec46d-16a4-4728-bf95-b68b8bec8f32">
+    <source media="(prefers-color-scheme: dark)" srcset=".https://github.com/muter-mutation-testing/muter/assets/7672056/d022fa00-46bd-4b8a-b0d4-53d72c7c73b5">
+</video>
 
 #### Muter can be run in your CI
 Use this script to easily mutation test your projects incrementally, enabling you to have per-commit updates on how code changes impact the quality of your test suite. Seamlessly connect the output of this CI step into your dashboard or communication channel of choice, or use it as a starting point for thinking about how you want to incrementally test your code.
