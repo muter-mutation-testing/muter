@@ -20,6 +20,22 @@ Use this mode to rapidly diagnose areas where you can begin improving your test 
 
 #### Muter can be run from the command line
 Use this mode to get detailed information about the health and quality of your entire test suite
+<!-- 
+    asciinema rec muter-cli-output.cast
+    agg --theme solarized-light --font-size 40 --cols 100  --speed 1 muter-cli-output.cast muter-light.gif
+    agg --theme solarized-dark --font-size 40 --cols 100  --speed 1 muter-cli-output.cast muter-dark.gif
+    ffmpeg -i file.gif -pix_fmt yuv420p output.mp4 
+-->
+
+<video>
+  <source media="(prefers-color-scheme: dark)" srcset="./Docs/Images/muter-in-xcode-dark.png">
+  <img alt="Muter running inside Xcode" src="./Docs/Images/muter-in-xcode-light.png">
+</video>
+
+<video autoplay loop muted>
+  <source src="https://github.com/muter-mutation-testing/muter/assets/7672056/52aec46d-16a4-4728-bf95-b68b8bec8f32" type="video/mp4" media="(prefers-color-scheme:light)">
+  <source src="https://github.com/muter-mutation-testing/muter/assets/7672056/d022fa00-46bd-4b8a-b0d4-53d72c7c73b5" type="video/mp4" media="(prefers-color-scheme:dark)">
+</video>
 
 <video src="https://github.com/muter-mutation-testing/muter/assets/7672056/cb113d11-c492-45a8-9d4a-7742d05f9b64"></video>
 
