@@ -21,10 +21,7 @@ Use this mode to rapidly diagnose areas where you can begin improving your test 
 #### Muter can be run from the command line
 Use this mode to get detailed information about the health and quality of your entire test suite
 
-<video controls>
-  <source src="./Docs/muter-cli-output.cast.mp4">
-  Your browser does not support the video tag.
-</video>
+<video src="./Docs/muter-cli-output.cast.mp4"></video>
 
 #### Muter can be run in your CI
 Use this script to easily mutation test your projects incrementally, enabling you to have per-commit updates on how code changes impact the quality of your test suite. Seamlessly connect the output of this CI step into your dashboard or communication channel of choice, or use it as a starting point for thinking about how you want to incrementally test your code.
