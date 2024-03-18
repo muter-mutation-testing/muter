@@ -221,8 +221,8 @@ Muter defaults to `run` when you don't specify any subcommands
 
 Mutant schemata is a trickly operation because the operators only deals with the source code AST (abstract syntax tree), there is not type inference.
 Ending up with a mutated project that does not compile is pretty common.
-To circumvent this issue, we recommend using both `mutate-wihtout-running` and `run-without-mutating`.
-The command `mutate-wihtout-running` will perform discover mutation points, apply it and save a JSON file named `muter-mappings.json`.
+To circumvent this issue, we recommend using both `mutate-without-running` and `run-without-mutating`.
+The command `mutate-without-running` will perform discover mutation points, apply it and save a JSON file named `muter-mappings.json`.
 In case the mutated project is not compiling you can fix all of the compilation issues (in our experience they are as simple as indentation issue or even an space that is missing) and re-run muter using `run-without-mutating`, passing the test plan JSON as a parameter.
 
 **Available Report Formats**

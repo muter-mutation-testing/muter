@@ -13,7 +13,7 @@ final class MutationTestHandler {
 
     init(
         options: Run.Options = .null,
-        steps: [MutationStep] = .defaultSteps,
+        steps: [MutationStep] = .allSteps,
         state: MutationTestState = .init()
     ) {
         self.steps = steps
@@ -23,7 +23,7 @@ final class MutationTestHandler {
 
     convenience init(
         options: Run.Options,
-        steps: [MutationStep] = .defaultSteps
+        steps: [MutationStep] = .allSteps
     ) {
         self.init(
             options: options,
@@ -55,7 +55,7 @@ final class MutationTestHandler {
 }
 
 private extension [MutationStep] {
-    static let defaultSteps: [MutationStep] = [
+    static let allSteps: [MutationStep] = [
         UpdateCheck(),
         LoadConfiguration(),
         CreateMutatedProjectDirectoryURL(),
