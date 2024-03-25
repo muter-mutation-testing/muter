@@ -4,16 +4,22 @@ enum SwapTernaryOperator {
     final class Visitor: MuterVisitor {
         convenience init(
             configuration: MuterConfiguration? = nil,
-            sourceCodeInfo: SourceCodeInfo
+            sourceCodeInfo: SourceCodeInfo,
+            regionsWithoutCoverage: [Region] = []
         ) {
             self.init(
                 configuration: configuration,
                 sourceCodeInfo: sourceCodeInfo,
-                mutationOperatorId: .swapTernary
+                mutationOperatorId: .swapTernary,
+                regionsWithoutCoverage: regionsWithoutCoverage
             )
         }
 
         override func visit(_ node: TernaryExprSyntax) -> SyntaxVisitorContinueKind {
+            guard !node.containsComplexCauses else {
+                return super.visit(node)
+            }
+
             let mutatedSyntax = mutated(node)
             let position = endLocation(for: node)
             let snapshot = MutationOperator.Snapshot(
@@ -34,6 +40,10 @@ enum SwapTernaryOperator {
 
         override func visit(_ node: ExprListSyntax) -> SyntaxVisitorContinueKind {
             guard containsTernayExpression(node) else {
+                return super.visit(node)
+            }
+
+            guard !containsComplexExpressions(cast(node)) else {
                 return super.visit(node)
             }
 
@@ -111,10 +121,22 @@ enum SwapTernaryOperator {
             }
         }
 
+        private func containsComplexExpressions(_ nodes: [ExprSyntax]) -> Bool {
+            nodes.contains(where: { $0.is(AsExprSyntax.self) })
+                || nodes.contains(where: { $0.is(UnresolvedAsExprSyntax.self) })
+        }
+
         private func containsTernayExpression(_ node: ExprListSyntax) -> Bool {
             node
                 .allChildren
-                .contains { $0.is(UnresolvedTernaryExprSyntax.self) }
+                .containsSyntaxKind(UnresolvedTernaryExprSyntax.self)
         }
+    }
+}
+
+private extension TernaryExprSyntax {
+    var containsComplexCauses: Bool {
+        thenExpression.allChildren.containsSyntaxKind(AsExprSyntax.self)
+            || elseExpression.allChildren.containsSyntaxKind(AsExprSyntax.self)
     }
 }

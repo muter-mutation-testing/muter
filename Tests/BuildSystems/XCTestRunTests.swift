@@ -1,3 +1,4 @@
+#if !os(Linux)
 @testable import muterCore
 import TestingExtensions
 import XCTest
@@ -44,3 +45,4 @@ final class XCTestRunTests: MuterTestCase {
         return try PropertyListSerialization.propertyList(from: data, format: nil) as? [String: AnyHashable] ?? [:]
     }
 }
+#endif

@@ -1,126 +1,166 @@
 struct Example {
-    func something(_ a: Int) -> String {
-        if ProcessInfo.processInfo.environment["sampleWithConditionalOperators_3_19_76"] != nil {
-            let b = a != 5
-            let e = a != 1
-            let c = a >= 4
-            let d = a <= 10
-            let f = a < 5
-            let g = a > 5
+  func something(_ a: Int) -> String {
+    if ProcessInfo.processInfo.environment[
+      "sampleWithConditionalOperators_RelationalOperatorReplacement_3_19_76"] != nil
+    {
+      let b = a != 5
+      let e = a != 1
+      let c = a >= 4
+      let d = a <= 10
+      let f = a < 5
+      let g = a > 5
 
-            if a == 10 {
-                return "hello"
-            }
+      if a == 10 {
+        return "hello"
+      }
 
-            return a == 9 ? "goodbye" : "what"
-        } else if ProcessInfo.processInfo.environment["sampleWithConditionalOperators_14_18_272"] != nil {
-            let b = a == 5
-            let e = a != 1
-            let c = a >= 4
-            let d = a <= 10
-            let f = a < 5
-            let g = a > 5
+      return a == 9 ? "goodbye" : "what"
+    } else if ProcessInfo.processInfo.environment[
+      "sampleWithConditionalOperators_RelationalOperatorReplacement_14_18_272"] != nil
+    {
+      let b = a == 5
+      let e = a != 1
+      let c = a >= 4
+      let d = a <= 10
+      let f = a < 5
+      let g = a > 5
 
-            if a == 10 {
-                return "hello"
-            }
+      if a == 10 {
+        return "hello"
+      }
 
-            return a != 9 ? "goodbye" : "what"
-        } else if ProcessInfo.processInfo.environment["sampleWithConditionalOperators_10_14_209"] != nil {
-            let b = a == 5
-            let e = a != 1
-            let c = a >= 4
-            let d = a <= 10
-            let f = a < 5
-            let g = a > 5
+      return a != 9 ? "goodbye" : "what"
+    } else if ProcessInfo.processInfo.environment[
+      "sampleWithConditionalOperators_RelationalOperatorReplacement_10_14_209"] != nil
+    {
+      let b = a == 5
+      let e = a != 1
+      let c = a >= 4
+      let d = a <= 10
+      let f = a < 5
+      let g = a > 5
 
-            if a != 10 {
-                return "hello"
-            }
+      if a != 10 {
+        return "hello"
+      }
 
-            return a == 9 ? "goodbye" : "what"
-        } else if ProcessInfo.processInfo.environment["sampleWithConditionalOperators_8_19_191"] != nil {
-            let b = a == 5
-            let e = a != 1
-            let c = a >= 4
-            let d = a <= 10
-            let f = a < 5
-            let g = a < 5
+      return a == 9 ? "goodbye" : "what"
+    } else if ProcessInfo.processInfo.environment[
+      "sampleWithConditionalOperators_RelationalOperatorReplacement_8_19_191"] != nil
+    {
+      let b = a == 5
+      let e = a != 1
+      let c = a >= 4
+      let d = a <= 10
+      let f = a < 5
+      let g = a < 5
 
-            if a == 10 {
-                return "hello"
-            }
+      if a == 10 {
+        return "hello"
+      }
 
-            return a == 9 ? "goodbye" : "what"
-        } else if ProcessInfo.processInfo.environment["sampleWithConditionalOperators_7_19_169"] != nil {
-            let b = a == 5
-            let e = a != 1
-            let c = a >= 4
-            let d = a <= 10
-            let f = a > 5
-            let g = a > 5
+      return a == 9 ? "goodbye" : "what"
+    } else if ProcessInfo.processInfo.environment[
+      "sampleWithConditionalOperators_RelationalOperatorReplacement_7_19_169"] != nil
+    {
+      let b = a == 5
+      let e = a != 1
+      let c = a >= 4
+      let d = a <= 10
+      let f = a > 5
+      let g = a > 5
 
-            if a == 10 {
-                return "hello"
-            }
+      if a == 10 {
+        return "hello"
+      }
 
-            return a == 9 ? "goodbye" : "what"
-        } else if ProcessInfo.processInfo.environment["sampleWithConditionalOperators_6_19_145"] != nil {
-            let b = a == 5
-            let e = a != 1
-            let c = a >= 4
-            let d = a >= 10
-            let f = a < 5
-            let g = a > 5
+      return a == 9 ? "goodbye" : "what"
+    } else if ProcessInfo.processInfo.environment[
+      "sampleWithConditionalOperators_RelationalOperatorReplacement_6_19_145"] != nil
+    {
+      let b = a == 5
+      let e = a != 1
+      let c = a >= 4
+      let d = a >= 10
+      let f = a < 5
+      let g = a > 5
 
-            if a == 10 {
-                return "hello"
-            }
+      if a == 10 {
+        return "hello"
+      }
 
-            return a == 9 ? "goodbye" : "what"
-        } else if ProcessInfo.processInfo.environment["sampleWithConditionalOperators_5_19_122"] != nil {
-            let b = a == 5
-            let e = a != 1
-            let c = a <= 4
-            let d = a <= 10
-            let f = a < 5
-            let g = a > 5
+      return a == 9 ? "goodbye" : "what"
+    } else if ProcessInfo.processInfo.environment[
+      "sampleWithConditionalOperators_RelationalOperatorReplacement_5_19_122"] != nil
+    {
+      let b = a == 5
+      let e = a != 1
+      let c = a <= 4
+      let d = a <= 10
+      let f = a < 5
+      let g = a > 5
 
-            if a == 10 {
-                return "hello"
-            }
+      if a == 10 {
+        return "hello"
+      }
 
-            return a == 9 ? "goodbye" : "what"
-        } else if ProcessInfo.processInfo.environment["sampleWithConditionalOperators_4_19_99"] != nil {
-            let b = a == 5
-            let e = a == 1
-            let c = a >= 4
-            let d = a <= 10
-            let f = a < 5
-            let g = a > 5
+      return a == 9 ? "goodbye" : "what"
+    } else if ProcessInfo.processInfo.environment[
+      "sampleWithConditionalOperators_RelationalOperatorReplacement_4_19_99"] != nil
+    {
+      let b = a == 5
+      let e = a == 1
+      let c = a >= 4
+      let d = a <= 10
+      let f = a < 5
+      let g = a > 5
 
-            if a == 10 {
-                return "hello"
-            }
+      if a == 10 {
+        return "hello"
+      }
 
-            return a == 9 ? "goodbye" : "what"
-        } else {
-            let b = a == 5
-            let e = a != 1
-            let c = a >= 4
-            let d = a <= 10
-            let f = a < 5
-            let g = a > 5
+      return a == 9 ? "goodbye" : "what"
+    } else {
+      let b = a == 5
+      let e = a != 1
+      let c = a >= 4
+      let d = a <= 10
+      let f = a < 5
+      let g = a > 5
 
-            if a == 10 {
-                return "hello"
-            }
+      if a == 10 {
+        return "hello"
+      }
 
-            return a == 9 ? "goodbye" : "what"
-        }
+      return a == 9 ? "goodbye" : "what"
     }
+  }
 }
 
 func < (lhs: String, rhs: String) -> Bool {
-    return false
+  return false
+}
+
+internal func isBare() throws -> Bool {
+  return try self.cachedIsBareRepo.memoize(body: {
+    if ProcessInfo.processInfo.environment[
+      "sampleWithConditionalOperators_RelationalOperatorReplacement_30_23_658"] != nil
+    {
+      let output = try callGit(
+        "rev-parse",
+        "--is-bare-repository",
+        failureMessage: "Couldn’t test for bare repository"
+      )
+
+      return output != "true"
+    } else {
+      let output = try callGit(
+        "rev-parse",
+        "--is-bare-repository",
+        failureMessage: "Couldn’t test for bare repository"
+      )
+
+      return output == "true"
+    }
+  })
 }

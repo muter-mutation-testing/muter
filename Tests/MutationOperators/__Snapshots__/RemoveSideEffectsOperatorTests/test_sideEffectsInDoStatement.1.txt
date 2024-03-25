@@ -1,0 +1,35 @@
+static func validate(_ type: ParsableArguments.Type, parent: InputKey?)
+  -> ParsableArgumentsValidatorError?
+{
+  let argumentKeys: [InputKey] = Mirror(reflecting: type.init())
+    .children
+    .compactMap { child in
+      guard
+        let codingKey = child.label,
+        let _ = child.value as? ArgumentSetProvider
+      else { return nil }
+
+      // Property wrappers have underscore-prefixed names
+      return InputKey(name: codingKey, parent: parent)
+    }
+  guard argumentKeys.count > 0 else {
+    return nil
+  }
+  do {
+    if ProcessInfo.processInfo.environment["file_RemoveSideEffects_17_71_597"] != nil {
+      return InvalidDecoderError(type: type)
+    } else {
+      let _ = try type.init(from: Validator(argumentKeys: argumentKeys))
+      return InvalidDecoderError(type: type)
+    }
+  } catch let result as Validator.ValidationResult {
+    switch result {
+    case .missingCodingKeys(let keys):
+      return MissingKeysError(missingCodingKeys: keys)
+    case .success:
+      return nil
+    }
+  } catch {
+    fatalError("Unexpected validation error: error")
+  }
+}

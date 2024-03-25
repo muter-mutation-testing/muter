@@ -8,33 +8,30 @@ final class SwiftCoverage: BuildSystemCoverage {
         with configuration: MuterConfiguration
     ) -> Result<Coverage, CoverageError> {
         guard runWithCoverageEnabled(using: configuration) != nil,
-              let binaryPath = binaryPath(configuration),
-              let testArtifact = findTestArtifact(binaryPath),
+              let binaryPath = buildDirectory(configuration),
+              let testArtifact = xctestExecutable(at: binaryPath),
               let coverageReport = coverageReport(binaryPath, testArtifact)
         else {
             return .failure(.build)
         }
 
-        let projectCoverage: Coverage = .from(
+        let projectCoverage = projectCoverage(
             report: coverageReport,
             coverageThreshold: configuration.coverageThreshold
         )
 
-        return .success(projectCoverage)
+        let functionsCoverage = functionsCoverage(configuration)
+
+        return .success(
+            Coverage(
+                percent: projectCoverage.percent,
+                filesWithoutCoverage: projectCoverage.filesWithoutCoverage,
+                functionsCoverage: functionsCoverage
+            )
+        )
     }
 
-    private func runWithCoverageEnabled(
-        using configuration: MuterConfiguration
-    ) -> String? {
-        process().runProcess(
-            url: configuration.testCommandExecutable,
-            arguments: configuration.enableCoverageArguments
-        ).map(\.trimmed)
-    }
-
-    private func binaryPath(
-        _ configuration: MuterConfiguration
-    ) -> String? {
+    func buildDirectory(_ configuration: MuterConfiguration) -> String? {
         process().runProcess(
             url: configuration.testCommandExecutable,
             arguments: ["build", "--show-bin-path"]
@@ -43,15 +40,24 @@ final class SwiftCoverage: BuildSystemCoverage {
         .map(\.trimmed)
     }
 
-    private func findTestArtifact(
-        _ binaryPath: String
-    ) -> String? {
-        process().runProcess(
-            url: "/usr/bin/find",
-            arguments: [binaryPath, "-name", "*.xctest"]
-        )
-        .flatMap(\.nilIfEmpty)
-        .map(\.trimmed)
+    private func projectCoverage(
+        report: String,
+        coverageThreshold: Double = 0
+    ) -> (percent: Int, filesWithoutCoverage: [FilePath]) {
+        let files = report.stringsMatchingRegex("^(.)*.swift", options: .anchorsMatchLines)
+        var percents = report.split(separator: "\n").compactMap { line in
+            String(line)
+                .stringsMatchingRegex("\\d{1,3}.\\d{1,2}%")
+                .last?
+                .replacingOccurrences(of: "%", with: "")
+        }.compactMap { Double($0) }
+
+        let percent = Int(percents.removeLast())
+        let filesWithoutCoverage = zip(files, percents)
+            .include { _, coverage in coverage <= coverageThreshold }
+            .map(\.0)
+
+        return (percent: percent, filesWithoutCoverage: filesWithoutCoverage)
     }
 
     private func coverageReport(
@@ -62,43 +68,31 @@ final class SwiftCoverage: BuildSystemCoverage {
             .deletingPathExtension()
             .lastPathComponent
 
+        #if os(Linux)
+        let url = process().which("llvm-cov") ?? ""
+        let arguments = [
+            "report",
+            testArtifactPath,
+            "-instr-profile",
+            binaryPath + "/codecov/default.profdata",
+            "--ignore-filename-regex=.build|Tests",
+        ]
+        #else
+        let url = process().which("xcrun") ?? ""
+        let arguments = [
+            "llvm-cov",
+            "report",
+            testArtifactPath + "/Contents/MacOS/\(packageTests)",
+            "-instr-profile",
+            binaryPath + "/codecov/default.profdata",
+            "--ignore-filename-regex=.build|Tests",
+        ]
+        #endif
         return process().runProcess(
-            url: "/usr/bin/xcrun",
-            arguments: [
-                "llvm-cov",
-                "report",
-                testArtifactPath + "/Contents/MacOS/\(packageTests)",
-                "-instr-profile",
-                binaryPath + "/codecov/default.profdata",
-                "--ignore-filename-regex=.build|Tests",
-            ]
+            url: url,
+            arguments: arguments
         )
         .flatMap(\.nilIfEmpty)
         .map(\.trimmed)
-    }
-}
-
-private extension Coverage {
-    static func from(
-        report: String,
-        coverageThreshold: Double = 0
-    ) -> Coverage {
-        let files = report.stringsMatchingRegex("^(.)*.swift", options: .anchorsMatchLines)
-        var percents = report.split(separator: "\n").compactMap { line in
-            String(line)
-                .stringsMatchingRegex("\\d{1,3}.\\d{1,2}%")
-                .last?
-                .replacingOccurrences(of: "%", with: "")
-        }.compactMap { Double($0) }
-
-        let percent = percents.removeLast()
-        let filesWithoutCoverage = zip(files, percents)
-            .include { _, coverage in coverage <= coverageThreshold }
-            .map(\.0)
-
-        return Coverage(
-            percent: Int(percent),
-            filesWithoutCoverage: filesWithoutCoverage
-        )
     }
 }

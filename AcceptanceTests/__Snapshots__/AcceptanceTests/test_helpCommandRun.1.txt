@@ -1,22 +1,22 @@
 OVERVIEW: Performs mutation testing for the Swift project contained within the
 current directory.
 
-USAGE: muter run [--files-to-mutate <files-to-mutate> ...] [--format <format>] [--skip-coverage] [--output <output>] [--operators <operators> ...] [--skip-update-check] [--configuration <configuration>]
+USAGE: muter run [--files-to-mutate <files-to-mutate> ...] [--operators <operators> ...] [--configuration <configuration>] [--skip-coverage] [--skip-update-check] [--format <format>] [--output <output>]
 
 OPTIONS:
   --files-to-mutate <files-to-mutate>
                           Only mutate a given list of source code files.
-  -f, --format <format>   The report format for muter: plain, json, html, xcode
-  --skip-coverage         Skips the step in which Muter runs your project in
-                          order to filter out files without coverage.
-  -o, --output <output>   Output file for the report to be saved.
   --operators <operators> The list of mutant operators to be used:
                           RelationalOperatorReplacement, RemoveSideEffects,
                           ChangeLogicalConnector, SwapTernary
-  --skip-update-check     Skips the step in which Muter checks for newer
-                          versions.
   -c, --configuration <configuration>
                           The path to the muter configuration file.
+  --skip-coverage         Skips the step in which Muter runs your project in
+                          order to filter out files without coverage.
+  --skip-update-check     Skips the step in which Muter checks for newer
+                          versions.
+  -f, --format <format>   The report format for muter: plain, json, html, xcode
+  -o, --output <output>   Output file for the report to be saved.
   --version               Show the version.
   -h, --help              Show help information.
 

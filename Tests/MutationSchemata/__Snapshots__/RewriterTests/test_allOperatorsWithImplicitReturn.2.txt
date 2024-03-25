@@ -1,0 +1,360 @@
+// swiftformat:disable all
+// swiftlint:disable all
+
+import class Foundation.ProcessInfo
+
+#if os(iOS) || os(tvOS)
+    print("please ignore me")
+#endif
+
+struct ConditionalOperators {
+    func something(_ a: Int) -> String {
+        if ProcessInfo.processInfo.environment["sampleWithAllOperators_RelationalOperatorReplacement_7_19"] != nil {
+            let b = a != 5
+            let e = a != 1
+            let c = a >= 4
+            let d = a <= 10
+            let f = a < 5
+            let g = a > 5
+
+            if a == 10 {
+                return "hello"
+            }
+
+            return a == 9 ? "goodbye" : "what"
+        } else if ProcessInfo.processInfo.environment["sampleWithAllOperators_SwapTernary_18_43"] != nil {
+            let b = a == 5
+            let e = a != 1
+            let c = a >= 4
+            let d = a <= 10
+            let f = a < 5
+            let g = a > 5
+
+            if a == 10 {
+                return "hello"
+            }
+
+            return a == 9 ? "what" : "goodbye"
+        } else if ProcessInfo.processInfo.environment["sampleWithAllOperators_RelationalOperatorReplacement_18_18"] != nil {
+            let b = a == 5
+            let e = a != 1
+            let c = a >= 4
+            let d = a <= 10
+            let f = a < 5
+            let g = a > 5
+
+            if a == 10 {
+                return "hello"
+            }
+
+            return a != 9 ? "goodbye" : "what"
+        } else if ProcessInfo.processInfo.environment["sampleWithAllOperators_RelationalOperatorReplacement_14_14"] != nil {
+            let b = a == 5
+            let e = a != 1
+            let c = a >= 4
+            let d = a <= 10
+            let f = a < 5
+            let g = a > 5
+
+            if a != 10 {
+                return "hello"
+            }
+
+            return a == 9 ? "goodbye" : "what"
+        } else if ProcessInfo.processInfo.environment["sampleWithAllOperators_RelationalOperatorReplacement_12_19"] != nil {
+            let b = a == 5
+            let e = a != 1
+            let c = a >= 4
+            let d = a <= 10
+            let f = a < 5
+            let g = a < 5
+
+            if a == 10 {
+                return "hello"
+            }
+
+            return a == 9 ? "goodbye" : "what"
+        } else if ProcessInfo.processInfo.environment["sampleWithAllOperators_RelationalOperatorReplacement_11_19"] != nil {
+            let b = a == 5
+            let e = a != 1
+            let c = a >= 4
+            let d = a <= 10
+            let f = a > 5
+            let g = a > 5
+
+            if a == 10 {
+                return "hello"
+            }
+
+            return a == 9 ? "goodbye" : "what"
+        } else if ProcessInfo.processInfo.environment["sampleWithAllOperators_RelationalOperatorReplacement_10_19"] != nil {
+            let b = a == 5
+            let e = a != 1
+            let c = a >= 4
+            let d = a >= 10
+            let f = a < 5
+            let g = a > 5
+
+            if a == 10 {
+                return "hello"
+            }
+
+            return a == 9 ? "goodbye" : "what"
+        } else if ProcessInfo.processInfo.environment["sampleWithAllOperators_RelationalOperatorReplacement_9_19"] != nil {
+            let b = a == 5
+            let e = a != 1
+            let c = a <= 4
+            let d = a <= 10
+            let f = a < 5
+            let g = a > 5
+
+            if a == 10 {
+                return "hello"
+            }
+
+            return a == 9 ? "goodbye" : "what"
+        } else if ProcessInfo.processInfo.environment["sampleWithAllOperators_RelationalOperatorReplacement_8_19"] != nil {
+            let b = a == 5
+            let e = a == 1
+            let c = a >= 4
+            let d = a <= 10
+            let f = a < 5
+            let g = a > 5
+
+            if a == 10 {
+                return "hello"
+            }
+
+            return a == 9 ? "goodbye" : "what"
+        } else {
+            let b = a == 5
+            let e = a != 1
+            let c = a >= 4
+            let d = a <= 10
+            let f = a < 5
+            let g = a > 5
+
+            if a == 10 {
+                return "hello"
+            }
+
+            return a == 9 ? "goodbye" : "what"
+        }
+    }
+
+    func < (_: String, _: String) -> Bool {
+        return false
+    }
+
+    func baz() {
+        if ProcessInfo.processInfo.environment["sampleWithAllOperators_RemoveSideEffects_26_37"] != nil {
+        } else {
+            _ = foo(bar: { $0 == char })
+        }
+    }
+}
+
+struct LogicalConnectors {
+    func someCode() -> Bool {
+        if ProcessInfo.processInfo.environment["sampleWithAllOperators_ChangeLogicalConnector_32_22"] != nil {
+            return false || false
+        } else {
+            return false && false
+        }
+    }
+
+    func someOtherCode() -> Bool {
+        if ProcessInfo.processInfo.environment["sampleWithAllOperators_ChangeLogicalConnector_36_21"] != nil {
+            return true && true
+        } else {
+            return true || true
+        }
+    }
+}
+
+struct SideEffects {
+    func containsSideEffect() -> Int {
+        if ProcessInfo.processInfo.environment["sampleWithAllOperators_RemoveSideEffects_42_31"] != nil {
+            return 1
+        } else {
+            _ = causesSideEffect()
+            return 1
+        }
+    }
+
+    func containsSideEffect() -> Int {
+        if ProcessInfo.processInfo.environment["sampleWithAllOperators_RemoveSideEffects_49_31"] != nil {
+            print("something")
+        } else {
+            print("something")
+
+            _ = causesSideEffect()
+        }
+    }
+
+    @discardableResult
+    func causesSideEffect() -> Int {
+        return 0
+    }
+
+    func causesAnotherSideEffect() {
+        if ProcessInfo.processInfo.environment["sampleWithAllOperators_RemoveSideEffects_60_66"] != nil {
+            let key = "some key"
+            let value = aFunctionThatReturnsAValue()
+        } else {
+            let key = "some key"
+            let value = aFunctionThatReturnsAValue()
+            someFunctionThatWritesToADatabase(key: key, value: value)
+        }
+    }
+
+    func containsSpecialCases() {
+        fatalError("this should never be deleted!")
+        exit(1)
+        abort()
+    }
+
+    func containsADeepMethodCall() {
+        let containsIgnoredResult = statement.description.contains("_ = ")
+        var anotherIgnoredResult = statement.description.contains("_ = ")
+    }
+
+    func containsAVoidFunctionCallThatSpansManyLine() {
+        if ProcessInfo.processInfo.environment["sampleWithAllOperators_RemoveSideEffects_79_10"] != nil {
+        } else {
+            functionCall(
+                "some argument",
+                anArgumentLabel: "some argument that's different",
+                anotherArgumentLabel: 5
+            )
+        }
+    }
+}
+
+struct Concurrency {
+    private let semaphore = DispatchSemaphore(value: 1)
+    private let conditionLock = NSConditionLock(condition: 0)
+    private let lock = NSRecursiveLock()
+    private let condition = NSCondition()
+
+    private func semaphoreLock(block: () -> Void) {
+        if ProcessInfo.processInfo.environment["sampleWithAllOperators_RemoveSideEffects_92_16"] != nil {
+            defer { semaphore.signal() }
+            semaphore.wait()
+        } else {
+            defer { semaphore.signal() }
+            semaphore.wait()
+            block()
+        }
+    }
+
+    private func recursiveLock(block: () -> Void) {
+        if ProcessInfo.processInfo.environment["sampleWithAllOperators_RemoveSideEffects_98_16"] != nil {
+            defer { lock.unlock() }
+            lock.lock()
+        } else {
+            defer { lock.unlock() }
+            lock.lock()
+            block()
+        }
+    }
+
+    private func nsCondition(block: () -> Void) {
+        if ProcessInfo.processInfo.environment["sampleWithAllOperators_RemoveSideEffects_104_16"] != nil {
+            defer { condition.signal() }
+            condition.wait()
+        } else {
+            defer { condition.signal() }
+            condition.wait()
+            block()
+        }
+    }
+
+    private func nsConditionLock(block: () -> Void) {
+        if ProcessInfo.processInfo.environment["sampleWithAllOperators_RemoveSideEffects_110_16"] != nil {
+            defer { conditionLock.unlock(withCondition: 1) }
+            conditionLock.lock(whenCondition: 1)
+        } else {
+            defer { conditionLock.unlock(withCondition: 1) }
+            conditionLock.lock(whenCondition: 1)
+            block()
+        }
+    }
+
+    private func sync(block: () -> Int) -> Int {
+        let semaphore = DispatchSemaphore(value: 2)
+        semaphore.wait()
+        let value = block()
+        semaphore.signal()
+
+        return value
+    }
+}
+
+struct TernayOperators {
+    func someCode(_ a: Bool) -> Bool {
+        if ProcessInfo.processInfo.environment["sampleWithAllOperators_SwapTernary_125_32"] != nil {
+            return a ? false : true
+        } else {
+            return a ? true : false
+        }
+    }
+
+    func someAnotherCode(_ a: Bool) -> String {
+        if ProcessInfo.processInfo.environment["sampleWithAllOperators_SwapTernary_129_36"] != nil {
+            return a ? "false" : "true"
+        } else {
+            return a ? "true" : "false"
+        }
+    }
+
+    func someCode(_ a: Bool, _ b: Bool) -> Bool {
+        if ProcessInfo.processInfo.environment["sampleWithAllOperators_SwapTernary_133_44"] != nil {
+            return a ? false : b ? true : false
+        } else if ProcessInfo.processInfo.environment["sampleWithAllOperators_SwapTernary_133_37"] != nil {
+            return a ? b ? false : true : false
+        } else {
+            return a ? b ? true : false : false
+        }
+    }
+}
+
+public enum Enum {
+    case a(CGFloat)
+    case b(CGFloat)
+
+    public func kerning(for something: String?) -> CGFloat {
+        switch self {
+        case let .a(value):
+            return value
+        case let .b(value):
+            if ProcessInfo.processInfo.environment["sampleWithAllOperators_RelationalOperatorReplacement_146_26"] != nil {
+                if something != nil {
+                    return 0
+                }
+                return 10
+            } else {
+                if something == nil {
+                    return 0
+                }
+                return 10
+            }
+        }
+    }
+}
+
+extension String {
+    private func bar() -> (String, String) {
+        return Something { value in
+            var remainder = value
+            for char in self {
+                guard let (_, newRemainder) = doSomething(condition: { if ProcessInfo.processInfo.environment["sampleWithAllOperators_RelationalOperatorReplacement_159_75"] != nil { $0 != char } else { $0 == char } }) else {
+                    return nil
+                }
+
+                remainder = newRemainder
+            }
+            return (self, remainder)
+        }
+    }
+}

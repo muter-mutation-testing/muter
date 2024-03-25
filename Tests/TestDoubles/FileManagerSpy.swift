@@ -24,6 +24,7 @@ class FileManagerSpy: Spy, FileSystemManager {
         }
     }
 
+    var delegate: FileManagerDelegate?
     var temporaryDirectory: URL = .init(fileURLWithPath: "")
     var currentDirectoryPathToReturn: String = ""
     var changeCurrentDirectoryPath: [String] = []

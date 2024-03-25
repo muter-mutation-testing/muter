@@ -9,3 +9,4 @@ arguments:
 executable: /usr/bin/xcodebuild
 exclude: []
 excludeCalls: []
+coverageThreshold: 0e+0

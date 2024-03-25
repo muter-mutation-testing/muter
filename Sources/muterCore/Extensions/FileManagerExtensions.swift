@@ -2,8 +2,8 @@ import Foundation
 
 public protocol FileSystemManager {
     var currentDirectoryPath: String { get }
-
     var temporaryDirectory: URL { get }
+    var delegate: FileManagerDelegate? { get set }
 
     func createDirectory(
         atPath path: String,

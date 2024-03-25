@@ -14,18 +14,21 @@ enum RemoveSideEffectsOperator {
         private lazy var untestedFunctionNames: [String] = [
             "print",
             "fatalError",
+            "preconditionFailure",
             "exit",
             "abort",
         ] + (configuration?.excludeCallList ?? [])
 
         convenience init(
             configuration: MuterConfiguration? = nil,
-            sourceCodeInfo: SourceCodeInfo
+            sourceCodeInfo: SourceCodeInfo,
+            regionsWithoutCoverage: [Region] = []
         ) {
             self.init(
                 configuration: configuration,
                 sourceCodeInfo: sourceCodeInfo,
-                mutationOperatorId: .removeSideEffects
+                mutationOperatorId: .removeSideEffects,
+                regionsWithoutCoverage: regionsWithoutCoverage
             )
         }
 
@@ -62,8 +65,17 @@ enum RemoveSideEffectsOperator {
             return super.visit(node)
         }
 
+        override func visit(_ node: DoStmtSyntax) -> SyntaxVisitorContinueKind {
+            removeSideEffectAt(node.body)
+
+            return super.visit(node)
+        }
+
         override func visit(_ node: FunctionDeclSyntax) -> SyntaxVisitorContinueKind {
-            guard let body = node.body, !node.hasImplicitReturn else {
+            guard let body = node.body,
+                  !node.hasImplicitReturn,
+                  !containsNodesThatWillBeVisited(body)
+            else {
                 return super.visit(node)
             }
 
@@ -99,23 +111,8 @@ enum RemoveSideEffectsOperator {
             }
         }
 
-        private func mutated(_ node: FunctionDeclSyntax, with body: CodeBlockSyntax) -> DeclSyntax {
-            let functionDecl = FunctionDeclSyntax(
-                attributes: node.attributes,
-                modifiers: node.modifiers,
-                funcKeyword: node.funcKeyword,
-                name: node.name,
-                genericParameterClause: node.genericParameterClause,
-                signature: node.signature,
-                genericWhereClause: node.genericWhereClause,
-                body: body
-            )
-
-            return DeclSyntax(functionDecl)
-        }
-
         private func statementContainsMutableToken(_ statement: CodeBlockItemListSyntax.Element) -> Bool {
-            let doesntContainVariableAssignment = statement.allChildren.count(variableAssignmentStatements) == 0
+            let doesntContainVariableAssignment = doesntContainVariableAssignment(statement.allChildren)
             let containsDiscardedResult = statement.description.contains("_ = ")
 
             let containsFunctionCall = statement.allChildren
@@ -130,6 +127,20 @@ enum RemoveSideEffectsOperator {
             return doesntContainVariableAssignment
                 && doesntContainPossibleDeadlock
                 && (containsDiscardedResult || containsFunctionCall)
+        }
+
+        private func doesntContainVariableAssignment(_ children: SyntaxChildren) -> Bool {
+            let childrenAssignment = children.count(variableAssignmentStatements) == 0
+            let doStatementAssignment = filterDoStatement(children).count(variableAssignmentStatements) == 0
+
+            return childrenAssignment || doStatementAssignment
+        }
+
+        private func filterDoStatement(_ children: SyntaxChildren) -> [Syntax] {
+            children
+                .compactMap { $0.as(DoStmtSyntax.self) }
+                .map(\.body)
+                .compactMap(Syntax.init)
         }
 
         private func variableAssignmentStatements(_ node: Syntax) -> Bool {
@@ -153,6 +164,27 @@ enum RemoveSideEffectsOperator {
 
         private func untestedFunctionCallStatements(_ node: Syntax) -> Bool {
             untestedFunctionNames.contains { name in node.description.contains(name) }
+        }
+
+        // This is to avoid false positives for code block items such as do statement
+        // We are going to visit them individually
+        private func containsNodesThatWillBeVisited(_ node: CodeBlockSyntax) -> Bool {
+            let skippableNodes: [SyntaxProtocol.Type] = [
+                ForStmtSyntax.self,
+                GuardStmtSyntax.self,
+                WhileStmtSyntax.self,
+                RepeatStmtSyntax.self,
+                DoStmtSyntax.self,
+            ]
+            for item in node.statements.map(\.item) {
+                for s in skippableNodes {
+                    if item.is(s) {
+                        return true
+                    }
+                }
+            }
+
+            return false
         }
 
         private func statementsContainsConcurrencyTypes(_ statement: PatternBindingSyntax) -> Bool {

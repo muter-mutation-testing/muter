@@ -4,14 +4,15 @@ class TokenAwareVisitor: MuterVisitor {
     var tokensToDiscover = [TokenKind]()
     var oppositeOperatorMapping: [String: String] = [:]
 
-    override func visit(_ node: TokenSyntax) -> SyntaxVisitorContinueKind {
-        guard canMutateToken(node),
-              let oppositeOperator = oppositeOperator(for: node.tokenKind)
+    override func visit(_ node: BinaryOperatorExprSyntax) -> SyntaxVisitorContinueKind {
+        let `operator` = node.operator
+        guard canMutateToken(`operator`),
+              let oppositeOperator = oppositeOperator(for: `operator`.tokenKind)
         else {
             return .visitChildren
         }
 
-        let position = location(for: node)
+        let position = startLocation(for: node)
         let snapshot = MutationOperator.Snapshot(
             before: node.description.trimmed,
             after: oppositeOperator,
@@ -20,7 +21,7 @@ class TokenAwareVisitor: MuterVisitor {
 
         add(
             mutation: mutated(
-                node,
+                `operator`,
                 using: oppositeOperator
             ),
             with: node,
@@ -71,15 +72,30 @@ class TokenAwareVisitor: MuterVisitor {
     ) -> CodeBlockItemListSyntax {
         let codeBlockItemListSyntax = node.codeBlockItemListSyntax
         let codeBlockDescription = codeBlockItemListSyntax.description
+        let mutatedSyntaxDescription = mutatedSyntax.description
         let nodePosition = node.offsetInCodeBlockItemListSyntax(sourceCodeInfo)
-        let nodeStartRange = codeBlockDescription.index(
+        
+        var nodeStartRange = codeBlockDescription.index(
             codeBlockDescription.startIndex,
             offsetBy: nodePosition
         )
-        let nodeEndRange = codeBlockDescription.index(
+        var nodeEndRange = codeBlockDescription.index(
             codeBlockDescription.startIndex,
-            offsetBy: nodePosition + mutatedSyntax.description.count
+            offsetBy: nodePosition + mutatedSyntaxDescription.count
         )
+        
+        let operatorInCodeBlock = String(codeBlockDescription[nodeStartRange ..< nodeEndRange])
+        let oppositeOperator = oppositeOperatorMapping[operatorInCodeBlock.trimmed]
+        if oppositeOperator != mutatedSyntaxDescription.trimmed,
+           let range = tryFixOperatorRange(
+               for: mutatedSyntax,
+               in: codeBlockDescription,
+               at: nodePosition
+           ) {
+            nodeStartRange = range.start
+            nodeEndRange = range.end
+        }
+
         let mutationRangeInCodeBlock = nodeStartRange ..< nodeEndRange
 
         return super.transform(
@@ -88,12 +104,37 @@ class TokenAwareVisitor: MuterVisitor {
             at: mutationRangeInCodeBlock
         )
     }
+
+    // This is a sliding window to try to find the correct String.Index since sometimes the utf8Offset is wrong.
+    private func tryFixOperatorRange(
+        for mutatedSyntax: SyntaxProtocol,
+        in codeBlockDescription: String,
+        at nodePosition: Int
+    ) -> (start: String.Index, end: String.Index)? {
+        let mutatedSyntaxDescription = mutatedSyntax.description
+        let op = oppositeOperatorMapping[mutatedSyntaxDescription.trimmed]
+        for i in 0 ... codeBlockDescription.count {
+            let start = codeBlockDescription.index(
+                codeBlockDescription.startIndex,
+                offsetBy: nodePosition - i
+            )
+            let end = codeBlockDescription.index(
+                codeBlockDescription.startIndex,
+                offsetBy: (nodePosition + mutatedSyntaxDescription.count) - i
+            )
+
+            if String(codeBlockDescription[start ..< end]).trimmed == op {
+                return (start: start, end: end)
+            }
+        }
+
+        return nil
+    }
 }
 
 private extension SyntaxProtocol {
     func offsetInCodeBlockItemListSyntax(_ sourceCode: SourceCodeInfo) -> Int {
         let nodePosition = mutationPosition(with: sourceCode)
-
         let codeBlockItemListSyntax = codeBlockItemListSyntax.mutationPosition(with: sourceCode)
 
         return nodePosition.utf8Offset - codeBlockItemListSyntax.utf8Offset

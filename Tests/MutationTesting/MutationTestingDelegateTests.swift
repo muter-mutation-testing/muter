@@ -24,13 +24,13 @@ final class MutationTestingDelegateTests: MuterTestCase {
     }
 
     func test_testProcessForXcodeBuild() throws {
-        current.process = Process.Factory.makeProcess
+        current.process = MuterProcessFactory.makeProcess
 
         let configuration = MuterConfiguration(
             executable: "/tmp/xcodebuild",
             arguments: [
                 "-destination",
-                "platform=macOS,arch=x86_64,variant=Mac Catalyst"
+                "platform=macOS,arch=x86_64,variant=Mac Catalyst",
             ]
         )
 
@@ -42,7 +42,7 @@ final class MutationTestingDelegateTests: MuterTestCase {
         let testProcess = try sut.testProcess(
             with: configuration,
             schemata: schemata,
-            and: FileHandle()
+            and: FileHandle(fileDescriptor: 0)
         )
 
         XCTAssertEqual(testProcess.arguments, [
@@ -50,15 +50,14 @@ final class MutationTestingDelegateTests: MuterTestCase {
             "-destination",
             "platform=macOS,arch=x86_64,variant=Mac Catalyst",
             "-xctestrun",
-            "muter.xctestrun"
+            "muter.xctestrun",
         ])
 
         XCTAssertEqual(testProcess.executableURL?.path, "/tmp/xcodebuild")
-        XCTAssertEqual(testProcess.qualityOfService, .userInitiated)
     }
 
     func test_testProcessForSwiftBuild() throws {
-        current.process = Process.Factory.makeProcess
+        current.process = MuterProcessFactory.makeProcess
 
         let configuration = MuterConfiguration(
             executable: "/tmp/swift",
@@ -73,14 +72,13 @@ final class MutationTestingDelegateTests: MuterTestCase {
         let testProcess = try sut.testProcess(
             with: configuration,
             schemata: schemata,
-            and: FileHandle()
+            and: FileHandle(fileDescriptor: 0)
         )
 
-        XCTAssertEqual(testProcess.environment?["fileName_1_0_0"], "YES")
+        XCTAssertEqual(testProcess.environment?[schemata.id], "YES")
         XCTAssertEqual(testProcess.environment?[isMuterRunningKey], isMuterRunningValue)
         XCTAssertEqual(testProcess.arguments, ["test", "--skip-build"])
         XCTAssertEqual(testProcess.executableURL?.path, "/tmp/swift")
-        XCTAssertEqual(testProcess.qualityOfService, .userInitiated)
     }
 
     func test_switchOn() throws {

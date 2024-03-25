@@ -1,6 +1,7 @@
 <img src="Docs/Images/Muter%20Logo.png" width="475" alt="Muter logo" />
 
-[![Swift 5 support](https://img.shields.io/badge/swift-5.9-ED523F.svg?style=flat)](https://swift.org/download/) 
+[![Swift 5 support](https://img.shields.io/badge/swift-5.9-ED523F.svg?style=flat)](https://swift.org/download/)
+![Platforms](https://img.shields.io/badge/platform-macos%20%7C%20linux-green)
 [![Build](https://img.shields.io/bitrise/6354dbc8bfead01c/master?label=build&token=jq6MzFouY0nlkBzizYvuhQ)](https://app.bitrise.io/app/6354dbc8bfead01c)
 ![Regression Tests](https://img.shields.io/endpoint?url=https://gist.githubusercontent.com/rakaramos/905b694fb277c23630c5476c3ddf0dae/raw/muter-regression-badge.json&style=flat)
 ![Acceptance Tests](https://img.shields.io/endpoint?url=https://gist.githubusercontent.com/rakaramos/c064fc556513a6be07349b0d2f3ba44e/raw/muter-acceptance-badge.json&style=flat)
@@ -20,11 +21,14 @@ Use this mode to rapidly diagnose areas where you can begin improving your test 
 #### Muter can be run from the command line
 Use this mode to get detailed information about the health and quality of your entire test suite
 
-<picture>
-  <source media="(prefers-color-scheme: dark)" srcset="./Docs/Images/muter-cli-output-dark.gif">
-  <img alt="Muter running on the terminal" src="./Docs/Images/muter-cli-output-light.gif">
-</picture>
+<!-- 
+    asciinema rec muter-cli-output.cast
+    agg --theme solarized-light --font-size 40 --cols 100  --speed 1 muter-cli-output.cast muter-light.gif
+    agg --theme solarized-dark --font-size 40 --cols 100  --speed 1 muter-cli-output.cast muter-dark.gif
+    ffmpeg -i file.gif -pix_fmt yuv420p output.mp4 
+-->
 
+<video src="https://github.com/muter-mutation-testing/muter/assets/7672056/d022fa00-46bd-4b8a-b0d4-53d72c7c73b5"></video>
 
 #### Muter can be run in your CI
 Use this script to easily mutation test your projects incrementally, enabling you to have per-commit updates on how code changes impact the quality of your test suite. Seamlessly connect the output of this CI step into your dashboard or communication channel of choice, or use it as a starting point for thinking about how you want to incrementally test your code.
@@ -178,9 +182,8 @@ Check out the `muter.conf.yml` in the root directory of this repository for anot
 ### Xcode Setup
 After creating your configuration:
 
-1) **Create a new Aggregate Build Target** in the Xcode project of the codebase you're mutation testing. We suggest calling it "Mutation Test"
-2) **Add a run script step** to the newly created aggregate build target.
-3) **Add the Muter Xcode command** to the build step:
+1) **Add a run script step** to the build target.
+2) **Add the Muter Xcode command** to the build step:
 
 ```sh
 muter --format xcode
@@ -195,23 +198,32 @@ Once you've created your configuration file, run `muter` in your terminal from a
 **Available Subcommands**
 
 ```
-help        Display general or subcommand-specific help
-init        Creates the configuration file that Muter uses
-run         Performs mutation testing for the Swift project contained within the current directory
-operator    Describes a given mutation operator
+init                    Creates the configuration file that Muter uses
+run (default)           Performs mutation testing for the Swift project contained within the current directory.
+run-without-mutating    Performs mutation testing using the test plan.
+mutate-without-running  Mutates the source code and outputs the test plan as JSON.
+operator                Describes a given mutation operator.
 ```
-Muter defaults to run when you don't specify any subcommands
+Muter defaults to `run` when you don't specify any subcommands
 
 **Available Flags**
 
 ```
 --files-to-mutate       Only mutate a given list of source code files (Supports glob expressions like Sources/**/*.swift)
---skip-coverage         Skips the step in which Muter runs your project in order to filter out files without coverage.
+--skip-coverage         Skips the step in which Muter runs your project to filter out files without coverage.
 -o, --output <output>   Output file for the report to be saved.
 --operators <operators> The list of mutant operators to be used: RelationalOperatorReplacement, RemoveSideEffects, ChangeLogicalConnector, SwapTernary
 --skip-update-check     Skips the step in which Muter checks for newer versions.
 -c, --configuration     The path to the muter configuration file.
 ```
+
+**Using Muter's test plan**
+
+Mutant schemata is a trickly operation because the operators only deals with the source code AST (abstract syntax tree), there is not type inference.
+Ending up with a mutated project that does not compile is pretty common.
+To circumvent this issue, we recommend using both `mutate-without-running` and `run-without-mutating`.
+The command `mutate-without-running` will perform discover mutation points, apply it and save a JSON file named `muter-mappings.json`.
+In case the mutated project is not compiling you can fix all of the compilation issues (in our experience they are as simple as indentation issue or even an space that is missing) and re-run muter using `run-without-mutating`, passing the test plan JSON as a parameter.
 
 **Available Report Formats**
 

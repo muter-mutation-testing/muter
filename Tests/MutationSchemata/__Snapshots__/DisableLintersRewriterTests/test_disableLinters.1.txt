@@ -3,9 +3,9 @@
 // swiftlint:disable all
 
 #if os(iOS) || os(tvOS)
-    import Foo
+  import Foo
 #else
-    import Bar
+  import Bar
 #endif
 
 func foo() {

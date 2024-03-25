@@ -6,7 +6,6 @@ import XCTest
 extension String: Error {}
 
 final class RegressionTests: XCTestCase {
-
     func runRegressionTest(
         forFixtureNamed fixtureName: String,
         withResultAt path: FilePath,

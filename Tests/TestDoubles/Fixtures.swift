@@ -58,14 +58,14 @@ extension MutationTestOutcome.Mutation {
         point: MutationPoint = .make(),
         snapshot: MutationOperator.Snapshot = .null,
         originalProjectDirectoryUrl: URL = URL(fileURLWithPath: ""),
-        tempDirectoryURL: URL = URL(fileURLWithPath: "")
+        mutatedProjectDirectoryURL: URL = URL(fileURLWithPath: "")
     ) -> Self {
         Self(
             testSuiteOutcome: testSuiteOutcome,
             mutationPoint: point,
             mutationSnapshot: snapshot,
             originalProjectDirectoryUrl: originalProjectDirectoryUrl,
-            tempDirectoryURL: tempDirectoryURL
+            mutatedProjectDirectoryURL: mutatedProjectDirectoryURL
         )
     }
 }
@@ -153,16 +153,36 @@ extension Array {
 extension Coverage {
     static func make(
         percent: Int = 0,
-        filesWithoutCoverage: [FilePath] = []
+        filesWithoutCoverage: [FilePath] = [],
+        functionsCoverage: FunctionsCoverage = .null
     ) -> Coverage {
         Coverage(
             percent: percent,
-            filesWithoutCoverage: filesWithoutCoverage
+            filesWithoutCoverage: filesWithoutCoverage,
+            functionsCoverage: functionsCoverage
         )
     }
 }
 
-extension RunOptions {
+extension Region {
+    static func make(
+        lineStart: Int = 0,
+        columnStart: Int = 0,
+        lineEnd: Int = 0,
+        columnEnd: Int = 0,
+        executionCount: Int = 0
+    ) -> Region {
+        Region(
+            lineStart: lineStart,
+            columnStart: columnStart,
+            lineEnd: lineEnd,
+            columnEnd: columnEnd,
+            executionCount: executionCount
+        )
+    }
+}
+
+extension Run.Options {
     static func make(
         filesToMutate: [String] = [],
         reportFormat: ReportFormat = .plain,
@@ -170,7 +190,9 @@ extension RunOptions {
         mutationOperatorsList: MutationOperatorList = [],
         skipCoverage: Bool = false,
         skipUpdateCheck: Bool = false,
-        configurationURL: URL? = nil
+        configurationURL: URL? = nil,
+        testPlanURL: URL? = nil,
+        createTestPlan: Bool = false
     ) -> Self {
         .init(
             filesToMutate: filesToMutate,
@@ -179,7 +201,9 @@ extension RunOptions {
             mutationOperatorsList: mutationOperatorsList,
             skipCoverage: skipCoverage,
             skipUpdateCheck: skipUpdateCheck,
-            configurationURL: configurationURL
+            configurationURL: configurationURL,
+            testPlanURL: testPlanURL,
+            createTestPlan: createTestPlan
         )
     }
 }
@@ -243,5 +267,39 @@ extension MuterConfiguration {
 extension MutationPosition {
     static var firstPosition: MutationPosition {
         MutationPosition(utf8Offset: 0, line: 0, column: 0)
+    }
+}
+
+extension MuterTestPlan {
+    static func make(
+        mutatedProjectPath: String = "",
+        projectCoverage: Int = 0,
+        mappings: [SchemataMutationMapping] = []
+    ) -> MuterTestPlan {
+        MuterTestPlan(
+            mutatedProjectPath: mutatedProjectPath,
+            projectCoverage: projectCoverage,
+            mappings: mappings
+        )
+    }
+
+    var toData: Data {
+        (try? JSONEncoder().encode(self)) ?? .init()
+    }
+}
+
+extension MutationTestLog {
+    static func make(
+        mutationPoint: MutationPoint? = nil,
+        testLog: String = "",
+        timePerBuildTestCycle: TimeInterval? = nil,
+        remainingMutationPointsCount: Int? = nil
+    ) -> MutationTestLog {
+        MutationTestLog(
+            mutationPoint: mutationPoint,
+            testLog: testLog,
+            timePerBuildTestCycle: timePerBuildTestCycle,
+            remainingMutationPointsCount: remainingMutationPointsCount
+        )
     }
 }

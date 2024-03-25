@@ -97,6 +97,16 @@ extension SyntaxChildren {
 
         return result
     }
+
+    func containsSyntaxKind(_ syntax: (some SyntaxProtocol).Type) -> Bool {
+        asArray.containsSyntaxKind(syntax)
+    }
+}
+
+extension [Syntax] {
+    func containsSyntaxKind<A: SyntaxProtocol>(_ syntax: A.Type) -> Bool {
+        contains { $0.is(A.self) }
+    }
 }
 
 extension FunctionDeclSyntax {

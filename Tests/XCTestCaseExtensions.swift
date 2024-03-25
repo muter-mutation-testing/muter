@@ -1,4 +1,5 @@
 @testable import muterCore
+import SnapshotTesting
 import TestingExtensions
 import XCTest
 
@@ -10,6 +11,9 @@ class MuterTestCase: XCTestCase {
     private(set) var process = ProcessSpy()
     private(set) var flushStandardOut = FlushHandlerSpy()
     private(set) var server = ServerSpy()
+    private(set) var writeFile = WriteFileSpy()
+    private(set) var printer = PrinterSpy()
+
     private let fixedNow = DateComponents(
         calendar: .init(identifier: .gregorian),
         year: 2021,
@@ -18,6 +22,15 @@ class MuterTestCase: XCTestCase {
         hour: 2,
         minute: 42
     ).date!
+
+    var isRecording: Bool {
+        get {
+            SnapshotTesting.isRecording
+        }
+        set {
+            SnapshotTesting.isRecording = newValue
+        }
+    }
 
     override func setUp() {
         super.setUp()
@@ -31,20 +44,16 @@ class MuterTestCase: XCTestCase {
         setup()
     }
 
-    override func setUp(completion: @escaping (Error?) -> Void) {
-        super.setUp(completion: completion)
-
-        setup()
-    }
-
     private func setup() {
         current = World(
             notificationCenter: notificationCenter,
             fileManager: fileManager,
             flushStandardOut: flushStandardOut.flush,
+            printer: printer.print,
             ioDelegate: ioDelegate,
             process: { self.process },
             prepareCode: prepareCode.prepare,
+            writeFile: writeFile.writeFile,
             server: server,
             now: { self.fixedNow }
         )
@@ -52,13 +61,15 @@ class MuterTestCase: XCTestCase {
 
     func generateSchemataMappings(
         for source: SourceCodeInfo,
-        changes: MutationSourceCodePreparationChange = .null
+        changes: MutationSourceCodePreparationChange = .null,
+        regionsWithoutCoverage: [Region] = []
     ) -> [SchemataMutationMapping] {
         MutationOperator.Id.allCases
             .accumulate(into: []) { newSchemataMappings, mutationOperatorId in
                 let visitor = mutationOperatorId.visitor(
                     .init(),
-                    source
+                    source,
+                    regionsWithoutCoverage
                 )
 
                 visitor.sourceCodePreparationChange = changes
@@ -112,20 +123,16 @@ class MuterTestCase: XCTestCase {
             }
         }
     }
+
+    func loadFixture(_ path: String) -> String {
+        FileManager.default
+            .contents(atPath: "\(fixturesDirectory)/\(path)")
+            .flatMap { String(data: $0, encoding: .utf8) }
+            ?? ""
+    }
 }
 
 public extension XCTestCase {
-    var productsDirectory: URL {
-        #if os(macOS)
-        for bundle in Bundle.allBundles where bundle.bundlePath.hasSuffix(".xctest") {
-            return bundle.bundleURL.deletingLastPathComponent()
-        }
-        fatalError("couldn't find the products directory")
-        #else
-        return Bundle.main.bundleURL
-        #endif
-    }
-
     var rootTestDirectory: String {
         String(
             URL(fileURLWithPath: #filePath)

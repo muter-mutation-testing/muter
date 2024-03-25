@@ -3,7 +3,6 @@ import Foundation
 final class PlainTextReporter: Reporter {
     func report(from outcome: MutationTestOutcome) -> String {
         let report = MuterTestReport(from: outcome)
-        let finishedRunningMessage = "\n\nHere's your test report:\n\n"
         let appliedMutationsMessage = """
         --------------------------
         Applied Mutation Operators
@@ -29,16 +28,16 @@ final class PlainTextReporter: Reporter {
         Mutation Test Scores
         --------------------
 
+        Muter took \(report.timeElapsed) to run.
+
         These are the mutation scores for your test suite, as well as the files that had mutants introduced into them.
 
         Mutation scores ignore build errors.
 
         Of the \(
-            report
-                .totalAppliedMutationOperators
+            report.totalAppliedMutationOperators
         ) mutants introduced into your code, your test suite killed \(
-            report
-                .numberOfKilledMutants
+            report.numberOfKilledMutants
         ).
         \(mutationScoreMessage)
         \(projectCoverageMessage)
@@ -46,7 +45,7 @@ final class PlainTextReporter: Reporter {
         \(generateMutationScoresCLITable(from: report.fileReports).description)
         """
 
-        return finishedRunningMessage + appliedMutationsMessage + mutationScoresMessage
+        return appliedMutationsMessage + mutationScoresMessage
     }
 
     private func coverageMessage(from report: MuterTestReport) -> String {

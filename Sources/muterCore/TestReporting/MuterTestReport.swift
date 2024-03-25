@@ -24,7 +24,7 @@ struct MuterTestReport {
 
 private extension TimeInterval {
     func formatted() -> String {
-        let time = NSInteger(self)
+        let time = Int(self)
         let ms = Int(truncatingRemainder(dividingBy: 1) * 1000)
         let seconds = time % 60
         let minutes = (time / 60) % 60

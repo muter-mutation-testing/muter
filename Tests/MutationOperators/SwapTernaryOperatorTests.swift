@@ -38,7 +38,7 @@ final class SwapTernaryOperatorTests: MuterTestCase {
                             after: "a  ? \"false\" :  \"true\"",
                             description: "swapped ternary operator"
                         )
-                    )
+                    ),
                 ]
             ),
             (
@@ -58,7 +58,7 @@ final class SwapTernaryOperatorTests: MuterTestCase {
                             after: "a  ? false :  true",
                             description: "swapped ternary operator"
                         )
-                    )
+                    ),
                 ]
             )
         )
@@ -107,7 +107,7 @@ final class SwapTernaryOperatorTests: MuterTestCase {
                             after: "b  ? false :  true",
                             description: "swapped ternary operator"
                         )
-                    )
+                    ),
                 ]
             )
         )
@@ -125,5 +125,23 @@ final class SwapTernaryOperatorTests: MuterTestCase {
         let rewriter = MuterRewriter(visitor.schemataMappings).rewrite(sampleNestedCode.code)
 
         AssertSnapshot(formatCode(rewriter.description))
+    }
+
+    func test_shouldIgnoreComplexExpressions() throws {
+        let source = try sourceCode(
+            """
+            func complexExpression(_ a: Any, _ b: Any) -> Any? {
+                return a.isEmpty ? nil : a as [String]
+            }
+            """
+        )
+
+        let visitor = SwapTernaryOperator.Visitor(
+            sourceCodeInfo: .init(path: "/path/to/file", code: source)
+        )
+
+        visitor.walk(source)
+
+        XCTAssertTrue(visitor.schemataMappings.isEmpty)
     }
 }

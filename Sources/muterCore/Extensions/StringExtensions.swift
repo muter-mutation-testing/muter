@@ -46,6 +46,19 @@ extension String {
             .map { String(substring(with: $0.range)) }
     }
 
+    func matches(
+        _ pattern: String,
+        options: NSRegularExpression.Options = []
+    ) -> Bool {
+        !NSRegularExpression
+            .regexWithPattern(pattern, options)
+            .matches(
+                in: self,
+                options: [],
+                range: stringRange
+            ).isEmpty
+    }
+
     func firstMatchOf(
         _ pattern: String,
         options: NSRegularExpression.Options = []

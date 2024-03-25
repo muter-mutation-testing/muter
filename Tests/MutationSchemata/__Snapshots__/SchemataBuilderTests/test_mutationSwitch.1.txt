@@ -1,9 +1,9 @@
-if ProcessInfo.processInfo.environment["file_0_0_0"] != nil {
-    a >= b
-} else if ProcessInfo.processInfo.environment["file_2_0_0"] != nil {
-    a == b
-} else if ProcessInfo.processInfo.environment["file_1_0_0"] != nil {
-    a <= b
+if ProcessInfo.processInfo.environment["file_RelationalOperatorReplacement_0_0_0"] != nil {
+  a >= b
+} else if ProcessInfo.processInfo.environment["file_RelationalOperatorReplacement_2_0_0"] != nil {
+  a == b
+} else if ProcessInfo.processInfo.environment["file_RelationalOperatorReplacement_1_0_0"] != nil {
+  a <= b
 } else {
-    a != b
+  a != b
 }

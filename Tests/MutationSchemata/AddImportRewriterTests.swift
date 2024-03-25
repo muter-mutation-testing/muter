@@ -11,6 +11,7 @@ final class AddImportRewriterTests: MuterTestCase {
             #else
                 import Bar
             #endif
+            import class Foundation.URL
 
             func foo() {
               return true && false
@@ -20,7 +21,7 @@ final class AddImportRewriterTests: MuterTestCase {
 
         let sut = AddImportRewriter().rewrite(code)
 
-        AssertSnapshot(sut.description)
+        AssertSnapshot(formatCode(sut.description))
     }
 
     func test_doNotAddImport() throws {
@@ -40,6 +41,6 @@ final class AddImportRewriterTests: MuterTestCase {
         )
 
         let sut = AddImportRewriter().visit(code)
-        AssertSnapshot(sut.description)
+        AssertSnapshot(formatCode(sut.description))
     }
 }

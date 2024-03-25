@@ -6,7 +6,9 @@ final class AddImportRewriter: SyntaxRewriter {
     private(set) var newLinesAddedToFile = 0
 
     override func visit(_ node: SourceFileSyntax) -> SourceFileSyntax {
-        guard visitor.shouldAddImportStatement(node) else {
+        visitor.walk(node)
+
+        guard !visitor.isImportingFoundation else {
             return super.visit(node)
         }
 
@@ -27,13 +29,30 @@ final class AddImportRewriter: SyntaxRewriter {
             CodeBlockItemSyntax(
                 item: CodeBlockItemSyntax.Item(
                     ImportDeclSyntax(
+                        leadingTrivia: .space,
+                        modifiers: [
+                            DeclModifierSyntax(
+                                name: TokenSyntax(
+                                    .keyword(.import),
+                                    trailingTrivia: .space,
+                                    presence: .present
+                                )
+                            ),
+                        ],
+                        importKeyword: .keyword(.class),
                         path: ImportPathComponentListSyntax([
                             ImportPathComponentSyntax(
+                                leadingTrivia: .space,
                                 name: .identifier("Foundation")
-                                    .appendingLeadingTrivia(.spaces(1))
-                                    .appendingTrailingTrivia(.newlines(2))
                             ),
-                        ])
+                            ImportPathComponentSyntax(
+                                name: .periodToken()
+                            ),
+                            ImportPathComponentSyntax(
+                                name: .identifier("ProcessInfo")
+                            ),
+                        ]),
+                        trailingTrivia: .newlines(2)
                     )
                 )
             ),
@@ -47,12 +66,26 @@ final class AddImportRewriter: SyntaxRewriter {
     }
 }
 
-final class AddImportVisitior {
-    func shouldAddImportStatement(_ node: SourceFileSyntax) -> Bool {
-        let allImports = node
-            .description
-            .split(separator: "\n")
-            .filter { $0.contains("import ") }
-        return !allImports.any { $0.contains("Foundation") }
+final class AddImportVisitior: SyntaxAnyVisitor {
+    private(set) var isImportingFoundation = false
+
+    init() {
+        super.init(viewMode: .all)
+    }
+
+    override func visit(_ node: ImportDeclSyntax) -> SyntaxVisitorContinueKind {
+        if isImportingProcessInfo(node) || isImportingFoundation(node) {
+            isImportingFoundation = true
+        }
+
+        return super.visit(node)
+    }
+
+    private func isImportingFoundation(_ node: ImportDeclSyntax) -> Bool {
+        node.path.count == 1 && node.path.first?.name.text == "Foundation"
+    }
+
+    private func isImportingProcessInfo(_ node: ImportDeclSyntax) -> Bool {
+        node.description.contains("Foundation.ProcessInfo")
     }
 }

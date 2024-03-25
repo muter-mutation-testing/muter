@@ -3,7 +3,7 @@ import SwiftSyntax
 
 typealias MutationSchemata = [MutationSchema]
 
-final class SchemataMutationMapping: Equatable {
+final class SchemataMutationMapping {
     let filePath: String
     fileprivate var mappings: [CodeBlockItemListSyntax: MutationSchemata]
 
@@ -65,6 +65,43 @@ final class SchemataMutationMapping: Equatable {
     }
 }
 
+extension SchemataMutationMapping: Codable {
+    enum CodingKeys: String, CodingKey {
+        case filePath
+        case mappings
+    }
+
+    convenience init(from decoder: Decoder) throws {
+        let container = try decoder.container(keyedBy: CodingKeys.self)
+
+        let schematas = try container.decode([MutationSchema].self, forKey: .mappings)
+        let mappings = [CodeBlockItemListSyntax([]): schematas]
+        let filePath = try container.decode(String.self, forKey: .filePath)
+
+        self.init(
+            filePath: filePath,
+            mappings: mappings
+        )
+    }
+
+    func encode(to encoder: Encoder) throws {
+        var container = encoder.container(keyedBy: CodingKeys.self)
+
+        try container.encode(filePath, forKey: .filePath)
+        try container.encode(mutationSchemata, forKey: .mappings)
+    }
+}
+
+extension SchemataMutationMapping: Equatable {
+    static func == (
+        lhs: SchemataMutationMapping,
+        rhs: SchemataMutationMapping
+    ) -> Bool {
+        lhs.codeBlocks == rhs.codeBlocks &&
+            lhs.mutationSchemata == rhs.mutationSchemata
+    }
+}
+
 func + (
     lhs: SchemataMutationMapping,
     rhs: SchemataMutationMapping
@@ -80,14 +117,6 @@ func + (
     }
 
     return result
-}
-
-func == (
-    lhs: SchemataMutationMapping,
-    rhs: SchemataMutationMapping
-) -> Bool {
-    lhs.codeBlocks == rhs.codeBlocks &&
-        lhs.mutationSchemata == rhs.mutationSchemata
 }
 
 extension [SchemataMutationMapping] {
@@ -111,11 +140,11 @@ extension SchemataMutationMapping: CustomStringConvertible, CustomDebugStringCon
     var debugDescription: String { description }
 
     var description: String {
-        let description = mappings.reduce(into: "") { accum, pair in
+        let description = mappings.keys.sorted().reduce(into: "") { accum, key in
             accum +=
                 """
-                source: "\(pair.key.escapedDescription)",
-                schemata: \(pair.value)
+                source: "\(key.escapedDescription)",
+                schemata: \(mappings[key]!)
                 """
         }
         return """
@@ -123,5 +152,14 @@ extension SchemataMutationMapping: CustomStringConvertible, CustomDebugStringCon
             \(description)
         )
         """
+    }
+}
+
+extension CodeBlockItemListSyntax: Comparable {
+    public static func < (
+        lhs: SwiftSyntax.CodeBlockItemListSyntax,
+        rhs: SwiftSyntax.CodeBlockItemListSyntax
+    ) -> Bool {
+        lhs.description < rhs.description
     }
 }

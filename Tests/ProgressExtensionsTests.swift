@@ -1,5 +1,4 @@
 @testable import muterCore
-import Progress
 
 // class ProgressExtensionsSpec: QuickSpec {
 //    override func spec() {

@@ -1,9 +1,10 @@
-#if os(iOS) || os(tvOS)
-    import Foo
-#else
-    import Bar
-#endif
 import Foundation
+
+#if os(iOS) || os(tvOS)
+  import Foo
+#else
+  import Bar
+#endif
 
 func foo() {
   return true && false

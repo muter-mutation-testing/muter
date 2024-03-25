@@ -14,7 +14,7 @@ final class MutationTestOutcomeTests: MuterTestCase {
             point: mutationPoint,
             snapshot: .null,
             originalProjectDirectoryUrl: URL(fileURLWithPath: "/Users/user0/Code/ProjectDirectory"),
-            tempDirectoryURL: URL(fileURLWithPath: "/var/tmp/nonsense/ProjectDirectory")
+            mutatedProjectDirectoryURL: URL(fileURLWithPath: "/var/tmp/nonsense/ProjectDirectory")
         )
 
         XCTAssertEqual(outcome.originalProjectPath, "/Users/user0/Code/ProjectDirectory/Subdirectory/file.swift")
@@ -32,7 +32,7 @@ final class MutationTestOutcomeTests: MuterTestCase {
             point: mutationPoint,
             snapshot: .null,
             originalProjectDirectoryUrl: URL(fileURLWithPath: "/Users/user0/Code/ProjectDirectory"),
-            tempDirectoryURL: URL(fileURLWithPath: "/var/tmp/nonsense/ProjectDirectory")
+            mutatedProjectDirectoryURL: URL(fileURLWithPath: "/var/tmp/nonsense/ProjectDirectory")
         )
 
         XCTAssertEqual(outcome.originalProjectPath, "/Users/user0/Code/ProjectDirectory/file.swift")
@@ -50,7 +50,7 @@ final class MutationTestOutcomeTests: MuterTestCase {
             point: mutationPoint,
             snapshot: .null,
             originalProjectDirectoryUrl: URL(fileURLWithPath: "/Users/user0/Project Directory"),
-            tempDirectoryURL: URL(fileURLWithPath: "/var/tmp/nonsense/Project Directory")
+            mutatedProjectDirectoryURL: URL(fileURLWithPath: "/var/tmp/nonsense/Project Directory")
         )
 
         XCTAssertEqual(outcome.originalProjectPath, "/Users/user0/Project Directory/file.swift")
@@ -68,7 +68,7 @@ final class MutationTestOutcomeTests: MuterTestCase {
             point: mutationPoint,
             snapshot: .null,
             originalProjectDirectoryUrl: URL(fileURLWithPath: "/Users/user0/Code/ProjectDirectory"),
-            tempDirectoryURL: URL(fileURLWithPath: "/var/tmp/nonsense/ProjectDirectory")
+            mutatedProjectDirectoryURL: URL(fileURLWithPath: "/var/tmp/nonsense/ProjectDirectory")
         )
 
         XCTAssertEqual(outcome.originalProjectPath, "/Users/user0/Code/ProjectDirectory/ProjectDirectory/file.swift")

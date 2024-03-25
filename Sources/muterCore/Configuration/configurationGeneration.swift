@@ -29,7 +29,7 @@ private extension MuterConfiguration {
         }
 
         return MuterConfiguration(
-            executable: "/usr/bin/xcodebuild",
+            executable: executablePath("xcodebuild"),
             arguments: arguments
         )
     }
@@ -43,7 +43,7 @@ private extension MuterConfiguration {
         }
 
         return MuterConfiguration(
-            executable: "/usr/bin/xcodebuild",
+            executable: executablePath("xcodebuild"),
             arguments: arguments
         )
     }
@@ -82,16 +82,30 @@ private extension MuterConfiguration {
 
         return defaultArguments + destination + ["test"]
     }
+
+    private static func executablePath(_ exec: String) -> String {
+        current.process().which(exec) ?? ""
+    }
 }
 
 private extension MuterConfiguration {
 
     static func generateSPMConfiguration(from directoryContents: [URL]) -> MuterConfiguration? {
         if directoryContents.contains(where: { $0.lastPathComponent == "Package.swift" }) {
-            return MuterConfiguration(executable: "/usr/bin/swift", arguments: ["test"], excludeList: ["Package.swift"])
+            return MuterConfiguration(
+                executable: executablePath("swift"),
+                arguments: ["test"],
+                excludeList: swiftPackageManifestFiles(from: directoryContents)
+            )
         }
 
         return nil
+    }
+
+    private static func swiftPackageManifestFiles(from directoryContents: [URL]) -> [String] {
+        directoryContents
+            .include { $0.lastPathComponent.matches("Package@*.swift") }
+            .map(\.lastPathComponent)
     }
 
     static func generateEmptyConfiguration(from directoryContents: [URL]) -> MuterConfiguration? {
@@ -118,7 +132,7 @@ extension Simulator {
 }
 
 private func iOSSimulator() -> Simulator {
-    let process = Process()
+    let process = MuterProcessFactory.makeProcess()
 
     guard let simulatorsListOutput: Data = process.runProcess(
         url: "/usr/bin/xcrun",

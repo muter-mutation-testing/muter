@@ -21,6 +21,12 @@ final class PrepareSourceCodeTests: MuterTestCase {
         )
     }
 
+    override func setUp() {
+        super.setUp()
+
+        current.writeFile = { try $0.write(toFile: $1, atomically: true, encoding: .utf8) }
+    }
+
     override func tearDownWithError() throws {
         try super.tearDownWithError()
 
@@ -30,6 +36,6 @@ final class PrepareSourceCodeTests: MuterTestCase {
     func test_prepareSourceCode() throws {
         let sut = try XCTUnwrap(PrepareSourceCode().prepareSourceCode(outputFilePath))
 
-        AssertSnapshot(sut.source.code.description)
+        AssertSnapshot(formatCode(sut.source.code.description))
     }
 }

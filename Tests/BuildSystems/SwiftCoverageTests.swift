@@ -28,25 +28,20 @@ final class SwiftCoverageTests: MuterTestCase {
     }
 
     func test_whenCoverageCommandSucceeds_thenFindBinaryPath() {
-        process.stdoutToBeReturned = ""
+        process.stdoutToBeReturned = "something"
 
         _ = sut.run(with: muterConfiguration)
 
         XCTAssertEqual(
-            process.executableURL?.path,
-            "/path/to/swift"
-        )
-
-        XCTAssertEqual(
             process.arguments, [
                 "build",
-                "--show-bin-path"
+                "--show-bin-path",
             ]
         )
     }
 
     func test_whenBinaryPathCommandSucceeds_thenFindTestArtifacts() {
-        process.stdoutToBeReturned = ""
+        process.stdoutToBeReturned = "something"
         process.stdoutToBeReturned = "/path/to/binary"
 
         _ = sut.run(with: muterConfiguration)
@@ -60,21 +55,48 @@ final class SwiftCoverageTests: MuterTestCase {
             process.arguments, [
                 "/path/to/binary",
                 "-name",
-                "*.xctest"
+                "*.xctest",
             ]
         )
     }
 
+    #if os(Linux)
     func test_whenFindTestArtifactsCommandSucceeds_thenGenerateCoverageTable() {
-        process.stdoutToBeReturned = ""
+        process.stdoutToBeReturned = "something"
         process.stdoutToBeReturned = "/path/to/binary"
         process.stdoutToBeReturned = "/path/to/testArtifact"
+        process.stdoutToBeReturned = "/path/to/llvm-cov"
 
         _ = sut.run(with: muterConfiguration)
 
         XCTAssertEqual(
             process.executableURL?.path,
-            "/usr/bin/xcrun"
+            "/path/to/llvm-cov"
+        )
+
+        XCTAssertEqual(
+            process.arguments, [
+                "report",
+                "/path/to/testArtifact",
+                "-instr-profile",
+                "/path/to/binary/codecov/default.profdata",
+                "--ignore-filename-regex=.build|Tests",
+            ]
+        )
+    }
+    #else
+
+    func test_whenFindTestArtifactsCommandSucceeds_thenGenerateCoverageTable() {
+        process.stdoutToBeReturned = "something"
+        process.stdoutToBeReturned = "/path/to/binary"
+        process.stdoutToBeReturned = "/path/to/testArtifact"
+        process.stdoutToBeReturned = "/path/to/xcrun"
+
+        _ = sut.run(with: muterConfiguration)
+
+        XCTAssertEqual(
+            process.executableURL?.path,
+            "/path/to/xcrun"
         )
 
         XCTAssertEqual(
@@ -84,16 +106,18 @@ final class SwiftCoverageTests: MuterTestCase {
                 "/path/to/testArtifact/Contents/MacOS/testArtifact",
                 "-instr-profile",
                 "/path/to/binary/codecov/default.profdata",
-                "--ignore-filename-regex=.build|Tests"
+                "--ignore-filename-regex=.build|Tests",
             ]
         )
     }
+    #endif
 
     func test_whenGenerateCoverageTableCommandSucceeds_thenParseProjectCoverage() throws {
-        process.stdoutToBeReturned = ""
+        process.stdoutToBeReturned = "something"
         process.stdoutToBeReturned = "/path/to/binary"
         process.stdoutToBeReturned = "/path/to/testArtifact"
-        process.stdoutToBeReturned = loadLLVMCovLog()
+        process.stdoutToBeReturned = "/path/to/xcrun"
+        process.stdoutToBeReturned = loadFixture("logFromllvm-cov.txt")
 
         let coverage = try XCTUnwrap(sut.run(with: muterConfiguration).get())
 
@@ -113,10 +137,12 @@ final class SwiftCoverageTests: MuterTestCase {
     }
 
     func test_ignoreFilesLessThanCoverageThreshold() throws {
-        process.stdoutToBeReturned = ""
+        process.stdoutToBeReturned = "something"
         process.stdoutToBeReturned = "/path/to/binary"
         process.stdoutToBeReturned = "/path/to/testArtifact"
-        process.stdoutToBeReturned = loadLLVMCovLog()
+        process.stdoutToBeReturned = "/path/to/xcrun"
+        process.stdoutToBeReturned = loadFixture("logFromllvm-cov.txt")
+
         coverageThreshold = 50
 
         let coverage = try XCTUnwrap(sut.run(with: muterConfiguration).get())
@@ -140,14 +166,26 @@ final class SwiftCoverageTests: MuterTestCase {
         )
     }
 
-    private func loadLLVMCovLog() -> String {
-        guard let data = FileManager.default
-            .contents(atPath: "\(SwiftCoverageTests().fixturesDirectory)/logFromllvm-cov.txt"),
-            let string = String(data: data, encoding: .utf8)
-        else {
-            fatalError("Unable to load reportfor testing")
-        }
+    func test_functionCoverage() throws {
+        process.stdoutToBeReturned = "/build/directory"
+        process.stdoutToBeReturned = "/path/to/testExecutable.xctest"
+        process.stdoutToBeReturned = "/path/to/testBinary"
+        process.stdoutToBeReturned = "/path/to/coverage.profdata"
+        process.stdoutToBeReturned = "/path/to/llvm-cov"
+        process.stdoutToBeReturned = loadFixture("llvmCovExport.json")
 
-        return string
+        let functionsCoverage = sut.functionsCoverage(muterConfiguration)
+
+        XCTAssertEqual(
+            functionsCoverage.regionsForFile("/path/to/file.swift"), [
+                .make(
+                    lineStart: 14,
+                    columnStart: 80,
+                    lineEnd: 24,
+                    columnEnd: 4,
+                    executionCount: 0
+                )
+            ]
+        )
     }
 }

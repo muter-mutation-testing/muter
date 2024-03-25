@@ -5,20 +5,26 @@ final class ConfigurationGenerationTests: MuterTestCase {
     func test_swiftPackageManagerProject() {
         let projectDirectoryContents = [
             "/some/path/Package.swift",
-            "/some/path/main.swift"
+            "/some/path/Package@swift-5.11.swift",
+            "/some/path/main.swift",
+            "/some/path/PackageIgnoreMe.swift",
         ]
 
+        process.stdoutToBeReturned = "/path/to/swift"
+
         let generatedConfiguration = MuterConfiguration(from: projectDirectoryContents)
+
         XCTAssertEqual(
             generatedConfiguration,
             MuterConfiguration(
-                executable: "/usr/bin/swift",
+                executable: "/path/to/swift",
                 arguments: ["test"],
-                excludeList: ["Package.swift"]
+                excludeList: ["Package.swift", "Package@swift-5.11.swift"]
             )
         )
     }
 
+    #if !os(Linux)
     func test_xcodeProject() {
         let projectDirectoryContents = [
             "/some/path/Package.swift",
@@ -26,11 +32,14 @@ final class ConfigurationGenerationTests: MuterTestCase {
             "\(fixturesDirectory)/XcodeProjectFiles/iOSApp.xcodeproj",
         ]
 
+        process.stdoutToBeReturned = "/path/to/xcodebuild"
+
         let generatedConfiguration = MuterConfiguration(from: projectDirectoryContents)
+
         XCTAssertEqual(
             generatedConfiguration,
             MuterConfiguration(
-                executable: "/usr/bin/xcodebuild",
+                executable: "/path/to/xcodebuild",
                 arguments: [
                     "-project",
                     "iOSApp.xcodeproj",
@@ -38,7 +47,7 @@ final class ConfigurationGenerationTests: MuterTestCase {
                     "iOSApp",
                     "-destination",
                     "platform=iOS Simulator,name=iPhone SE (3rd generation)",
-                    "test"
+                    "test",
                 ]
             )
         )
@@ -50,11 +59,14 @@ final class ConfigurationGenerationTests: MuterTestCase {
             "/some/path/AppDelegate.swift",
         ]
 
+        process.stdoutToBeReturned = "/path/to/xcodebuild"
+
         let generatedConfiguration = MuterConfiguration(from: projectDirectoryContents)
+
         XCTAssertEqual(
             generatedConfiguration,
             MuterConfiguration(
-                executable: "/usr/bin/xcodebuild",
+                executable: "/path/to/xcodebuild",
                 arguments: [
                     "-project",
                     "iOSApp.xcodeproj",
@@ -62,7 +74,7 @@ final class ConfigurationGenerationTests: MuterTestCase {
                     "iOSApp",
                     "-destination",
                     "platform=iOS Simulator,name=iPhone SE (3rd generation)",
-                    "test"
+                    "test",
                 ]
             )
         )
@@ -73,14 +85,17 @@ final class ConfigurationGenerationTests: MuterTestCase {
             "\(fixturesDirectory)/XcodeProjectFiles/iOSApp.xcodeproj",
             "\(fixturesDirectory)/XcodeProjectFiles/iOSApp.xcodeproj/project.xcworkspace",
             "\(fixturesDirectory)/XcodeProjectFiles/iOSApp.xcodeproj/project.xcworkspace/contents.xcworkspacedata",
-            "/some/path/AppDelegate.swift"
+            "/some/path/AppDelegate.swift",
         ]
 
+        process.stdoutToBeReturned = "/path/to/xcodebuild"
+
         let generatedConfiguration = MuterConfiguration(from: projectDirectoryContents)
+
         XCTAssertEqual(
             generatedConfiguration,
             MuterConfiguration(
-                executable: "/usr/bin/xcodebuild",
+                executable: "/path/to/xcodebuild",
                 arguments: [
                     "-project",
                     "iOSApp.xcodeproj",
@@ -88,7 +103,7 @@ final class ConfigurationGenerationTests: MuterTestCase {
                     "iOSApp",
                     "-destination",
                     "platform=iOS Simulator,name=iPhone SE (3rd generation)",
-                    "test"
+                    "test",
                 ]
             )
         )
@@ -100,17 +115,20 @@ final class ConfigurationGenerationTests: MuterTestCase {
             "/some/path/AppDelegate.swift",
         ]
 
+        process.stdoutToBeReturned = "/path/to/xcodebuild"
+
         let generatedConfiguration = MuterConfiguration(from: projectDirectoryContents)
+
         XCTAssertEqual(
             generatedConfiguration,
             MuterConfiguration(
-                executable: "/usr/bin/xcodebuild",
+                executable: "/path/to/xcodebuild",
                 arguments: [
                     "-project",
                     "CocoaApp.xcodeproj",
                     "-scheme",
                     "CocoaApp",
-                    "test"
+                    "test",
                 ]
             )
         )
@@ -123,11 +141,14 @@ final class ConfigurationGenerationTests: MuterTestCase {
             "/some/path/AppDelegate.swift",
         ]
 
+        process.stdoutToBeReturned = "/path/to/xcodebuild"
+
         let generatedConfiguration = MuterConfiguration(from: projectDirectoryContents)
+
         XCTAssertEqual(
             generatedConfiguration,
             MuterConfiguration(
-                executable: "/usr/bin/xcodebuild",
+                executable: "/path/to/xcodebuild",
                 arguments: [
                     "-workspace",
                     "iOSApp.xcworkspace",
@@ -148,11 +169,14 @@ final class ConfigurationGenerationTests: MuterTestCase {
             "/some/path/AppDelegate.swift",
         ]
 
+        process.stdoutToBeReturned = "/path/to/xcodebuild"
+
         let generatedConfiguration = MuterConfiguration(from: projectDirectoryContents)
+
         XCTAssertEqual(
             generatedConfiguration,
             MuterConfiguration(
-                executable: "/usr/bin/xcodebuild",
+                executable: "/path/to/xcodebuild",
                 arguments: [
                     "-workspace",
                     "CocoaApp.xcworkspace",
@@ -163,6 +187,7 @@ final class ConfigurationGenerationTests: MuterTestCase {
             )
         )
     }
+    #endif
 
     func test_unsupportedProject() {
         let generatedConfiguration = MuterConfiguration(from: ["/some/path/main.swift"])
