@@ -21,3 +21,18 @@ func someOtherCode() -> Bool {
     return true || true
   }
 }
+
+func isEnabledToShow() -> Bool {
+  // バルーンの表示判定
+  if ProcessInfo.processInfo.environment[
+    "sampleWithLogicalOperators_ChangeLogicalConnector_15_18_256"] != nil
+  {
+    // バルーンの表示判定
+    return false || false
+    // バルーンの表示判定
+  } else {
+    // バルーンの表示判定
+    return false && false
+    // バルーンの表示判定
+  }
+}
