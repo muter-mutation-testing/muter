@@ -33,6 +33,26 @@ final class ChangeLogicalConnectorOperatorTests: MuterTestCase {
         let actualSchemata = visitor.schemataMappings
         let expectedSchemata = try SchemataMutationMapping.make(
             (
+                source: "\n    // バルーンの表示判定\n    return false && false",
+                schemata: [
+                    .make(
+                        filePath: sourceWithLogicalOperators.path,
+                        mutationOperatorId: .logicalOperator,
+                        syntaxMutation: "\n    // バルーンの表示判定\n    return false || false",
+                        position: MutationPosition(
+                            utf8Offset: 256,
+                            line: 15,
+                            column: 18
+                        ),
+                        snapshot: .make(
+                            before: "&&",
+                            after: "||",
+                            description: "changed && to ||"
+                        )
+                    ),
+                ]
+            ),
+            (
                 source: "\n    return false && false",
                 schemata: [
                     .make(
