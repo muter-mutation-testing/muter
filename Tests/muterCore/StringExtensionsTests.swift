@@ -1,10 +1,3 @@
-//
-//  StringExtensionsTests.swift
-//  
-//
-//  Created by Tuan Hoang on 24/2/24.
-//
-
 import XCTest
 @testable import muterCore
 
