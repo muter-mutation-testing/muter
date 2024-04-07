@@ -153,7 +153,7 @@ private func iOSSimulator() -> Simulator {
             .compactMap { try JSONDecoder().decode(Simulator.self, from: $0) }
             .filter(\.isAvailable)
             .sorted(by: { $0.deviceTypeIdentifier > $1.deviceTypeIdentifier })
-            .first { $0.name.contains("iPhone SE") }
+            .first { $0.name.contains("iPhone") }
 
         return device ?? .fallback
     } catch {
