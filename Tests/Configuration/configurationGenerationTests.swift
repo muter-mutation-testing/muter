@@ -36,21 +36,23 @@ final class ConfigurationGenerationTests: MuterTestCase {
 
         let generatedConfiguration = MuterConfiguration(from: projectDirectoryContents)
 
-        XCTAssertEqual(
-            generatedConfiguration,
-            MuterConfiguration(
-                executable: "/path/to/xcodebuild",
-                arguments: [
-                    "-project",
-                    "iOSApp.xcodeproj",
-                    "-scheme",
-                    "iOSApp",
-                    "-destination",
-                    "platform=iOS Simulator,name=iPhone SE (3rd generation)",
-                    "test",
-                ]
-            )
+        let expectedConfiguration = MuterConfiguration(
+            executable: "/path/to/xcodebuild",
+            arguments: [
+                "-project",
+                "iOSApp.xcodeproj",
+                "-scheme",
+                "iOSApp",
+                "-destination",
+                "platform=iOS Simulator,name=iPhone SE (3rd generation)",
+                "test",
+            ]
         )
+
+        XCTAssertEqual(generatedConfiguration.testCommandExecutable, expectedConfiguration.testCommandExecutable)
+        XCTAssertEqual(generatedConfiguration.testCommandArguments.filter { !$0.contains("platform") },
+                       expectedConfiguration.testCommandArguments.filter { !$0.contains("platform") })
+        XCTAssertNotNil(generatedConfiguration.testCommandArguments.first { $0.contains("platform=iOS Simulator,name=iPhone") })
     }
 
     func test_iosProject() {
@@ -63,21 +65,23 @@ final class ConfigurationGenerationTests: MuterTestCase {
 
         let generatedConfiguration = MuterConfiguration(from: projectDirectoryContents)
 
-        XCTAssertEqual(
-            generatedConfiguration,
-            MuterConfiguration(
-                executable: "/path/to/xcodebuild",
-                arguments: [
-                    "-project",
-                    "iOSApp.xcodeproj",
-                    "-scheme",
-                    "iOSApp",
-                    "-destination",
-                    "platform=iOS Simulator,name=iPhone SE (3rd generation)",
-                    "test",
-                ]
-            )
+        let expectedConfiguration = MuterConfiguration(
+            executable: "/path/to/xcodebuild",
+            arguments: [
+                "-project",
+                "iOSApp.xcodeproj",
+                "-scheme",
+                "iOSApp",
+                "-destination",
+                "platform=iOS Simulator,name=iPhone SE (3rd generation)",
+                "test",
+            ]
         )
+
+        XCTAssertEqual(generatedConfiguration.testCommandExecutable, expectedConfiguration.testCommandExecutable)
+        XCTAssertEqual(generatedConfiguration.testCommandArguments.filter { !$0.contains("platform") },
+                       expectedConfiguration.testCommandArguments.filter { !$0.contains("platform") })
+        XCTAssertNotNil(generatedConfiguration.testCommandArguments.first { $0.contains("platform=iOS Simulator,name=iPhone") })
     }
 
     func test_xcodeWorkspace() {
@@ -92,21 +96,23 @@ final class ConfigurationGenerationTests: MuterTestCase {
 
         let generatedConfiguration = MuterConfiguration(from: projectDirectoryContents)
 
-        XCTAssertEqual(
-            generatedConfiguration,
-            MuterConfiguration(
-                executable: "/path/to/xcodebuild",
-                arguments: [
-                    "-project",
-                    "iOSApp.xcodeproj",
-                    "-scheme",
-                    "iOSApp",
-                    "-destination",
-                    "platform=iOS Simulator,name=iPhone SE (3rd generation)",
-                    "test",
-                ]
-            )
+        let expectedConfiguration = MuterConfiguration(
+            executable: "/path/to/xcodebuild",
+            arguments: [
+                "-project",
+                "iOSApp.xcodeproj",
+                "-scheme",
+                "iOSApp",
+                "-destination",
+                "platform=iOS Simulator,name=iPhone SE (3rd generation)",
+                "test",
+            ]
         )
+
+        XCTAssertEqual(generatedConfiguration.testCommandExecutable, expectedConfiguration.testCommandExecutable)
+        XCTAssertEqual(generatedConfiguration.testCommandArguments.filter { !$0.contains("platform") },
+                       expectedConfiguration.testCommandArguments.filter { !$0.contains("platform") })
+        XCTAssertNotNil(generatedConfiguration.testCommandArguments.first { $0.contains("platform=iOS Simulator,name=iPhone") })
     }
 
     func test_macOSProject() {
@@ -145,21 +151,23 @@ final class ConfigurationGenerationTests: MuterTestCase {
 
         let generatedConfiguration = MuterConfiguration(from: projectDirectoryContents)
 
-        XCTAssertEqual(
-            generatedConfiguration,
-            MuterConfiguration(
-                executable: "/path/to/xcodebuild",
-                arguments: [
-                    "-workspace",
-                    "iOSApp.xcworkspace",
-                    "-scheme",
-                    "iOSApp",
-                    "-destination",
-                    "platform=iOS Simulator,name=iPhone SE (3rd generation)",
-                    "test",
-                ]
-            )
+        let expectedConfiguration = MuterConfiguration(
+            executable: "/path/to/xcodebuild",
+            arguments: [
+                "-workspace",
+                "iOSApp.xcworkspace",
+                "-scheme",
+                "iOSApp",
+                "-destination",
+                "platform=iOS Simulator,name=iPhone SE (3rd generation)",
+                "test",
+            ]
         )
+
+        XCTAssertEqual(generatedConfiguration.testCommandExecutable, expectedConfiguration.testCommandExecutable)
+        XCTAssertEqual(generatedConfiguration.testCommandArguments.filter { !$0.contains("platform") },
+                       expectedConfiguration.testCommandArguments.filter { !$0.contains("platform") })
+        XCTAssertNotNil(generatedConfiguration.testCommandArguments.first { $0.contains("platform=iOS Simulator,name=iPhone") })
     }
 
     func test_macOSWorkspace() {

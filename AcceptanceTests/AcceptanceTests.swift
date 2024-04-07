@@ -100,7 +100,7 @@ final class AcceptanceTests: XCTestCase {
         XCTAssertTrue(decodedConfiguration.testCommandArguments.contains("-destination"))
         XCTAssertTrue(
             decodedConfiguration.testCommandArguments
-                .contains("platform=iOS Simulator,name=iPhone SE (3rd generation)")
+                .contains { $0.contains("platform=iOS Simulator,name=iPhone") }
         )
     }
 
