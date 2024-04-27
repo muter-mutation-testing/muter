@@ -16,5 +16,7 @@ final class JsonReporterTests: ReporterTestCase {
         // Basically, when we deserialize it, it's missing a field (`path`).
         XCTAssertEqual(actualReport.totalAppliedMutationOperators, 1)
         XCTAssertEqual(actualReport.fileReports.first?.fileName, "file3.swift")
+        XCTAssertEqual(actualReport.fileReports.first?.appliedOperators.map(\.mutationSnapshot),
+                       [.init(before: "!=", after: "==", description: "from != to ==")])
     }
 }
