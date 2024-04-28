@@ -1,5 +1,5 @@
-import XCTest
 @testable import muterCore
+import XCTest
 
 final class StringExtensionsTests: XCTestCase {
     func testUTF8OffsetToCharOffset() {
@@ -13,7 +13,7 @@ final class StringExtensionsTests: XCTestCase {
 
         // Test invalid offset (beyond string length)
         XCTAssertNil(string.convertToCharOffset(from: string.utf8.count + 1))
-        
+
         XCTAssertNil(string.convertToCharOffset(from: 2))
     }
 }

@@ -37,7 +37,7 @@ final class LoadMuterTestPlanTests: MuterTestCase {
             result, [
                 .tempDirectoryUrlCreated(URL(fileURLWithPath: "/path/to/muted")),
                 .projectCoverage(.init(percent: 23)),
-                .mutationMappingsDiscovered([])
+                .mutationMappingsDiscovered([]),
             ]
         )
     }

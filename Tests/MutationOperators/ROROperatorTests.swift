@@ -69,16 +69,16 @@ final class ROROperatorTests: MuterTestCase {
 
         AssertSnapshot(formatCode(rewriter.description))
     }
-    
+
     func test_charOffsetCrash() throws {
         let source = try sourceCode(
             """
             if value == "バルーンの表示判定" {
-            
+
             }
             """
         )
-        
+
         let visitor = ROROperator.Visitor(
             sourceCodeInfo: .init(path: "/path/to/file.swift", code: source)
         )

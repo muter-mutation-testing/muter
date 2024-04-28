@@ -50,9 +50,14 @@ final class ConfigurationGenerationTests: MuterTestCase {
         )
 
         XCTAssertEqual(generatedConfiguration.testCommandExecutable, expectedConfiguration.testCommandExecutable)
-        XCTAssertEqual(generatedConfiguration.testCommandArguments.filter { !$0.contains("platform") },
-                       expectedConfiguration.testCommandArguments.filter { !$0.contains("platform") })
-        XCTAssertNotNil(generatedConfiguration.testCommandArguments.first { $0.contains("platform=iOS Simulator,name=iPhone") })
+        XCTAssertEqual(
+            generatedConfiguration.testCommandArguments.filter { !$0.contains("platform") },
+            expectedConfiguration.testCommandArguments.filter { !$0.contains("platform") }
+        )
+        XCTAssertNotNil(
+            generatedConfiguration.testCommandArguments
+                .first { $0.contains("platform=iOS Simulator,name=iPhone") }
+        )
     }
 
     func test_iosProject() {
@@ -79,9 +84,14 @@ final class ConfigurationGenerationTests: MuterTestCase {
         )
 
         XCTAssertEqual(generatedConfiguration.testCommandExecutable, expectedConfiguration.testCommandExecutable)
-        XCTAssertEqual(generatedConfiguration.testCommandArguments.filter { !$0.contains("platform") },
-                       expectedConfiguration.testCommandArguments.filter { !$0.contains("platform") })
-        XCTAssertNotNil(generatedConfiguration.testCommandArguments.first { $0.contains("platform=iOS Simulator,name=iPhone") })
+        XCTAssertEqual(
+            generatedConfiguration.testCommandArguments.filter { !$0.contains("platform") },
+            expectedConfiguration.testCommandArguments.filter { !$0.contains("platform") }
+        )
+        XCTAssertNotNil(
+            generatedConfiguration.testCommandArguments
+                .first { $0.contains("platform=iOS Simulator,name=iPhone") }
+        )
     }
 
     func test_xcodeWorkspace() {
@@ -110,9 +120,14 @@ final class ConfigurationGenerationTests: MuterTestCase {
         )
 
         XCTAssertEqual(generatedConfiguration.testCommandExecutable, expectedConfiguration.testCommandExecutable)
-        XCTAssertEqual(generatedConfiguration.testCommandArguments.filter { !$0.contains("platform") },
-                       expectedConfiguration.testCommandArguments.filter { !$0.contains("platform") })
-        XCTAssertNotNil(generatedConfiguration.testCommandArguments.first { $0.contains("platform=iOS Simulator,name=iPhone") })
+        XCTAssertEqual(
+            generatedConfiguration.testCommandArguments.filter { !$0.contains("platform") },
+            expectedConfiguration.testCommandArguments.filter { !$0.contains("platform") }
+        )
+        XCTAssertNotNil(
+            generatedConfiguration.testCommandArguments
+                .first { $0.contains("platform=iOS Simulator,name=iPhone") }
+        )
     }
 
     func test_macOSProject() {
@@ -165,9 +180,14 @@ final class ConfigurationGenerationTests: MuterTestCase {
         )
 
         XCTAssertEqual(generatedConfiguration.testCommandExecutable, expectedConfiguration.testCommandExecutable)
-        XCTAssertEqual(generatedConfiguration.testCommandArguments.filter { !$0.contains("platform") },
-                       expectedConfiguration.testCommandArguments.filter { !$0.contains("platform") })
-        XCTAssertNotNil(generatedConfiguration.testCommandArguments.first { $0.contains("platform=iOS Simulator,name=iPhone") })
+        XCTAssertEqual(
+            generatedConfiguration.testCommandArguments.filter { !$0.contains("platform") },
+            expectedConfiguration.testCommandArguments.filter { !$0.contains("platform") }
+        )
+        XCTAssertNotNil(
+            generatedConfiguration.testCommandArguments
+                .first { $0.contains("platform=iOS Simulator,name=iPhone") }
+        )
     }
 
     func test_macOSWorkspace() {

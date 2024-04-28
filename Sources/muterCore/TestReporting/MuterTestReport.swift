@@ -110,7 +110,11 @@ extension MuterTestReport {
             let container = try decoder.container(keyedBy: CodingKeys.self)
             mutationPoint = try container.decode(MutationPoint.self, forKey: .mutationPoint)
             testSuiteOutcome = try container.decode(TestSuiteOutcome.self, forKey: .testSuiteOutcome)
-            mutationSnapshot = container.decode(MutationOperator.Snapshot.self, default: .null, forKey: .mutationSnapshot)
+            mutationSnapshot = container.decode(
+                MutationOperator.Snapshot.self,
+                default: .null,
+                forKey: .mutationSnapshot
+            )
         }
     }
 }
