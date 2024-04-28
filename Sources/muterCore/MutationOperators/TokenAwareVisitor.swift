@@ -73,7 +73,7 @@ class TokenAwareVisitor: MuterVisitor {
         let codeBlockItemListSyntax = node.codeBlockItemListSyntax
         let codeBlockDescription = codeBlockItemListSyntax.description
         let utf8Offset = node.offsetInCodeBlockItemListSyntax(sourceCodeInfo)
-        
+
         guard let nodePositionOffset = codeBlockDescription.convertToCharOffset(from: utf8Offset) else {
             return super.transform(node: node, mutatedSyntax: mutatedSyntax, at: mutationRange)
         }
@@ -82,7 +82,7 @@ class TokenAwareVisitor: MuterVisitor {
             codeBlockDescription.startIndex,
             offsetBy: nodePositionOffset
         )
-        
+
         let nodeEndRange = codeBlockDescription.index(
             codeBlockDescription.startIndex,
             offsetBy: nodePositionOffset + mutatedSyntax.description.count

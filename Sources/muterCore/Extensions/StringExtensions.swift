@@ -86,7 +86,8 @@ extension String {
     ///
     /// - Parameters:
     ///   - utf8Offset: The UTF-8 byte offset to be converted.
-    /// - Returns: The corresponding character offset if the conversion is successful, or `nil` if can't convert to corresponding char offset.
+    /// - Returns: The corresponding character offset if the conversion is successful, or `nil` if can't convert to
+    /// corresponding char offset.
     ///
     /// - Complexity: O(*n*), where *n* is the number of characters in the string.
     func convertToCharOffset(from utf8Offset: Int) -> Int? {
@@ -101,11 +102,11 @@ extension String {
             if currentUtf8Offset == utf8Offset {
                 return charOffset
             }
-            
+
             if currentUtf8Offset > utf8Offset {
                 return nil
             }
-            
+
             currentUtf8Offset += char.utf8.count
             charOffset += 1
         }

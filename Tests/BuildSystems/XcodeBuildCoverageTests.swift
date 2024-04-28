@@ -108,7 +108,7 @@ final class XcodeBuildCoverageTests: MuterTestCase {
                     lineEnd: 24,
                     columnEnd: 4,
                     executionCount: 0
-                )
+                ),
             ]
         )
     }

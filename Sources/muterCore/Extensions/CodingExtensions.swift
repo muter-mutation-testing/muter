@@ -1,10 +1,3 @@
-//
-//  CodingExtensions.swift
-//
-//
-//  Created by Annalise Mariottini on 4/12/24.
-//
-
 import Foundation
 
 extension KeyedDecodingContainerProtocol {
