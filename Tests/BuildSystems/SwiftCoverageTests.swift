@@ -22,6 +22,8 @@ final class SwiftCoverageTests: MuterTestCase {
 
         XCTAssertEqual(
             process.arguments, [
+                "--build-path",
+                ".build",
                 "--enable-code-coverage",
             ]
         )

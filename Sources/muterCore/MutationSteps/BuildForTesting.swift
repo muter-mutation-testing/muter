@@ -24,9 +24,9 @@ struct BuildForTesting: MutationStep {
         fileManager.changeCurrentDirectoryPath(state.mutatedProjectDirectoryURL.path)
 
         do {
-            let buildDirectory = try buildDirectory(state.muterConfiguration)
             try runBuildForTestingCommand(state.muterConfiguration)
             let tempDebugURL = debugURLForTempDirectory(state.mutatedProjectDirectoryURL)
+            let buildDirectory = buildDirectory(state.muterConfiguration)
             try copyBuildArtifactsAtPath(buildDirectory, to: tempDebugURL.path)
 
             let xcTestRun = try parseXCTestRunAt(tempDebugURL)
@@ -37,23 +37,8 @@ struct BuildForTesting: MutationStep {
         }
     }
 
-    private func buildDirectory(_ configuration: MuterConfiguration) throws -> String {
-        guard let buildSettings = process()
-            .runProcess(url: configuration.testCommandExecutable, arguments: ["-showBuildSettings"])
-            .flatMap(\.nilIfEmpty)
-        else {
-            throw MuterError.literal(reason: "Could not find `BUILD_DIR`")
-        }
-
-        guard let buildDirectory = buildSettings
-            .firstMatchOf("BUILD_DIR = (.+)")?
-            .replacingOccurrences(of: "BUILD_DIR = ", with: "")
-            .trimmed
-        else {
-            throw MuterError.literal(reason: "Could not extract `BUILD_DIR` from project settings")
-        }
-
-        return buildDirectory
+    private func buildDirectory(_ configuration: MuterConfiguration) -> String {
+        "\(configuration.buildPath)/Build/Products"
     }
 
     private func runBuildForTestingCommand(

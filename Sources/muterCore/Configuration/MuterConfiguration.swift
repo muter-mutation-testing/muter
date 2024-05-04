@@ -9,6 +9,7 @@ struct MuterConfiguration: Equatable, Codable {
     /// Exclusion list of functions for Remove Side Effects.
     let excludeCallList: [String]
     let coverageThreshold: Double
+    let buildPath: String
 
     var buildSystem: BuildSystem {
         guard let buildSystem = testCommandExecutable.components(separatedBy: "/").last?.trimmed else {
@@ -24,6 +25,7 @@ struct MuterConfiguration: Equatable, Codable {
         case excludeFileList = "exclude"
         case excludeCallList = "excludeCalls"
         case coverageThreshold
+        case buildPath
     }
 
     init(
@@ -31,13 +33,15 @@ struct MuterConfiguration: Equatable, Codable {
         arguments: [String] = [],
         excludeList: [String] = [],
         excludeCallList callList: [String] = [],
-        coverageThreshold threshold: Double = 0
+        coverageThreshold threshold: Double = 0,
+        buildPath: String = Self.defaultBuildPath
     ) {
         testCommandExecutable = executable
         testCommandArguments = arguments
         excludeFileList = excludeList
         excludeCallList = callList
         coverageThreshold = threshold
+        self.buildPath = buildPath
     }
 
     init(from decoder: Decoder) throws {
@@ -49,6 +53,7 @@ struct MuterConfiguration: Equatable, Codable {
         excludeFileList = container.decode([String].self, default: [], forKey: .excludeFileList)
         excludeCallList = container.decode([String].self, default: [], forKey: .excludeCallList)
         coverageThreshold = container.decode(Double.self, default: 0, forKey: .coverageThreshold)
+        buildPath = container.decode(String.self, default: Self.defaultBuildPath, forKey: .buildPath)
     }
 
     init(from data: Data) throws {
@@ -65,6 +70,7 @@ extension MuterConfiguration {
     static let `extension` = "yml"
     static let fileNameWithExtension = "\(fileName).\(`extension`)"
     static let legacyFileNameWithExtension = "\(fileName).json"
+    static let defaultBuildPath = ".build"
 }
 
 extension MuterConfiguration {
@@ -75,8 +81,19 @@ extension MuterConfiguration {
 }
 
 extension MuterConfiguration {
+    var buildPathArguments: [String] {
+        switch buildSystem {
+        case .xcodebuild:
+            return ["-derivedDataPath", buildPath]
+        case .swift:
+            return ["--build-path", buildPath]
+        case .unknown:
+            return []
+        }
+    }
+
     var enableCoverageArguments: [String] {
-        let arguments = testCommandArguments
+        let arguments = testCommandArguments + buildPathArguments
 
         switch buildSystem {
         case .xcodebuild:
@@ -94,10 +111,10 @@ extension MuterConfiguration {
 
         switch buildSystem {
         case .xcodebuild:
-            return arguments.dropLast() + ["clean", "build-for-testing"]
+            return arguments.dropLast() + ["clean", "build-for-testing"] + buildPathArguments
         case .swift,
-             .unknown:
-            return arguments
+                .unknown:
+            return arguments + buildPathArguments
         }
     }
 
@@ -114,9 +131,9 @@ extension MuterConfiguration {
                 testCommandArguments[destinationIndex.advanced(by: 1)],
                 "-xctestrun",
                 testRunFile,
-            ]
+            ] + buildPathArguments
         case .swift:
-            return arguments + ["--skip-build"]
+            return arguments + ["--skip-build"] + buildPathArguments
         case .unknown:
             return arguments
         }

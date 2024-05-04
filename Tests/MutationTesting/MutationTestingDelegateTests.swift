@@ -51,6 +51,8 @@ final class MutationTestingDelegateTests: MuterTestCase {
             "platform=macOS,arch=x86_64,variant=Mac Catalyst",
             "-xctestrun",
             "muter.xctestrun",
+            "-derivedDataPath",
+            ".build",
         ])
 
         XCTAssertEqual(testProcess.executableURL?.path, "/tmp/xcodebuild")
@@ -77,7 +79,7 @@ final class MutationTestingDelegateTests: MuterTestCase {
 
         XCTAssertEqual(testProcess.environment?[schemata.id], "YES")
         XCTAssertEqual(testProcess.environment?[isMuterRunningKey], isMuterRunningValue)
-        XCTAssertEqual(testProcess.arguments, ["test", "--skip-build"])
+        XCTAssertEqual(testProcess.arguments, ["test", "--skip-build", "--build-path", ".build"])
         XCTAssertEqual(testProcess.executableURL?.path, "/tmp/swift")
     }
 
