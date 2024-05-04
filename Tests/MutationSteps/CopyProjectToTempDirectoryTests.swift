@@ -19,7 +19,7 @@ final class CopyProjectToTempDirectoryTests: MuterTestCase {
         XCTAssertEqual(fileManager.copyPaths.first?.source, "/some/projectName")
         XCTAssertEqual(fileManager.copyPaths.first?.dest, "/tmp/projectName")
         XCTAssertEqual(fileManager.copyPaths.count, 1)
-        XCTAssertEqual(fileManager.methodCalls, ["copyItem(atPath:toPath:)"])
+        XCTAssertEqual(fileManager.methodCalls, ["copyItem(atPath:toPath:)", "fileExists(atPath:)"])
     }
 
     func test_whenItsUnableToCopyAProjectIntoATempDirectory() async throws {

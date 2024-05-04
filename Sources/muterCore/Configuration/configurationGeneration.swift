@@ -89,17 +89,71 @@ private extension MuterConfiguration {
 }
 
 private extension MuterConfiguration {
-
     static func generateSPMConfiguration(from directoryContents: [URL]) -> MuterConfiguration? {
-        if directoryContents.contains(where: { $0.lastPathComponent == "Package.swift" }) {
-            return MuterConfiguration(
-                executable: executablePath("swift"),
-                arguments: ["test"],
-                excludeList: swiftPackageManifestFiles(from: directoryContents)
-            )
+        guard directoryContents.contains(where: { $0.lastPathComponent == "Package.swift" }) else {
+            return nil
         }
 
-        return nil
+        let swiftExecutable = executablePath("swift")
+
+        lazy var defaultSPMConfiguration: MuterConfiguration = MuterConfiguration(
+            executable: swiftExecutable,
+            arguments: ["test"],
+            excludeList: swiftPackageManifestFiles(from: directoryContents)
+        )
+
+        guard let swiftDumpPackage = swiftDumpPackage(swiftExecutable: swiftExecutable) else {
+            return defaultSPMConfiguration
+        }
+
+        let platformsIncludeiOS = swiftDumpPackage.platforms.contains(where: {
+            $0.platformName.lowercased() == "ios"
+        })
+
+        guard platformsIncludeiOS else {
+            return defaultSPMConfiguration
+        }
+
+        let xcodeBuildExecutable = executablePath("xcodebuild")
+        // If an SPM library has more than 1 product a "-Package" scheme is generated automatically.
+        let predictedPackageScheme = "\(swiftDumpPackage.name)-Package"
+        let fallbackScheme = swiftDumpPackage.name
+        let schemes = swiftPackageSchemes(xcodebuildExecutable: xcodeBuildExecutable)
+        let candidateSchemes: [() -> String?] = [
+            { schemes.first { $0 == predictedPackageScheme } },
+            { schemes.first { $0.contains(swiftDumpPackage.name) } },
+            { schemes.first },
+        ]
+        let scheme = candidateSchemes.lazy.compactMap { $0() }.first ?? fallbackScheme
+        let arguments: [String] = [
+            "-scheme",
+            scheme,
+            "-destination",
+            "platform=iOS Simulator,name=\(iOSSimulator().name)",
+            "test"
+        ]
+
+        return MuterConfiguration(executable: xcodeBuildExecutable,
+                                  arguments: arguments,
+                                  excludeList: swiftPackageManifestFiles(from: directoryContents))
+    }
+
+   private static func swiftDumpPackage(swiftExecutable: String) -> SwiftDumpPackage? {
+        guard let swiftDumpPackageData = current.process().runProcess(url: swiftExecutable, arguments: ["package", "dump-package"]),
+              let swiftDumpPackage = try? JSONDecoder().decode(SwiftDumpPackage.self, from: swiftDumpPackageData) else {
+            return nil
+        }
+
+        return swiftDumpPackage
+    }
+
+    private static func swiftPackageSchemes(xcodebuildExecutable: String) -> [String] {
+        guard let schemeOutputData = current.process().runProcess(url: xcodebuildExecutable, arguments: ["-list", "-quiet", "-json"]),
+              let schemeOutput = try? JSONDecoder().decode(XcodeBuildSchemes.self, from: schemeOutputData) else {
+            return []
+        }
+
+        return schemeOutput.workspace.schemes
     }
 
     private static func swiftPackageManifestFiles(from directoryContents: [URL]) -> [String] {
@@ -107,9 +161,26 @@ private extension MuterConfiguration {
             .include { $0.lastPathComponent.matches("Package@*.swift") }
             .map(\.lastPathComponent)
     }
+}
 
+extension MuterConfiguration {
     static func generateEmptyConfiguration(from directoryContents: [URL]) -> MuterConfiguration? {
         MuterConfiguration(executable: "", arguments: [], excludeList: [])
+    }
+}
+
+private struct SwiftDumpPackage: Codable {
+    let name: String
+    let platforms: [Platform]
+    struct Platform: Codable {
+        let platformName: String
+    }
+}
+
+private struct XcodeBuildSchemes: Codable {
+    let workspace: Workspace
+    struct Workspace: Codable {
+        let schemes: [String]
     }
 }
 

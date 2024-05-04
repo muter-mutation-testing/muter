@@ -8,23 +8,36 @@ private enum AcceptanceTestsError: Error {
 }
 
 final class AcceptanceTests: XCTestCase {
-    private let messages = (
-        mutationScoreOfTestSuite: "Mutation Score of Test Suite: 33%",
-        mutationScoresHeader: """
-        --------------------
-        Mutation Test Scores
-        --------------------
-        """,
-        appliedMutationOperatorsHeader: """
-        --------------------------
-        Applied Mutation Operators
-        --------------------------
-        """
-    )
+    enum Suffix: String {
+        case xcodeproj
+        case spm
+    }
 
-    func test_runCommand() throws {
-        let output = try muterOutput
-        let logFiles = try muterLogFiles
+    private func messages(suffix: Suffix) -> (mutationScoreOfTestSuite: String, mutationScoresHeader: String, appliedMutationOperatorsHeader: String) {
+        let percent = {
+            switch suffix {
+            case .xcodeproj: return "33"
+            case .spm: return "33"
+            }
+        }()
+        return (
+            mutationScoreOfTestSuite: "Mutation Score of Test Suite: \(percent)%",
+            mutationScoresHeader: """
+            --------------------
+            Mutation Test Scores
+            --------------------
+            """,
+            appliedMutationOperatorsHeader: """
+            --------------------------
+            Applied Mutation Operators
+            --------------------------
+            """
+        )
+    }
+
+    func test_runCommand_xcodeProj() throws {
+        let output = try muterOutput(suffix: .xcodeproj)
+        let logFiles = try muterLogFiles(suffix: .xcodeproj)
 
         XCTAssertTrue(output.contains("Copying your project to a temporary directory for testing"))
 
@@ -38,10 +51,10 @@ final class AcceptanceTests: XCTestCase {
         XCTAssertEqual(try numberOfProgressUpdates(in: output), 3)
         XCTAssertEqual(try numberOfDurationEstimates(in: output), 3)
 
-        XCTAssertTrue(output.contains(messages.mutationScoresHeader))
-        XCTAssertTrue(output.contains(messages.mutationScoreOfTestSuite))
+        XCTAssertTrue(output.contains(messages(suffix: .xcodeproj).mutationScoresHeader))
+        XCTAssertTrue(output.contains(messages(suffix: .xcodeproj).mutationScoreOfTestSuite))
 
-        XCTAssertTrue(output.contains(messages.appliedMutationOperatorsHeader))
+        XCTAssertTrue(output.contains(messages(suffix: .xcodeproj).appliedMutationOperatorsHeader))
 
         let expectedLogFiles = [
             "baseline run.log",
@@ -51,7 +64,7 @@ final class AcceptanceTests: XCTestCase {
         ]
 
         let numberOfEmptyLogFiles = try expectedLogFiles
-            .map(contentsOfLogFile(named:))
+            .map { try contentsOfLogFile(named: $0, suffix: .xcodeproj) }
             .count { $0.isEmpty }
 
         XCTAssertEqual(
@@ -61,26 +74,89 @@ final class AcceptanceTests: XCTestCase {
         XCTAssertEqual(numberOfEmptyLogFiles, 0)
     }
 
-    func test_runWithTestPlanCommand() throws {
-        let output = try mutersOutputWithTestPlan
+    func test_runWithTestPlanCommand_xcodeProj() throws {
+        let output = try mutersOutputWithTestPlan(suffix: .xcodeproj)
 
         XCTAssertTrue(output.contains("Muter mutation test plan loaded"))
     }
 
-    func test_withCoverage() throws {
-        let output = try muterWithCoverageOutput
+    func test_withCoverage_xcodeProj() throws {
+        let output = try muterWithCoverageOutput(suffix: .xcodeproj)
 
         XCTAssertTrue(output.contains("Code Coverage of your project:"))
     }
 
-    func test_xcodeFormat() throws {
-        let output = try muterXcodeOutput
+    func test_xcodeFormat_xcodeProj() throws {
+        let output = try muterXcodeOutput(suffix: .xcodeproj)
 
         XCTAssertEqual(try numberOfXcodeFormattedMessages(in: output), 1)
     }
 
-    func test_filesToMutate() throws {
-        let output = try muterFilesToMutateOutput
+    func test_filesToMutate_xcodeProj() throws {
+        let output = try muterFilesToMutateOutput(suffix: .xcodeproj)
+
+        XCTAssertTrue(output.contains("In total, Muter discovered 1 mutants in 1 files"))
+    }
+
+    func test_runCommand_spm() throws {
+        let output = try muterOutput(suffix: .spm)
+        let logFiles = try muterLogFiles(suffix: .spm)
+
+        XCTAssertTrue(output.contains("Copying your project to a temporary directory for testing"))
+
+        XCTAssertTrue(output.contains("In total, Muter discovered 4 Swift files"))
+        XCTAssertTrue(try numberOfDiscoveredFileLists(in: output) >= 1)
+
+        XCTAssertTrue(output.contains("_mutated"))
+
+        XCTAssertTrue(output.contains("In total, Muter introduced 3 mutants in 3 files."))
+
+        XCTAssertEqual(try numberOfProgressUpdates(in: output), 3)
+        XCTAssertEqual(try numberOfDurationEstimates(in: output), 3)
+
+        XCTAssertTrue(output.contains(messages(suffix: .spm).mutationScoresHeader))
+        XCTAssertTrue(output.contains(messages(suffix: .spm).mutationScoreOfTestSuite))
+
+        XCTAssertTrue(output.contains(messages(suffix: .spm).appliedMutationOperatorsHeader))
+
+        let expectedLogFiles = [
+            "baseline run.log",
+            "ChangeLogicalConnector @ Module2.swift-2-17.log",
+            "RelationalOperatorReplacement @ Module.swift-4-7.log",
+            "RemoveSideEffects @ ViewController.swift-5-28.log",
+        ]
+
+        let numberOfEmptyLogFiles = try expectedLogFiles
+            .map { try contentsOfLogFile(named: $0, suffix: .spm) }
+            .count { $0.isEmpty }
+
+        XCTAssertEqual(
+            logFiles.sorted(),
+            expectedLogFiles.sorted()
+        ) // Sort these so it's easier to reason about any erroneous failures
+        XCTAssertEqual(numberOfEmptyLogFiles, 0)
+    }
+
+    func test_runWithTestPlanCommand_spm() throws {
+        let output = try mutersOutputWithTestPlan(suffix: .spm)
+
+        XCTAssertTrue(output.contains("Muter mutation test plan loaded"))
+    }
+
+    func test_withCoverage_spm() throws {
+        let output = try muterWithCoverageOutput(suffix: .spm)
+
+        XCTAssertTrue(output.contains("Code Coverage of your project:"))
+    }
+
+    func test_xcodeFormat_spm() throws {
+        let output = try muterXcodeOutput(suffix: .spm)
+
+        XCTAssertEqual(try numberOfXcodeFormattedMessages(in: output), 1)
+    }
+
+    func test_filesToMutate_spm() throws {
+        let output = try muterFilesToMutateOutput(suffix: .spm)
 
         XCTAssertTrue(output.contains("In total, Muter discovered 1 mutants in 1 files"))
     }
@@ -89,33 +165,62 @@ final class AcceptanceTests: XCTestCase {
         let output = try muterEmptyStateOutput
 
         XCTAssertTrue(output.contains("Muter wasn't able to discover any code it could mutation test."))
-        XCTAssertFalse(output.contains(messages.mutationScoresHeader))
-        XCTAssertFalse(output.contains(messages.mutationScoreOfTestSuite))
-        XCTAssertFalse(output.contains(messages.appliedMutationOperatorsHeader))
+        XCTAssertFalse(output.contains(messages(suffix: .xcodeproj).mutationScoresHeader))
+        XCTAssertFalse(output.contains(messages(suffix: .xcodeproj).mutationScoreOfTestSuite))
+        XCTAssertFalse(output.contains(messages(suffix: .xcodeproj).appliedMutationOperatorsHeader))
     }
 
-    func test_initCommandOniOSProject() throws {
-        let decodedConfiguration = try MuterConfiguration(from: createdIOSConfiguration)
+    func test_initCommandOniOSProject_xcodeProj() throws {
+        let decodedConfiguration = try MuterConfiguration(from: createdIOSConfiguration(suffix: .xcodeproj))
         XCTAssertEqual(decodedConfiguration.testCommandExecutable, "/usr/bin/xcodebuild")
         XCTAssertTrue(decodedConfiguration.testCommandArguments.contains("-destination"))
         XCTAssertTrue(
             decodedConfiguration.testCommandArguments
-                .contains { $0.contains("platform=iOS Simulator,name=iPhone") }
+                .contains("platform=iOS Simulator,name=iPhone SE (3rd generation)")
         )
+        XCTAssertEqual(decodedConfiguration.buildPath, ".build")
     }
 
-    func test_initCommandOnMacOSProject() throws {
-        let decodedConfiguration = try MuterConfiguration(from: createdMacOSConfiguration)
+    func test_initCommand_spm() throws {
+        let decodedConfiguration = try MuterConfiguration(from: createdIOSConfiguration(suffix: .spm))
+        XCTAssertEqual(decodedConfiguration.testCommandExecutable, "/usr/bin/xcodebuild")
+        XCTAssertTrue(decodedConfiguration.testCommandArguments.contains("-scheme"))
+        XCTAssertTrue(decodedConfiguration.testCommandArguments.contains("ExampleiOSPackage"))
+        XCTAssertTrue(decodedConfiguration.testCommandArguments.contains("-destination"))
+        XCTAssertTrue(
+            decodedConfiguration.testCommandArguments
+                .contains("platform=iOS Simulator,name=iPhone SE (3rd generation)")
+        )
+        XCTAssertEqual(decodedConfiguration.buildPath, ".build")
+    }
+
+    func test_initCommandOnMacOSProject_xcodeproj() throws {
+        let decodedConfiguration = try MuterConfiguration(from: createdMacOSConfiguration(suffix: .xcodeproj))
         XCTAssertEqual(decodedConfiguration.testCommandExecutable, "/usr/bin/xcodebuild")
         XCTAssertFalse(decodedConfiguration.testCommandArguments.contains("-destination"))
         XCTAssertFalse(
             decodedConfiguration.testCommandArguments
                 .contains("platform=iOS Simulator,name=iPhone SE (3rd generation)")
         )
+        XCTAssertEqual(decodedConfiguration.buildPath, ".build")
     }
 
-    func test_mutationTestPlan() throws {
-        let decodedTestPlan = try JSONDecoder().decode(MuterTestPlan.self, from: createdTestPlan)
+    func test_initCommandOnMacOSProject_spm() throws {
+        let decodedConfiguration = try MuterConfiguration(from: createdMacOSConfiguration(suffix: .spm))
+        XCTAssertEqual(decodedConfiguration.testCommandExecutable, "/usr/bin/swift")
+        XCTAssertTrue(decodedConfiguration.testCommandArguments.contains("test"))
+        XCTAssertEqual(decodedConfiguration.buildPath, ".build")
+    }
+
+    func test_mutationTestPlan_xcodeProj() throws {
+        let decodedTestPlan = try JSONDecoder().decode(MuterTestPlan.self, from: createdTestPlan(suffix: .xcodeproj))
+        XCTAssertTrue(decodedTestPlan.mutatedProjectPath.contains("_mutated"))
+        XCTAssertEqual(decodedTestPlan.projectCoverage, 23)
+        XCTAssertEqual(decodedTestPlan.mappings.count, 1)
+    }
+
+    func test_mutationTestPlan_spm() throws {
+        let decodedTestPlan = try JSONDecoder().decode(MuterTestPlan.self, from: createdTestPlan(suffix: .spm))
         XCTAssertTrue(decodedTestPlan.mutatedProjectPath.contains("_mutated"))
         XCTAssertEqual(decodedTestPlan.projectCoverage, 23)
         XCTAssertEqual(decodedTestPlan.mappings.count, 1)
@@ -151,35 +256,26 @@ extension AcceptanceTests {
         )
     }
 
-    var muterOutput: String {
-        get throws {
-            try contentsOfFileAsString("\(rootTestDirectory)/samples/muters_output.txt")
-        }
+    func muterOutput(suffix: Suffix) throws -> String {
+        try contentsOfFileAsString("\(rootTestDirectory)/samples/muters_output.\(suffix).txt")
     }
 
-    var mutersOutputWithTestPlan: String {
-        get throws {
-            try contentsOfFileAsString("\(rootTestDirectory)/samples/muters_output_with_test_plan.txt")
-        }
+    func mutersOutputWithTestPlan(suffix: Suffix) throws -> String {
+        try contentsOfFileAsString("\(rootTestDirectory)/samples/muters_output_with_test_plan.\(suffix).txt")
     }
 
-    var muterXcodeOutput: String {
-        get throws {
-            try contentsOfFileAsString("\(rootTestDirectory)/samples/muters_xcode_output.txt")
-        }
+    func muterXcodeOutput(suffix: Suffix) throws -> String {
+        try contentsOfFileAsString("\(rootTestDirectory)/samples/muters_xcode_output.\(suffix).txt")
     }
 
-    var muterFilesToMutateOutput: String {
-        get throws {
-            try contentsOfFileAsString(
-                "\(rootTestDirectory)/samples/muters_files_to_mutate_output.txt"
-            )
-        }
+    func muterFilesToMutateOutput(suffix: Suffix) throws -> String {
+        try contentsOfFileAsString(
+            "\(rootTestDirectory)/samples/muters_files_to_mutate_output.\(suffix).txt"
+        )
     }
-    var muterWithCoverageOutput: String {
-        get throws {
-            try contentsOfFileAsString("\(rootTestDirectory)/samples/muters_with_coverage_output.txt")
-        }
+
+    func muterWithCoverageOutput(suffix: Suffix) throws -> String {
+        try contentsOfFileAsString("\(rootTestDirectory)/samples/muters_with_coverage_output.\(suffix).txt")
     }
 
     var muterEmptyStateOutput: String {
@@ -226,40 +322,34 @@ extension AcceptanceTests {
         }
     }
 
-    var muterLogFiles: [String] {
-        get throws {
-            try contentsOfDirectory(muterLogsRootPath)
-                .map { muterLogsRootPath + "/" + $0 }
-                .flatMap(contentsOfDirectory)
-        }
+    func muterLogFiles(suffix: Suffix) throws -> [String] {
+        try contentsOfDirectory(muterLogsRootPath(suffix: suffix))
+            .map { muterLogsRootPath(suffix: suffix) + "/" + $0 }
+            .flatMap(contentsOfDirectory)
     }
 
-    var createdIOSConfiguration: Data {
-        get throws {
-            try contentsOfFileAsData("\(rootTestDirectory)/samples/created_iOS_config.yml")
-        }
+    func createdIOSConfiguration(suffix: Suffix) throws -> Data {
+        try contentsOfFileAsData("\(rootTestDirectory)/samples/created_iOS_config.\(suffix).yml")
     }
 
-    var createdMacOSConfiguration: Data {
-        get throws {
-            try contentsOfFileAsData("\(rootTestDirectory)/samples/created_macOS_config.yml")
-        }
+    func createdMacOSConfiguration(suffix: Suffix) throws -> Data {
+        try contentsOfFileAsData("\(rootTestDirectory)/samples/created_macOS_config.\(suffix).yml")
     }
 
-    var createdTestPlan: Data {
-        get throws {
-            try contentsOfFileAsData("\(rootTestDirectory)/samples/created_muter-mappings.json")
-        }
+    func createdTestPlan(suffix: Suffix) throws -> Data {
+        try contentsOfFileAsData("\(rootTestDirectory)/samples/created_muter-mappings.\(suffix).json")
     }
 
-    var muterLogsRootPath: String { "\(rootTestDirectory)/samples/muter_logs/" }
+    func muterLogsRootPath(suffix: Suffix) -> String {
+        "\(rootTestDirectory)/samples/muter_logs_\(suffix)/"
+    }
 }
 
 extension AcceptanceTests {
-    func contentsOfLogFile(named fileName: String) throws -> String {
-        try contentsOfDirectory(muterLogsRootPath)
+    func contentsOfLogFile(named fileName: String, suffix: Suffix) throws -> String {
+        try contentsOfDirectory(muterLogsRootPath(suffix: suffix))
             .first
-            .map { muterLogsRootPath + $0 + "/" + fileName }
+            .map { muterLogsRootPath(suffix: suffix) + $0 + "/" + fileName }
             .map(contentsOfFileAsString)!
     }
 

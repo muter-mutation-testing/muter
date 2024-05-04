@@ -14,7 +14,7 @@ sourcekite
 muter.xcodeproj
 /Tests/bonmot_regression_test_output.json
 muterReport.json
-muter_logs
+muter_logs*
 AcceptanceTests/samples/*.*
 AcceptanceTests/Repositories/
 RegressionTests/samples/*.*
@@ -25,6 +25,7 @@ RegressionTests/parsercombinator_regression_test_output.json
 Repositories/UninitializedApp/muter.conf.json
 *_mutated
 .swiftpm
+temp
 
 
 ### macOS ###

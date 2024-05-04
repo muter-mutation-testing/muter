@@ -16,7 +16,7 @@ final class XcodeBuildCoverageTests: MuterTestCase {
         _ = sut.run(with: muterConfiguration)
 
         XCTAssertEqual(process.executableURL?.path, "/path/to/xcodebuild")
-        XCTAssertEqual(process.arguments, ["-enableCodeCoverage", "YES"])
+        XCTAssertEqual(process.arguments, ["-derivedDataPath", ".build", "-enableCodeCoverage", "YES"])
     }
 
     func test_whenRunWithCoverageSucceeds_thenRunXcovCommand() {
@@ -91,7 +91,6 @@ final class XcodeBuildCoverageTests: MuterTestCase {
     }
 
     func test_functionCoverage() throws {
-        process.stdoutToBeReturned = "BUILD_DIR = /build/directory"
         process.stdoutToBeReturned = "/path/to/testExecutable.xctest"
         process.stdoutToBeReturned = "/path/to/testBinary"
         process.stdoutToBeReturned = "/path/to/coverage.profdata"

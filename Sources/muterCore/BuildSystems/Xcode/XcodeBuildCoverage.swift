@@ -32,14 +32,7 @@ final class XcodeBuildCoverage: BuildSystemCoverage {
     }
 
     func buildDirectory(_ configuration: MuterConfiguration) -> String? {
-        process().runProcess(
-            url: configuration.testCommandExecutable,
-            arguments: configuration.testCommandArguments + ["-showBuildSettings"]
-        )
-        .flatMap { $0.firstMatchOf("BUILD_DIR = (.+)", options: .anchorsMatchLines) }
-        .map(\.trimmed)
-        .flatMap(\.nilIfEmpty)
-        .flatMap { URL(fileURLWithPath: $0).deletingLastPathComponent().path }
+        "\(configuration.buildPath)/Build"
     }
 
     private func runTestsWithCoverageEnabled(
