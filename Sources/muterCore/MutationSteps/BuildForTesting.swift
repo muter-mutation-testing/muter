@@ -38,6 +38,11 @@ struct BuildForTesting: MutationStep {
     }
 
     private func buildDirectory(_ configuration: MuterConfiguration) throws -> String {
+        if let index = configuration.testCommandArguments.firstIndex(where: { $0 == "-derivedDataPath"}), 
+            let derivedDataPath = configuration.testCommandArguments[safe: index + 1] {
+            return derivedDataPath + "/Build/Products"
+        }
+        
         guard let buildSettings = process()
             .runProcess(url: configuration.testCommandExecutable, arguments: ["-showBuildSettings"])
             .flatMap(\.nilIfEmpty)
