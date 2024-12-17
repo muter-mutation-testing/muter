@@ -137,6 +137,26 @@ final class BuildForTestingTests: MuterTestCase {
             .literal(reason: "Could not parse xctestrun at path: some/project.xctestrun")
         )
     }
+    
+    func test_givenTestArgumentsContainsDerivedDataPath_shouldCopyXCTestrunCorrectly() async throws {
+        state.muterConfiguration = MuterConfiguration(
+            executable: "/path/to/xcodebuild",
+            arguments: [
+                "some",
+                "commands",
+                "-derivedDataPath",
+                "/path/to/custom_derived_Data_path",
+                "test"
+            ]
+        )
+        
+        state.mutatedProjectDirectoryURL = URL(fileURLWithPath: "/path/to/temp")
+        process.stdoutToBeReturned = xcodebuildBuildForTestingOutput()
+        
+        _ = try? await sut.run(with: state)
+        XCTAssertTrue(fileManager.copyPaths.contains(where: { $0.source == "/path/to/custom_derived_Data_path/Build/Products" && $0.dest == "/path/to/temp/Debug" }))
+        
+    }
 
     private func xcodebuildBuildForTestingOutput() -> String {
         """
