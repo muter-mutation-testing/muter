@@ -138,7 +138,7 @@ final class BuildForTestingTests: MuterTestCase {
         )
     }
     
-    func test_givenTestArgumentsContainsDerivedDataPath_shouldCopyXCTestrunCorrectly() async throws {
+    func test_supportsCustomDerivedDataPath() async throws {
         state.muterConfiguration = MuterConfiguration(
             executable: "/path/to/xcodebuild",
             arguments: [
