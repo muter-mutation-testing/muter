@@ -1,11 +1,5 @@
-let report =
+let css =
     """
-    body {
-        background-color: #FAFAFA;
-        color: #000000;
-        font-family: -apple-system, BlinkMacSystemFont, Segoe UI, Helvetica, Arial, sans-serif, Apple Color Emoji, Segoe UI Emoji
-    }
-
     h1 {
         font-size: 3em;
         margin: 0;
@@ -135,6 +129,10 @@ let report =
         height: 30px;
     }
 
+    .time-out {
+        height: 30px;
+    }
+
     .footer {
         left: 0;
         bottom: 0;
@@ -182,13 +180,35 @@ let report =
         width: 100%;
     }
 
-    @media (prefers-color-scheme: dark) {
-        body {
-            color: #eee;
-            background: #0d1117;
-        }
+    body {
+      --text-white: #ffffff;
+      --text-dark: #142136;
 
-        p, span, label, h1 {
+      --bg-grey-light: #f5f5f5;
+      --bg-white: #ffffff;
+      --bg-blue-dark: #142136;
+      --bg-indigo: #6366f1;
+
+      font-family: -apple-system, BlinkMacSystemFont, Segoe UI, Helvetica, Arial, sans-serif, Apple Color Emoji, Segoe UI Emoji
+
+      transition: background 0.2s linear;
+    }
+
+    .dark {
+      color: #eee;
+      background: #0d1117;
+      --text-white: #e6e6e6;
+      --text-dark: #ffffff;
+
+      --bg-grey-light: #142136;
+      --bg-white: #22395d;
+      --bg-blue-dark: #142136;
+      --bg-indigo: #7577e1;
+
+        p,
+        span,
+        label,
+        h1 {
             color: #ffffff;
         }
 
@@ -220,5 +240,4 @@ let report =
         th {
             background-color: #293649;
         }
-    }
     """

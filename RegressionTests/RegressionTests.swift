@@ -24,7 +24,7 @@ final class RegressionTests: XCTestCase {
         do {
             let testReport = try JSONDecoder().decode(MuterTestReport.self, from: data)
             assertSnapshot(
-                matching: testReport,
+                of: testReport,
                 as: .json(excludingKeysMatching: keysToExclude),
                 named: fixtureName,
                 file: file,

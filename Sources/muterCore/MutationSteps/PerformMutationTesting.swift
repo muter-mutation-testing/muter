@@ -58,8 +58,7 @@ private extension PerformMutationTesting {
         notificationCenter.post(name: .mutationTestingStarted, object: nil)
 
         let initialTime = Date()
-        let (testSuiteOutcome, testLog) = ioDelegate.runTestSuite(
-            withSchemata: .null,
+        let (testSuiteOutcome, testLog) = ioDelegate.benchmarkTests(
             using: state.muterConfiguration,
             savingResultsIntoFileNamed: "baseline run"
         )

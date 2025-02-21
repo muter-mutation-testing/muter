@@ -111,4 +111,49 @@ final class MutationTestingDelegateTests: MuterTestCase {
 
         fileManager.changeCurrentDirectoryPath(currentDirectoryPath)
     }
+
+    func test_timeOut() throws {
+        let configuration = MuterConfiguration(
+            executable: "/tmp/swift",
+            arguments: ["test"],
+            testSuiteTimeOut: 9
+        )
+
+        let schemata = try MutationSchema.make(
+            filePath: "/path/fileName",
+            position: .init(line: 1)
+        )
+
+        _ = sut.runTestSuite(
+            withSchemata: schemata,
+            using: configuration,
+            savingResultsIntoFileNamed: "logFileName"
+        )
+
+        let expectedTimeOut = current.instant() + configuration.testSuiteTimeOut!
+
+        XCTAssertTrue(testingTimeOutExecutor.waitCalled)
+        XCTAssertEqual(testingTimeOutExecutor.timeoutPassed, expectedTimeOut)
+    }
+
+    func test_whenConfigurationHasNoTimeOut_thenRunTestsWithoutTimeOut() throws {
+        let configuration = MuterConfiguration(
+            executable: "/tmp/swift",
+            arguments: ["test"],
+            testSuiteTimeOut: nil
+        )
+
+        let schemata = try MutationSchema.make(
+            filePath: "/path/fileName",
+            position: .init(line: 1)
+        )
+
+        _ = sut.runTestSuite(
+            withSchemata: schemata,
+            using: configuration,
+            savingResultsIntoFileNamed: "logFileName"
+        )
+
+        XCTAssertFalse(testingTimeOutExecutor.waitCalled)
+    }
 }
