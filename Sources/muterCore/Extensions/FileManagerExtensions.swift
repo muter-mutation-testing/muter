@@ -40,11 +40,22 @@ extension FileManager: FileSystemManager {
         atPath path: String,
         sortedByDate order: ComparisonResult
     ) throws -> [String] {
-        var files = try contentsOfDirectory(
+        guard let enumerator = FileManager.default.enumerator(
             at: URL(fileURLWithPath: path),
             includingPropertiesForKeys: [.creationDateKey],
             options: [.skipsHiddenFiles]
-        )
+        ) else {
+            return []
+        }
+        
+        var files = [URL]()
+        while let url = enumerator.nextObject() as? URL {
+            files.append(url)
+        }
+
+        if files.isEmpty {
+            return []
+        }
 
         try files.sort {
             let lhs = try $0.resourceValues(forKeys: [URLResourceKey.creationDateKey])
