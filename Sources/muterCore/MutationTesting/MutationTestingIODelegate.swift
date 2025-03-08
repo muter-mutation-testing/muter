@@ -4,6 +4,7 @@ protocol MutationTestingIODelegate {
     func runTestSuite(
         withSchemata schemata: MutationSchema,
         using configuration: MuterConfiguration,
+        simulatorUDID: String?,
         savingResultsIntoFileNamed fileName: String
     ) -> (
         outcome: TestSuiteOutcome,
@@ -28,6 +29,7 @@ struct MutationTestingDelegate: MutationTestingIODelegate {
     func runTestSuite(
         withSchemata schemata: MutationSchema,
         using configuration: MuterConfiguration,
+        simulatorUDID: String?,
         savingResultsIntoFileNamed fileName: String
     ) -> (
         outcome: TestSuiteOutcome,
@@ -38,6 +40,7 @@ struct MutationTestingDelegate: MutationTestingIODelegate {
             defer { try? testProcessFileHandle.close() }
 
             let process = try testProcess(
+                simulatorUDID: simulatorUDID,
                 with: configuration,
                 schemata: schemata,
                 and: testProcessFileHandle
@@ -77,24 +80,33 @@ struct MutationTestingDelegate: MutationTestingIODelegate {
             options: 0
         )
 
+        let testRunFileName = "muter" + "_\(schemata.fileName)" + ".xctestrun"
         try data.write(
-            to: path.appendingPathComponent(muterTestRunFileName)
+            to: path.appendingPathComponent(testRunFileName)
         )
     }
 
     func testProcess(
+        simulatorUDID: String?,
         with configuration: MuterConfiguration,
         schemata: MutationSchema,
         and fileHandle: FileHandle
     ) throws -> Process {
-        let testCommandArguments = schemata == .null
+        let testRunFileName = "muter" + "_\(schemata.fileName)" + ".xctestrun"
+        var testCommandArguments = schemata == .null
             ? configuration.testCommandArguments
-            : configuration.testWithoutBuildArguments(with: muterTestRunFileName)
+        : configuration.testWithoutBuildArguments(
+            with: testRunFileName,
+            simulatorUDID: simulatorUDID
+        )
 
         let process = process()
 
         if schemata != .null {
             process.environment?[schemata.id] = "YES"
+            let testTarget = configuration.testTarget
+            let testFileName = createTestFileName(from: schemata.fileName, testFileSuffix: configuration.testFileSuffix)
+            testCommandArguments.append("-only-testing:\(testTarget)/\(testFileName)")
         }
 
         process.arguments = testCommandArguments
@@ -103,6 +115,24 @@ struct MutationTestingDelegate: MutationTestingIODelegate {
         process.standardError = fileHandle
 
         return process
+    }
+
+    private func createTestFileName(
+        from fileName: String,
+        testFileSuffix: String
+    ) -> String {
+        // Split the file name into name and extension components
+        let fileURL = URL(fileURLWithPath: fileName)
+        let baseName = fileURL.deletingPathExtension().lastPathComponent
+        let fileExtension = fileURL.pathExtension
+        
+        // Ensure the file name has a valid extension
+        guard !baseName.isEmpty, !fileExtension.isEmpty else {
+            fatalError("Can not empty")
+        }
+
+        let testFileName = "\(baseName)\(testFileSuffix)"
+        return testFileName
     }
 
     func fileHandle(

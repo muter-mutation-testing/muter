@@ -16,7 +16,8 @@ struct MutateWithoutRunning: RunCommand {
             skipCoverage: options.skipCoverage,
             skipUpdateCheck: options.skipUpdateCheck,
             configurationURL: options.configurationURL,
-            createTestPlan: true
+            createTestPlan: true,
+            sourceBranch: options.sourceBranch
         )
 
         try await run(with: options)

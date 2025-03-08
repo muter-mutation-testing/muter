@@ -113,9 +113,10 @@ private extension MuterConfiguration {
     }
 }
 
-private struct Simulator: Codable, CustomStringConvertible {
+struct Simulator: Codable, CustomStringConvertible {
     let isAvailable: Bool
     let name: String
+    let udid: String
     let deviceTypeIdentifier: String
 
     var description: String { name }
@@ -126,6 +127,7 @@ extension Simulator {
         Simulator(
             isAvailable: true,
             name: "iPhone SE (3rd generation)",
+            udid: "",
             deviceTypeIdentifier: ""
         )
     }

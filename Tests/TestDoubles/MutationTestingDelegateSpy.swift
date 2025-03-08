@@ -38,6 +38,7 @@ class MutationTestingDelegateSpy: Spy, MutationTestingIODelegate {
     func runTestSuite(
         withSchemata schemata: MutationSchema,
         using configuration: MuterConfiguration,
+        simulatorUDID: String?,
         savingResultsIntoFileNamed fileName: String
     ) -> (
         outcome: TestSuiteOutcome,

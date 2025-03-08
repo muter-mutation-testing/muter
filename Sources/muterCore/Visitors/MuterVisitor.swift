@@ -148,10 +148,14 @@ class MuterVisitor: SyntaxAnyVisitor {
         at mutationRange: Range<String.Index>? = nil
     ) -> CodeBlockItemListSyntax {
         let codeBlockItemListSyntax = node.codeBlockItemListSyntax
-        let codeBlockDescription = codeBlockItemListSyntax.description
-        let mutationDescription = mutatedSyntax.description
-        let range = mutationRange ?? codeBlockDescription.range(of: node.description)
+        let codeBlockDescription = codeBlockItemListSyntax.description // whole block
+
+        let mutationDescription = mutatedSyntax.description // only the changed part
+
+        let range = mutationRange ?? codeBlockDescription.range(of: node.description) // get the range to replace
+
         let codeBlockTree = Parser.parse(source: codeBlockDescription)
+
         guard let range
         else {
             return codeBlockItemListSyntax
@@ -163,7 +167,7 @@ class MuterVisitor: SyntaxAnyVisitor {
 
         let edit = IncrementalEdit(
             offset: mutationPositionInCodeBlock,
-            length: mutatedSyntax.description.utf8.count,
+            length: node.description.utf8.count,
             replacementLength: mutatedSyntax.description.utf8.count
         )
 

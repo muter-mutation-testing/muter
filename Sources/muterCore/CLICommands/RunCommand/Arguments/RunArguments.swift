@@ -19,4 +19,7 @@ struct RunArguments: ParsableArguments {
         help: "Skips the step in which Muter checks for newer versions."
     )
     var skipUpdateCheck: Bool = false
+
+    @Option(help: "The target branch to compare against. Use to filter results to only those that are new or changed in the target branch. (Default is non-filter)")
+    var sourceBranch: String?
 }

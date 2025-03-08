@@ -203,7 +203,8 @@ extension Run.Options {
             skipUpdateCheck: skipUpdateCheck,
             configurationURL: configurationURL,
             testPlanURL: testPlanURL,
-            createTestPlan: createTestPlan
+            createTestPlan: createTestPlan,
+            sourceBranch: nil
         )
     }
 }

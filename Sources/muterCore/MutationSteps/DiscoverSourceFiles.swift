@@ -6,6 +6,8 @@ struct DiscoverSourceFiles: MutationStep {
     private var notificationCenter: NotificationCenter
     @Dependency(\.fileManager)
     private var fileManager: FileSystemManager
+    @Dependency(\.process)
+    var process: ProcessFactory
 
     func run(
         with state: AnyMutationTestState
@@ -15,7 +17,7 @@ struct DiscoverSourceFiles: MutationStep {
             object: nil
         )
 
-        let sourceFileCandidates = state.filesToMutate.isEmpty
+        var sourceFileCandidates = state.filesToMutate.isEmpty
             ? discoverSourceFiles(
                 inDirectoryAt: state.mutatedProjectDirectoryURL.path,
                 excludingPathsIn: state.muterConfiguration.excludeFileList,
@@ -25,6 +27,8 @@ struct DiscoverSourceFiles: MutationStep {
                 files: state.filesToMutate,
                 inDirectoryAt: state.mutatedProjectDirectoryURL.path
             )
+
+        sourceFileCandidates = SourceBranchFilter().filterChangedFilesIfNeed(state: state, sourceFileCandidates: sourceFileCandidates)
 
         let failure: MuterError = state.filesToMutate.isEmpty
             ? .noSourceFilesDiscovered

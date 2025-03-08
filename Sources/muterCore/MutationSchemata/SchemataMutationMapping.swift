@@ -5,7 +5,7 @@ typealias MutationSchemata = [MutationSchema]
 
 final class SchemataMutationMapping {
     let filePath: String
-    fileprivate var mappings: [CodeBlockItemListSyntax: MutationSchemata]
+    private(set) var mappings: [CodeBlockItemListSyntax: MutationSchemata]
 
     var count: Int {
         mappings.count
@@ -36,7 +36,7 @@ final class SchemataMutationMapping {
         )
     }
 
-    fileprivate init(
+    init(
         filePath: String = "",
         mappings: [CodeBlockItemListSyntax: MutationSchemata]
     ) {

@@ -12,12 +12,14 @@ protocol AnyMutationTestState: AnyObject {
     var projectXCTestRun: XCTestRun { get }
     var projectCoverage: Coverage { get }
     var sourceFileCandidates: [FilePath] { get }
+    var sourceFileCandidateChangedInfo: [FilePath: FileDiff.Changes] { get set }
     var mutationPoints: [MutationPoint] { get }
     var mutationMapping: [SchemataMutationMapping] { get }
     var sourceCodeByFilePath: [FilePath: SourceFileSyntax] { get }
     var filesToMutate: [String] { get }
     var swapFilePathsByOriginalPath: [FilePath: FilePath] { get }
     var mutationTestOutcome: MutationTestOutcome { get }
+    var launchedDeviceUdids: [String] { get }
 
     func apply(_ stateChanges: [MutationTestState.Change])
 }
@@ -34,11 +36,13 @@ final class MutationTestState: AnyMutationTestState {
     var projectXCTestRun: XCTestRun = .init()
     var projectCoverage: Coverage = .null
     var sourceFileCandidates: [FilePath] = []
+    var sourceFileCandidateChangedInfo: [FilePath : FileDiff.Changes] = [:]
     var mutationPoints: [MutationPoint] = []
     var mutationMapping: [SchemataMutationMapping] = []
     var sourceCodeByFilePath: [FilePath: SourceFileSyntax] = [:]
     var swapFilePathsByOriginalPath: [FilePath: FilePath] = [:]
     var mutationTestOutcome: MutationTestOutcome = .init()
+    var launchedDeviceUdids: [String] = []
 
     init() {}
 
@@ -57,6 +61,7 @@ extension MutationTestState {
         case tempDirectoryUrlCreated(URL)
         case projectXCTestRun(XCTestRun)
         case projectCoverage(Coverage)
+        case prelaunchSimulator([String])
         case sourceFileCandidatesDiscovered([FilePath])
         case mutationPointsDiscovered([MutationPoint])
         case mutationMappingsDiscovered([SchemataMutationMapping])
@@ -94,6 +99,8 @@ extension MutationTestState {
                 self.swapFilePathsByOriginalPath = swapFilePathsByOriginalPath
             case let .mutationTestOutcomeGenerated(mutationTestOutcome):
                 self.mutationTestOutcome = mutationTestOutcome
+            case let .prelaunchSimulator(deviceUdids):
+                self.launchedDeviceUdids = deviceUdids
             }
         }
     }

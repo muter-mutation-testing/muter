@@ -40,6 +40,7 @@ final class MutationTestingDelegateTests: MuterTestCase {
         )
 
         let testProcess = try sut.testProcess(
+            simulatorUDID: nil,
             with: configuration,
             schemata: schemata,
             and: FileHandle(fileDescriptor: 0)
@@ -70,6 +71,7 @@ final class MutationTestingDelegateTests: MuterTestCase {
         )
 
         let testProcess = try sut.testProcess(
+            simulatorUDID: nil,
             with: configuration,
             schemata: schemata,
             and: FileHandle(fileDescriptor: 0)

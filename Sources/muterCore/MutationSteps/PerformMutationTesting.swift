@@ -1,7 +1,7 @@
 import Foundation
 import SwiftSyntax
 
-struct PerformMutationTesting: MutationStep {
+final class PerformMutationTesting: MutationStep {
     @Dependency(\.ioDelegate)
     private var ioDelegate: MutationTestingIODelegate
     @Dependency(\.notificationCenter)
@@ -10,6 +10,12 @@ struct PerformMutationTesting: MutationStep {
     private var fileManager: FileSystemManager
     @Dependency(\.now)
     private var now: Now
+
+    /// Parallel running
+    private var availableSimulators: [String] = []
+    private let queue = DispatchQueue(label: "mutation-testing-queue", attributes: .concurrent)
+    private var semaphore: DispatchSemaphore?
+    private let lock = NSLock()
 
     private let buildErrorsThreshold: Int = 5
 
@@ -60,7 +66,8 @@ private extension PerformMutationTesting {
         let initialTime = Date()
         let (testSuiteOutcome, testLog) = ioDelegate.runTestSuite(
             withSchemata: .null,
-            using: state.muterConfiguration,
+            using: state.muterConfiguration, 
+            simulatorUDID: nil,
             savingResultsIntoFileNamed: "baseline run"
         )
 
@@ -88,70 +95,113 @@ private extension PerformMutationTesting {
             object: mutationLog
         )
 
-        return try await testMutation(using: state)
+        return try testMutation(using: state)
     }
 
-    func testMutation(using state: AnyMutationTestState) async throws -> [MutationTestOutcome.Mutation] {
+    func testMutation(using state: AnyMutationTestState) throws -> [MutationTestOutcome.Mutation] {
         var outcomes: [MutationTestOutcome.Mutation] = []
         outcomes.reserveCapacity(state.mutationPoints.count)
         var buildErrors = 0
 
+        self.semaphore = DispatchSemaphore(value: state.launchedDeviceUdids.count)
+        self.availableSimulators = state.launchedDeviceUdids
+        let group = DispatchGroup()
+
         for mutationMap in state.mutationMapping {
             for mutationSchema in mutationMap.mutationSchemata {
+                semaphore?.wait() // Wait for an available simulator
+                group.enter()
 
-                try? ioDelegate.switchOn(
-                    schemata: mutationSchema,
-                    for: state.projectXCTestRun,
-                    at: state.mutatedProjectDirectoryURL
-                )
+                queue.async {
+                    var simulatorUDID: String?
 
-                let (testSuiteOutcome, testLog) = ioDelegate.runTestSuite(
-                    withSchemata: mutationSchema,
-                    using: state.muterConfiguration,
-                    savingResultsIntoFileNamed: logFileName(
-                        for: mutationMap.fileName,
-                        schemata: mutationSchema
+                    self.lock.lock()
+                    if !self.availableSimulators.isEmpty {
+                        simulatorUDID = self.availableSimulators.removeFirst()
+                    }
+                    self.lock.unlock()
+
+                    guard let assignedSimulator = simulatorUDID else {
+                        self.semaphore?.signal()
+                        group.leave()
+                        return
+                    }
+
+                    defer {
+                        self.lock.lock()
+                        self.availableSimulators.append(assignedSimulator)
+                        self.lock.unlock()
+                        self.semaphore?.signal() // Release simulator
+                        group.leave()
+                    }
+
+                    try? self.ioDelegate.switchOn(
+                        schemata: mutationSchema,
+                        for: state.projectXCTestRun,
+                        at: state.mutatedProjectDirectoryURL
                     )
-                )
 
-                let mutationPoint = MutationPoint(
-                    mutationOperatorId: mutationSchema.mutationOperatorId,
-                    filePath: mutationSchema.filePath,
-                    position: mutationSchema.position
-                )
+                    let (testSuiteOutcome, testLog) = self.ioDelegate.runTestSuite(
+                        withSchemata: mutationSchema,
+                        using: state.muterConfiguration,
+                        simulatorUDID: assignedSimulator, // Properly assigned simulator
+                        savingResultsIntoFileNamed: self.logFileName(
+                            for: mutationMap.fileName,
+                            schemata: mutationSchema
+                        )
+                    )
 
-                let outcome = MutationTestOutcome.Mutation(
-                    testSuiteOutcome: testSuiteOutcome,
-                    mutationPoint: mutationPoint,
-                    mutationSnapshot: mutationSchema.snapshot,
-                    originalProjectDirectoryUrl: state.projectDirectoryURL,
-                    mutatedProjectDirectoryURL: state.mutatedProjectDirectoryURL
-                )
+                    let mutationPoint = MutationPoint(
+                        mutationOperatorId: mutationSchema.mutationOperatorId,
+                        filePath: mutationSchema.filePath,
+                        position: mutationSchema.position
+                    )
 
-                outcomes.append(outcome)
+                    let outcome = MutationTestOutcome.Mutation(
+                        testSuiteOutcome: testSuiteOutcome,
+                        mutationPoint: mutationPoint,
+                        mutationSnapshot: mutationSchema.snapshot,
+                        originalProjectDirectoryUrl: state.projectDirectoryURL,
+                        mutatedProjectDirectoryURL: state.mutatedProjectDirectoryURL
+                    )
 
-                let mutationLog = MutationTestLog(
-                    mutationPoint: mutationPoint,
-                    testLog: testLog,
-                    timePerBuildTestCycle: .none,
-                    remainingMutationPointsCount: .none
-                )
+                    self.lock.lock()
+                    outcomes.append(outcome)
+                    if testSuiteOutcome == .buildError {
+                        buildErrors += 1
+                    }
+                    self.lock.unlock()
 
-                notificationCenter.post(
-                    name: .newMutationTestOutcomeAvailable,
-                    object: outcome
-                )
+                    let mutationLog = MutationTestLog(
+                        mutationPoint: mutationPoint,
+                        testLog: testLog,
+                        timePerBuildTestCycle: .none,
+                        remainingMutationPointsCount: .none
+                    )
 
-                notificationCenter.post(
-                    name: .newTestLogAvailable,
-                    object: mutationLog
-                )
+                    DispatchQueue.main.async {
+                        self.notificationCenter.post(
+                            name: .newMutationTestOutcomeAvailable,
+                            object: outcome
+                        )
 
-                buildErrors = testSuiteOutcome == .buildError ? (buildErrors + 1) : 0
-                if buildErrors >= buildErrorsThreshold {
-                    throw MuterError.mutationTestingAborted(reason: .tooManyBuildErrors)
+                        self.notificationCenter.post(
+                            name: .newTestLogAvailable,
+                            object: mutationLog
+                        )
+                    }
+
+                    if buildErrors >= self.buildErrorsThreshold {
+                        return
+                    }
                 }
             }
+        }
+
+        group.wait() // Ensure all tasks complete before returning
+
+        if buildErrors >= buildErrorsThreshold {
+            throw MuterError.mutationTestingAborted(reason: .tooManyBuildErrors)
         }
 
         return outcomes

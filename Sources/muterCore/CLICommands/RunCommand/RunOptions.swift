@@ -12,6 +12,8 @@ extension Run {
         let configurationURL: URL?
         let testPlanURL: URL?
         let createTestPlan: Bool
+        let sourceBranch: String?
+
         var isUsingTestPlan: Bool {
             testPlanURL != nil
         }
@@ -25,7 +27,8 @@ extension Run {
             skipUpdateCheck: Bool,
             configurationURL: URL?,
             testPlanURL: URL? = nil,
-            createTestPlan: Bool = false
+            createTestPlan: Bool = false,
+            sourceBranch: String?
         ) {
             self.skipCoverage = skipCoverage
             self.skipUpdateCheck = skipUpdateCheck
@@ -33,6 +36,7 @@ extension Run {
             self.mutationOperatorsList = mutationOperatorsList
             self.configurationURL = configurationURL
             self.testPlanURL = testPlanURL
+            self.sourceBranch = sourceBranch
 
             self.filesToMutate = filesToMutate.reduce(into: []) { accum, next in
                 accum.append(
@@ -72,7 +76,8 @@ extension Run.Options: Nullable {
             skipUpdateCheck: false,
             configurationURL: nil,
             testPlanURL: nil,
-            createTestPlan: false
+            createTestPlan: false,
+            sourceBranch: nil
         )
     }
 }

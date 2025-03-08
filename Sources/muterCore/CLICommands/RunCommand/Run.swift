@@ -40,7 +40,8 @@ struct Run: RunCommand {
             mutationOperatorsList: mutationOperatorsList,
             skipCoverage: options.skipCoverage,
             skipUpdateCheck: options.skipUpdateCheck,
-            configurationURL: options.configurationURL
+            configurationURL: options.configurationURL,
+            sourceBranch: options.sourceBranch
         )
 
         try await run(with: options)

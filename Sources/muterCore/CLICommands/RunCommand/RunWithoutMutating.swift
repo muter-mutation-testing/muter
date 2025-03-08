@@ -24,7 +24,8 @@ struct RunWithoutMutating: RunCommand {
             skipCoverage: options.skipCoverage,
             skipUpdateCheck: options.skipUpdateCheck,
             configurationURL: options.configurationURL,
-            testPlanURL: testPlanURL
+            testPlanURL: testPlanURL,
+            sourceBranch: options.sourceBranch
         )
 
         try await run(with: options)

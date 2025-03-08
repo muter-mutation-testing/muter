@@ -22,6 +22,15 @@ struct DiscoverMutationPoints: MutationStep {
             coverage: state.projectCoverage
         )
 
+        if state.runOptions.sourceBranch != nil {
+            let filter = TargetBranchSchemataFilter(
+                original: discovered.mappings,
+                sourceFileCandidateDiffInfo: state.sourceFileCandidateChangedInfo
+            )
+
+            discovered.mappings = filter.applyFilter()
+        }
+
         guard discovered.mappings.count >= 1 else {
             throw MuterError.noMutationPointsDiscovered
         }
