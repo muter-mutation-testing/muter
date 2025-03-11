@@ -7,6 +7,9 @@ struct BuildForTesting: MutationStep {
     private var notificationCenter: NotificationCenter
     @Dependency(\.process)
     private var process: ProcessFactory
+    
+    private let testContentsFolder = "TestContents"
+    private let buildDirectory = "Build/Products/"
 
     func run(
         with state: AnyMutationTestState
@@ -26,7 +29,7 @@ struct BuildForTesting: MutationStep {
         do {
             let buildDirectory = try buildDirectory(state.muterConfiguration)
             try runBuildForTestingCommand(state.muterConfiguration)
-            let tempDebugURL = debugURLForTempDirectory(state.mutatedProjectDirectoryURL)
+            let tempDebugURL = createTestContetsUrl(state.mutatedProjectDirectoryURL)
             try copyBuildArtifactsAtPath(buildDirectory, to: tempDebugURL.path)
 
             let xcTestRun = try parseXCTestRunAt(tempDebugURL)
@@ -38,22 +41,7 @@ struct BuildForTesting: MutationStep {
     }
 
     private func buildDirectory(_ configuration: MuterConfiguration) throws -> String {
-        guard let buildSettings = process()
-            .runProcess(url: configuration.testCommandExecutable, arguments: ["-showBuildSettings"])
-            .flatMap(\.nilIfEmpty)
-        else {
-            throw MuterError.literal(reason: "Could not find `BUILD_DIR`")
-        }
-
-        guard let buildDirectory = buildSettings
-            .firstMatchOf("BUILD_DIR = (.+)")?
-            .replacingOccurrences(of: "BUILD_DIR = ", with: "")
-            .trimmed
-        else {
-            throw MuterError.literal(reason: "Could not extract `BUILD_DIR` from project settings")
-        }
-
-        return buildDirectory
+        configuration.derivedDataPath
     }
 
     private func runBuildForTestingCommand(
@@ -66,17 +54,6 @@ struct BuildForTesting: MutationStep {
         else {
             throw MuterError.literal(reason: "Could not run test with -build-for-testing argument")
         }
-    }
-
-    private func findBuildRequestJsonPath(_ output: String) throws -> String {
-        guard let buildRequestFolder = output.firstMatchOf("Build description path: .*(\\n)")?
-            .replacingOccurrences(of: "Build description path: ", with: "")
-            .trimmed
-        else {
-            throw MuterError.literal(reason: "Could not parse buildRequest.json from build description path")
-        }
-
-        return "\(buildRequestFolder)/build-request.json"
     }
 
     private func parseBuildRequest(_ path: String) throws -> XCTestBuildRequest {
@@ -108,7 +85,7 @@ struct BuildForTesting: MutationStep {
 
         guard let replaced = stringContents.replacingOccurrences(
             of: "__TESTROOT__/",
-            with: "__TESTROOT__/Debug/"
+            with: "__TESTROOT__/\(testContentsFolder)/\(buildDirectory)"
         ).data(using: .utf8)
         else {
             throw MuterError.literal(reason: "Error error")
@@ -137,8 +114,8 @@ struct BuildForTesting: MutationStep {
         return xctestrun
     }
 
-    private func debugURLForTempDirectory(_ tempURL: URL) -> URL {
-        tempURL.appendingPathComponent("Debug")
+    private func createTestContetsUrl(_ tempURL: URL) -> URL {
+        tempURL.appendingPathComponent(testContentsFolder)
     }
 }
 
