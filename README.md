@@ -7,6 +7,7 @@
 ![Acceptance Tests](https://img.shields.io/endpoint?url=https://gist.githubusercontent.com/rakaramos/c064fc556513a6be07349b0d2f3ba44e/raw/muter-acceptance-badge.json&style=flat)
 [![Code coverage](https://img.shields.io/endpoint?url=https://gist.githubusercontent.com/rakaramos/2c3b3eae1b44a4c859bb8f8f2f32c783/raw/muter-coverage-badge.json&style=flat)](https://codecov.io/gh/muter-mutation-testing/muter)
 ![Mutation score](https://img.shields.io/badge/mutation%20score-67-blue?style=flat)
+[![libs.tech recommends](https://libs.tech/project/147972300/badge.svg)](https://libs.tech/project/147972300/muter)
 
 ### Automated [mutation testing](https://en.wikipedia.org/wiki/Mutation_testing) for Swift inspired by [Stryker](https://github.com/stryker-mutator/stryker), [PITest](https://github.com/hcoles/pitest), and [Mull](https://github.com/mull-project/mull).
 
