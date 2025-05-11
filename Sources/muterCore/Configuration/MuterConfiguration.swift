@@ -9,6 +9,7 @@ struct MuterConfiguration: Equatable, Codable {
     /// Exclusion list of functions for Remove Side Effects.
     let excludeCallList: [String]
     let coverageThreshold: Double
+    let testSuiteTimeOut: Double?
 
     var buildSystem: BuildSystem {
         guard let buildSystem = testCommandExecutable.components(separatedBy: "/").last?.trimmed else {
@@ -24,6 +25,7 @@ struct MuterConfiguration: Equatable, Codable {
         case excludeFileList = "exclude"
         case excludeCallList = "excludeCalls"
         case coverageThreshold
+        case testSuiteTimeOut = "timeOut"
     }
 
     init(
@@ -31,13 +33,15 @@ struct MuterConfiguration: Equatable, Codable {
         arguments: [String] = [],
         excludeList: [String] = [],
         excludeCallList callList: [String] = [],
-        coverageThreshold threshold: Double = 0
+        coverageThreshold threshold: Double = 0,
+        testSuiteTimeOut timeOut: Double? = nil
     ) {
         testCommandExecutable = executable
         testCommandArguments = arguments
         excludeFileList = excludeList
         excludeCallList = callList
         coverageThreshold = threshold
+        testSuiteTimeOut = timeOut
     }
 
     init(from decoder: Decoder) throws {
@@ -49,6 +53,7 @@ struct MuterConfiguration: Equatable, Codable {
         excludeFileList = container.decode([String].self, default: [], forKey: .excludeFileList)
         excludeCallList = container.decode([String].self, default: [], forKey: .excludeCallList)
         coverageThreshold = container.decode(Double.self, default: 0, forKey: .coverageThreshold)
+        testSuiteTimeOut = try container.decodeIfPresent(Double.self, forKey: .testSuiteTimeOut)
     }
 
     init(from data: Data) throws {

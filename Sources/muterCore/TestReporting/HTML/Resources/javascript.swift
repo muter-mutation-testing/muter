@@ -1,5 +1,7 @@
 let javascript = """
 window.onload = function() {
+    setupTheme();
+
     showHide(false, 'mutation-operators-per-file');
     showHide(false, 'applied-operators');
 };
@@ -39,5 +41,25 @@ function showChange(button) {
         changes.style.display = "table-cell";
         button.innerHTML = "-";
     }
+}
+
+function setupTheme() {
+    localStorage.setItem('theme', 'dark');
+
+    localStorage.getItem('theme');
+
+    const toggle = document.getElementById("toggle");
+    const theme = window.localStorage.getItem("theme");
+
+    if (theme === "dark") {
+        document.body.classList.add("dark");
+    }
+
+    toggle.addEventListener("click", () => {
+      document.body.classList.toggle("dark");
+      if (theme === "dark") {
+        window.localStorage.setItem("theme", "light");
+      } else window.localStorage.setItem("theme", "dark");
+    });
 }
 """

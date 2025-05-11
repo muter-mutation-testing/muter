@@ -33,7 +33,7 @@ final class PerformMutationTestingTests: MuterTestCase {
 
         XCTAssertEqual(ioDelegate.methodCalls, [
             // Base line
-            "runTestSuite(withSchemata:using:savingResultsIntoFileNamed:)",
+            "benchmarkTests(using:savingResultsIntoFileNamed:)",
             // First mutation
             "switchOn(schemata:for:at:)",
             "runTestSuite(withSchemata:using:savingResultsIntoFileNamed:)",
@@ -107,7 +107,7 @@ final class PerformMutationTestingTests: MuterTestCase {
 
         XCTAssertEqual(
             ioDelegate.methodCalls,
-            ["runTestSuite(withSchemata:using:savingResultsIntoFileNamed:)"]
+            ["benchmarkTests(using:savingResultsIntoFileNamed:)",]
         )
     }
 
@@ -126,7 +126,7 @@ final class PerformMutationTestingTests: MuterTestCase {
         }
 
         XCTAssertEqual(ioDelegate.methodCalls, [
-            "runTestSuite(withSchemata:using:savingResultsIntoFileNamed:)",
+            "benchmarkTests(using:savingResultsIntoFileNamed:)",
         ])
     }
 
@@ -145,7 +145,7 @@ final class PerformMutationTestingTests: MuterTestCase {
         }
 
         XCTAssertEqual(ioDelegate.methodCalls, [
-            "runTestSuite(withSchemata:using:savingResultsIntoFileNamed:)",
+            "benchmarkTests(using:savingResultsIntoFileNamed:)",
         ])
     }
 
@@ -167,7 +167,7 @@ final class PerformMutationTestingTests: MuterTestCase {
         )
 
         XCTAssertEqual(ioDelegate.methodCalls, [
-            "runTestSuite(withSchemata:using:savingResultsIntoFileNamed:)",
+            "benchmarkTests(using:savingResultsIntoFileNamed:)",
             "switchOn(schemata:for:at:)",
             "runTestSuite(withSchemata:using:savingResultsIntoFileNamed:)",
             "switchOn(schemata:for:at:)",
@@ -198,7 +198,7 @@ final class PerformMutationTestingTests: MuterTestCase {
 
         XCTAssertEqual(ioDelegate.methodCalls, [
             // base line
-            "runTestSuite(withSchemata:using:savingResultsIntoFileNamed:)",
+            "benchmarkTests(using:savingResultsIntoFileNamed:)",
             "switchOn(schemata:for:at:)",
             // First operator
             "runTestSuite(withSchemata:using:savingResultsIntoFileNamed:)",

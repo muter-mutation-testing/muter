@@ -10,6 +10,14 @@ protocol MutationTestingIODelegate {
         testLog: String
     )
 
+    func benchmarkTests(
+        using configuration: MuterConfiguration,
+        savingResultsIntoFileNamed fileName: String
+    ) -> (
+        outcome: TestSuiteOutcome,
+        testLog: String
+    )
+
     func switchOn(
         schemata: MutationSchema,
         for testRun: XCTestRun,
@@ -22,13 +30,47 @@ struct MutationTestingDelegate: MutationTestingIODelegate {
     private var notificationCenter: NotificationCenter
     @Dependency(\.process)
     private var process: ProcessFactory
+    @Dependency(\.testingTimeOutExecutor)
+    private var testingTimeOutExecutor: TestingTimeOutExecutorFactory
 
     private let muterTestRunFileName = "muter.xctestrun"
+
+    func benchmarkTests(
+        using configuration: MuterConfiguration,
+        savingResultsIntoFileNamed fileName: String
+    ) -> (
+        outcome: TestSuiteOutcome,
+        testLog: String
+    ) {
+        runTestSuite(
+            withSchemata: .null,
+            using: configuration,
+            savingResultsIntoFileNamed: fileName,
+            isBenchmark: true
+        )
+    }
 
     func runTestSuite(
         withSchemata schemata: MutationSchema,
         using configuration: MuterConfiguration,
         savingResultsIntoFileNamed fileName: String
+    ) -> (
+        outcome: TestSuiteOutcome,
+        testLog: String
+    ) {
+        runTestSuite(
+            withSchemata: schemata,
+            using: configuration,
+            savingResultsIntoFileNamed: fileName,
+            isBenchmark: false
+        )
+    }
+
+    private func runTestSuite(
+        withSchemata schemata: MutationSchema,
+        using configuration: MuterConfiguration,
+        savingResultsIntoFileNamed fileName: String,
+        isBenchmark: Bool
     ) -> (
         outcome: TestSuiteOutcome,
         testLog: String
@@ -43,23 +85,52 @@ struct MutationTestingDelegate: MutationTestingIODelegate {
                 and: testProcessFileHandle
             )
 
-            try process.run()
-
-            process.waitUntilExit()
-
-            let contents = try String(contentsOf: testLogUrl)
+            let timeOut = isBenchmark ? nil : configuration.testSuiteTimeOut
+            let (outcome, contents) = try runTestProcess(process, logFileUrl: testLogUrl, withTimeOut: timeOut)
 
             return (
-                outcome: TestSuiteOutcome.from(
-                    testLog: contents,
-                    terminationStatus: process.terminationStatus
-                ),
+                outcome: outcome,
                 testLog: contents
             )
 
         } catch {
             return (.buildError, "") // this should never be executed
         }
+    }
+
+    private func runTestProcess(
+        _ process: Process,
+        logFileUrl: URL,
+        withTimeOut timeOut: TimeInterval?
+    ) throws -> (TestSuiteOutcome, String) {
+        let executionResult = timeOut == nil
+            ? try runTestProcess(process)
+            : try runTestProcess(process, withTimeOut: timeOut!)
+
+        let testExecutionLog = try String(contentsOf: logFileUrl)
+        let testResult = TestSuiteOutcome.from(
+            testLog: testExecutionLog,
+            terminationStatus: process.terminationStatus,
+            timeOutExecution: executionResult
+        )
+
+        return (testResult, testExecutionLog)
+    }
+
+    private func runTestProcess(
+        _ process: Process,
+        withTimeOut timeOut: TimeInterval
+    ) throws -> TestingExecutionResult {
+        let executor = testingTimeOutExecutor()
+
+        return try executor.runTestProcess(process, withTimeOut: timeOut)
+    }
+
+    private func runTestProcess(_ process: Process) throws -> TestingExecutionResult {
+        try process.run()
+        process.waitUntilExit()
+
+        return .success
     }
 
     func switchOn(

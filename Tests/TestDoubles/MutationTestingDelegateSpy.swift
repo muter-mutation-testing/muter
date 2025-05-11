@@ -28,15 +28,19 @@ class MutationTestingDelegateSpy: Spy, MutationTestingIODelegate {
     }
 
     func runTestSuite(
+        withSchemata schemata: MutationSchema,
         using configuration: MuterConfiguration,
         savingResultsIntoFileNamed fileName: String
-    ) -> (outcome: TestSuiteOutcome, testLog: String) {
+    ) -> (
+        outcome: TestSuiteOutcome,
+        testLog: String
+    ) {
         methodCalls.append(#function)
+        testLogs.append(fileName)
         return (testSuiteOutcomes.remove(at: 0), "testLog")
     }
 
-    func runTestSuite(
-        withSchemata schemata: MutationSchema,
+    func benchmarkTests(
         using configuration: MuterConfiguration,
         savingResultsIntoFileNamed fileName: String
     ) -> (
