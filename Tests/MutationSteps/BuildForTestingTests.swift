@@ -59,34 +59,6 @@ final class BuildForTestingTests: MuterTestCase {
         )
     }
 
-    func test_runShowBuildSettings() async throws {
-        state.muterConfiguration = MuterConfiguration(
-            executable: "/path/to/xcodebuild",
-            arguments: ["some", "commands", "test"]
-        )
-
-        process.stdoutToBeReturned = ""
-
-        _ = try? await sut.run(with: state)
-
-        XCTAssertEqual(process.executableURL?.path, "/path/to/xcodebuild")
-        XCTAssertEqual(process.arguments, ["-showBuildSettings"])
-    }
-
-    func test_whenCannotParseBuildDirectoryThenThrowError() async throws {
-        state.muterConfiguration = MuterConfiguration(
-            executable: "/path/to/xcodebuild",
-            arguments: ["some", "commands", "test"]
-        )
-
-        process.stdoutToBeReturned = ""
-
-        try await assertThrowsMuterError(
-            await sut.run(with: state),
-            .literal(reason: "Could not find `BUILD_DIR`")
-        )
-    }
-
     func test_copyBuildArtifactsFailed() async throws {
         state.muterConfiguration = MuterConfiguration(
             executable: "/path/to/xcodebuild",
@@ -94,7 +66,6 @@ final class BuildForTestingTests: MuterTestCase {
         )
 
         state.mutatedProjectDirectoryURL = URL(fileURLWithPath: "/path/to/temp")
-        process.stdoutToBeReturned = xcodebuildShowBuildSettingsOutput()
         process.stdoutToBeReturned = xcodebuildBuildForTestingOutput()
         fileManager.errorToThrow = TestingError.stub
 
@@ -111,13 +82,12 @@ final class BuildForTestingTests: MuterTestCase {
         )
 
         state.mutatedProjectDirectoryURL = URL(fileURLWithPath: "/path/to/temp")
-        process.stdoutToBeReturned = xcodebuildShowBuildSettingsOutput()
         process.stdoutToBeReturned = xcodebuildBuildForTestingOutput()
         fileManager.contentsAtPathSortedToReturn = [""]
 
         try await assertThrowsMuterError(
             await sut.run(with: state),
-            .literal(reason: "Could not find xctestrun file at path: /path/to/temp/Debug")
+            .literal(reason: "Could not find xctestrun file at path: /path/to/temp/TestContents")
         )
     }
 
@@ -128,7 +98,6 @@ final class BuildForTestingTests: MuterTestCase {
         )
 
         state.mutatedProjectDirectoryURL = URL(fileURLWithPath: "/path/to/temp")
-        process.stdoutToBeReturned = xcodebuildShowBuildSettingsOutput()
         process.stdoutToBeReturned = xcodebuildBuildForTestingOutput()
         fileManager.contentsAtPathSortedToReturn = ["some/project.xctestrun"]
 
@@ -156,30 +125,6 @@ final class BuildForTestingTests: MuterTestCase {
 
 
         ** TEST BUILD SUCCEEDED **
-        """
-    }
-
-    private func xcodebuildShowBuildSettingsOutput() -> String {
-        """
-        AUTOMATICALLY_MERGE_DEPENDENCIES = NO
-            AVAILABLE_PLATFORMS = appletvos appletvsimulator driverkit iphoneos iphonesimulator macosx watchos watchsimulator
-            BITCODE_GENERATION_MODE = marker
-            BUILD_ACTIVE_RESOURCES_ONLY = NO
-            BUILD_COMPONENTS = headers build
-            BUILD_DIR = /user/Library/Developer/Xcode/DerivedData/App-gkbxrvayhpqhtperezjiwgahsiuy/Build/Products
-            BUILD_LIBRARY_FOR_DISTRIBUTION = NO
-            BUILD_ROOT = /user/Library/Developer/Xcode/DerivedData/App-gkbxrvayhpqhtperezjiwgahsiuy/Build/Products
-            BUILD_STYLE =
-            BUILD_VARIANTS = normal
-            BUILT_PRODUCTS_DIR = /user/Library/Developer/Xcode/DerivedData/App-gkbxrvayhpqhtperezjiwgahsiuy/Build/Products/Release-iphoneos
-            BUNDLE_CONTENTS_FOLDER_PATH_deep = Contents/
-            BUNDLE_EXECUTABLE_FOLDER_NAME_deep = MacOS
-            BUNDLE_EXTENSIONS_FOLDER_PATH = Extensions
-            BUNDLE_FORMAT = shallow
-            BUNDLE_FRAMEWORKS_FOLDER_PATH = Frameworks
-            BUNDLE_PLUGINS_FOLDER_PATH = PlugIns
-            BUNDLE_PRIVATE_HEADERS_FOLDER_PATH = PrivateHeaders
-            BUNDLE_PUBLIC_HEADERS_FOLDER_PATH = Headers
         """
     }
 

@@ -99,31 +99,66 @@ extension MuterConfiguration {
 
         switch buildSystem {
         case .xcodebuild:
-            return arguments.dropLast() + ["clean", "build-for-testing"]
+            return testArgumentsWithtDerivedData() + ["clean", "build-for-testing"]
         case .swift,
              .unknown:
             return arguments
         }
     }
 
+    var derivedDataPath: String {
+        guard let index = derivedDataArgumentIndex() else {
+            return defaultDerivedData
+        }
+
+        return testCommandArguments[index + 1]
+    }
+    
+    private var defaultDerivedData: String { "DerivedData" }
+
     func testWithoutBuildArguments(with testRunFile: String) -> [String] {
         let arguments = testCommandArguments
         switch buildSystem {
         case .xcodebuild:
-            guard let destinationIndex = arguments.firstIndex(of: "-destination") else {
+            guard let destinationIndex = indexOfArgument("-destination") else {
                 return arguments
             }
             return [
                 "test-without-building",
                 testCommandArguments[destinationIndex],
-                testCommandArguments[destinationIndex.advanced(by: 1)],
+                testCommandArguments[destinationIndex + 1],
                 "-xctestrun",
-                testRunFile,
+                testRunFile
             ]
         case .swift:
             return arguments + ["--skip-build"]
         case .unknown:
             return arguments
         }
+    }
+
+    private func indexOfArgument(_ arg: String) -> Int? {
+        testCommandArguments.firstIndex(of: arg)
+    }
+
+    private func derivedDataArgumentIndex() -> Int? {
+        indexOfArgument("-derivedDataPath")
+    }
+
+    private func testArgumentsWithtDerivedData() -> [String] {
+        guard derivedDataArgumentIndex() == nil else {
+            return testCommandArguments
+        }
+        
+        guard let testArgsIndex = indexOfArgument("test") else {
+            return testCommandArguments
+        }
+        
+        var args = testCommandArguments
+        args.remove(at: testArgsIndex)
+        args.append("-derivedDataPath")
+        args.append(defaultDerivedData)
+        
+        return args
     }
 }
