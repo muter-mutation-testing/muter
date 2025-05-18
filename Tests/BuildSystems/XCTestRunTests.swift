@@ -1,4 +1,4 @@
-#if !os(Linux)
+#if os(macOS)
 @testable import muterCore
 import TestingExtensions
 import XCTest

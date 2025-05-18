@@ -1,7 +1,8 @@
-#if os(Linux)
+import Foundation
+#if canImport(FoundationNetworking)
 import FoundationNetworking
 #endif
-import Foundation
+
 @testable import muterCore
 
 final class ServerSpy: Server {

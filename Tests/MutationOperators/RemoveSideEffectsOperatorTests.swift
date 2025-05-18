@@ -6,7 +6,7 @@ import XCTest
 
 final class RemoveSideEffectsOperatorTests: MuterTestCase {
     private lazy var sourceWithSideEffects = sourceCode(
-        fromFileAt: "\(fixturesDirectory)/MutationExamples/SideEffect/sampleWithSideEffects.swift"
+        fromFileAt: "\(fixturesDirectory)/MutationExamples/SideEffect/sampleWithSideEffects.swift".platformNormalizedPath
     )!
 
     func test_visitor() throws {

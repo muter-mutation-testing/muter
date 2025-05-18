@@ -24,7 +24,7 @@ final class ConfigurationGenerationTests: MuterTestCase {
         )
     }
 
-    #if !os(Linux)
+    #if os(macOS)
     func test_xcodeProject() {
         let projectDirectoryContents = [
             "/some/path/Package.swift",

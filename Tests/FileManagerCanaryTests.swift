@@ -13,9 +13,11 @@ final class FileManagerCanaryTests: XCTestCase {
 
             #if os(Linux)
             XCTAssertTrue(temporaryDirectory.absoluteString.contains("/tmp/TemporaryItems/"))
-            #else
+            #elseif os(macOS)
             XCTAssertTrue(temporaryDirectory.absoluteString.contains("/var/folders"))
             XCTAssertTrue(temporaryDirectory.absoluteString.contains("/T/TemporaryItems/"))
+            #elseif os(Windows)
+            XCTAssertTrue(temporaryDirectory.absoluteString.contains("\\AppData\\Local\\Temp\\"))
             #endif
         } catch {
             XCTFail("Expected no errors, but got \(error)")

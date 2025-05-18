@@ -102,7 +102,7 @@ extension BuildSystemCoverage {
     }
 
     func llvmCovJsonReport(withExecutableAt executablePath: String, coverageProfile: String) -> String? {
-        #if os(Linux)
+        #if !os(macOS)
         let url = process().which("llvm-cov")
         let arguments = [
             "export",

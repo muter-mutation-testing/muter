@@ -4,15 +4,15 @@ import XCTest
 
 final class ROROperatorTests: MuterTestCase {
     private lazy var sourceWithConditionalLogic = sourceCode(
-        fromFileAt: "\(mutationExamplesDirectory)/NegateConditionals/sampleWithConditionalOperators.swift"
+        fromFileAt: "\(mutationExamplesDirectory)/NegateConditionals/sampleWithConditionalOperators.swift".platformNormalizedPath
     )!
 
     private lazy var sourceWithoutMutableCode = sourceCode(
-        fromFileAt: "\(fixturesDirectory)/sourceWithoutMutableCode.swift"
+        fromFileAt: "\(fixturesDirectory)/sourceWithoutMutableCode.swift".platformNormalizedPath
     )!
 
     private lazy var conditionalConformanceConstraints = sourceCode(
-        fromFileAt: "\(mutationExamplesDirectory)/NegateConditionals/conditionalConformanceConstraints.swift"
+        fromFileAt: "\(mutationExamplesDirectory)/NegateConditionals/conditionalConformanceConstraints.swift".platformNormalizedPath
     )!
 
     func test_visitor() throws {
