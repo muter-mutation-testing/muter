@@ -2,9 +2,7 @@ import Foundation
 
 extension String {
     var platformNormalizedPath: String {
-        let result = replacingOccurrences(of: "/", with: pathSeparator)
-        print("result: \(result)")
-        return result
+        replacingOccurrences(of: "/", with: pathSeparator)
     }
 
     private var pathSeparator: String {
