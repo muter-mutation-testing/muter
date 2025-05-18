@@ -45,7 +45,7 @@ final class SwiftCoverage: BuildSystemCoverage {
         coverageThreshold: Double = 0
     ) -> (percent: Int, filesWithoutCoverage: [FilePath]) {
         let files = report.stringsMatchingRegex("^(.)*.swift", options: .anchorsMatchLines)
-        var percents = report.split(separator: "\n").compactMap { line in
+        var percents = report.components(separatedBy: .newlines).compactMap { line in
             String(line)
                 .stringsMatchingRegex("\\d{1,3}.\\d{1,2}%")
                 .last?
@@ -68,7 +68,7 @@ final class SwiftCoverage: BuildSystemCoverage {
             .deletingPathExtension()
             .lastPathComponent
 
-        #if os(Linux)
+        #if !os(macOS)
         let url = process().which("llvm-cov") ?? ""
         let arguments = [
             "report",

@@ -98,7 +98,7 @@ public func AssertThrowsError(
     }
 }
 
-#if os(Linux)
+#if !os(macOS)
 public extension XCTestCase {
     func fulfillment(of expectations: [XCTestExpectation], timeout: TimeInterval, enforceOrder: Bool = false) async {
         await withCheckedContinuation { continuation in

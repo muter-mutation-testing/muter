@@ -1,14 +1,14 @@
-#if os(Linux)
+import Foundation
+#if canImport(FoundationNetworking)
 import FoundationNetworking
 #endif
-import Foundation
 import Version
 
 protocol Server {
     func data(from url: URL) async throws -> (Data, URLResponse)
 }
 
-#if os(Linux)
+#if os(Linux) || os(Windows)
 extension URLSession: Server {
     func data(from url: URL) async throws -> (Data, URLResponse) {
         try await withCheckedThrowingContinuation { continuation in

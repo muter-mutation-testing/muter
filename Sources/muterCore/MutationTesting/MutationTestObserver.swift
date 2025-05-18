@@ -1,6 +1,6 @@
 #if os(Linux)
 import Glibc
-#else
+#elseif os(macOS)
 import Darwin.C
 #endif
 import Foundation

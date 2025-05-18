@@ -1,14 +1,28 @@
 #if os(Linux)
 import Glibc
-#else
+#elseif os(macOS)
 import Darwin.C
+#elseif os(Windows)
+import WinSDK
 #endif
 
+#if os(Windows)
+func getTimeOfDay() -> Double {
+    var fileTime = FILETIME()
+    GetSystemTimeAsFileTime(&fileTime)
+    
+    let windowsTicks: UInt64 = UInt64(fileTime.dwHighDateTime) << 32 | UInt64(fileTime.dwLowDateTime)
+    let unixTicks = windowsTicks - 116444736000000000
+    let seconds = Double(unixTicks) / 10000000.0
+    return seconds
+}
+#else
 func getTimeOfDay() -> Double {
     var tv = timeval()
     gettimeofday(&tv, nil)
     return Double(tv.tv_sec) + Double(tv.tv_usec) / 1000000
 }
+#endif
 
 extension Double {
     func format(_ decimalPartLength: Int, minimumIntegerPartLength: Int = 0) -> String {

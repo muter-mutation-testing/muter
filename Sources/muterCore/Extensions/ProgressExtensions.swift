@@ -93,10 +93,3 @@ struct ProgressBarMultilineTerminalPrinter: ProgressBarPrinter {
     }
 }
 
-private extension ProgressBarMultilineTerminalPrinter {
-    func getTimeOfDay() -> Double {
-        var tv = timeval()
-        gettimeofday(&tv, nil)
-        return Double(tv.tv_sec) + Double(tv.tv_usec) / 1000000
-    }
-}

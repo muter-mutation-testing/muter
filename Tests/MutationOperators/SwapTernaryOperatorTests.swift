@@ -4,11 +4,11 @@ import XCTest
 
 final class SwapTernaryOperatorTests: MuterTestCase {
     private lazy var sampleCode = sourceCode(
-        fromFileAt: "\(mutationExamplesDirectory)/TernaryOperator/sampleWithTernaryOperator.swift"
+        fromFileAt: "\(mutationExamplesDirectory)/TernaryOperator/sampleWithTernaryOperator.swift".platformNormalizedPath
     )!
 
     private lazy var sampleNestedCode = sourceCode(
-        fromFileAt: "\(mutationExamplesDirectory)/TernaryOperator/sampleWithNestedTernaryOperator.swift"
+        fromFileAt: "\(mutationExamplesDirectory)/TernaryOperator/sampleWithNestedTernaryOperator.swift".platformNormalizedPath
     )!
 
     func test_visitor() throws {

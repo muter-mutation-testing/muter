@@ -123,18 +123,14 @@ private struct XCTestBuildRequest: Codable {
     var buildProductsPath: String {
         parameters.arenaInfo.buildProductsPath
     }
-
     private let parameters: Parameters
 }
 
-extension XCTestBuildRequest {
-    struct Parameters: Codable {
-        let arenaInfo: ArenaInfo
-    }
+private struct Parameters: Codable {
+    let arenaInfo: ArenaInfo
 }
 
-extension XCTestBuildRequest.Parameters {
-    struct ArenaInfo: Codable {
-        let buildProductsPath: String
-    }
+private struct ArenaInfo: Codable {
+    let buildProductsPath: String
 }
+

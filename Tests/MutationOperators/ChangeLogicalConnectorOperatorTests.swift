@@ -4,11 +4,11 @@ import XCTest
 
 final class ChangeLogicalConnectorOperatorTests: MuterTestCase {
     private lazy var sourceWithLogicalOperators = sourceCode(
-        fromFileAt: "\(fixturesDirectory)/MutationExamples/LogicalOperator/sampleWithLogicalOperators.swift"
+        fromFileAt: "\(fixturesDirectory)/MutationExamples/LogicalOperator/sampleWithLogicalOperators.swift".platformNormalizedPath
     )!
 
     private lazy var sampleWithFailuresParsing = sourceCode(
-        fromFileAt: "\(fixturesDirectory)/MutationExamples/LogicalOperator/sampleWithFailuresParsing.swift"
+        fromFileAt: "\(fixturesDirectory)/MutationExamples/LogicalOperator/sampleWithFailuresParsing.swift".platformNormalizedPath
     )!
 
     func test_rewriter() throws {

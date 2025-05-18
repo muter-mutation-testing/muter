@@ -3,7 +3,7 @@ import Foundation
 extension Foundation.Process: MuterProcess {}
 
 extension Foundation.Process {
-    #if !os(Linux)
+    #if os(macOS)
     @objc
     #endif
     var processData: Data? {

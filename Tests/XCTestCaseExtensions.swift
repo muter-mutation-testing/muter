@@ -134,11 +134,13 @@ class MuterTestCase: XCTestCase {
 
 public extension XCTestCase {
     var rootTestDirectory: String {
-        String(
-            URL(fileURLWithPath: #filePath)
-                .deletingLastPathComponent()
-                .withoutScheme()
-        )
+        let filePath = URL(fileURLWithPath: #filePath)
+            .deletingLastPathComponent()
+        #if os(Windows)
+        return filePath.path
+        #else
+        filePath.withoutScheme()
+        #endif
     }
 
     var fixturesDirectory: String { "\(rootTestDirectory)/fixtures" }

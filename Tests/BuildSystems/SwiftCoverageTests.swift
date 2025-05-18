@@ -60,7 +60,7 @@ final class SwiftCoverageTests: MuterTestCase {
         )
     }
 
-    #if os(Linux)
+    #if !os(macOS)
     func test_whenFindTestArtifactsCommandSucceeds_thenGenerateCoverageTable() {
         process.stdoutToBeReturned = "something"
         process.stdoutToBeReturned = "/path/to/binary"
@@ -85,7 +85,6 @@ final class SwiftCoverageTests: MuterTestCase {
         )
     }
     #else
-
     func test_whenFindTestArtifactsCommandSucceeds_thenGenerateCoverageTable() {
         process.stdoutToBeReturned = "something"
         process.stdoutToBeReturned = "/path/to/binary"

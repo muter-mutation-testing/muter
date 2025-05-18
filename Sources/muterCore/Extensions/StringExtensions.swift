@@ -1,6 +1,18 @@
 import Foundation
 
 extension String {
+    var platformNormalizedPath: String {
+        replacingOccurrences(of: "/", with: pathSeparator)
+    }
+
+    private var pathSeparator: String {
+        #if os(macOS)
+        "/"
+        #else
+        "\\"
+        #endif
+    }
+
     func repeated(_ times: Int) -> String { (0 ..< times).reduce("") { current, _ in current + "\(self)" } }
 
     func removingSubrange(_ bounds: Range<String.Index>?) -> String {
