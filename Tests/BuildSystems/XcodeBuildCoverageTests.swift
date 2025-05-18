@@ -1,3 +1,4 @@
+#if os(macOS)
 @testable import muterCore
 import TestingExtensions
 import XCTest
@@ -157,3 +158,4 @@ let coverageData =
       ]
     }
     """
+#endif
