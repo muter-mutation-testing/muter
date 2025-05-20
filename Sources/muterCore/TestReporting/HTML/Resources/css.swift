@@ -140,9 +140,10 @@ let css =
         text-align: center;
     }
 
-    .toggle {
+    .theme-toggle {
+        border: none;
         float: right;
-        padding: 5px 0px 10px 0px;
+        background: transparent;
     }
 
     .logo {

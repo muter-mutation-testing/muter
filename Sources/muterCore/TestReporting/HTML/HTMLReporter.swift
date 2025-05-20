@@ -24,6 +24,7 @@ private func htmlReport(
         .muterHeader(),
         .body(
             .div(
+                .themeToggle(),
                 .class("report"),
                 .muterHeader(from: testReport),
                 .main(
@@ -59,14 +60,6 @@ extension Node where Context == HTML.DocumentContext {
         let css = normalizeCSS + reportCSS
 
         return .head(
-            .link(
-                .rel(.stylesheet),
-                .href("https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css"),
-                .integrity(
-                    "sha512-Kc323vGBEqzTmouAECnVceyQqyqdsSiqLQISBL29aUW4U/M7pSPA/gEUZQqv1cwx4OnYxTxve5UMg5GT6L4JJg=="
-                ),
-                .crossorigin(true)
-            ),
             .title("Muter Report"),
             .meta(.charset(.utf8)),
             .style(css),
@@ -110,6 +103,12 @@ extension Node where Context: HTML.BodyContext {
             )
         )
     }
+    
+    static func themeToggle() -> Self {
+        .div(
+            .button(.id("theme-toggle"), .class("theme-toggle"))
+        )
+    }
 
     static func summary(
         from testReport: MuterTestReport,
@@ -117,21 +116,16 @@ extension Node where Context: HTML.BodyContext {
     ) -> Self {
         .div(
             .p(
-                "In total, Muter introduced ",
+                "📝 In total, Muter introduced ",
                 .span(.class("strong"), "\(testReport.totalAppliedMutationOperators)"),
                 " mutants in ",
                 .span(.class("strong"), "\(testReport.fileReports.count)"),
                 " files."
             ),
-            .p("Muter took \(testReport.timeElapsed) to run."),
-            .p("Muter took \(testReport.timeElapsed) to run."),
-            .div(
-                .class("buttons"),
-                .button(.id("toggle"), .class("toggle"), "Toggle")
-            ),
+            .p("⏰ Muter took \(testReport.timeElapsed) to run."),
             .if(
                 !newVersion.isEmpty,
-                .p("The version \(newVersion) of Muter is available")
+                .p("🆕 The version \(newVersion) of Muter is available")
             )
         )
     }

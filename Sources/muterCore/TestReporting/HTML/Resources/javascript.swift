@@ -44,22 +44,35 @@ function showChange(button) {
 }
 
 function setupTheme() {
-    localStorage.setItem('theme', 'dark');
-
-    localStorage.getItem('theme');
-
-    const toggle = document.getElementById("toggle");
-    const theme = window.localStorage.getItem("theme");
-
-    if (theme === "dark") {
-        document.body.classList.add("dark");
+    // Set default theme if not set
+    if (!localStorage.getItem('theme')) {
+        localStorage.setItem('theme', 'dark');
     }
 
+    const toggle = document.getElementById("theme-toggle");
+    let theme = localStorage.getItem("theme");
+
+    function applyTheme() {
+        theme = localStorage.getItem("theme");
+        if (theme === "dark") {
+            toggle.textContent = "☀️";
+            document.body.classList.add("dark");
+        } else {
+            toggle.textContent = "🌙";
+            document.body.classList.remove("dark");
+        }
+    }
+
+    applyTheme();
+
     toggle.addEventListener("click", () => {
-      document.body.classList.toggle("dark");
-      if (theme === "dark") {
-        window.localStorage.setItem("theme", "light");
-      } else window.localStorage.setItem("theme", "dark");
+        theme = localStorage.getItem("theme");
+        if (theme === "dark") {
+            localStorage.setItem("theme", "light");
+        } else {
+            localStorage.setItem("theme", "dark");
+        }
+        applyTheme();
     });
 }
 """
