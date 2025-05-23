@@ -376,13 +376,7 @@ template {
 
 [hidden] {
     display: none;
-}body {
-    background-color: #FAFAFA;
-    color: #000000;
-    font-family: -apple-system, BlinkMacSystemFont, Segoe UI, Helvetica, Arial, sans-serif, Apple Color Emoji, Segoe UI Emoji
-}
-
-h1 {
+}h1 {
     font-size: 3em;
     margin: 0;
 }
@@ -522,9 +516,10 @@ th {
     text-align: center;
 }
 
-.toggle {
+.theme-toggle {
+    border: none;
     float: right;
-    padding: 5px 0px 10px 0px;
+    background: transparent;
 }
 
 .logo {
@@ -562,13 +557,35 @@ th {
     width: 100%;
 }
 
-@media (prefers-color-scheme: dark) {
-    body {
-        color: #eee;
-        background: #0d1117;
-    }
+body {
+  --text-white: #ffffff;
+  --text-dark: #142136;
 
-    p, span, label, h1 {
+  --bg-grey-light: #f5f5f5;
+  --bg-white: #ffffff;
+  --bg-blue-dark: #142136;
+  --bg-indigo: #6366f1;
+
+  font-family: -apple-system, BlinkMacSystemFont, Segoe UI, Helvetica, Arial, sans-serif, Apple Color Emoji, Segoe UI Emoji
+
+  transition: background 0.2s linear;
+}
+
+.dark {
+  color: #eee;
+  background: #0d1117;
+  --text-white: #e6e6e6;
+  --text-dark: #ffffff;
+
+  --bg-grey-light: #142136;
+  --bg-white: #22395d;
+  --bg-blue-dark: #142136;
+  --bg-indigo: #7577e1;
+
+    p,
+    span,
+    label,
+    h1 {
         color: #ffffff;
     }
 
@@ -599,8 +616,9 @@ th {
 
     th {
         background-color: #293649;
-    }
-}</style><script>window.onload = function() {
+    }</style><script>window.onload = function() {
+    setupTheme();
+
     showHide(false, 'mutation-operators-per-file');
     showHide(false, 'applied-operators');
 };
@@ -640,7 +658,40 @@ function showChange(button) {
         changes.style.display = "table-cell";
         button.innerHTML = "-";
     }
-}</script></head><body><div class="report"><header><div class="logo"><svg viewBox="0 0 1121 354" width="100%">
+}
+
+function setupTheme() {
+    // Set default theme if not set
+    if (!localStorage.getItem('theme')) {
+        localStorage.setItem('theme', 'dark');
+    }
+
+    const toggle = document.getElementById("theme-toggle");
+    let theme = localStorage.getItem("theme");
+
+    function applyTheme() {
+        theme = localStorage.getItem("theme");
+        if (theme === "dark") {
+            toggle.textContent = "☀️";
+            document.body.classList.add("dark");
+        } else {
+            toggle.textContent = "🌙";
+            document.body.classList.remove("dark");
+        }
+    }
+
+    applyTheme();
+
+    toggle.addEventListener("click", () => {
+        theme = localStorage.getItem("theme");
+        if (theme === "dark") {
+            localStorage.setItem("theme", "light");
+        } else {
+            localStorage.setItem("theme", "dark");
+        }
+        applyTheme();
+    });
+}</script></head><body><div class="report"><div><button id="theme-toggle" class="theme-toggle"></button></div><header><div class="logo"><svg viewBox="0 0 1121 354" width="100%">
     <style>
         .a {
             fill: #1e2434
@@ -685,7 +736,7 @@ function showChange(button) {
         d="M934.259 78.2v17.2l-36.6-29-4.7 5.3c-9 10.1-24 11.7-34.9 3.9l20.4-26.3c6.6 3.6 14 5.5 21.4 5.5h12.1l22.3 23.4z" />
         <path d="M920.359 104.1l10.5 8.3c-6.4 4.3-14.9 3.5-20.4-1.8l9.9-6.5z" class="b" />
     </g>
-</svg></div><div class="header-item"><div class="box" style="background-color: #92b300"><p class="small">Mutation Score</p><h1>52%</h1></div></div><div class="header-item"><div class="box" style="background-color: #3498db"><p class="small">Operators Applied</p><h1>43</h1></div></div></header><main class="summary"><div><p>In total, Muter introduced <span class="strong">43</span> mutants in <span class="strong">43</span> files.</p><p>Muter took 00:00:00.000 to run.</p><p>Muter took 00:00:00.000 to run.</p></div><div class="divider"><span class="divider-content">Mutation Operators per File</span></div><div class="mutation-operators-per-file"><div class="toggle"><input id="show-more-mutation-operators-per-file" type="checkbox" onclick="showHide(this.checked, 'mutation-operators-per-file');"/><label for="show-more-mutation-operators-per-file">Show all</label></div><table id="mutation-operators-per-file"><thead><tr><th>File</th><th># of Introduced Mutants</th><th>Mutation Score</th></tr></thead><tbody><tr><td class="left-aligned">file0.swift</td><td class="right-aligned">1</td><td class="right-aligned" style="color: #51a100">100</td></tr><tr><td class="left-aligned">file1.swift</td><td class="right-aligned">1</td><td class="right-aligned" style="color: #51a100">100</td></tr><tr><td class="left-aligned">file2.swift</td><td class="right-aligned">1</td><td class="right-aligned" style="color: #f70000">0</td></tr><tr><td class="left-aligned">file3.swift</td><td class="right-aligned">1</td><td class="right-aligned" style="color: #51a100">100</td></tr><tr><td class="left-aligned">file5.swift</td><td class="right-aligned">1</td><td class="right-aligned" style="color: #f70000">0</td></tr><tr><td class="left-aligned">file6.swift</td><td class="right-aligned">1</td><td class="right-aligned" style="color: #f70000">0</td></tr><tr><td class="left-aligned">file7.swift</td><td class="right-aligned">1</td><td class="right-aligned" style="color: #51a100">100</td></tr><tr><td class="left-aligned">file8.swift</td><td class="right-aligned">1</td><td class="right-aligned" style="color: #f70000">0</td></tr><tr><td class="left-aligned">file9.swift</td><td class="right-aligned">1</td><td class="right-aligned" style="color: #51a100">100</td></tr><tr><td class="left-aligned">file11.swift</td><td class="right-aligned">1</td><td class="right-aligned" style="color: #f70000">0</td></tr><tr><td class="left-aligned">file12.swift</td><td class="right-aligned">1</td><td class="right-aligned" style="color: #f70000">0</td></tr><tr><td class="left-aligned">file13.swift</td><td class="right-aligned">1</td><td class="right-aligned" style="color: #51a100">100</td></tr><tr><td class="left-aligned">file14.swift</td><td class="right-aligned">1</td><td class="right-aligned" style="color: #f70000">0</td></tr><tr><td class="left-aligned">file15.swift</td><td class="right-aligned">1</td><td class="right-aligned" style="color: #51a100">100</td></tr><tr><td class="left-aligned">file17.swift</td><td class="right-aligned">1</td><td class="right-aligned" style="color: #f70000">0</td></tr><tr><td class="left-aligned">file18.swift</td><td class="right-aligned">1</td><td class="right-aligned" style="color: #f70000">0</td></tr><tr><td class="left-aligned">file19.swift</td><td class="right-aligned">1</td><td class="right-aligned" style="color: #51a100">100</td></tr><tr><td class="left-aligned">file20.swift</td><td class="right-aligned">1</td><td class="right-aligned" style="color: #f70000">0</td></tr><tr><td class="left-aligned">file21.swift</td><td class="right-aligned">1</td><td class="right-aligned" style="color: #51a100">100</td></tr><tr><td class="left-aligned">file23.swift</td><td class="right-aligned">1</td><td class="right-aligned" style="color: #f70000">0</td></tr><tr><td class="left-aligned">file24.swift</td><td class="right-aligned">1</td><td class="right-aligned" style="color: #f70000">0</td></tr><tr><td class="left-aligned">file25.swift</td><td class="right-aligned">1</td><td class="right-aligned" style="color: #51a100">100</td></tr><tr><td class="left-aligned">file26.swift</td><td class="right-aligned">1</td><td class="right-aligned" style="color: #f70000">0</td></tr><tr><td class="left-aligned">file27.swift</td><td class="right-aligned">1</td><td class="right-aligned" style="color: #51a100">100</td></tr><tr><td class="left-aligned">file29.swift</td><td class="right-aligned">1</td><td class="right-aligned" style="color: #f70000">0</td></tr><tr><td class="left-aligned">file30.swift</td><td class="right-aligned">1</td><td class="right-aligned" style="color: #f70000">0</td></tr><tr><td class="left-aligned">file31.swift</td><td class="right-aligned">1</td><td class="right-aligned" style="color: #51a100">100</td></tr><tr><td class="left-aligned">file32.swift</td><td class="right-aligned">1</td><td class="right-aligned" style="color: #f70000">0</td></tr><tr><td class="left-aligned">file33.swift</td><td class="right-aligned">1</td><td class="right-aligned" style="color: #51a100">100</td></tr><tr><td class="left-aligned">file35.swift</td><td class="right-aligned">1</td><td class="right-aligned" style="color: #f70000">0</td></tr><tr><td class="left-aligned">file36.swift</td><td class="right-aligned">1</td><td class="right-aligned" style="color: #f70000">0</td></tr><tr><td class="left-aligned">file37.swift</td><td class="right-aligned">1</td><td class="right-aligned" style="color: #51a100">100</td></tr><tr><td class="left-aligned">file38.swift</td><td class="right-aligned">1</td><td class="right-aligned" style="color: #f70000">0</td></tr><tr><td class="left-aligned">file39.swift</td><td class="right-aligned">1</td><td class="right-aligned" style="color: #51a100">100</td></tr><tr><td class="left-aligned">file41.swift</td><td class="right-aligned">1</td><td class="right-aligned" style="color: #f70000">0</td></tr><tr><td class="left-aligned">file42.swift</td><td class="right-aligned">1</td><td class="right-aligned" style="color: #f70000">0</td></tr><tr><td class="left-aligned">file43.swift</td><td class="right-aligned">1</td><td class="right-aligned" style="color: #51a100">100</td></tr><tr><td class="left-aligned">file44.swift</td><td class="right-aligned">1</td><td class="right-aligned" style="color: #f70000">0</td></tr><tr><td class="left-aligned">file45.swift</td><td class="right-aligned">1</td><td class="right-aligned" style="color: #51a100">100</td></tr><tr><td class="left-aligned">file47.swift</td><td class="right-aligned">1</td><td class="right-aligned" style="color: #f70000">0</td></tr><tr><td class="left-aligned">file48.swift</td><td class="right-aligned">1</td><td class="right-aligned" style="color: #f70000">0</td></tr><tr><td class="left-aligned">file49.swift</td><td class="right-aligned">1</td><td class="right-aligned" style="color: #51a100">100</td></tr><tr><td class="left-aligned">file50.swift</td><td class="right-aligned">1</td><td class="right-aligned" style="color: #f70000">0</td></tr></tbody></table></div><div class="divider"><span class="divider-content">Applied Mutation Operators</span></div><div class="applied-operators"><div class="toggle"><input id="show-more-applied-operators" type="checkbox" onclick="showHide(this.checked, 'applied-operators');"/><label for="show-more-applied-operators">Show all</label></div><table id="applied-operators"><thead><tr><th>File</th><th>Applied Mutation Operator</th><th>Changes</th><th>Mutation Test Result</th></tr></thead><tbody><tr><td class="left-aligned">file0.swift:0</td><td class="left-aligned"><wbr>Remove Side Effects<wbr></td><td class="mutation-snapshot"><div class="snapshot-changes"><span class="snapshot-before">before</span></div></td><td><svg class="passed" role="img" viewBox="0 0 72 72">
+</svg></div><div class="header-item"><div class="box" style="background-color: #92b300"><p class="small">Mutation Score</p><h1>52%</h1></div></div><div class="header-item"><div class="box" style="background-color: #3498db"><p class="small">Operators Applied</p><h1>43</h1></div></div></header><main class="summary"><div><p>📝 In total, Muter introduced <span class="strong">43</span> mutants in <span class="strong">43</span> files.</p><p>⏰ Muter took 00:00:00.000 to run.</p></div><div class="divider"><span class="divider-content">Mutation Operators per File</span></div><div class="mutation-operators-per-file"><div class="toggle"><input id="show-more-mutation-operators-per-file" type="checkbox" onclick="showHide(this.checked, 'mutation-operators-per-file');"/><label for="show-more-mutation-operators-per-file">Show all</label></div><table id="mutation-operators-per-file"><thead><tr><th>File</th><th># of Introduced Mutants</th><th>Mutation Score</th></tr></thead><tbody><tr><td class="left-aligned">file0.swift</td><td class="right-aligned">1</td><td class="right-aligned" style="color: #51a100">100</td></tr><tr><td class="left-aligned">file1.swift</td><td class="right-aligned">1</td><td class="right-aligned" style="color: #51a100">100</td></tr><tr><td class="left-aligned">file2.swift</td><td class="right-aligned">1</td><td class="right-aligned" style="color: #f70000">0</td></tr><tr><td class="left-aligned">file3.swift</td><td class="right-aligned">1</td><td class="right-aligned" style="color: #51a100">100</td></tr><tr><td class="left-aligned">file5.swift</td><td class="right-aligned">1</td><td class="right-aligned" style="color: #f70000">0</td></tr><tr><td class="left-aligned">file6.swift</td><td class="right-aligned">1</td><td class="right-aligned" style="color: #f70000">0</td></tr><tr><td class="left-aligned">file7.swift</td><td class="right-aligned">1</td><td class="right-aligned" style="color: #51a100">100</td></tr><tr><td class="left-aligned">file8.swift</td><td class="right-aligned">1</td><td class="right-aligned" style="color: #f70000">0</td></tr><tr><td class="left-aligned">file9.swift</td><td class="right-aligned">1</td><td class="right-aligned" style="color: #51a100">100</td></tr><tr><td class="left-aligned">file11.swift</td><td class="right-aligned">1</td><td class="right-aligned" style="color: #f70000">0</td></tr><tr><td class="left-aligned">file12.swift</td><td class="right-aligned">1</td><td class="right-aligned" style="color: #f70000">0</td></tr><tr><td class="left-aligned">file13.swift</td><td class="right-aligned">1</td><td class="right-aligned" style="color: #51a100">100</td></tr><tr><td class="left-aligned">file14.swift</td><td class="right-aligned">1</td><td class="right-aligned" style="color: #f70000">0</td></tr><tr><td class="left-aligned">file15.swift</td><td class="right-aligned">1</td><td class="right-aligned" style="color: #51a100">100</td></tr><tr><td class="left-aligned">file17.swift</td><td class="right-aligned">1</td><td class="right-aligned" style="color: #f70000">0</td></tr><tr><td class="left-aligned">file18.swift</td><td class="right-aligned">1</td><td class="right-aligned" style="color: #f70000">0</td></tr><tr><td class="left-aligned">file19.swift</td><td class="right-aligned">1</td><td class="right-aligned" style="color: #51a100">100</td></tr><tr><td class="left-aligned">file20.swift</td><td class="right-aligned">1</td><td class="right-aligned" style="color: #f70000">0</td></tr><tr><td class="left-aligned">file21.swift</td><td class="right-aligned">1</td><td class="right-aligned" style="color: #51a100">100</td></tr><tr><td class="left-aligned">file23.swift</td><td class="right-aligned">1</td><td class="right-aligned" style="color: #f70000">0</td></tr><tr><td class="left-aligned">file24.swift</td><td class="right-aligned">1</td><td class="right-aligned" style="color: #f70000">0</td></tr><tr><td class="left-aligned">file25.swift</td><td class="right-aligned">1</td><td class="right-aligned" style="color: #51a100">100</td></tr><tr><td class="left-aligned">file26.swift</td><td class="right-aligned">1</td><td class="right-aligned" style="color: #f70000">0</td></tr><tr><td class="left-aligned">file27.swift</td><td class="right-aligned">1</td><td class="right-aligned" style="color: #51a100">100</td></tr><tr><td class="left-aligned">file29.swift</td><td class="right-aligned">1</td><td class="right-aligned" style="color: #f70000">0</td></tr><tr><td class="left-aligned">file30.swift</td><td class="right-aligned">1</td><td class="right-aligned" style="color: #f70000">0</td></tr><tr><td class="left-aligned">file31.swift</td><td class="right-aligned">1</td><td class="right-aligned" style="color: #51a100">100</td></tr><tr><td class="left-aligned">file32.swift</td><td class="right-aligned">1</td><td class="right-aligned" style="color: #f70000">0</td></tr><tr><td class="left-aligned">file33.swift</td><td class="right-aligned">1</td><td class="right-aligned" style="color: #51a100">100</td></tr><tr><td class="left-aligned">file35.swift</td><td class="right-aligned">1</td><td class="right-aligned" style="color: #f70000">0</td></tr><tr><td class="left-aligned">file36.swift</td><td class="right-aligned">1</td><td class="right-aligned" style="color: #f70000">0</td></tr><tr><td class="left-aligned">file37.swift</td><td class="right-aligned">1</td><td class="right-aligned" style="color: #51a100">100</td></tr><tr><td class="left-aligned">file38.swift</td><td class="right-aligned">1</td><td class="right-aligned" style="color: #f70000">0</td></tr><tr><td class="left-aligned">file39.swift</td><td class="right-aligned">1</td><td class="right-aligned" style="color: #51a100">100</td></tr><tr><td class="left-aligned">file41.swift</td><td class="right-aligned">1</td><td class="right-aligned" style="color: #f70000">0</td></tr><tr><td class="left-aligned">file42.swift</td><td class="right-aligned">1</td><td class="right-aligned" style="color: #f70000">0</td></tr><tr><td class="left-aligned">file43.swift</td><td class="right-aligned">1</td><td class="right-aligned" style="color: #51a100">100</td></tr><tr><td class="left-aligned">file44.swift</td><td class="right-aligned">1</td><td class="right-aligned" style="color: #f70000">0</td></tr><tr><td class="left-aligned">file45.swift</td><td class="right-aligned">1</td><td class="right-aligned" style="color: #51a100">100</td></tr><tr><td class="left-aligned">file47.swift</td><td class="right-aligned">1</td><td class="right-aligned" style="color: #f70000">0</td></tr><tr><td class="left-aligned">file48.swift</td><td class="right-aligned">1</td><td class="right-aligned" style="color: #f70000">0</td></tr><tr><td class="left-aligned">file49.swift</td><td class="right-aligned">1</td><td class="right-aligned" style="color: #51a100">100</td></tr><tr><td class="left-aligned">file50.swift</td><td class="right-aligned">1</td><td class="right-aligned" style="color: #f70000">0</td></tr></tbody></table></div><div class="divider"><span class="divider-content">Applied Mutation Operators</span></div><div class="applied-operators"><div class="toggle"><input id="show-more-applied-operators" type="checkbox" onclick="showHide(this.checked, 'applied-operators');"/><label for="show-more-applied-operators">Show all</label></div><table id="applied-operators"><thead><tr><th>File</th><th>Applied Mutation Operator</th><th>Changes</th><th>Mutation Test Result</th></tr></thead><tbody><tr><td class="left-aligned">file0.swift:0</td><td class="left-aligned"><wbr>Remove Side Effects<wbr></td><td class="mutation-snapshot"><div class="snapshot-changes"><span class="snapshot-before">before</span></div></td><td><svg class="passed" role="img" viewBox="0 0 72 72">
     <title>mutant killed (test failure)</title>
     <path fill="#b1cc33" d="m61.5 23.3-8.013-8.013-25.71 25.71-9.26-9.26-8.013 8.013 17.42 17.44z"/>
     <path fill="none" stroke="#000" stroke-linejoin="round" stroke-miterlimit="10" stroke-width="2" d="M10.5 39.76L27.92 57.2 61.5 23.31l-8.013-8.013-25.71 25.71-9.26-9.26z"/>
