@@ -58,7 +58,7 @@ private extension PerformMutationTesting {
         notificationCenter.post(name: .mutationTestingStarted, object: nil)
 
         let initialTime = Date()
-        let (testSuiteOutcome, testLog) = ioDelegate.benchmarkTests(
+        let (testSuiteOutcome, testLog) = await ioDelegate.benchmarkTests(
             using: state.muterConfiguration,
             savingResultsIntoFileNamed: "baseline run"
         )
@@ -98,13 +98,13 @@ private extension PerformMutationTesting {
         for mutationMap in state.mutationMapping {
             for mutationSchema in mutationMap.mutationSchemata {
 
-                try? ioDelegate.switchOn(
+                try? await ioDelegate.switchOn(
                     schemata: mutationSchema,
                     for: state.projectXCTestRun,
                     at: state.mutatedProjectDirectoryURL
                 )
 
-                let (testSuiteOutcome, testLog) = ioDelegate.runTestSuite(
+                let (testSuiteOutcome, testLog) = await ioDelegate.runTestSuite(
                     withSchemata: mutationSchema,
                     using: state.muterConfiguration,
                     savingResultsIntoFileNamed: logFileName(
