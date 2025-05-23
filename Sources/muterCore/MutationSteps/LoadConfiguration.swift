@@ -41,7 +41,7 @@ struct LoadConfiguration: MutationStep {
                 .configurationParsed(configuration),
             ]
         } catch {
-            throw MuterError.configurationParsingError(reason: error.localizedDescription)
+            throw MuterError.configurationParsingError(reason: "\(error)")
         }
     }
 

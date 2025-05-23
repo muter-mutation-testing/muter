@@ -5,7 +5,15 @@ protocol MutationTestingIODelegate {
         withSchemata schemata: MutationSchema,
         using configuration: MuterConfiguration,
         savingResultsIntoFileNamed fileName: String
-    ) -> (
+    ) async -> (
+        outcome: TestSuiteOutcome,
+        testLog: String
+    )
+
+    func benchmarkTests(
+        using configuration: MuterConfiguration,
+        savingResultsIntoFileNamed fileName: String
+    ) async -> (
         outcome: TestSuiteOutcome,
         testLog: String
     )
@@ -14,7 +22,7 @@ protocol MutationTestingIODelegate {
         schemata: MutationSchema,
         for testRun: XCTestRun,
         at path: URL
-    ) throws
+    ) async throws
 }
 
 struct MutationTestingDelegate: MutationTestingIODelegate {
@@ -22,14 +30,48 @@ struct MutationTestingDelegate: MutationTestingIODelegate {
     private var notificationCenter: NotificationCenter
     @Dependency(\.process)
     private var process: ProcessFactory
+    @Dependency(\.testingTimeOutExecutor)
+    private var testingTimeOutExecutor: TestingTimeOutExecutorFactory
 
     private let muterTestRunFileName = "muter.xctestrun"
+
+    func benchmarkTests(
+        using configuration: MuterConfiguration,
+        savingResultsIntoFileNamed fileName: String
+    ) async -> (
+        outcome: TestSuiteOutcome,
+        testLog: String
+    ) {
+        await runTestSuite(
+            withSchemata: .null,
+            using: configuration,
+            savingResultsIntoFileNamed: fileName,
+            isBenchmark: true
+        )
+    }
 
     func runTestSuite(
         withSchemata schemata: MutationSchema,
         using configuration: MuterConfiguration,
         savingResultsIntoFileNamed fileName: String
-    ) -> (
+    ) async -> (
+        outcome: TestSuiteOutcome,
+        testLog: String
+    ) {
+        await runTestSuite(
+            withSchemata: schemata,
+            using: configuration,
+            savingResultsIntoFileNamed: fileName,
+            isBenchmark: false
+        )
+    }
+
+    private func runTestSuite(
+        withSchemata schemata: MutationSchema,
+        using configuration: MuterConfiguration,
+        savingResultsIntoFileNamed fileName: String,
+        isBenchmark: Bool
+    ) async -> (
         outcome: TestSuiteOutcome,
         testLog: String
     ) {
@@ -37,23 +79,17 @@ struct MutationTestingDelegate: MutationTestingIODelegate {
             let (testProcessFileHandle, testLogUrl) = try fileHandle(for: fileName)
             defer { try? testProcessFileHandle.close() }
 
-            let process = try testProcess(
+            let process = try await testProcess(
                 with: configuration,
                 schemata: schemata,
                 and: testProcessFileHandle
             )
 
-            try process.run()
-
-            process.waitUntilExit()
-
-            let contents = try String(contentsOf: testLogUrl)
+            let timeOut = isBenchmark ? nil : configuration.testSuiteTimeOut
+            let (outcome, contents) = try await runTestProcess(process, logFileUrl: testLogUrl, withTimeOut: timeOut)
 
             return (
-                outcome: TestSuiteOutcome.from(
-                    testLog: contents,
-                    terminationStatus: process.terminationStatus
-                ),
+                outcome: outcome,
                 testLog: contents
             )
 
@@ -62,11 +98,59 @@ struct MutationTestingDelegate: MutationTestingIODelegate {
         }
     }
 
+    private func runTestProcess(
+        _ process: Process,
+        logFileUrl: URL,
+        withTimeOut timeOut: TimeInterval?
+    ) async throws -> (TestSuiteOutcome, String) {
+        let executionResult = await timeOut == nil
+            ? try runTestProcess(process)
+            : try runTestProcess(process, withTimeOut: timeOut!)
+
+        let testExecutionLog = try String(contentsOf: logFileUrl)
+        let testResult = TestSuiteOutcome.from(
+            testLog: testExecutionLog,
+            terminationStatus: process.terminationStatus,
+            timeOutExecution: executionResult
+        )
+
+        return (testResult, testExecutionLog)
+    }
+
+    private func runTestProcess(
+        _ process: Process,
+        withTimeOut timeOut: TimeInterval
+    ) async throws -> TestingExecutionResult {
+        await withCheckedContinuation { continuation in
+            let executor = testingTimeOutExecutor()
+            Task {
+                do {
+                    try await executor.withTimeLimit(timeOut) {
+                        try process.run()
+                        process.waitUntilExit()
+                        continuation.resume(returning: .success)
+                    } timeoutHandler: {
+                        continuation.resume(returning: .timeOut)
+                    }
+                } catch {
+                    continuation.resume(returning: .timeOut)
+                }
+            }
+        }
+    }
+
+    private func runTestProcess(_ process: Process) async throws -> TestingExecutionResult {
+        try process.run()
+        process.waitUntilExit()
+
+        return .success
+    }
+
     func switchOn(
         schemata: MutationSchema,
         for testRun: XCTestRun,
         at path: URL
-    ) throws {
+    ) async throws {
         let updated = testRun.updateEnvironmentVariable(
             setting: schemata.id
         )
@@ -86,7 +170,7 @@ struct MutationTestingDelegate: MutationTestingIODelegate {
         with configuration: MuterConfiguration,
         schemata: MutationSchema,
         and fileHandle: FileHandle
-    ) throws -> Process {
+    ) async throws -> Process {
         let testCommandArguments = schemata == .null
             ? configuration.testCommandArguments
             : configuration.testWithoutBuildArguments(with: muterTestRunFileName)

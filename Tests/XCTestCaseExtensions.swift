@@ -1,5 +1,4 @@
 @testable import muterCore
-import SnapshotTesting
 import TestingExtensions
 import XCTest
 
@@ -13,6 +12,7 @@ class MuterTestCase: XCTestCase {
     private(set) var server = ServerSpy()
     private(set) var writeFile = WriteFileSpy()
     private(set) var printer = PrinterSpy()
+    private(set) var testingTimeOutExecutor = TestingTimeOutExecutorSpy()
 
     private let fixedNow = DateComponents(
         calendar: .init(identifier: .gregorian),
@@ -22,15 +22,6 @@ class MuterTestCase: XCTestCase {
         hour: 2,
         minute: 42
     ).date!
-
-    var isRecording: Bool {
-        get {
-            SnapshotTesting.isRecording
-        }
-        set {
-            SnapshotTesting.isRecording = newValue
-        }
-    }
 
     override func setUp() {
         super.setUp()
@@ -55,7 +46,9 @@ class MuterTestCase: XCTestCase {
             prepareCode: prepareCode.prepare,
             writeFile: writeFile.writeFile,
             server: server,
-            now: { self.fixedNow }
+            now: { self.fixedNow },
+            instant: { DispatchTime(uptimeNanoseconds: 1) },
+            testingTimeOutExecutor: { self.testingTimeOutExecutor }
         )
     }
 

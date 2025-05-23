@@ -71,7 +71,7 @@ public func AssertSnapshot(
     testName: String = #function
 ) {
     assertSnapshot(
-        matching: matching,
+        of: matching,
         as: .lines,
         file: file,
         testName: testName,
