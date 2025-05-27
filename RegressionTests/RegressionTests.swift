@@ -3,7 +3,7 @@ import SnapshotTesting
 import TestingExtensions
 import XCTest
 
-extension String: Error {}
+extension String: @retroactive Error {}
 
 final class RegressionTests: XCTestCase {
     func runRegressionTest(
