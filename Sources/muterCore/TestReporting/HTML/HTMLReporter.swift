@@ -289,8 +289,8 @@ private extension TestSuiteOutcome {
             icon = testBuildError
         case .noCoverage:
             icon = skipped
-        case .timeOut:
-            icon = testTimeOut
+        case .timeout:
+            icon = testTimeout
         }
 
         return icon.replacingOccurrences(of: "$title$", with: asMutationTestOutcome)

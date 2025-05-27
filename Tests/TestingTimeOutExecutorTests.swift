@@ -1,10 +1,10 @@
 @testable import muterCore
 import XCTest
 
-final class TestingTimeOutExecutorTests: MuterTestCase {
-    private let sut = TestingTimeOutExecutor()
+final class TestingTimeoutExecutorTests: MuterTestCase {
+    private let sut = TestingTimeoutExecutor()
 
-    func test_timeOut() async throws {
+    func test_timeout() async throws {
         let expect = expectation(description: #function)
 
         try await sut.withTimeLimit(1) {

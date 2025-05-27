@@ -38,4 +38,6 @@ final class ProcessSpy: MuterProcess {
     func terminate() {
         terminateCalled = true
     }
+
+    func interrupt() {}
 }

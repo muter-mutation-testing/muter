@@ -1,4 +1,4 @@
-let testTimeOut =
+let testTimeout =
     """
     <svg class="time-out" role="img" viewBox="0 0 72 72">
     <title>$title$</title>

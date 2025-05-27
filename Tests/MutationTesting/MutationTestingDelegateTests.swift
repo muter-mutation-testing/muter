@@ -112,7 +112,7 @@ final class MutationTestingDelegateTests: MuterTestCase {
         fileManager.changeCurrentDirectoryPath(currentDirectoryPath)
     }
 
-    func test_timeOut() async throws {
+    func test_timeout() async throws {
         let configuration = MuterConfiguration(
             executable: "/tmp/swift",
             arguments: ["test"],

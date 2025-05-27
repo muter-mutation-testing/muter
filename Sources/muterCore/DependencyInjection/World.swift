@@ -28,7 +28,7 @@ typealias LoadSourceCode = (String) -> SourceCodeInfo?
 typealias ProjectCoverage = (BuildSystem) -> BuildSystemCoverage?
 typealias Now = () -> Date
 typealias Instant = () -> DispatchTime
-typealias TestingTimeOutExecutorFactory = () -> TestingTimeOutExecution
+typealias TestingTimeoutExecutorFactory = () -> TestingTimeoutExecution
 
 struct World {
     var notificationCenter: NotificationCenter = .default
@@ -53,5 +53,5 @@ struct World {
     var server: Server = URLSession.shared
     var now: Now = Date.init
     var instant: Instant = DispatchTime.now
-    var testingTimeOutExecutor: TestingTimeOutExecutorFactory = { TestingTimeOutExecutor() }
+    var testingTimeOutExecutor: TestingTimeoutExecutorFactory = { TestingTimeoutExecutor() }
 }

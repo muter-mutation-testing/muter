@@ -8,7 +8,7 @@ enum TestSuiteOutcome: String, Codable, CaseIterable {
     case buildError
     case runtimeError
     case noCoverage
-    case timeOut
+    case timeout
 
     var asMutationTestOutcome: String {
         switch self {
@@ -22,7 +22,7 @@ enum TestSuiteOutcome: String, Codable, CaseIterable {
             return "mutant killed (runtime error)"
         case .noCoverage:
             return "skipped (no coverage)"
-        case .timeOut:
+        case .timeout:
             return "time out"
         }
     }
@@ -32,10 +32,10 @@ extension TestSuiteOutcome {
     static func from(
         testLog: String,
         terminationStatus: Int32,
-        timeOutExecution: TestingExecutionResult? = nil
+        timeoutExecution: TestingExecutionResult? = nil
     ) -> TestSuiteOutcome {
-        if timeOutExecution == .timeOut {
-            return .timeOut
+        if timeoutExecution == .timeout {
+            return .timeout
         }
 
         if logContainsBuildError(testLog) {

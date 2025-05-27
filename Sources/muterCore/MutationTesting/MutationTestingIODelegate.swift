@@ -31,7 +31,7 @@ struct MutationTestingDelegate: MutationTestingIODelegate {
     @Dependency(\.process)
     private var process: ProcessFactory
     @Dependency(\.testingTimeOutExecutor)
-    private var testingTimeOutExecutor: TestingTimeOutExecutorFactory
+    private var testingTimeOutExecutor: TestingTimeoutExecutorFactory
 
     private let muterTestRunFileName = "muter.xctestrun"
 
@@ -85,8 +85,8 @@ struct MutationTestingDelegate: MutationTestingIODelegate {
                 and: testProcessFileHandle
             )
 
-            let timeOut = isBenchmark ? nil : configuration.testSuiteTimeOut
-            let (outcome, contents) = try await runTestProcess(process, logFileUrl: testLogUrl, withTimeOut: timeOut)
+            let timeout = isBenchmark ? nil : configuration.testSuiteTimeout
+            let (outcome, contents) = try await runTestProcess(process, logFileUrl: testLogUrl, withTimeout: timeout)
 
             return (
                 outcome: outcome,
@@ -101,17 +101,17 @@ struct MutationTestingDelegate: MutationTestingIODelegate {
     private func runTestProcess(
         _ process: Process,
         logFileUrl: URL,
-        withTimeOut timeOut: TimeInterval?
+        withTimeout timeout: TimeInterval?
     ) async throws -> (TestSuiteOutcome, String) {
-        let executionResult = await timeOut == nil
+        let executionResult = await timeout == nil
             ? try runTestProcess(process)
-            : try runTestProcess(process, withTimeOut: timeOut!)
+            : try runTestProcess(process, withTimeout: timeout!)
 
         let testExecutionLog = try String(contentsOf: logFileUrl)
         let testResult = TestSuiteOutcome.from(
             testLog: testExecutionLog,
             terminationStatus: process.terminationStatus,
-            timeOutExecution: executionResult
+            timeoutExecution: executionResult
         )
 
         return (testResult, testExecutionLog)
@@ -119,21 +119,19 @@ struct MutationTestingDelegate: MutationTestingIODelegate {
 
     private func runTestProcess(
         _ process: Process,
-        withTimeOut timeOut: TimeInterval
+        withTimeout timeout: TimeInterval
     ) async throws -> TestingExecutionResult {
         await withCheckedContinuation { continuation in
             let executor = testingTimeOutExecutor()
             Task {
-                do {
-                    try await executor.withTimeLimit(timeOut) {
-                        try process.run()
-                        process.waitUntilExit()
-                        continuation.resume(returning: .success)
-                    } timeoutHandler: {
-                        continuation.resume(returning: .timeOut)
-                    }
-                } catch {
-                    continuation.resume(returning: .timeOut)
+                try? await executor.withTimeLimit(timeout) {
+                    try process.run()
+                    process.waitUntilExit()
+                    continuation.resume(returning: .success)
+                } timeoutHandler: {
+                    process.interrupt()
+                    process.waitUntilExit()
+                    continuation.resume(returning: .timeout)
                 }
             }
         }

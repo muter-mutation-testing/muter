@@ -155,7 +155,7 @@ extension SchemataMutationMapping: CustomStringConvertible, CustomDebugStringCon
     }
 }
 
-extension CodeBlockItemListSyntax: Comparable {
+extension CodeBlockItemListSyntax: @retroactive Comparable {
     public static func < (
         lhs: SwiftSyntax.CodeBlockItemListSyntax,
         rhs: SwiftSyntax.CodeBlockItemListSyntax

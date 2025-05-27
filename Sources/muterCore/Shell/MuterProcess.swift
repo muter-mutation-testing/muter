@@ -21,6 +21,8 @@ protocol MuterProcess: AnyObject {
     func waitUntilExit()
 
     func terminate()
+    
+    func interrupt()
 }
 
 extension MuterProcess {
