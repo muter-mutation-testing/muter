@@ -1,11 +1,11 @@
 import Foundation
 
 protocol TestingTimeoutExecution {
-    func withTimeLimit(
+    func withTimeLimit<T>(
         _ timeLimit: TimeInterval,
-        _ body: @escaping @Sendable () async throws -> Void,
-        timeoutHandler: @escaping @Sendable () async throws -> Void
-    ) async throws
+        _ body: @escaping @Sendable () async throws -> T,
+        timeoutHandler: @escaping @Sendable () async throws -> T
+    ) async throws -> T
 }
 
 enum TestingExecutionResult {
@@ -14,14 +14,13 @@ enum TestingExecutionResult {
 }
 
 struct TestingTimeoutExecutor: TestingTimeoutExecution {
-    func withTimeLimit(
+    func withTimeLimit<T>(
         _ timeLimit: TimeInterval,
-        _ body: @escaping @Sendable () async throws -> Void,
-        timeoutHandler: @escaping @Sendable () async throws -> Void
-    ) async throws {
-        try await withThrowingTaskGroup(of: Void.self) { group in
+        _ body: @escaping @Sendable () async throws -> T,
+        timeoutHandler: @escaping @Sendable () async throws -> T
+    ) async throws -> T {
+        try await withThrowingTaskGroup(of: T.self) { group in
             defer {
-                print("defer", group.isCancelled)
                 group.cancelAll()
             }
 
@@ -30,16 +29,16 @@ struct TestingTimeoutExecutor: TestingTimeoutExecution {
                 // the timeout was reached before this task could be cancelled, so call
                 // the timeout handler.
                 try await Task.sleep(seconds: timeLimit)
-                print("try await Task.sleep(seconds: timeLimit)", Task.isCancelled)
-                try await timeoutHandler()
+                return try await timeoutHandler()
             }
 
             group.addTask(operation: body)
 
+            guard let result = try await group.next() else {
+                throw CancellationError()
+            }
 
-            print("before next", group.isCancelled)
-            try await group.next()
-            print("after next", group.isCancelled)
+            return result
         }
     }
 }

@@ -121,19 +121,13 @@ struct MutationTestingDelegate: MutationTestingIODelegate {
         _ process: Process,
         withTimeout timeout: TimeInterval
     ) async throws -> TestingExecutionResult {
-        await withCheckedContinuation { continuation in
-            let executor = testingTimeOutExecutor()
-            Task {
-                try? await executor.withTimeLimit(timeout) {
-                    try process.run()
-                    process.waitUntilExit()
-                    continuation.resume(returning: .success)
-                } timeoutHandler: {
-                    process.interrupt()
-                    process.waitUntilExit()
-                    continuation.resume(returning: .timeout)
-                }
-            }
+        try await testingTimeOutExecutor().withTimeLimit(timeout) {
+            try process.run()
+            process.waitUntilExit()
+            return .success
+        } timeoutHandler: {
+            process.interrupt()
+            return .timeout
         }
     }
 

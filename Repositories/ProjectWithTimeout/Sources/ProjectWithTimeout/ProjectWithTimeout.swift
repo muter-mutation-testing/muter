@@ -1,3 +1,7 @@
 func foo(value: Int) -> Int {
-    value > 1 ? 0 : -1
+    if value >= 0 {
+        return 0
+    } else {
+        return 0
+    }
 }

@@ -7,15 +7,15 @@ final class TestingTimeOutExecutorSpy: TestingTimeoutExecution {
     private(set) var timeLimitPassed: TimeInterval = 0
 
     var shouldSucceed = true
-    func withTimeLimit(
+    func withTimeLimit<T>(
         _ timeLimit: TimeInterval,
-        _ body: @escaping @Sendable () async throws -> Void,
-        timeoutHandler: @escaping @Sendable () async throws -> Void
-    ) async throws {
+        _ body: @escaping @Sendable () async throws -> T,
+        timeoutHandler: @escaping @Sendable () async throws -> T
+    ) async throws -> T {
         withTimeLimitCalled = true
         timeLimitPassed = timeLimit
 
-        shouldSucceed
+        return shouldSucceed
             ? try await body()
             : try await timeoutHandler()
     }

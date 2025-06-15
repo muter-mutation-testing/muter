@@ -14,6 +14,9 @@ final class TestSuiteResultParsingTests: MuterTestCase {
     func test_logWithoutFailure() {
         var contents = loadLogFile(named: "testRunWithFailures_withoutTestFailedFooter.log")
         XCTAssertEqual(TestSuiteOutcome.from(testLog: contents, terminationStatus: 0), .failed)
+        
+        contents = loadLogFile(named: "testRunWithFailures_swift.log")
+        XCTAssertEqual(TestSuiteOutcome.from(testLog: contents, terminationStatus: 0), .failed)
 
         contents = loadLogFile(named: "testRunWithFailures_withTestFailedFooter.log")
         XCTAssertEqual(TestSuiteOutcome.from(testLog: contents, terminationStatus: 0), .failed)

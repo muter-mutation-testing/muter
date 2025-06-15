@@ -1,0 +1,10 @@
+[0/1] Planning build
+Test Suite 'All tests' started at 2025-06-15 10:10:33.816.
+Test Suite 'All tests' passed at 2025-06-15 10:10:33.818.
+     Executed 0 tests, with 0 failures (0 unexpected) in 0.000 (0.001) seconds
+◇ Test run started.
+↳ Testing Library Version: 102 (arm64e-apple-macos13.0)
+◇ Test example() started.
+✘ Test example() recorded an issue at ProjectWithTimeoutTests.swift:6:5: Expectation failed: (foo(value: 1) → 0) == -1
+✘ Test example() failed after 2.136 seconds with 1 issue.
+✘ Test run with 1 test failed after 2.136 seconds with 1 issue.
