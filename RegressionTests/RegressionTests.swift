@@ -3,8 +3,6 @@ import SnapshotTesting
 import TestingExtensions
 import XCTest
 
-extension String: @retroactive Error {}
-
 final class RegressionTests: XCTestCase {
     func runRegressionTest(
         forFixtureNamed fixtureName: String,
@@ -12,9 +10,9 @@ final class RegressionTests: XCTestCase {
         file: StaticString = #filePath,
         testName: String = #function,
         line: UInt = #line
-    ) -> Result<Void, String> {
+    ) async throws {
         guard let data = FileManager.default.contents(atPath: path) else {
-            return .failure("Unable to load a valid Muter test report from \(path)")
+            throw MuterError.literal(reason: "Unable to load a valid Muter test report from \(path)")
         }
 
         let keysToExclude: (String) -> Bool = {
@@ -31,39 +29,44 @@ final class RegressionTests: XCTestCase {
                 testName: testName,
                 line: line
             )
-            return .success(())
+            return
         } catch let deserializationError {
-            return .failure("""
-            Unable to deserialize a valid Muter test report from \(path)
+            throw MuterError.literal(
+                reason: """
+                Unable to deserialize a valid Muter test report from \(path)
 
-            \(String(data: data, encoding: .utf8) ?? "no-content")
+                \(String(data: data, encoding: .utf8) ?? "no-content")
 
-            \(deserializationError)
-            """)
+                \(deserializationError)
+                """
+            )
         }
     }
 
-    func test_bonMot() {
+    func test_bonMot() async {
         let path = "\(rootTestDirectory)/samples/bonmot_regression_test_output.json"
-        if case let .failure(description) = runRegressionTest(forFixtureNamed: "bonmot", withResultAt: path) {
-            XCTFail(description)
+        do {
+            try await runRegressionTest(forFixtureNamed: "bonmot", withResultAt: path)
+        } catch {
+            XCTFail("\(error)")
         }
     }
 
-    func test_parseCombinator() {
+    func test_parseCombinator() async {
         let path = "\(rootTestDirectory)/samples/parsercombinator_regression_test_output.json"
-        if case let .failure(description) = runRegressionTest(forFixtureNamed: "parsercombinator", withResultAt: path) {
-            XCTFail(description)
+        do {
+            try await runRegressionTest(forFixtureNamed: "parsercombinator", withResultAt: path)
+        } catch {
+            XCTFail("\(error)")
         }
     }
 
-    func test_projectWithConcurrency() {
+    func test_projectWithConcurrency() async {
         let path = "\(rootTestDirectory)/samples/projectwithconcurrency_test_output.json"
-        if case let .failure(description) = runRegressionTest(
-            forFixtureNamed: "projectwithconcurrency",
-            withResultAt: path
-        ) {
-            XCTFail(description)
+        do {
+            try await runRegressionTest(forFixtureNamed: "projectwithconcurrency", withResultAt: path)
+        } catch {
+            XCTFail("\(error)")
         }
     }
 }

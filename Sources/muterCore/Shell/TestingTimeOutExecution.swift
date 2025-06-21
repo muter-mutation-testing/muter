@@ -28,7 +28,7 @@ struct TestingTimeoutExecutor: TestingTimeoutExecution {
                 // If sleep() returns instead of throwing a CancellationError, that means
                 // the timeout was reached before this task could be cancelled, so call
                 // the timeout handler.
-                try await Task.sleep(seconds: timeLimit)
+                try await Task.sleep(nanoseconds: UInt64(timeLimit) * 1_000_000_000)
                 return try await timeoutHandler()
             }
 
