@@ -23,14 +23,14 @@ final class MutationTestingDelegateTests: MuterTestCase {
         try FileManager.default.removeItem(atPath: outputFolder)
     }
 
-    func test_testProcessForXcodeBuild() throws {
+    func test_testProcessForXcodeBuild() async throws {
         current.process = MuterProcessFactory.makeProcess
 
         let configuration = MuterConfiguration(
             executable: "/tmp/xcodebuild",
             arguments: [
                 "-destination",
-                "platform=macOS,arch=x86_64,variant=Mac Catalyst",
+                "platform=macOS,arch=x86_64,variant=Mac Catalyst"
             ]
         )
 
@@ -39,7 +39,7 @@ final class MutationTestingDelegateTests: MuterTestCase {
             position: .init(line: 1)
         )
 
-        let testProcess = try sut.testProcess(
+        let testProcess = try await sut.testProcess(
             with: configuration,
             schemata: schemata,
             and: FileHandle(fileDescriptor: 0)
@@ -50,13 +50,13 @@ final class MutationTestingDelegateTests: MuterTestCase {
             "-destination",
             "platform=macOS,arch=x86_64,variant=Mac Catalyst",
             "-xctestrun",
-            "muter.xctestrun",
+            "muter.xctestrun"
         ])
 
         XCTAssertEqual(testProcess.executableURL?.path, "/tmp/xcodebuild")
     }
 
-    func test_testProcessForSwiftBuild() throws {
+    func test_testProcessForSwiftBuild() async throws {
         current.process = MuterProcessFactory.makeProcess
 
         let configuration = MuterConfiguration(
@@ -69,7 +69,7 @@ final class MutationTestingDelegateTests: MuterTestCase {
             position: .init(line: 1)
         )
 
-        let testProcess = try sut.testProcess(
+        let testProcess = try await sut.testProcess(
             with: configuration,
             schemata: schemata,
             and: FileHandle(fileDescriptor: 0)
@@ -81,11 +81,11 @@ final class MutationTestingDelegateTests: MuterTestCase {
         XCTAssertEqual(testProcess.executableURL?.path, "/tmp/swift")
     }
 
-    func test_switchOn() throws {
+    func test_switchOn() async throws {
         let schemata = try MutationSchema.make()
         let testRun = XCTestRun()
 
-        try sut.switchOn(
+        try await sut.switchOn(
             schemata: schemata,
             for: testRun,
             at: outputFolderURL
@@ -110,5 +110,48 @@ final class MutationTestingDelegateTests: MuterTestCase {
         XCTAssertNotNil(handleAndLogFileUrl.handle)
 
         fileManager.changeCurrentDirectoryPath(currentDirectoryPath)
+    }
+
+    func test_timeout() async throws {
+        let configuration = MuterConfiguration(
+            executable: "/tmp/swift",
+            arguments: ["test"],
+            testSuiteTimeOut: 9
+        )
+
+        let schemata = try MutationSchema.make(
+            filePath: "/path/fileName",
+            position: .init(line: 1)
+        )
+
+        _ = await sut.runTestSuite(
+            withSchemata: schemata,
+            using: configuration,
+            savingResultsIntoFileNamed: "logFileName"
+        )
+
+        XCTAssertTrue(testingTimeOutExecutor.withTimeLimitCalled)
+        XCTAssertEqual(testingTimeOutExecutor.timeLimitPassed, 9)
+    }
+
+    func test_whenConfigurationHasNoTimeOut_thenRunTestsWithoutTimeOut() async throws {
+        let configuration = MuterConfiguration(
+            executable: "/tmp/swift",
+            arguments: ["test"],
+            testSuiteTimeOut: nil
+        )
+
+        let schemata = try MutationSchema.make(
+            filePath: "/path/fileName",
+            position: .init(line: 1)
+        )
+
+        _ = await sut.runTestSuite(
+            withSchemata: schemata,
+            using: configuration,
+            savingResultsIntoFileNamed: "logFileName"
+        )
+
+        XCTAssertFalse(testingTimeOutExecutor.withTimeLimitCalled)
     }
 }

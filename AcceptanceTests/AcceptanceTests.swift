@@ -47,7 +47,7 @@ final class AcceptanceTests: XCTestCase {
             "baseline run.log",
             "ChangeLogicalConnector @ Module2.swift-2-17.log",
             "RelationalOperatorReplacement @ Module.swift-4-7.log",
-            "RemoveSideEffects @ ViewController.swift-5-28.log",
+            "RemoveSideEffects @ ViewController.swift-5-28.log"
         ]
 
         let numberOfEmptyLogFiles = try expectedLogFiles
@@ -121,6 +121,16 @@ final class AcceptanceTests: XCTestCase {
         XCTAssertEqual(decodedTestPlan.mappings.count, 1)
     }
 
+    func test_mutationTestTimeout() throws {
+        let output = try muterWithTimeoutOutput
+
+        XCTAssertTrue(output.contains("""
+        File                         Applied Mutation Operator       Mutation Test Result
+        ----                         -------------------------       --------------------
+        ProjectWithTimeout.swift:2   RelationalOperatorReplacement   time out
+        """))
+    }
+
     func test_all_operatos() throws {
         try AssertSnapshot(muterOperatorAllOutput)
     }
@@ -176,9 +186,16 @@ extension AcceptanceTests {
             )
         }
     }
+
     var muterWithCoverageOutput: String {
         get throws {
             try contentsOfFileAsString("\(rootTestDirectory)/samples/muters_with_coverage_output.txt")
+        }
+    }
+    
+    var muterWithTimeoutOutput: String {
+        get throws {
+            try contentsOfFileAsString("\(rootTestDirectory)/samples/muters_timeout_output.txt")
         }
     }
 

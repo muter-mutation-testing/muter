@@ -163,8 +163,8 @@ class MuterVisitor: SyntaxAnyVisitor {
 
         let edit = IncrementalEdit(
             offset: mutationPositionInCodeBlock,
-            length: node.description.utf8.count,
-            replacementLength: mutatedSyntax.description.utf8.count
+            length: max(mutatedSyntax.description.count, node.description.count),
+            replacementLength: mutatedSyntax.description.count
         )
 
         let codeBlockWithMutation = codeBlockDescription.replacingCharacters(

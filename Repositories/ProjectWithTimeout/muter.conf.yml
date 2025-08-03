@@ -1,0 +1,8 @@
+arguments:
+- test
+executable: /usr/bin/swift
+exclude:
+- Package.swift
+excludeCalls: []
+coverageThreshold: 0e+0
+mutationTestTimeout: 1

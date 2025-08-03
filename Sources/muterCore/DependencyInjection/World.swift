@@ -27,6 +27,8 @@ typealias WriteFile = (String, String) throws -> Void
 typealias LoadSourceCode = (String) -> SourceCodeInfo?
 typealias ProjectCoverage = (BuildSystem) -> BuildSystemCoverage?
 typealias Now = () -> Date
+typealias Instant = () -> DispatchTime
+typealias TestingTimeoutExecutorFactory = () -> TestingTimeoutExecution
 
 struct World {
     var notificationCenter: NotificationCenter = .default
@@ -50,4 +52,6 @@ struct World {
     var projectCoverage: ProjectCoverage = BuildSystem.coverage
     var server: Server = URLSession.shared
     var now: Now = Date.init
+    var instant: Instant = DispatchTime.now
+    var testingTimeOutExecutor: TestingTimeoutExecutorFactory = { TestingTimeoutExecutor() }
 }

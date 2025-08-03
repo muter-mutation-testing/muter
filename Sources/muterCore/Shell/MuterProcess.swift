@@ -4,6 +4,7 @@ typealias Process = MuterProcess
 
 protocol MuterProcess: AnyObject {
     var terminationStatus: Int32 { get }
+    var terminationHandler: (@Sendable (Foundation.Process) -> Void)? { get set }
     var environment: [String: String]? { get set }
     var arguments: [String]? { get set }
     var executableURL: URL? { get set }
@@ -18,6 +19,10 @@ protocol MuterProcess: AnyObject {
     func run() throws
 
     func waitUntilExit()
+
+    func terminate()
+    
+    func interrupt()
 }
 
 extension MuterProcess {

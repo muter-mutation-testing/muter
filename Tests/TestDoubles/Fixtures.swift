@@ -138,7 +138,7 @@ extension MutationPosition: ExpressibleByIntegerLiteral {
     }
 }
 
-extension SwiftSyntax.SourceLocation: ExpressibleByIntegerLiteral {
+extension SwiftSyntax.SourceLocation: @retroactive ExpressibleByIntegerLiteral {
     public init(integerLiteral value: Int) {
         self.init(line: value, column: value, offset: value, file: "")
     }

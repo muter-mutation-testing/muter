@@ -3,6 +3,7 @@ import Foundation
 
 final class ProcessSpy: MuterProcess {
     var terminationStatus: Int32 { 0 }
+    var terminationHandler: (@Sendable (Foundation.Process) -> Void)? = nil
     var environment: [String: String]?
     var arguments: [String]?
     var executableURL: URL?
@@ -32,4 +33,11 @@ final class ProcessSpy: MuterProcess {
 
         return queue.dequeue()?.data(using: .utf8)
     }
+
+    var terminateCalled = false
+    func terminate() {
+        terminateCalled = true
+    }
+
+    func interrupt() {}
 }

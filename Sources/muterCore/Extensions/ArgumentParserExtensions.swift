@@ -1,7 +1,7 @@
 import ArgumentParser
 import Foundation
 
-extension URL: ExpressibleByArgument {
+extension URL: @retroactive ExpressibleByArgument {
     public init?(argument: String) {
         self = argument.contains("/")
             ? URL(fileURLWithPath: argument)

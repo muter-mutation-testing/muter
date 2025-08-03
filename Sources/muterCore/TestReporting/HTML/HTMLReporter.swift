@@ -20,9 +20,11 @@ private func htmlReport(
     let testReport = MuterTestReport(from: outcome)
 
     return HTML(
+        .lang(.english),
         .muterHeader(),
         .body(
             .div(
+                .themeToggle(),
                 .class("report"),
                 .muterHeader(from: testReport),
                 .main(
@@ -54,12 +56,12 @@ private extension Date {
 extension Node where Context == HTML.DocumentContext {
     static func muterHeader() -> Self {
         let normalizeCSS = normalize
-        let reportCSS = report
+        let reportCSS = css
         let css = normalizeCSS + reportCSS
 
         return .head(
-            .attribute(named: "charset", value: "utf-8"),
             .title("Muter Report"),
+            .meta(.charset(.utf8)),
             .style(css),
             .raw("<script>\(javascript)</script>")
         )
@@ -101,6 +103,12 @@ extension Node where Context: HTML.BodyContext {
             )
         )
     }
+    
+    static func themeToggle() -> Self {
+        .div(
+            .button(.id("theme-toggle"), .class("theme-toggle"))
+        )
+    }
 
     static func summary(
         from testReport: MuterTestReport,
@@ -108,16 +116,16 @@ extension Node where Context: HTML.BodyContext {
     ) -> Self {
         .div(
             .p(
-                "In total, Muter introduced ",
+                "📝 In total, Muter introduced ",
                 .span(.class("strong"), "\(testReport.totalAppliedMutationOperators)"),
                 " mutants in ",
                 .span(.class("strong"), "\(testReport.fileReports.count)"),
                 " files."
             ),
-            .p("Muter took \(testReport.timeElapsed) to run."),
+            .p("⏰ Muter took \(testReport.timeElapsed) to run."),
             .if(
                 !newVersion.isEmpty,
-                .p("The version \(newVersion) of Muter is available")
+                .p("🆕 The version \(newVersion) of Muter is available")
             )
         )
     }
@@ -173,7 +181,7 @@ extension Node where Context: HTML.BodyContext {
             .div(
                 .class("toggle"),
                 .input(
-                    .id("show-more-mutation-operators-per-file"),
+                    .id("show-more-applied-operators"),
                     .type(.checkbox),
                     .attribute(named: "onclick", value: "showHide(this.checked, 'applied-operators');")
                 ),
@@ -240,7 +248,7 @@ extension Node where Context: HTML.BodyContext {
                     else:
                     .group(
                         .span(.class("snapshot-before"), "\(appliedOperator.mutationSnapshot.before)"),
-                        .span(.class("snapshot-arrow"), "→"),
+                        .span(.class("snapshot-arrow"), "\u{2192}"), // →
                         .span(.class("snapshot-after"), "\(appliedOperator.mutationSnapshot.after)")
                     )
                 )
@@ -259,15 +267,16 @@ extension Node where Context: HTML.BodyContext {
 private extension MutationOperator.Id {
     var friendlyName: String {
         switch self {
-        case .ror: return "Relational Operator Replacement"
-        case .removeSideEffects: return "Remove Side Effects"
-        case .logicalOperator: return "Change Logical Connector"
-        case .swapTernary: return "Swap Ternary"
+        case .ror: "Relational Operator Replacement"
+        case .removeSideEffects: "Remove Side Effects"
+        case .logicalOperator: "Change Logical Connector"
+        case .swapTernary: "Swap Ternary"
         }
     }
 }
 
 private extension TestSuiteOutcome {
+    // icons are from the collection: https://www.svgrepo.com/collection/openmoji-vectors/
     var asIcon: String {
         let icon: String
         switch self {
@@ -280,6 +289,8 @@ private extension TestSuiteOutcome {
             icon = testBuildError
         case .noCoverage:
             icon = skipped
+        case .timeout:
+            icon = testTimeout
         }
 
         return icon.replacingOccurrences(of: "$title$", with: asMutationTestOutcome)
@@ -296,9 +307,9 @@ private extension MuterTestReport {
 
 private func coloredMutationScore(for score: Int) -> String {
     switch score {
-    case 0 ... 25: return "#f70000"
-    case 26 ... 50: return "#ce9400"
-    case 51 ... 75: return "#92b300"
-    default: return "#51a100"
+    case 0 ... 25: "#f70000"
+    case 26 ... 50: "#ce9400"
+    case 51 ... 75: "#92b300"
+    default: "#51a100"
     }
 }

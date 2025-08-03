@@ -1,6 +1,6 @@
 import Foundation
 
-public enum TestSuiteOutcome: String, Codable, CaseIterable {
+enum TestSuiteOutcome: String, Codable, CaseIterable {
     /// Mutant survived
     case passed
     /// Mutant killed
@@ -8,6 +8,7 @@ public enum TestSuiteOutcome: String, Codable, CaseIterable {
     case buildError
     case runtimeError
     case noCoverage
+    case timeout
 
     var asMutationTestOutcome: String {
         switch self {
@@ -21,12 +22,22 @@ public enum TestSuiteOutcome: String, Codable, CaseIterable {
             return "mutant killed (runtime error)"
         case .noCoverage:
             return "skipped (no coverage)"
+        case .timeout:
+            return "time out"
         }
     }
 }
 
 extension TestSuiteOutcome {
-    public static func from(testLog: String, terminationStatus: Int32) -> TestSuiteOutcome {
+    static func from(
+        testLog: String,
+        terminationStatus: Int32,
+        timeoutExecution: TestingExecutionResult? = nil
+    ) -> TestSuiteOutcome {
+        if timeoutExecution == .timeout {
+            return .timeout
+        }
+
         if logContainsBuildError(testLog) {
             return .buildError
         } else if logContainsTestFailure(testLog) {
@@ -46,8 +57,8 @@ extension TestSuiteOutcome {
             testLog.contains(testFailedMessage(from: .buck))
     }
 
-    private static func testFailedMessage(from binaryType: BinaryType) -> String {
-        switch binaryType {
+    private static func testFailedMessage(from testingBuildSystem: TestingBuildSystem) -> String {
+        switch testingBuildSystem {
         case .xcodebuild: return "** TEST FAILED **"
         case .buck: return "TESTS FAILED: "
         case .swift: return " failures "
@@ -55,7 +66,7 @@ extension TestSuiteOutcome {
     }
 
     private static var testFailureRegEx: NSRegularExpression {
-        try! NSRegularExpression(pattern: "with ([1-9]{1}[0-9]{0,}) failure", options: [])
+        NSRegularExpression.regexWithPattern(#"test\(s\)? failed|with ([1-9][0-9]*) failure|with ([1-9][0-9]*) tests? failed"#)
     }
 
     private static func terminationStatusIsSuccess(_ terminationStatus: Int32) -> Bool {
@@ -71,7 +82,7 @@ extension TestSuiteOutcome {
     }
 }
 
-private enum BinaryType {
+private enum TestingBuildSystem {
     case xcodebuild
     case buck
     case swift

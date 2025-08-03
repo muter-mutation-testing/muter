@@ -1,5 +1,7 @@
 let javascript = """
 window.onload = function() {
+    setupTheme();
+
     showHide(false, 'mutation-operators-per-file');
     showHide(false, 'applied-operators');
 };
@@ -39,5 +41,38 @@ function showChange(button) {
         changes.style.display = "table-cell";
         button.innerHTML = "-";
     }
+}
+
+function setupTheme() {
+    // Set default theme if not set
+    if (!localStorage.getItem('theme')) {
+        localStorage.setItem('theme', 'dark');
+    }
+
+    const toggle = document.getElementById("theme-toggle");
+    let theme = localStorage.getItem("theme");
+
+    function applyTheme() {
+        theme = localStorage.getItem("theme");
+        if (theme === "dark") {
+            toggle.textContent = "☀️";
+            document.body.classList.add("dark");
+        } else {
+            toggle.textContent = "🌙";
+            document.body.classList.remove("dark");
+        }
+    }
+
+    applyTheme();
+
+    toggle.addEventListener("click", () => {
+        theme = localStorage.getItem("theme");
+        if (theme === "dark") {
+            localStorage.setItem("theme", "light");
+        } else {
+            localStorage.setItem("theme", "dark");
+        }
+        applyTheme();
+    });
 }
 """
