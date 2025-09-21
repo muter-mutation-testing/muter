@@ -27,7 +27,7 @@ struct BuildForTesting: MutationStep {
         fileManager.changeCurrentDirectoryPath(state.mutatedProjectDirectoryURL.path)
 
         do {
-            let buildDirectory = try buildDirectory(state.muterConfiguration)
+            let buildDirectory = state.muterConfiguration.buildPath
             try runBuildForTestingCommand(state.muterConfiguration)
             let tempDebugURL = createTestContetsUrl(state.mutatedProjectDirectoryURL)
             try copyBuildArtifactsAtPath(buildDirectory, to: tempDebugURL.path)
@@ -38,10 +38,6 @@ struct BuildForTesting: MutationStep {
         } catch {
             throw MuterError.literal(reason: "\(error)")
         }
-    }
-
-    private func buildDirectory(_ configuration: MuterConfiguration) throws -> String {
-        configuration.derivedDataPath
     }
 
     private func runBuildForTestingCommand(

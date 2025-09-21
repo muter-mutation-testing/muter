@@ -54,7 +54,7 @@ struct MuterConfiguration: Equatable, Codable {
         excludeCallList = container.decode([String].self, default: [], forKey: .excludeCallList)
         coverageThreshold = container.decode(Double.self, default: 0, forKey: .coverageThreshold)
         testSuiteTimeout = try container.decodeIfPresent(Double.self, forKey: .testSuiteTimeout)
-            ?? (try container.decodeIfPresent(Int.self, forKey: .testSuiteTimeout)).flatMap(Double.init)
+            ?? (container.decodeIfPresent(Int.self, forKey: .testSuiteTimeout)).flatMap(Double.init)
     }
 
     init(from data: Data) throws {
@@ -96,26 +96,35 @@ extension MuterConfiguration {
     }
 
     var buildForTestingArguments: [String] {
-        let arguments = testCommandArguments
-
         switch buildSystem {
         case .xcodebuild:
-            return testArgumentsWithtDerivedData() + ["clean", "build-for-testing"]
+            return testArgumentsWithDerivedData() + ["clean", "build-for-testing"]
         case .swift,
              .unknown:
-            return arguments
+            return testArgumentsWithSPMBuildPath()
         }
     }
 
-    var derivedDataPath: String {
-        guard let index = derivedDataArgumentIndex() else {
-            return defaultDerivedData
-        }
+    var buildPath: String {
+        switch buildSystem {
+        case .xcodebuild:
+            guard let index = derivedDataArgumentIndex() else {
+                return defaultDerivedData
+            }
 
-        return testCommandArguments[index + 1]
+            return testCommandArguments[index + 1]
+        case .swift:
+            guard let index = spmBuildPathDataArgumentIndex() else {
+                return defaultSPMBuildPath
+            }
+            return testCommandArguments[index + 1]
+        case .unknown:
+            return ""
+        }
     }
-    
+
     private var defaultDerivedData: String { "DerivedData" }
+    private var defaultSPMBuildPath: String { "BuildPath" }
 
     func testWithoutBuildArguments(with testRunFile: String) -> [String] {
         let arguments = testCommandArguments
@@ -145,21 +154,42 @@ extension MuterConfiguration {
     private func derivedDataArgumentIndex() -> Int? {
         indexOfArgument("-derivedDataPath")
     }
+    
+    private func spmBuildPathDataArgumentIndex() -> Int? {
+        indexOfArgument("--build-path")
+    }
 
-    private func testArgumentsWithtDerivedData() -> [String] {
+    private func testArgumentsWithDerivedData() -> [String] {
         guard derivedDataArgumentIndex() == nil else {
             return testCommandArguments
         }
-        
+
         guard let testArgsIndex = indexOfArgument("test") else {
             return testCommandArguments
         }
-        
+
         var args = testCommandArguments
         args.remove(at: testArgsIndex)
         args.append("-derivedDataPath")
         args.append(defaultDerivedData)
-        
+
+        return args
+    }
+    
+    private func testArgumentsWithSPMBuildPath() -> [String] {
+        guard spmBuildPathDataArgumentIndex() == nil else {
+            return testCommandArguments
+        }
+
+        guard let testArgsIndex = indexOfArgument("test") else {
+            return testCommandArguments
+        }
+
+        var args = testCommandArguments
+        args.remove(at: testArgsIndex)
+        args.append("--build-path")
+        args.append(defaultSPMBuildPath)
+
         return args
     }
 }

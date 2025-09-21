@@ -2,7 +2,6 @@
 import XCTest
 
 final class ConfigurationXcodeProjectParsingTests: MuterTestCase {
-
     func test_withDerivedDataPath() {
         let sut = MuterConfiguration(
             executable: "/path/to/xcodebuild",
@@ -36,7 +35,7 @@ final class ConfigurationXcodeProjectParsingTests: MuterTestCase {
             ]
         )
 
-        XCTAssertEqual(sut.derivedDataPath, "foo/bar")
+        XCTAssertEqual(sut.buildPath, "foo/bar")
     }
 
     func test_withoutDerivedDataPath() {
@@ -69,6 +68,6 @@ final class ConfigurationXcodeProjectParsingTests: MuterTestCase {
             ]
         )
 
-        XCTAssertEqual(sut.derivedDataPath, "DerivedData")
+        XCTAssertEqual(sut.buildPath, "DerivedData")
     }
 }
