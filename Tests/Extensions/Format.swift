@@ -4,7 +4,7 @@ public func formatCode(_ code: String) -> String {
     let formatter = SwiftFormatter(configuration: Configuration())
     var stream = OutputStream()
 
-    try? formatter.format(source: code, assumingFileURL: nil, to: &stream)
+    try? formatter.format(source: code, assumingFileURL: nil, selection: .infinite, to: &stream)
 
     return stream.output
 }

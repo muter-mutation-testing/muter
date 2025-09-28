@@ -161,10 +161,10 @@ class MuterVisitor: SyntaxAnyVisitor {
             to: range.lowerBound
         )
 
-        let edit = IncrementalEdit(
-            offset: mutationPositionInCodeBlock,
-            length: max(mutatedSyntax.description.count, node.description.count),
-            replacementLength: mutatedSyntax.description.count
+        let editEnd = mutationPositionInCodeBlock + max(mutatedSyntax.description.count, node.description.count)
+        let edit = SourceEdit(
+            range: AbsolutePosition(utf8Offset: mutationPositionInCodeBlock) ..< AbsolutePosition(utf8Offset: editEnd),
+            replacement: Array(repeating: UInt8(ascii: " "), count: mutatedSyntax.description.count)
         )
 
         let codeBlockWithMutation = codeBlockDescription.replacingCharacters(
@@ -173,9 +173,8 @@ class MuterVisitor: SyntaxAnyVisitor {
         )
 
         let parseTransition = IncrementalParseTransition(
-            previousTree: codeBlockTree,
-            edits: ConcurrentEdits(edit),
-            lookaheadRanges: .init()
+            previousIncrementalParseResult: .init(tree: codeBlockTree, lookaheadRanges: .init()),
+            edits: ConcurrentEdits(edit)
         )
 
         let mutationParsed = Parser.parseIncrementally(

@@ -176,7 +176,8 @@ enum RemoveSideEffectsOperator {
                 RepeatStmtSyntax.self,
                 DoStmtSyntax.self,
             ]
-            for item in node.statements.map(\.item) {
+            let syntaxNodes = node.statements.map(\.item._syntaxNode)
+            for item in syntaxNodes {
                 for s in skippableNodes {
                     if item.is(s) {
                         return true

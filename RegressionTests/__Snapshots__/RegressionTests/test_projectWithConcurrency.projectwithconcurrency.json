@@ -10,6 +10,11 @@
               "line" : 11
             }
           },
+          "mutationSnapshot" : {
+            "after" : "removed line",
+            "before" : "block()",
+            "description" : "removed line"
+          },
           "testSuiteOutcome" : "passed"
         },
         {
@@ -19,6 +24,11 @@
               "column" : 12,
               "line" : 17
             }
+          },
+          "mutationSnapshot" : {
+            "after" : "removed line",
+            "before" : "block()",
+            "description" : "removed line"
           },
           "testSuiteOutcome" : "passed"
         },
@@ -30,6 +40,11 @@
               "line" : 23
             }
           },
+          "mutationSnapshot" : {
+            "after" : "removed line",
+            "before" : "block()",
+            "description" : "removed line"
+          },
           "testSuiteOutcome" : "passed"
         },
         {
@@ -39,6 +54,11 @@
               "column" : 12,
               "line" : 29
             }
+          },
+          "mutationSnapshot" : {
+            "after" : "removed line",
+            "before" : "block()",
+            "description" : "removed line"
           },
           "testSuiteOutcome" : "passed"
         }
