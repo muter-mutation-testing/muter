@@ -12,16 +12,16 @@ let package = Package(
         .executable(name: "muter", targets: ["muter", "muterCore"]),
     ],
     dependencies: [
-        .package(url: "https://github.com/apple/swift-argument-parser.git", from: "1.5.0"),
-        .package(url: "https://github.com/onevcat/Rainbow.git", from: "4.1.0"),
+        .package(url: "https://github.com/apple/swift-argument-parser.git", from: "1.6.1"),
+        .package(url: "https://github.com/swiftlang/swift-syntax.git", from: "601.0.0"),
+        .package(url: "https://github.com/swiftlang/swift-format.git", from: "601.0.0"),
+        .package(url: "https://github.com/onevcat/Rainbow.git", from: "4.2.0"),
         .package(url: "https://github.com/dduan/Pathos.git", from: "0.4.2"),
-        .package(url: "https://github.com/swiftlang/swift-syntax.git", from: "509.0.2"),
         .package(url: "https://github.com/johnsundell/plot.git", from: "0.14.0"),
         .package(url: "https://github.com/krzysztofzablocki/Difference.git", from: "1.1.0"),
-        .package(url: "https://github.com/jpsim/Yams.git", from: "5.3.1"),
-        .package(url: "https://github.com/pointfreeco/swift-snapshot-testing.git", from: "1.18.3"),
-        .package(url: "https://github.com/mxcl/Version.git", from: "2.1.0"),
-        .package(url: "https://github.com/swiftlang/swift-format.git", from: "509.0.0"),
+        .package(url: "https://github.com/jpsim/Yams.git", from: "6.1.0"),
+        .package(url: "https://github.com/pointfreeco/swift-snapshot-testing.git", from: "1.18.7"),
+        .package(url: "https://github.com/mxcl/Version.git", from: "2.2.0"),
     ],
     targets: [
         .executableTarget(
