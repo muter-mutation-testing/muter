@@ -6,7 +6,7 @@ static func validate(_ type: ParsableArguments.Type, parent: InputKey?)
     .compactMap { child in
       guard
         let codingKey = child.label,
-        let _ = child.value as? ArgumentSetProvider
+        child.value as? ArgumentSetProvider != nil
       else { return nil }
 
       // Property wrappers have underscore-prefixed names
