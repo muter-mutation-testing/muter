@@ -110,14 +110,14 @@ You can build Muter from source, and get the latest set of features/improvements
 ```sh
 git clone https://github.com/muter-mutation-testing/muter.git
 cd muter
-make install
+make install prefix=$(brew --prefix)
 ```
 
 If you've already installed Muter via homebrew, this will install over it. If you've done this, and want to go back to the latest version you've downloaded through homebrew, run the following:
 
 ```sh
-make uninstall
-brew link muter
+make uninstall prefix=$(brew --prefix)
+brew unlink muter && brew link muter
 ```
 
 ## Development
