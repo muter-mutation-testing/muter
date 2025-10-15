@@ -59,7 +59,7 @@ Both of these test suites are lengthy (~5 minutes). Budget your time accordingly
 It's possible (and encouraged!) to run Muter on itself. To do this with the version of the code you've been working on, run:
 
 ```
-make install
+make install prefix=$(brew --prefix)
 make mutation-test
 ```
 
