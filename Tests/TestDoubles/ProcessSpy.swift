@@ -31,6 +31,8 @@ final class ProcessSpy: MuterProcess {
         executableURL = URL(string: url)
         arguments = args
 
+        print("WARNING: Missing return for \(url) \(args.joined(separator: " "))")
+        
         return queue.dequeue()?.data(using: .utf8)
     }
 

@@ -7,10 +7,10 @@ final class ConfigurationGenerationTests: MuterTestCase {
             "/some/path/Package.swift",
             "/some/path/Package@swift-5.11.swift",
             "/some/path/main.swift",
-            "/some/path/PackageIgnoreMe.swift",
+            "/some/path/PackageIgnoreMe.swift"
         ]
 
-        process.stdoutToBeReturned = "/path/to/swift"
+        process.stdoutToBeReturned = which("swift")
 
         let generatedConfiguration = MuterConfiguration(from: projectDirectoryContents)
 
@@ -29,10 +29,11 @@ final class ConfigurationGenerationTests: MuterTestCase {
         let projectDirectoryContents = [
             "/some/path/Package.swift",
             "/some/path/main.swift",
-            "\(fixturesDirectory)/XcodeProjectFiles/iOSApp.xcodeproj",
+            "\(fixturesDirectory)/XcodeProjectFiles/iOSApp.xcodeproj"
         ]
 
-        process.stdoutToBeReturned = "/path/to/xcodebuild"
+        process.stdoutToBeReturned = simCtl()
+        process.stdoutToBeReturned = which("xcodebuild")
 
         let generatedConfiguration = MuterConfiguration(from: projectDirectoryContents)
 
@@ -45,7 +46,7 @@ final class ConfigurationGenerationTests: MuterTestCase {
                 "iOSApp",
                 "-destination",
                 "platform=iOS Simulator,name=iPhone SE (3rd generation)",
-                "test",
+                "test"
             ]
         )
 
@@ -63,10 +64,11 @@ final class ConfigurationGenerationTests: MuterTestCase {
     func test_iosProject() {
         let projectDirectoryContents = [
             "\(fixturesDirectory)/XcodeProjectFiles/iOSApp.xcodeproj",
-            "/some/path/AppDelegate.swift",
+            "/some/path/AppDelegate.swift"
         ]
 
-        process.stdoutToBeReturned = "/path/to/xcodebuild"
+        process.stdoutToBeReturned = simCtl()
+        process.stdoutToBeReturned = which("xcodebuild")
 
         let generatedConfiguration = MuterConfiguration(from: projectDirectoryContents)
 
@@ -79,7 +81,7 @@ final class ConfigurationGenerationTests: MuterTestCase {
                 "iOSApp",
                 "-destination",
                 "platform=iOS Simulator,name=iPhone SE (3rd generation)",
-                "test",
+                "test"
             ]
         )
 
@@ -99,10 +101,11 @@ final class ConfigurationGenerationTests: MuterTestCase {
             "\(fixturesDirectory)/XcodeProjectFiles/iOSApp.xcodeproj",
             "\(fixturesDirectory)/XcodeProjectFiles/iOSApp.xcodeproj/project.xcworkspace",
             "\(fixturesDirectory)/XcodeProjectFiles/iOSApp.xcodeproj/project.xcworkspace/contents.xcworkspacedata",
-            "/some/path/AppDelegate.swift",
+            "/some/path/AppDelegate.swift"
         ]
 
-        process.stdoutToBeReturned = "/path/to/xcodebuild"
+        process.stdoutToBeReturned = simCtl()
+        process.stdoutToBeReturned = which("xcodebuild")
 
         let generatedConfiguration = MuterConfiguration(from: projectDirectoryContents)
 
@@ -115,7 +118,7 @@ final class ConfigurationGenerationTests: MuterTestCase {
                 "iOSApp",
                 "-destination",
                 "platform=iOS Simulator,name=iPhone SE (3rd generation)",
-                "test",
+                "test"
             ]
         )
 
@@ -133,10 +136,11 @@ final class ConfigurationGenerationTests: MuterTestCase {
     func test_macOSProject() {
         let projectDirectoryContents = [
             "\(fixturesDirectory)/XcodeProjectFiles/CocoaApp.xcodeproj",
-            "/some/path/AppDelegate.swift",
+            "/some/path/AppDelegate.swift"
         ]
 
-        process.stdoutToBeReturned = "/path/to/xcodebuild"
+        process.stdoutToBeReturned = macOSDescitionation()
+        process.stdoutToBeReturned = which("xcodebuild")
 
         let generatedConfiguration = MuterConfiguration(from: projectDirectoryContents)
 
@@ -149,7 +153,9 @@ final class ConfigurationGenerationTests: MuterTestCase {
                     "CocoaApp.xcodeproj",
                     "-scheme",
                     "CocoaApp",
-                    "test",
+                    "-destination",
+                    "platform=macOS,arch=arm64,id=00006000-000A38D61E02401E,name=My Mac",
+                    "test"
                 ]
             )
         )
@@ -159,10 +165,11 @@ final class ConfigurationGenerationTests: MuterTestCase {
         let projectDirectoryContents = [
             "\(fixturesDirectory)/XcodeProjectFiles/iOSApp.xcodeproj",
             "/some/path/iOSApp.xcworkspace", // does not need to be a real file - just needs to share a name
-            "/some/path/AppDelegate.swift",
+            "/some/path/AppDelegate.swift"
         ]
 
-        process.stdoutToBeReturned = "/path/to/xcodebuild"
+        process.stdoutToBeReturned = simCtl()
+        process.stdoutToBeReturned = which("xcodebuild")
 
         let generatedConfiguration = MuterConfiguration(from: projectDirectoryContents)
 
@@ -175,7 +182,7 @@ final class ConfigurationGenerationTests: MuterTestCase {
                 "iOSApp",
                 "-destination",
                 "platform=iOS Simulator,name=iPhone SE (3rd generation)",
-                "test",
+                "test"
             ]
         )
 
@@ -194,10 +201,11 @@ final class ConfigurationGenerationTests: MuterTestCase {
         let projectDirectoryContents = [
             "\(fixturesDirectory)/XcodeProjectFiles/CocoaApp.xcodeproj",
             "/some/path/CocoaApp.xcworkspace", // does not need to be a real file - just needs to share a name
-            "/some/path/AppDelegate.swift",
+            "/some/path/AppDelegate.swift"
         ]
 
-        process.stdoutToBeReturned = "/path/to/xcodebuild"
+        process.stdoutToBeReturned = macOSDescitionation()
+        process.stdoutToBeReturned = which("xcodebuild")
 
         let generatedConfiguration = MuterConfiguration(from: projectDirectoryContents)
 
@@ -210,7 +218,9 @@ final class ConfigurationGenerationTests: MuterTestCase {
                     "CocoaApp.xcworkspace",
                     "-scheme",
                     "CocoaApp",
-                    "test",
+                    "-destination",
+                    "platform=macOS,arch=arm64,id=00006000-000A38D61E02401E,name=My Mac",
+                    "test"
                 ]
             )
         )
@@ -223,5 +233,52 @@ final class ConfigurationGenerationTests: MuterTestCase {
             generatedConfiguration,
             MuterConfiguration(executable: "", arguments: [])
         )
+    }
+
+    private func simCtl() -> String {
+        """
+        {
+            "devicetypes":
+            [
+                {
+                    "productFamily": "iPhone",
+                    "bundlePath": "/Library/Developer/CoreSimulator/Profiles/DeviceTypes/iPhone 14 Plus.simdevicetype",
+                    "maxRuntimeVersion": 4294967295,
+                    "maxRuntimeVersionString": "65535.255.255",
+                    "identifier": "com.apple.CoreSimulator.SimDeviceType.iPhone-14-Plus",
+                    "modelIdentifier": "iPhone14,8",
+                    "minRuntimeVersionString": "16.0.0",
+                    "minRuntimeVersion": 1048576,
+                    "name": "iPhone 14 Plus"
+                },
+                {
+                    "productFamily": "iPhone",
+                    "bundlePath": "/Library/Developer/CoreSimulator/Profiles/DeviceTypes/iPhone SE (3rd generation).simdevicetype",
+                    "maxRuntimeVersion": 4294967295,
+                    "maxRuntimeVersionString": "65535.255.255",
+                    "identifier": "com.apple.CoreSimulator.SimDeviceType.iPhone-SE-3rd-generation",
+                    "modelIdentifier": "iPhone14,6",
+                    "minRuntimeVersionString": "15.4.0",
+                    "minRuntimeVersion": 984064,
+                    "name": "iPhone SE (3rd generation)"
+                }
+            ]
+        }
+        """
+    }
+
+    private func macOSDescitionation() -> String {
+        """
+            [MT] IDERunDestination: Supported platforms for the buildables in the current scheme is empty.
+
+
+                Available destinations for the "ExampleMacOSApp" scheme:
+                    { platform:macOS, arch:arm64, id:00006000-000A38D61E02401E, name:My Mac }
+                    { platform:macOS, name:Any Mac }
+        """
+    }
+
+    func which(_ program: String) -> String {
+        "/path/to/\(program)"
     }
 }

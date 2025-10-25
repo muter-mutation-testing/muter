@@ -1,8 +1,8 @@
-import XCTest
 @testable import ExampleMacOSApp
+import XCTest
 
 class ExampleMacOSAppTests: XCTestCase {
     func test_alwaysTrue() {
-        XCTAssert(true)
+        XCTAssertTrue(foo())
     }
 }

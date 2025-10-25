@@ -5,7 +5,7 @@ extension MuterConfiguration {
         generateXcodeProjectConfiguration,
         generateXcodeWorkspaceConfiguration,
         generateSPMConfiguration,
-        generateEmptyConfiguration,
+        generateEmptyConfiguration
     ]
 
     init(from directoryContents: [FilePath]) {
@@ -73,12 +73,12 @@ private extension MuterConfiguration {
             isWorkSpace ? "-workspace" : "-project",
             isWorkSpace ? "\(projectName).xcworkspace" : "\(projectName).xcodeproj",
             "-scheme",
-            "\(projectName)",
+            "\(projectName)"
         ]
 
         let destination = projectFile.contains("SDKROOT = iphoneos") ?
-            ["-destination", "platform=iOS Simulator,name=\(iOSSimulator().name)"] :
-            []
+            ["-destination", "platform=iOS Simulator,name=\(iosDestination())"] :
+            ["-destination", macOSDestionation(defaultArguments)]
 
         return defaultArguments + destination + ["test"]
     }
@@ -89,7 +89,6 @@ private extension MuterConfiguration {
 }
 
 private extension MuterConfiguration {
-
     static func generateSPMConfiguration(from directoryContents: [URL]) -> MuterConfiguration? {
         if directoryContents.contains(where: { $0.lastPathComponent == "Package.swift" }) {
             return MuterConfiguration(
@@ -113,50 +112,74 @@ private extension MuterConfiguration {
     }
 }
 
-private struct Simulator: Codable, CustomStringConvertible {
-    let isAvailable: Bool
-    let name: String
-    let deviceTypeIdentifier: String
+private extension MuterConfiguration {
+    private struct Simulator: Codable, CustomStringConvertible {
+        let isAvailable: Bool
+        let name: String
+        let deviceTypeIdentifier: String
 
-    var description: String { name }
-}
+        var description: String { name }
 
-extension Simulator {
-    static var fallback: Simulator {
-        Simulator(
-            isAvailable: true,
-            name: "iPhone SE (3rd generation)",
-            deviceTypeIdentifier: ""
+        static var fallback: Simulator {
+            Simulator(
+                isAvailable: true,
+                name: "iPhone SE (3rd generation)",
+                deviceTypeIdentifier: ""
+            )
+        }
+    }
+
+    private static func iosDestination() -> String {
+        let process = current.process()
+        guard let simulatorsListOutput: Data = process.runProcess(
+            url: "/usr/bin/xcrun",
+            arguments: ["simctl", "list", "--json"]
         )
+        else {
+            return Simulator.fallback.name
+        }
+
+        do {
+            let simulatorsJson = try (
+                JSONSerialization
+                    .jsonObject(with: simulatorsListOutput) as? [String: AnyHashable]
+            ) ??
+                [:]
+            let devices = (simulatorsJson["devices"] as? [String: AnyHashable]) ?? [:]
+            let newestRuntime = devices.keys.filter { $0.contains("iOS") }.sorted().last ?? ""
+            let devicesForRunTime = (devices[newestRuntime] as? [AnyHashable]) ?? []
+            let device: Simulator? = try devicesForRunTime
+                .compactMap { try JSONSerialization.data(withJSONObject: $0) }
+                .compactMap { try JSONDecoder().decode(Simulator.self, from: $0) }
+                .filter(\.isAvailable)
+                .sorted(by: { $0.deviceTypeIdentifier > $1.deviceTypeIdentifier })
+                .first { $0.name.contains("iPhone") }
+
+            return device?.name ?? Simulator.fallback.name
+        } catch {
+            return Simulator.fallback.name
+        }
     }
-}
 
-private func iOSSimulator() -> Simulator {
-    let process = MuterProcessFactory.makeProcess()
+    private static func macOSDestionation(_ projectArguments: [String]) -> String {
+        let process = current.process()
+        guard let destinationsOutput: String = process.runProcess(
+            url: "/usr/bin/xcodebuild",
+            arguments: projectArguments + ["-showdestinations"]
+        )
+        else {
+            return ""
+        }
 
-    guard let simulatorsListOutput: Data = process.runProcess(
-        url: "/usr/bin/xcrun",
-        arguments: ["simctl", "list", "--json"]
-    )
-    else {
-        return .fallback
-    }
+        guard let destination = destinationsOutput.firstMatchOf(#"\{\s*([^}]+)\s*\}"#) else {
+            return ""
+        }
 
-    do {
-        let simulatorsJson = try (JSONSerialization.jsonObject(with: simulatorsListOutput) as? [String: AnyHashable]) ??
-            [:]
-        let devices = (simulatorsJson["devices"] as? [String: AnyHashable]) ?? [:]
-        let newestRuntime = devices.keys.filter { $0.contains("iOS") }.sorted().last ?? ""
-        let devicesForRunTime = (devices[newestRuntime] as? [AnyHashable]) ?? []
-        let device = try devicesForRunTime
-            .compactMap { try JSONSerialization.data(withJSONObject: $0) }
-            .compactMap { try JSONDecoder().decode(Simulator.self, from: $0) }
-            .filter(\.isAvailable)
-            .sorted(by: { $0.deviceTypeIdentifier > $1.deviceTypeIdentifier })
-            .first { $0.name.contains("iPhone") }
-
-        return device ?? .fallback
-    } catch {
-        return .fallback
+        return destination
+            .replacingOccurrences(of: "{", with: "")
+            .replacingOccurrences(of: "}", with: "")
+            .replacingOccurrences(of: ", ", with: ",")
+            .trimmed
+            .replacingOccurrences(of: ":", with: "=")
     }
 }
