@@ -107,10 +107,9 @@ final class AcceptanceTests: XCTestCase {
     func test_initCommandOnMacOSProject() throws {
         let decodedConfiguration = try MuterConfiguration(from: createdMacOSConfiguration)
         XCTAssertEqual(decodedConfiguration.testCommandExecutable, "/usr/bin/xcodebuild")
-        XCTAssertFalse(decodedConfiguration.testCommandArguments.contains("-destination"))
-        XCTAssertFalse(
-            decodedConfiguration.testCommandArguments
-                .contains("platform=iOS Simulator,name=iPhone SE (3rd generation)")
+        XCTAssertTrue(decodedConfiguration.testCommandArguments.contains("-destination"))
+        XCTAssertTrue(
+            decodedConfiguration.testCommandArguments.contains { $0.contains("platform=macOS,arch=arm64") }
         )
     }
 
