@@ -35,12 +35,19 @@ struct DiscoverMutationPoints: MutationStep {
 
         return [
             .mutationMappingsDiscovered(mappings),
-            .sourceCodeParsed(discovered.sourceCodeByFilePath),
+            // Pass empty dictionary - ApplySchemata will re-parse files on demand
+            // This prevents memory exhaustion on large codebases (2000+ files)
+            .sourceCodeParsed([:]),
         ]
     }
 }
 
 private extension DiscoverMutationPoints {
+
+    // Batch size for parallel processing - balances memory usage vs. parallelism
+    static let batchSize = 50
+    // Max concurrent tasks to limit memory pressure
+    static let maxConcurrency = 8
 
     func discoverMutationPoints(
         forOperators operators: MutationOperatorList,
@@ -48,29 +55,56 @@ private extension DiscoverMutationPoints {
         configuration: MuterConfiguration,
         coverage: Coverage
     ) -> DiscoveredFiles {
-        filePaths.accumulate(into: DiscoveredFiles()) { discoveredFiles, path in
-            guard
-                pathContainsDotSwift(path),
-                let sourceCode = prepareSourceCode(path)
-            else {
-                return discoveredFiles
+        // Process files in parallel batches for better performance on large codebases
+        // Uses autoreleasepool per file to prevent memory accumulation
+        let discoveredFiles = DiscoveredFiles()
+        let swiftFiles = filePaths.filter(pathContainsDotSwift)
+
+        // Process in batches to limit memory pressure
+        let batches = swiftFiles.chunked(into: Self.batchSize)
+
+        for batch in batches {
+            // Process batch concurrently using DispatchGroup
+            let group = DispatchGroup()
+            let queue = DispatchQueue(label: "muter.discovery", attributes: .concurrent)
+            let semaphore = DispatchSemaphore(value: Self.maxConcurrency)
+            let lock = NSLock()
+
+            for path in batch {
+                group.enter()
+                semaphore.wait()
+
+                queue.async {
+                    defer {
+                        semaphore.signal()
+                        group.leave()
+                    }
+
+                    autoreleasepool {
+                        guard let sourceCode = self.prepareSourceCode(path) else {
+                            return
+                        }
+
+                        let schemataMappings = self.discoverNewSchemataMappings(
+                            forOperators: operators,
+                            inFile: sourceCode,
+                            configuration: configuration,
+                            regionsWithoutCoverage: coverage.regionsForFile(path)
+                        )
+
+                        if !schemataMappings.isEmpty {
+                            lock.lock()
+                            discoveredFiles.mappings.append(contentsOf: schemataMappings)
+                            lock.unlock()
+                        }
+                    }
+                }
             }
 
-            let schemataMappings = discoverNewSchemataMappings(
-                forOperators: operators,
-                inFile: sourceCode,
-                configuration: configuration,
-                regionsWithoutCoverage: coverage.regionsForFile(path)
-            )
-
-            if !schemataMappings.isEmpty {
-                discoveredFiles.sourceCodeByFilePath[path] = sourceCode.source.code
-            }
-
-            discoveredFiles.mappings.append(contentsOf: schemataMappings)
-
-            return discoveredFiles
+            group.wait()
         }
+
+        return discoveredFiles
     }
 
     func discoverNewSchemataMappings(
@@ -110,5 +144,4 @@ private extension DiscoverMutationPoints {
 
 private class DiscoveredFiles {
     var mappings: [SchemataMutationMapping] = []
-    var sourceCodeByFilePath: [FilePath: SourceFileSyntax] = [:]
 }
