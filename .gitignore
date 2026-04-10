@@ -145,3 +145,12 @@ iOSInjectionProject/
 **/xcshareddata/WorkspaceSettings.xcsettings
 
 # End of https://www.gitignore.io/api/swift,xcode,macos
+
+# Muter artifacts
+logFileName
+muter_logs/
+muter_tmp/
+
+# Snapshot backup/conflict files
+*.txt.bak
+*\ 2.txt
