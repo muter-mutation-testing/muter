@@ -60,6 +60,44 @@ final class DiscoverMutationPointsTests: MuterTestCase {
         XCTAssertEqual(removeSideEffectsSchemata?.count, 2)
     }
 
+    // Regression for #302: discovery handed ApplySchemata an empty
+    // `sourceCodeParsed` dictionary, so the rewriter never matched a node
+    // and every schemata was silently dropped — the mutated copy ran the
+    // original code, collapsing the mutation score. Every file that produced
+    // mutations must carry its parsed source so ApplySchemata can rewrite the
+    // very tree the mapping keys belong to.
+    func test_cachesParsedSourceForMutatedFiles() async throws {
+        state.sourceFileCandidates = [
+            "\(fixturesDirectory)/sampleForDiscoveringMutations.swift",
+            "\(fixturesDirectory)/sample With Spaces For Discovering Mutations.swift",
+        ]
+
+        let result = try await sut.run(with: state)
+
+        let sourceCodeByFilePath = result
+            .compactMap { change -> [FilePath: SourceFileSyntax]? in
+                guard case let .sourceCodeParsed(byPath) = change else {
+                    return nil
+                }
+                return byPath
+            }
+            .first
+
+        let byPath = try XCTUnwrap(
+            sourceCodeByFilePath,
+            "Discovery must emit a .sourceCodeParsed change"
+        )
+
+        XCTAssertFalse(
+            byPath.isEmpty,
+            "No parsed source cached — ApplySchemata cannot apply any schemata"
+        )
+        XCTAssertTrue(
+            byPath.keys.contains { $0.contains("sampleForDiscoveringMutations") },
+            "Mutated file's parsed source missing from cache: \(Array(byPath.keys))"
+        )
+    }
+
     func test_shouldIgnoreUknownOperators() async throws {
         state.sourceFileCandidates = [
             "\(fixturesDirectory)/sourceWithoutMutableCode.swift",
@@ -96,26 +134,39 @@ final class DiscoverMutationPointsTests: MuterTestCase {
         XCTAssertTrue(fileNames.contains { $0.contains("sample With Spaces") })
     }
 
-    func test_returnsEmptySourceCodeDictionary() async throws {
-        // The fix passes an empty dictionary to prevent memory exhaustion
-        // ApplySchemata should re-parse files on demand
+    // Memory stays bounded by caching *only* the files that produced
+    // mutations — not by dropping every file's source (which broke
+    // ApplySchemata entirely, see test_cachesParsedSourceForMutatedFiles).
+    func test_doesNotCacheSourceForFilesWithoutMutations() async throws {
         state.sourceFileCandidates = [
             "\(fixturesDirectory)/sampleForDiscoveringMutations.swift",
+            "\(fixturesDirectory)/sourceWithoutMutableCode.swift",
         ]
 
         let result = try await sut.run(with: state)
 
-        // Check that sourceCodeParsed change contains empty dictionary
-        let sourceCodeChange = result.first { change in
-            if case .sourceCodeParsed = change { return true }
-            return false
-        }
+        let sourceCodeByFilePath = result
+            .compactMap { change -> [FilePath: SourceFileSyntax]? in
+                guard case let .sourceCodeParsed(byPath) = change else {
+                    return nil
+                }
+                return byPath
+            }
+            .first
 
-        guard case let .sourceCodeParsed(sourceCode) = sourceCodeChange else {
-            return XCTFail("Expected sourceCodeParsed change")
-        }
+        let byPath = try XCTUnwrap(
+            sourceCodeByFilePath,
+            "Discovery must emit a .sourceCodeParsed change"
+        )
 
-        XCTAssertTrue(sourceCode.isEmpty, "Source code dictionary should be empty to prevent memory exhaustion")
+        XCTAssertTrue(
+            byPath.keys.contains { $0.contains("sampleForDiscoveringMutations") },
+            "Mutated file's parsed source must be cached: \(Array(byPath.keys))"
+        )
+        XCTAssertFalse(
+            byPath.keys.contains { $0.contains("sourceWithoutMutableCode") },
+            "File without mutations must not be cached (keeps memory bounded)"
+        )
     }
 
     func test_handlesEmptyFileCandidates() async throws {
