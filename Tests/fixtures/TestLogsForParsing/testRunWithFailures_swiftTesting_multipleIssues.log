@@ -1,0 +1,11 @@
+◇ Test run started.
+↳ Testing Library Version: 102 (arm64e-apple-macos15.0)
+◇ Suite MathTests started.
+◇ Test addition() started.
+✘ Test addition() recorded an issue at MathTests.swift:8:5: Expectation failed
+✘ Test addition() failed after 0.001 seconds with 1 issue.
+◇ Test subtraction() started.
+✘ Test subtraction() recorded an issue at MathTests.swift:14:5: Expectation failed
+✘ Test subtraction() failed after 0.001 seconds with 1 issue.
+◇ Suite MathTests failed after 0.003 seconds with 2 issues.
+✘ Test run with 27 tests in 5 suites failed after 0.034 seconds with 6 issues.

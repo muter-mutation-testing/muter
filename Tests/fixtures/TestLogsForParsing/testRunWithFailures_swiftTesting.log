@@ -1,0 +1,8 @@
+◇ Test run started.
+↳ Testing Library Version: 102 (arm64e-apple-macos15.0)
+◇ Suite SwiftTestingSampleTests started.
+◇ Test sampleTest() started.
+✘ Test sampleTest() recorded an issue at SwiftTestingSampleTests.swift:12:5: Expectation failed: (2 → 2) == 3
+✘ Test sampleTest() failed after 0.001 seconds with 1 issue.
+◇ Suite SwiftTestingSampleTests failed after 0.001 seconds with 1 issue.
+✘ Test run with 1 test failed after 0.001 seconds with 1 issue.
