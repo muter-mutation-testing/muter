@@ -126,7 +126,8 @@ struct MutationTestingDelegate: MutationTestingIODelegate {
             process.waitUntilExit()
             return .success
         } timeoutHandler: {
-            process.interrupt()
+            // Kill the whole process tree, not just the launched command — see terminateTree().
+            process.terminateTree()
             return .timeout
         }
     }

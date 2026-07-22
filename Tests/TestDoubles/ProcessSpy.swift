@@ -2,6 +2,7 @@ import Foundation
 @testable import muterCore
 
 final class ProcessSpy: MuterProcess {
+    var processIdentifier: Int32 { 0 }
     var terminationStatus: Int32 { 0 }
     var terminationHandler: (@Sendable (Foundation.Process) -> Void)? = nil
     var environment: [String: String]?
@@ -42,4 +43,11 @@ final class ProcessSpy: MuterProcess {
     }
 
     func interrupt() {}
+
+    // Override the protocol's default `terminateTree()` so tests can assert the timeout handler
+    // reaches for the tree-kill without invoking the real `ps`/`kill` path.
+    private(set) var terminateTreeCalled = false
+    func terminateTree() {
+        terminateTreeCalled = true
+    }
 }
