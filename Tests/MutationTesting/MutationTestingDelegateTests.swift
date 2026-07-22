@@ -134,6 +134,32 @@ final class MutationTestingDelegateTests: MuterTestCase {
         XCTAssertEqual(testingTimeOutExecutor.timeLimitPassed, 9)
     }
 
+    func test_whenTestTimesOut_thenKillsProcessTreeAndReportsTimeout() async throws {
+        let configuration = MuterConfiguration(
+            executable: "/tmp/swift",
+            arguments: ["test"],
+            testSuiteTimeOut: 9
+        )
+        // Force the timeout branch (the test "ran too long").
+        testingTimeOutExecutor.shouldSucceed = false
+
+        let schemata = try MutationSchema.make(
+            filePath: "/path/fileName",
+            position: .init(line: 1)
+        )
+
+        let result = await sut.runTestSuite(
+            withSchemata: schemata,
+            using: configuration,
+            savingResultsIntoFileNamed: "logFileName"
+        )
+
+        // On timeout we kill the WHOLE process tree (not just interrupt the parent), and the mutant
+        // is reported as timed out rather than hanging the run forever.
+        XCTAssertTrue(process.terminateTreeCalled)
+        XCTAssertEqual(result.outcome, .timeout)
+    }
+
     func test_whenConfigurationHasNoTimeOut_thenRunTestsWithoutTimeOut() async throws {
         let configuration = MuterConfiguration(
             executable: "/tmp/swift",
