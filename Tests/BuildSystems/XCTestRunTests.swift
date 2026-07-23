@@ -36,6 +36,40 @@ final class XCTestRunTests: MuterTestCase {
         XCTAssertNotNil(environmentVariables?[isMuterRunningKey])
     }
 
+    func test_updateEnvironmentVariable_createsEnvironmentVariablesWhenAbsent() {
+        // A freshly generated .xctestrun target has no EnvironmentVariables dict. The var must still
+        // be injected (regression: the old keys.contains guard skipped it → phantom 0% on simulator).
+        sut = muterCore.XCTestRun([
+            "SomeTestTarget": ["BlueprintName": "SomeTestTarget"] as [String: AnyHashable]
+        ])
+
+        let actualPlist = sut.updateEnvironmentVariable(setting: "keyToBeSet")
+
+        let target = actualPlist["SomeTestTarget"] as? [String: AnyHashable]
+        let environmentVariables = target?["EnvironmentVariables"] as? [String: AnyHashable]
+        XCTAssertEqual(environmentVariables?["keyToBeSet"], isMuterRunningValue)
+        XCTAssertEqual(environmentVariables?[isMuterRunningKey], isMuterRunningValue)
+    }
+
+    func test_updateEnvironmentVariable_forTestPlan_createsEnvironmentVariablesWhenAbsent() {
+        sut = muterCore.XCTestRun([
+            "TestConfigurations": [
+                ["TestTargets": [["BlueprintName": "SomeTestTarget"] as [String: AnyHashable]]] as [String: AnyHashable]
+            ]
+        ])
+
+        let actualPlist = sut.updateEnvironmentVariable(setting: "keyToBeSet")
+
+        let testConfigurations = actualPlist["TestConfigurations"] as? [AnyHashable]
+        let testConfiguration = testConfigurations?.first as? [String: AnyHashable]
+        let testTargets = testConfiguration?["TestTargets"] as? [AnyHashable]
+        let testTarget = testTargets?.first as? [String: AnyHashable]
+        let environmentVariables = testTarget?["EnvironmentVariables"] as? [String: AnyHashable]
+
+        XCTAssertEqual(environmentVariables?["keyToBeSet"], isMuterRunningValue)
+        XCTAssertEqual(environmentVariables?[isMuterRunningKey], isMuterRunningValue)
+    }
+
     private func loadPlist(for fileName: String) throws -> [String: AnyHashable] {
         let data = try XCTUnwrap(
             FileManager.default

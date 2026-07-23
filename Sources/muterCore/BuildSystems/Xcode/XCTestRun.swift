@@ -59,13 +59,17 @@ struct XCTestRun: Equatable {
         let environmentVariablesKey = "EnvironmentVariables"
         var configuration = configuration
 
-        if configuration.keys.contains(environmentVariablesKey),
-           var allEnvironmentVariables = configuration[environmentVariablesKey] as? [String: AnyHashable] {
-            allEnvironmentVariables[key] = isMuterRunningValue
-            allEnvironmentVariables[isMuterRunningKey] = isMuterRunningValue
+        // Create the `EnvironmentVariables` dict when absent instead of skipping. A freshly generated
+        // .xctestrun has no such dict for a target, so the old `keys.contains` guard silently never
+        // wrote the schemata activation var. On the `test-without-building -xctestrun` path (used for
+        // simulator-hosted targets, where the env must ride in via the xctestrun rather than the parent
+        // process) the mutant then never activated in the test host — every mutant became a false
+        // "survived", i.e. a phantom 0% score.
+        var allEnvironmentVariables = configuration[environmentVariablesKey] as? [String: AnyHashable] ?? [:]
+        allEnvironmentVariables[key] = isMuterRunningValue
+        allEnvironmentVariables[isMuterRunningKey] = isMuterRunningValue
 
-            configuration[environmentVariablesKey] = allEnvironmentVariables
-        }
+        configuration[environmentVariablesKey] = allEnvironmentVariables
 
         return configuration
     }
