@@ -170,8 +170,19 @@ struct MutationTestingDelegate: MutationTestingIODelegate {
 
         let process = process()
 
+        // Set the muter marker only on the TEST process, not the shared build process (see
+        // MuterProcessFactory) — it's not needed at build time and setting it there can suppress
+        // xcodebuild's build-request.json.
+        process.environment?[isMuterRunningKey] = isMuterRunningValue
+
         if schemata != .null {
             process.environment?[schemata.id] = "YES"
+            // Also forward the activation var into an iOS Simulator test host. When xcodebuild spawns
+            // tests in the simulator, CoreSimulator only propagates env vars prefixed `SIMCTL_CHILD_`
+            // into the simulated process; a bare var set on this (parent) process never reaches the
+            // test host, so the mutant wouldn't activate. Harmless for non-simulator (swift/macOS) runs,
+            // which read the bare var directly. Complements the xctestrun `EnvironmentVariables` path.
+            process.environment?["SIMCTL_CHILD_\(schemata.id)"] = "YES"
         }
 
         process.arguments = testCommandArguments
