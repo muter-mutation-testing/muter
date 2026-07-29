@@ -6,6 +6,7 @@ typealias MutationSchemata = [MutationSchema]
 final class SchemataMutationMapping {
     let filePath: String
     fileprivate var mappings: [CodeBlockItemListSyntax: MutationSchemata]
+    private var mappingsByPosition: [Int: MutationSchemata] = [:]
 
     var count: Int {
         mappings.count
@@ -42,6 +43,9 @@ final class SchemataMutationMapping {
     ) {
         self.filePath = filePath
         self.mappings = mappings
+        for (codeBlock, schemata) in mappings {
+            mappingsByPosition[codeBlock.position.utf8Offset, default: []].append(contentsOf: schemata)
+        }
     }
 
     func add(
@@ -49,6 +53,7 @@ final class SchemataMutationMapping {
         _ schemata: MutationSchema
     ) {
         mappings[codeBlockSyntax, default: []].append(schemata)
+        mappingsByPosition[codeBlockSyntax.position.utf8Offset, default: []].append(schemata)
     }
 
     func add(
@@ -56,12 +61,13 @@ final class SchemataMutationMapping {
         _ schemata: MutationSchemata
     ) {
         mappings[codeBlockSyntax, default: []].append(contentsOf: schemata)
+        mappingsByPosition[codeBlockSyntax.position.utf8Offset, default: []].append(contentsOf: schemata)
     }
 
     func schemata(
         _ codeBlockSyntax: CodeBlockItemListSyntax
     ) -> MutationSchemata? {
-        mappings[codeBlockSyntax]
+        mappings[codeBlockSyntax] ?? mappingsByPosition[codeBlockSyntax.position.utf8Offset]
     }
 }
 
