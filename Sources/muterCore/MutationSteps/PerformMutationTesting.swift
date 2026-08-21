@@ -69,18 +69,29 @@ private extension PerformMutationTesting {
             end: timeAfterRunningTestSuite
         ).duration
 
-        guard testSuiteOutcome == .passed else {
-            throw MuterError.mutationTestingAborted(
-                reason: .baselineTestFailed(log: testLog)
-            )
-        }
-
         let mutationLog = MutationTestLog(
             mutationPoint: .none,
             testLog: testLog,
             timePerBuildTestCycle: timePerBuildTestCycle,
             remainingMutationPointsCount: state.mutationPoints.count
         )
+
+        guard testSuiteOutcome == .passed else {
+            // A failing baseline is exactly when the user needs its output on disk, and nothing else
+            // records it. It gets its own notification rather than `.newTestLogAvailable`, which also
+            // announces that a baseline was successfully determined and starts the progress bar.
+            notificationCenter.post(
+                name: .baselineTestFailed,
+                object: mutationLog
+            )
+
+            throw MuterError.mutationTestingAborted(
+                reason: .baselineTestFailed(
+                    log: testLog,
+                    mutatedFilePaths: state.mutationMapping.map(\.filePath)
+                )
+            )
+        }
 
         notificationCenter.post(
             name: .newTestLogAvailable,

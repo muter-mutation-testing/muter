@@ -30,6 +30,7 @@ extension Notification.Name {
 
     static let newMutationTestOutcomeAvailable = Notification.Name("newMutationTestOutcomeAvailable")
     static let newTestLogAvailable = Notification.Name("newTestLogAvailable")
+    static let baselineTestFailed = Notification.Name("baselineTestFailed")
 
     static let configurationFileCreated = Notification.Name("configurationFileCreated")
 
@@ -75,6 +76,7 @@ final class MutationTestObserver {
 
             (name: .newMutationTestOutcomeAvailable, handler: handleNewMutationTestOutcomeAvailable),
             (name: .newTestLogAvailable, handler: handleNewTestLogAvailable),
+            (name: .baselineTestFailed, handler: handleBaselineTestFailed),
 
             (name: .mutationTestingFinished, handler: handleMutationTestingFinished),
 
@@ -176,6 +178,16 @@ extension MutationTestObserver {
 
         logger.newMutationTestLogAvailable(mutationTestLog: mutationTestLog)
 
+        writeTestLog(mutationTestLog)
+    }
+
+    /// Records the log only. The abort message reports the failure to the console, and there is no
+    /// progress left to announce.
+    func handleBaselineTestFailed(notification: Notification) {
+        writeTestLog(notification.object as! MutationTestLog)
+    }
+
+    private func writeTestLog(_ mutationTestLog: MutationTestLog) {
         _ = fileManager.createFile(
             atPath: "\(loggingDirectory)/\(logFileName(from: mutationTestLog.mutationPoint))",
             contents: mutationTestLog.testLog.data(using: .utf8),

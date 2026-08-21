@@ -94,7 +94,22 @@ struct MutationTestingDelegate: MutationTestingIODelegate {
             )
 
         } catch {
-            return (.buildError, "") // this should never be executed
+            // Reaching here means the test command never ran — the log file couldn't be opened, or
+            // the process failed to spawn. There is no test output to report, so the thrown error is
+            // the only evidence of what went wrong; return it as the log rather than an empty string,
+            // which leaves the caller with nothing to show the user.
+            return (
+                .buildError,
+                """
+                Muter could not run your test command and captured no test output.
+
+                  executable: \(configuration.testCommandExecutable)
+                  arguments: \(configuration.testCommandArguments.joined(separator: " "))
+                  working directory: \(FileManager.default.currentDirectoryPath)
+
+                \(error.localizedDescription)
+                """
+            )
         }
     }
 
@@ -126,7 +141,8 @@ struct MutationTestingDelegate: MutationTestingIODelegate {
             process.waitUntilExit()
             return .success
         } timeoutHandler: {
-            process.interrupt()
+            // Kill the whole process tree, not just the launched command — see terminateTree().
+            process.terminateTree()
             return .timeout
         }
     }
@@ -169,8 +185,19 @@ struct MutationTestingDelegate: MutationTestingIODelegate {
 
         let process = process()
 
+        // Set the muter marker only on the TEST process, not the shared build process (see
+        // MuterProcessFactory) — it's not needed at build time and setting it there can suppress
+        // xcodebuild's build-request.json.
+        process.environment?[isMuterRunningKey] = isMuterRunningValue
+
         if schemata != .null {
             process.environment?[schemata.id] = "YES"
+            // Also forward the activation var into an iOS Simulator test host. When xcodebuild spawns
+            // tests in the simulator, CoreSimulator only propagates env vars prefixed `SIMCTL_CHILD_`
+            // into the simulated process; a bare var set on this (parent) process never reaches the
+            // test host, so the mutant wouldn't activate. Harmless for non-simulator (swift/macOS) runs,
+            // which read the bare var directly. Complements the xctestrun `EnvironmentVariables` path.
+            process.environment?["SIMCTL_CHILD_\(schemata.id)"] = "YES"
         }
 
         process.arguments = testCommandArguments

@@ -76,9 +76,21 @@ final class MutationTestingDelegateTests: MuterTestCase {
         )
 
         XCTAssertEqual(testProcess.environment?[schemata.id], "YES")
+        // Also forwarded with the SIMCTL_CHILD_ prefix so it reaches an iOS Simulator test host
+        // (CoreSimulator only propagates SIMCTL_CHILD_-prefixed vars into the simulated process).
+        XCTAssertEqual(testProcess.environment?["SIMCTL_CHILD_\(schemata.id)"], "YES")
         XCTAssertEqual(testProcess.environment?[isMuterRunningKey], isMuterRunningValue)
         XCTAssertEqual(testProcess.arguments, ["test", "--skip-build"])
         XCTAssertEqual(testProcess.executableURL?.path, "/tmp/swift")
+    }
+
+    func test_makeProcess_doesNotSetMuterRunningMarker() {
+        // The shared factory (used for build-for-testing too) must NOT carry IS_MUTER_RUNNING — on
+        // some projects it makes xcodebuild skip writing build-request.json, breaking BuildForTesting.
+        // The marker belongs only on the test process (asserted in test_testProcessForSwiftBuild).
+        let process = MuterProcessFactory.makeProcess()
+
+        XCTAssertNil(process.environment?[isMuterRunningKey])
     }
 
     func test_switchOn() async throws {
@@ -132,6 +144,56 @@ final class MutationTestingDelegateTests: MuterTestCase {
 
         XCTAssertTrue(testingTimeOutExecutor.withTimeLimitCalled)
         XCTAssertEqual(testingTimeOutExecutor.timeLimitPassed, 9)
+    }
+
+    func test_whenTestTimesOut_thenKillsProcessTreeAndReportsTimeout() async throws {
+        let configuration = MuterConfiguration(
+            executable: "/tmp/swift",
+            arguments: ["test"],
+            testSuiteTimeOut: 9
+        )
+        // Force the timeout branch (the test "ran too long").
+        testingTimeOutExecutor.shouldSucceed = false
+
+        let schemata = try MutationSchema.make(
+            filePath: "/path/fileName",
+            position: .init(line: 1)
+        )
+
+        let result = await sut.runTestSuite(
+            withSchemata: schemata,
+            using: configuration,
+            savingResultsIntoFileNamed: "logFileName"
+        )
+
+        // On timeout we kill the WHOLE process tree (not just interrupt the parent), and the mutant
+        // is reported as timed out rather than hanging the run forever.
+        XCTAssertTrue(process.terminateTreeCalled)
+        XCTAssertEqual(result.outcome, .timeout)
+    }
+
+    func test_whenTestProcessCannotBeLaunched_thenTheFailureIsReportedAsTheLog() async throws {
+        let configuration = MuterConfiguration(
+            executable: "swift",
+            arguments: ["test", "--filter", "CalcTests"]
+        )
+        process.runError = NSError(
+            domain: NSCocoaErrorDomain,
+            code: NSFileNoSuchFileError,
+            userInfo: [NSLocalizedDescriptionKey: "The file \"swift\" doesn't exist."]
+        )
+
+        let result = await sut.benchmarkTests(
+            using: configuration,
+            savingResultsIntoFileNamed: "logFileName"
+        )
+
+        // A process that never launches produces no test output, so the spawn failure itself is the only
+        // evidence there is. An empty log here leaves the abort message with nothing to show the user.
+        XCTAssertEqual(result.outcome, .buildError)
+        XCTAssertTrue(result.testLog.contains("swift"), result.testLog)
+        XCTAssertTrue(result.testLog.contains("test --filter CalcTests"), result.testLog)
+        XCTAssertTrue(result.testLog.contains("doesn't exist"), result.testLog)
     }
 
     func test_whenConfigurationHasNoTimeOut_thenRunTestsWithoutTimeOut() async throws {

@@ -22,6 +22,26 @@ final class CopyProjectToTempDirectoryTests: MuterTestCase {
         XCTAssertEqual(fileManager.methodCalls, ["copyItem(atPath:toPath:)"])
     }
 
+    func test_whenTheCopyContainsModuleCaches_thenTheyAreDiscarded() async throws {
+        state.projectDirectoryURL = URL(fileURLWithPath: "/some/projectName")
+        state.mutatedProjectDirectoryURL = URL(fileURLWithPath: "/tmp/projectName")
+        process.stdoutToBeReturned = """
+        /tmp/projectName/.build/arm64-apple-macosx/debug/ModuleCache
+        /tmp/projectName/.build/arm64-apple-macosx/release/ModuleCache
+        """
+
+        _ = try await sut.run(with: state)
+
+        // A module cache records the absolute path it was built under, so one carried into the copy makes
+        // every compile there fail with `missing required module 'SwiftShims'`.
+        XCTAssertEqual(process.executableURL?.path, "/usr/bin/find")
+        XCTAssertEqual(process.arguments, ["/tmp/projectName", "-name", "ModuleCache"])
+        XCTAssertEqual(fileManager.paths, [
+            "/tmp/projectName/.build/arm64-apple-macosx/debug/ModuleCache",
+            "/tmp/projectName/.build/arm64-apple-macosx/release/ModuleCache",
+        ])
+    }
+
     func test_whenItsUnableToCopyAProjectIntoATempDirectory() async throws {
         fileManager.errorToThrow = TestingError.stub
         state.projectDirectoryURL = URL(string: "/some/projectName")!
