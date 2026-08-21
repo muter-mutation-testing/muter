@@ -172,6 +172,30 @@ final class MutationTestingDelegateTests: MuterTestCase {
         XCTAssertEqual(result.outcome, .timeout)
     }
 
+    func test_whenTestProcessCannotBeLaunched_thenTheFailureIsReportedAsTheLog() async throws {
+        let configuration = MuterConfiguration(
+            executable: "swift",
+            arguments: ["test", "--filter", "CalcTests"]
+        )
+        process.runError = NSError(
+            domain: NSCocoaErrorDomain,
+            code: NSFileNoSuchFileError,
+            userInfo: [NSLocalizedDescriptionKey: "The file \"swift\" doesn't exist."]
+        )
+
+        let result = await sut.benchmarkTests(
+            using: configuration,
+            savingResultsIntoFileNamed: "logFileName"
+        )
+
+        // A process that never launches produces no test output, so the spawn failure itself is the only
+        // evidence there is. An empty log here leaves the abort message with nothing to show the user.
+        XCTAssertEqual(result.outcome, .buildError)
+        XCTAssertTrue(result.testLog.contains("swift"), result.testLog)
+        XCTAssertTrue(result.testLog.contains("test --filter CalcTests"), result.testLog)
+        XCTAssertTrue(result.testLog.contains("doesn't exist"), result.testLog)
+    }
+
     func test_whenConfigurationHasNoTimeOut_thenRunTestsWithoutTimeOut() async throws {
         let configuration = MuterConfiguration(
             executable: "/tmp/swift",
