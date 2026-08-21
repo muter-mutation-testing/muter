@@ -19,8 +19,15 @@ final class ProcessSpy: MuterProcess {
     }
 
     var runCalled = false
+    /// Set to simulate a process that can't be launched at all — what `Foundation.Process.run()` throws
+    /// when `executableURL` names a file that doesn't exist.
+    var runError: Error?
     func run() throws {
         runCalled = true
+
+        if let runError {
+            throw runError
+        }
     }
 
     var waitUntilExitCalled = false

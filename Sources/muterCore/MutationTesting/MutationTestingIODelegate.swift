@@ -94,7 +94,22 @@ struct MutationTestingDelegate: MutationTestingIODelegate {
             )
 
         } catch {
-            return (.buildError, "") // this should never be executed
+            // Reaching here means the test command never ran — the log file couldn't be opened, or
+            // the process failed to spawn. There is no test output to report, so the thrown error is
+            // the only evidence of what went wrong; return it as the log rather than an empty string,
+            // which leaves the caller with nothing to show the user.
+            return (
+                .buildError,
+                """
+                Muter could not run your test command and captured no test output.
+
+                  executable: \(configuration.testCommandExecutable)
+                  arguments: \(configuration.testCommandArguments.joined(separator: " "))
+                  working directory: \(FileManager.default.currentDirectoryPath)
+
+                \(error.localizedDescription)
+                """
+            )
         }
     }
 
