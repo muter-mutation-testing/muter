@@ -80,6 +80,21 @@ struct MuterConfiguration: Equatable, Codable {
 }
 
 extension MuterConfiguration {
+    /// A copy of this configuration whose test command runs `executable`.
+    func withExecutable(_ executable: String) -> MuterConfiguration {
+        MuterConfiguration(
+            executable: executable,
+            arguments: testCommandArguments,
+            excludeList: excludeFileList,
+            excludeCallList: excludeCallList,
+            coverageThreshold: coverageThreshold,
+            testSuiteTimeOut: testSuiteTimeout,
+            buildSystem: explicitBuildSystem
+        )
+    }
+}
+
+extension MuterConfiguration {
     static let fileName = "muter.conf"
     static let `extension` = "yml"
     static let fileNameWithExtension = "\(fileName).\(`extension`)"
