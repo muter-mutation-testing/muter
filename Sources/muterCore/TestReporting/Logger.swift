@@ -39,6 +39,15 @@ final class Logger {
         print("✂️ Copying your project to a temporary directory for testing...")
     }
 
+    func projectCopySkippedVanishedFiles(_ paths: [String]) {
+        let shown = paths.prefix(5).map { "  \($0)" }
+        let more = paths.count > shown.count ? ["  … and \(paths.count - shown.count) more"] : []
+        print(
+            (["⚠️ Skipped \(paths.count) file(s) that disappeared while your project was being copied:"] + shown + more)
+                .joined(separator: "\n")
+        )
+    }
+
     func projectCopyFinished(destinationPath: String) {
         print(
             """

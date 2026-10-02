@@ -15,6 +15,7 @@ extension Notification.Name {
 
     static let projectCopyStarted = Notification.Name("projectCopyStarted")
     static let projectCopyFinished = Notification.Name("projectCopyFinished")
+    static let projectCopySkippedVanishedFiles = Notification.Name("projectCopySkippedVanishedFiles")
 
     static let projectCoverageDiscoveryStarted = Notification.Name("projectCoverageDiscoveryStarted")
     static let projectCoverageDiscoveryFinished = Notification.Name("projectCoverageDiscoveryFinished")
@@ -60,6 +61,7 @@ final class MutationTestObserver {
             (name: .updateCheckFinished, handler: handleUpdateCheckFinished),
 
             (name: .projectCopyStarted, handler: handleProjectCopyStarted),
+            (name: .projectCopySkippedVanishedFiles, handler: handleProjectCopySkippedVanishedFiles),
             (name: .projectCopyFinished, handler: handleProjectCopyFinished),
 
             (name: .projectCoverageDiscoveryStarted, handler: handleProjectCoverageDiscoveryStarted),
@@ -126,6 +128,10 @@ extension MutationTestObserver {
 
     func handleProjectCopyStarted(notification: Notification) {
         logger.projectCopyStarted()
+    }
+
+    func handleProjectCopySkippedVanishedFiles(notification: Notification) {
+        (notification.object as? [String]).map(logger.projectCopySkippedVanishedFiles)
     }
 
     func handleProjectCopyFinished(notification: Notification) {

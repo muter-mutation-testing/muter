@@ -42,6 +42,22 @@ final class LoggerTests: MuterTestCase {
         AssertSnapshot(printer.linesPassed.joined(separator: "\n"))
     }
 
+    func test_projectCopySkippedVanishedFiles_listsUpToFivePaths() {
+        sut.projectCopySkippedVanishedFiles((1 ... 7).map { "/p/f\($0).lock" })
+
+        XCTAssertEqual(printer.linesPassed, [
+            """
+            ⚠️ Skipped 7 file(s) that disappeared while your project was being copied:
+              /p/f1.lock
+              /p/f2.lock
+              /p/f3.lock
+              /p/f4.lock
+              /p/f5.lock
+              … and 2 more
+            """,
+        ])
+    }
+
     private func makeSchemataMapping() throws -> SchemataMutationMapping {
         try SchemataMutationMapping.make(
             filePath: "/some/path",
