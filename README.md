@@ -175,7 +175,8 @@ Should you need to modify any of the options, you can use the list below to unde
     **NOTE**: Doesn't support overloading currently - all function calls with a matching name will be skipped.
 
 - `coverageThreshold` - when present Muter will ignore files that have a coverage value less than this option.
-- `testSuiteTimeout` - the maximum time in seconds that a test suite is allowed to run before being terminated. This prevents mutations from causing infinite loops or hanging tests. If not specified, tests will run without a timeout.
+- `mutationTestTimeout` - the maximum time in seconds that a test suite is allowed to run before being terminated. This prevents mutations from causing infinite loops or hanging tests. If not specified, each mutant's test run is stopped after 3 times as long as the baseline test run took, and never less than 10 seconds.
+- `mutationTestWorkers` - how many mutants to test at the same time. Each extra worker runs your test suite in its own copy of the mutated project, made with `cp -c`, which clones files on APFS instead of copying them. Only SwiftPM projects (`executable` is `swift`) run in parallel, because `xcodebuild` test runs share an `.xctestrun` file and DerivedData. Defaults to 1.
 
 Below is an example pulled directly from the `ExampleApp` project.
 The configuration file will end up looking something like this:

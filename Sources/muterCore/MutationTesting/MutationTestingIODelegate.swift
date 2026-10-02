@@ -10,6 +10,19 @@ protocol MutationTestingIODelegate {
         testLog: String
     )
 
+    /// `runTestSuite(withSchemata:using:savingResultsIntoFileNamed:)` with the test command run in
+    /// `workingDirectory`, a parallel worker's clone of the mutated project. The log is still saved
+    /// in the current directory.
+    func runTestSuite(
+        withSchemata schemata: MutationSchema,
+        using configuration: MuterConfiguration,
+        savingResultsIntoFileNamed fileName: String,
+        workingDirectory: URL
+    ) async -> (
+        outcome: TestSuiteOutcome,
+        testLog: String
+    )
+
     func benchmarkTests(
         using configuration: MuterConfiguration,
         savingResultsIntoFileNamed fileName: String
@@ -66,11 +79,30 @@ struct MutationTestingDelegate: MutationTestingIODelegate {
         )
     }
 
+    func runTestSuite(
+        withSchemata schemata: MutationSchema,
+        using configuration: MuterConfiguration,
+        savingResultsIntoFileNamed fileName: String,
+        workingDirectory: URL
+    ) async -> (
+        outcome: TestSuiteOutcome,
+        testLog: String
+    ) {
+        await runTestSuite(
+            withSchemata: schemata,
+            using: configuration,
+            savingResultsIntoFileNamed: fileName,
+            isBenchmark: false,
+            workingDirectory: workingDirectory
+        )
+    }
+
     private func runTestSuite(
         withSchemata schemata: MutationSchema,
         using configuration: MuterConfiguration,
         savingResultsIntoFileNamed fileName: String,
-        isBenchmark: Bool
+        isBenchmark: Bool,
+        workingDirectory: URL? = nil
     ) async -> (
         outcome: TestSuiteOutcome,
         testLog: String
@@ -82,7 +114,8 @@ struct MutationTestingDelegate: MutationTestingIODelegate {
             let process = try await testProcess(
                 with: configuration,
                 schemata: schemata,
-                and: testProcessFileHandle
+                and: testProcessFileHandle,
+                workingDirectory: workingDirectory
             )
 
             let timeout = isBenchmark ? nil : configuration.testSuiteTimeout
@@ -161,7 +194,8 @@ struct MutationTestingDelegate: MutationTestingIODelegate {
     func testProcess(
         with configuration: MuterConfiguration,
         schemata: MutationSchema,
-        and fileHandle: FileHandle
+        and fileHandle: FileHandle,
+        workingDirectory: URL? = nil
     ) async throws -> Process {
         let testCommandArguments = schemata == .null
             ? configuration.testCommandArguments
@@ -175,6 +209,9 @@ struct MutationTestingDelegate: MutationTestingIODelegate {
 
         process.arguments = testCommandArguments
         process.executableURL = URL(fileURLWithPath: configuration.testCommandExecutable)
+        if let workingDirectory {
+            process.currentDirectoryURL = workingDirectory
+        }
         process.standardOutput = fileHandle
         process.standardError = fileHandle
 

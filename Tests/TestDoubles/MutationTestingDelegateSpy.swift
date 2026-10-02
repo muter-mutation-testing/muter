@@ -13,6 +13,9 @@ class MutationTestingDelegateSpy: Spy, MutationTestingIODelegate {
     private(set) var testRuns: [XCTestRun] = []
     private(set) var testRunPaths: [URL] = []
     private(set) var testLogs: [String] = []
+    private(set) var workingDirectories: [URL] = []
+    private(set) var configurations: [MuterConfiguration] = []
+    private let lock = NSLock()
 
     var testSuiteOutcomes: [TestSuiteOutcome]!
 
@@ -37,7 +40,28 @@ class MutationTestingDelegateSpy: Spy, MutationTestingIODelegate {
     ) {
         methodCalls.append(#function)
         testLogs.append(fileName)
+        configurations.append(configuration)
         return (testSuiteOutcomes.remove(at: 0), "testLog")
+    }
+
+    /// Called concurrently by parallel workers, so it takes the lock.
+    func runTestSuite(
+        withSchemata schemata: MutationSchema,
+        using configuration: MuterConfiguration,
+        savingResultsIntoFileNamed fileName: String,
+        workingDirectory: URL
+    ) async -> (
+        outcome: TestSuiteOutcome,
+        testLog: String
+    ) {
+        await Task.yield()
+        return lock.withLock {
+            methodCalls.append(#function)
+            testLogs.append(fileName)
+            workingDirectories.append(workingDirectory)
+            configurations.append(configuration)
+            return (testSuiteOutcomes.remove(at: 0), "testLog")
+        }
     }
 
     func benchmarkTests(
