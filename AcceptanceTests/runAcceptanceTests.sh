@@ -5,6 +5,8 @@ echo "📴📴📴📴📴📴📴 Acceptance Testing has started 📴📴📴�
 muterdir="../../../.build/debug"
 samplesdir="../../samples"
 
+# Muter writes its logs next to the project it runs on, in `../<project>_muter_logs`.
+
 echo "🧹 Cleaning up from prior acceptance test runs..."
 rm -rf ./AcceptanceTests/samples/muter_logs
 rm -rf ./AcceptanceTests/samples
@@ -23,32 +25,32 @@ echo " > Creating a configuration file..."
 cp ./muter.conf.yml "$samplesdir"/created_iOS_config.yml
 
 echo " > Running in CLI mode..."
-rm -rf ./muter_logs 2>/dev/null
+rm -rf ../ExampleApp_muter_logs 2>/dev/null
 "$muterdir"/muter --skip-coverage --skip-update-check > "$samplesdir"/muters_output.txt 2>/dev/null
 echo " > Copying logs..."
-cp -R ./muter_logs "$samplesdir"/
-rm -rf ./muter_logs
+cp -R ../ExampleApp_muter_logs/. "$samplesdir"/muter_logs/
+rm -rf ../ExampleApp_muter_logs
 
 echo " > Running with coverage"
 "$muterdir"/muter --skip-update-check > "$samplesdir"/muters_with_coverage_output.txt 2>/dev/null
-rm -rf ./muter_logs
+rm -rf ../ExampleApp_muter_logs
 
 echo " > Running in Xcode mode..."
 "$muterdir"/muter --skip-coverage --skip-update-check --format xcode > "$samplesdir"/muters_xcode_output.txt 2>/dev/null
-rm -rf ./muter_logs
+rm -rf ../ExampleApp_muter_logs
 
 echo " > Running with --filesToMutate flag"
 "$muterdir"/muter --skip-coverage --skip-update-check --files-to-mutate "/ExampleApp/Module.swift" > "$samplesdir"/muters_files_to_mutate_output.txt 2>/dev/null
-rm -rf ./muter_logs
+rm -rf ../ExampleApp_muter_logs
 
 echo " > Creating muter's test plan"
 "$muterdir"/muter mutate-without-running --skip-update-check > /dev/null
 cp ./muter-mappings.json "$samplesdir"/created_muter-mappings.json
-rm -rf ./muter_logs
+rm -rf ../ExampleApp_muter_logs
 
 echo " > Running with a test plan"
 "$muterdir"/muter run-without-mutating --skip-update-check muter-mappings.json > "$samplesdir"/muters_output_with_test_plan.txt
-rm -rf ./muter_logs
+rm -rf ../ExampleApp_muter_logs
 
 rm muter-mappings.json # cleanup the created mutation test run file for the next test run
 rm muter.conf.yml # cleanup the created configuration file for the next test run
@@ -76,17 +78,17 @@ echo "🧟‍♂️ Running Muter on an example test suite that fails..."
 cd ./Repositories/ProjectWithFailures
 
 echo " > Running in CLI mode..."
-rm -rf ./muter_logs 2>/dev/null
+rm -rf ../ProjectWithFailures_muter_logs 2>/dev/null
 "$muterdir"/muter --skip-coverage --skip-update-check > "$samplesdir"/muters_aborted_testing_output.txt 2>/dev/null
-rm -rf ./muter_logs
+rm -rf ../ProjectWithFailures_muter_logs
 cd ../..
 
 echo " > Running Muter in a project that times out..."
 cd ./Repositories/ProjectWithTimeout
 
-rm -rf ./muter_logs 2>/dev/null
+rm -rf ../ProjectWithTimeout_muter_logs 2>/dev/null
 "$muterdir"/muter --skip-coverage --skip-update-check > "$samplesdir"/muters_timeout_output.txt 2>/dev/null
-rm -rf ./muter_logs
+rm -rf ../ProjectWithTimeout_muter_logs
 
 cd ../..
 

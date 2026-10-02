@@ -92,7 +92,7 @@ final class MutationTestObserver {
 
     func start() {
         loggingDirectory = createLoggingDirectory(
-            in: fileManager.currentDirectoryPath,
+            forProjectAt: fileManager.currentDirectoryPath,
             fileManager: fileManager
         )
 
