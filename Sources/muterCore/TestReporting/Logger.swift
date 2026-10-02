@@ -2,7 +2,7 @@ import Foundation
 
 final class Logger {
     @Dependency(\.printer)
-    private var print: Printer
+    private var printer: Printer
     private var numberOfMutationPoints: Int = 0
     private var progressBar: ProgressBar!
 
@@ -189,8 +189,13 @@ final class Logger {
         print("⬆️ Muter mutation test plan loaded")
     }
 
+    /// Every line Muter logs goes through here, and so through the injected `printer`.
+    ///
+    /// The printer used to be a property also named `print`. Calls to `print("…")` inside this
+    /// type were then ambiguous between that property and this method, and newer compilers
+    /// pick this method, which wrote straight to standard output and bypassed the printer.
     func print(_ message: String) {
-        Swift.print(message)
+        printer(message)
     }
 
     private func printMessage(_ message: String) {
