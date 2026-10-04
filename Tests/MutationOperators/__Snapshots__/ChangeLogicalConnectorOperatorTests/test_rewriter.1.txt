@@ -3,8 +3,7 @@
 #endif
 
 func someCode() -> Bool {
-  if ProcessInfo.processInfo.environment[
-    "sampleWithLogicalOperators_ChangeLogicalConnector_6_18_101"] != nil
+  if __SwiftMutator.environment["sampleWithLogicalOperators_ChangeLogicalConnector_6_18_101"] != nil
   {
     return false || false
   } else {
@@ -13,8 +12,8 @@ func someCode() -> Bool {
 }
 
 func someOtherCode() -> Bool {
-  if ProcessInfo.processInfo.environment[
-    "sampleWithLogicalOperators_ChangeLogicalConnector_10_17_160"] != nil
+  if __SwiftMutator.environment["sampleWithLogicalOperators_ChangeLogicalConnector_10_17_160"]
+    != nil
   {
     return true && true
   } else {
@@ -24,8 +23,8 @@ func someOtherCode() -> Bool {
 
 func isEnabledToShow() -> Bool {
   // バルーンの表示判定
-  if ProcessInfo.processInfo.environment[
-    "sampleWithLogicalOperators_ChangeLogicalConnector_15_18_256"] != nil
+  if __SwiftMutator.environment["sampleWithLogicalOperators_ChangeLogicalConnector_15_18_256"]
+    != nil
   {
     // バルーンの表示判定
     return false || false
@@ -35,4 +34,7 @@ func isEnabledToShow() -> Bool {
     return false && false
     // バルーンの表示判定
   }
+}
+private enum __SwiftMutator {
+  static let environment = ProcessInfo.processInfo.environment
 }

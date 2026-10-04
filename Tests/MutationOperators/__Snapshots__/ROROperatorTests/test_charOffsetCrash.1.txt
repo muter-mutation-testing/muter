@@ -1,4 +1,4 @@
-if ProcessInfo.processInfo.environment["file_RelationalOperatorReplacement_1_10_9"] != nil {
+if __SwiftMutator.environment["file_RelationalOperatorReplacement_1_10_9"] != nil {
   if value != "バルーンの表示判定" {
 
   }
@@ -6,4 +6,7 @@ if ProcessInfo.processInfo.environment["file_RelationalOperatorReplacement_1_10_
   if value == "バルーンの表示判定" {
 
   }
+}
+private enum __SwiftMutator {
+  static let environment = ProcessInfo.processInfo.environment
 }

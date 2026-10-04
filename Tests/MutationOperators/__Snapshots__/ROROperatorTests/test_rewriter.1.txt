@@ -1,6 +1,6 @@
 struct Example {
   func something(_ a: Int) -> String {
-    if ProcessInfo.processInfo.environment[
+    if __SwiftMutator.environment[
       "sampleWithConditionalOperators_RelationalOperatorReplacement_3_19_76"] != nil
     {
       let b = a != 5
@@ -15,7 +15,7 @@ struct Example {
       }
 
       return a == 9 ? "goodbye" : "what"
-    } else if ProcessInfo.processInfo.environment[
+    } else if __SwiftMutator.environment[
       "sampleWithConditionalOperators_RelationalOperatorReplacement_14_18_272"] != nil
     {
       let b = a == 5
@@ -30,7 +30,7 @@ struct Example {
       }
 
       return a != 9 ? "goodbye" : "what"
-    } else if ProcessInfo.processInfo.environment[
+    } else if __SwiftMutator.environment[
       "sampleWithConditionalOperators_RelationalOperatorReplacement_10_14_209"] != nil
     {
       let b = a == 5
@@ -45,7 +45,7 @@ struct Example {
       }
 
       return a == 9 ? "goodbye" : "what"
-    } else if ProcessInfo.processInfo.environment[
+    } else if __SwiftMutator.environment[
       "sampleWithConditionalOperators_RelationalOperatorReplacement_8_19_191"] != nil
     {
       let b = a == 5
@@ -60,7 +60,7 @@ struct Example {
       }
 
       return a == 9 ? "goodbye" : "what"
-    } else if ProcessInfo.processInfo.environment[
+    } else if __SwiftMutator.environment[
       "sampleWithConditionalOperators_RelationalOperatorReplacement_7_19_169"] != nil
     {
       let b = a == 5
@@ -75,7 +75,7 @@ struct Example {
       }
 
       return a == 9 ? "goodbye" : "what"
-    } else if ProcessInfo.processInfo.environment[
+    } else if __SwiftMutator.environment[
       "sampleWithConditionalOperators_RelationalOperatorReplacement_6_19_145"] != nil
     {
       let b = a == 5
@@ -90,7 +90,7 @@ struct Example {
       }
 
       return a == 9 ? "goodbye" : "what"
-    } else if ProcessInfo.processInfo.environment[
+    } else if __SwiftMutator.environment[
       "sampleWithConditionalOperators_RelationalOperatorReplacement_5_19_122"] != nil
     {
       let b = a == 5
@@ -105,7 +105,7 @@ struct Example {
       }
 
       return a == 9 ? "goodbye" : "what"
-    } else if ProcessInfo.processInfo.environment[
+    } else if __SwiftMutator.environment[
       "sampleWithConditionalOperators_RelationalOperatorReplacement_4_19_99"] != nil
     {
       let b = a == 5
@@ -143,7 +143,7 @@ func < (lhs: String, rhs: String) -> Bool {
 
 internal func isBare() throws -> Bool {
   return try self.cachedIsBareRepo.memoize(body: {
-    if ProcessInfo.processInfo.environment[
+    if __SwiftMutator.environment[
       "sampleWithConditionalOperators_RelationalOperatorReplacement_30_23_658"] != nil
     {
       let output = try callGit(
@@ -163,4 +163,7 @@ internal func isBare() throws -> Bool {
       return output == "true"
     }
   })
+}
+private enum __SwiftMutator {
+  static let environment = ProcessInfo.processInfo.environment
 }
