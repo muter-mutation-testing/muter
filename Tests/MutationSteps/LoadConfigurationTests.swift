@@ -98,6 +98,72 @@ final class LoadConfigurationTests: MuterTestCase {
         }
     }
 
+    func test_whenExecutableIsABareCommandName_thenItIsResolvedToItsPathLocation() async throws {
+        fileManager.fileExistsToReturn = [false, true]
+        fileManager.fileContentsToReturn = MuterConfiguration(
+            executable: "swift",
+            arguments: ["test"]
+        ).asData
+        process.stdoutToBeReturned = "/usr/bin/swift\n"
+
+        let result = try await sut.run(with: state)
+
+        // A bare command name is only resolvable by searching PATH. Later steps run the test command
+        // from Muter's copy of the project, where `Process` would look for a file literally named
+        // "swift" — so the configuration has to carry the absolute path from here on.
+        XCTAssertEqual(process.executableURL?.path, "/usr/bin/which")
+        XCTAssertEqual(process.arguments, ["swift"])
+        XCTAssertEqual(
+            result.last,
+            .configurationParsed(
+                MuterConfiguration(executable: "/usr/bin/swift", arguments: ["test"])
+            )
+        )
+    }
+
+    func test_whenExecutableIsAnAbsolutePath_thenItIsLeftAlone() async throws {
+        fileManager.fileExistsToReturn = [false, true]
+        fileManager.fileContentsToReturn = MuterConfiguration(
+            executable: "/opt/homebrew/bin/swift",
+            arguments: ["test"]
+        ).asData
+
+        let result = try await sut.run(with: state)
+
+        XCTAssertNil(process.executableURL)
+        XCTAssertEqual(
+            result.last,
+            .configurationParsed(
+                MuterConfiguration(executable: "/opt/homebrew/bin/swift", arguments: ["test"])
+            )
+        )
+    }
+
+    func test_whenExecutableIsNotOnPath_thenFailWithAnActionableError() async throws {
+        fileManager.fileExistsToReturn = [false, true]
+        fileManager.fileContentsToReturn = MuterConfiguration(
+            executable: "swiftly",
+            arguments: ["test"]
+        ).asData
+
+        try await assertThrowsMuterError(
+            await sut.run(with: state)
+        ) { error in
+            // Reported verbatim: the configuration file itself parsed fine, so calling this a parsing
+            // error would point the user at the wrong problem.
+            guard case let .literal(reason) = error else {
+                XCTFail("Expected literal, got \(error)")
+                return
+            }
+
+            XCTAssertTrue(
+                reason.contains("swiftly"),
+                "Expected the error to name the executable it couldn't find, got: \(reason)"
+            )
+            XCTAssertTrue(reason.contains("PATH"), reason)
+        }
+    }
+
     func test_loadingConfigurationFromCustomPath() async throws {
         fileManager.fileContentsToReturn = loadYAMLConfiguration()
         fileManager.fileExistsToReturn = [false, true]

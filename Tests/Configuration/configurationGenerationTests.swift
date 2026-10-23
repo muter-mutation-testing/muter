@@ -96,6 +96,23 @@ final class ConfigurationGenerationTests: MuterTestCase {
         )
     }
 
+    func test_iosProject_whenNewestRuntimeHasNoAvailableDevices_thenUseNewestRuntimeThatDoes() {
+        let projectDirectoryContents = [
+            "\(fixturesDirectory)/XcodeProjectFiles/iOSApp.xcodeproj",
+            "/some/path/AppDelegate.swift"
+        ]
+
+        process.stdoutToBeReturned = simCtlWithUnsupportedNewestRuntime()
+        process.stdoutToBeReturned = which("xcodebuild")
+
+        let generatedConfiguration = MuterConfiguration(from: projectDirectoryContents)
+
+        XCTAssertTrue(
+            generatedConfiguration.testCommandArguments
+                .contains("platform=iOS Simulator,name=iPhone 17 Pro")
+        )
+    }
+
     func test_xcodeWorkspace() {
         let projectDirectoryContents = [
             "\(fixturesDirectory)/XcodeProjectFiles/iOSApp.xcodeproj",
@@ -263,6 +280,36 @@ final class ConfigurationGenerationTests: MuterTestCase {
                     "name": "iPhone SE (3rd generation)"
                 }
             ]
+        }
+        """
+    }
+
+    private func simCtlWithUnsupportedNewestRuntime() -> String {
+        """
+        {
+            "devices": {
+                "com.apple.CoreSimulator.SimRuntime.iOS-9-3": [
+                    {
+                        "isAvailable": true,
+                        "name": "iPhone 6s",
+                        "deviceTypeIdentifier": "com.apple.CoreSimulator.SimDeviceType.iPhone-6s"
+                    }
+                ],
+                "com.apple.CoreSimulator.SimRuntime.iOS-26-0": [
+                    {
+                        "isAvailable": true,
+                        "name": "iPhone 17 Pro",
+                        "deviceTypeIdentifier": "com.apple.CoreSimulator.SimDeviceType.iPhone-17-Pro"
+                    }
+                ],
+                "com.apple.CoreSimulator.SimRuntime.iOS-26-3": [
+                    {
+                        "isAvailable": false,
+                        "name": "iPhone 17 Pro Max",
+                        "deviceTypeIdentifier": "com.apple.CoreSimulator.SimDeviceType.iPhone-17-Pro-Max"
+                    }
+                ]
+            }
         }
         """
     }

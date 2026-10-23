@@ -3,6 +3,8 @@ import Foundation
 struct LoadConfiguration: MutationStep {
     @Dependency(\.fileManager)
     private var fileManager: FileSystemManager
+    @Dependency(\.process)
+    private var process: ProcessFactory
 
     func run(
         with state: AnyMutationTestState
@@ -38,11 +40,45 @@ struct LoadConfiguration: MutationStep {
 
             return [
                 .projectDirectoryUrlDiscovered(URL(fileURLWithPath: fileManager.currentDirectoryPath)),
-                .configurationParsed(configuration),
+                .configurationParsed(try withResolvedExecutable(configuration)),
             ]
+        } catch let error as MuterError {
+            throw error
         } catch {
             throw MuterError.configurationParsingError(reason: "\(error)")
         }
+    }
+
+    /// Turns a bare command name in `executable` into the absolute path it resolves to on `PATH`.
+    ///
+    /// A name with no path separator — `swift`, `xcodebuild` — only means anything to a shell, which
+    /// searches `PATH` for it. Muter spawns the test command with `Process`, and `Process.executableURL`
+    /// resolves a name that isn't an absolute path against the *current working directory*. Later steps
+    /// run from the mutated copy of the project, where no such file exists, so the test process fails to
+    /// spawn before it can emit a single line. Resolving here — while the working directory is still the
+    /// project root — gives every later step an executable it can actually launch.
+    private func withResolvedExecutable(
+        _ configuration: MuterConfiguration
+    ) throws -> MuterConfiguration {
+        let executable = configuration.testCommandExecutable
+        guard !executable.contains("/") else {
+            return configuration
+        }
+
+        // Reported verbatim rather than as a `configurationParsingError`: the file parsed fine, so framing
+        // this as a parsing or FileManager problem would send the user looking in the wrong place.
+        guard let resolved = process().which(executable) else {
+            throw MuterError.literal(
+                reason: """
+                Muter could not find "\(executable)" on your PATH.
+
+                The "executable" option in \(MuterConfiguration.fileNameWithExtension) must name a command \
+                that exists on your PATH, or be an absolute path such as "/usr/bin/\(executable)".
+                """
+            )
+        }
+
+        return configuration.withExecutable(resolved)
     }
 
     private func configurationPath(_ options: Run.Options) -> String {

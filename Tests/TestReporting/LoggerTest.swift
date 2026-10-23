@@ -42,6 +42,12 @@ final class LoggerTests: MuterTestCase {
         AssertSnapshot(printer.linesPassed.joined(separator: "\n"))
     }
 
+    func test_print_writesThroughTheInjectedPrinter() {
+        sut.print("a line")
+
+        XCTAssertEqual(printer.linesPassed, ["a line"])
+    }
+
     private func makeSchemataMapping() throws -> SchemataMutationMapping {
         try SchemataMutationMapping.make(
             filePath: "/some/path",

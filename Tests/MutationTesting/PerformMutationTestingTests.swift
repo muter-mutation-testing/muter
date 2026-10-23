@@ -97,7 +97,7 @@ final class PerformMutationTestingTests: MuterTestCase {
         try await assertThrowsMuterError(
             await sut.run(with: state)
         ) { error in
-            guard case let .mutationTestingAborted(reason: .baselineTestFailed(log)) = error else {
+            guard case let .mutationTestingAborted(reason: .baselineTestFailed(log, _)) = error else {
                 XCTFail("Expected mutationTestingAborted, got \(error)")
                 return
             }
@@ -117,7 +117,7 @@ final class PerformMutationTestingTests: MuterTestCase {
         try await assertThrowsMuterError(
             await sut.run(with: state)
         ) { error in
-            guard case let .mutationTestingAborted(reason: .baselineTestFailed(log)) = error else {
+            guard case let .mutationTestingAborted(reason: .baselineTestFailed(log, _)) = error else {
                 XCTFail("Expected mutationTestingAborted, got \(error)")
                 return
             }
@@ -136,7 +136,7 @@ final class PerformMutationTestingTests: MuterTestCase {
         try await assertThrowsMuterError(
             await sut.run(with: state)
         ) { error in
-            guard case let .mutationTestingAborted(reason: .baselineTestFailed(log)) = error else {
+            guard case let .mutationTestingAborted(reason: .baselineTestFailed(log, _)) = error else {
                 XCTFail("Expected mutationTestingAborted, got \(error)")
                 return
             }
@@ -147,6 +147,52 @@ final class PerformMutationTestingTests: MuterTestCase {
         XCTAssertEqual(ioDelegate.methodCalls, [
             "benchmarkTests(using:savingResultsIntoFileNamed:)",
         ])
+    }
+
+    func test_whenBaselineFails_thenItsLogIsStillPublishedForWritingToDisk() async throws {
+        ioDelegate.testSuiteOutcomes = [.buildError]
+
+        // The baseline's output is the only evidence of why Muter can't start, and nothing else records
+        // it — so it has to be published even though the run is about to be aborted.
+        let expect = expectation(
+            forNotification: .baselineTestFailed,
+            object: nil,
+            notificationCenter: notificationCenter
+        ) { notification in
+            (notification.object as? MutationTestLog)?.mutationPoint == nil
+        }
+
+        // …and not as `.newTestLogAvailable`, which announces "Determined baseline for mutation
+        // testing" and starts the progress bar — neither of which happened.
+        let announcedSuccess = expectation(
+            forNotification: .newTestLogAvailable,
+            object: nil,
+            notificationCenter: notificationCenter
+        )
+        announcedSuccess.isInverted = true
+
+        try await assertThrowsMuterError(
+            await sut.run(with: state)
+        ) { _ in }
+
+        await fulfillment(of: [expect, announcedSuccess], timeout: 2)
+    }
+
+    func test_whenBaselineFails_thenTheAbortReasonCarriesTheMutatedFilePaths() async throws {
+        ioDelegate.testSuiteOutcomes = [.buildError]
+
+        try await assertThrowsMuterError(
+            await sut.run(with: state)
+        ) { error in
+            guard case let .mutationTestingAborted(reason: .baselineTestFailed(_, mutatedFilePaths)) = error else {
+                XCTFail("Expected mutationTestingAborted, got \(error)")
+                return
+            }
+
+            // Naming the files Muter rewrote is what lets the message tell a broken mutant apart from
+            // a misconfigured test command.
+            XCTAssertEqual(mutatedFilePaths, ["/some/path", "/some/path"])
+        }
     }
 
     func test_whenEncountersFiveConsecutiveBuildErrors_thenCancelMutationTesting() async throws {

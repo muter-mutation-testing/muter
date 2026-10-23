@@ -10,8 +10,16 @@ struct MuterConfiguration: Equatable, Codable {
     let excludeCallList: [String]
     let coverageThreshold: Double
     let testSuiteTimeout: Double?
+    /// Optional explicit build system from the `buildSystem:` config key. When set it overrides the
+    /// executable-basename heuristic — needed when `executable` is a wrapper script (e.g. one that
+    /// restores env / forwards SIMCTL_CHILD_ vars) whose filename isn't literally `xcodebuild`/`swift`.
+    let explicitBuildSystem: BuildSystem?
 
     var buildSystem: BuildSystem {
+        if let explicitBuildSystem, explicitBuildSystem != .unknown {
+            return explicitBuildSystem
+        }
+
         guard let buildSystem = testCommandExecutable.components(separatedBy: "/").last?.trimmed else {
             return .unknown
         }
@@ -26,6 +34,7 @@ struct MuterConfiguration: Equatable, Codable {
         case excludeCallList = "excludeCalls"
         case coverageThreshold
         case testSuiteTimeout = "mutationTestTimeout"
+        case explicitBuildSystem = "buildSystem"
     }
 
     init(
@@ -34,7 +43,8 @@ struct MuterConfiguration: Equatable, Codable {
         excludeList: [String] = [],
         excludeCallList callList: [String] = [],
         coverageThreshold threshold: Double = 0,
-        testSuiteTimeOut timeout: Double? = nil
+        testSuiteTimeOut timeout: Double? = nil,
+        buildSystem: BuildSystem? = nil
     ) {
         testCommandExecutable = executable
         testCommandArguments = arguments
@@ -42,6 +52,7 @@ struct MuterConfiguration: Equatable, Codable {
         excludeCallList = callList
         coverageThreshold = threshold
         testSuiteTimeout = timeout
+        explicitBuildSystem = buildSystem
     }
 
     init(from decoder: Decoder) throws {
@@ -55,6 +66,8 @@ struct MuterConfiguration: Equatable, Codable {
         coverageThreshold = container.decode(Double.self, default: 0, forKey: .coverageThreshold)
         testSuiteTimeout = try container.decodeIfPresent(Double.self, forKey: .testSuiteTimeout)
             ?? (try container.decodeIfPresent(Int.self, forKey: .testSuiteTimeout)).flatMap(Double.init)
+        explicitBuildSystem = (try container.decodeIfPresent(String.self, forKey: .explicitBuildSystem))
+            .map(BuildSystem.init(rawValue:))
     }
 
     init(from data: Data) throws {
@@ -63,6 +76,21 @@ struct MuterConfiguration: Equatable, Codable {
         } catch {
             self = try JSONDecoder().decode(MuterConfiguration.self, from: data)
         }
+    }
+}
+
+extension MuterConfiguration {
+    /// A copy of this configuration whose test command runs `executable`.
+    func withExecutable(_ executable: String) -> MuterConfiguration {
+        MuterConfiguration(
+            executable: executable,
+            arguments: testCommandArguments,
+            excludeList: excludeFileList,
+            excludeCallList: excludeCallList,
+            coverageThreshold: coverageThreshold,
+            testSuiteTimeOut: testSuiteTimeout,
+            buildSystem: explicitBuildSystem
+        )
     }
 }
 

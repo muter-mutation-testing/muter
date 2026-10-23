@@ -75,11 +75,11 @@
             "before" : "result.append(element)",
             "description" : "removed line"
           },
-          "testSuiteOutcome" : "passed"
+          "testSuiteOutcome" : "failed"
         }
       ],
       "fileName" : "FFCParserCombinator.swift",
-      "mutationScore" : 80
+      "mutationScore" : 100
     },
     {
       "appliedOperators" : [
@@ -223,7 +223,7 @@
       "mutationScore" : 100
     }
   ],
-  "globalMutationScore" : 92,
-  "numberOfKilledMutants" : 13,
+  "globalMutationScore" : 100,
+  "numberOfKilledMutants" : 14,
   "totalAppliedMutationOperators" : 14
 }

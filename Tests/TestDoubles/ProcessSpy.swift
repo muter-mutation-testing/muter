@@ -2,6 +2,7 @@ import Foundation
 @testable import muterCore
 
 final class ProcessSpy: MuterProcess {
+    var processIdentifier: Int32 { 0 }
     var terminationStatus: Int32 { 0 }
     var terminationHandler: (@Sendable (Foundation.Process) -> Void)? = nil
     var environment: [String: String]?
@@ -18,8 +19,15 @@ final class ProcessSpy: MuterProcess {
     }
 
     var runCalled = false
+    /// Set to simulate a process that can't be launched at all — what `Foundation.Process.run()` throws
+    /// when `executableURL` names a file that doesn't exist.
+    var runError: Error?
     func run() throws {
         runCalled = true
+
+        if let runError {
+            throw runError
+        }
     }
 
     var waitUntilExitCalled = false
@@ -42,4 +50,11 @@ final class ProcessSpy: MuterProcess {
     }
 
     func interrupt() {}
+
+    // Override the protocol's default `terminateTree()` so tests can assert the timeout handler
+    // reaches for the tree-kill without invoking the real `ps`/`kill` path.
+    private(set) var terminateTreeCalled = false
+    func terminateTree() {
+        terminateTreeCalled = true
+    }
 }
