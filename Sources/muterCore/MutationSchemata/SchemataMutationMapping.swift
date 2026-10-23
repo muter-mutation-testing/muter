@@ -5,7 +5,7 @@ typealias MutationSchemata = [MutationSchema]
 
 final class SchemataMutationMapping {
     let filePath: String
-    fileprivate var mappings: [CodeBlockItemListSyntax: MutationSchemata]
+    fileprivate var mappings: [CodeBlockKey: MutationSchemata]
 
     var count: Int {
         mappings.count
@@ -38,7 +38,7 @@ final class SchemataMutationMapping {
 
     fileprivate init(
         filePath: String = "",
-        mappings: [CodeBlockItemListSyntax: MutationSchemata]
+        mappings: [CodeBlockKey: MutationSchemata]
     ) {
         self.filePath = filePath
         self.mappings = mappings
@@ -48,20 +48,23 @@ final class SchemataMutationMapping {
         _ codeBlockSyntax: CodeBlockItemListSyntax,
         _ schemata: MutationSchema
     ) {
-        mappings[codeBlockSyntax, default: []].append(schemata)
+        let key = CodeBlockKey(codeBlockSyntax)
+        mappings[key, default: []].append(schemata)
     }
 
     func add(
         _ codeBlockSyntax: CodeBlockItemListSyntax,
         _ schemata: MutationSchemata
     ) {
-        mappings[codeBlockSyntax, default: []].append(contentsOf: schemata)
+        let key = CodeBlockKey(codeBlockSyntax)
+        mappings[key, default: []].append(contentsOf: schemata)
     }
 
     func schemata(
         _ codeBlockSyntax: CodeBlockItemListSyntax
     ) -> MutationSchemata? {
-        mappings[codeBlockSyntax]
+        let key = CodeBlockKey(codeBlockSyntax)
+        return mappings[key]
     }
 }
 
@@ -75,7 +78,8 @@ extension SchemataMutationMapping: Codable {
         let container = try decoder.container(keyedBy: CodingKeys.self)
 
         let schematas = try container.decode([MutationSchema].self, forKey: .mappings)
-        let mappings = [CodeBlockItemListSyntax([]): schematas]
+        let key = CodeBlockKey(CodeBlockItemListSyntax([]))
+        let mappings = [key: schematas]
         let filePath = try container.decode(String.self, forKey: .filePath)
 
         self.init(
@@ -106,14 +110,11 @@ func + (
     lhs: SchemataMutationMapping,
     rhs: SchemataMutationMapping
 ) -> SchemataMutationMapping {
-    let result = SchemataMutationMapping(
-        filePath: lhs.filePath
-    )
+    let result = SchemataMutationMapping(filePath: lhs.filePath)
 
-    let mergedMappgins = lhs.mappings.merging(rhs.mappings) { $0 + $1 }
-
-    for (codeBlock, schemata) in mergedMappgins {
-        result.add(codeBlock, schemata)
+    let merged = lhs.mappings.merging(rhs.mappings) { $0 + $1 }
+    for (key, schemata) in merged {
+        result.mappings[key, default: []].append(contentsOf: schemata)
     }
 
     return result
@@ -140,26 +141,21 @@ extension SchemataMutationMapping: CustomStringConvertible, CustomDebugStringCon
     var debugDescription: String { description }
 
     var description: String {
-        let description = mappings.keys.sorted().reduce(into: "") { accum, key in
-            accum +=
-                """
-                source: "\(key.escapedDescription)",
-                schemata: \(mappings[key]!)
-                """
-        }
+        let description = mappings.keys.sorted(by: { $0.description < $1.description })
+            .reduce(into: "") { accum, key in
+                accum +=
+                    """
+                    source: "\(key.description.replacingOccurrences(of: "\n", with: "\\n").replacingOccurrences(
+                        of: "\"",
+                        with: "\\\""
+                    ))",
+                    schemata: \(mappings[key]!)
+                    """
+            }
         return """
         SchemataMutationMapping(
             \(description)
         )
         """
-    }
-}
-
-extension CodeBlockItemListSyntax: @retroactive Comparable {
-    public static func < (
-        lhs: SwiftSyntax.CodeBlockItemListSyntax,
-        rhs: SwiftSyntax.CodeBlockItemListSyntax
-    ) -> Bool {
-        lhs.description < rhs.description
     }
 }
