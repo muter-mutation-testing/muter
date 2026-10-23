@@ -76,9 +76,21 @@ final class MutationTestingDelegateTests: MuterTestCase {
         )
 
         XCTAssertEqual(testProcess.environment?[schemata.id], "YES")
+        // Also forwarded with the SIMCTL_CHILD_ prefix so it reaches an iOS Simulator test host
+        // (CoreSimulator only propagates SIMCTL_CHILD_-prefixed vars into the simulated process).
+        XCTAssertEqual(testProcess.environment?["SIMCTL_CHILD_\(schemata.id)"], "YES")
         XCTAssertEqual(testProcess.environment?[isMuterRunningKey], isMuterRunningValue)
         XCTAssertEqual(testProcess.arguments, ["test", "--skip-build"])
         XCTAssertEqual(testProcess.executableURL?.path, "/tmp/swift")
+    }
+
+    func test_makeProcess_doesNotSetMuterRunningMarker() {
+        // The shared factory (used for build-for-testing too) must NOT carry IS_MUTER_RUNNING — on
+        // some projects it makes xcodebuild skip writing build-request.json, breaking BuildForTesting.
+        // The marker belongs only on the test process (asserted in test_testProcessForSwiftBuild).
+        let process = MuterProcessFactory.makeProcess()
+
+        XCTAssertNil(process.environment?[isMuterRunningKey])
     }
 
     func test_switchOn() async throws {

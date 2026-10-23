@@ -3,9 +3,35 @@ import SwiftSyntax
 
 typealias MutationSchemata = [MutationSchema]
 
+/// A key that identifies a code block by its STABLE source position (the UTF-8 byte offset of its
+/// first token) plus its text, rather than by SwiftSyntax node identity.
+///
+/// The mapping used to be keyed by `CodeBlockItemListSyntax` directly, but `Syntax` hashes on
+/// `SyntaxIdentifier` — i.e. node IDENTITY, tied to a specific parse tree. `ApplySchemata` re-parses
+/// each source file (on-demand re-parsing avoids memory exhaustion on large codebases), producing
+/// fresh node identities, so the rewriter's lookup never matched what discovery inserted — schemata
+/// were silently never applied and every mutant was reported as "survived" (0% score). Two parses of
+/// the same bytes yield the same offset + text, so this key is stable across re-parsing.
+struct CodeBlockKey: Hashable {
+    let offset: Int
+    let text: String
+
+    init(_ node: CodeBlockItemListSyntax) {
+        offset = node.positionAfterSkippingLeadingTrivia.utf8Offset
+        text = node.description
+    }
+
+    init(offset: Int, text: String) {
+        self.offset = offset
+        self.text = text
+    }
+}
+
 final class SchemataMutationMapping {
     let filePath: String
-    fileprivate var mappings: [CodeBlockItemListSyntax: MutationSchemata]
+    fileprivate var mappings: [CodeBlockKey: MutationSchemata]
+    // Preserves the code-block text for each key so `codeBlocks` / `description` keep reporting source.
+    fileprivate var codeBlockText: [CodeBlockKey: String]
 
     var count: Int {
         mappings.count
@@ -20,7 +46,7 @@ final class SchemataMutationMapping {
     }
 
     var codeBlocks: [String] {
-        mappings.keys.map(\.description).sorted()
+        mappings.keys.compactMap { codeBlockText[$0] }.sorted()
     }
 
     var fileName: String {
@@ -32,36 +58,53 @@ final class SchemataMutationMapping {
     ) {
         self.init(
             filePath: filePath,
-            mappings: [:]
+            mappings: [:],
+            codeBlockText: [:]
         )
     }
 
     fileprivate init(
         filePath: String = "",
-        mappings: [CodeBlockItemListSyntax: MutationSchemata]
+        mappings: [CodeBlockKey: MutationSchemata],
+        codeBlockText: [CodeBlockKey: String] = [:]
     ) {
         self.filePath = filePath
         self.mappings = mappings
+        self.codeBlockText = codeBlockText
     }
 
     func add(
         _ codeBlockSyntax: CodeBlockItemListSyntax,
         _ schemata: MutationSchema
     ) {
-        mappings[codeBlockSyntax, default: []].append(schemata)
+        let key = CodeBlockKey(codeBlockSyntax)
+        codeBlockText[key] = codeBlockSyntax.description
+        mappings[key, default: []].append(schemata)
     }
 
     func add(
         _ codeBlockSyntax: CodeBlockItemListSyntax,
         _ schemata: MutationSchemata
     ) {
-        mappings[codeBlockSyntax, default: []].append(contentsOf: schemata)
+        let key = CodeBlockKey(codeBlockSyntax)
+        codeBlockText[key] = codeBlockSyntax.description
+        mappings[key, default: []].append(contentsOf: schemata)
     }
 
     func schemata(
         _ codeBlockSyntax: CodeBlockItemListSyntax
     ) -> MutationSchemata? {
-        mappings[codeBlockSyntax]
+        mappings[CodeBlockKey(codeBlockSyntax)]
+    }
+
+    // Key-based add for merging two mappings without reconstructing a syntax node from text.
+    fileprivate func add(
+        _ key: CodeBlockKey,
+        text: String,
+        _ schemata: MutationSchemata
+    ) {
+        codeBlockText[key] = text
+        mappings[key, default: []].append(contentsOf: schemata)
     }
 }
 
@@ -75,8 +118,15 @@ extension SchemataMutationMapping: Codable {
         let container = try decoder.container(keyedBy: CodingKeys.self)
 
         let schematas = try container.decode([MutationSchema].self, forKey: .mappings)
-        let mappings = [CodeBlockItemListSyntax([]): schematas]
         let filePath = try container.decode(String.self, forKey: .filePath)
+
+        // Re-key each decoded schema by its own stable source offset rather than collapsing them all
+        // under one empty-block key (which previously merged every schema into a single mapping entry).
+        var mappings: [CodeBlockKey: MutationSchemata] = [:]
+        for schema in schematas {
+            let key = CodeBlockKey(offset: schema.position.utf8Offset, text: schema.snapshot.before)
+            mappings[key, default: []].append(schema)
+        }
 
         self.init(
             filePath: filePath,
@@ -110,10 +160,11 @@ func + (
         filePath: lhs.filePath
     )
 
-    let mergedMappgins = lhs.mappings.merging(rhs.mappings) { $0 + $1 }
+    let mergedMappings = lhs.mappings.merging(rhs.mappings) { $0 + $1 }
+    let mergedText = lhs.codeBlockText.merging(rhs.codeBlockText) { current, _ in current }
 
-    for (codeBlock, schemata) in mergedMappgins {
-        result.add(codeBlock, schemata)
+    for (key, schemata) in mergedMappings {
+        result.add(key, text: mergedText[key] ?? key.text, schemata)
     }
 
     return result
@@ -141,9 +192,12 @@ extension SchemataMutationMapping: CustomStringConvertible, CustomDebugStringCon
 
     var description: String {
         let description = mappings.keys.sorted().reduce(into: "") { accum, key in
+            let source = (codeBlockText[key] ?? key.text)
+                .replacingOccurrences(of: "\n", with: "\\n")
+                .replacingOccurrences(of: "\"", with: "\\\"")
             accum +=
                 """
-                source: "\(key.escapedDescription)",
+                source: "\(source)",
                 schemata: \(mappings[key]!)
                 """
         }
@@ -155,11 +209,8 @@ extension SchemataMutationMapping: CustomStringConvertible, CustomDebugStringCon
     }
 }
 
-extension CodeBlockItemListSyntax: @retroactive Comparable {
-    public static func < (
-        lhs: SwiftSyntax.CodeBlockItemListSyntax,
-        rhs: SwiftSyntax.CodeBlockItemListSyntax
-    ) -> Bool {
-        lhs.description < rhs.description
+extension CodeBlockKey: Comparable {
+    static func < (lhs: CodeBlockKey, rhs: CodeBlockKey) -> Bool {
+        lhs.text < rhs.text
     }
 }

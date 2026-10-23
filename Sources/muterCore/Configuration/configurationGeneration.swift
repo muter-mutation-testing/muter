@@ -146,19 +146,38 @@ private extension MuterConfiguration {
             ) ??
                 [:]
             let devices = (simulatorsJson["devices"] as? [String: AnyHashable]) ?? [:]
-            let newestRuntime = devices.keys.filter { $0.contains("iOS") }.sorted().last ?? ""
-            let devicesForRunTime = (devices[newestRuntime] as? [AnyHashable]) ?? []
-            let device: Simulator? = try devicesForRunTime
-                .compactMap { try JSONSerialization.data(withJSONObject: $0) }
-                .compactMap { try JSONDecoder().decode(Simulator.self, from: $0) }
-                .filter(\.isAvailable)
-                .sorted(by: { $0.deviceTypeIdentifier > $1.deviceTypeIdentifier })
-                .first { $0.name.contains("iPhone") }
 
-            return device?.name ?? Simulator.fallback.name
+            // A runtime newer than the active Xcode supports lists its devices as unavailable,
+            // so walk runtimes newest first and take the first with a usable iPhone.
+            let runtimesNewestFirst = devices.keys
+                .filter { $0.contains("iOS") }
+                .sorted { runtimeVersion($0).lexicographicallyPrecedes(runtimeVersion($1)) }
+                .reversed()
+
+            for runtime in runtimesNewestFirst {
+                let devicesForRunTime = (devices[runtime] as? [AnyHashable]) ?? []
+                let device: Simulator? = try devicesForRunTime
+                    .compactMap { try JSONSerialization.data(withJSONObject: $0) }
+                    .compactMap { try JSONDecoder().decode(Simulator.self, from: $0) }
+                    .filter(\.isAvailable)
+                    .sorted(by: { $0.deviceTypeIdentifier > $1.deviceTypeIdentifier })
+                    .first { $0.name.contains("iPhone") }
+
+                if let device {
+                    return device.name
+                }
+            }
+
+            return Simulator.fallback.name
         } catch {
             return Simulator.fallback.name
         }
+    }
+
+    /// `com.apple.CoreSimulator.SimRuntime.iOS-26-3` -> `[26, 3]`
+    private static func runtimeVersion(_ runtime: String) -> [Int] {
+        let version = runtime.components(separatedBy: "iOS-").last ?? ""
+        return version.split(separator: "-").compactMap { Int($0) }
     }
 
     private static func macOSDestionation(_ projectArguments: [String]) -> String {
