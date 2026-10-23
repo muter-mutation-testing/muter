@@ -12,11 +12,11 @@ final class MuterRewriter: SyntaxRewriter {
             return super.visit(node)
         }
 
-        let newNode = MutationSwitch.apply(
-            mutationSchemata: mutationSchemata,
-            with: node
-        )
+        let childrenRewritten = super.visit(node)
 
-        return super.visit(newNode)
+        return MutationSwitch.apply(
+            mutationSchemata: mutationSchemata,
+            with: childrenRewritten
+        )
     }
 }
