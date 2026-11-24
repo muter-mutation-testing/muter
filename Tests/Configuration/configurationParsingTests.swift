@@ -25,4 +25,29 @@ final class ConfigurationParsingTests: MuterTestCase {
 
         XCTAssertEqual(configuration?.excludeFileList, ["ExampleApp"])
     }
+
+    func test_buildSystem_defaultsToExecutableBasename() throws {
+        let yaml = """
+        executable: /usr/bin/xcodebuild
+        arguments: [test]
+        """
+        let configuration = try MuterConfiguration(from: Data(yaml.utf8))
+
+        XCTAssertNil(configuration.explicitBuildSystem)
+        XCTAssertEqual(configuration.buildSystem, .xcodebuild)
+    }
+
+    func test_explicitBuildSystem_overridesWrapperExecutableName() throws {
+        // A wrapper executable whose filename isn't `xcodebuild` would otherwise resolve to `.unknown`;
+        // the explicit `buildSystem:` key forces the correct build system.
+        let yaml = """
+        executable: ./.muter-bin/wrapper.sh
+        arguments: [test]
+        buildSystem: xcodebuild
+        """
+        let configuration = try MuterConfiguration(from: Data(yaml.utf8))
+
+        XCTAssertEqual(configuration.explicitBuildSystem, .xcodebuild)
+        XCTAssertEqual(configuration.buildSystem, .xcodebuild)
+    }
 }
