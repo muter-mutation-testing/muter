@@ -9,6 +9,10 @@ build:
 	@swift package clean
 	@swift build -c debug $(flags)
 
+# Builds without `swift package clean`, so CI reuses the build from the earlier steps.
+build-incremental:
+	@swift build -c debug $(flags)
+
 build-release: 
 	@swift build -c release --product muter --disable-sandbox
 
@@ -37,7 +41,7 @@ test:
 acceptance-test: build
 	@./AcceptanceTests/runAcceptanceTests.sh
 
-regression-test: build
+regression-test: build-incremental
 	@./RegressionTests/runRegressionTests.sh
 
 mutation-test: clean
@@ -45,11 +49,11 @@ mutation-test: clean
 
 # ci
 
-ci-regression-test: build
+ci-regression-test: build-incremental
 	@./Scripts/ci/regression/run_regression_tests.sh
 
 ci-test: build
 	@./Scripts/ci/pull\ request/run_unit_test.sh
 	@./Scripts/ci/pull\ request/extract_coverage.sh
 
-.PHONY: build clean test run install uninstall release
+.PHONY: build build-incremental clean test run install uninstall release

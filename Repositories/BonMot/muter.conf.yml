@@ -12,3 +12,4 @@ exclude:
 - Tab.swift
 - Package.swift
 excludeCalls: []
+mutationTestWorkers: 4
