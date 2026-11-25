@@ -7,9 +7,6 @@ trigger_map:
   workflow: badges
 - pull_request_source_branch: "*"
   workflow: pull-request
-- pull_request_source_branch: "*"
-  workflow: regression
-  pull_request_target_branch: master
 workflows:
   badges:
     steps:
@@ -46,6 +43,9 @@ workflows:
         - content: ruby Scripts/ci/update_badges.rb "$GIST_KEY"
             c064fc556513a6be07349b0d2f3ba44e muter-acceptance-badge.json
             "{\"color\":\"$BADGE_COLOR\",\"label\":\"acceptance-tests\",\"message\":\"$BADGE_MESSAGE\",\"schemaVersion\":1}"
+    after_run:
+    - _regression-tests
+    - _regression-badge
     meta:
       bitrise.io:
         machine_type_id: g2.mac.medium
@@ -95,16 +95,28 @@ workflows:
         inputs:
         - is_compress: 'true'
         - deploy_path: "$BITRISE_SOURCE_DIR/AcceptanceTests/samples/"
+    after_run:
+    - _regression-tests
     meta:
       bitrise.io:
         machine_type_id: g2.mac.medium
   regression:
+    summary: Runs the regression tests on their own and updates the badge. Start it by hand.
     steps:
     - activate-ssh-key:
         run_if: '{{getenv "SSH_RSA_PRIVATE_KEY" | ne ""}}'
     - git-clone:
         inputs:
         - update_submodules: 'no'
+    after_run:
+    - _regression-tests
+    - _regression-badge
+    meta:
+      bitrise.io:
+        machine_type_id: g2.mac.medium
+  _regression-tests:
+    summary: Runs Muter on the regression projects and compares the reports with the snapshots.
+    steps:
     - script@1:
         title: Run Regression Tests
         inputs:
@@ -112,6 +124,9 @@ workflows:
             #!/bin/bash
 
             sh Scripts/ci/regression/run_regression_tests.sh
+  _regression-badge:
+    summary: Updates the regression badge. Needs GIST_KEY, so run it only on master.
+    steps:
     - script@1:
         inputs:
         - content: ruby Scripts/ci/update_badges.rb "$GIST_KEY"
@@ -119,9 +134,6 @@ workflows:
             "{\"color\":\"$BADGE_COLOR\",\"label\":\"regression-tests\",\"message\":\"$BADGE_MESSAGE\",\"schemaVersion\":1}"
         title: Update badge
         is_always_run: true
-    meta:
-      bitrise.io:
-        machine_type_id: g2.mac.medium
 app:
   envs:
   - opts:
