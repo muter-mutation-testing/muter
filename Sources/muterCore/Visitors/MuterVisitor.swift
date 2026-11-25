@@ -87,9 +87,20 @@ class MuterVisitor: SyntaxAnyVisitor {
         return regionsWithoutCoverage.include { $0.contains(nodeRegion) }.isEmpty
     }
 
+    /// The node's code, from its first token to its last, without trivia. Coverage regions do not
+    /// include trailing whitespace or comments, so trivia would push the node outside a region that
+    /// does contain its code.
     private func nodeRegion(_ node: SyntaxProtocol) -> Region {
         let start = startLocation(for: node)
-        let end = endLocation(for: node)
+        let end = mutationPosition(
+            for: node.endLocation(
+                converter: SourceLocationConverter(
+                    fileName: sourceCodeInfo.path,
+                    tree: sourceCodeInfo.code
+                ),
+                afterTrailingTrivia: false
+            )
+        )
 
         return Region(
             lineStart: start.line,

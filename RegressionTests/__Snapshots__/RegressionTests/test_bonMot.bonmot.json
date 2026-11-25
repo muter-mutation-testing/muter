@@ -36,21 +36,6 @@
           "mutationPoint" : {
             "mutationOperatorId" : "SwapTernary",
             "position" : {
-              "column" : 108,
-              "line" : 78
-            }
-          },
-          "mutationSnapshot" : {
-            "after" : "swashAlternates  ? kSwashAlternatesOffSelector :  kSwashAlternatesOnSelector",
-            "before" : "swashAlternates ? kSwashAlternatesOnSelector : kSwashAlternatesOffSelector",
-            "description" : "swapped ternary operator"
-          },
-          "testSuiteOutcome" : "passed"
-        },
-        {
-          "mutationPoint" : {
-            "mutationOperatorId" : "SwapTernary",
-            "position" : {
               "column" : 138,
               "line" : 81
             }
@@ -64,7 +49,7 @@
         }
       ],
       "fileName" : "ContextualAlternates.swift",
-      "mutationScore" : 25
+      "mutationScore" : 33
     },
     {
       "appliedOperators" : [
@@ -232,21 +217,6 @@
             "mutationOperatorId" : "SwapTernary",
             "position" : {
               "column" : 96,
-              "line" : 217
-            }
-          },
-          "mutationSnapshot" : {
-            "after" : "one  ? kStylisticAltOneOffSelector :  kStylisticAltOneOnSelector",
-            "before" : "one ? kStylisticAltOneOnSelector : kStylisticAltOneOffSelector",
-            "description" : "swapped ternary operator"
-          },
-          "testSuiteOutcome" : "passed"
-        },
-        {
-          "mutationPoint" : {
-            "mutationOperatorId" : "SwapTernary",
-            "position" : {
-              "column" : 96,
               "line" : 220
             }
           },
@@ -268,21 +238,6 @@
           "mutationSnapshot" : {
             "after" : "three  ? kStylisticAltThreeOffSelector :  kStylisticAltThreeOnSelector",
             "before" : "three ? kStylisticAltThreeOnSelector : kStylisticAltThreeOffSelector",
-            "description" : "swapped ternary operator"
-          },
-          "testSuiteOutcome" : "passed"
-        },
-        {
-          "mutationPoint" : {
-            "mutationOperatorId" : "SwapTernary",
-            "position" : {
-              "column" : 99,
-              "line" : 226
-            }
-          },
-          "mutationSnapshot" : {
-            "after" : "four  ? kStylisticAltFourOffSelector :  kStylisticAltFourOnSelector",
-            "before" : "four ? kStylisticAltFourOnSelector : kStylisticAltFourOffSelector",
             "description" : "swapped ternary operator"
           },
           "testSuiteOutcome" : "passed"
@@ -316,220 +271,10 @@
             "description" : "swapped ternary operator"
           },
           "testSuiteOutcome" : "failed"
-        },
-        {
-          "mutationPoint" : {
-            "mutationOperatorId" : "SwapTernary",
-            "position" : {
-              "column" : 102,
-              "line" : 235
-            }
-          },
-          "mutationSnapshot" : {
-            "after" : "seven  ? kStylisticAltSevenOffSelector :  kStylisticAltSevenOnSelector",
-            "before" : "seven ? kStylisticAltSevenOnSelector : kStylisticAltSevenOffSelector",
-            "description" : "swapped ternary operator"
-          },
-          "testSuiteOutcome" : "passed"
-        },
-        {
-          "mutationPoint" : {
-            "mutationOperatorId" : "SwapTernary",
-            "position" : {
-              "column" : 102,
-              "line" : 238
-            }
-          },
-          "mutationSnapshot" : {
-            "after" : "eight  ? kStylisticAltEightOffSelector :  kStylisticAltEightOnSelector",
-            "before" : "eight ? kStylisticAltEightOnSelector : kStylisticAltEightOffSelector",
-            "description" : "swapped ternary operator"
-          },
-          "testSuiteOutcome" : "passed"
-        },
-        {
-          "mutationPoint" : {
-            "mutationOperatorId" : "SwapTernary",
-            "position" : {
-              "column" : 99,
-              "line" : 241
-            }
-          },
-          "mutationSnapshot" : {
-            "after" : "nine  ? kStylisticAltNineOffSelector :  kStylisticAltNineOnSelector",
-            "before" : "nine ? kStylisticAltNineOnSelector : kStylisticAltNineOffSelector",
-            "description" : "swapped ternary operator"
-          },
-          "testSuiteOutcome" : "passed"
-        },
-        {
-          "mutationPoint" : {
-            "mutationOperatorId" : "SwapTernary",
-            "position" : {
-              "column" : 96,
-              "line" : 244
-            }
-          },
-          "mutationSnapshot" : {
-            "after" : "ten  ? kStylisticAltTenOffSelector :  kStylisticAltTenOnSelector",
-            "before" : "ten ? kStylisticAltTenOnSelector : kStylisticAltTenOffSelector",
-            "description" : "swapped ternary operator"
-          },
-          "testSuiteOutcome" : "passed"
-        },
-        {
-          "mutationPoint" : {
-            "mutationOperatorId" : "SwapTernary",
-            "position" : {
-              "column" : 105,
-              "line" : 247
-            }
-          },
-          "mutationSnapshot" : {
-            "after" : "eleven  ? kStylisticAltElevenOffSelector :  kStylisticAltElevenOnSelector",
-            "before" : "eleven ? kStylisticAltElevenOnSelector : kStylisticAltElevenOffSelector",
-            "description" : "swapped ternary operator"
-          },
-          "testSuiteOutcome" : "passed"
-        },
-        {
-          "mutationPoint" : {
-            "mutationOperatorId" : "SwapTernary",
-            "position" : {
-              "column" : 105,
-              "line" : 250
-            }
-          },
-          "mutationSnapshot" : {
-            "after" : "twelve  ? kStylisticAltTwelveOffSelector :  kStylisticAltTwelveOnSelector",
-            "before" : "twelve ? kStylisticAltTwelveOnSelector : kStylisticAltTwelveOffSelector",
-            "description" : "swapped ternary operator"
-          },
-          "testSuiteOutcome" : "passed"
-        },
-        {
-          "mutationPoint" : {
-            "mutationOperatorId" : "SwapTernary",
-            "position" : {
-              "column" : 111,
-              "line" : 253
-            }
-          },
-          "mutationSnapshot" : {
-            "after" : "thirteen  ? kStylisticAltThirteenOffSelector :  kStylisticAltThirteenOnSelector",
-            "before" : "thirteen ? kStylisticAltThirteenOnSelector : kStylisticAltThirteenOffSelector",
-            "description" : "swapped ternary operator"
-          },
-          "testSuiteOutcome" : "passed"
-        },
-        {
-          "mutationPoint" : {
-            "mutationOperatorId" : "SwapTernary",
-            "position" : {
-              "column" : 111,
-              "line" : 256
-            }
-          },
-          "mutationSnapshot" : {
-            "after" : "fourteen  ? kStylisticAltFourteenOffSelector :  kStylisticAltFourteenOnSelector",
-            "before" : "fourteen ? kStylisticAltFourteenOnSelector : kStylisticAltFourteenOffSelector",
-            "description" : "swapped ternary operator"
-          },
-          "testSuiteOutcome" : "passed"
-        },
-        {
-          "mutationPoint" : {
-            "mutationOperatorId" : "SwapTernary",
-            "position" : {
-              "column" : 108,
-              "line" : 259
-            }
-          },
-          "mutationSnapshot" : {
-            "after" : "fifteen  ? kStylisticAltFifteenOffSelector :  kStylisticAltFifteenOnSelector",
-            "before" : "fifteen ? kStylisticAltFifteenOnSelector : kStylisticAltFifteenOffSelector",
-            "description" : "swapped ternary operator"
-          },
-          "testSuiteOutcome" : "passed"
-        },
-        {
-          "mutationPoint" : {
-            "mutationOperatorId" : "SwapTernary",
-            "position" : {
-              "column" : 108,
-              "line" : 262
-            }
-          },
-          "mutationSnapshot" : {
-            "after" : "sixteen  ? kStylisticAltSixteenOffSelector :  kStylisticAltSixteenOnSelector",
-            "before" : "sixteen ? kStylisticAltSixteenOnSelector : kStylisticAltSixteenOffSelector",
-            "description" : "swapped ternary operator"
-          },
-          "testSuiteOutcome" : "passed"
-        },
-        {
-          "mutationPoint" : {
-            "mutationOperatorId" : "SwapTernary",
-            "position" : {
-              "column" : 114,
-              "line" : 265
-            }
-          },
-          "mutationSnapshot" : {
-            "after" : "seventeen  ? kStylisticAltSeventeenOffSelector :  kStylisticAltSeventeenOnSelector",
-            "before" : "seventeen ? kStylisticAltSeventeenOnSelector : kStylisticAltSeventeenOffSelector",
-            "description" : "swapped ternary operator"
-          },
-          "testSuiteOutcome" : "passed"
-        },
-        {
-          "mutationPoint" : {
-            "mutationOperatorId" : "SwapTernary",
-            "position" : {
-              "column" : 111,
-              "line" : 268
-            }
-          },
-          "mutationSnapshot" : {
-            "after" : "eighteen  ? kStylisticAltEighteenOffSelector :  kStylisticAltEighteenOnSelector",
-            "before" : "eighteen ? kStylisticAltEighteenOnSelector : kStylisticAltEighteenOffSelector",
-            "description" : "swapped ternary operator"
-          },
-          "testSuiteOutcome" : "passed"
-        },
-        {
-          "mutationPoint" : {
-            "mutationOperatorId" : "SwapTernary",
-            "position" : {
-              "column" : 111,
-              "line" : 271
-            }
-          },
-          "mutationSnapshot" : {
-            "after" : "nineteen  ? kStylisticAltNineteenOffSelector :  kStylisticAltNineteenOnSelector",
-            "before" : "nineteen ? kStylisticAltNineteenOnSelector : kStylisticAltNineteenOffSelector",
-            "description" : "swapped ternary operator"
-          },
-          "testSuiteOutcome" : "passed"
-        },
-        {
-          "mutationPoint" : {
-            "mutationOperatorId" : "SwapTernary",
-            "position" : {
-              "column" : 105,
-              "line" : 274
-            }
-          },
-          "mutationSnapshot" : {
-            "after" : "twenty  ? kStylisticAltTwentyOffSelector :  kStylisticAltTwentyOnSelector",
-            "before" : "twenty ? kStylisticAltTwentyOnSelector : kStylisticAltTwentyOffSelector",
-            "description" : "swapped ternary operator"
-          },
-          "testSuiteOutcome" : "passed"
         }
       ],
       "fileName" : "StylisticAlternates.swift",
-      "mutationScore" : 14
+      "mutationScore" : 60
     },
     {
       "appliedOperators" : [
@@ -871,21 +616,6 @@
       "appliedOperators" : [
         {
           "mutationPoint" : {
-            "mutationOperatorId" : "RelationalOperatorReplacement",
-            "position" : {
-              "column" : 23,
-              "line" : 178
-            }
-          },
-          "mutationSnapshot" : {
-            "after" : "!=",
-            "before" : "==",
-            "description" : "changed == to !="
-          },
-          "testSuiteOutcome" : "passed"
-        },
-        {
-          "mutationPoint" : {
             "mutationOperatorId" : "RemoveSideEffects",
             "position" : {
               "column" : 36,
@@ -988,25 +718,10 @@
             "description" : "removed line"
           },
           "testSuiteOutcome" : "passed"
-        },
-        {
-          "mutationPoint" : {
-            "mutationOperatorId" : "RemoveSideEffects",
-            "position" : {
-              "column" : 98,
-              "line" : 179
-            }
-          },
-          "mutationSnapshot" : {
-            "after" : "removed line",
-            "before" : "super.observeValue(forKeyPath: keyPath, of: object, change: change, context: context)",
-            "description" : "removed line"
-          },
-          "testSuiteOutcome" : "passed"
         }
       ],
       "fileName" : "TextAlignmentConstraint.swift",
-      "mutationScore" : 33
+      "mutationScore" : 42
     },
     {
       "appliedOperators" : [
@@ -1207,21 +922,6 @@
             "mutationOperatorId" : "RelationalOperatorReplacement",
             "position" : {
               "column" : 65,
-              "line" : 175
-            }
-          },
-          "mutationSnapshot" : {
-            "after" : "!=",
-            "before" : "==",
-            "description" : "changed == to !="
-          },
-          "testSuiteOutcome" : "passed"
-        },
-        {
-          "mutationPoint" : {
-            "mutationOperatorId" : "RelationalOperatorReplacement",
-            "position" : {
-              "column" : 65,
               "line" : 177
             }
           },
@@ -1384,7 +1084,7 @@
         }
       ],
       "fileName" : "XMLBuilder.swift",
-      "mutationScore" : 88
+      "mutationScore" : 93
     },
     {
       "appliedOperators" : [
@@ -1408,8 +1108,8 @@
       "mutationScore" : 0
     }
   ],
-  "globalMutationScore" : 32,
+  "globalMutationScore" : 42,
   "numberOfKilledMutants" : 28,
   "projectCodeCoverage" : 78,
-  "totalAppliedMutationOperators" : 86
+  "totalAppliedMutationOperators" : 66
 }
