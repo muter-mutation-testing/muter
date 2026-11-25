@@ -8,6 +8,7 @@ final class ProcessSpy: MuterProcess {
     var environment: [String: String]?
     var arguments: [String]?
     var executableURL: URL?
+    var currentDirectoryURL: URL?
     var standardOutput: Any?
     var standardError: Any?
 
