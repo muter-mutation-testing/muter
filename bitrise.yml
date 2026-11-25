@@ -1,0 +1,146 @@
+---
+format_version: '11'
+default_step_lib_source: https://github.com/bitrise-io/bitrise-steplib.git
+project_type: other
+trigger_map:
+- push_branch: master
+  workflow: badges
+- pull_request_source_branch: "*"
+  workflow: pull-request
+workflows:
+  badges:
+    steps:
+    - activate-ssh-key:
+        run_if: '{{getenv "SSH_RSA_PRIVATE_KEY" | ne ""}}'
+    - git-clone:
+        inputs:
+        - update_submodules: 'no'
+    - script@1.2:
+        title: Run Unit Tests
+        inputs:
+        - content: |-
+            #!/bin/bash
+
+            sh Scripts/ci/pull\ request/extract_coverage.sh
+    - script@1.2:
+        title: Update coverage badge
+        inputs:
+        - content: |-
+            #!/bin/bash
+
+            ruby Scripts/ci/update_badges.rb $GIST_KEY 2c3b3eae1b44a4c859bb8f8f2f32c783 muter-coverage-badge.json "$COVERAGE_BADGE_DATA"
+    - script:
+        title: Run Acceptance Tests
+        inputs:
+        - content: |-
+            #!/usr/bin/env bash
+
+            sh Scripts/ci/pull\ request/run_acceptance_test.sh
+        is_always_run: true
+    - script@1.2:
+        title: Update acceptance badge
+        inputs:
+        - content: ruby Scripts/ci/update_badges.rb "$GIST_KEY"
+            c064fc556513a6be07349b0d2f3ba44e muter-acceptance-badge.json
+            "{\"color\":\"$BADGE_COLOR\",\"label\":\"acceptance-tests\",\"message\":\"$BADGE_MESSAGE\",\"schemaVersion\":1}"
+    after_run:
+    - _regression-tests
+    - _regression-badge
+    meta:
+      bitrise.io:
+        machine_type_id: g2.mac.medium
+  linux:
+    steps:
+    - activate-ssh-key:
+        run_if: '{{getenv "SSH_RSA_PRIVATE_KEY" | ne ""}}'
+    - git-clone:
+        inputs:
+        - update_submodules: 'no'
+    - script@1.2:
+        title: Run Unit Tests
+        inputs:
+        - content: make test
+    - script:
+        title: Run Acceptance Tests
+        inputs:
+        - content: make acceptance-test
+        is_always_run: true
+    - deploy-to-bitrise-io@2:
+        title: Copy acceptance test output
+        inputs:
+        - is_compress: 'true'
+        - deploy_path: "$BITRISE_SOURCE_DIR/AcceptanceTests/samples/"
+    meta:
+      bitrise.io:
+        stack: ubuntu-latest-stable
+        machine_type_id: g2.linux.medium
+  pull-request:
+    steps:
+    - activate-ssh-key:
+        run_if: '{{getenv "SSH_RSA_PRIVATE_KEY" | ne ""}}'
+    - git-clone:
+        inputs:
+        - update_submodules: 'no'
+    - script@1.2:
+        title: Run Unit Tests
+        inputs:
+        - content: make test
+    - script:
+        title: Run Acceptance Tests
+        inputs:
+        - content: make acceptance-test
+        is_always_run: true
+    - deploy-to-bitrise-io@2:
+        title: Copy acceptance test output
+        inputs:
+        - is_compress: 'true'
+        - deploy_path: "$BITRISE_SOURCE_DIR/AcceptanceTests/samples/"
+    after_run:
+    - _regression-tests
+    meta:
+      bitrise.io:
+        machine_type_id: g2.mac.medium
+  regression:
+    summary: Runs the regression tests on their own and updates the badge. Start it by hand.
+    steps:
+    - activate-ssh-key:
+        run_if: '{{getenv "SSH_RSA_PRIVATE_KEY" | ne ""}}'
+    - git-clone:
+        inputs:
+        - update_submodules: 'no'
+    after_run:
+    - _regression-tests
+    - _regression-badge
+    meta:
+      bitrise.io:
+        machine_type_id: g2.mac.medium
+  _regression-tests:
+    summary: Runs Muter on the regression projects and compares the reports with the snapshots.
+    steps:
+    - script@1:
+        title: Run Regression Tests
+        inputs:
+        - content: |-
+            #!/bin/bash
+
+            sh Scripts/ci/regression/run_regression_tests.sh
+  _regression-badge:
+    summary: Updates the regression badge. Needs GIST_KEY, so run it only on master.
+    steps:
+    - script@1:
+        inputs:
+        - content: ruby Scripts/ci/update_badges.rb "$GIST_KEY"
+            905b694fb277c23630c5476c3ddf0dae muter-regression-badge.json
+            "{\"color\":\"$BADGE_COLOR\",\"label\":\"regression-tests\",\"message\":\"$BADGE_MESSAGE\",\"schemaVersion\":1}"
+        title: Update badge
+        is_always_run: true
+app:
+  envs:
+  - opts:
+      is_expand: false
+    DANGER_GITHUB_API_TOKEN: DANGER_GITHUB_API_TOKEN
+meta:
+  bitrise.io:
+    machine_type: performance
+    stack: osx-xcode-26.0.x
+    machine_type_id: g2-m1.4core
