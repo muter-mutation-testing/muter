@@ -1,6 +1,6 @@
 import Foundation
 
-enum BuildSystem: String {
+enum BuildSystem: String, Codable, Equatable {
     case xcodebuild
     case swift
     case unknown
