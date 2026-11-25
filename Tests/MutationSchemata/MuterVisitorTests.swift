@@ -91,6 +91,40 @@ final class MuterVisitorTests: MuterTestCase {
             ]
         )
 
+        // The uncovered region is the `if` body, so `a == b` inside it is skipped. The condition
+        // `a && b` on line 4 is outside the region and runs, so it is still mutated.
+        let mutants = mappings.flatMap(\.mutationSchemata).map {
+            "\($0.mutationOperatorId.rawValue)@\($0.position.line)"
+        }
+        XCTAssertEqual(mutants, ["ChangeLogicalConnector@4"])
+    }
+
+    func test_ignoreEveryMutantInsideAnUncoveredFunction() throws {
+        let source = try sourceCode("""
+        import Foundation
+
+        public func foo(_ a: Bool, _ b: Bool) -> Bool {
+            if a && b {
+                return a == b
+            }
+
+            return true
+        }
+        """)
+
+        let mappings = generateSchemataMappings(
+            for: .init(path: "/path/to/file", code: source),
+            changes: .null,
+            regionsWithoutCoverage: [
+                .make(
+                    lineStart: 3,
+                    columnStart: 47,
+                    lineEnd: 9,
+                    columnEnd: 2
+                ),
+            ]
+        )
+
         XCTAssertTrue(mappings.isEmpty)
     }
 }
