@@ -119,6 +119,7 @@ extension MuterConfiguration {
             excludeCallList: excludeCallList,
             coverageThreshold: coverageThreshold,
             testSuiteTimeOut: testSuiteTimeout,
+            mutationTestWorkers: mutationTestWorkers,
             buildSystem: explicitBuildSystem
         )
     }

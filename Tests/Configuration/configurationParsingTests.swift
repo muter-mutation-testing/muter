@@ -84,4 +84,31 @@ final class ConfigurationParsingTests: MuterTestCase {
         XCTAssertEqual(configuration.explicitBuildSystem, .xcodebuild)
         XCTAssertEqual(configuration.buildSystem, .xcodebuild)
     }
+
+    func test_withExecutable_keepsEveryOtherSetting() {
+        let configuration = MuterConfiguration(
+            executable: "swift",
+            arguments: ["test"],
+            excludeList: ["Generated"],
+            excludeCallList: ["log"],
+            coverageThreshold: 50,
+            testSuiteTimeOut: 30,
+            mutationTestWorkers: 4,
+            buildSystem: .swift
+        )
+
+        XCTAssertEqual(
+            configuration.withExecutable("/usr/bin/swift"),
+            MuterConfiguration(
+                executable: "/usr/bin/swift",
+                arguments: ["test"],
+                excludeList: ["Generated"],
+                excludeCallList: ["log"],
+                coverageThreshold: 50,
+                testSuiteTimeOut: 30,
+                mutationTestWorkers: 4,
+                buildSystem: .swift
+            )
+        )
+    }
 }
