@@ -70,4 +70,79 @@ final class DiscoverMutationPointsTests: MuterTestCase {
             .noMutationPointsDiscovered
         )
     }
+
+    // MARK: - Large Codebase Tests (Parallel Processing)
+
+    func test_discoversMultipleFilesInParallel() async throws {
+        // Test that multiple files are processed correctly with parallel batching
+        state.sourceFileCandidates = [
+            "\(fixturesDirectory)/sampleForDiscoveringMutations.swift",
+            "\(fixturesDirectory)/sample With Spaces For Discovering Mutations.swift",
+        ]
+
+        let result = try await sut.run(with: state)
+        let change = try XCTUnwrap(result.first)
+
+        guard case let .mutationMappingsDiscovered(mappings) = change else {
+            return XCTFail("Expected mappings, got \(change)")
+        }
+
+        // Verify all files were processed
+        XCTAssertEqual(mappings.count, 2)
+
+        // Verify mutations were found in both files
+        let fileNames = mappings.map { $0.fileName }
+        XCTAssertTrue(fileNames.contains { $0.contains("sampleForDiscoveringMutations") })
+        XCTAssertTrue(fileNames.contains { $0.contains("sample With Spaces") })
+    }
+
+    func test_returnsEmptySourceCodeDictionary() async throws {
+        // The fix passes an empty dictionary to prevent memory exhaustion
+        // ApplySchemata should re-parse files on demand
+        state.sourceFileCandidates = [
+            "\(fixturesDirectory)/sampleForDiscoveringMutations.swift",
+        ]
+
+        let result = try await sut.run(with: state)
+
+        // Check that sourceCodeParsed change contains empty dictionary
+        let sourceCodeChange = result.first { change in
+            if case .sourceCodeParsed = change { return true }
+            return false
+        }
+
+        guard case let .sourceCodeParsed(sourceCode) = sourceCodeChange else {
+            return XCTFail("Expected sourceCodeParsed change")
+        }
+
+        XCTAssertTrue(sourceCode.isEmpty, "Source code dictionary should be empty to prevent memory exhaustion")
+    }
+
+    func test_handlesEmptyFileCandidates() async throws {
+        state.sourceFileCandidates = []
+
+        try await assertThrowsMuterError(
+            await sut.run(with: state),
+            .noMutationPointsDiscovered
+        )
+    }
+
+    func test_handlesNonSwiftFiles() async throws {
+        // Non-swift files should be filtered out
+        state.sourceFileCandidates = [
+            "\(fixturesDirectory)/someFile.txt",
+            "\(fixturesDirectory)/sampleForDiscoveringMutations.swift",
+        ]
+
+        let result = try await sut.run(with: state)
+        let change = try XCTUnwrap(result.first)
+
+        guard case let .mutationMappingsDiscovered(mappings) = change else {
+            return XCTFail("Expected mappings, got \(change)")
+        }
+
+        // Only Swift files should be processed
+        XCTAssertEqual(mappings.count, 1)
+        XCTAssertTrue(mappings[0].fileName.hasSuffix(".swift"))
+    }
 }

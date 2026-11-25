@@ -14,7 +14,7 @@ final class TestSuiteResultParsingTests: MuterTestCase {
     func test_logWithoutFailure() {
         var contents = loadLogFile(named: "testRunWithFailures_withoutTestFailedFooter.log")
         XCTAssertEqual(TestSuiteOutcome.from(testLog: contents, terminationStatus: 0), .failed)
-        
+
         contents = loadLogFile(named: "testRunWithFailures_swift.log")
         XCTAssertEqual(TestSuiteOutcome.from(testLog: contents, terminationStatus: 0), .failed)
 
@@ -68,4 +68,26 @@ final class TestSuiteResultParsingTests: MuterTestCase {
 
         return string
     }
+
+    // MARK: - Swift Testing
+
+    func test_logWithSwiftTestingFailure() {
+        var contents = loadLogFile(named: "testRunWithFailures_swiftTesting.log")
+        XCTAssertEqual(TestSuiteOutcome.from(testLog: contents, terminationStatus: 1), .failed)
+
+        contents = loadLogFile(named: "testRunWithFailures_swiftTesting_multipleIssues.log")
+        XCTAssertEqual(TestSuiteOutcome.from(testLog: contents, terminationStatus: 1), .failed)
+    }
+
+    func test_logWithSwiftTestingSuccess() {
+        let contents = loadLogFile(named: "testRunWithoutFailures_swiftTesting.log")
+        XCTAssertEqual(TestSuiteOutcome.from(testLog: contents, terminationStatus: 0), .passed)
+    }
+
+    func test_logWithSwiftTestingFailureAndExitCodeZero() {
+        // Special case: log says "failed" even if exit code is 0
+        let contents = loadLogFile(named: "testRunWithFailures_swiftTesting.log")
+        XCTAssertEqual(TestSuiteOutcome.from(testLog: contents, terminationStatus: 0), .failed)
+    }
+
 }
