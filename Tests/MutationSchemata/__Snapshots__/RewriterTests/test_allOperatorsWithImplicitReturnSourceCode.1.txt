@@ -165,7 +165,15 @@ struct ConditionalOperators {
   func baz() {
     if __SwiftMutator.environment["sampleWithAllOperators_RemoveSideEffects_26_37_596"] != nil {
     } else {
-      _ = foo(bar: { $0 == char })
+      _ = foo(bar: {
+        if ProcessInfo.processInfo.environment[
+          "sampleWithAllOperators_RelationalOperatorReplacement_26_27_586"] != nil
+        {
+          $0 != char
+        } else {
+          $0 == char
+        }
+      })
     }
   }
 }
