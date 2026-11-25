@@ -10,6 +10,10 @@ struct MuterConfiguration: Equatable, Codable {
     let excludeCallList: [String]
     let coverageThreshold: Double
     let testSuiteTimeout: Double?
+    /// How many mutants to test at once (`mutationTestWorkers:`). Each worker runs the test command in
+    /// its own clone of the mutated project, because `swift test` locks the package's build directory.
+    /// Only SwiftPM projects run in parallel; nil or 1 tests one mutant at a time.
+    let mutationTestWorkers: Int?
     /// Optional explicit build system from the `buildSystem:` config key. When set it overrides the
     /// executable-basename heuristic — needed when `executable` is a wrapper script (e.g. one that
     /// restores env / forwards SIMCTL_CHILD_ vars) whose filename isn't literally `xcodebuild`/`swift`.
@@ -34,6 +38,7 @@ struct MuterConfiguration: Equatable, Codable {
         case excludeCallList = "excludeCalls"
         case coverageThreshold
         case testSuiteTimeout = "mutationTestTimeout"
+        case mutationTestWorkers
         case explicitBuildSystem = "buildSystem"
     }
 
@@ -44,6 +49,7 @@ struct MuterConfiguration: Equatable, Codable {
         excludeCallList callList: [String] = [],
         coverageThreshold threshold: Double = 0,
         testSuiteTimeOut timeout: Double? = nil,
+        mutationTestWorkers workers: Int? = nil,
         buildSystem: BuildSystem? = nil
     ) {
         testCommandExecutable = executable
@@ -52,6 +58,7 @@ struct MuterConfiguration: Equatable, Codable {
         excludeCallList = callList
         coverageThreshold = threshold
         testSuiteTimeout = timeout
+        mutationTestWorkers = workers
         explicitBuildSystem = buildSystem
     }
 
@@ -66,8 +73,31 @@ struct MuterConfiguration: Equatable, Codable {
         coverageThreshold = container.decode(Double.self, default: 0, forKey: .coverageThreshold)
         testSuiteTimeout = try container.decodeIfPresent(Double.self, forKey: .testSuiteTimeout)
             ?? (try container.decodeIfPresent(Int.self, forKey: .testSuiteTimeout)).flatMap(Double.init)
+        mutationTestWorkers = try container.decodeIfPresent(Int.self, forKey: .mutationTestWorkers)
         explicitBuildSystem = (try container.decodeIfPresent(String.self, forKey: .explicitBuildSystem))
             .map(BuildSystem.init(rawValue:))
+    }
+
+    /// The number of mutants to test at once: `mutationTestWorkers` for a SwiftPM project, at least 1;
+    /// always 1 for other build systems, whose test runs share an `.xctestrun` file and DerivedData.
+    var workerCount: Int {
+        guard buildSystem == .swift else { return 1 }
+        return max(1, mutationTestWorkers ?? 1)
+    }
+
+    /// This configuration with `testSuiteTimeout` set to `timeout`, unless it already has one.
+    func withDefaultTestSuiteTimeout(_ timeout: TimeInterval) -> MuterConfiguration {
+        guard testSuiteTimeout == nil else { return self }
+        return MuterConfiguration(
+            executable: testCommandExecutable,
+            arguments: testCommandArguments,
+            excludeList: excludeFileList,
+            excludeCallList: excludeCallList,
+            coverageThreshold: coverageThreshold,
+            testSuiteTimeOut: timeout,
+            mutationTestWorkers: mutationTestWorkers,
+            buildSystem: explicitBuildSystem
+        )
     }
 
     init(from data: Data) throws {

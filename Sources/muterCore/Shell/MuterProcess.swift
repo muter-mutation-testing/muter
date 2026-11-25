@@ -8,6 +8,7 @@ protocol MuterProcess: AnyObject {
     var environment: [String: String]? { get set }
     var arguments: [String]? { get set }
     var executableURL: URL? { get set }
+    var currentDirectoryURL: URL? { get set }
     var standardOutput: Any? { get set }
     var standardError: Any? { get set }
 
