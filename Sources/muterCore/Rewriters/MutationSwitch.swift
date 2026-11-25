@@ -79,16 +79,14 @@ enum MutationSwitch {
                             ExprSyntax(
                                 SubscriptCallExprSyntax(
                                     calledExpression:
+                                    // `__SwiftMutator.environment`, the copy MuterRewriter appends to
+                                    // the file. Reading `ProcessInfo.processInfo.environment` here
+                                    // rebuilt the dictionary on every execution of the block.
                                     MemberAccessExprSyntax(
                                         base: MemberAccessExprSyntax(
-                                            base: MemberAccessExprSyntax(
-                                                period: .periodToken(presence: .missing),
-                                                declName: DeclReferenceExprSyntax(
-                                                    baseName: .identifier("ProcessInfo")
-                                                )
-                                            ),
+                                            period: .periodToken(presence: .missing),
                                             declName: DeclReferenceExprSyntax(
-                                                baseName: .identifier("processInfo")
+                                                baseName: .identifier(MuterRewriter.environmentCacheName)
                                             )
                                         ),
                                         declName: DeclReferenceExprSyntax(
