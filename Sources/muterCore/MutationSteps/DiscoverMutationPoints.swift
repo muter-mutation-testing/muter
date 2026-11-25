@@ -35,12 +35,9 @@ struct DiscoverMutationPoints: MutationStep {
 
         return [
             .mutationMappingsDiscovered(mappings),
-            // Only files that actually produced mutations are cached, so
-            // ApplySchemata rewrites the *same* parse tree the mapping keys
-            // belong to. Non-mutated files' ASTs are freed during the scan
-            // (autoreleasepool below), keeping memory bounded on large
-            // codebases without silently dropping every mutation.
-            .sourceCodeParsed(discovered.sourceCodeByFilePath),
+            // Pass empty dictionary - ApplySchemata will re-parse files on demand
+            // This prevents memory exhaustion on large codebases (2000+ files)
+            .sourceCodeParsed([:]),
         ]
     }
 }
@@ -98,7 +95,6 @@ private extension DiscoverMutationPoints {
                         if !schemataMappings.isEmpty {
                             lock.lock()
                             discoveredFiles.mappings.append(contentsOf: schemataMappings)
-                            discoveredFiles.sourceCodeByFilePath[path] = sourceCode.source.code
                             lock.unlock()
                         }
                     }
@@ -148,5 +144,4 @@ private extension DiscoverMutationPoints {
 
 private class DiscoveredFiles {
     var mappings: [SchemataMutationMapping] = []
-    var sourceCodeByFilePath: [FilePath: SourceFileSyntax] = [:]
 }
