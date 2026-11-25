@@ -10,8 +10,8 @@ def replace(file_path, new_url, new_sha):
     with open(file_path) as file:
         new_lines = file.readlines()
 
-        new_lines[3] = "  url \"%s\"\n" % (new_url)
-        new_lines[4] = "  sha256 \"%s\"\n" % (new_sha)
+        new_lines[3] = "\turl \"%s\"\n" % (new_url) 
+        new_lines[4] = "\tsha256 \"%s\"\n" % (new_sha)
 
     with open(file_path, 'w') as file:
         for line in new_lines:
@@ -20,7 +20,7 @@ def replace(file_path, new_url, new_sha):
 
 if len(sys.argv) == 3:
     replace("./homebrew-formulae/Formula/muter.rb", 
-            "https://github.com/muter-mutation-testing/muter/archive/refs/tags/%s.tar.gz" % (sys.argv[1]),
+            "https://github.com/muter-mutation-testing/muter/archive/refs/tags/%s.zip" % (sys.argv[1]),
             sys.argv[2])
 
 else:
