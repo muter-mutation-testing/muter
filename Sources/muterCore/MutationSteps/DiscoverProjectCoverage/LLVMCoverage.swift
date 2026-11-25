@@ -29,9 +29,11 @@ extension Region: Decodable {
         executionCount = data[safe: 4] ?? 0
     }
 
+    /// Whether `other` lies entirely inside this region. Positions compare by line first and then by
+    /// column, so a region on one line never contains code on a later line.
     func contains(_ other: Region) -> Bool {
-        lineStart <= other.lineEnd
-            && columnStart <= other.columnEnd
+        (lineStart, columnStart) <= (other.lineStart, other.columnStart)
+            && (other.lineEnd, other.columnEnd) <= (lineEnd, columnEnd)
     }
 }
 
