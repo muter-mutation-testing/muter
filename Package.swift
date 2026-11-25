@@ -6,22 +6,22 @@ import PackageDescription
 let package = Package(
     name: "muter",
     platforms: [
-        .macOS(.v12),
+        .macOS(.v13),
     ],
     products: [
         .executable(name: "muter", targets: ["muter", "muterCore"]),
     ],
     dependencies: [
-        .package(url: "https://github.com/apple/swift-argument-parser.git", from: "1.6.1"),
-        .package(url: "https://github.com/swiftlang/swift-syntax.git", from: "601.0.0"),
-        .package(url: "https://github.com/swiftlang/swift-format.git", from: "601.0.0"),
-        .package(url: "https://github.com/onevcat/Rainbow.git", from: "4.2.0"),
+        .package(url: "https://github.com/apple/swift-argument-parser.git", from: "1.8.2"),
+        .package(url: "https://github.com/swiftlang/swift-syntax.git", from: "604.0.0"),
+        .package(url: "https://github.com/swiftlang/swift-format.git", from: "604.0.0"),
+        .package(url: "https://github.com/onevcat/Rainbow.git", from: "4.2.2"),
         .package(url: "https://github.com/dduan/Pathos.git", from: "0.4.2"),
         .package(url: "https://github.com/johnsundell/plot.git", from: "0.14.0"),
         .package(url: "https://github.com/krzysztofzablocki/Difference.git", from: "1.1.0"),
-        .package(url: "https://github.com/jpsim/Yams.git", from: "6.1.0"),
-        .package(url: "https://github.com/pointfreeco/swift-snapshot-testing.git", from: "1.18.7"),
-        .package(url: "https://github.com/mxcl/Version.git", from: "2.2.0"),
+        .package(url: "https://github.com/jpsim/Yams.git", from: "6.2.2"),
+        .package(url: "https://github.com/pointfreeco/swift-snapshot-testing.git", from: "1.19.7"),
+        .package(url: "https://github.com/mxcl/Version.git", from: "2.2.1"),
     ],
     targets: [
         .executableTarget(

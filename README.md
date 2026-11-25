@@ -342,7 +342,7 @@ Check out this example to familiarize yourself with what a report looks like.
 
 Muter supports any platform that compiles and tests using `xcodebuild`, which includes iOS, macOS, tvOS, and watchOS.
 
-Muter can run only on macOS 10.15 or higher.
+Muter can run only on macOS 13 or higher.
 
 **Does Muter support UI test suites?**
 
