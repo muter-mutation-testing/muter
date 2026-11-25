@@ -94,6 +94,8 @@ class FileManagerSpy: Spy, FileSystemManager {
                 throw vanished
             }
         }
+        // The filtered copy calls copyItem once per file; report each vanished file once.
+        pathsVanishingDuringCopy = []
     }
 
     func contents(
