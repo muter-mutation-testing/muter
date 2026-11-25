@@ -26,25 +26,25 @@ cp ./muter.conf.yml "$samplesdir"/created_iOS_config.yml
 
 echo " > Running in CLI mode..."
 rm -rf ../ExampleApp_muter_logs 2>/dev/null
-"$muterdir"/muter --skip-coverage --skip-update-check > "$samplesdir"/muters_output.txt 2>/dev/null
+"$muterdir"/muter --skip-coverage --skip-update-check > "$samplesdir"/muters_output.txt 2>"$samplesdir"/muters_output.stderr.log
 echo " > Copying logs..."
 cp -R ../ExampleApp_muter_logs/. "$samplesdir"/muter_logs/
 rm -rf ../ExampleApp_muter_logs
 
 echo " > Running with coverage"
-"$muterdir"/muter --skip-update-check > "$samplesdir"/muters_with_coverage_output.txt 2>/dev/null
+"$muterdir"/muter --skip-update-check > "$samplesdir"/muters_with_coverage_output.txt 2>"$samplesdir"/muters_with_coverage_output.stderr.log
 rm -rf ../ExampleApp_muter_logs
 
 echo " > Running in Xcode mode..."
-"$muterdir"/muter --skip-coverage --skip-update-check --format xcode > "$samplesdir"/muters_xcode_output.txt 2>/dev/null
+"$muterdir"/muter --skip-coverage --skip-update-check --format xcode > "$samplesdir"/muters_xcode_output.txt 2>"$samplesdir"/muters_xcode_output.stderr.log
 rm -rf ../ExampleApp_muter_logs
 
 echo " > Running with --filesToMutate flag"
-"$muterdir"/muter --skip-coverage --skip-update-check --files-to-mutate "/ExampleApp/Module.swift" > "$samplesdir"/muters_files_to_mutate_output.txt 2>/dev/null
+"$muterdir"/muter --skip-coverage --skip-update-check --files-to-mutate "/ExampleApp/Module.swift" > "$samplesdir"/muters_files_to_mutate_output.txt 2>"$samplesdir"/muters_files_to_mutate_output.stderr.log
 rm -rf ../ExampleApp_muter_logs
 
 echo " > Creating muter's test plan"
-"$muterdir"/muter mutate-without-running --skip-update-check > /dev/null
+"$muterdir"/muter mutate-without-running --skip-update-check > "$samplesdir"/muters_mutate_without_running_output.txt 2>"$samplesdir"/muters_mutate_without_running_output.stderr.log
 cp ./muter-mappings.json "$samplesdir"/created_muter-mappings.json
 rm -rf ../ExampleApp_muter_logs
 
@@ -71,7 +71,7 @@ echo "🧟‍♂️ Running Muter on an empty example codebase..."
 cd ./Repositories/EmptyExampleApp
 
 echo " > Running in CLI mode with custom configuration path..."
-"$muterdir"/muter --skip-coverage --skip-update-check --configuration "$(pwd)/configuration/muter.conf.yml" > "$samplesdir"/muters_empty_state_output.txt 2>/dev/null
+"$muterdir"/muter --skip-coverage --skip-update-check --configuration "$(pwd)/configuration/muter.conf.yml" > "$samplesdir"/muters_empty_state_output.txt 2>"$samplesdir"/muters_empty_state_output.stderr.log
 cd ../..
 
 echo "🧟‍♂️ Running Muter on an example test suite that fails..."
@@ -79,7 +79,7 @@ cd ./Repositories/ProjectWithFailures
 
 echo " > Running in CLI mode..."
 rm -rf ../ProjectWithFailures_muter_logs 2>/dev/null
-"$muterdir"/muter --skip-coverage --skip-update-check > "$samplesdir"/muters_aborted_testing_output.txt 2>/dev/null
+"$muterdir"/muter --skip-coverage --skip-update-check > "$samplesdir"/muters_aborted_testing_output.txt 2>"$samplesdir"/muters_aborted_testing_output.stderr.log
 rm -rf ../ProjectWithFailures_muter_logs
 cd ../..
 
@@ -87,7 +87,7 @@ echo " > Running Muter in a project that times out..."
 cd ./Repositories/ProjectWithTimeout
 
 rm -rf ../ProjectWithTimeout_muter_logs 2>/dev/null
-"$muterdir"/muter --skip-coverage --skip-update-check > "$samplesdir"/muters_timeout_output.txt 2>/dev/null
+"$muterdir"/muter --skip-coverage --skip-update-check > "$samplesdir"/muters_timeout_output.txt 2>"$samplesdir"/muters_timeout_output.stderr.log
 rm -rf ../ProjectWithTimeout_muter_logs
 
 cd ../..
@@ -116,7 +116,7 @@ rm -rf ./AcceptanceTests/Repositories
 
 echo "Running tests..."
 
-swift test --filter 'AcceptanceTests' 2>/dev/null
+swift test --filter 'AcceptanceTests'
 
 exitCode=$?
 
