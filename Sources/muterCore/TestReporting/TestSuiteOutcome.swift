@@ -35,7 +35,7 @@ extension TestSuiteOutcome {
         timeoutExecution: TestingExecutionResult? = nil
     ) -> TestSuiteOutcome {
         if timeoutExecution == .timeout {
-            return .timeout
+            return outcomeOfTimedOutRun(testLog)
         }
 
         if logContainsBuildError(testLog) {
@@ -47,6 +47,25 @@ extension TestSuiteOutcome {
         }
 
         return .passed
+    }
+
+    /// A run can hit the time limit after the mutant was already killed: xcodebuild waits a long time
+    /// before it restarts the tests after a crash, and the default limit is only a few baseline runs.
+    /// Such a mutant is killed, not timed out. Only a run whose log shows no failure and no crash
+    /// counts as a timeout.
+    private static func outcomeOfTimedOutRun(_ testLog: String) -> TestSuiteOutcome {
+        if logContainsTestFailure(testLog) {
+            return .failed
+        } else if logContainsCrash(testLog) {
+            return .runtimeError
+        }
+
+        return .timeout
+    }
+
+    private static func logContainsCrash(_ testLog: String) -> Bool {
+        testLog.contains("Fatal error:") ||
+            testLog.contains("Exited with unexpected signal code")
     }
 
     private static func logContainsTestFailure(_ testLog: String) -> Bool {

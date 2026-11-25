@@ -90,4 +90,43 @@ final class TestSuiteResultParsingTests: MuterTestCase {
         XCTAssertEqual(TestSuiteOutcome.from(testLog: contents, terminationStatus: 0), .failed)
     }
 
+    func test_timedOutRunWithoutFailureOrCrash_isATimeout() {
+        let log = "Test Suite 'All tests' started at 2026-11-25 11:48:27.092."
+
+        XCTAssertEqual(
+            TestSuiteOutcome.from(testLog: log, terminationStatus: 15, timeoutExecution: .timeout),
+            .timeout
+        )
+    }
+
+    func test_timedOutRunThatAlreadyCrashed_isARuntimeError() {
+        let log = """
+        Test Case '-[FFCParserCombinatorTests.FFCParserCombinatorTests testBacktrack]' passed (0.002 seconds).
+        FFCParserCombinator/FFCParserCombinator.swift:105: Fatal error: Unexpectedly found nil while unwrapping an Optional value
+        Restarting after unexpected exit, crash, or test timeout; summary will include totals from previous launches.
+        """
+
+        XCTAssertEqual(
+            TestSuiteOutcome.from(testLog: log, terminationStatus: 15, timeoutExecution: .timeout),
+            .runtimeError
+        )
+    }
+
+    func test_timedOutSwiftTestRunThatAlreadyCrashed_isARuntimeError() {
+        let log = "error: Exited with unexpected signal code 11"
+
+        XCTAssertEqual(
+            TestSuiteOutcome.from(testLog: log, terminationStatus: 15, timeoutExecution: .timeout),
+            .runtimeError
+        )
+    }
+
+    func test_timedOutRunThatAlreadyFailedATest_isAFailure() {
+        let contents = loadLogFile(named: "testRunWithFailures_withoutTestFailedFooter.log")
+
+        XCTAssertEqual(
+            TestSuiteOutcome.from(testLog: contents, terminationStatus: 15, timeoutExecution: .timeout),
+            .failed
+        )
+    }
 }
