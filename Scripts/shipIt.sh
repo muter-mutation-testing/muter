@@ -13,15 +13,16 @@ else
     git commit -m "Bump version to $1"
     git tag "$1"
     git push origin head
-    git push origin head --tags
+    # Push only the new release tag, not every local tag.
+    git push origin "refs/tags/$1"
 
     echo "Generating SHA256 hash of the new version..."
-    curl -L "https://github.com/muter-mutation-testing/muter/archive/refs/tags/$1.zip" -o new_muter_version.zip
-    SHA=$(shasum -a 256 "./new_muter_version.zip" | cut -d " " -f 1) 
-    rm new_muter_version.zip
+    curl -L "https://github.com/muter-mutation-testing/muter/archive/refs/tags/$1.tar.gz" -o new_muter_version.tar.gz
+    SHA=$(shasum -a 256 "./new_muter_version.tar.gz" | cut -d " " -f 1) 
+    rm new_muter_version.tar.gz
 
     echo "Updating Homebrew formula..."
-    python ./Scripts/bump_version.py $1 $SHA
+    python3 ./Scripts/bump_version.py $1 $SHA
 
     echo "Uninstalling old version..."
     make uninstall
