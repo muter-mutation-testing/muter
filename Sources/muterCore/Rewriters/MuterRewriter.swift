@@ -8,15 +8,19 @@ final class MuterRewriter: SyntaxRewriter {
     }
 
     override func visit(_ node: CodeBlockItemListSyntax) -> CodeBlockItemListSyntax {
+        // Visit children FIRST (bottom-up) so inner code blocks get their
+        // mutation switches while their SyntaxIdentifiers still match the
+        // dictionary keys. Applying the outer switch first (top-down) creates
+        // a new syntax tree that changes all inner node IDs, breaking lookups.
+        let visitedNode = super.visit(node)
+
         guard let mutationSchemata = schemataMappings.schemata(node) else {
-            return super.visit(node)
+            return visitedNode
         }
 
-        let newNode = MutationSwitch.apply(
+        return MutationSwitch.apply(
             mutationSchemata: mutationSchemata,
-            with: node
+            with: visitedNode
         )
-
-        return super.visit(newNode)
     }
 }
