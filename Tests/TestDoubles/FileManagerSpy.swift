@@ -25,6 +25,11 @@ class FileManagerSpy: Spy, FileSystemManager {
     }
 
     var delegate: FileManagerDelegate?
+    private(set) var delegateDuringCopy: FileManagerDelegate?
+    /// Files that "disappear" during `copyItem`: each is reported to the delegate as a
+    /// no-such-file error, the way Foundation reports one, and the copy carries on if it
+    /// says to proceed.
+    var pathsVanishingDuringCopy: [String] = []
     var temporaryDirectory: URL = .init(fileURLWithPath: "")
     var currentDirectoryPathToReturn: String = ""
     var changeCurrentDirectoryPath: [String] = []
@@ -76,8 +81,18 @@ class FileManagerSpy: Spy, FileSystemManager {
     ) throws {
         methodCalls.append(#function)
         copyPaths.append((source: srcPath, dest: dstPath))
+        delegateDuringCopy = delegate
         if let error = errorToThrow {
             throw error
+        }
+        for path in pathsVanishingDuringCopy {
+            let vanished = NSError(domain: NSPOSIXErrorDomain, code: Int(ENOENT))
+            let proceed = delegate?.fileManager?(
+                .default, shouldProceedAfterError: vanished, copyingItemAtPath: path, toPath: dstPath
+            ) ?? false
+            if !proceed {
+                throw vanished
+            }
         }
     }
 
