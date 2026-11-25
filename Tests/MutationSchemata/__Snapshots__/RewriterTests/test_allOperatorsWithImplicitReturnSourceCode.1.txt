@@ -166,7 +166,7 @@ struct ConditionalOperators {
     if __SwiftMutator.environment["sampleWithAllOperators_RemoveSideEffects_26_37_596"] != nil {
     } else {
       _ = foo(bar: {
-        if ProcessInfo.processInfo.environment[
+        if __SwiftMutator.environment[
           "sampleWithAllOperators_RelationalOperatorReplacement_26_27_586"] != nil
         {
           $0 != char

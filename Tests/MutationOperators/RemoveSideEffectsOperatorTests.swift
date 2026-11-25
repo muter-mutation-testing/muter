@@ -150,7 +150,7 @@ final class RemoveSideEffectsOperatorTests: MuterTestCase {
         let rewritten = MuterRewriter(mappings).rewrite(source).description
 
         let mutationSwitchCount = rewritten
-            .components(separatedBy: "ProcessInfo.processInfo.environment[")
+            .components(separatedBy: "\(MuterRewriter.environmentCacheName).environment[")
             .count - 1
 
         // There are 2 schemata so there must be 2 env-var checks in the
