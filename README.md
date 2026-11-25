@@ -328,7 +328,7 @@ In case Muter fails to run due to a compilation error, you can assess the mutate
 - Running Muter can be a lengthy process, so be sure to allocate enough time for the test to finish.
 - Because Muter can take a while to run, it is recommended to exclude UI or journey tests from your test suite. We recommend creating separate schemes or targets for mutation testing. However, you should feel free to run these kinds of tests if you're okay with the longer feedback cycle.
 - Don't be dogmatic about your mutation score - in practice, 100% is not always possible.
-- Configure test timeouts appropriately - Muter supports test timeouts to prevent infinite loops or hanging tests. You can configure this through the `testSuiteTimeout` option in your configuration file. This is especially important for mutation testing since mutations can sometimes cause infinite loops.
+- Configure test timeouts appropriately - Muter supports test timeouts to prevent infinite loops or hanging tests. You can configure this through the `mutationTestTimeout` option in your configuration file. This is especially important for mutation testing since mutations can sometimes cause infinite loops.
 
 ## Example Test Report
 
