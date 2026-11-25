@@ -97,9 +97,11 @@ If you're curious about how a mutation score is different than test code coverag
 
 ## Installation
 
-Muter is available through [Homebrew](https://brew.sh/). Run the following command to install Muter:
+Muter is available through [Homebrew](https://brew.sh/), from Muter's own tap. Homebrew loads a formula from a third-party tap only after you trust it. Run the following commands to install Muter:
 
 ```sh
+brew tap muter-mutation-testing/formulae
+brew trust --formula muter-mutation-testing/formulae/muter
 brew install muter-mutation-testing/formulae/muter
 ```
 
