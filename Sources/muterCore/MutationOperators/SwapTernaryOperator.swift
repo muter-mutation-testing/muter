@@ -88,6 +88,16 @@ enum SwapTernaryOperator {
                 return node
             }
 
+            // Only swap when the else-expression is a SINGLE trailing child (`… ? a : b`, so the
+            // ternary is at `index` and `b` at `index + 1`, the last element). When the else-expression
+            // is itself a comparison/sequence (`… ? a : c < d`), SwiftSyntax flattens `c < d` into
+            // multiple sibling children of the outer SequenceExpr; swapping would take only `c` and
+            // leave `< d` dangling, producing `x < y < d` — adjacent operators in a non-associative
+            // precedence group, a compile error. Skip rather than emit invalid code.
+            guard children.count == index + 2 else {
+                return node
+            }
+
             let secondChoice = children[index + 1]
                 .withTrailingTrivia(.spaces(1))
                 .withLeadingTrivia(.spaces(1))
