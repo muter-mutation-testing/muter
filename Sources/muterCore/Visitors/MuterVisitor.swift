@@ -27,10 +27,6 @@ extension MutationSourceCodePreparationChange: Nullable {
 }
 
 class MuterVisitor: SyntaxAnyVisitor {
-    private let muterDisableTag = "muter:disable"
-    private let muterEnabledTag = "muter:enable"
-    private(set) var isDisabled = false
-
     let configuration: MuterConfiguration?
     let sourceCodeInfo: SourceCodeInfo
     let mutationOperatorId: MutationOperator.Id
@@ -39,6 +35,11 @@ class MuterVisitor: SyntaxAnyVisitor {
     var sourceCodePreparationChange: MutationSourceCodePreparationChange = .null
 
     private(set) var schemataMappings: SchemataMutationMapping
+
+    private lazy var disableDirectives = DisableDirectives(
+        source: sourceCodeInfo.code,
+        fileName: sourceCodeInfo.path
+    )
 
     required init(
         configuration: MuterConfiguration? = nil,
@@ -63,16 +64,16 @@ class MuterVisitor: SyntaxAnyVisitor {
             return .skipChildren
         }
 
-        checkNodeForDisableTag(node)
-
         return super.visitAny(node)
     }
 
-    func checkNodeForDisableTag(_ node: SyntaxProtocol) {
-        isDisabled = isDisabled
-            && !node.containsLineComment(muterEnabledTag)
-            || !isDisabled
-            && node.containsLineComment(muterDisableTag)
+    /// Tells if a `muter:disable` comment turns off this operator's mutants that start on `line`.
+    /// `line` is a reported line, so it does not count the lines that source preparation added.
+    func isDisabled(onLine line: Int) -> Bool {
+        disableDirectives.isDisabled(
+            mutationOperatorId,
+            onLine: line + sourceCodePreparationChange.newLines
+        )
     }
 
     private func hasTestCoverage(
@@ -200,9 +201,12 @@ class MuterVisitor: SyntaxAnyVisitor {
         mutation: SyntaxProtocol,
         with syntax: SyntaxProtocol,
         at position: MutationPosition,
-        snapshot: MutationOperator.Snapshot
+        snapshot: MutationOperator.Snapshot,
+        startLine: Int? = nil
     ) {
-        guard !isDisabled else {
+        // Operators that report the end of a multi-line node give its start line, so that a
+        // `muter:disable next-line` comment above the node applies to it.
+        guard !isDisabled(onLine: startLine ?? position.line) else {
             return
         }
 

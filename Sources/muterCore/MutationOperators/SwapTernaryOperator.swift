@@ -32,7 +32,8 @@ enum SwapTernaryOperator {
                 mutation: mutated(node),
                 with: node,
                 at: position,
-                snapshot: snapshot
+                snapshot: snapshot,
+                startLine: startLocation(for: node).line
             )
 
             return super.visit(node)
@@ -60,7 +61,8 @@ enum SwapTernaryOperator {
                 mutation: mutated(node),
                 with: node,
                 at: position,
-                snapshot: snapshot
+                snapshot: snapshot,
+                startLine: startLocation(for: node).line
             )
 
             return super.visit(node)
