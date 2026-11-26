@@ -1,6 +1,6 @@
 struct Example {
   func containsSideEffect() -> Int {
-    if __SwiftMutator.environment["sampleWithSideEffects_RemoveSideEffects_3_27_80"] != nil {
+    if __SwiftMutator.activeMutant == 0 {
       return 1
     } else {
       _ = causesSideEffect()
@@ -9,7 +9,7 @@ struct Example {
   }
 
   func containsSideEffect() -> Int {
-    if __SwiftMutator.environment["sampleWithSideEffects_RemoveSideEffects_10_27_186"] != nil {
+    if __SwiftMutator.activeMutant == 0 {
       print("something")
     } else {
       print("something")
@@ -23,7 +23,7 @@ struct Example {
   }
 
   func causesAnotherSideEffect() {
-    if __SwiftMutator.environment["sampleWithSideEffects_RemoveSideEffects_20_62_423"] != nil {
+    if __SwiftMutator.activeMutant == 0 {
       let key = "some key"
       let value = aFunctionThatReturnsAValue()
     } else {
@@ -40,10 +40,9 @@ struct Example {
   }
 
   func containsADeepMethodCall() {
-    if __SwiftMutator.environment["sampleWithSideEffects_RemoveSideEffects_30_71_643"] != nil {
+    if __SwiftMutator.activeMutant == 0 {
       var anotherIgnoredResult = statement.description.contains("_ = ")
-    } else if __SwiftMutator.environment["sampleWithSideEffects_RemoveSideEffects_31_70_713"] != nil
-    {
+    } else if __SwiftMutator.activeMutant == 0 {
       let containsIgnoredResult = statement.description.contains("_ = ")
     } else {
       let containsIgnoredResult = statement.description.contains("_ = ")
@@ -52,7 +51,7 @@ struct Example {
   }
 
   func containsAVoidFunctionCallThatSpansManyLine() {
-    if __SwiftMutator.environment["sampleWithSideEffects_RemoveSideEffects_39_6_906"] != nil {
+    if __SwiftMutator.activeMutant == 0 {
     } else {
       functionCall(
         "some argument",
@@ -64,7 +63,7 @@ struct Example {
 
   func sideEffectsInsideLoopsAndGuard() {
     guard true else {
-      if __SwiftMutator.environment["sampleWithSideEffects_RemoveSideEffects_44_19_994"] != nil {
+      if __SwiftMutator.activeMutant == 0 {
         return
       } else {
         sideEffect()
@@ -72,21 +71,21 @@ struct Example {
       }
     }
     while true {
-      if __SwiftMutator.environment["sampleWithSideEffects_RemoveSideEffects_48_19_1049"] != nil {
+      if __SwiftMutator.activeMutant == 0 {
       } else {
         sideEffect()
       }
     }
 
     for item in items {
-      if __SwiftMutator.environment["sampleWithSideEffects_RemoveSideEffects_52_19_1099"] != nil {
+      if __SwiftMutator.activeMutant == 0 {
       } else {
         sideEffect()
       }
     }
 
     repeat {
-      if __SwiftMutator.environment["sampleWithSideEffects_RemoveSideEffects_56_19_1138"] != nil {
+      if __SwiftMutator.activeMutant == 0 {
       } else {
         sideEffect()
       }
@@ -102,5 +101,7 @@ struct Example {
   }
 }
 private enum __SwiftMutator {
-  static let environment = ProcessInfo.processInfo.environment
+  static let activeMutant = ProcessInfo.processInfo.environment["MUTER_ACTIVE_MUTANT"].flatMap {
+    Int($0)
+  }
 }

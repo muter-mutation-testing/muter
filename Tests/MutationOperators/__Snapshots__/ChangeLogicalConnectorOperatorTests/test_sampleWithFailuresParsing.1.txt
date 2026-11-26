@@ -13,7 +13,7 @@
 // https://mandoc.bsd.lv/mdoc/intro/escaping.html
 extension String {
   func escapedMacroArgument() -> String {
-    if __SwiftMutator.environment["sampleWithFailuresParsing_ChangeLogicalConnector_55_24_2310"] != nil {
+    if __SwiftMutator.activeMutant == 0 {
     var escaped = ""
     var containsBlankCharacter = false
 
@@ -143,5 +143,5 @@ extension String {
   }
 }
 fileprivate enum __SwiftMutator {
-    static let environment = ProcessInfo.processInfo.environment
+    static let activeMutant = ProcessInfo.processInfo.environment["MUTER_ACTIVE_MUTANT"].flatMap { Int($0) }
 }

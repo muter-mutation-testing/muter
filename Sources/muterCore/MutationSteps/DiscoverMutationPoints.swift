@@ -26,7 +26,7 @@ struct DiscoverMutationPoints: MutationStep {
             throw MuterError.noMutationPointsDiscovered
         }
 
-        let mappings = discovered.mappings.mergeByFileName()
+        let mappings = discovered.mappings.mergeByFilePath().numberedMutants()
 
         notificationCenter.post(
             name: .mutationsDiscoveryFinished,

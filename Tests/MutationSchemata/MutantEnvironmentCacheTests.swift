@@ -16,8 +16,9 @@ final class MutantEnvironmentCacheTests: MuterTestCase {
         }
         """)
 
-        XCTAssertFalse(rewritten.contains("ProcessInfo.processInfo.environment["), rewritten)
-        XCTAssertTrue(rewritten.contains("__SwiftMutator.environment[\""), rewritten)
+        // Only the cache at the end of the file reads the live environment.
+        XCTAssertEqual(rewritten.components(separatedBy: "ProcessInfo.processInfo.environment[").count - 1, 1, rewritten)
+        XCTAssertTrue(rewritten.contains("__SwiftMutator.activeMutant == 1 "), rewritten)
     }
 
     func test_theCacheIsDeclaredOnceAtTheEndOfAMutatedFile() throws {

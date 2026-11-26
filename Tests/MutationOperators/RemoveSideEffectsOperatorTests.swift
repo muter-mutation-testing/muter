@@ -150,7 +150,7 @@ final class RemoveSideEffectsOperatorTests: MuterTestCase {
         let rewritten = MuterRewriter(mappings).rewrite(source).description
 
         let mutationSwitchCount = rewritten
-            .components(separatedBy: "\(MuterRewriter.environmentCacheName).environment[")
+            .components(separatedBy: "\(MuterRewriter.environmentCacheName).activeMutant == ")
             .count - 1
 
         // There are 2 schemata so there must be 2 env-var checks in the
@@ -167,7 +167,7 @@ final class RemoveSideEffectsOperatorTests: MuterTestCase {
         // Additionally verify each specific schemata ID appears
         for schema in mappings.mutationSchemata {
             XCTAssertTrue(
-                rewritten.contains(schema.id),
+                rewritten.contains("activeMutant == \(schema.id) "),
                 "Rewritten source must contain a mutation switch for schemata "
                 + "'\(schema.id)' but it was not found. The inner mutation was "
                 + "silently dropped during rewriting."

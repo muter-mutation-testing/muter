@@ -233,6 +233,7 @@ extension SchemataMutationMapping {
 
 extension MutationSchema {
     static func make(
+        id: Int = 0,
         filePath: String = "",
         mutationOperatorId: MutationOperator.Id = .ror,
         syntaxMutation: String = "",
@@ -240,6 +241,7 @@ extension MutationSchema {
         snapshot: MutationOperator.Snapshot = .null
     ) throws -> MutationSchema {
         try MutationSchema(
+            id: id,
             filePath: filePath,
             mutationOperatorId: mutationOperatorId,
             syntaxMutation: sourceCode(syntaxMutation).statements,

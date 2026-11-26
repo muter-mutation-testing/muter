@@ -7,9 +7,12 @@ struct XCTestRun: Equatable {
         self.plist = plist
     }
 
+    /// The plist with `MUTER_ACTIVE_MUTANT` set to `activeMutant` for every test target.
     func updateEnvironmentVariable(
-        setting key: String
+        activeMutant: Int
     ) -> [String: AnyHashable] {
+        let key = activeMutantKey
+        let value = String(activeMutant)
         var copy = plist
         let testConfigurationsKey = "TestConfigurations"
         let testTargetsKey = "TestTargets"
@@ -23,7 +26,8 @@ struct XCTestRun: Equatable {
                         if let newTestTarget = testTarget as? [String: AnyHashable] {
                             return updateEnvironmentVariables(
                                 forConfiguration: newTestTarget,
-                                key: key
+                                key: key,
+                                value: value
                             ) as AnyHashable
                         }
                         return testTarget
@@ -43,7 +47,8 @@ struct XCTestRun: Equatable {
                 if let testConfiguration = plistValue as? [String: AnyHashable] {
                     copy[plistEntry] = updateEnvironmentVariables(
                         forConfiguration: testConfiguration,
-                        key: key
+                        key: key,
+                        value: value
                     )
                 }
             }
@@ -54,7 +59,8 @@ struct XCTestRun: Equatable {
 
     private func updateEnvironmentVariables(
         forConfiguration configuration: [String: AnyHashable],
-        key: String
+        key: String,
+        value: String
     ) -> [String: AnyHashable] {
         let environmentVariablesKey = "EnvironmentVariables"
         var configuration = configuration
@@ -66,7 +72,7 @@ struct XCTestRun: Equatable {
         // process) the mutant then never activated in the test host — every mutant became a false
         // "survived", i.e. a phantom 0% score.
         var allEnvironmentVariables = configuration[environmentVariablesKey] as? [String: AnyHashable] ?? [:]
-        allEnvironmentVariables[key] = isMuterRunningValue
+        allEnvironmentVariables[key] = value
         allEnvironmentVariables[isMuterRunningKey] = isMuterRunningValue
 
         configuration[environmentVariablesKey] = allEnvironmentVariables

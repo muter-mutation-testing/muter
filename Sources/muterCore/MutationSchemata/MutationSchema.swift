@@ -3,7 +3,14 @@ import SwiftParser
 import SwiftSyntax
 
 struct MutationSchema {
-    var id: String {
+    /// The number that switches this mutant on, unique in the whole run. Discovery numbers the
+    /// mutants from 1 (see `numberedMutants()`), and a mutated file checks
+    /// `__SwiftMutator.activeMutant == id`.
+    var id: Int
+
+    /// The operator and position of the mutant in its file. It orders the mutants of a file, but it
+    /// is not unique in the run: two files can have the same name.
+    var positionKey: String {
         let fileName = URL(fileURLWithPath: filePath)
             .deletingPathExtension()
             .lastPathComponent
@@ -17,6 +24,22 @@ struct MutationSchema {
     let position: MutationPosition
     let snapshot: MutationOperator.Snapshot
 
+    init(
+        id: Int = 0,
+        filePath: String,
+        mutationOperatorId: MutationOperator.Id,
+        syntaxMutation: CodeBlockItemListSyntax,
+        position: MutationPosition,
+        snapshot: MutationOperator.Snapshot
+    ) {
+        self.id = id
+        self.filePath = filePath
+        self.mutationOperatorId = mutationOperatorId
+        self.syntaxMutation = syntaxMutation
+        self.position = position
+        self.snapshot = snapshot
+    }
+
     var fileName: String {
         URL(fileURLWithPath: filePath).lastPathComponent
     }
@@ -25,6 +48,7 @@ struct MutationSchema {
 extension MutationSchema: Codable {
     init(from decoder: Decoder) throws {
         let container = try decoder.container(keyedBy: CodingKeys.self)
+        id = try container.decodeIfPresent(Int.self, forKey: .id) ?? 0
         filePath = try container.decode(String.self, forKey: .filePath)
         mutationOperatorId = try container.decode(MutationOperator.Id.self, forKey: .mutationOperatorId)
         syntaxMutation = CodeBlockItemListSyntax([])
@@ -35,6 +59,7 @@ extension MutationSchema: Codable {
     func encode(to encoder: Encoder) throws {
         var container = encoder.container(keyedBy: CodingKeys.self)
 
+        try container.encode(id, forKey: .id)
         try container.encode(filePath, forKey: .filePath)
         try container.encode(mutationOperatorId, forKey: .mutationOperatorId)
         try container.encode(position, forKey: .position)
@@ -42,6 +67,7 @@ extension MutationSchema: Codable {
     }
 
     enum CodingKeys: String, CodingKey {
+        case id
         case filePath
         case mutationOperatorId
         case position
@@ -78,7 +104,7 @@ extension MutationSchema: CustomStringConvertible, CustomDebugStringConvertible 
     var description: String {
         """
         Schemata(
-            id: "\(id)",
+            id: \(id),
             filePath: "\(filePath)",
             mutationOperatorId: .\(mutationOperatorId),
             syntaxMutation: "\(syntaxMutation.escapedDescription)",
@@ -94,7 +120,7 @@ extension MutationSchema: Comparable {
         lhs: MutationSchema,
         rhs: MutationSchema
     ) -> Bool {
-        lhs.id < rhs.id
+        (lhs.filePath, lhs.positionKey) < (rhs.filePath, rhs.positionKey)
     }
 }
 
