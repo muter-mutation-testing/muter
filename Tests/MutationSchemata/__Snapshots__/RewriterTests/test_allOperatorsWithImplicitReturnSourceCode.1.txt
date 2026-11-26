@@ -159,7 +159,11 @@ struct ConditionalOperators {
   }
 
   func < (_: String, _: String) -> Bool {
-    return false
+    if __SwiftMutator.environment["sampleWithAllOperators_SwapBooleanLiteral_22_16_530"] != nil {
+      return true
+    } else {
+      return false
+    }
   }
 
   func baz() {
@@ -183,6 +187,14 @@ struct LogicalConnectors {
     if __SwiftMutator.environment["sampleWithAllOperators_ChangeLogicalConnector_32_22_684"] != nil
     {
       return false || false
+    } else if __SwiftMutator.environment["sampleWithAllOperators_SwapBooleanLiteral_32_25_687"]
+      != nil
+    {
+      return false && true
+    } else if __SwiftMutator.environment["sampleWithAllOperators_SwapBooleanLiteral_32_16_678"]
+      != nil
+    {
+      return true && false
     } else {
       return false && false
     }
@@ -192,6 +204,14 @@ struct LogicalConnectors {
     if __SwiftMutator.environment["sampleWithAllOperators_ChangeLogicalConnector_36_21_755"] != nil
     {
       return true && true
+    } else if __SwiftMutator.environment["sampleWithAllOperators_SwapBooleanLiteral_36_24_758"]
+      != nil
+    {
+      return true || false
+    } else if __SwiftMutator.environment["sampleWithAllOperators_SwapBooleanLiteral_36_16_750"]
+      != nil
+    {
+      return false || true
     } else {
       return true || true
     }
@@ -329,6 +349,14 @@ struct TernayOperators {
   func someCode(_ a: Bool) -> Bool {
     if __SwiftMutator.environment["sampleWithAllOperators_SwapTernary_125_32_2915"] != nil {
       return a ? false : true
+    } else if __SwiftMutator.environment["sampleWithAllOperators_SwapBooleanLiteral_125_27_2910"]
+      != nil
+    {
+      return a ? true : true
+    } else if __SwiftMutator.environment["sampleWithAllOperators_SwapBooleanLiteral_125_20_2903"]
+      != nil
+    {
+      return a ? false : false
     } else {
       return a ? true : false
     }
@@ -345,6 +373,18 @@ struct TernayOperators {
   func someCode(_ a: Bool, _ b: Bool) -> Bool {
     if __SwiftMutator.environment["sampleWithAllOperators_SwapTernary_133_44_3107"] != nil {
       return a ? false : b ? true : false
+    } else if __SwiftMutator.environment["sampleWithAllOperators_SwapBooleanLiteral_133_39_3102"]
+      != nil
+    {
+      return a ? b ? true : false : true
+    } else if __SwiftMutator.environment["sampleWithAllOperators_SwapBooleanLiteral_133_31_3094"]
+      != nil
+    {
+      return a ? b ? true : true : false
+    } else if __SwiftMutator.environment["sampleWithAllOperators_SwapBooleanLiteral_133_24_3087"]
+      != nil
+    {
+      return a ? b ? false : false : false
     } else if __SwiftMutator.environment["sampleWithAllOperators_SwapTernary_133_37_3100"] != nil {
       return a ? b ? false : true : false
     } else {

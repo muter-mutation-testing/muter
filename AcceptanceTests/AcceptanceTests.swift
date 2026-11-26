@@ -9,7 +9,7 @@ private enum AcceptanceTestsError: Error {
 
 final class AcceptanceTests: XCTestCase {
     private let messages = (
-        mutationScoreOfTestSuite: "Mutation Score of Test Suite: 33%",
+        mutationScoreOfTestSuite: "Mutation Score of Test Suite: 16%",
         mutationScoresHeader: """
         --------------------
         Mutation Test Scores
@@ -33,10 +33,10 @@ final class AcceptanceTests: XCTestCase {
 
         XCTAssertTrue(output.contains("_mutated"))
 
-        XCTAssertTrue(output.contains("In total, Muter introduced 3 mutants in 3 files."))
+        XCTAssertTrue(output.contains("In total, Muter introduced 6 mutants in 4 files."))
 
-        XCTAssertEqual(try numberOfProgressUpdates(in: output), 3)
-        XCTAssertEqual(try numberOfDurationEstimates(in: output), 3)
+        XCTAssertEqual(try numberOfProgressUpdates(in: output), 6)
+        XCTAssertEqual(try numberOfDurationEstimates(in: output), 6)
 
         XCTAssertTrue(output.contains(messages.mutationScoresHeader))
         XCTAssertTrue(output.contains(messages.mutationScoreOfTestSuite))
@@ -47,7 +47,10 @@ final class AcceptanceTests: XCTestCase {
             "baseline run.log",
             "ChangeLogicalConnector @ Module2.swift-2-17.log",
             "RelationalOperatorReplacement @ Module.swift-4-7.log",
-            "RemoveSideEffects @ ViewController.swift-5-28.log"
+            "RemoveSideEffects @ ViewController.swift-5-28.log",
+            "SwapBooleanLiteral @ AppDelegate.swift-9-16.log",
+            "SwapBooleanLiteral @ Module2.swift-2-12.log",
+            "SwapBooleanLiteral @ Module2.swift-2-20.log"
         ]
 
         let numberOfEmptyLogFiles = try expectedLogFiles
@@ -76,7 +79,7 @@ final class AcceptanceTests: XCTestCase {
     func test_xcodeFormat() throws {
         let output = try muterXcodeOutput
 
-        XCTAssertEqual(try numberOfXcodeFormattedMessages(in: output), 1)
+        XCTAssertEqual(try numberOfXcodeFormattedMessages(in: output), 2)
     }
 
     func test_filesToMutate() throws {

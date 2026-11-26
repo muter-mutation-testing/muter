@@ -215,6 +215,45 @@ private extension MutationOperator.Id {
                 """.onCodeBlock
             )
             """
+        case .swapBooleanLiteral:
+            return """
+
+            \("Swap Boolean Literal".bold)
+
+            The \("swap boolean literal".italic) operator will change boolean literals in your code based on this table:
+
+            +-------------------+------------------+
+            | Original Literal  | Changed Literal  |
+            +-------------------+------------------+
+            |\("       true        ".onCodeEscape)|\("      false       ".onCodeEscape)|
+            |\("       false       ".onCodeEscape)|\("      true        ".onCodeEscape)|
+            +-------------------+------------------+
+
+            The purpose of this operator is to show whether your tests check a value, not only that it is set.
+            Removing a line that sets a value its default already has goes unnoticed; swapping the literal does not.
+            Literals outside a function, closure or accessor body (for example, a stored property's default value) are not changed.
+
+            \("Mutating a boolean literal".bold)
+
+            \(
+                """
+                \("func".asKeyword) \("enableSync".asDeclaration)() {
+                    settings.isSyncEnabled = \("true".asKeyword)
+                }
+                """.onCodeBlock
+            )
+
+            becomes
+
+            \(
+                """
+                \("func".asKeyword) \("enableSync".asDeclaration)() {
+                    settings.isSyncEnabled = \("false".asKeyword)
+                }
+                """.onCodeBlock
+            )
+
+            """
         case .swapTernary:
             return """
 

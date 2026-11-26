@@ -167,6 +167,76 @@
         column: 16
     )
 ), OperatorIdAndPositionAssert(
+    id: .swapBooleanLiteral,
+    position: MutationPosition(
+        utf8Offset: 2903,
+        line: 125,
+        column: 20
+    )
+), OperatorIdAndPositionAssert(
+    id: .swapBooleanLiteral,
+    position: MutationPosition(
+        utf8Offset: 2910,
+        line: 125,
+        column: 27
+    )
+), OperatorIdAndPositionAssert(
+    id: .swapBooleanLiteral,
+    position: MutationPosition(
+        utf8Offset: 3087,
+        line: 133,
+        column: 24
+    )
+), OperatorIdAndPositionAssert(
+    id: .swapBooleanLiteral,
+    position: MutationPosition(
+        utf8Offset: 3094,
+        line: 133,
+        column: 31
+    )
+), OperatorIdAndPositionAssert(
+    id: .swapBooleanLiteral,
+    position: MutationPosition(
+        utf8Offset: 3102,
+        line: 133,
+        column: 39
+    )
+), OperatorIdAndPositionAssert(
+    id: .swapBooleanLiteral,
+    position: MutationPosition(
+        utf8Offset: 530,
+        line: 22,
+        column: 16
+    )
+), OperatorIdAndPositionAssert(
+    id: .swapBooleanLiteral,
+    position: MutationPosition(
+        utf8Offset: 678,
+        line: 32,
+        column: 16
+    )
+), OperatorIdAndPositionAssert(
+    id: .swapBooleanLiteral,
+    position: MutationPosition(
+        utf8Offset: 687,
+        line: 32,
+        column: 25
+    )
+), OperatorIdAndPositionAssert(
+    id: .swapBooleanLiteral,
+    position: MutationPosition(
+        utf8Offset: 750,
+        line: 36,
+        column: 16
+    )
+), OperatorIdAndPositionAssert(
+    id: .swapBooleanLiteral,
+    position: MutationPosition(
+        utf8Offset: 758,
+        line: 36,
+        column: 24
+    )
+), OperatorIdAndPositionAssert(
     id: .swapTernary,
     position: MutationPosition(
         utf8Offset: 2915,

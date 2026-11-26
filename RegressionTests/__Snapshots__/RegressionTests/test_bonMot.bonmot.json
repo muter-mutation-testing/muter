@@ -91,6 +91,27 @@
       "appliedOperators" : [
         {
           "mutationPoint" : {
+            "mutationOperatorId" : "SwapBooleanLiteral",
+            "position" : {
+              "column" : 28,
+              "line" : 21
+            }
+          },
+          "mutationSnapshot" : {
+            "after" : "true",
+            "before" : "false",
+            "description" : "changed false to true"
+          },
+          "testSuiteOutcome" : "passed"
+        }
+      ],
+      "fileName" : "FontInspector.swift",
+      "mutationScore" : 0
+    },
+    {
+      "appliedOperators" : [
+        {
+          "mutationPoint" : {
             "mutationOperatorId" : "ChangeLogicalConnector",
             "position" : {
               "column" : 60,
@@ -133,10 +154,25 @@
             "description" : "removed line"
           },
           "testSuiteOutcome" : "killed"
+        },
+        {
+          "mutationPoint" : {
+            "mutationOperatorId" : "SwapBooleanLiteral",
+            "position" : {
+              "column" : 98,
+              "line" : 70
+            }
+          },
+          "mutationSnapshot" : {
+            "after" : "true",
+            "before" : "false",
+            "description" : "changed false to true"
+          },
+          "testSuiteOutcome" : "killed"
         }
       ],
       "fileName" : "NSAttributedString+BonMot.swift",
-      "mutationScore" : 66
+      "mutationScore" : 75
     },
     {
       "appliedOperators" : [
@@ -1069,6 +1105,66 @@
         },
         {
           "mutationPoint" : {
+            "mutationOperatorId" : "SwapBooleanLiteral",
+            "position" : {
+              "column" : 47,
+              "line" : 282
+            }
+          },
+          "mutationSnapshot" : {
+            "after" : "true",
+            "before" : "false",
+            "description" : "changed false to true"
+          },
+          "testSuiteOutcome" : "killed"
+        },
+        {
+          "mutationPoint" : {
+            "mutationOperatorId" : "SwapBooleanLiteral",
+            "position" : {
+              "column" : 53,
+              "line" : 283
+            }
+          },
+          "mutationSnapshot" : {
+            "after" : "true",
+            "before" : "false",
+            "description" : "changed false to true"
+          },
+          "testSuiteOutcome" : "passed"
+        },
+        {
+          "mutationPoint" : {
+            "mutationOperatorId" : "SwapBooleanLiteral",
+            "position" : {
+              "column" : 53,
+              "line" : 284
+            }
+          },
+          "mutationSnapshot" : {
+            "after" : "true",
+            "before" : "false",
+            "description" : "changed false to true"
+          },
+          "testSuiteOutcome" : "passed"
+        },
+        {
+          "mutationPoint" : {
+            "mutationOperatorId" : "SwapBooleanLiteral",
+            "position" : {
+              "column" : 80,
+              "line" : 291
+            }
+          },
+          "mutationSnapshot" : {
+            "after" : "true",
+            "before" : "false",
+            "description" : "changed false to true"
+          },
+          "testSuiteOutcome" : "killed"
+        },
+        {
+          "mutationPoint" : {
             "mutationOperatorId" : "SwapTernary",
             "position" : {
               "column" : 103,
@@ -1099,7 +1195,7 @@
         }
       ],
       "fileName" : "XMLBuilder.swift",
-      "mutationScore" : 88
+      "mutationScore" : 80
     },
     {
       "appliedOperators" : [
@@ -1123,8 +1219,8 @@
       "mutationScore" : 0
     }
   ],
-  "globalMutationScore" : 41,
-  "numberOfKilledMutants" : 28,
+  "globalMutationScore" : 42,
+  "numberOfKilledMutants" : 31,
   "projectCodeCoverage" : 78,
-  "totalAppliedMutationOperators" : 67
+  "totalAppliedMutationOperators" : 73
 }
