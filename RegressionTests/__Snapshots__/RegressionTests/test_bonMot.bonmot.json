@@ -757,7 +757,7 @@
         }
       ],
       "fileName" : "TextAlignmentConstraint.swift",
-      "mutationScore" : 42
+      "mutationScore" : 43
     },
     {
       "appliedOperators" : [
@@ -1195,7 +1195,7 @@
         }
       ],
       "fileName" : "XMLBuilder.swift",
-      "mutationScore" : 80
+      "mutationScore" : 81
     },
     {
       "appliedOperators" : [

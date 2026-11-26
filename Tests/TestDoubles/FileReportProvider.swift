@@ -39,7 +39,7 @@ enum FileReportProvider {
     }
 
     static var expectedFileReport3: MuterTestReport.FileReport {
-        .init(fileName: "file1.swift", path: "/tmp/file1.swift", mutationScore: 66, appliedOperators: [
+        .init(fileName: "file1.swift", path: "/tmp/file1.swift", mutationScore: 67, appliedOperators: [
             MuterTestReport.AppliedMutationOperator.make(
                 mutationPoint: MutationPoint.make(
                     mutationOperatorId: .ror,

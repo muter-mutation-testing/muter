@@ -66,7 +66,7 @@ final class TestReportTableGenerationTests: MuterTestCase {
                 CLITable.Row(value: "1"),
             ]),
             CLITable.Column(title: "Mutation Score", rows: [
-                CLITable.Row(value: "66"),
+                CLITable.Row(value: "67"),
                 CLITable.Row(value: "100"),
                 CLITable.Row(value: "33"),
                 CLITable.Row(value: "0"),
