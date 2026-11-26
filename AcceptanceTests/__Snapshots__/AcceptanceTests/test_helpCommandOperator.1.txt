@@ -5,7 +5,8 @@ USAGE: muter operator <operator>
 ARGUMENTS:
   <operator>                  Avaiable operators are:
                           RelationalOperatorReplacement, RemoveSideEffects,
-                          ChangeLogicalConnector, SwapTernary
+                          ChangeLogicalConnector, SwapTernary,
+                          SwapBooleanLiteral
                               For all operators use: all
 
 OPTIONS:

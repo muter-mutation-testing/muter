@@ -132,3 +132,32 @@ func stringify(_ a: Bool -> String {
     return a ? "false" : "true"
 }
 
+
+
+Swap Boolean Literal
+
+The swap boolean literal operator will change boolean literals in your code based on this table:
+
++-------------------+------------------+
+| Original Literal  | Changed Literal  |
++-------------------+------------------+
+|       true        |      false       |
+|       false       |      true        |
++-------------------+------------------+
+
+The purpose of this operator is to show whether your tests check a value, not only that it is set.
+Removing a line that sets a value its default already has goes unnoticed; swapping the literal does not.
+Literals outside a function, closure or accessor body (for example, a stored property's default value) are not changed.
+
+Mutating a boolean literal
+
+func enableSync() {
+    settings.isSyncEnabled = true
+}
+
+becomes
+
+func enableSync() {
+    settings.isSyncEnabled = false
+}
+

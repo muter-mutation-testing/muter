@@ -26,7 +26,8 @@ final class MuterVisitorTests: MuterTestCase {
 
         XCTAssertEqual(mappings.count, 1)
 
-        XCTAssertEqual(mappings.first?.mutationSchemata.count, 1)
+        // Only the first f() is mutated: RemoveSideEffects and SwapBooleanLiteral on its `true`.
+        XCTAssertEqual(mappings.first?.mutationSchemata.count, 2)
     }
 
     func test_shouldIgnoreComplexDisablingRules() throws {
@@ -46,7 +47,7 @@ final class MuterVisitorTests: MuterTestCase {
         let ids = mappings.first?.mutationSchemata.map(\.mutationOperatorId)
         XCTAssertEqual(
             ids,
-            [.ror, .removeSideEffects, .swapTernary]
+            [.ror, .removeSideEffects, .swapBooleanLiteral, .swapTernary]
         )
     }
 
@@ -96,7 +97,7 @@ final class MuterVisitorTests: MuterTestCase {
         let mutants = mappings.flatMap(\.mutationSchemata).map {
             "\($0.mutationOperatorId.rawValue)@\($0.position.line)"
         }
-        XCTAssertEqual(mutants, ["ChangeLogicalConnector@4"])
+        XCTAssertEqual(mutants, ["ChangeLogicalConnector@4", "SwapBooleanLiteral@8"])
     }
 
     func test_ignoreEveryMutantInsideAnUncoveredFunction() throws {

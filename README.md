@@ -263,7 +263,7 @@ Muter defaults to `run` when you don't specify any subcommands
 --files-to-mutate       Only mutate a given list of source code files (Supports glob expressions like Sources/**/*.swift)
 --skip-coverage         Skips the step in which Muter runs your project to filter out files without coverage.
 -o, --output <output>   Output file for the report to be saved.
---operators <operators> The list of mutant operators to be used: RelationalOperatorReplacement, RemoveSideEffects, ChangeLogicalConnector, SwapTernary
+--operators <operators> The list of mutant operators to be used: RelationalOperatorReplacement, RemoveSideEffects, ChangeLogicalConnector, SwapTernary, SwapBooleanLiteral
 --skip-update-check     Skips the step in which Muter checks for newer versions.
 -c, --configuration     The path to the muter configuration file.
 ```

@@ -14,6 +14,7 @@ enum MutationOperator {
         case removeSideEffects = "RemoveSideEffects"
         case logicalOperator = "ChangeLogicalConnector"
         case swapTernary = "SwapTernary"
+        case swapBooleanLiteral = "SwapBooleanLiteral"
 
         var visitor: VisitorInitializer {
             switch self {
@@ -25,6 +26,8 @@ enum MutationOperator {
                 return ChangeLogicalConnectorOperator.Visitor.init
             case .swapTernary:
                 return SwapTernaryOperator.Visitor.init
+            case .swapBooleanLiteral:
+                return SwapBooleanLiteralOperator.Visitor.init
             }
         }
 
