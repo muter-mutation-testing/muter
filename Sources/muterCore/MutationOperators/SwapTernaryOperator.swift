@@ -16,7 +16,7 @@ enum SwapTernaryOperator {
         }
 
         override func visit(_ node: TernaryExprSyntax) -> SyntaxVisitorContinueKind {
-            guard !node.containsComplexCauses else {
+            guard node.isInsideABody, !node.containsComplexCauses else {
                 return super.visit(node)
             }
 
@@ -39,7 +39,8 @@ enum SwapTernaryOperator {
         }
 
         override func visit(_ node: ExprListSyntax) -> SyntaxVisitorContinueKind {
-            guard containsTernayExpression(node) else {
+            // Only inside a body, as for the other operators: elsewhere the mutant does not compile.
+            guard node.isInsideABody, containsTernayExpression(node) else {
                 return super.visit(node)
             }
 

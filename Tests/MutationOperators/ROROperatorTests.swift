@@ -73,8 +73,10 @@ final class ROROperatorTests: MuterTestCase {
     func test_charOffsetCrash() throws {
         let source = try sourceCode(
             """
-            if value == "バルーンの表示判定" {
+            func check(_ value: String) {
+                if value == "バルーンの表示判定" {
 
+                }
             }
             """
         )
