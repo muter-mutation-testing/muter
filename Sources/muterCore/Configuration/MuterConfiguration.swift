@@ -145,6 +145,10 @@ extension MuterConfiguration {
 
         switch buildSystem {
         case .xcodebuild:
+            // Xcode prints no build settings, such as BUILD_DIR, for a Swift package, so for a package
+            // Muter chooses the build folder itself. Projects and workspaces keep their own build
+            // location (for example SYMROOT in an .xcconfig), which -derivedDataPath would not override.
+            let arguments = testsSwiftPackageWithXcodebuild ? argumentsWithDerivedDataPath : arguments
             return arguments + ["-enableCodeCoverage", "YES"]
         case .swift:
             return arguments + ["--enable-code-coverage"]
@@ -203,6 +207,21 @@ extension MuterConfiguration {
 
     private func derivedDataArgumentIndex() -> Int? {
         indexOfArgument("-derivedDataPath")
+    }
+
+    /// An xcodebuild command without `-project` or `-workspace` runs on the Swift package in the
+    /// current folder.
+    var testsSwiftPackageWithXcodebuild: Bool {
+        buildSystem == .xcodebuild
+            && indexOfArgument("-project") == nil
+            && indexOfArgument("-workspace") == nil
+    }
+
+    /// The test command with `-derivedDataPath`, added only when the user did not set one.
+    var argumentsWithDerivedDataPath: [String] {
+        derivedDataArgumentIndex() == nil
+            ? testCommandArguments + ["-derivedDataPath", defaultDerivedData]
+            : testCommandArguments
     }
 
     private func testArgumentsWithtDerivedData() -> [String] {

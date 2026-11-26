@@ -8,15 +8,72 @@ final class XcodeBuildCoverageTests: MuterTestCase {
     private var coverageThreshold: Double = 0
     private lazy var muterConfiguration = MuterConfiguration(
         executable: "/path/to/xcodebuild",
-        arguments: [],
+        arguments: ["-project", "App.xcodeproj"],
         coverageThreshold: coverageThreshold
+    )
+
+    private let packageConfiguration = MuterConfiguration(
+        executable: "/path/to/xcodebuild",
+        arguments: ["-scheme", "IOSCore", "test"]
     )
 
     func test_whenUsesSupportedBuildSystem_shouldRunWithCoverage() {
         _ = sut.run(with: muterConfiguration)
 
         XCTAssertEqual(process.executableURL?.path, "/path/to/xcodebuild")
-        XCTAssertEqual(process.arguments, ["-enableCodeCoverage", "YES"])
+        // A project keeps its own build location: no -derivedDataPath is added.
+        XCTAssertEqual(process.arguments, ["-project", "App.xcodeproj", "-enableCodeCoverage", "YES"])
+    }
+
+    func test_project_buildDirectoryComesFromShowBuildSettings() {
+        process.stdoutToBeReturned = "    BUILD_DIR = /custom/build/Products\n"
+
+        XCTAssertEqual(sut.buildDirectory(muterConfiguration), "/custom/build")
+        XCTAssertEqual(process.arguments, ["-project", "App.xcodeproj", "-showBuildSettings"])
+    }
+
+    func test_buildDir_isOnlyTheValue() {
+        let output = """
+        Build settings for action test and target App:
+            BUILD_DIR = /custom/build/Products
+            BUILD_ROOT = /custom/build/Products
+        """
+
+        XCTAssertEqual(XcodeBuildCoverage.buildDir(inBuildSettings: output), "/custom/build/Products")
+        XCTAssertNil(XcodeBuildCoverage.buildDir(inBuildSettings: "Resolved source packages:"))
+    }
+
+    func test_swiftPackage_coverageRunUsesADerivedDataPath() {
+        _ = sut.run(with: packageConfiguration)
+
+        XCTAssertEqual(
+            process.arguments,
+            ["-scheme", "IOSCore", "test", "-derivedDataPath", "DerivedData", "-enableCodeCoverage", "YES"]
+        )
+    }
+
+    func test_swiftPackage_buildDirectoryIsTheDerivedDataPath_withoutShowBuildSettings() {
+        // Xcode prints no build settings for a Swift package.
+        let buildDirectory = sut.buildDirectory(packageConfiguration)
+
+        XCTAssertEqual(buildDirectory?.hasSuffix("/DerivedData"), true, buildDirectory ?? "nil")
+        XCTAssertEqual(buildDirectory?.hasPrefix("/"), true, buildDirectory ?? "nil")
+        XCTAssertNil(process.arguments)
+    }
+
+    func test_swiftPackage_whenTheUserSetsADerivedDataPath_thenItIsUsed() {
+        let configuration = MuterConfiguration(
+            executable: "/path/to/xcodebuild",
+            arguments: ["-scheme", "IOSCore", "-derivedDataPath", "/custom/DerivedData", "test"]
+        )
+
+        _ = sut.run(with: configuration)
+
+        XCTAssertEqual(
+            process.arguments,
+            ["-scheme", "IOSCore", "-derivedDataPath", "/custom/DerivedData", "test", "-enableCodeCoverage", "YES"]
+        )
+        XCTAssertEqual(sut.buildDirectory(configuration), "/custom/DerivedData")
     }
 
     func test_whenRunWithCoverageSucceeds_thenRunXcovCommand() {

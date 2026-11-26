@@ -90,15 +90,46 @@ private extension MuterConfiguration {
 
 private extension MuterConfiguration {
     static func generateSPMConfiguration(from directoryContents: [URL]) -> MuterConfiguration? {
-        if directoryContents.contains(where: { $0.lastPathComponent == "Package.swift" }) {
+        guard let manifest = directoryContents.first(where: { $0.lastPathComponent == "Package.swift" }) else {
+            return nil
+        }
+
+        let swift = executablePath("swift")
+        let excludeList = swiftPackageManifestFiles(from: directoryContents)
+
+        // `swift test` builds for macOS. A package that supports iOS but not macOS (it imports UIKit,
+        // for example) only builds with xcodebuild and an iOS Simulator destination.
+        if let package = PackageDump(swift: swift, packageDirectory: manifest.deletingLastPathComponent()),
+           package.supportsIOSButNotMacOS {
+            let scheme = packageScheme(for: package.name)
+            let destination = "platform=iOS Simulator,name=\(iosDestination())"
+
             return MuterConfiguration(
-                executable: executablePath("swift"),
-                arguments: ["test"],
-                excludeList: swiftPackageManifestFiles(from: directoryContents)
+                executable: executablePath("xcodebuild"),
+                arguments: ["-scheme", scheme, "-destination", destination, "test"],
+                excludeList: excludeList
             )
         }
 
-        return nil
+        return MuterConfiguration(
+            executable: swift,
+            arguments: ["test"],
+            excludeList: excludeList
+        )
+    }
+
+    /// The scheme Xcode creates for the package: `<name>-Package` when the package has several
+    /// products, otherwise the package's name.
+    private static func packageScheme(for packageName: String) -> String {
+        let xcodebuild = executablePath("xcodebuild")
+        let schemes = current.process()
+            .runProcess(url: xcodebuild, arguments: ["-list", "-json"])
+            .flatMap { $0.data(using: .utf8) }
+            .flatMap { try? JSONDecoder().decode(XcodebuildList.self, from: $0) }?
+            .workspace?
+            .schemes ?? []
+
+        return ["\(packageName)-Package", packageName].first(where: schemes.contains) ?? packageName
     }
 
     private static func swiftPackageManifestFiles(from directoryContents: [URL]) -> [String] {
@@ -201,4 +232,43 @@ private extension MuterConfiguration {
             .trimmed
             .replacingOccurrences(of: ":", with: "=")
     }
+}
+
+/// The parts of `swift package dump-package` that decide how to build the package.
+private struct PackageDump: Decodable {
+    struct Platform: Decodable {
+        let platformName: String
+    }
+
+    let name: String
+    let platforms: [Platform]?
+
+    var supportsIOSButNotMacOS: Bool {
+        let names = (platforms ?? []).map { $0.platformName.lowercased() }
+        return names.contains("ios") && !names.contains("macos")
+    }
+
+    init?(swift: String, packageDirectory: URL) {
+        guard !swift.isEmpty,
+              let output: String = current.process().runProcess(
+                  url: swift,
+                  arguments: ["package", "--package-path", packageDirectory.path, "dump-package"]
+              ),
+              let data = output.data(using: .utf8),
+              let dump = try? JSONDecoder().decode(PackageDump.self, from: data)
+        else {
+            return nil
+        }
+
+        self = dump
+    }
+}
+
+/// The part of `xcodebuild -list -json` that lists a package's schemes.
+private struct XcodebuildList: Decodable {
+    struct Workspace: Decodable {
+        let schemes: [String]
+    }
+
+    let workspace: Workspace?
 }
