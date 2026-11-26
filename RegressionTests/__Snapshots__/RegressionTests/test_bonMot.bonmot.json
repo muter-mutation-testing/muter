@@ -30,7 +30,7 @@
             "before" : "contextualAlternates ? kContextualAlternatesOnSelector : kContextualAlternatesOffSelector",
             "description" : "swapped ternary operator"
           },
-          "testSuiteOutcome" : "failed"
+          "testSuiteOutcome" : "killed"
         },
         {
           "mutationPoint" : {
@@ -66,7 +66,7 @@
             "before" : ">",
             "description" : "changed > to <"
           },
-          "testSuiteOutcome" : "failed"
+          "testSuiteOutcome" : "killed"
         },
         {
           "mutationPoint" : {
@@ -81,7 +81,7 @@
             "before" : ">",
             "description" : "changed > to <"
           },
-          "testSuiteOutcome" : "failed"
+          "testSuiteOutcome" : "killed"
         }
       ],
       "fileName" : "FontFeatures.swift",
@@ -117,7 +117,7 @@
             "before" : "debug.replaceCharacters(in: replacement.range, with: \"<BON:\\(replacement.string)\/>\")",
             "description" : "removed line"
           },
-          "testSuiteOutcome" : "failed"
+          "testSuiteOutcome" : "killed"
         },
         {
           "mutationPoint" : {
@@ -132,7 +132,7 @@
             "before" : "debug.replaceCharacters(in: replacement.range, with: replacement.string)",
             "description" : "removed line"
           },
-          "testSuiteOutcome" : "failed"
+          "testSuiteOutcome" : "killed"
         }
       ],
       "fileName" : "NSAttributedString+BonMot.swift",
@@ -174,7 +174,7 @@
             "before" : "update(part: part)",
             "description" : "removed line"
           },
-          "testSuiteOutcome" : "failed"
+          "testSuiteOutcome" : "killed"
         },
         {
           "mutationPoint" : {
@@ -189,7 +189,7 @@
             "before" : "style.update(part: part)",
             "description" : "removed line"
           },
-          "testSuiteOutcome" : "failed"
+          "testSuiteOutcome" : "killed"
         }
       ],
       "fileName" : "StringStyle+Part.swift",
@@ -225,7 +225,7 @@
             "before" : "two ? kStylisticAltTwoOnSelector : kStylisticAltTwoOffSelector",
             "description" : "swapped ternary operator"
           },
-          "testSuiteOutcome" : "failed"
+          "testSuiteOutcome" : "killed"
         },
         {
           "mutationPoint" : {
@@ -255,7 +255,7 @@
             "before" : "five ? kStylisticAltFiveOnSelector : kStylisticAltFiveOffSelector",
             "description" : "swapped ternary operator"
           },
-          "testSuiteOutcome" : "failed"
+          "testSuiteOutcome" : "killed"
         },
         {
           "mutationPoint" : {
@@ -270,7 +270,7 @@
             "before" : "six ? kStylisticAltSixOnSelector : kStylisticAltSixOffSelector",
             "description" : "swapped ternary operator"
           },
-          "testSuiteOutcome" : "failed"
+          "testSuiteOutcome" : "killed"
         }
       ],
       "fileName" : "StylisticAlternates.swift",
@@ -627,7 +627,7 @@
             "before" : "constraint.setupObservers()",
             "description" : "removed line"
           },
-          "testSuiteOutcome" : "failed"
+          "testSuiteOutcome" : "killed"
         },
         {
           "mutationPoint" : {
@@ -642,7 +642,7 @@
             "before" : "constraint.updateConstant()",
             "description" : "removed line"
           },
-          "testSuiteOutcome" : "failed"
+          "testSuiteOutcome" : "killed"
         },
         {
           "mutationPoint" : {
@@ -702,7 +702,7 @@
             "before" : "addObserver(self, forKeyPath: keyPath, options: [], context: &TextAlignmentConstraintKVOContext)",
             "description" : "removed line"
           },
-          "testSuiteOutcome" : "failed"
+          "testSuiteOutcome" : "killed"
         },
         {
           "mutationPoint" : {
@@ -855,7 +855,7 @@
             "before" : "&&",
             "description" : "changed && to ||"
           },
-          "testSuiteOutcome" : "failed"
+          "testSuiteOutcome" : "killed"
         },
         {
           "mutationPoint" : {
@@ -870,7 +870,7 @@
             "before" : "==",
             "description" : "changed == to !="
           },
-          "testSuiteOutcome" : "failed"
+          "testSuiteOutcome" : "killed"
         },
         {
           "mutationPoint" : {
@@ -885,7 +885,7 @@
             "before" : "==",
             "description" : "changed == to !="
           },
-          "testSuiteOutcome" : "failed"
+          "testSuiteOutcome" : "killed"
         },
         {
           "mutationPoint" : {
@@ -900,7 +900,7 @@
             "before" : "==",
             "description" : "changed == to !="
           },
-          "testSuiteOutcome" : "failed"
+          "testSuiteOutcome" : "killed"
         },
         {
           "mutationPoint" : {
@@ -915,7 +915,7 @@
             "before" : "==",
             "description" : "changed == to !="
           },
-          "testSuiteOutcome" : "failed"
+          "testSuiteOutcome" : "killed"
         },
         {
           "mutationPoint" : {
@@ -930,7 +930,7 @@
             "before" : "==",
             "description" : "changed == to !="
           },
-          "testSuiteOutcome" : "failed"
+          "testSuiteOutcome" : "killed"
         },
         {
           "mutationPoint" : {
@@ -945,7 +945,7 @@
             "before" : "==",
             "description" : "changed == to !="
           },
-          "testSuiteOutcome" : "failed"
+          "testSuiteOutcome" : "killed"
         },
         {
           "mutationPoint" : {
@@ -960,7 +960,7 @@
             "before" : "==",
             "description" : "changed == to !="
           },
-          "testSuiteOutcome" : "failed"
+          "testSuiteOutcome" : "killed"
         },
         {
           "mutationPoint" : {
@@ -975,7 +975,7 @@
             "before" : "!=",
             "description" : "changed != to =="
           },
-          "testSuiteOutcome" : "failed"
+          "testSuiteOutcome" : "killed"
         },
         {
           "mutationPoint" : {
@@ -990,7 +990,7 @@
             "before" : "!=",
             "description" : "changed != to =="
           },
-          "testSuiteOutcome" : "failed"
+          "testSuiteOutcome" : "killed"
         },
         {
           "mutationPoint" : {
@@ -1005,7 +1005,7 @@
             "before" : "styles.removeLast()",
             "description" : "removed line"
           },
-          "testSuiteOutcome" : "failed"
+          "testSuiteOutcome" : "killed"
         },
         {
           "mutationPoint" : {
@@ -1035,7 +1035,7 @@
             "before" : "foundNewString()",
             "description" : "removed line"
           },
-          "testSuiteOutcome" : "failed"
+          "testSuiteOutcome" : "killed"
         },
         {
           "mutationPoint" : {
@@ -1050,7 +1050,7 @@
             "before" : "enter(element: elementName, attributes: attributeDict)",
             "description" : "removed line"
           },
-          "testSuiteOutcome" : "runtimeError"
+          "testSuiteOutcome" : "killed"
         },
         {
           "mutationPoint" : {
@@ -1065,7 +1065,7 @@
             "before" : "options.contains(.doNotWrapXML) ? string : \"<\\(XMLBuilder.internalTopLevelElement)>\\(string)<\/\\(XMLBuilder.internalTopLevelElement)>\"",
             "description" : "swapped ternary operator"
           },
-          "testSuiteOutcome" : "failed"
+          "testSuiteOutcome" : "killed"
         },
         {
           "mutationPoint" : {
@@ -1080,7 +1080,7 @@
             "before" : "shiftColumn ? shiftSize : 0",
             "description" : "swapped ternary operator"
           },
-          "testSuiteOutcome" : "failed"
+          "testSuiteOutcome" : "killed"
         }
       ],
       "fileName" : "XMLBuilder.swift",

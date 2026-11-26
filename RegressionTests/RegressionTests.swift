@@ -19,11 +19,24 @@ final class RegressionTests: XCTestCase {
             $0 == "filePath" || $0 == "utf8Offset" || $0 == "timeElapsed"
         }
 
+        // A mutant is killed by a failing test or by a crash. Which of the two the test runner reports
+        // first depends on the Xcode version, so the snapshot records only that the mutant was killed.
+        let killedOutcome: (String, Any) -> Any = { key, value in
+            guard key == "testSuiteOutcome",
+                  let outcome = value as? String,
+                  outcome == TestSuiteOutcome.failed.rawValue || outcome == TestSuiteOutcome.runtimeError.rawValue
+            else {
+                return value
+            }
+
+            return "killed"
+        }
+
         do {
             let testReport = try JSONDecoder().decode(MuterTestReport.self, from: data)
             assertSnapshot(
                 of: testReport,
-                as: .json(excludingKeysMatching: keysToExclude),
+                as: .json(excludingKeysMatching: keysToExclude, transformingValues: killedOutcome),
                 named: fixtureName,
                 file: file,
                 testName: testName,

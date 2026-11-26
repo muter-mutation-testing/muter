@@ -50,30 +50,44 @@ extension BuildSystemCoverage {
 
     func functionsCoverage(_ configuration: MuterConfiguration) -> FunctionsCoverage {
         guard let buildDirectory = buildDirectory(configuration) else {
+            CoverageDiagnostics.warn("The build directory was not found.")
             return .null
         }
+        CoverageDiagnostics.debug("build directory: \(buildDirectory)")
 
         guard let xctestExecutable = xctestExecutable(at: buildDirectory) else {
+            CoverageDiagnostics.warn("No .xctest bundle was found in \(buildDirectory).")
             return .null
         }
+        CoverageDiagnostics.debug("xctest bundle: \(xctestExecutable)")
 
         guard let testBinary = testBinary(at: xctestExecutable) else {
+            CoverageDiagnostics.warn("No test binary was found in \(xctestExecutable).")
             return .null
         }
+        CoverageDiagnostics.debug("test binary: \(testBinary)")
 
         guard let testProfile = testProfileData(at: buildDirectory) else {
+            CoverageDiagnostics.warn("No .profdata file was found in \(buildDirectory).")
             return .null
         }
+        CoverageDiagnostics.debug("profile data: \(testProfile)")
 
         guard let reportJson = llvmCovJsonReport(
             withExecutableAt: testBinary,
             coverageProfile: testProfile
         )?.data(using: .utf8)
         else {
+            CoverageDiagnostics.warn("llvm-cov export gave no output for \(testBinary).")
             return .null
         }
+        CoverageDiagnostics.debug("llvm-cov export: \(reportJson.count) bytes")
 
-        guard let coverageData = try? JSONDecoder().decode(LLVMCoverage.self, from: reportJson) else {
+        let coverageData: LLVMCoverage
+        do {
+            coverageData = try JSONDecoder().decode(LLVMCoverage.self, from: reportJson)
+        } catch {
+            CoverageDiagnostics.warn("The llvm-cov export could not be decoded: \(error)")
             return .null
         }
 
@@ -81,14 +95,31 @@ extension BuildSystemCoverage {
     }
 
     func xctestExecutable(at buildDirectory: String) -> String? {
-        process().find(atPath: buildDirectory, byName: "*.xctest").map(\.trimmed)
+        process().find(atPath: buildDirectory, byName: "*.xctest")
+            .flatMap { firstPath(in: $0) }
     }
 
+    /// The test executable inside the `.xctest` bundle. Since Xcode 26, SwiftPM also puts the
+    /// debug symbols in the bundle (`Contents/MacOS/<name>.dSYM/Contents/Resources/DWARF/<name>`),
+    /// and that file has the same name. `llvm-cov` needs the executable, so files inside a
+    /// `.dSYM` are skipped.
     func testBinary(at path: String) -> String? {
         let url = URL(fileURLWithPath: path)
         let name = url.deletingPathExtension().lastPathComponent
 
         return process().findExecutable(atPath: url.path, byName: name)
+            .flatMap { firstPath(in: $0) { !$0.contains(".dSYM/") } }
+    }
+
+    /// `find` prints one path per line. Two paths joined by a newline are not a path.
+    private func firstPath(
+        in findOutput: String,
+        where isIncluded: (String) -> Bool = { _ in true }
+    ) -> String? {
+        findOutput
+            .components(separatedBy: "\n")
+            .map(\.trimmed)
+            .first { !$0.isEmpty && isIncluded($0) }
     }
 
     func testProfileData(at path: String) -> String? {

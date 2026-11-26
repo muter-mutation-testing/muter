@@ -20,6 +20,10 @@ final class FunctionsCoverage {
 
             coverage[filename, default: []].append(contentsOf: functionsWithoutExecutaion)
         }
+
+        CoverageDiagnostics.debug(
+            "\(data.functions.count) functions, \(coverage.count) files with uncovered regions"
+        )
     }
 
     private func containsNonExecutionRegion(_ region: Region) -> Bool {
@@ -27,7 +31,12 @@ final class FunctionsCoverage {
     }
 
     func regionsForFile(_ filePath: FilePath) -> [Region] {
-        coverage[filePath] ?? []
+        let regions = coverage[filePath] ?? []
+        CoverageDiagnostics.debug(
+            "\(filePath): \(regions.count) uncovered regions"
+                + (regions.isEmpty ? " (known files: \(coverage.keys.sorted().prefix(3)))" : "")
+        )
+        return regions
     }
 }
 extension FunctionsCoverage: Equatable {

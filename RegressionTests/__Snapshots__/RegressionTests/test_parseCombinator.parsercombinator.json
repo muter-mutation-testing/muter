@@ -15,7 +15,7 @@
             "before" : "||",
             "description" : "changed || to &&"
           },
-          "testSuiteOutcome" : "runtimeError"
+          "testSuiteOutcome" : "killed"
         },
         {
           "mutationPoint" : {
@@ -30,7 +30,7 @@
             "before" : "==",
             "description" : "changed == to !="
           },
-          "testSuiteOutcome" : "runtimeError"
+          "testSuiteOutcome" : "killed"
         },
         {
           "mutationPoint" : {
@@ -45,7 +45,7 @@
             "before" : "<",
             "description" : "changed < to >"
           },
-          "testSuiteOutcome" : "failed"
+          "testSuiteOutcome" : "killed"
         },
         {
           "mutationPoint" : {
@@ -60,7 +60,7 @@
             "before" : "<",
             "description" : "changed < to >"
           },
-          "testSuiteOutcome" : "failed"
+          "testSuiteOutcome" : "killed"
         },
         {
           "mutationPoint" : {
@@ -75,7 +75,7 @@
             "before" : "result.append(element)",
             "description" : "removed line"
           },
-          "testSuiteOutcome" : "failed"
+          "testSuiteOutcome" : "killed"
         }
       ],
       "fileName" : "FFCParserCombinator.swift",
@@ -96,7 +96,7 @@
             "before" : "==",
             "description" : "changed == to !="
           },
-          "testSuiteOutcome" : "failed"
+          "testSuiteOutcome" : "killed"
         },
         {
           "mutationPoint" : {
@@ -111,7 +111,7 @@
             "before" : "==",
             "description" : "changed == to !="
           },
-          "testSuiteOutcome" : "failed"
+          "testSuiteOutcome" : "killed"
         },
         {
           "mutationPoint" : {
@@ -126,7 +126,7 @@
             "before" : ">",
             "description" : "changed > to <"
           },
-          "testSuiteOutcome" : "runtimeError"
+          "testSuiteOutcome" : "killed"
         },
         {
           "mutationPoint" : {
@@ -141,7 +141,7 @@
             "before" : "==",
             "description" : "changed == to !="
           },
-          "testSuiteOutcome" : "runtimeError"
+          "testSuiteOutcome" : "killed"
         },
         {
           "mutationPoint" : {
@@ -156,7 +156,7 @@
             "before" : "==",
             "description" : "changed == to !="
           },
-          "testSuiteOutcome" : "failed"
+          "testSuiteOutcome" : "killed"
         },
         {
           "mutationPoint" : {
@@ -171,7 +171,7 @@
             "before" : "==",
             "description" : "changed == to !="
           },
-          "testSuiteOutcome" : "failed"
+          "testSuiteOutcome" : "killed"
         },
         {
           "mutationPoint" : {
@@ -186,7 +186,7 @@
             "before" : "==",
             "description" : "changed == to !="
           },
-          "testSuiteOutcome" : "failed"
+          "testSuiteOutcome" : "killed"
         },
         {
           "mutationPoint" : {
@@ -201,7 +201,7 @@
             "before" : "s == .minus ? -1 : 1",
             "description" : "swapped ternary operator"
           },
-          "testSuiteOutcome" : "failed"
+          "testSuiteOutcome" : "killed"
         },
         {
           "mutationPoint" : {
@@ -216,7 +216,7 @@
             "before" : "e > 0 ? \"+\" : \"\"",
             "description" : "swapped ternary operator"
           },
-          "testSuiteOutcome" : "runtimeError"
+          "testSuiteOutcome" : "killed"
         }
       ],
       "fileName" : "StringParsing.swift",

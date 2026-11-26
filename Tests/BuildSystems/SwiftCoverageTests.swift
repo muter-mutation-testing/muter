@@ -188,4 +188,38 @@ final class SwiftCoverageTests: MuterTestCase {
             ]
         )
     }
+
+    func test_functionCoverage_whenTheTestBundleHasDebugSymbols_thenUsesTheTestExecutable() throws {
+        // Since Xcode 26, the .dSYM is inside the .xctest bundle, and its DWARF file has the same
+        // name as the test executable, so `find` prints both.
+        let executable = "/build/BonMotPackageTests.xctest/Contents/MacOS/BonMotPackageTests"
+        process.stdoutToBeReturned = "/build/directory"
+        process.stdoutToBeReturned = "/build/BonMotPackageTests.xctest\n"
+        process.stdoutToBeReturned = """
+        /build/BonMotPackageTests.xctest/Contents/MacOS/BonMotPackageTests.dSYM/Contents/Resources/DWARF/BonMotPackageTests
+        \(executable)
+
+        """
+        process.stdoutToBeReturned = "/path/to/coverage.profdata"
+        process.stdoutToBeReturned = "/path/to/llvm-cov"
+        process.stdoutToBeReturned = loadFixture("llvmCovExport.json")
+
+        let functionsCoverage = sut.functionsCoverage(muterConfiguration)
+
+        XCTAssertEqual(process.arguments?.prefix(3), ["llvm-cov", "export", executable])
+        XCTAssertFalse(functionsCoverage.regionsForFile("/path/to/file.swift").isEmpty)
+    }
+
+    func test_functionCoverage_whenFindPrintsSeveralBundles_thenUsesTheFirst() throws {
+        process.stdoutToBeReturned = "/build/directory"
+        process.stdoutToBeReturned = "/build/A.xctest\n/build/B.xctest\n"
+        process.stdoutToBeReturned = "/build/A.xctest/Contents/MacOS/A\n"
+        process.stdoutToBeReturned = "/path/to/coverage.profdata"
+        process.stdoutToBeReturned = "/path/to/llvm-cov"
+        process.stdoutToBeReturned = loadFixture("llvmCovExport.json")
+
+        _ = sut.functionsCoverage(muterConfiguration)
+
+        XCTAssertEqual(process.arguments?.prefix(3), ["llvm-cov", "export", "/build/A.xctest/Contents/MacOS/A"])
+    }
 }
