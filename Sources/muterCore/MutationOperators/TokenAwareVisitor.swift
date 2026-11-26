@@ -86,9 +86,11 @@ class TokenAwareVisitor: MuterVisitor {
             offsetBy: nodePositionOffset
         )
 
+        // The range covers the original operator. The new one can be longer or shorter: a negated
+        // comparison changes length (`>` becomes `<=`).
         let nodeEndRange = codeBlockDescription.index(
             codeBlockDescription.startIndex,
-            offsetBy: nodePositionOffset + mutatedSyntax.description.count
+            offsetBy: nodePositionOffset + node.description.count
         )
         let mutationRangeInCodeBlock = nodeStartRange ..< nodeEndRange
 

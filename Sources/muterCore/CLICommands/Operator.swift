@@ -161,7 +161,7 @@ private extension MutationOperator.Id {
             The \(
                 "relational operator replacement"
                     .italic
-            ) operator will invert conditional operators in your code based on this table:
+            ) operator will negate conditional operators in your code based on this table:
 
             +-------------------+------------------+
             | Original Operator | Changed Operator |
@@ -174,19 +174,19 @@ private extension MutationOperator.Id {
                 +-------------------+-----------------+
                 """.onCodeBlock
             )
-            |       \(" >= ".onCodeEscape)        |       \(" <= ".onCodeEscape)      |
+            |       \(" >= ".onCodeEscape)        |       \(" < ".onCodeEscape)       |
             \(
                 """
                 +-------------------+-----------------+
-                |       \(" <= ".onCodeEscape)        |       \(" >= ".onCodeEscape)      |
+                |       \(" <= ".onCodeEscape)        |       \(" > ".onCodeEscape)       |
                 +-------------------+-----------------+
                 """.onCodeBlock
             )
-            |       \(" > ".onCodeEscape)         |       \(" < ".onCodeEscape)       |
+            |       \(" > ".onCodeEscape)         |       \(" <= ".onCodeEscape)      |
             \(
                 """
                 +-------------------+-----------------+
-                |       \(" < ".onCodeEscape)         |       \(" > ".onCodeEscape)       |
+                |       \(" < ".onCodeEscape)         |       \(" >= ".onCodeEscape)      |
                 +-------------------+-----------------+
                 """.onCodeBlock
             )
