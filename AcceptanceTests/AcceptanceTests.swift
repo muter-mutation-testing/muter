@@ -9,7 +9,7 @@ private enum AcceptanceTestsError: Error {
 
 final class AcceptanceTests: XCTestCase {
     private let messages = (
-        mutationScoreOfTestSuite: "Mutation Score of Test Suite: 16%",
+        mutationScoreOfTestSuite: "Mutation Score of Test Suite: 17%",
         mutationScoresHeader: """
         --------------------
         Mutation Test Scores
@@ -129,7 +129,7 @@ final class AcceptanceTests: XCTestCase {
         XCTAssertTrue(output.contains("""
         File                         Applied Mutation Operator       Mutation Test Result
         ----                         -------------------------       --------------------
-        ProjectWithTimeout.swift:2   RelationalOperatorReplacement   time out
+        ProjectWithTimeout.swift:2   RelationalOperatorReplacement   mutant killed (time out)
         """))
     }
 
