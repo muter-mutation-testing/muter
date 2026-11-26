@@ -28,7 +28,7 @@ final class MutationsOutsideBodiesTests: MuterTestCase {
 
     func test_relationalOperatorReplacement_onlyInsideBodies() throws {
         // `18 == 18` is a stored property: not mutated. `age >= 18` is in a computed property's accessor.
-        XCTAssertEqual(try mutants(.ror), ["5: changed >= to <="])
+        XCTAssertEqual(try mutants(.ror), ["5: changed >= to <"])
     }
 
     func test_changeLogicalConnector_notInDefaultParameterValues() throws {

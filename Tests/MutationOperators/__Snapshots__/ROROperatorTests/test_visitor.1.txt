@@ -34,7 +34,7 @@ schemata: [Schemata(
     id: "file_RelationalOperatorReplacement_5_19_122",
     filePath: "/path/to/file",
     mutationOperatorId: .ror,
-    syntaxMutation: "\n        let b = a == 5\n        let e = a != 1\n        let c = a <= 4\n        let d = a <= 10\n        let f = a < 5\n        let g = a > 5\n\n        if a == 10 {\n            return \"hello\"\n        }\n\n        return a == 9 ? \"goodbye\" : \"what\"",
+    syntaxMutation: "\n        let b = a == 5\n        let e = a != 1\n        let c = a < 4\n        let d = a <= 10\n        let f = a < 5\n        let g = a > 5\n\n        if a == 10 {\n            return \"hello\"\n        }\n\n        return a == 9 ? \"goodbye\" : \"what\"",
     position: MutationPosition(
     utf8Offset: 122,
     line: 5,
@@ -42,14 +42,14 @@ schemata: [Schemata(
 ),
     snapshot: MutationOperator.Snapshot(
     before: ">=",
-    after: "<=",
-    description: "changed >= to <="
+    after: "<",
+    description: "changed >= to <"
 )
 ), Schemata(
     id: "file_RelationalOperatorReplacement_6_19_145",
     filePath: "/path/to/file",
     mutationOperatorId: .ror,
-    syntaxMutation: "\n        let b = a == 5\n        let e = a != 1\n        let c = a >= 4\n        let d = a >= 10\n        let f = a < 5\n        let g = a > 5\n\n        if a == 10 {\n            return \"hello\"\n        }\n\n        return a == 9 ? \"goodbye\" : \"what\"",
+    syntaxMutation: "\n        let b = a == 5\n        let e = a != 1\n        let c = a >= 4\n        let d = a > 10\n        let f = a < 5\n        let g = a > 5\n\n        if a == 10 {\n            return \"hello\"\n        }\n\n        return a == 9 ? \"goodbye\" : \"what\"",
     position: MutationPosition(
     utf8Offset: 145,
     line: 6,
@@ -57,14 +57,14 @@ schemata: [Schemata(
 ),
     snapshot: MutationOperator.Snapshot(
     before: "<=",
-    after: ">=",
-    description: "changed <= to >="
+    after: ">",
+    description: "changed <= to >"
 )
 ), Schemata(
     id: "file_RelationalOperatorReplacement_7_19_169",
     filePath: "/path/to/file",
     mutationOperatorId: .ror,
-    syntaxMutation: "\n        let b = a == 5\n        let e = a != 1\n        let c = a >= 4\n        let d = a <= 10\n        let f = a > 5\n        let g = a > 5\n\n        if a == 10 {\n            return \"hello\"\n        }\n\n        return a == 9 ? \"goodbye\" : \"what\"",
+    syntaxMutation: "\n        let b = a == 5\n        let e = a != 1\n        let c = a >= 4\n        let d = a <= 10\n        let f = a >= 5\n        let g = a > 5\n\n        if a == 10 {\n            return \"hello\"\n        }\n\n        return a == 9 ? \"goodbye\" : \"what\"",
     position: MutationPosition(
     utf8Offset: 169,
     line: 7,
@@ -72,14 +72,14 @@ schemata: [Schemata(
 ),
     snapshot: MutationOperator.Snapshot(
     before: "<",
-    after: ">",
-    description: "changed < to >"
+    after: ">=",
+    description: "changed < to >="
 )
 ), Schemata(
     id: "file_RelationalOperatorReplacement_8_19_191",
     filePath: "/path/to/file",
     mutationOperatorId: .ror,
-    syntaxMutation: "\n        let b = a == 5\n        let e = a != 1\n        let c = a >= 4\n        let d = a <= 10\n        let f = a < 5\n        let g = a < 5\n\n        if a == 10 {\n            return \"hello\"\n        }\n\n        return a == 9 ? \"goodbye\" : \"what\"",
+    syntaxMutation: "\n        let b = a == 5\n        let e = a != 1\n        let c = a >= 4\n        let d = a <= 10\n        let f = a < 5\n        let g = a <= 5\n\n        if a == 10 {\n            return \"hello\"\n        }\n\n        return a == 9 ? \"goodbye\" : \"what\"",
     position: MutationPosition(
     utf8Offset: 191,
     line: 8,
@@ -87,8 +87,8 @@ schemata: [Schemata(
 ),
     snapshot: MutationOperator.Snapshot(
     before: ">",
-    after: "<",
-    description: "changed > to <"
+    after: "<=",
+    description: "changed > to <="
 )
 ), Schemata(
     id: "file_RelationalOperatorReplacement_10_14_209",
