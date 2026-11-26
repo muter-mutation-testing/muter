@@ -9,7 +9,7 @@ OPTIONS:
   --operators <operators> The list of mutant operators to be used:
                           RelationalOperatorReplacement, RemoveSideEffects,
                           ChangeLogicalConnector, SwapTernary,
-                          SwapBooleanLiteral
+                          SwapBooleanLiteral, SwapRangeOperator
   -c, --configuration <configuration>
                           The path to the muter configuration file.
   --skip-coverage         Skips the step in which Muter runs your project in
