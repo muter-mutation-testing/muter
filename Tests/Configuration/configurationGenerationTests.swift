@@ -24,7 +24,59 @@ final class ConfigurationGenerationTests: MuterTestCase {
         )
     }
 
+    func test_swiftPackageThatSupportsMacOS_usesSwiftTest() {
+        process.stdoutToBeReturned = which("swift")
+        process.stdoutToBeReturned = packageDump(platforms: ["ios", "macos"])
+
+        let generatedConfiguration = MuterConfiguration(from: ["/some/path/Package.swift"])
+
+        XCTAssertEqual(
+            generatedConfiguration,
+            MuterConfiguration(executable: "/path/to/swift", arguments: ["test"], excludeList: ["Package.swift"])
+        )
+    }
+
+    private func packageDump(platforms: [String]) -> String {
+        let list = platforms.map { #"{ "platformName": "\#($0)", "version": "15.0", "options": [] }"# }
+        return #"{ "name": "IOSCore", "platforms": [\#(list.joined(separator: ", "))] }"#
+    }
+
     #if !os(Linux)
+    func test_swiftPackageForIOSOnly_usesXcodebuildWithAnIOSSimulator() {
+        // `swift test` builds for macOS, so a package that imports UIKit only builds with xcodebuild (#296).
+        process.stdoutToBeReturned = which("swift")
+        process.stdoutToBeReturned = packageDump(platforms: ["ios"])
+        process.stdoutToBeReturned = which("xcodebuild")
+        process.stdoutToBeReturned = #"{ "workspace": { "name": "IOSCore", "schemes": ["IOSCore"] } }"#
+        process.stdoutToBeReturned = simCtl()
+        process.stdoutToBeReturned = which("xcodebuild")
+
+        let generatedConfiguration = MuterConfiguration(from: ["/some/path/Package.swift"])
+
+        XCTAssertEqual(generatedConfiguration.testCommandExecutable, "/path/to/xcodebuild")
+        XCTAssertEqual(
+            generatedConfiguration.testCommandArguments.filter { !$0.contains("platform") },
+            ["-scheme", "IOSCore", "-destination", "test"]
+        )
+        XCTAssertNotNil(
+            generatedConfiguration.testCommandArguments.first { $0.hasPrefix("platform=iOS Simulator,name=") }
+        )
+        XCTAssertEqual(generatedConfiguration.excludeFileList, ["Package.swift"])
+    }
+
+    func test_swiftPackageForIOSOnly_withSeveralProducts_usesThePackageScheme() {
+        process.stdoutToBeReturned = which("swift")
+        process.stdoutToBeReturned = packageDump(platforms: ["ios"])
+        process.stdoutToBeReturned = which("xcodebuild")
+        process.stdoutToBeReturned = #"{ "workspace": { "name": "IOSCore", "schemes": ["Core", "IOSCore-Package", "UI"] } }"#
+        process.stdoutToBeReturned = simCtl()
+        process.stdoutToBeReturned = which("xcodebuild")
+
+        let generatedConfiguration = MuterConfiguration(from: ["/some/path/Package.swift"])
+
+        XCTAssertEqual(generatedConfiguration.testCommandArguments.prefix(2), ["-scheme", "IOSCore-Package"])
+    }
+
     func test_xcodeProject() {
         let projectDirectoryContents = [
             "/some/path/Package.swift",

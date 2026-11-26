@@ -145,7 +145,9 @@ extension MuterConfiguration {
 
         switch buildSystem {
         case .xcodebuild:
-            return arguments + ["-enableCodeCoverage", "YES"]
+            // With -derivedDataPath, Muter knows where the build goes: Xcode prints no build settings,
+            // such as BUILD_DIR, for a Swift package.
+            return argumentsWithDerivedDataPath + ["-enableCodeCoverage", "YES"]
         case .swift:
             return arguments + ["--enable-code-coverage"]
 
@@ -203,6 +205,13 @@ extension MuterConfiguration {
 
     private func derivedDataArgumentIndex() -> Int? {
         indexOfArgument("-derivedDataPath")
+    }
+
+    /// The test command with `-derivedDataPath`, added only when the user did not set one.
+    var argumentsWithDerivedDataPath: [String] {
+        derivedDataArgumentIndex() == nil
+            ? testCommandArguments + ["-derivedDataPath", defaultDerivedData]
+            : testCommandArguments
     }
 
     private func testArgumentsWithtDerivedData() -> [String] {

@@ -31,15 +31,11 @@ final class XcodeBuildCoverage: BuildSystemCoverage {
         return .success(projectCoverage)
     }
 
+    /// The DerivedData folder of the coverage run. `enableCoverageArguments` passes `-derivedDataPath`,
+    /// so the folder is known without `-showBuildSettings`, which prints no settings for a Swift
+    /// package. Muter searches it for the test bundle and the profile data, without assuming a layout.
     func buildDirectory(_ configuration: MuterConfiguration) -> String? {
-        process().runProcess(
-            url: configuration.testCommandExecutable,
-            arguments: configuration.testCommandArguments + ["-showBuildSettings"]
-        )
-        .flatMap { $0.firstMatchOf("BUILD_DIR = (.+)", options: .anchorsMatchLines) }
-        .map(\.trimmed)
-        .flatMap(\.nilIfEmpty)
-        .flatMap { URL(fileURLWithPath: $0).deletingLastPathComponent().path }
+        URL(fileURLWithPath: configuration.derivedDataPath).path.nilIfEmpty
     }
 
     private func runTestsWithCoverageEnabled(
