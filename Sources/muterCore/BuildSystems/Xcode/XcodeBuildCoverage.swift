@@ -31,11 +31,36 @@ final class XcodeBuildCoverage: BuildSystemCoverage {
         return .success(projectCoverage)
     }
 
-    /// The DerivedData folder of the coverage run. `enableCoverageArguments` passes `-derivedDataPath`,
-    /// so the folder is known without `-showBuildSettings`, which prints no settings for a Swift
-    /// package. Muter searches it for the test bundle and the profile data, without assuming a layout.
+    /// The folder that Muter searches for the test bundle and the profile data.
+    ///
+    /// - A project or workspace: the parent of `BUILD_DIR` from `-showBuildSettings`, so a custom build
+    ///   location set by the project is respected.
+    /// - A Swift package: `-showBuildSettings` prints no settings, so `enableCoverageArguments` passes
+    ///   `-derivedDataPath`, and that folder is used.
     func buildDirectory(_ configuration: MuterConfiguration) -> String? {
-        URL(fileURLWithPath: configuration.derivedDataPath).path.nilIfEmpty
+        if configuration.testsSwiftPackageWithXcodebuild {
+            return URL(fileURLWithPath: configuration.derivedDataPath).path.nilIfEmpty
+        }
+
+        return process().runProcess(
+            url: configuration.testCommandExecutable,
+            arguments: configuration.testCommandArguments + ["-showBuildSettings"]
+        )
+        .flatMap(Self.buildDir(inBuildSettings:))
+        .flatMap { URL(fileURLWithPath: $0).deletingLastPathComponent().path }
+    }
+
+    /// The value of `BUILD_DIR` in `-showBuildSettings` output (`    BUILD_DIR = /path/Build/Products`).
+    /// Only the value: the whole line is not a path.
+    static func buildDir(inBuildSettings output: String) -> String? {
+        let prefix = "BUILD_DIR = "
+
+        return output
+            .components(separatedBy: .newlines)
+            .map(\.trimmed)
+            .first { $0.hasPrefix(prefix) }
+            .map { String($0.dropFirst(prefix.count)).trimmed }
+            .flatMap(\.nilIfEmpty)
     }
 
     private func runTestsWithCoverageEnabled(
