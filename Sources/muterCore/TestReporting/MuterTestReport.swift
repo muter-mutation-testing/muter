@@ -10,6 +10,11 @@ struct MuterTestReport {
     let projectCodeCoverage: Int?
     let fileReports: [FileReport]
     let timeElapsed: String
+    /// Mutants, killed mutants and failed tests for each mutation operator.
+    let operatorReports: [OperatorReport]
+    /// The average number of failed tests per mutant, over the mutants whose test run reported a
+    /// count (a surviving mutant counts as 0). `nil` when no run reported a count.
+    let averageNumberOfFailedTests: Double?
 
     init(from outcome: MutationTestOutcome = .init()) {
         globalMutationScore = mutationScore(from: outcome.mutations.map { $0.testSuiteOutcome })
@@ -19,7 +24,50 @@ struct MuterTestReport {
         projectCodeCoverage = outcome.coverage == .null ? nil : outcome.coverage.percent
         fileReports = MuterTestReport.fileReports(from: outcome)
         timeElapsed = outcome.testDuration.formatted()
+        operatorReports = OperatorReport.reports(from: outcome.mutations)
+        averageNumberOfFailedTests = average(outcome.mutations.compactMap(\.failedTests))
     }
+}
+
+extension MuterTestReport {
+    struct OperatorReport: Codable, Equatable {
+        let mutationOperator: MutationOperator.Id
+        let numberOfMutants: Int
+        let numberOfKilledMutants: Int
+        /// The failed tests of all this operator's mutants whose test run reported a count.
+        let numberOfFailedTests: Int
+        let averageNumberOfFailedTests: Double?
+
+        static func reports(from mutations: [MutationTestOutcome.Mutation]) -> [OperatorReport] {
+            MutationOperator.Id.allCases.compactMap { id in
+                let mutants = mutations.filter { $0.point.mutationOperatorId == id }
+                guard !mutants.isEmpty else {
+                    return nil
+                }
+
+                let counts = mutants.compactMap(\.failedTests)
+                return OperatorReport(
+                    mutationOperator: id,
+                    numberOfMutants: mutants.count,
+                    numberOfKilledMutants: mutants.count {
+                        $0.testSuiteOutcome == .failed || $0.testSuiteOutcome == .runtimeError
+                    },
+                    numberOfFailedTests: counts.reduce(0, +),
+                    averageNumberOfFailedTests: average(counts)
+                )
+            }
+        }
+    }
+}
+
+/// The average, rounded to two decimals, or `nil` for no values.
+private func average(_ values: [Int]) -> Double? {
+    guard !values.isEmpty else {
+        return nil
+    }
+
+    let average = Double(values.reduce(0, +)) / Double(values.count)
+    return (average * 100).rounded() / 100
 }
 
 private extension TimeInterval {
@@ -89,21 +137,26 @@ extension MuterTestReport {
         let mutationPoint: MutationPoint
         let mutationSnapshot: MutationOperator.Snapshot
         let testSuiteOutcome: TestSuiteOutcome
+        /// How many tests failed with this mutant, when the test run reported it.
+        let numberOfFailedTests: Int?
 
         enum CodingKeys: String, CodingKey {
             case mutationPoint
             case testSuiteOutcome
             case mutationSnapshot
+            case numberOfFailedTests
         }
 
         init(
             mutationPoint: MutationPoint,
             mutationSnapshot: MutationOperator.Snapshot,
-            testSuiteOutcome: TestSuiteOutcome
+            testSuiteOutcome: TestSuiteOutcome,
+            numberOfFailedTests: Int? = nil
         ) {
             self.mutationPoint = mutationPoint
             self.mutationSnapshot = mutationSnapshot
             self.testSuiteOutcome = testSuiteOutcome
+            self.numberOfFailedTests = numberOfFailedTests
         }
 
         public init(from decoder: Decoder) throws {
@@ -115,6 +168,7 @@ extension MuterTestReport {
                 default: .null,
                 forKey: .mutationSnapshot
             )
+            numberOfFailedTests = try container.decodeIfPresent(Int.self, forKey: .numberOfFailedTests)
         }
     }
 }
@@ -136,7 +190,8 @@ private extension MuterTestReport {
                         AppliedMutationOperator(
                             mutationPoint: $0.point,
                             mutationSnapshot: $0.snapshot,
-                            testSuiteOutcome: $0.testSuiteOutcome
+                            testSuiteOutcome: $0.testSuiteOutcome,
+                            numberOfFailedTests: $0.failedTests
                         )
                     }
 
@@ -179,5 +234,20 @@ extension MuterTestReport: Codable {
         case projectCodeCoverage
         case fileReports
         case timeElapsed
+        case operatorReports
+        case averageNumberOfFailedTests
+    }
+
+    /// Reports written before `operatorReports` and `averageNumberOfFailedTests` existed still decode.
+    init(from decoder: Decoder) throws {
+        let container = try decoder.container(keyedBy: CodingKeys.self)
+        globalMutationScore = try container.decode(Int.self, forKey: .globalMutationScore)
+        totalAppliedMutationOperators = try container.decode(Int.self, forKey: .totalAppliedMutationOperators)
+        numberOfKilledMutants = try container.decode(Int.self, forKey: .numberOfKilledMutants)
+        projectCodeCoverage = try container.decodeIfPresent(Int.self, forKey: .projectCodeCoverage)
+        fileReports = try container.decode([FileReport].self, forKey: .fileReports)
+        timeElapsed = try container.decode(String.self, forKey: .timeElapsed)
+        operatorReports = try container.decodeIfPresent([OperatorReport].self, forKey: .operatorReports) ?? []
+        averageNumberOfFailedTests = try container.decodeIfPresent(Double.self, forKey: .averageNumberOfFailedTests)
     }
 }

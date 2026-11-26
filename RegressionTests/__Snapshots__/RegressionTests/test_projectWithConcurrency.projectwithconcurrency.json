@@ -69,5 +69,12 @@
   ],
   "globalMutationScore" : 0,
   "numberOfKilledMutants" : 0,
+  "operatorReports" : [
+    {
+      "mutationOperator" : "RemoveSideEffects",
+      "numberOfKilledMutants" : 0,
+      "numberOfMutants" : 4
+    }
+  ],
   "totalAppliedMutationOperators" : 4
 }

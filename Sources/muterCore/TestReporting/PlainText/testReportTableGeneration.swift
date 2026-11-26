@@ -61,6 +61,31 @@ func generateMutationScoresCLITable(
     ])
 }
 
+func generateTestFailuresCLITable(from operatorReports: [MuterTestReport.OperatorReport]) -> CLITable {
+    CLITable(padding: 3, columns: [
+        CLITable.Column(
+            title: "Mutation Operator",
+            rows: operatorReports.map { CLITable.Row(value: $0.mutationOperator.rawValue) }
+        ),
+        CLITable.Column(
+            title: "# of Mutants",
+            rows: operatorReports.map { CLITable.Row(value: "\($0.numberOfMutants)") }
+        ),
+        CLITable.Column(
+            title: "Killed",
+            rows: operatorReports.map { CLITable.Row(value: "\($0.numberOfKilledMutants)") }
+        ),
+        CLITable.Column(
+            title: "Failed Tests",
+            rows: operatorReports.map { CLITable.Row(value: "\($0.numberOfFailedTests)") }
+        ),
+        CLITable.Column(
+            title: "Average Failed Tests",
+            rows: operatorReports.map { CLITable.Row(value: $0.averageNumberOfFailedTests.map(formatted) ?? "-") }
+        ),
+    ])
+}
+
 // MARK: - Coloring Functions
 
 func applyMutationTestResultsColor(to rows: [CLITable.Row]) -> [CLITable.Row] {

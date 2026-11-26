@@ -225,5 +225,27 @@
   ],
   "globalMutationScore" : 100,
   "numberOfKilledMutants" : 14,
+  "operatorReports" : [
+    {
+      "mutationOperator" : "RelationalOperatorReplacement",
+      "numberOfKilledMutants" : 10,
+      "numberOfMutants" : 10
+    },
+    {
+      "mutationOperator" : "RemoveSideEffects",
+      "numberOfKilledMutants" : 1,
+      "numberOfMutants" : 1
+    },
+    {
+      "mutationOperator" : "ChangeLogicalConnector",
+      "numberOfKilledMutants" : 1,
+      "numberOfMutants" : 1
+    },
+    {
+      "mutationOperator" : "SwapTernary",
+      "numberOfKilledMutants" : 2,
+      "numberOfMutants" : 2
+    }
+  ],
   "totalAppliedMutationOperators" : 14
 }

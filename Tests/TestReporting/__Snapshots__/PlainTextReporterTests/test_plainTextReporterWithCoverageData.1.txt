@@ -28,3 +28,17 @@ Code Coverage of your project: 1%
 File          # of Introduced Mutants   Mutation Score
 ----          -----------------------   --------------
 file3.swift   1                         0
+
+
+----------------------------------
+Test Failures by Mutation Operator
+----------------------------------
+
+These are the tests that failed because of each mutation operator's mutants.
+Runs that did not report a count, such as build errors and timeouts, are left out.
+
+No test run reported how many tests failed.
+
+Mutation Operator               # of Mutants   Killed   Failed Tests   Average Failed Tests
+-----------------               ------------   ------   ------------   --------------------
+RelationalOperatorReplacement   1              0        0              -
