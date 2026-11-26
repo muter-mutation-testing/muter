@@ -62,9 +62,9 @@
             }
           },
           "mutationSnapshot" : {
-            "after" : "<",
+            "after" : "<=",
             "before" : ">",
-            "description" : "changed > to <"
+            "description" : "changed > to <="
           },
           "testSuiteOutcome" : "killed"
         },
@@ -77,9 +77,9 @@
             }
           },
           "mutationSnapshot" : {
-            "after" : "<",
+            "after" : "<=",
             "before" : ">",
-            "description" : "changed > to <"
+            "description" : "changed > to <="
           },
           "testSuiteOutcome" : "killed"
         }
@@ -344,9 +344,9 @@
             }
           },
           "mutationSnapshot" : {
-            "after" : "<",
+            "after" : "<=",
             "before" : ">",
-            "description" : "changed > to <"
+            "description" : "changed > to <="
           },
           "testSuiteOutcome" : "passed"
         },
@@ -470,9 +470,9 @@
             }
           },
           "mutationSnapshot" : {
-            "after" : "<",
+            "after" : "<=",
             "before" : ">",
-            "description" : "changed > to <"
+            "description" : "changed > to <="
           },
           "testSuiteOutcome" : "passed"
         },
@@ -485,9 +485,9 @@
             }
           },
           "mutationSnapshot" : {
-            "after" : ">",
+            "after" : ">=",
             "before" : "<",
-            "description" : "changed < to >"
+            "description" : "changed < to >="
           },
           "testSuiteOutcome" : "passed"
         },
@@ -623,9 +623,9 @@
             }
           },
           "mutationSnapshot" : {
-            "after" : "<",
+            "after" : "<=",
             "before" : ">",
-            "description" : "changed > to <"
+            "description" : "changed > to <="
           },
           "testSuiteOutcome" : "passed"
         },

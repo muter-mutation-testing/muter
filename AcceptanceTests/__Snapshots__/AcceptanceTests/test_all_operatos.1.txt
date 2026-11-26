@@ -1,7 +1,7 @@
 
 Relational Operator Replacement
 
-The relational operator replacement operator will invert conditional operators in your code based on this table:
+The relational operator replacement operator will negate conditional operators in your code based on this table:
 
 +-------------------+------------------+
 | Original Operator | Changed Operator |
@@ -10,13 +10,13 @@ The relational operator replacement operator will invert conditional operators i
 +-------------------+-----------------+
 |        !=         |        ==       |
 +-------------------+-----------------+
-|        >=         |        <=       |
+|        >=         |        <        |
 +-------------------+-----------------+
-|        <=         |        >=       |
+|        <=         |        >        |
 +-------------------+-----------------+
-|        >          |        <        |
+|        >          |        <=       |
 +-------------------+-----------------+
-|        <          |        >        |
+|        <          |        >=       |
 +-------------------+-----------------+
 
 

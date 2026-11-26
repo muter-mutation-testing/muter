@@ -41,9 +41,9 @@
             }
           },
           "mutationSnapshot" : {
-            "after" : ">",
+            "after" : ">=",
             "before" : "<",
-            "description" : "changed < to >"
+            "description" : "changed < to >="
           },
           "testSuiteOutcome" : "killed"
         },
@@ -56,9 +56,9 @@
             }
           },
           "mutationSnapshot" : {
-            "after" : ">",
+            "after" : ">=",
             "before" : "<",
-            "description" : "changed < to >"
+            "description" : "changed < to >="
           },
           "testSuiteOutcome" : "killed"
         },
@@ -122,9 +122,9 @@
             }
           },
           "mutationSnapshot" : {
-            "after" : "<",
+            "after" : "<=",
             "before" : ">",
-            "description" : "changed > to <"
+            "description" : "changed > to <="
           },
           "testSuiteOutcome" : "killed"
         },
