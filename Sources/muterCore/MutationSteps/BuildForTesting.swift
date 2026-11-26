@@ -9,7 +9,6 @@ struct BuildForTesting: MutationStep {
     private var process: ProcessFactory
     
     private let testContentsFolder = "TestContents"
-    private let buildDirectory = "Build/Products/"
 
     func run(
         with state: AnyMutationTestState
@@ -32,7 +31,7 @@ struct BuildForTesting: MutationStep {
             let tempDebugURL = createTestContetsUrl(state.mutatedProjectDirectoryURL)
             try copyBuildArtifactsAtPath(buildDirectory, to: tempDebugURL.path)
 
-            let xcTestRun = try parseXCTestRunAt(tempDebugURL)
+            let xcTestRun = try parseXCTestRunAt(tempDebugURL, projectURL: state.mutatedProjectDirectoryURL)
 
             return [.projectXCTestRun(xcTestRun)]
         } catch {
@@ -47,13 +46,47 @@ struct BuildForTesting: MutationStep {
     private func runBuildForTestingCommand(
         _ configuration: MuterConfiguration
     ) throws {
-        guard let _: String = process().runProcess(
+        let buildProcess = process()
+        guard let output: String = buildProcess.runProcessIncludingStandardError(
             url: configuration.testCommandExecutable,
             arguments: configuration.buildForTestingArguments
         ).flatMap(\.nilIfEmpty)
         else {
             throw MuterError.literal(reason: "Could not run test with -build-for-testing argument")
         }
+
+        // A failed build still prints output, so the output alone does not show success. Without this
+        // check, Muter went on and reported only that no .xctestrun file was found.
+        guard buildProcess.terminationStatus == 0 else {
+            throw MuterError.literal(
+                reason: Self.buildForTestingFailure(
+                    output: output,
+                    exitCode: buildProcess.terminationStatus,
+                    command: ([configuration.testCommandExecutable] + configuration.buildForTestingArguments)
+                        .joined(separator: " ")
+                )
+            )
+        }
+    }
+
+    static func buildForTestingFailure(output: String, exitCode: Int32, command: String) -> String {
+        let lines = output.components(separatedBy: .newlines)
+        var seen = Set<String>()
+        let errors = lines
+            .map(\.trimmed)
+            .filter { $0.contains("error:") && seen.insert($0).inserted }
+        let evidence = errors.isEmpty
+            ? lines.suffix(20).joined(separator: "\n")
+            : errors.prefix(10).joined(separator: "\n")
+
+        return """
+        build-for-testing failed (exit code \(exitCode)), so there is no .xctestrun file to test the mutants with.
+
+        \(evidence)
+
+        Run the same command in the mutated copy of your project to see the full output:
+        \(command)
+        """
     }
 
     private func parseBuildRequest(_ path: String) throws -> XCTestBuildRequest {
@@ -75,8 +108,12 @@ struct BuildForTesting: MutationStep {
         )
     }
 
-    private func parseXCTestRunAt(_ url: URL) throws -> XCTestRun {
+    private func parseXCTestRunAt(_ url: URL, projectURL: URL) throws -> XCTestRun {
         let xcTestRunPath = try findMostRecentXCTestRunAtURL(url)
+        let productsDirectory = Self.productsDirectory(
+            ofXCTestRunAt: xcTestRunPath,
+            inProjectAt: projectURL
+        )
         guard let contents = fileManager.contents(atPath: xcTestRunPath),
               let stringContents = String(data: contents, encoding: .utf8)
         else {
@@ -85,7 +122,7 @@ struct BuildForTesting: MutationStep {
 
         guard let replaced = stringContents.replacingOccurrences(
             of: "__TESTROOT__/",
-            with: "__TESTROOT__/\(testContentsFolder)/\(buildDirectory)"
+            with: "__TESTROOT__/\(productsDirectory)"
         ).data(using: .utf8)
         else {
             throw MuterError.literal(reason: "Error error")
@@ -100,6 +137,29 @@ struct BuildForTesting: MutationStep {
         }
 
         return XCTestRun(plist)
+    }
+
+    /// The folder that holds the `.xctestrun` file, relative to the project copy, with a trailing slash.
+    /// Muter writes its own copy of the file to the project root, so `__TESTROOT__` must point there.
+    /// The folder is taken from where xcodebuild put the file, not from a fixed layout, because the
+    /// layout inside DerivedData is not documented and can change between Xcode releases.
+    static func productsDirectory(ofXCTestRunAt xcTestRunPath: String, inProjectAt projectURL: URL) -> String {
+        let fallback = "TestContents/Build/Products/"
+        let directory = URL(fileURLWithPath: xcTestRunPath)
+            .deletingLastPathComponent()
+            .resolvingSymlinksInPath()
+            .standardizedFileURL
+            .path
+        let project = projectURL
+            .resolvingSymlinksInPath()
+            .standardizedFileURL
+            .path
+
+        guard directory.hasPrefix(project + "/") else {
+            return fallback
+        }
+
+        return String(directory.dropFirst(project.count + 1)) + "/"
     }
 
     private func findMostRecentXCTestRunAtURL(_ url: URL) throws -> String {

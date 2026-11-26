@@ -107,6 +107,110 @@ final class BuildForTestingTests: MuterTestCase {
         )
     }
 
+    func test_whenBuildForTestingFails_thenReportsTheBuildErrors() async throws {
+        state.muterConfiguration = MuterConfiguration(
+            executable: "/path/to/xcodebuild",
+            arguments: ["some", "commands", "test"]
+        )
+
+        state.mutatedProjectDirectoryURL = URL(fileURLWithPath: "/path/to/temp")
+        process.stdoutToBeReturned = """
+        CompileSwift normal arm64 /path/to/temp/Sources/Module.swift
+        /path/to/temp/Sources/Module.swift:4:7: error: cannot find 'foo' in scope
+        /path/to/temp/Sources/Module.swift:4:7: error: cannot find 'foo' in scope
+        ** TEST BUILD FAILED **
+        """
+        process.terminationStatus = 65
+
+        do {
+            _ = try await sut.run(with: state)
+            XCTFail("Expected an error")
+        } catch let MuterError.literal(reason) {
+            XCTAssertTrue(reason.contains("build-for-testing failed (exit code 65)"), reason)
+            XCTAssertEqual(reason.components(separatedBy: "error: cannot find 'foo' in scope").count, 2, reason)
+            XCTAssertTrue(reason.contains("/path/to/xcodebuild some commands"), reason)
+        }
+
+        XCTAssertFalse(fileManager.methodCalls.contains("copyItem(atPath:toPath:)"))
+    }
+
+    func test_buildForTestingFailure_withoutErrorLines_showsTheEndOfTheOutput() {
+        let output = (1 ... 30).map { "line \($0)" }.joined(separator: "\n")
+
+        let message = BuildForTesting.buildForTestingFailure(output: output, exitCode: 70, command: "xcodebuild")
+
+        XCTAssertTrue(message.contains("line 30"))
+        XCTAssertTrue(message.contains("line 11"))
+        XCTAssertFalse(message.contains("line 10\n"))
+    }
+
+    func test_productsDirectory_isWhereTheXCTestRunFileIs() {
+        let project = URL(fileURLWithPath: "/path/to/temp")
+
+        XCTAssertEqual(
+            BuildForTesting.productsDirectory(
+                ofXCTestRunAt: "/path/to/temp/TestContents/Build/Products/App_iphonesimulator.xctestrun",
+                inProjectAt: project
+            ),
+            "TestContents/Build/Products/"
+        )
+        // The layout inside DerivedData is not documented, so a different folder must also work.
+        XCTAssertEqual(
+            BuildForTesting.productsDirectory(
+                ofXCTestRunAt: "/path/to/temp/TestContents/Products/Debug/App.xctestrun",
+                inProjectAt: project
+            ),
+            "TestContents/Products/Debug/"
+        )
+    }
+
+    func test_productsDirectory_outsideTheProject_fallsBackToTheUsualFolder() {
+        XCTAssertEqual(
+            BuildForTesting.productsDirectory(
+                ofXCTestRunAt: "some/project.xctestrun",
+                inProjectAt: URL(fileURLWithPath: "/path/to/temp")
+            ),
+            "TestContents/Build/Products/"
+        )
+    }
+
+    func test_xcTestRunPathsPointAtTheFolderWhereTheFileWasFound() async throws {
+        state.muterConfiguration = MuterConfiguration(
+            executable: "/path/to/xcodebuild",
+            arguments: ["some", "commands", "test"]
+        )
+
+        state.mutatedProjectDirectoryURL = URL(fileURLWithPath: "/path/to/temp")
+        process.stdoutToBeReturned = xcodebuildBuildForTestingOutput()
+        fileManager.contentsAtPathSortedToReturn = [
+            "/path/to/temp/TestContents/Build/Intermediates.noindex/some.file",
+            "/path/to/temp/TestContents/Products/App.xctestrun",
+        ]
+        fileManager.fileContentsToReturn = Data("""
+        <?xml version="1.0" encoding="UTF-8"?>
+        <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+        <plist version="1.0">
+        <dict>
+            <key>AppTests</key>
+            <dict>
+                <key>TestHostPath</key>
+                <string>__TESTROOT__/Debug-iphonesimulator/App.app</string>
+            </dict>
+        </dict>
+        </plist>
+        """.utf8)
+
+        let result = try await sut.run(with: state)
+
+        XCTAssertEqual(result, [
+            .projectXCTestRun(XCTestRun([
+                "AppTests": [
+                    "TestHostPath": "__TESTROOT__/TestContents/Products/Debug-iphonesimulator/App.app",
+                ] as [String: AnyHashable],
+            ])),
+        ])
+    }
+
     private func xcodebuildBuildForTestingOutput() -> String {
         """
         Command line invocation:
