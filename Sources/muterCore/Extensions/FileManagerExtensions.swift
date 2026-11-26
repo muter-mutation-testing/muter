@@ -36,38 +36,36 @@ public protocol FileSystemManager {
 }
 
 extension FileManager: FileSystemManager {
+    /// Every file under `path`, recursively, sorted by modification date. A file without a date sorts as
+    /// the oldest. Modification dates survive a copy; creation dates become the time of the copy.
     public func contents(
         atPath path: String,
         sortedByDate order: ComparisonResult
     ) throws -> [String] {
         guard let enumerator = FileManager.default.enumerator(
             at: URL(fileURLWithPath: path),
-            includingPropertiesForKeys: [.creationDateKey],
+            includingPropertiesForKeys: [.contentModificationDateKey],
             options: [.skipsHiddenFiles]
         ) else {
             return []
         }
-        
-        var files = [URL]()
+
+        var files = [(path: String, date: Date)]()
         while let url = enumerator.nextObject() as? URL {
-            files.append(url)
+            let date = (try? url.resourceValues(forKeys: [.contentModificationDateKey]))?
+                .contentModificationDate ?? .distantPast
+            files.append((url.path, date))
         }
 
-        if files.isEmpty {
-            return []
+        switch order {
+        case .orderedDescending:
+            files.sort { $0.date > $1.date }
+        case .orderedAscending:
+            files.sort { $0.date < $1.date }
+        case .orderedSame:
+            break
         }
 
-        try files.sort {
-            let lhs = try $0.resourceValues(forKeys: [URLResourceKey.creationDateKey])
-            let rhs = try $1.resourceValues(forKeys: [URLResourceKey.creationDateKey])
-
-            if let lhsDate = lhs.allValues.first?.value as? Date,
-               let rhsDate = rhs.allValues.first?.value as? Date {
-
-                return lhsDate.compare(rhsDate) == order
-            }
-            return true
-        }
         return files.map(\.path)
     }
 }

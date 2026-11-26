@@ -3,7 +3,7 @@ import Foundation
 
 final class ProcessSpy: MuterProcess {
     var processIdentifier: Int32 { 0 }
-    var terminationStatus: Int32 { 0 }
+    var terminationStatus: Int32 = 0
     var terminationHandler: (@Sendable (Foundation.Process) -> Void)? = nil
     var environment: [String: String]?
     var arguments: [String]?
