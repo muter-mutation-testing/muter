@@ -6,7 +6,7 @@ ARGUMENTS:
   <operator>                  Avaiable operators are:
                           RelationalOperatorReplacement, RemoveSideEffects,
                           ChangeLogicalConnector, SwapTernary,
-                          SwapBooleanLiteral
+                          SwapBooleanLiteral, SwapRangeOperator
                               For all operators use: all
 
 OPTIONS:

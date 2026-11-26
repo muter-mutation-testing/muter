@@ -161,3 +161,32 @@ func enableSync() {
     settings.isSyncEnabled = false
 }
 
+
+
+Swap Range Operator
+
+The swap range operator operator will change range operators in your code based on this table:
+
++-------------------+------------------+
+| Original Operator | Changed Operator |
++-------------------+------------------+
+|        ...        |       ..<        |
+|        ..<        |       ...        |
++-------------------+------------------+
+
+The purpose of this operator is to find off-by-one gaps at the end of a range.
+Tests that never reach the last element of a range will not notice the change.
+Ranges outside a function, closure or accessor body (for example, a stored property's value) are not changed.
+
+Mutating a range
+
+for page in 1...pageCount {
+    load(page)
+}
+
+becomes
+
+for page in 1..<pageCount {
+    load(page)
+}
+

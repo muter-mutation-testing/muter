@@ -215,6 +215,45 @@ private extension MutationOperator.Id {
                 """.onCodeBlock
             )
             """
+        case .swapRangeOperator:
+            return """
+
+            \("Swap Range Operator".bold)
+
+            The \("swap range operator".italic) operator will change range operators in your code based on this table:
+
+            +-------------------+------------------+
+            | Original Operator | Changed Operator |
+            +-------------------+------------------+
+            |\("        ...        ".onCodeEscape)|\("       ..<        ".onCodeEscape)|
+            |\("        ..<        ".onCodeEscape)|\("       ...        ".onCodeEscape)|
+            +-------------------+------------------+
+
+            The purpose of this operator is to find off-by-one gaps at the end of a range.
+            Tests that never reach the last element of a range will not notice the change.
+            Ranges outside a function, closure or accessor body (for example, a stored property's value) are not changed.
+
+            \("Mutating a range".bold)
+
+            \(
+                """
+                \("for".asKeyword) page \("in".asKeyword) 1\("...".asKeyword)pageCount {
+                    load(page)
+                }
+                """.onCodeBlock
+            )
+
+            becomes
+
+            \(
+                """
+                \("for".asKeyword) page \("in".asKeyword) 1\("..<".asKeyword)pageCount {
+                    load(page)
+                }
+                """.onCodeBlock
+            )
+
+            """
         case .swapBooleanLiteral:
             return """
 
