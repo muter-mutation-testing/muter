@@ -35,6 +35,8 @@ private func htmlReport(
                     ),
                     .divider("Mutation Operators per File"),
                     .mutationOperatorsPerFile(from: testReport),
+                    .divider("Test Failures per Mutation Operator"),
+                    .testFailuresPerOperator(from: testReport),
                     .divider("Applied Mutation Operators"),
                     .appliedOperators(from: testReport)
                 ),
@@ -100,7 +102,18 @@ extension Node where Context: HTML.BodyContext {
                     .p(.class("small"), "Operators Applied"),
                     .h1("\(testReport.totalAppliedMutationOperators)")
                 )
-            )
+            ),
+            .unwrap(testReport.averageNumberOfFailedTests) { average in
+                .div(
+                    .class("header-item"),
+                    .div(
+                        .class("box"),
+                        .style("background-color: #8e44ad"),
+                        .p(.class("small"), "Avg. Failed Tests"),
+                        .h1(.text(formatted(average)))
+                    )
+                )
+            }
         )
     }
     
@@ -175,6 +188,46 @@ extension Node where Context: HTML.BodyContext {
         )
     }
 
+    static func testFailuresPerOperator(from testReport: MuterTestReport) -> Self {
+        .div(
+            .class("test-failures-per-operator"),
+            .p(
+                .text(
+                    testReport.averageNumberOfFailedTests
+                        .map { "On average, each mutant made \(formatted($0)) tests fail." }
+                        ?? "No test run reported how many tests failed."
+                )
+            ),
+            .p(
+                .class("small"),
+                "Runs that did not report a count, such as build errors and timeouts, are left out."
+            ),
+            .table(
+                .id("test-failures-per-operator"),
+                .thead(
+                    .tr(
+                        .th("Mutation Operator"),
+                        .th("# of Mutants"),
+                        .th("Killed"),
+                        .th("Failed Tests"),
+                        .th("Average Failed Tests")
+                    )
+                ),
+                .tbody(
+                    .forEach(testReport.operatorReports) { report in
+                        .tr(
+                            .td(.class("left-aligned"), .text(report.mutationOperator.friendlyName)),
+                            .td(.class("right-aligned"), "\(report.numberOfMutants)"),
+                            .td(.class("right-aligned"), "\(report.numberOfKilledMutants)"),
+                            .td(.class("right-aligned"), "\(report.numberOfFailedTests)"),
+                            .td(.class("right-aligned"), .text(report.averageNumberOfFailedTests.map(formatted) ?? "-"))
+                        )
+                    }
+                )
+            )
+        )
+    }
+
     static func appliedOperators(from testReport: MuterTestReport) -> Self {
         .div(
             .class("applied-operators"),
@@ -205,7 +258,8 @@ extension Node where Context: HTML.BodyContext {
                     .th("File"),
                     .th("Applied Mutation Operator"),
                     .th("Changes"),
-                    .th("Mutation Test Result")
+                    .th("Mutation Test Result"),
+                    .th("Failed Tests")
                 )
             ),
             .tbody(
@@ -222,6 +276,10 @@ extension Node where Context: HTML.BodyContext {
                         .td(.class("mutation-snapshot"), .diff(of: report.appliedOperator)),
                         .td(
                             .raw("\(report.appliedOperator.testSuiteOutcome.asIcon)")
+                        ),
+                        .td(
+                            .class("right-aligned"),
+                            .text(report.appliedOperator.numberOfFailedTests.map(String.init) ?? "-")
                         )
                     )
                 }
