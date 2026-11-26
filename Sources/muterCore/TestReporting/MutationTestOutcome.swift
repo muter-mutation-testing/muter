@@ -27,15 +27,19 @@ extension MutationTestOutcome {
         let point: MutationPoint
         let snapshot: MutationOperator.Snapshot
         let originalProjectPath: String
+        /// How many tests failed with this mutant, or `nil` when the test log does not say.
+        let failedTests: Int?
 
         init(
             testSuiteOutcome: TestSuiteOutcome,
             mutationPoint: MutationPoint,
             mutationSnapshot: MutationOperator.Snapshot,
             originalProjectDirectoryUrl: URL,
-            mutatedProjectDirectoryURL: URL
+            mutatedProjectDirectoryURL: URL,
+            failedTests: Int? = nil
         ) {
             self.testSuiteOutcome = testSuiteOutcome
+            self.failedTests = failedTests
             point = mutationPoint
             snapshot = mutationSnapshot
 

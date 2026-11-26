@@ -45,11 +45,36 @@ final class PlainTextReporter: Reporter {
         \(generateMutationScoresCLITable(from: report.fileReports).description)
         """
 
-        return appliedMutationsMessage + mutationScoresMessage
+        return appliedMutationsMessage + mutationScoresMessage + testFailuresMessage(from: report)
+    }
+
+    private func testFailuresMessage(from report: MuterTestReport) -> String {
+        let average = report.averageNumberOfFailedTests
+            .map { "On average, each mutant made \(formatted($0)) tests fail." }
+            ?? "No test run reported how many tests failed."
+
+        return """
+
+
+        ----------------------------------
+        Test Failures by Mutation Operator
+        ----------------------------------
+
+        These are the tests that failed because of each mutation operator's mutants.
+        Runs that did not report a count, such as build errors and timeouts, are left out.
+
+        \(average)
+
+        \(generateTestFailuresCLITable(from: report.operatorReports).description)
+        """
     }
 
     private func coverageMessage(from report: MuterTestReport) -> String {
         report.projectCodeCoverage.map { "Code Coverage of your project: \($0)%" }
             ?? "Muter could not gather coverage data from your project"
     }
+}
+
+func formatted(_ average: Double) -> String {
+    String(format: "%.2f", average)
 }

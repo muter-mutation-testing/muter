@@ -222,6 +222,17 @@ private extension PerformMutationTesting {
 
     /// Builds `job`'s outcome, posts its notifications, and aborts after `buildErrorsThreshold`
     /// build errors in a row.
+    /// The number of failed tests, only when the tests ran to the end: a build error has no test
+    /// results, and a timed-out run stopped part way.
+    static func failedTests(for outcome: TestSuiteOutcome, in testLog: String) -> Int? {
+        switch outcome {
+        case .passed, .failed, .runtimeError:
+            return FailedTests.count(in: testLog)
+        case .buildError, .timeout, .noCoverage:
+            return nil
+        }
+    }
+
     func record(
         _ job: MutantJob,
         _ testSuiteOutcome: TestSuiteOutcome,
@@ -240,7 +251,8 @@ private extension PerformMutationTesting {
             mutationPoint: mutationPoint,
             mutationSnapshot: job.schema.snapshot,
             originalProjectDirectoryUrl: state.projectDirectoryURL,
-            mutatedProjectDirectoryURL: state.mutatedProjectDirectoryURL
+            mutatedProjectDirectoryURL: state.mutatedProjectDirectoryURL,
+            failedTests: Self.failedTests(for: testSuiteOutcome, in: testLog)
         )
 
         let mutationLog = MutationTestLog(

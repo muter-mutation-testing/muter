@@ -15,8 +15,11 @@ final class RegressionTests: XCTestCase {
             return .failure(.literal(reason: "Unable to load a valid Muter test report from \(path)"))
         }
 
+        // The number of failed tests depends on the Xcode version, so the snapshots leave it out.
         let keysToExclude: (String) -> Bool = {
-            $0 == "filePath" || $0 == "utf8Offset" || $0 == "timeElapsed"
+            [
+                "filePath", "utf8Offset", "timeElapsed", "numberOfFailedTests", "averageNumberOfFailedTests",
+            ].contains($0)
         }
 
         // A mutant is killed by a failing test or by a crash. Which of the two the test runner reports

@@ -1221,6 +1221,33 @@
   ],
   "globalMutationScore" : 42,
   "numberOfKilledMutants" : 31,
+  "operatorReports" : [
+    {
+      "mutationOperator" : "RelationalOperatorReplacement",
+      "numberOfKilledMutants" : 11,
+      "numberOfMutants" : 19
+    },
+    {
+      "mutationOperator" : "RemoveSideEffects",
+      "numberOfKilledMutants" : 10,
+      "numberOfMutants" : 36
+    },
+    {
+      "mutationOperator" : "ChangeLogicalConnector",
+      "numberOfKilledMutants" : 1,
+      "numberOfMutants" : 2
+    },
+    {
+      "mutationOperator" : "SwapTernary",
+      "numberOfKilledMutants" : 6,
+      "numberOfMutants" : 10
+    },
+    {
+      "mutationOperator" : "SwapBooleanLiteral",
+      "numberOfKilledMutants" : 3,
+      "numberOfMutants" : 6
+    }
+  ],
   "projectCodeCoverage" : 78,
   "totalAppliedMutationOperators" : 73
 }
