@@ -1,10 +1,12 @@
-if __SwiftMutator.environment["file_RelationalOperatorReplacement_1_10_9"] != nil {
-  if value != "バルーンの表示判定" {
+func check(_ value: String) {
+  if __SwiftMutator.environment["file_RelationalOperatorReplacement_2_14_43"] != nil {
+    if value != "バルーンの表示判定" {
 
-  }
-} else {
-  if value == "バルーンの表示判定" {
+    }
+  } else {
+    if value == "バルーンの表示判定" {
 
+    }
   }
 }
 private enum __SwiftMutator {

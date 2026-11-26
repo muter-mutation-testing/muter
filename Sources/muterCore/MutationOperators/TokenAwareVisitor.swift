@@ -6,7 +6,10 @@ class TokenAwareVisitor: MuterVisitor {
 
     override func visit(_ node: BinaryOperatorExprSyntax) -> SyntaxVisitorContinueKind {
         let `operator` = node.operator
-        guard canMutateToken(`operator`),
+        // Outside a body (a stored property, a default parameter value, the top level of a file), the
+        // mutant would wrap declarations in an `if` at the top level, which does not compile.
+        guard node.isInsideABody,
+              canMutateToken(`operator`),
               let oppositeOperator = oppositeOperator(for: `operator`.tokenKind)
         else {
             return .visitChildren
