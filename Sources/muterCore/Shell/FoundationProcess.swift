@@ -14,9 +14,24 @@ extension Foundation.Process {
         url: String,
         arguments args: [String]
     ) -> Data? {
+        runProcess(url: url, arguments: args, includingStandardError: false)
+    }
+
+    func runProcessIncludingStandardError(
+        url: String,
+        arguments args: [String]
+    ) -> Data? {
+        runProcess(url: url, arguments: args, includingStandardError: true)
+    }
+
+    private func runProcess(
+        url: String,
+        arguments args: [String],
+        includingStandardError: Bool
+    ) -> Data? {
         let pipe = Pipe()
         standardOutput = pipe
-        standardError = FileHandle.nullDevice
+        standardError = includingStandardError ? pipe : FileHandle.nullDevice
         executableURL = URL(fileURLWithPath: url)
         arguments = args
 

@@ -18,6 +18,13 @@ protocol MuterProcess: AnyObject {
         arguments args: [String]
     ) -> Data?
 
+    /// Like `runProcess(url:arguments:)`, but standard error goes to the same output, so a command's error
+    /// messages are not lost.
+    func runProcessIncludingStandardError(
+        url: String,
+        arguments args: [String]
+    ) -> Data?
+
     func run() throws
 
     func waitUntilExit()
@@ -32,6 +39,21 @@ protocol MuterProcess: AnyObject {
 }
 
 extension MuterProcess {
+    func runProcessIncludingStandardError(
+        url: String,
+        arguments args: [String]
+    ) -> Data? {
+        runProcess(url: url, arguments: args)
+    }
+
+    func runProcessIncludingStandardError(
+        url: String,
+        arguments args: [String]
+    ) -> String? {
+        let output: Data? = runProcessIncludingStandardError(url: url, arguments: args)
+        return output.flatMap { String(data: $0, encoding: .utf8) }
+    }
+
     /// SIGKILL this process and every transitive descendant. `interrupt()`/`terminate()` signal only
     /// the launched command (`swift test` / `xcodebuild`), not the test-runner grandchildren it spawns
     /// (`swiftpm-testing-helper`, `xctest`); those survive, keep spinning at ~100% CPU, and accumulate

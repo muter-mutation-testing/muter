@@ -47,7 +47,7 @@ struct BuildForTesting: MutationStep {
         _ configuration: MuterConfiguration
     ) throws {
         let buildProcess = process()
-        guard let output: String = buildProcess.runProcess(
+        guard let output: String = buildProcess.runProcessIncludingStandardError(
             url: configuration.testCommandExecutable,
             arguments: configuration.buildForTestingArguments
         ).flatMap(\.nilIfEmpty)
