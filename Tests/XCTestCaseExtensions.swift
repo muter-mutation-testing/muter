@@ -76,7 +76,7 @@ class MuterTestCase: XCTestCase {
                 } else {
                     return newSchemataMappings
                 }
-            }.mergeByFileName()
+            }.mergeByFilePath().numberedMutants()
     }
 
     func assertThrowsMuterError(

@@ -2,6 +2,8 @@ import Foundation
 
 let isMuterRunningKey = "IS_MUTER_RUNNING"
 let isMuterRunningValue = "YES"
+/// The environment variable that holds the number of the mutant to switch on.
+let activeMutantKey = "MUTER_ACTIVE_MUTANT"
 
 enum MuterProcessFactory {
     /// macOS system tool directories that SwiftPM, xcodebuild, and the

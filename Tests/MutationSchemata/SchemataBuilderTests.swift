@@ -51,6 +51,7 @@ final class SchemataBuilderTests: MuterTestCase {
             .enumerated()
             .compactMap {
                 try MutationSchema.make(
+                    id: $0.offset + 1,
                     filePath: "/path/to/file",
                     syntaxMutation: $0.element,
                     position: MutationPosition(

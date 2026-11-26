@@ -16,7 +16,7 @@ static func validate(_ type: ParsableArguments.Type, parent: InputKey?)
     return nil
   }
   do {
-    if __SwiftMutator.environment["file_RemoveSideEffects_17_71_597"] != nil {
+    if __SwiftMutator.activeMutant == 0 {
       return InvalidDecoderError(type: type)
     } else {
       let _ = try type.init(from: Validator(argumentKeys: argumentKeys))
@@ -34,5 +34,7 @@ static func validate(_ type: ParsableArguments.Type, parent: InputKey?)
   }
 }
 private enum __SwiftMutator {
-  static let environment = ProcessInfo.processInfo.environment
+  static let activeMutant = ProcessInfo.processInfo.environment["MUTER_ACTIVE_MUTANT"].flatMap {
+    Int($0)
+  }
 }

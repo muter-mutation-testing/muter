@@ -193,7 +193,7 @@ struct MutationTestingDelegate: MutationTestingIODelegate {
         at path: URL
     ) async throws {
         let updated = testRun.updateEnvironmentVariable(
-            setting: schemata.id
+            activeMutant: schemata.id
         )
 
         let data = try PropertyListSerialization.data(
@@ -225,13 +225,13 @@ struct MutationTestingDelegate: MutationTestingIODelegate {
         process.environment?[isMuterRunningKey] = isMuterRunningValue
 
         if schemata != .null {
-            process.environment?[schemata.id] = "YES"
+            process.environment?[activeMutantKey] = String(schemata.id)
             // Also forward the activation var into an iOS Simulator test host. When xcodebuild spawns
             // tests in the simulator, CoreSimulator only propagates env vars prefixed `SIMCTL_CHILD_`
             // into the simulated process; a bare var set on this (parent) process never reaches the
             // test host, so the mutant wouldn't activate. Harmless for non-simulator (swift/macOS) runs,
             // which read the bare var directly. Complements the xctestrun `EnvironmentVariables` path.
-            process.environment?["SIMCTL_CHILD_\(schemata.id)"] = "YES"
+            process.environment?["SIMCTL_CHILD_\(activeMutantKey)"] = String(schemata.id)
         }
 
         process.arguments = testCommandArguments

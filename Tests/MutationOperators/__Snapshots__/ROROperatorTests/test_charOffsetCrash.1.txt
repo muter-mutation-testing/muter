@@ -1,5 +1,5 @@
 func check(_ value: String) {
-  if __SwiftMutator.environment["file_RelationalOperatorReplacement_2_14_43"] != nil {
+  if __SwiftMutator.activeMutant == 0 {
     if value != "バルーンの表示判定" {
 
     }
@@ -10,5 +10,7 @@ func check(_ value: String) {
   }
 }
 private enum __SwiftMutator {
-  static let environment = ProcessInfo.processInfo.environment
+  static let activeMutant = ProcessInfo.processInfo.environment["MUTER_ACTIVE_MUTANT"].flatMap {
+    Int($0)
+  }
 }

@@ -68,8 +68,10 @@ enum MutationSwitch {
         ])
     }
 
+    /// `__SwiftMutator.activeMutant == <id>`. `activeMutant` is the number in `MUTER_ACTIVE_MUTANT`,
+    /// read once for each file (see `MuterRewriter`), so each check is one integer compare.
     private static func buildSchemataCondition(
-        withId id: String
+        withId id: Int
     ) -> ConditionElementListSyntax {
         ConditionElementListSyntax([
             ConditionElementSyntax(
@@ -77,59 +79,25 @@ enum MutationSwitch {
                     SequenceExprSyntax(
                         elements: ExprListSyntax([
                             ExprSyntax(
-                                SubscriptCallExprSyntax(
-                                    calledExpression:
-                                    // `__SwiftMutator.environment`, the copy MuterRewriter appends to
-                                    // the file. Reading `ProcessInfo.processInfo.environment` here
-                                    // rebuilt the dictionary on every execution of the block.
-                                    MemberAccessExprSyntax(
-                                        base: MemberAccessExprSyntax(
-                                            period: .periodToken(presence: .missing),
-                                            declName: DeclReferenceExprSyntax(
-                                                baseName: .identifier(MuterRewriter.environmentCacheName)
-                                            )
-                                        ),
-                                        declName: DeclReferenceExprSyntax(
-                                            baseName: .identifier("environment")
-                                        )
+                                MemberAccessExprSyntax(
+                                    base: DeclReferenceExprSyntax(
+                                        baseName: .identifier(MuterRewriter.environmentCacheName)
                                     ),
-                                    leftSquare: .leftSquareToken(),
-                                    arguments:
-                                    LabeledExprListSyntax([
-                                        LabeledExprSyntax(
-                                            label: nil,
-                                            colon: nil,
-                                            expression: StringLiteralExprSyntax(
-                                                openingQuote: .stringQuoteToken(),
-                                                segments: StringLiteralSegmentListSyntax(
-                                                    [
-                                                        .stringSegment(
-                                                            StringSegmentSyntax(
-                                                                content:
-                                                                .stringSegment(id)
-                                                            )
-                                                        ),
-                                                    ]
-                                                ),
-                                                closingQuote: .stringQuoteToken()
-                                            )
-                                        ),
-                                    ]),
-                                    rightSquare: .rightSquareToken(),
-                                    trailingClosure: nil,
-                                    additionalTrailingClosures: []
+                                    declName: DeclReferenceExprSyntax(
+                                        baseName: .identifier("activeMutant")
+                                    )
                                 )
                             ),
                             ExprSyntax(
                                 BinaryOperatorExprSyntax(
-                                    operator: .binaryOperator("!=")
+                                    operator: .binaryOperator("==")
                                         .withLeadingTrivia(.spaces(1))
                                         .withTrailingTrivia(.spaces(1))
                                 )
                             ),
                             ExprSyntax(
-                                NilLiteralExprSyntax(
-                                    nilKeyword: .keyword(.nil)
+                                IntegerLiteralExprSyntax(
+                                    literal: .integerLiteral(String(id))
                                         .withTrailingTrivia(.spaces(1))
                                 )
                             ),

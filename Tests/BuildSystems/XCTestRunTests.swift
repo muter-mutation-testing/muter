@@ -9,22 +9,18 @@ final class XCTestRunTests: MuterTestCase {
     func test_updateEnvironmentVariable() throws {
         sut = try muterCore.XCTestRun(loadPlist(for: "project"))
 
-        let actualPlist = sut.updateEnvironmentVariable(
-            setting: "keyToBeSet"
-        )
+        let actualPlist = sut.updateEnvironmentVariable(activeMutant: 7)
 
         let project = actualPlist["iOSProjectTests"] as? [String: AnyHashable]
         let environmentVariables = project?["EnvironmentVariables"] as? [String: AnyHashable]
-        XCTAssertNotNil(environmentVariables?["keyToBeSet"])
+        XCTAssertEqual(environmentVariables?[activeMutantKey], "7")
         XCTAssertNotNil(environmentVariables?[isMuterRunningKey])
     }
 
     func test_updateEnvironmentVariable_forTestPlan() throws {
         sut = try muterCore.XCTestRun(loadPlist(for: "projectWithTestPlan"))
 
-        let actualPlist = sut.updateEnvironmentVariable(
-            setting: "keyToBeSet"
-        )
+        let actualPlist = sut.updateEnvironmentVariable(activeMutant: 7)
 
         let testConfigurations = actualPlist["TestConfigurations"] as? [AnyHashable]
         let testConfiguration = testConfigurations?.first as? [String: AnyHashable]
@@ -32,7 +28,7 @@ final class XCTestRunTests: MuterTestCase {
         let testTarget = testTargets?.first as? [String: AnyHashable]
         let environmentVariables = testTarget?["EnvironmentVariables"] as? [String: AnyHashable]
 
-        XCTAssertNotNil(environmentVariables?["keyToBeSet"])
+        XCTAssertEqual(environmentVariables?[activeMutantKey], "7")
         XCTAssertNotNil(environmentVariables?[isMuterRunningKey])
     }
 
@@ -43,11 +39,11 @@ final class XCTestRunTests: MuterTestCase {
             "SomeTestTarget": ["BlueprintName": "SomeTestTarget"] as [String: AnyHashable]
         ])
 
-        let actualPlist = sut.updateEnvironmentVariable(setting: "keyToBeSet")
+        let actualPlist = sut.updateEnvironmentVariable(activeMutant: 7)
 
         let target = actualPlist["SomeTestTarget"] as? [String: AnyHashable]
         let environmentVariables = target?["EnvironmentVariables"] as? [String: AnyHashable]
-        XCTAssertEqual(environmentVariables?["keyToBeSet"], isMuterRunningValue)
+        XCTAssertEqual(environmentVariables?[activeMutantKey], "7")
         XCTAssertEqual(environmentVariables?[isMuterRunningKey], isMuterRunningValue)
     }
 
@@ -58,7 +54,7 @@ final class XCTestRunTests: MuterTestCase {
             ]
         ])
 
-        let actualPlist = sut.updateEnvironmentVariable(setting: "keyToBeSet")
+        let actualPlist = sut.updateEnvironmentVariable(activeMutant: 7)
 
         let testConfigurations = actualPlist["TestConfigurations"] as? [AnyHashable]
         let testConfiguration = testConfigurations?.first as? [String: AnyHashable]
@@ -66,7 +62,7 @@ final class XCTestRunTests: MuterTestCase {
         let testTarget = testTargets?.first as? [String: AnyHashable]
         let environmentVariables = testTarget?["EnvironmentVariables"] as? [String: AnyHashable]
 
-        XCTAssertEqual(environmentVariables?["keyToBeSet"], isMuterRunningValue)
+        XCTAssertEqual(environmentVariables?[activeMutantKey], "7")
         XCTAssertEqual(environmentVariables?[isMuterRunningKey], isMuterRunningValue)
     }
 

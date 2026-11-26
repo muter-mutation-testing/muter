@@ -97,6 +97,24 @@ final class SchemataMutationMapping {
         mappings[CodeBlockKey(codeBlockSyntax)]
     }
 
+    /// Numbers this file's mutants in order, from `first`, and returns the next free number.
+    func numberMutants(from first: Int) -> Int {
+        var numbers: [String: Int] = [:]
+        for (offset, schema) in mutationSchemata.enumerated() {
+            numbers[schema.positionKey] = first + offset
+        }
+
+        mappings = mappings.mapValues { schemata in
+            schemata.map { schema in
+                var numbered = schema
+                numbered.id = numbers[schema.positionKey] ?? schema.id
+                return numbered
+            }
+        }
+
+        return first + numbers.count
+    }
+
     // Key-based add for merging two mappings without reconstructing a syntax node from text.
     fileprivate func add(
         _ key: CodeBlockKey,
@@ -171,18 +189,32 @@ func + (
 }
 
 extension [SchemataMutationMapping] {
-    func mergeByFileName() -> Self {
-        var result = [FileName: SchemataMutationMapping]()
+    /// One mapping for each file. The key is the whole path: two files can have the same name, and
+    /// merging them by name put one file's mutants in the other file's mapping, where they were
+    /// never applied.
+    func mergeByFilePath() -> Self {
+        var result = [FilePath: SchemataMutationMapping]()
 
         for map in self {
-            if let exists = result[map.fileName] {
-                result[map.fileName] = exists + map
+            if let exists = result[map.filePath] {
+                result[map.filePath] = exists + map
             } else {
-                result[map.fileName] = map
+                result[map.filePath] = map
             }
         }
 
         return Array(result.values)
+    }
+
+    /// The mappings in file path order, with their mutants numbered from 1 across all files.
+    func numberedMutants() -> Self {
+        let sorted = sorted { $0.filePath < $1.filePath }
+        var next = 1
+        for mapping in sorted {
+            next = mapping.numberMutants(from: next)
+        }
+
+        return sorted
     }
 }
 

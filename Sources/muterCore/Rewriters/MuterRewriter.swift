@@ -4,7 +4,7 @@ import SwiftSyntax
 final class MuterRewriter: SyntaxRewriter {
     private let schemataMappings: SchemataMutationMapping
 
-    /// The file-private type holding the one copy of the environment every switch in a file reads.
+    /// The file-private type holding the active mutant number that every switch in a file reads.
     static let environmentCacheName = "__SwiftMutator"
 
     required init(_ schemataMappings: SchemataMutationMapping) {
@@ -17,14 +17,14 @@ final class MuterRewriter: SyntaxRewriter {
     /// `main.swift`, where a global would not be initialised until execution reached it.
     override func visit(_ node: SourceFileSyntax) -> SourceFileSyntax {
         let rewritten = super.visit(node)
-        guard rewritten.description.contains("\(Self.environmentCacheName).environment[") else {
+        guard rewritten.description.contains("\(Self.environmentCacheName).activeMutant ==") else {
             return rewritten
         }
 
         let cache = Parser.parse(source: """
 
         fileprivate enum \(Self.environmentCacheName) {
-            static let environment = ProcessInfo.processInfo.environment
+            static let activeMutant = ProcessInfo.processInfo.environment["\(activeMutantKey)"].flatMap { Int($0) }
         }
 
         """).statements

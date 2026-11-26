@@ -65,6 +65,7 @@ final class MutationTestingDelegateTests: MuterTestCase {
         )
 
         let schemata = try MutationSchema.make(
+            id: 3,
             filePath: "/path/fileName",
             position: .init(line: 1)
         )
@@ -75,10 +76,10 @@ final class MutationTestingDelegateTests: MuterTestCase {
             and: FileHandle(fileDescriptor: 0)
         )
 
-        XCTAssertEqual(testProcess.environment?[schemata.id], "YES")
+        XCTAssertEqual(testProcess.environment?[activeMutantKey], "3")
         // Also forwarded with the SIMCTL_CHILD_ prefix so it reaches an iOS Simulator test host
         // (CoreSimulator only propagates SIMCTL_CHILD_-prefixed vars into the simulated process).
-        XCTAssertEqual(testProcess.environment?["SIMCTL_CHILD_\(schemata.id)"], "YES")
+        XCTAssertEqual(testProcess.environment?["SIMCTL_CHILD_\(activeMutantKey)"], "3")
         XCTAssertEqual(testProcess.environment?[isMuterRunningKey], isMuterRunningValue)
         XCTAssertEqual(testProcess.arguments, ["test", "--skip-build"])
         XCTAssertEqual(testProcess.executableURL?.path, "/tmp/swift")
