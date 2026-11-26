@@ -2,8 +2,6 @@
 
 echo "🦕🦕🦕🦕🦕🦕🦕🦕 Regression Testing has started 🦕🦕🦕🦕🦕🦕🦕🦕"
 
-# TEMPORARY: diagnose coverage on Bitrise
-export MUTER_DEBUG_COVERAGE=1
 muterdir="../../.build/debug"
 samplesdir="../../RegressionTests/samples"
 
