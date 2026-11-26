@@ -97,7 +97,34 @@ If you're curious about how a mutation score is different than test code coverag
 
 ## Installation
 
-Muter is available through [Homebrew](https://brew.sh/), from Muter's own tap. Homebrew loads a formula from a third-party tap only after you trust it. Run the following commands to install Muter:
+You can install Muter with [mise](https://mise.jdx.dev/) or with [Homebrew](https://brew.sh/). Muter runs your tests, so you need Xcode or a Swift toolchain.
+
+### mise
+
+Each Muter release has a prebuilt universal macOS binary (arm64 and x86_64). mise downloads it with its `github` backend, in a few seconds.
+
+To install Muter for your user:
+
+```sh
+mise use --global github:muter-mutation-testing/muter@17
+```
+
+To pin Muter for a project, add it to the project's `mise.toml`:
+
+```toml
+[tools]
+"github:muter-mutation-testing/muter" = "17"
+```
+
+Then run `mise install` in the project.
+
+Use an exact version, such as `17`. mise can hide a release for some days after it is published (its `minimum_release_age` setting), so `latest` can still install the previous release.
+
+To build Muter from source with mise instead, use the `spm` backend: `spm:muter-mutation-testing/muter@17`. The build takes a few minutes.
+
+### Homebrew
+
+Muter is available from its own Homebrew tap. Homebrew builds Muter from source, which takes a few minutes. Homebrew loads a formula from a third-party tap only after you trust it. Run the following commands to install Muter:
 
 ```sh
 brew tap muter-mutation-testing/formulae
