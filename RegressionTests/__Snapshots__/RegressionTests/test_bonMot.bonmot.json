@@ -1054,6 +1054,21 @@
         },
         {
           "mutationPoint" : {
+            "mutationOperatorId" : "RemoveSideEffects",
+            "position" : {
+              "column" : 50,
+              "line" : 89
+            }
+          },
+          "mutationSnapshot" : {
+            "after" : "removed line",
+            "before" : "rules.append(.styles(NamedStyles.shared))",
+            "description" : "removed line"
+          },
+          "testSuiteOutcome" : "passed"
+        },
+        {
+          "mutationPoint" : {
             "mutationOperatorId" : "SwapTernary",
             "position" : {
               "column" : 103,
@@ -1084,7 +1099,7 @@
         }
       ],
       "fileName" : "XMLBuilder.swift",
-      "mutationScore" : 93
+      "mutationScore" : 88
     },
     {
       "appliedOperators" : [
@@ -1108,8 +1123,8 @@
       "mutationScore" : 0
     }
   ],
-  "globalMutationScore" : 42,
+  "globalMutationScore" : 41,
   "numberOfKilledMutants" : 28,
   "projectCodeCoverage" : 78,
-  "totalAppliedMutationOperators" : 66
+  "totalAppliedMutationOperators" : 67
 }

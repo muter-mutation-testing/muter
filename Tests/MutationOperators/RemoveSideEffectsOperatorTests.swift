@@ -174,4 +174,59 @@ final class RemoveSideEffectsOperatorTests: MuterTestCase {
             )
         }
     }
+
+    // MARK: Closures (#117)
+
+    private func removedStatements(in code: String) throws -> [String] {
+        let source = try sourceCode(code)
+        let visitor = RemoveSideEffectsOperator.Visitor(
+            sourceCodeInfo: SourceCodeInfo(path: "/path/to/file", code: source)
+        )
+
+        visitor.walk(source)
+
+        return visitor.schemataMappings.mutationSchemata.map(\.snapshot.before).sorted()
+    }
+
+    func test_removesSideEffectsInsideAForEachClosure() throws {
+        let removed = try removedStatements(in: """
+        func configure(_ views: [Int: TextView]) {
+            views.map { $0.value }.forEach {
+                $0.enabledTextCheckingTypes = 0
+                $0.setNeedsLayout()
+                $0.configure(true)
+            }
+        }
+        """)
+
+        XCTAssertTrue(removed.contains("$0.setNeedsLayout()"), "\(removed)")
+        XCTAssertTrue(removed.contains("$0.configure(true)"), "\(removed)")
+    }
+
+    func test_doesNotRemoveTheOnlyStatementOfAClosure() throws {
+        // A one-statement closure can return that statement's value implicitly.
+        let removed = try removedStatements(in: """
+        func values(_ numbers: [Int]) -> [Int] {
+            let doubled = numbers.map { compute($0) }
+            return doubled
+        }
+        """)
+
+        XCTAssertFalse(removed.contains("compute($0)"), "\(removed)")
+    }
+
+    func test_doesNotRemoveStatementsOfAClosureThatHasAGuard() throws {
+        // `guard let` declares names that later statements use, so removing statements could break the build.
+        let removed = try removedStatements(in: """
+        func keys(_ children: [Child]) -> [Key] {
+            children.compactMap { child in
+                guard let label = child.label else { return nil }
+                log(label)
+                return Key(label)
+            }
+        }
+        """)
+
+        XCTAssertFalse(removed.contains("log(label)"), "\(removed)")
+    }
 }

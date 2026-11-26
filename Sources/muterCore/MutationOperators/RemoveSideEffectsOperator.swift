@@ -71,6 +71,25 @@ enum RemoveSideEffectsOperator {
             return super.visit(node)
         }
 
+        /// Statements inside a closure, for example the body passed to `forEach`. Two rules keep the
+        /// mutants compiling, as for function bodies:
+        /// - A closure with one statement can return that statement's value implicitly, so removing it
+        ///   would change the closure's type. Only closures with more than one statement are mutated.
+        /// - A closure that contains `guard`, `for`, `while`, `repeat` or `do` is skipped, because a
+        ///   `guard let` declares names that later statements use. Those statements' own bodies are
+        ///   mutated instead.
+        override func visit(_ node: ClosureExprSyntax) -> SyntaxVisitorContinueKind {
+            guard node.statements.count > 1,
+                  !containsNodesThatWillBeVisited(node.statements)
+            else {
+                return super.visit(node)
+            }
+
+            removeSideEffectAt(node.statements)
+
+            return super.visit(node)
+        }
+
         override func visit(_ node: FunctionDeclSyntax) -> SyntaxVisitorContinueKind {
             guard let body = node.body,
                   !node.hasImplicitReturn,
@@ -85,10 +104,12 @@ enum RemoveSideEffectsOperator {
         }
 
         private func removeSideEffectAt(_ body: CodeBlockSyntax) {
-            let statements = body.statements
-            for statement in body.statements where statementContainsMutableToken(statement) {
-                let mutatedFunctionStatements = body
-                    .statements
+            removeSideEffectAt(body.statements)
+        }
+
+        private func removeSideEffectAt(_ statements: CodeBlockItemListSyntax) {
+            for statement in statements where statementContainsMutableToken(statement) {
+                let mutatedFunctionStatements = statements
                     .exclude { $0.description == statement.description }
 
                 let newCodeBlockItemList = CodeBlockItemListSyntax(mutatedFunctionStatements)
@@ -169,6 +190,10 @@ enum RemoveSideEffectsOperator {
         // This is to avoid false positives for code block items such as do statement
         // We are going to visit them individually
         private func containsNodesThatWillBeVisited(_ node: CodeBlockSyntax) -> Bool {
+            containsNodesThatWillBeVisited(node.statements)
+        }
+
+        private func containsNodesThatWillBeVisited(_ statements: CodeBlockItemListSyntax) -> Bool {
             let skippableNodes: [SyntaxProtocol.Type] = [
                 ForStmtSyntax.self,
                 GuardStmtSyntax.self,
@@ -176,7 +201,7 @@ enum RemoveSideEffectsOperator {
                 RepeatStmtSyntax.self,
                 DoStmtSyntax.self,
             ]
-            let syntaxNodes = node.statements.map(\.item._syntaxNode)
+            let syntaxNodes = statements.map(\.item._syntaxNode)
             for item in syntaxNodes {
                 for s in skippableNodes {
                     if item.is(s) {
