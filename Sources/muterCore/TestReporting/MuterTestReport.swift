@@ -20,7 +20,7 @@ struct MuterTestReport {
         globalMutationScore = mutationScore(from: outcome.mutations.map { $0.testSuiteOutcome })
         totalAppliedMutationOperators = outcome.mutations.count
         numberOfKilledMutants = outcome.mutations
-            .count { $0.testSuiteOutcome == .failed || $0.testSuiteOutcome == .runtimeError }
+            .count { $0.testSuiteOutcome.isKilled }
         projectCodeCoverage = outcome.coverage == .null ? nil : outcome.coverage.percent
         fileReports = MuterTestReport.fileReports(from: outcome)
         timeElapsed = outcome.testDuration.formatted()
@@ -49,9 +49,7 @@ extension MuterTestReport {
                 return OperatorReport(
                     mutationOperator: id,
                     numberOfMutants: mutants.count,
-                    numberOfKilledMutants: mutants.count {
-                        $0.testSuiteOutcome == .failed || $0.testSuiteOutcome == .runtimeError
-                    },
+                    numberOfKilledMutants: mutants.count { $0.testSuiteOutcome.isKilled },
                     numberOfFailedTests: counts.reduce(0, +),
                     averageNumberOfFailedTests: average(counts)
                 )

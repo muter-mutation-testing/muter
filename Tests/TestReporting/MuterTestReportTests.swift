@@ -47,7 +47,7 @@ final class MuterTestReportTests: MuterTestCase {
 
     func test_mutationScore() {
         let expectedMutationScores = [
-            "/tmp/file1.swift": 66,
+            "/tmp/file1.swift": 67,
             "/tmp/file2.swift": 100,
             "/tmp/file3.swift": 33,
             "/tmp/file 4.swift": 0,

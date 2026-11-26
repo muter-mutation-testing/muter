@@ -23,8 +23,14 @@ enum TestSuiteOutcome: String, Codable, CaseIterable {
         case .noCoverage:
             return "skipped (no coverage)"
         case .timeout:
-            return "time out"
+            return "mutant killed (time out)"
         }
+    }
+
+    /// The tests detected the mutant: a test failed, the tests crashed, or they did not finish in
+    /// time. A mutant that makes the code loop forever is detected, like in Stryker and PIT.
+    var isKilled: Bool {
+        self == .failed || self == .runtimeError || self == .timeout
     }
 }
 
