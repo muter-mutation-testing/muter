@@ -50,30 +50,44 @@ extension BuildSystemCoverage {
 
     func functionsCoverage(_ configuration: MuterConfiguration) -> FunctionsCoverage {
         guard let buildDirectory = buildDirectory(configuration) else {
+            CoverageDiagnostics.warn("The build directory was not found.")
             return .null
         }
+        CoverageDiagnostics.debug("build directory: \(buildDirectory)")
 
         guard let xctestExecutable = xctestExecutable(at: buildDirectory) else {
+            CoverageDiagnostics.warn("No .xctest bundle was found in \(buildDirectory).")
             return .null
         }
+        CoverageDiagnostics.debug("xctest bundle: \(xctestExecutable)")
 
         guard let testBinary = testBinary(at: xctestExecutable) else {
+            CoverageDiagnostics.warn("No test binary was found in \(xctestExecutable).")
             return .null
         }
+        CoverageDiagnostics.debug("test binary: \(testBinary)")
 
         guard let testProfile = testProfileData(at: buildDirectory) else {
+            CoverageDiagnostics.warn("No .profdata file was found in \(buildDirectory).")
             return .null
         }
+        CoverageDiagnostics.debug("profile data: \(testProfile)")
 
         guard let reportJson = llvmCovJsonReport(
             withExecutableAt: testBinary,
             coverageProfile: testProfile
         )?.data(using: .utf8)
         else {
+            CoverageDiagnostics.warn("llvm-cov export gave no output for \(testBinary).")
             return .null
         }
+        CoverageDiagnostics.debug("llvm-cov export: \(reportJson.count) bytes")
 
-        guard let coverageData = try? JSONDecoder().decode(LLVMCoverage.self, from: reportJson) else {
+        let coverageData: LLVMCoverage
+        do {
+            coverageData = try JSONDecoder().decode(LLVMCoverage.self, from: reportJson)
+        } catch {
+            CoverageDiagnostics.warn("The llvm-cov export could not be decoded: \(error)")
             return .null
         }
 
