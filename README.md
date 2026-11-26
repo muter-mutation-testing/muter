@@ -313,6 +313,41 @@ func f() {
 }
 ```
 
+Add mutation operator names to turn off only those operators. Separate the names with commas or spaces. `muter:enable` takes the same names.
+
+```swift
+// muter:disable RemoveSideEffects, SwapTernary
+func log() {
+    print(isDebug ? "debug" : "release")
+}
+// muter:enable RemoveSideEffects, SwapTernary
+```
+
+Use `next-line` to turn off only the mutants that start on the next line:
+
+```swift
+// muter:disable next-line RelationalOperatorReplacement
+let isEmpty = items.count == 0
+```
+
+Write a reason after a colon. Muter ignores the text after the colon:
+
+```swift
+// muter:disable next-line: this only changes a log message
+logger.info("done")
+```
+
+The operator names are:
+
+- `RelationalOperatorReplacement`
+- `RemoveSideEffects`
+- `ChangeLogicalConnector`
+- `SwapTernary`
+- `SwapBooleanLiteral`
+- `SwapRangeOperator`
+
+A comment without a known operator name applies to all operators.
+
 ## Mutant Schemata
 
 Muter uses a technique called mutant schemata. This builds a copy of your code with all known mutations inserted at once, but they are disabled by flags. Then your tests are run repeatedly, activating a different mutant each time via environment variables. This is a huge win performance, but comes with a caveat:

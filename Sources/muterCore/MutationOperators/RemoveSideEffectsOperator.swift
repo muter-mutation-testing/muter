@@ -121,13 +121,12 @@ enum RemoveSideEffectsOperator {
                     description: "removed line"
                 )
 
-                checkNodeForDisableTag(statement)
-
                 add(
                     mutation: newCodeBlockItemList,
                     with: statements,
                     at: position,
-                    snapshot: snapshot
+                    snapshot: snapshot,
+                    startLine: startLocation(for: statement).line
                 )
             }
         }
