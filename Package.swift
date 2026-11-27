@@ -29,8 +29,13 @@ let package = Package(
             dependencies: ["muterCore"]
         ),
         .target(
+            name: "CIndexStore",
+            path: "Sources/CIndexStore"
+        ),
+        .target(
             name: "muterCore",
             dependencies: [
+                "CIndexStore",
                 .product(name: "Pathos", package: "Pathos"),
                 .product(name: "Rainbow", package: "Rainbow"),
                 .product(name: "Plot", package: "plot"),
