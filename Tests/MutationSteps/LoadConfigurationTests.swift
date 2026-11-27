@@ -44,6 +44,55 @@ final class LoadConfigurationTests: MuterTestCase {
         )
     }
 
+    // The legacy file was read from `/muter.conf.json`, at the root of the disk. The spy
+    // returns its contents for any path, so only the path shows it.
+    func test_migration_readsAndReplacesTheLegacyFileInTheProject() async throws {
+        fileManager.fileExistsToReturn = [true, false]
+        fileManager.fileContentsToReturn = loadJSONConfiguration()
+
+        _ = try await sut.run(with: state)
+
+        let legacy = "\(fixturesDirectory)/\(MuterConfiguration.legacyFileNameWithExtension)"
+        XCTAssertEqual(fileManager.contentsAtPath, [legacy])
+        XCTAssertEqual(fileManager.paths, [
+            "\(fixturesDirectory)/\(MuterConfiguration.fileNameWithExtension)",
+            legacy,
+        ])
+    }
+
+    func test_migration_inACustomFolder_staysThere() async throws {
+        fileManager.fileExistsToReturn = [true, false]
+        fileManager.fileContentsToReturn = loadJSONConfiguration()
+        state.runOptions = .make(configurationURL: URL(fileURLWithPath: "/some/custom/path"))
+
+        _ = try await sut.run(with: state)
+
+        XCTAssertEqual(fileManager.contentsAtPath, ["/some/custom/path/muter.conf.json"])
+        XCTAssertEqual(fileManager.paths, ["/some/custom/path/muter.conf.yml", "/some/custom/path/muter.conf.json"])
+    }
+
+    // Migrating would overwrite the YAML file with the legacy file's older settings.
+    func test_aYAMLFileWinsOverALegacyFile_whichStays() async throws {
+        fileManager.fileExistsToReturn = [true, true]
+        fileManager.fileContentsToReturn = loadYAMLConfiguration()
+
+        _ = try await sut.run(with: state)
+
+        XCTAssertEqual(fileManager.contentsAtPath, ["\(fixturesDirectory)/\(MuterConfiguration.fileNameWithExtension)"])
+        XCTAssertFalse(fileManager.methodCalls.contains("removeItem(atPath:)"))
+        XCTAssertFalse(fileManager.methodCalls.contains("createFile(atPath:contents:attributes:)"))
+    }
+
+    func test_aFailedMigration_keepsTheLegacyFile() async throws {
+        fileManager.fileExistsToReturn = [true, false]
+        fileManager.fileContentsToReturn = loadJSONConfiguration()
+        fileManager.createFileToReturn = false
+
+        _ = try await sut.run(with: state)
+
+        XCTAssertFalse(fileManager.methodCalls.contains("removeItem(atPath:)"))
+    }
+
     private func assertConfigurationsEquals(
         _ actual: Data?,
         _ expected: Data?

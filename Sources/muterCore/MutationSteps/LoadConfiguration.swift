@@ -13,12 +13,13 @@ struct LoadConfiguration: MutationStep {
         do {
             let hasJSON = hasJsonInProjectAtPath(configurationPath)
             let hasYAML = hasYamlInProjectAtPath(configurationPath)
-            let canLoadConfiguration = hasJSON || hasYAML
+            // A YAML file wins over a legacy JSON file beside it, which migrating would overwrite.
+            let isLegacy = hasJSON && !hasYAML
 
-            guard canLoadConfiguration,
+            guard hasYAML || isLegacy,
                   let configurationData = loadConfigurationDataAtPath(
                       configurationPath,
-                      legacy: hasJSON
+                      legacy: isLegacy
                   )
             else {
                 throw MuterError.configurationParsingError(
@@ -28,7 +29,7 @@ struct LoadConfiguration: MutationStep {
 
             let configuration = try MuterConfiguration(from: configurationData)
 
-            if hasJSON {
+            if isLegacy {
                 try migrateToYAMLAtPath(configurationPath, configurationData)
             }
 
@@ -107,13 +108,13 @@ struct LoadConfiguration: MutationStep {
     }
 
     private func loadConfigurationDataAtPath(
-        _ currentDirectory: String,
+        _ path: String,
         legacy: Bool
     ) -> Data? {
         fileManager.contents(
             atPath: legacy
-                ? "/\(MuterConfiguration.legacyFileNameWithExtension)"
-                : currentDirectory
+                ? "\(path.pathWithoutFileName)/\(MuterConfiguration.legacyFileNameWithExtension)"
+                : path
         )
     }
 
@@ -123,14 +124,16 @@ struct LoadConfiguration: MutationStep {
     ) throws {
         let configuration = try JSONDecoder().decode(MuterConfiguration.self, from: configurationData)
 
-        try fileManager
-            .removeItem(atPath: "\(path.pathWithoutFileName)/\(MuterConfiguration.legacyFileNameWithExtension)")
-
-        _ = fileManager.createFile(
+        // Write the YAML file first, so the settings are not lost if that fails.
+        let wrote = fileManager.createFile(
             atPath: "\(path.pathWithoutFileName)/\(MuterConfiguration.fileNameWithExtension)",
             contents: configuration.asData,
             attributes: nil
         )
+        guard wrote else { return }
+
+        try fileManager
+            .removeItem(atPath: "\(path.pathWithoutFileName)/\(MuterConfiguration.legacyFileNameWithExtension)")
     }
 
     private func legacyPath(_ path: String) -> String {
