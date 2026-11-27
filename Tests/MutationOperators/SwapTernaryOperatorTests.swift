@@ -1,4 +1,6 @@
 @testable import muterCore
+import SwiftParser
+import SwiftSyntax
 import TestingExtensions
 import XCTest
 
@@ -27,7 +29,7 @@ final class SwapTernaryOperatorTests: MuterTestCase {
                     .make(
                         filePath: sampleCode.path,
                         mutationOperatorId: .swapTernary,
-                        syntaxMutation: "\n    return a  ? \"false\" :  \"true\" ",
+                        syntaxMutation: "\n    return a ? \"false\" : \"true\"",
                         position: MutationPosition(
                             utf8Offset: 199,
                             line: 10,
@@ -35,7 +37,7 @@ final class SwapTernaryOperatorTests: MuterTestCase {
                         ),
                         snapshot: MutationOperator.Snapshot(
                             before: "a ? \"true\" : \"false\"",
-                            after: "a  ? \"false\" :  \"true\"",
+                            after: "a ? \"false\" : \"true\"",
                             description: "swapped ternary operator"
                         )
                     ),
@@ -47,7 +49,7 @@ final class SwapTernaryOperatorTests: MuterTestCase {
                     .make(
                         filePath: sampleCode.path,
                         mutationOperatorId: .swapTernary,
-                        syntaxMutation: "\n    return a  ? false :  true ",
+                        syntaxMutation: "\n    return a ? false : true",
                         position: MutationPosition(
                             utf8Offset: 120,
                             line: 6,
@@ -55,7 +57,7 @@ final class SwapTernaryOperatorTests: MuterTestCase {
                         ),
                         snapshot: MutationOperator.Snapshot(
                             before: "a ? true : false",
-                            after: "a  ? false :  true",
+                            after: "a ? false : true",
                             description: "swapped ternary operator"
                         )
                     ),
@@ -81,7 +83,7 @@ final class SwapTernaryOperatorTests: MuterTestCase {
                     .make(
                         filePath: sampleNestedCode.path,
                         mutationOperatorId: .swapTernary,
-                        syntaxMutation: "\n    return a  ? false :  b ? true : false ",
+                        syntaxMutation: "\n    return a ? false : b ? true : false",
                         position: MutationPosition(
                             utf8Offset: 143,
                             line: 6,
@@ -89,14 +91,14 @@ final class SwapTernaryOperatorTests: MuterTestCase {
                         ),
                         snapshot: MutationOperator.Snapshot(
                             before: "a ? b ? true : false : false",
-                            after: "a  ? false :  b ? true : false",
+                            after: "a ? false : b ? true : false",
                             description: "swapped ternary operator"
                         )
                     ),
                     .make(
                         filePath: sampleNestedCode.path,
                         mutationOperatorId: .swapTernary,
-                        syntaxMutation: "\n    return a ? b  ? false :  true : false",
+                        syntaxMutation: "\n    return a ? b ? false : true : false",
                         position: MutationPosition(
                             utf8Offset: 136,
                             line: 6,
@@ -104,7 +106,7 @@ final class SwapTernaryOperatorTests: MuterTestCase {
                         ),
                         snapshot: MutationOperator.Snapshot(
                             before: "b ? true : false",
-                            after: "b  ? false :  true",
+                            after: "b ? false : true",
                             description: "swapped ternary operator"
                         )
                     ),
@@ -125,6 +127,35 @@ final class SwapTernaryOperatorTests: MuterTestCase {
         let rewriter = MuterRewriter(visitor.schemataMappings).rewrite(sampleNestedCode.code)
 
         AssertSnapshot(formatCode(rewriter.description))
+    }
+
+    /// A multi-line ternary keeps its lines when its branches swap. Before, every part got one
+    /// space around it, so a `//` comment after the condition hid the rest of the expression, and
+    /// the mutant did not build.
+    func test_multiLineTernaryKeepsItsLines() throws {
+        let source = try sourceCode(
+            """
+            func pick(_ flag: Bool) -> Int {
+                return flag // the flag
+                    ? 1
+                    : 2
+            }
+            """
+        )
+
+        let visitor = SwapTernaryOperator.Visitor(
+            sourceCodeInfo: .init(path: "/path/to/file", code: source)
+        )
+        visitor.walk(source)
+
+        let schema = try XCTUnwrap(visitor.schemataMappings.mutationSchemata.first)
+        XCTAssertEqual(
+            schema.mutatedCode,
+            "\n    return flag // the flag\n        ? 2\n        : 1"
+        )
+
+        let rewritten = MuterRewriter(visitor.schemataMappings).rewrite(source).description
+        XCTAssertFalse(Parser.parse(source: rewritten).hasError, rewritten)
     }
 
     func test_shouldIgnoreComplexExpressions() throws {

@@ -197,7 +197,7 @@
             }
           },
           "mutationSnapshot" : {
-            "after" : "s == .minus  ? 1 :  -1",
+            "after" : "s == .minus ? 1 : -1",
             "before" : "s == .minus ? -1 : 1",
             "description" : "swapped ternary operator"
           },
@@ -212,7 +212,7 @@
             }
           },
           "mutationSnapshot" : {
-            "after" : "e > 0  ? \"\" :  \"+\"",
+            "after" : "e > 0 ? \"\" : \"+\"",
             "before" : "e > 0 ? \"+\" : \"\"",
             "description" : "swapped ternary operator"
           },
