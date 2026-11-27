@@ -50,7 +50,7 @@ enum SwapBooleanLiteralOperator {
             node: SyntaxProtocol,
             mutatedSyntax: SyntaxProtocol,
             at mutationRange: Range<String.Index>? = nil
-        ) -> CodeBlockItemListSyntax {
+        ) -> String {
             guard let literal = Syntax(node).as(BooleanLiteralExprSyntax.self)?.literal else {
                 return super.transform(node: node, mutatedSyntax: mutatedSyntax, at: mutationRange)
             }

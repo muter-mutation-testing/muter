@@ -76,7 +76,7 @@ extension BuildSystemCoverage {
         guard let reportJson = llvmCovJsonReport(
             withExecutableAt: testBinary,
             coverageProfile: testProfile
-        )?.data(using: .utf8)
+        )
         else {
             CoverageDiagnostics.warn("llvm-cov export gave no output for \(testBinary).")
             return .null
@@ -132,7 +132,9 @@ extension BuildSystemCoverage {
         return lines.first ?? profiles.trimmed
     }
 
-    func llvmCovJsonReport(withExecutableAt executablePath: String, coverageProfile: String) -> String? {
+    /// The `llvm-cov export` JSON, as the process wrote it. The report can be hundreds of megabytes
+    /// for a large app, so it stays `Data`: each conversion to a `String` and back made a full copy.
+    func llvmCovJsonReport(withExecutableAt executablePath: String, coverageProfile: String) -> Data? {
         #if os(Linux)
         let url = process().which("llvm-cov")
         let arguments = [
@@ -153,12 +155,11 @@ extension BuildSystemCoverage {
             "--ignore-filename-regex=.build|Tests",
         ]
         #endif
-        return process().runProcess(
+        let report: Data? = process().runProcess(
             url: url ?? "",
             arguments: arguments
         )
-        .flatMap(\.nilIfEmpty)
-        .map(\.trimmed)
+        return report.flatMap { $0.isEmpty ? nil : $0 }
     }
 }
 

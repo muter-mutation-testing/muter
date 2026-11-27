@@ -73,24 +73,14 @@ func == (lhs: AbsolutePosition, rhs: MutationPosition) -> Bool {
 
 extension SyntaxProtocol {
     func mutationPosition(with sourceCodeInfo: SourceCodeInfo) -> MutationPosition {
-        let converter = SourceLocationConverter(
-            fileName: sourceCodeInfo.path,
-            tree: sourceCodeInfo.code
-        )
-
-        let sourceLocation = converter.location(for: position)
+        let sourceLocation = sourceCodeInfo.locationConverter.location(for: position)
 
         return MutationPosition(sourceLocation: sourceLocation)
     }
 
     func line(with sourceCodeInfo: SourceCodeInfo) -> Int {
-        let converter = SourceLocationConverter(
-            fileName: sourceCodeInfo.path,
-            tree: sourceCodeInfo.code
-        )
-
         let sourceLocation = startLocation(
-            converter: converter
+            converter: sourceCodeInfo.locationConverter
         )
 
         return MutationPosition(sourceLocation: sourceLocation).line

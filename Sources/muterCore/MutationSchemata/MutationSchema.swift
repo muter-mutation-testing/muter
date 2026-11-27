@@ -20,9 +20,27 @@ struct MutationSchema {
 
     let filePath: String
     let mutationOperatorId: MutationOperator.Id
-    let syntaxMutation: CodeBlockItemListSyntax
+    /// The mutated code block, as source text. Text takes much less memory than a syntax tree, and a
+    /// run can hold many thousands of mutants until they are tested.
+    let mutatedCode: String
     let position: MutationPosition
     let snapshot: MutationOperator.Snapshot
+
+    init(
+        id: Int = 0,
+        filePath: String,
+        mutationOperatorId: MutationOperator.Id,
+        mutatedCode: String,
+        position: MutationPosition,
+        snapshot: MutationOperator.Snapshot
+    ) {
+        self.id = id
+        self.filePath = filePath
+        self.mutationOperatorId = mutationOperatorId
+        self.mutatedCode = mutatedCode
+        self.position = position
+        self.snapshot = snapshot
+    }
 
     init(
         id: Int = 0,
@@ -32,12 +50,19 @@ struct MutationSchema {
         position: MutationPosition,
         snapshot: MutationOperator.Snapshot
     ) {
-        self.id = id
-        self.filePath = filePath
-        self.mutationOperatorId = mutationOperatorId
-        self.syntaxMutation = syntaxMutation
-        self.position = position
-        self.snapshot = snapshot
+        self.init(
+            id: id,
+            filePath: filePath,
+            mutationOperatorId: mutationOperatorId,
+            mutatedCode: syntaxMutation.description,
+            position: position,
+            snapshot: snapshot
+        )
+    }
+
+    /// The mutated code block, parsed again from `mutatedCode`.
+    var syntaxMutation: CodeBlockItemListSyntax {
+        Parser.parse(source: mutatedCode).statements
     }
 
     var fileName: String {
@@ -51,7 +76,7 @@ extension MutationSchema: Codable {
         id = try container.decodeIfPresent(Int.self, forKey: .id) ?? 0
         filePath = try container.decode(String.self, forKey: .filePath)
         mutationOperatorId = try container.decode(MutationOperator.Id.self, forKey: .mutationOperatorId)
-        syntaxMutation = CodeBlockItemListSyntax([])
+        mutatedCode = ""
         position = try container.decode(MutationPosition.self, forKey: .position)
         snapshot = try container.decode(MutationOperator.Snapshot.self, forKey: .snapshot)
     }
@@ -80,7 +105,7 @@ extension MutationSchema: Nullable {
         MutationSchema(
             filePath: "",
             mutationOperatorId: .ror,
-            syntaxMutation: CodeBlockItemListSyntax([]),
+            mutatedCode: "",
             position: .null,
             snapshot: .null
         )
@@ -92,7 +117,7 @@ extension MutationSchema: Equatable {
         lhs.id == rhs.id &&
             lhs.filePath == rhs.filePath &&
             lhs.mutationOperatorId == rhs.mutationOperatorId &&
-            lhs.syntaxMutation.description == rhs.syntaxMutation.description &&
+            lhs.mutatedCode == rhs.mutatedCode &&
             lhs.position == rhs.position &&
             lhs.snapshot == rhs.snapshot
     }
