@@ -127,7 +127,8 @@ enum RemoveSideEffectsOperator {
                     at: position,
                     snapshot: snapshot,
                     startLine: startLocation(for: statement).line,
-                    mutatedNode: statement
+                    mutatedNode: statement,
+                    replacement: ""
                 )
             }
         }

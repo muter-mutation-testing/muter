@@ -28,6 +28,9 @@ struct MutationSchema {
     /// Where the mutated code is, for the reports. A test plan from an older Muter does not have it.
     /// It is not part of equality: it describes the mutant, but it does not change what Muter tests.
     let range: MutationRange?
+    /// The source code that takes the place of the mutated code, for the reports. Like `range`, it
+    /// is optional and not part of equality.
+    let replacement: String?
 
     init(
         id: Int = 0,
@@ -36,7 +39,8 @@ struct MutationSchema {
         mutatedCode: String,
         position: MutationPosition,
         snapshot: MutationOperator.Snapshot,
-        range: MutationRange? = nil
+        range: MutationRange? = nil,
+        replacement: String? = nil
     ) {
         self.id = id
         self.filePath = filePath
@@ -45,6 +49,7 @@ struct MutationSchema {
         self.position = position
         self.snapshot = snapshot
         self.range = range
+        self.replacement = replacement
     }
 
     init(
@@ -54,7 +59,8 @@ struct MutationSchema {
         syntaxMutation: CodeBlockItemListSyntax,
         position: MutationPosition,
         snapshot: MutationOperator.Snapshot,
-        range: MutationRange? = nil
+        range: MutationRange? = nil,
+        replacement: String? = nil
     ) {
         self.init(
             id: id,
@@ -63,7 +69,8 @@ struct MutationSchema {
             mutatedCode: syntaxMutation.description,
             position: position,
             snapshot: snapshot,
-            range: range
+            range: range,
+            replacement: replacement
         )
     }
 
@@ -87,6 +94,7 @@ extension MutationSchema: Codable {
         position = try container.decode(MutationPosition.self, forKey: .position)
         snapshot = try container.decode(MutationOperator.Snapshot.self, forKey: .snapshot)
         range = try container.decodeIfPresent(MutationRange.self, forKey: .range)
+        replacement = try container.decodeIfPresent(String.self, forKey: .replacement)
     }
 
     func encode(to encoder: Encoder) throws {
@@ -98,6 +106,7 @@ extension MutationSchema: Codable {
         try container.encode(position, forKey: .position)
         try container.encode(snapshot, forKey: .snapshot)
         try container.encodeIfPresent(range, forKey: .range)
+        try container.encodeIfPresent(replacement, forKey: .replacement)
     }
 
     enum CodingKeys: String, CodingKey {
@@ -107,6 +116,7 @@ extension MutationSchema: Codable {
         case position
         case snapshot
         case range
+        case replacement
     }
 }
 

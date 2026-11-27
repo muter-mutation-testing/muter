@@ -60,7 +60,8 @@ extension MutationTestOutcome.Mutation {
         originalProjectDirectoryUrl: URL = URL(fileURLWithPath: ""),
         mutatedProjectDirectoryURL: URL = URL(fileURLWithPath: ""),
         failedTests: Int? = nil,
-        range: MutationRange? = nil
+        range: MutationRange? = nil,
+        replacement: String? = nil
     ) -> Self {
         Self(
             testSuiteOutcome: testSuiteOutcome,
@@ -69,7 +70,8 @@ extension MutationTestOutcome.Mutation {
             originalProjectDirectoryUrl: originalProjectDirectoryUrl,
             mutatedProjectDirectoryURL: mutatedProjectDirectoryURL,
             failedTests: failedTests,
-            range: range
+            range: range,
+            replacement: replacement
         )
     }
 }
@@ -241,7 +243,8 @@ extension MutationSchema {
         syntaxMutation: String = "",
         position: MutationPosition = .null,
         snapshot: MutationOperator.Snapshot = .null,
-        range: MutationRange? = nil
+        range: MutationRange? = nil,
+        replacement: String? = nil
     ) throws -> MutationSchema {
         try MutationSchema(
             id: id,
@@ -250,7 +253,8 @@ extension MutationSchema {
             syntaxMutation: sourceCode(syntaxMutation).statements,
             position: position,
             snapshot: snapshot,
-            range: range
+            range: range,
+            replacement: replacement
         )
     }
 }

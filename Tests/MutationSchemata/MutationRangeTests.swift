@@ -98,6 +98,40 @@ final class MutationRangeTests: MuterTestCase {
         )
     }
 
+    func test_replacementIsTheNewCode() throws {
+        let ror = try walk(.ror, in: """
+        func f(a: Int, b: Int) -> Bool {
+            return a > b
+        }
+        """)
+        let removal = try walk(.removeSideEffects, in: """
+        func f() {
+            var values = [Int]()
+            values.append(1)
+            print(values)
+        }
+        """)
+
+        XCTAssertEqual(ror.schemataMappings.mutationSchemata.map(\.replacement), ["<="])
+        XCTAssertEqual(Set(removal.schemataMappings.mutationSchemata.map(\.replacement)), [""])
+    }
+
+    /// The snapshot puts a multi-line expression on one line, for display. The replacement is the
+    /// code that the mutant puts in the file.
+    func test_replacementIsTheCodeInTheMutant() throws {
+        let visitor = try walk(.swapTernary, in: """
+        func f(a: Bool) -> Int {
+            return a
+                ? 1
+                : 2
+        }
+        """)
+
+        let schema = try XCTUnwrap(visitor.schemataMappings.mutationSchemata.first)
+        let replacement = try XCTUnwrap(schema.replacement)
+        XCTAssertTrue(schema.mutatedCode.contains(replacement), "\(replacement) not in \(schema.mutatedCode)")
+    }
+
     /// A range compared by line and column only: the UTF-8 offset is not part of what the reports use.
     private static func lineAndColumns(_ range: MutationRange) -> [Int] {
         [range.start.line, range.start.column, range.end.line, range.end.column]

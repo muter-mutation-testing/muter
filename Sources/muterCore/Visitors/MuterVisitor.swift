@@ -172,10 +172,14 @@ class MuterVisitor: SyntaxAnyVisitor {
         at position: MutationPosition,
         snapshot: MutationOperator.Snapshot,
         startLine: Int? = nil,
-        mutatedNode: SyntaxProtocol? = nil
+        mutatedNode: SyntaxProtocol? = nil,
+        replacement: String? = nil
     ) {
         // The code that the mutant changes. It is `syntax`, unless the operator gives a smaller node.
         let range = range(of: mutatedNode ?? syntax)
+        // The source code that takes its place. The snapshot is for display: it puts multi-line code
+        // on one line, where a `//` comment would hide the rest of the code.
+        let replacement = replacement ?? mutation.trimmedDescription
 
         // Operators that report the end of a multi-line node give its start line, so that a
         // `muter:disable next-line` comment above the node applies to it.
@@ -188,7 +192,8 @@ class MuterVisitor: SyntaxAnyVisitor {
                         position: position
                     ),
                     snapshot: snapshot,
-                    range: range
+                    range: range,
+                    replacement: replacement
                 )
             )
             return
@@ -199,7 +204,8 @@ class MuterVisitor: SyntaxAnyVisitor {
             mutation: mutation,
             at: position,
             for: snapshot,
-            range: range
+            range: range,
+            replacement: replacement
         )
 
         schemataMappings.add(
@@ -213,7 +219,8 @@ class MuterVisitor: SyntaxAnyVisitor {
         mutation: SyntaxProtocol,
         at position: MutationPosition,
         for snapshot: MutationOperator.Snapshot,
-        range: MutationRange? = nil
+        range: MutationRange? = nil,
+        replacement: String? = nil
     ) -> MutationSchema {
         MutationSchema(
             filePath: sourceCodeInfo.path,
@@ -224,7 +231,8 @@ class MuterVisitor: SyntaxAnyVisitor {
             ),
             position: position,
             snapshot: snapshot,
-            range: range
+            range: range,
+            replacement: replacement
         )
     }
 }

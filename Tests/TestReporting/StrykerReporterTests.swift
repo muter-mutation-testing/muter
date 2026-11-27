@@ -19,6 +19,7 @@ final class StrykerReporterTests: MuterTestCase {
         column: Int,
         snapshot: MutationOperator.Snapshot,
         range: MutationRange? = nil,
+        replacement: String? = nil,
         failedTests: Int? = nil
     ) -> MutationTestOutcome.Mutation {
         .make(
@@ -32,7 +33,8 @@ final class StrykerReporterTests: MuterTestCase {
             originalProjectDirectoryUrl: projectURL,
             mutatedProjectDirectoryURL: mutatedProjectURL,
             failedTests: failedTests,
-            range: range
+            range: range,
+            replacement: replacement
         )
     }
 
@@ -145,6 +147,44 @@ final class StrykerReporterTests: MuterTestCase {
         ])
 
         XCTAssertEqual(report.files["Sources/B.swift"]?.mutants.first?.replacement, "")
+    }
+
+    func test_replacementComesFromTheMutantWhenItHasOne() {
+        let report = report([
+            mutation(
+                .passed, .swapTernary, file: "A.swift", line: 2, column: 14,
+                snapshot: .make(before: "x ? 1 // one 2", after: "x ? 2 // one 1", description: "swapped ternary operator"),
+                range: range(2, 12, 20),
+                replacement: "x // the flag\n    ? 2\n    : 1"
+            ),
+        ])
+
+        XCTAssertEqual(
+            report.files["Sources/A.swift"]?.mutants.first?.replacement,
+            "x // the flag\n    ? 2\n    : 1"
+        )
+    }
+
+    /// Muter does not mutate a file with no coverage. Coverage gives its path in the mutated copy,
+    /// and the report lists it, with no mutants, by its path in the project.
+    func test_filesWithoutCoverageAreInTheReportWithNoMutants() {
+        let report = StrykerReport(
+            outcome: .make(
+                mutations: [
+                    mutation(
+                        .passed, .ror, file: "A.swift", line: 2, column: 14,
+                        snapshot: .make(before: ">", after: "<=", description: "changed > to <="),
+                        range: range(2, 14, 15)
+                    ),
+                ],
+                coverage: .make(filesWithoutCoverage: ["/tmp/project_mutated/Sources/B.swift"])
+            ),
+            readFile: { self.sources[$0] }
+        )
+
+        XCTAssertEqual(report.files.keys.sorted(), ["Sources/A.swift", "Sources/B.swift"])
+        XCTAssertEqual(report.files["Sources/B.swift"]?.mutants, [])
+        XCTAssertEqual(report.files["Sources/B.swift"]?.source, sources["/user/project/Sources/B.swift"])
     }
 
     func test_ignoredMutantsAreInTheReport() {

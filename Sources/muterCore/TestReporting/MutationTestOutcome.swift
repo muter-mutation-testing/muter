@@ -33,6 +33,9 @@ extension MutationTestOutcome {
         let failedTests: Int?
         /// Where the mutated code is, or `nil` for a mutant from an older test plan.
         let range: MutationRange?
+        /// The source code that takes the place of the mutated code, or `nil` for a mutant from an
+        /// older test plan.
+        let replacement: String?
 
         init(
             testSuiteOutcome: TestSuiteOutcome,
@@ -41,11 +44,13 @@ extension MutationTestOutcome {
             originalProjectDirectoryUrl: URL,
             mutatedProjectDirectoryURL: URL,
             failedTests: Int? = nil,
-            range: MutationRange? = nil
+            range: MutationRange? = nil,
+            replacement: String? = nil
         ) {
             self.testSuiteOutcome = testSuiteOutcome
             self.failedTests = failedTests
             self.range = range
+            self.replacement = replacement
             point = mutationPoint
             snapshot = mutationSnapshot
 

@@ -125,23 +125,64 @@ extension StrykerReport {
             )
         }
 
+        let projectRoot = mutations.first.flatMap(Self.projectRoot(of:))
+        var files: [String: File] = mutantsByPath.reduce(into: [:]) { files, entry in
+            files[entry.key] = File(
+                language: "swift",
+                source: sourceByPath[entry.key] ?? "",
+                mutants: entry.value
+            )
+        }
+
+        // Muter does not mutate a file that the tests do not cover at all. The report still lists
+        // it, with no mutants, like Muter's other reports.
+        let mutatedRoot = mutations.first.flatMap(Self.mutatedProjectRoot(of:))
+        for path in outcome.coverage.filesWithoutCoverage {
+            let relativePath = Self.relativePath(of: path, roots: [mutatedRoot, projectRoot])
+            guard files[relativePath] == nil else {
+                continue
+            }
+
+            let originalPath = projectRoot.map { $0 + "/" + relativePath } ?? path
+            files[relativePath] = File(
+                language: "swift",
+                source: readFile(originalPath) ?? readFile(path) ?? "",
+                mutants: []
+            )
+        }
+
         self.init(
             schemaVersion: "2",
             thresholds: Self.defaultThresholds,
-            projectRoot: mutations.first.flatMap(Self.projectRoot(of:)),
+            projectRoot: projectRoot,
             framework: Framework(
                 name: "Muter",
                 version: version,
                 branding: .init(homepageUrl: "https://github.com/muter-mutation-testing/muter")
             ),
-            files: mutantsByPath.reduce(into: [:]) { files, entry in
-                files[entry.key] = File(
-                    language: "swift",
-                    source: sourceByPath[entry.key] ?? "",
-                    mutants: entry.value
-                )
-            }
+            files: files
         )
+    }
+
+    /// The root of the mutated copy of the project, where the coverage paths point.
+    private static func mutatedProjectRoot(of mutation: MutationTestOutcome.Mutation) -> String? {
+        let suffix = "/" + mutation.relativePath
+        guard !mutation.relativePath.isEmpty,
+              mutation.point.filePath.hasSuffix(suffix)
+        else {
+            return nil
+        }
+
+        return String(mutation.point.filePath.dropLast(suffix.count))
+    }
+
+    /// `path` from the first root that contains it, or `path` itself.
+    private static func relativePath(of path: String, roots: [String?]) -> String {
+        for case let root? in roots where path.hasPrefix(root + "/") {
+            return String(path.dropFirst(root.count + 1))
+        }
+
+        return path
     }
 
     private static func sourceOrder(
@@ -168,9 +209,14 @@ extension StrykerReport {
         return String(mutation.originalProjectPath.dropLast(suffix.count))
     }
 
-    /// The code that replaces the mutated code. A removed statement is replaced by nothing.
+    /// The code that replaces the mutated code. A mutant from an older test plan has only its
+    /// snapshot, where a removed statement is replaced by nothing.
     private static func replacement(of mutation: MutationTestOutcome.Mutation) -> String {
-        mutation.point.mutationOperatorId == .removeSideEffects ? "" : mutation.snapshot.after
+        if let replacement = mutation.replacement {
+            return replacement
+        }
+
+        return mutation.point.mutationOperatorId == .removeSideEffects ? "" : mutation.snapshot.after
     }
 
     private static func statusReason(of mutation: MutationTestOutcome.Mutation) -> String {
