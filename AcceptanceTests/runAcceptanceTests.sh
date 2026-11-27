@@ -3,7 +3,12 @@
 echo "📴📴📴📴📴📴📴 Acceptance Testing has started 📴📴📴📴📴📴📴"
 
 muterdir="../../../.build/debug"
-samplesdir="../../samples"
+samplesdir="$(pwd)/AcceptanceTests/samples"
+
+# Muter runs on copies of the projects in `AcceptanceRepositories`, outside the `AcceptanceTests`
+# target. In the target, SwiftPM would see the copied projects as resources while they exist, and
+# a `swift test` that runs at the same time, such as the regression tests, would fail to build.
+workdir="./AcceptanceRepositories"
 
 # Muter writes its logs next to the project it runs on, in `../<project>_muter_logs`.
 
@@ -11,14 +16,18 @@ echo "🧹 Cleaning up from prior acceptance test runs..."
 rm -rf ./AcceptanceTests/samples/muter_logs
 rm -rf ./AcceptanceTests/samples
 rm -rf ./AcceptanceTests/Repositories
+rm -rf "$workdir"
 
 mkdir -p ./AcceptanceTests/samples
 mkdir -p ./AcceptanceTests/samples/muter_logs
 
-cp -R ./Repositories ./AcceptanceTests
+# Leaves out the `_mutated` copies and logs that earlier Muter runs left in `Repositories`. They
+# take hundreds of megabytes, and a regression test that runs at the same time writes to them.
+mkdir -p "$workdir"
+rsync -a --exclude '*_mutated/' --exclude '*_muter_logs/' ./Repositories "$workdir"
 
 echo "🧟‍♂️ Running Muter on an iOS codebase with a test suite..."
-cd ./AcceptanceTests/Repositories/ExampleApp
+cd "$workdir"/Repositories/ExampleApp
 
 echo " > Creating a configuration file..."
 "$muterdir"/muter init
@@ -112,7 +121,7 @@ echo " > Running all operators command..."
 
 cd ../../..
 
-rm -rf ./AcceptanceTests/Repositories
+rm -rf "$workdir"
 
 echo "Running tests..."
 
