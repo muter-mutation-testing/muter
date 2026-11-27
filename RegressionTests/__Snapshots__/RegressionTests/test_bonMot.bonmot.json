@@ -26,7 +26,7 @@
             }
           },
           "mutationSnapshot" : {
-            "after" : "contextualAlternates  ? kContextualAlternatesOffSelector :  kContextualAlternatesOnSelector",
+            "after" : "contextualAlternates ? kContextualAlternatesOffSelector : kContextualAlternatesOnSelector",
             "before" : "contextualAlternates ? kContextualAlternatesOnSelector : kContextualAlternatesOffSelector",
             "description" : "swapped ternary operator"
           },
@@ -41,7 +41,7 @@
             }
           },
           "mutationSnapshot" : {
-            "after" : "contextualSwashAlternates  ? kContextualSwashAlternatesOffSelector :  kContextualSwashAlternatesOnSelector",
+            "after" : "contextualSwashAlternates ? kContextualSwashAlternatesOffSelector : kContextualSwashAlternatesOnSelector",
             "before" : "contextualSwashAlternates ? kContextualSwashAlternatesOnSelector : kContextualSwashAlternatesOffSelector",
             "description" : "swapped ternary operator"
           },
@@ -257,7 +257,7 @@
             }
           },
           "mutationSnapshot" : {
-            "after" : "two  ? kStylisticAltTwoOffSelector :  kStylisticAltTwoOnSelector",
+            "after" : "two ? kStylisticAltTwoOffSelector : kStylisticAltTwoOnSelector",
             "before" : "two ? kStylisticAltTwoOnSelector : kStylisticAltTwoOffSelector",
             "description" : "swapped ternary operator"
           },
@@ -272,7 +272,7 @@
             }
           },
           "mutationSnapshot" : {
-            "after" : "three  ? kStylisticAltThreeOffSelector :  kStylisticAltThreeOnSelector",
+            "after" : "three ? kStylisticAltThreeOffSelector : kStylisticAltThreeOnSelector",
             "before" : "three ? kStylisticAltThreeOnSelector : kStylisticAltThreeOffSelector",
             "description" : "swapped ternary operator"
           },
@@ -287,7 +287,7 @@
             }
           },
           "mutationSnapshot" : {
-            "after" : "five  ? kStylisticAltFiveOffSelector :  kStylisticAltFiveOnSelector",
+            "after" : "five ? kStylisticAltFiveOffSelector : kStylisticAltFiveOnSelector",
             "before" : "five ? kStylisticAltFiveOnSelector : kStylisticAltFiveOffSelector",
             "description" : "swapped ternary operator"
           },
@@ -302,7 +302,7 @@
             }
           },
           "mutationSnapshot" : {
-            "after" : "six  ? kStylisticAltSixOffSelector :  kStylisticAltSixOnSelector",
+            "after" : "six ? kStylisticAltSixOffSelector : kStylisticAltSixOnSelector",
             "before" : "six ? kStylisticAltSixOnSelector : kStylisticAltSixOffSelector",
             "description" : "swapped ternary operator"
           },
@@ -500,7 +500,7 @@
             }
           },
           "mutationSnapshot" : {
-            "after" : "font = pointSize > size  ? font :  font.fontWithSameAttributes(named: fontName)",
+            "after" : "font = pointSize > size ? font : font.fontWithSameAttributes(named: fontName)",
             "before" : "font = pointSize > size ? font.fontWithSameAttributes(named: fontName) : font",
             "description" : "swapped ternary operator"
           },
@@ -515,7 +515,7 @@
             }
           },
           "mutationSnapshot" : {
-            "after" : "font = pointSize < size  ? font :  font.fontWithSameAttributes(named: family)",
+            "after" : "font = pointSize < size ? font : font.fontWithSameAttributes(named: family)",
             "before" : "font = pointSize < size ? font.fontWithSameAttributes(named: family) : font",
             "description" : "swapped ternary operator"
           },
@@ -1172,7 +1172,7 @@
             }
           },
           "mutationSnapshot" : {
-            "after" : "options.contains(.doNotWrapXML)  ? \"<\\(XMLBuilder.internalTopLevelElement)>\\(string)<\/\\(XMLBuilder.internalTopLevelElement)>\" :  string",
+            "after" : "options.contains(.doNotWrapXML) ? \"<\\(XMLBuilder.internalTopLevelElement)>\\(string)<\/\\(XMLBuilder.internalTopLevelElement)>\" : string",
             "before" : "options.contains(.doNotWrapXML) ? string : \"<\\(XMLBuilder.internalTopLevelElement)>\\(string)<\/\\(XMLBuilder.internalTopLevelElement)>\"",
             "description" : "swapped ternary operator"
           },
@@ -1187,7 +1187,7 @@
             }
           },
           "mutationSnapshot" : {
-            "after" : "shiftColumn  ? 0 :  shiftSize",
+            "after" : "shiftColumn ? 0 : shiftSize",
             "before" : "shiftColumn ? shiftSize : 0",
             "description" : "swapped ternary operator"
           },

@@ -101,18 +101,20 @@ enum SwapTernaryOperator {
                 return node
             }
 
-            let secondChoice = children[index + 1]
-                .withTrailingTrivia(.spaces(1))
-                .withLeadingTrivia(.spaces(1))
-            let firstChoice = ternary.thenExpression
-                .withTrailingTrivia(.spaces(1))
-                .withLeadingTrivia(.spaces(1))
+            // The two branches swap places, and each one takes the trivia of the place it moves to.
+            // The `?` and `:` tokens keep their own trivia. So the layout of the code stays the same:
+            // a line break or a `//` comment stays where it was, and does not hide the code after it.
+            let thenExpression = ternary.thenExpression
+            let elseExpression = children[index + 1]
 
-            children[index] = ExprSyntax(
-                UnresolvedTernaryExprSyntax(thenExpression: secondChoice)
-                    .withTrailingTrivia(.spaces(1))
-                    .withLeadingTrivia(.spaces(1))
-            )
+            let secondChoice = elseExpression
+                .withLeadingTrivia(thenExpression.leadingTrivia)
+                .withTrailingTrivia(thenExpression.trailingTrivia)
+            let firstChoice = thenExpression
+                .withLeadingTrivia(elseExpression.leadingTrivia)
+                .withTrailingTrivia(elseExpression.trailingTrivia)
+
+            children[index] = ExprSyntax(ternary.with(\.thenExpression, secondChoice))
             children[index + 1] = firstChoice
 
             return ExprListSyntax(children)
