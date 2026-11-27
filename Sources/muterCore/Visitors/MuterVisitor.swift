@@ -89,7 +89,18 @@ class MuterVisitor: SyntaxAnyVisitor {
     /// include trailing whitespace or comments, so trivia would push the node outside a region that
     /// does contain its code.
     private func nodeRegion(_ node: SyntaxProtocol) -> Region {
-        let start = startLocation(for: node)
+        let range = range(of: node)
+
+        return Region(
+            lineStart: range.start.line,
+            columnStart: range.start.column,
+            lineEnd: range.end.line,
+            columnEnd: range.end.column
+        )
+    }
+
+    /// The node's code, from its first token to just after its last, without trivia.
+    func range(of node: SyntaxProtocol) -> MutationRange {
         let end = mutationPosition(
             for: node.endLocation(
                 converter: sourceCodeInfo.locationConverter,
@@ -97,12 +108,7 @@ class MuterVisitor: SyntaxAnyVisitor {
             )
         )
 
-        return Region(
-            lineStart: start.line,
-            columnStart: start.column,
-            lineEnd: end.line,
-            columnEnd: end.column
-        )
+        return MutationRange(start: startLocation(for: node), end: end)
     }
 
     func startLocation(
@@ -165,8 +171,16 @@ class MuterVisitor: SyntaxAnyVisitor {
         with syntax: SyntaxProtocol,
         at position: MutationPosition,
         snapshot: MutationOperator.Snapshot,
-        startLine: Int? = nil
+        startLine: Int? = nil,
+        mutatedNode: SyntaxProtocol? = nil,
+        replacement: String? = nil
     ) {
+        // The code that the mutant changes. It is `syntax`, unless the operator gives a smaller node.
+        let range = range(of: mutatedNode ?? syntax)
+        // The source code that takes its place. The snapshot is for display: it puts multi-line code
+        // on one line, where a `//` comment would hide the rest of the code.
+        let replacement = replacement ?? mutation.trimmedDescription
+
         // Operators that report the end of a multi-line node give its start line, so that a
         // `muter:disable next-line` comment above the node applies to it.
         guard !isDisabled(onLine: startLine ?? position.line) else {
@@ -177,7 +191,9 @@ class MuterVisitor: SyntaxAnyVisitor {
                         filePath: sourceCodeInfo.path,
                         position: position
                     ),
-                    snapshot: snapshot
+                    snapshot: snapshot,
+                    range: range,
+                    replacement: replacement
                 )
             )
             return
@@ -187,7 +203,9 @@ class MuterVisitor: SyntaxAnyVisitor {
             with: syntax,
             mutation: mutation,
             at: position,
-            for: snapshot
+            for: snapshot,
+            range: range,
+            replacement: replacement
         )
 
         schemataMappings.add(
@@ -200,7 +218,9 @@ class MuterVisitor: SyntaxAnyVisitor {
         with syntax: SyntaxProtocol,
         mutation: SyntaxProtocol,
         at position: MutationPosition,
-        for snapshot: MutationOperator.Snapshot
+        for snapshot: MutationOperator.Snapshot,
+        range: MutationRange? = nil,
+        replacement: String? = nil
     ) -> MutationSchema {
         MutationSchema(
             filePath: sourceCodeInfo.path,
@@ -210,7 +230,9 @@ class MuterVisitor: SyntaxAnyVisitor {
                 mutatedSyntax: mutation
             ),
             position: position,
-            snapshot: snapshot
+            snapshot: snapshot,
+            range: range,
+            replacement: replacement
         )
     }
 }

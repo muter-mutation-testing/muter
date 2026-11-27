@@ -47,7 +47,9 @@ struct PerformMutationTesting: MutationStep {
                 mutationPoint: $0.point,
                 mutationSnapshot: $0.snapshot,
                 originalProjectDirectoryUrl: state.projectDirectoryURL,
-                mutatedProjectDirectoryURL: state.mutatedProjectDirectoryURL
+                mutatedProjectDirectoryURL: state.mutatedProjectDirectoryURL,
+                range: $0.range,
+                replacement: $0.replacement
             )
         }
 
@@ -262,7 +264,9 @@ private extension PerformMutationTesting {
             mutationSnapshot: job.schema.snapshot,
             originalProjectDirectoryUrl: state.projectDirectoryURL,
             mutatedProjectDirectoryURL: state.mutatedProjectDirectoryURL,
-            failedTests: Self.failedTests(for: testSuiteOutcome, in: testLog)
+            failedTests: Self.failedTests(for: testSuiteOutcome, in: testLog),
+            range: job.schema.range,
+            replacement: job.schema.replacement
         )
 
         let mutationLog = MutationTestLog(

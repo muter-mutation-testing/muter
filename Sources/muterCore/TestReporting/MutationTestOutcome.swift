@@ -27,8 +27,15 @@ extension MutationTestOutcome {
         let point: MutationPoint
         let snapshot: MutationOperator.Snapshot
         let originalProjectPath: String
+        /// The path of the file in the project, from the project's root directory.
+        let relativePath: String
         /// How many tests failed with this mutant, or `nil` when the test log does not say.
         let failedTests: Int?
+        /// Where the mutated code is, or `nil` for a mutant from an older test plan.
+        let range: MutationRange?
+        /// The source code that takes the place of the mutated code, or `nil` for a mutant from an
+        /// older test plan.
+        let replacement: String?
 
         init(
             testSuiteOutcome: TestSuiteOutcome,
@@ -36,10 +43,14 @@ extension MutationTestOutcome {
             mutationSnapshot: MutationOperator.Snapshot,
             originalProjectDirectoryUrl: URL,
             mutatedProjectDirectoryURL: URL,
-            failedTests: Int? = nil
+            failedTests: Int? = nil,
+            range: MutationRange? = nil,
+            replacement: String? = nil
         ) {
             self.testSuiteOutcome = testSuiteOutcome
             self.failedTests = failedTests
+            self.range = range
+            self.replacement = replacement
             point = mutationPoint
             snapshot = mutationSnapshot
 
@@ -48,6 +59,7 @@ extension MutationTestOutcome {
             let numberOfDirectoriesToDrop = splitTempFilePath.map(String.init)
                 .firstIndex(of: tempProjectDirectoryName) ?? 0
             let pathSuffix = splitTempFilePath.dropFirst(numberOfDirectoriesToDrop + 1).joined(separator: "/")
+            relativePath = pathSuffix
 
             originalProjectPath = originalProjectDirectoryUrl
                 .appendingPathComponent(pathSuffix, isDirectory: true)

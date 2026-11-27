@@ -79,7 +79,8 @@ final class PerformMutationTestingTests: MuterTestCase {
     func test_ignoredMutantsAreInTheOutcomeWithoutATestRun() async throws {
         let ignoredMutant = IgnoredMutant(
             point: .make(mutationOperatorId: .swapTernary, filePath: "/project_mutated/file.swift", position: 4),
-            snapshot: .make(before: "a ? b : c", after: "a ? c : b")
+            snapshot: .make(before: "a ? b : c", after: "a ? c : b"),
+            range: MutationRange(start: .init(line: 4, column: 9), end: .init(line: 4, column: 18))
         )
         state.mutationMapping = []
         state.ignoredMutants = [ignoredMutant]
@@ -97,12 +98,34 @@ final class PerformMutationTestingTests: MuterTestCase {
                             point: ignoredMutant.point,
                             snapshot: ignoredMutant.snapshot,
                             originalProjectDirectoryUrl: state.projectDirectoryURL,
-                            mutatedProjectDirectoryURL: state.mutatedProjectDirectoryURL
+                            mutatedProjectDirectoryURL: state.mutatedProjectDirectoryURL,
+                            range: ignoredMutant.range
                         ),
                     ])
                 ),
             ]
         )
+    }
+
+    func test_outcomeHasTheRangeOfTheMutant() async throws {
+        let range = MutationRange(start: .init(line: 2, column: 7), end: .init(line: 2, column: 8))
+        state.mutationMapping = try [
+            .make(
+                filePath: "/project_mutated/file.swift",
+                ("func f() {\n  print(a < b)\n}", [
+                    .make(id: 1, filePath: "/project_mutated/file.swift", range: range),
+                ])
+            ),
+        ]
+        ioDelegate.testSuiteOutcomes = [.passed, .failed]
+
+        let result = try await sut.run(with: state)
+
+        guard case let .mutationTestOutcomeGenerated(outcome) = result.first else {
+            return XCTFail("Expected a test outcome, got \(result)")
+        }
+        XCTAssertEqual(outcome.mutations.map(\.range), [range])
+        XCTAssertEqual(outcome.mutations.map(\.relativePath), ["file.swift"])
     }
 
     func test_createLogFile() async throws {
