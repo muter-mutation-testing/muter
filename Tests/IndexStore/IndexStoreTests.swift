@@ -1,4 +1,6 @@
 @testable import muterCore
+import SwiftParser
+import SwiftSyntax
 import XCTest
 
 /// These tests compile a small Swift file with an index store, then read the store with the
@@ -66,6 +68,26 @@ final class IndexStoreTests: XCTestCase {
             try? FileManager.default.removeItem(at: directory)
         }
         try super.tearDownWithError()
+    }
+
+    // MARK: - Discovery
+
+    /// A visitor walks the prepared code, which has extra lines at the top. It looks up a token at
+    /// its position in the file on disk, which is where the compiler recorded it.
+    func test_visitorFindsTheSymbolOfAnOperatorInPreparedCode() throws {
+        let prepared = Parser.parse(source: "import Foundation\n" + Self.fixture)
+        let visitor = ROROperator.Visitor(
+            sourceCodeInfo: SourceCodeInfo(path: sourceFile.path, code: prepared),
+            regionsWithoutCoverage: []
+        )
+        visitor.sourceCodePreparationChange = MutationSourceCodePreparationChange(newLines: 1)
+        let greaterThan = try XCTUnwrap(prepared.tokens(viewMode: .sourceAccurate).first { $0.text == ">" })
+
+        XCTAssertNil(visitor.referencedSymbol(at: greaterThan), "No index, no symbol")
+
+        visitor.symbolIndex = index
+        let symbol = try XCTUnwrap(visitor.referencedSymbol(at: greaterThan))
+        XCTAssertEqual(demangled(symbol), "static Swift.Int.> infix(Swift.Int, Swift.Int) -> Swift.Bool")
     }
 
     // MARK: - Lookups
