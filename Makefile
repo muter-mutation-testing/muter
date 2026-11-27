@@ -38,11 +38,15 @@ run: build
 test:
 	@swift test --filter 'muterTests'
 	
-acceptance-test: build
+acceptance-test: build-incremental
 	@./AcceptanceTests/runAcceptanceTests.sh
 
 regression-test: build-incremental
 	@./RegressionTests/runRegressionTests.sh
+
+# Runs the regression and the acceptance tests at the same time.
+regression-and-acceptance-test: build-incremental
+	@./Scripts/runRegressionAndAcceptanceTests.sh
 
 mutation-test: clean
 	muter
@@ -56,4 +60,4 @@ ci-test: build
 	@./Scripts/ci/pull\ request/run_unit_test.sh
 	@./Scripts/ci/pull\ request/extract_coverage.sh
 
-.PHONY: build build-incremental clean test run install uninstall release
+.PHONY: build build-incremental clean test run install uninstall release acceptance-test regression-test regression-and-acceptance-test

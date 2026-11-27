@@ -90,6 +90,14 @@ Run the regression tests with:
 
 The regression tests run Muter on three real projects (BonMot, FFCParserCombinator and ProjectWithConcurrency) and compare each report with a snapshot.
 
+The three projects run at the same time. Each one writes its Muter output to a `.log` file in `RegressionTests/samples`.
+
+To run the regression and the acceptance tests at the same time, use:
+
+```make regression-and-acceptance-test```
+
+This takes about as long as the slower of the two. It prints the output of each one when both are done, and keeps it in `.build/test-logs`.
+
 Run the acceptance tests often if you're making a change which impacts a user's workflow or journey through Muter's interface. Run the regression tests often if your change affects which mutants Muter finds, how it runs them, or its test report. At a bare minimum, run both prior to making a pull request.
 
 Both of these test suites are lengthy (about 5 to 10 minutes each). Budget your time accordingly, perhaps to coincide with a bathroom or tea break. :)
