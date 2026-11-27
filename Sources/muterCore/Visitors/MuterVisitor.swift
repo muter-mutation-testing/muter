@@ -34,6 +34,9 @@ class MuterVisitor: SyntaxAnyVisitor {
 
     var sourceCodePreparationChange: MutationSourceCodePreparationChange = .null
 
+    /// The platform that the tests build for, when Muter can tell it from the test command.
+    private lazy var targetPlatform: TargetPlatform? = configuration.flatMap(TargetPlatform.init(configuration:))
+
     private(set) var schemataMappings: SchemataMutationMapping
     /// The mutants that `muter:disable` comments turned off.
     private(set) var ignoredMutants: [IgnoredMutant] = []
@@ -58,6 +61,12 @@ class MuterVisitor: SyntaxAnyVisitor {
 
     override func visitAny(_ node: Syntax) -> SyntaxVisitorContinueKind {
         guard hasTestCoverage(node) else {
+            return .skipChildren
+        }
+
+        // The test build does not compile this code, so no test can kill a mutant in it.
+        if let clause = node.as(IfConfigClauseSyntax.self),
+           targetPlatform?.isInactive(clause) == true {
             return .skipChildren
         }
 

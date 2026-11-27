@@ -373,6 +373,17 @@ A comment without a known operator name applies to all operators.
 
 The reports show the turned-off mutants as `ignored (muter:disable)`. Muter does not test them, and they do not count in the mutation score.
 
+### Code that the tests do not compile
+
+Muter does not mutate the code in an `#if` block that the test build leaves out. No test can kill a mutant in such code, so it would always count as a survived mutant. For example, when your tests run on macOS, Muter leaves out the code in `#if canImport(UIKit)` and `#if os(iOS)`.
+
+Muter finds the platform in your test command:
+
+- `swift`: the platform of the machine that runs Muter.
+- `xcodebuild`: the platform in the `-destination` argument, such as `platform=iOS Simulator,name=iPhone 16` or `platform=macOS`.
+
+Muter evaluates only conditions that it knows for sure: `os(...)`, `targetEnvironment(simulator)`, and `canImport` of `Foundation`, `UIKit`, `AppKit` and `Darwin` (and of `Glibc` on Apple platforms). It mutates the code in a block with any other condition, such as a custom flag (`DEBUG`), `swift(>=5.9)` or `canImport` of a package. It also mutates all blocks when it cannot tell the platform, for example with a destination that has a `variant` (Mac Catalyst, Designed for iPad), a watchOS destination or a test command other than `swift` and `xcodebuild`, such as a script.
+
 ## Mutant Schemata
 
 Muter uses a technique called mutant schemata. This builds a copy of your code with all known mutations inserted at once, but they are disabled by flags. Then your tests are run repeatedly, activating a different mutant each time via environment variables. This is a huge win performance, but comes with a caveat:
