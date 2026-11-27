@@ -29,9 +29,8 @@ struct CodeBlockKey: Hashable {
 
 final class SchemataMutationMapping {
     let filePath: String
+    // The key holds the code block's text too, so `codeBlocks` and `description` read it from there.
     fileprivate var mappings: [CodeBlockKey: MutationSchemata]
-    // Preserves the code-block text for each key so `codeBlocks` / `description` keep reporting source.
-    fileprivate var codeBlockText: [CodeBlockKey: String]
 
     var count: Int {
         mappings.count
@@ -42,11 +41,11 @@ final class SchemataMutationMapping {
     }
 
     var mutationSchemata: MutationSchemata {
-        Array(mappings.values).reduce([], +).sorted()
+        mappings.values.flatMap { $0 }.sorted()
     }
 
     var codeBlocks: [String] {
-        mappings.keys.compactMap { codeBlockText[$0] }.sorted()
+        mappings.keys.map(\.text).sorted()
     }
 
     var fileName: String {
@@ -58,37 +57,30 @@ final class SchemataMutationMapping {
     ) {
         self.init(
             filePath: filePath,
-            mappings: [:],
-            codeBlockText: [:]
+            mappings: [:]
         )
     }
 
     fileprivate init(
         filePath: String = "",
-        mappings: [CodeBlockKey: MutationSchemata],
-        codeBlockText: [CodeBlockKey: String] = [:]
+        mappings: [CodeBlockKey: MutationSchemata]
     ) {
         self.filePath = filePath
         self.mappings = mappings
-        self.codeBlockText = codeBlockText
     }
 
     func add(
         _ codeBlockSyntax: CodeBlockItemListSyntax,
         _ schemata: MutationSchema
     ) {
-        let key = CodeBlockKey(codeBlockSyntax)
-        codeBlockText[key] = codeBlockSyntax.description
-        mappings[key, default: []].append(schemata)
+        mappings[CodeBlockKey(codeBlockSyntax), default: []].append(schemata)
     }
 
     func add(
         _ codeBlockSyntax: CodeBlockItemListSyntax,
         _ schemata: MutationSchemata
     ) {
-        let key = CodeBlockKey(codeBlockSyntax)
-        codeBlockText[key] = codeBlockSyntax.description
-        mappings[key, default: []].append(contentsOf: schemata)
+        mappings[CodeBlockKey(codeBlockSyntax), default: []].append(contentsOf: schemata)
     }
 
     func schemata(
@@ -118,10 +110,8 @@ final class SchemataMutationMapping {
     // Key-based add for merging two mappings without reconstructing a syntax node from text.
     fileprivate func add(
         _ key: CodeBlockKey,
-        text: String,
         _ schemata: MutationSchemata
     ) {
-        codeBlockText[key] = text
         mappings[key, default: []].append(contentsOf: schemata)
     }
 }
@@ -179,10 +169,9 @@ func + (
     )
 
     let mergedMappings = lhs.mappings.merging(rhs.mappings) { $0 + $1 }
-    let mergedText = lhs.codeBlockText.merging(rhs.codeBlockText) { current, _ in current }
 
     for (key, schemata) in mergedMappings {
-        result.add(key, text: mergedText[key] ?? key.text, schemata)
+        result.add(key, schemata)
     }
 
     return result
@@ -224,7 +213,7 @@ extension SchemataMutationMapping: CustomStringConvertible, CustomDebugStringCon
 
     var description: String {
         let description = mappings.keys.sorted().reduce(into: "") { accum, key in
-            let source = (codeBlockText[key] ?? key.text)
+            let source = key.text
                 .replacingOccurrences(of: "\n", with: "\\n")
                 .replacingOccurrences(of: "\"", with: "\\\"")
             accum +=

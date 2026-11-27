@@ -72,7 +72,7 @@ class TokenAwareVisitor: MuterVisitor {
         node: SyntaxProtocol,
         mutatedSyntax: SyntaxProtocol,
         at mutationRange: Range<String.Index>? = nil
-    ) -> CodeBlockItemListSyntax {
+    ) -> String {
         let codeBlockItemListSyntax = node.codeBlockItemListSyntax
         let codeBlockDescription = codeBlockItemListSyntax.description
         let utf8Offset = node.offsetInCodeBlockItemListSyntax(sourceCodeInfo)

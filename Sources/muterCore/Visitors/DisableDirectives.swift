@@ -41,8 +41,12 @@ struct DisableDirectives {
         self.directives = directives
     }
 
-    init(source: SourceFileSyntax, fileName: String) {
-        let converter = SourceLocationConverter(fileName: fileName, tree: source)
+    init(
+        source: SourceFileSyntax,
+        fileName: String,
+        converter: SourceLocationConverter? = nil
+    ) {
+        let converter = converter ?? SourceLocationConverter(fileName: fileName, tree: source)
         var directives: [Directive] = []
 
         for token in source.tokens(viewMode: .sourceAccurate) {

@@ -22,6 +22,7 @@ enum MutationSwitch {
         )
 
         for schema in schemata {
+            let syntaxMutation = schema.syntaxMutation
             let elseBody = IfExprSyntax.ElseBody(
                 IfExprSyntax(
                     ifKeyword: .keyword(.if)
@@ -31,9 +32,9 @@ enum MutationSwitch {
                         withId: schema.id
                     ),
                     body: CodeBlockSyntax(
-                        statements: schema.syntaxMutation,
+                        statements: syntaxMutation,
                         rightBrace: .rightBraceToken()
-                            .withLeadingTrivia(schema.syntaxMutation.leadingTrivia)
+                            .withLeadingTrivia(syntaxMutation.leadingTrivia)
                     ),
                     elseKeyword: .keyword(.else)
                         .withTrailingTrivia(.spaces(1))

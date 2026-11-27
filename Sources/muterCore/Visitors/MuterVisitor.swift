@@ -38,11 +38,6 @@ class MuterVisitor: SyntaxAnyVisitor {
     /// The mutants that `muter:disable` comments turned off.
     private(set) var ignoredMutants: [IgnoredMutant] = []
 
-    private lazy var disableDirectives = DisableDirectives(
-        source: sourceCodeInfo.code,
-        fileName: sourceCodeInfo.path
-    )
-
     required init(
         configuration: MuterConfiguration? = nil,
         sourceCodeInfo: SourceCodeInfo,
@@ -72,7 +67,7 @@ class MuterVisitor: SyntaxAnyVisitor {
     /// Tells if a `muter:disable` comment turns off this operator's mutants that start on `line`.
     /// `line` is a reported line, so it does not count the lines that source preparation added.
     func isDisabled(onLine line: Int) -> Bool {
-        disableDirectives.isDisabled(
+        sourceCodeInfo.disableDirectives.isDisabled(
             mutationOperatorId,
             onLine: line + sourceCodePreparationChange.newLines
         )
@@ -97,10 +92,7 @@ class MuterVisitor: SyntaxAnyVisitor {
         let start = startLocation(for: node)
         let end = mutationPosition(
             for: node.endLocation(
-                converter: SourceLocationConverter(
-                    fileName: sourceCodeInfo.path,
-                    tree: sourceCodeInfo.code
-                ),
+                converter: sourceCodeInfo.locationConverter,
                 afterTrailingTrivia: false
             )
         )
@@ -116,13 +108,8 @@ class MuterVisitor: SyntaxAnyVisitor {
     func startLocation(
         for node: SyntaxProtocol
     ) -> MutationPosition {
-        let converter = SourceLocationConverter(
-            fileName: sourceCodeInfo.path,
-            tree: sourceCodeInfo.code
-        )
-
         let sourceLocation = node.startLocation(
-            converter: converter
+            converter: sourceCodeInfo.locationConverter
         )
 
         return mutationPosition(
@@ -134,10 +121,7 @@ class MuterVisitor: SyntaxAnyVisitor {
         for node: SyntaxProtocol
     ) -> MutationPosition {
         let sourceLocation = node.endLocation(
-            converter: SourceLocationConverter(
-                fileName: sourceCodeInfo.path,
-                tree: sourceCodeInfo.code
-            ),
+            converter: sourceCodeInfo.locationConverter,
             afterTrailingTrivia: true
         )
 
@@ -156,47 +140,24 @@ class MuterVisitor: SyntaxAnyVisitor {
         )
     }
 
+    /// The code block of `node` with `mutatedSyntax` in place of `node`, as source text. The text
+    /// is all a mutant needs: `MutationSwitch` parses it when it writes the mutated file. Keeping a
+    /// parsed tree for each mutant kept a copy of the whole code block, and its first parse, in
+    /// memory until the end of the run.
     func transform(
         node: SyntaxProtocol,
         mutatedSyntax: SyntaxProtocol,
         at mutationRange: Range<String.Index>? = nil
-    ) -> CodeBlockItemListSyntax {
-        let codeBlockItemListSyntax = node.codeBlockItemListSyntax
-        let codeBlockDescription = codeBlockItemListSyntax.description
-        let mutationDescription = mutatedSyntax.description
-        let range = mutationRange ?? codeBlockDescription.range(of: node.description)
-        let codeBlockTree = Parser.parse(source: codeBlockDescription)
-        guard let range
-        else {
-            return codeBlockItemListSyntax
+    ) -> String {
+        let codeBlockDescription = node.codeBlockItemListSyntax.description
+        guard let range = mutationRange ?? codeBlockDescription.range(of: node.description) else {
+            return codeBlockDescription
         }
 
-        let mutationPositionInCodeBlock = codeBlockDescription.distance(
-            to: range.lowerBound
-        )
-
-        let editEnd = mutationPositionInCodeBlock + max(mutatedSyntax.description.count, node.description.count)
-        let edit = SourceEdit(
-            range: AbsolutePosition(utf8Offset: mutationPositionInCodeBlock) ..< AbsolutePosition(utf8Offset: editEnd),
-            replacement: Array(repeating: UInt8(ascii: " "), count: mutatedSyntax.description.count)
-        )
-
-        let codeBlockWithMutation = codeBlockDescription.replacingCharacters(
+        return codeBlockDescription.replacingCharacters(
             in: range,
-            with: mutationDescription
+            with: mutatedSyntax.description
         )
-
-        let parseTransition = IncrementalParseTransition(
-            previousIncrementalParseResult: .init(tree: codeBlockTree, lookaheadRanges: .init()),
-            edits: ConcurrentEdits(edit)
-        )
-
-        let mutationParsed = Parser.parseIncrementally(
-            source: codeBlockWithMutation,
-            parseTransition: parseTransition
-        )
-
-        return mutationParsed.tree.statements
     }
 
     func add(
@@ -244,7 +205,7 @@ class MuterVisitor: SyntaxAnyVisitor {
         MutationSchema(
             filePath: sourceCodeInfo.path,
             mutationOperatorId: mutationOperatorId,
-            syntaxMutation: transform(
+            mutatedCode: transform(
                 node: syntax,
                 mutatedSyntax: mutation
             ),
