@@ -109,10 +109,7 @@ enum RemoveSideEffectsOperator {
 
         private func removeSideEffectAt(_ statements: CodeBlockItemListSyntax) {
             for statement in statements where statementContainsMutableToken(statement) {
-                let mutatedFunctionStatements = statements
-                    .exclude { $0.description == statement.description }
-
-                let newCodeBlockItemList = CodeBlockItemListSyntax(mutatedFunctionStatements)
+                let newCodeBlockItemList = statements.removing(statement)
 
                 let position = endLocation(for: statement)
                 let snapshot = MutationOperator.Snapshot(
@@ -227,5 +224,32 @@ enum RemoveSideEffectsOperator {
         private func propertyName(from patternSyntax: PatternBindingSyntax) -> String {
             patternSyntax.pattern.description.trimmed
         }
+    }
+}
+
+private extension CodeBlockItemListSyntax {
+    /// The list without `statement`. It is matched by identity, not by text, because an identical
+    /// statement elsewhere in the block is a mutant of its own.
+    ///
+    /// The removed statement takes its leading trivia with it, and that trivia holds the line break
+    /// before it. A statement after it on the same line, after a `;`, has no line break of its own,
+    /// so it gets the removed statement's leading trivia. Without that, removing `reload();` from
+    /// `prepare()` followed by `reload(); notify()` gave `prepare()notify()`, which does not compile.
+    func removing(_ statement: Element) -> CodeBlockItemListSyntax {
+        var remaining = [Element]()
+        var removedTrivia: Trivia?
+        for item in self {
+            if item.id == statement.id {
+                removedTrivia = item.leadingTrivia
+                continue
+            }
+            var kept = item
+            if let trivia = removedTrivia, !item.leadingTrivia.contains(where: \.isNewline) {
+                kept.leadingTrivia = trivia + item.leadingTrivia
+            }
+            removedTrivia = nil
+            remaining.append(kept)
+        }
+        return CodeBlockItemListSyntax(remaining)
     }
 }
