@@ -10,7 +10,6 @@ func check(_ value: String) {
   }
 }
 private enum __SwiftMutator {
-  static let activeMutant = ProcessInfo.processInfo.environment["MUTER_ACTIVE_MUTANT"].flatMap {
-    Int($0)
-  }
+  nonisolated static let activeMutant = ProcessInfo.processInfo.environment["MUTER_ACTIVE_MUTANT"]
+    .flatMap { Int($0) }
 }
