@@ -137,6 +137,22 @@ final class StrykerReporterTests: MuterTestCase {
         )
     }
 
+    /// RemoveSideEffects and SwapTernary record the end of the mutated code. Without a range, the
+    /// location covers that line up to the end, not the code after it.
+    func test_locationWithoutARangeForAnEndPositionUsesItsLine() {
+        let report = report([
+            mutation(
+                .passed, .removeSideEffects, file: "B.swift", line: 3, column: 18,
+                snapshot: .make(before: "print(é == 1)", after: "removed line", description: "removed line")
+            ),
+        ])
+
+        XCTAssertEqual(
+            report.files["Sources/B.swift"]?.mutants.first?.location,
+            .init(start: .init(line: 3, column: 5), end: .init(line: 3, column: 17))
+        )
+    }
+
     func test_removedStatementHasAnEmptyReplacement() {
         let report = report([
             mutation(

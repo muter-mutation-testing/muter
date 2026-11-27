@@ -238,13 +238,7 @@ extension StrykerReport {
             start = range.start
             end = range.end
         } else {
-            // A mutant from an older test plan has only its position. The location then covers the
-            // original code on that line.
-            start = mutation.point.position
-            end = MutationPosition(
-                line: start.line,
-                column: start.column + mutation.snapshot.before.utf8.count
-            )
+            (start, end) = fallbackRange(of: mutation, lines: lines)
         }
 
         let startPosition = position(line: start.line, utf8Column: start.column, lines: lines)
@@ -256,6 +250,28 @@ extension StrykerReport {
                 ? startPosition
                 : endPosition
         )
+    }
+
+    /// A mutant from an older test plan has only its position. Most operators give the start of the
+    /// mutated code, and the range then covers the original code from there. RemoveSideEffects and
+    /// SwapTernary give the end of the code, which can start on an earlier line. The range then
+    /// covers the last line of the code, from its first character to that end.
+    private static func fallbackRange(
+        of mutation: MutationTestOutcome.Mutation,
+        lines: [Substring]
+    ) -> (start: MutationPosition, end: MutationPosition) {
+        let position = mutation.point.position
+        switch mutation.point.mutationOperatorId {
+        case .removeSideEffects, .swapTernary:
+            let line = position.line >= 1 && position.line <= lines.count ? lines[position.line - 1] : ""
+            let indentation = line.utf8.prefix { $0 == UInt8(ascii: " ") || $0 == UInt8(ascii: "\t") }.count
+            return (MutationPosition(line: position.line, column: indentation + 1), position)
+        default:
+            return (
+                position,
+                MutationPosition(line: position.line, column: position.column + mutation.snapshot.before.utf8.count)
+            )
+        }
     }
 
     private static func position(line: Int, utf8Column: Int, lines: [Substring]) -> Position {
