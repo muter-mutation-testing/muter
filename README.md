@@ -388,7 +388,7 @@ Muter evaluates only conditions that it knows for sure: `os(...)`, `targetEnviro
 
 The build that measures coverage also writes an index store, in which the compiler records the type of each symbol. Muter adds `--enable-index-store` to a `swift` test command, and `COMPILER_INDEX_STORE_ENABLE=YES` to an `xcodebuild` test command. If your test command already sets one of these, Muter keeps your setting.
 
-Muter reads the index of the files that it can mutate, before it discovers the mutants. It needs the `libIndexStore` library of the Swift toolchain. Without an index, for example with `--skip-coverage`, Muter mutates as before. Set `MUTER_DEBUG_COVERAGE` in the environment to see where Muter finds the index and how much it reads.
+Muter reads the index of the files that it can mutate, before it discovers the mutants. It needs the `libIndexStore` library of the Swift toolchain. Without an index, for example with `--skip-coverage`, Muter mutates as before. Xcode writes the index into the derived data folder of the project. Muter finds that folder from `OBJROOT`, so it finds no index when a project moves its intermediate files out of derived data. Set `MUTER_DEBUG_COVERAGE` in the environment to see where Muter finds the index and how much it reads.
 
 ## Mutant Schemata
 

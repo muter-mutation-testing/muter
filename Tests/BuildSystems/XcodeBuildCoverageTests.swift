@@ -32,15 +32,33 @@ final class XcodeBuildCoverageTests: MuterTestCase {
         XCTAssertEqual(process.arguments, ["-project", "App.xcodeproj", "-showBuildSettings"])
     }
 
-    func test_indexStore_isInTheDerivedDataFolder() {
-        // A project: the build directory is `<DerivedData>/<Project-hash>/Build`.
+    /// The index store is in the derived data folder, also when the project moves its build
+    /// products out of it with `SYMROOT`.
+    func test_indexStore_isInTheDerivedDataFolderOfObjRoot() {
+        let settings = """
+            BUILD_DIR = /custom/products
+            OBJROOT = /DerivedData/App-hash/Build/Intermediates.noindex
+        """
+
         XCTAssertEqual(
-            sut.indexStorePath(muterConfiguration, buildDirectory: "/DerivedData/App-hash/Build"),
+            sut.indexStorePath(muterConfiguration, buildSettings: settings),
             "/DerivedData/App-hash/Index.noindex/DataStore"
         )
-        // A Swift package: the build directory is the derived data folder.
+    }
+
+    func test_indexStore_isUnknownWhenTheProjectMovesObjRoot() {
+        XCTAssertNil(sut.indexStorePath(muterConfiguration, buildSettings: "    OBJROOT = /custom/objects\n"))
+        XCTAssertNil(sut.indexStorePath(muterConfiguration, buildSettings: nil))
+    }
+
+    func test_swiftPackage_indexStoreIsInTheDerivedDataPath() {
+        let configuration = MuterConfiguration(
+            executable: "/path/to/xcodebuild",
+            arguments: ["-scheme", "IOSCore", "-derivedDataPath", "/custom/DerivedData", "test"]
+        )
+
         XCTAssertEqual(
-            sut.indexStorePath(packageConfiguration, buildDirectory: "/custom/DerivedData"),
+            sut.indexStorePath(configuration, buildSettings: nil),
             "/custom/DerivedData/Index.noindex/DataStore"
         )
     }
