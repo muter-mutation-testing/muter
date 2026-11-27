@@ -31,6 +31,14 @@ struct MutationPosition: Codable, Equatable {
     }
 }
 
+/// Where the mutated code is in the source file. `start` is its first character and `end` is just
+/// after its last character, without the trivia around the code. Lines do not count the lines that
+/// Muter adds to the file before it mutates it, so they match the user's file.
+struct MutationRange: Codable, Equatable {
+    let start: MutationPosition
+    let end: MutationPosition
+}
+
 extension MutationPosition: Comparable {
     static func < (lhs: MutationPosition, rhs: MutationPosition) -> Bool {
         lhs.utf8Offset < rhs.utf8Offset &&

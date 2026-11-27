@@ -25,6 +25,9 @@ struct MutationSchema {
     let mutatedCode: String
     let position: MutationPosition
     let snapshot: MutationOperator.Snapshot
+    /// Where the mutated code is, for the reports. A test plan from an older Muter does not have it.
+    /// It is not part of equality: it describes the mutant, but it does not change what Muter tests.
+    let range: MutationRange?
 
     init(
         id: Int = 0,
@@ -32,7 +35,8 @@ struct MutationSchema {
         mutationOperatorId: MutationOperator.Id,
         mutatedCode: String,
         position: MutationPosition,
-        snapshot: MutationOperator.Snapshot
+        snapshot: MutationOperator.Snapshot,
+        range: MutationRange? = nil
     ) {
         self.id = id
         self.filePath = filePath
@@ -40,6 +44,7 @@ struct MutationSchema {
         self.mutatedCode = mutatedCode
         self.position = position
         self.snapshot = snapshot
+        self.range = range
     }
 
     init(
@@ -48,7 +53,8 @@ struct MutationSchema {
         mutationOperatorId: MutationOperator.Id,
         syntaxMutation: CodeBlockItemListSyntax,
         position: MutationPosition,
-        snapshot: MutationOperator.Snapshot
+        snapshot: MutationOperator.Snapshot,
+        range: MutationRange? = nil
     ) {
         self.init(
             id: id,
@@ -56,7 +62,8 @@ struct MutationSchema {
             mutationOperatorId: mutationOperatorId,
             mutatedCode: syntaxMutation.description,
             position: position,
-            snapshot: snapshot
+            snapshot: snapshot,
+            range: range
         )
     }
 
@@ -79,6 +86,7 @@ extension MutationSchema: Codable {
         mutatedCode = ""
         position = try container.decode(MutationPosition.self, forKey: .position)
         snapshot = try container.decode(MutationOperator.Snapshot.self, forKey: .snapshot)
+        range = try container.decodeIfPresent(MutationRange.self, forKey: .range)
     }
 
     func encode(to encoder: Encoder) throws {
@@ -89,6 +97,7 @@ extension MutationSchema: Codable {
         try container.encode(mutationOperatorId, forKey: .mutationOperatorId)
         try container.encode(position, forKey: .position)
         try container.encode(snapshot, forKey: .snapshot)
+        try container.encodeIfPresent(range, forKey: .range)
     }
 
     enum CodingKeys: String, CodingKey {
@@ -97,6 +106,7 @@ extension MutationSchema: Codable {
         case mutationOperatorId
         case position
         case snapshot
+        case range
     }
 }
 

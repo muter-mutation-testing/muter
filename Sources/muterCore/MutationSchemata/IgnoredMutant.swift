@@ -5,6 +5,18 @@ import Foundation
 struct IgnoredMutant: Equatable, Codable {
     let point: MutationPoint
     let snapshot: MutationOperator.Snapshot
+    /// Where the mutated code is. A test plan from an older Muter does not have it.
+    let range: MutationRange?
+
+    init(
+        point: MutationPoint,
+        snapshot: MutationOperator.Snapshot,
+        range: MutationRange? = nil
+    ) {
+        self.point = point
+        self.snapshot = snapshot
+        self.range = range
+    }
 }
 
 extension IgnoredMutant: Comparable {

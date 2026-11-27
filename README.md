@@ -283,9 +283,32 @@ plain: (default) prints the report to stdout.
 json: prints the report in JSON format.
 html: prints an HTML report.
 xcode: prints mutation test results in real-time, as they are produced, in a format that Xcode can use to report them in the Issue Navigator.
+stryker: prints the report in the mutation testing report schema of Stryker (version 2).
 ```
 
 Note: If you pass `--output` muter will save the report, instead of using stdout.
+
+**Stryker report format**
+
+The `stryker` format follows the [mutation testing report schema](https://github.com/stryker-mutator/mutation-testing-elements/tree/master/packages/report-schema) of Stryker. Tools that read this schema can show Muter's results, for example the [mutation-testing-elements](https://github.com/stryker-mutator/mutation-testing-elements) HTML report and the [Stryker Dashboard](https://dashboard.stryker-mutator.io).
+
+```shell
+muter run --format stryker --output mutation-report.json
+```
+
+The report has the full source of each mutated file and the location of each mutant in it. Muter's outcomes become these statuses:
+
+| Muter outcome | Stryker status |
+|---|---|
+| mutant survived | `Survived` |
+| mutant killed (test failure) | `Killed` |
+| mutant killed (runtime error) | `Killed` |
+| mutant killed (time out) | `Timeout` |
+| build error | `CompileError` |
+| skipped (no coverage) | `NoCoverage` |
+| ignored (muter:disable) | `Ignored` |
+
+A test run that crashed is `Killed`, because Muter counts it as killed. Its `statusReason` says that it was a runtime error. With these statuses, the score that the tools show is Muter's mutation score. The report uses Stryker's default thresholds: 80 for high and 60 for low.
 
 **Operators documentation**
 
