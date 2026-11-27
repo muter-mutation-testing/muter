@@ -175,4 +175,25 @@ final class SwapTernaryOperatorTests: MuterTestCase {
 
         XCTAssertTrue(visitor.schemataMappings.isEmpty)
     }
+
+    // These shapes are not swapped, and their mutant had the original code, so it always survived.
+    func test_doesNotAddAMutantThatLeavesTheCodeAsItIs() throws {
+        let source = try sourceCode(
+            """
+            func total(_ flag: Bool, _ base: Int, _ extra: Int) -> Int {
+                let sum = flag ? base : base + extra
+                let same = flag ? base : base
+                return sum + same
+            }
+            """
+        )
+
+        let visitor = SwapTernaryOperator.Visitor(
+            sourceCodeInfo: .init(path: "/path/to/file", code: source)
+        )
+
+        visitor.walk(source)
+
+        XCTAssertEqual(visitor.schemataMappings.mutationSchemata.map(\.snapshot.before), [])
+    }
 }

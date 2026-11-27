@@ -21,6 +21,9 @@ enum SwapTernaryOperator {
             }
 
             let mutatedSyntax = mutated(node)
+            guard mutatedSyntax.description != node.description else {
+                return super.visit(node)
+            }
             let position = endLocation(for: node)
             let snapshot = MutationOperator.Snapshot(
                 before: node.description.trimmed.inlined,
@@ -29,7 +32,7 @@ enum SwapTernaryOperator {
             )
 
             add(
-                mutation: mutated(node),
+                mutation: mutatedSyntax,
                 with: node,
                 at: position,
                 snapshot: snapshot,
@@ -49,7 +52,12 @@ enum SwapTernaryOperator {
                 return super.visit(node)
             }
 
+            // `mutated` leaves some shapes as they are, for example `flag ? a : b + c`. A mutant
+            // with the original code can never be killed, so it would only lower the score.
             let mutatedSyntax = mutated(node)
+            guard mutatedSyntax.description != node.description else {
+                return super.visit(node)
+            }
             let position = endLocation(for: node)
             let snapshot = MutationOperator.Snapshot(
                 before: node.description.trimmed.inlined,
@@ -58,7 +66,7 @@ enum SwapTernaryOperator {
             )
 
             add(
-                mutation: mutated(node),
+                mutation: mutatedSyntax,
                 with: node,
                 at: position,
                 snapshot: snapshot,
