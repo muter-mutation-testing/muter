@@ -35,6 +35,7 @@ struct DiscoverMutationPoints: MutationStep {
 
         return [
             .mutationMappingsDiscovered(mappings),
+            .ignoredMutantsDiscovered(discovered.ignoredMutants.sorted()),
             // Pass empty dictionary - ApplySchemata will re-parse files on demand
             // This prevents memory exhaustion on large codebases (2000+ files)
             .sourceCodeParsed([:]),
@@ -85,18 +86,17 @@ private extension DiscoverMutationPoints {
                             return
                         }
 
-                        let schemataMappings = self.discoverNewSchemataMappings(
+                        let (schemataMappings, ignoredMutants) = self.discoverNewSchemataMappings(
                             forOperators: operators,
                             inFile: sourceCode,
                             configuration: configuration,
                             regionsWithoutCoverage: coverage.regionsForFile(path)
                         )
 
-                        if !schemataMappings.isEmpty {
-                            lock.lock()
-                            discoveredFiles.mappings.append(contentsOf: schemataMappings)
-                            lock.unlock()
-                        }
+                        lock.lock()
+                        discoveredFiles.mappings.append(contentsOf: schemataMappings)
+                        discoveredFiles.ignoredMutants.append(contentsOf: ignoredMutants)
+                        lock.unlock()
                     }
                 }
             }
@@ -112,10 +112,11 @@ private extension DiscoverMutationPoints {
         inFile sourceCode: PreparedSourceCode,
         configuration: MuterConfiguration,
         regionsWithoutCoverage: [Region]
-    ) -> [SchemataMutationMapping] {
+    ) -> (mappings: [SchemataMutationMapping], ignoredMutants: [IgnoredMutant]) {
         let source = sourceCode.source.code
+        var ignoredMutants: [IgnoredMutant] = []
 
-        return operators.accumulate(into: []) { newSchemataMappings, mutationOperatorId in
+        let mappings: [SchemataMutationMapping] = operators.accumulate(into: []) { newSchemataMappings, mutationOperatorId in
             let visitor = mutationOperatorId.visitor(
                 configuration,
                 sourceCode.source,
@@ -126,6 +127,7 @@ private extension DiscoverMutationPoints {
 
             visitor.walk(source)
 
+            ignoredMutants += visitor.ignoredMutants
             let schemataMapping = visitor.schemataMappings
 
             if !schemataMapping.isEmpty {
@@ -134,6 +136,8 @@ private extension DiscoverMutationPoints {
                 return newSchemataMappings
             }
         }
+
+        return (mappings, ignoredMutants)
     }
 
     func pathContainsDotSwift(_ filePath: String) -> Bool {
@@ -144,4 +148,5 @@ private extension DiscoverMutationPoints {
 
 private class DiscoveredFiles {
     var mappings: [SchemataMutationMapping] = []
+    var ignoredMutants: [IgnoredMutant] = []
 }

@@ -23,6 +23,7 @@ struct LoadMuterTestPlan: MutationStep {
             .tempDirectoryUrlCreated(URL(fileURLWithPath: testPlan.mutatedProjectPath)),
             .projectCoverage(.init(percent: testPlan.projectCoverage)),
             .mutationMappingsDiscovered(testPlan.mappings),
+            .ignoredMutantsDiscovered(testPlan.ignoredMutants),
         ]
     }
 }

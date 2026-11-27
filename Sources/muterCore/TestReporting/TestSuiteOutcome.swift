@@ -9,6 +9,8 @@ enum TestSuiteOutcome: String, Codable, CaseIterable {
     case runtimeError
     case noCoverage
     case timeout
+    /// A `muter:disable` comment turned the mutant off, so Muter did not test it.
+    case ignored
 
     var asMutationTestOutcome: String {
         switch self {
@@ -24,6 +26,8 @@ enum TestSuiteOutcome: String, Codable, CaseIterable {
             return "skipped (no coverage)"
         case .timeout:
             return "mutant killed (time out)"
+        case .ignored:
+            return "ignored (muter:disable)"
         }
     }
 

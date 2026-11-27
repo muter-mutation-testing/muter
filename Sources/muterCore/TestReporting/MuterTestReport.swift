@@ -7,6 +7,9 @@ struct MuterTestReport {
     let globalMutationScore: Int
     let totalAppliedMutationOperators: Int
     let numberOfKilledMutants: Int
+    /// The mutants that `muter:disable` comments turned off. The other counts and the scores do not
+    /// include them.
+    let numberOfIgnoredMutants: Int
     let projectCodeCoverage: Int?
     let fileReports: [FileReport]
     let timeElapsed: String
@@ -18,7 +21,8 @@ struct MuterTestReport {
 
     init(from outcome: MutationTestOutcome = .init()) {
         globalMutationScore = mutationScore(from: outcome.mutations.map { $0.testSuiteOutcome })
-        totalAppliedMutationOperators = outcome.mutations.count
+        totalAppliedMutationOperators = outcome.mutations.count { $0.testSuiteOutcome != .ignored }
+        numberOfIgnoredMutants = outcome.mutations.count { $0.testSuiteOutcome == .ignored }
         numberOfKilledMutants = outcome.mutations
             .count { $0.testSuiteOutcome.isKilled }
         projectCodeCoverage = outcome.coverage == .null ? nil : outcome.coverage.percent
@@ -40,7 +44,9 @@ extension MuterTestReport {
 
         static func reports(from mutations: [MutationTestOutcome.Mutation]) -> [OperatorReport] {
             MutationOperator.Id.allCases.compactMap { id in
-                let mutants = mutations.filter { $0.point.mutationOperatorId == id }
+                let mutants = mutations.filter {
+                    $0.point.mutationOperatorId == id && $0.testSuiteOutcome != .ignored
+                }
                 guard !mutants.isEmpty else {
                     return nil
                 }
@@ -229,6 +235,7 @@ extension MuterTestReport: Codable {
         case globalMutationScore
         case totalAppliedMutationOperators
         case numberOfKilledMutants
+        case numberOfIgnoredMutants
         case projectCodeCoverage
         case fileReports
         case timeElapsed
@@ -236,12 +243,14 @@ extension MuterTestReport: Codable {
         case averageNumberOfFailedTests
     }
 
-    /// Reports written before `operatorReports` and `averageNumberOfFailedTests` existed still decode.
+    /// Reports written before `operatorReports`, `averageNumberOfFailedTests` and
+    /// `numberOfIgnoredMutants` existed still decode.
     init(from decoder: Decoder) throws {
         let container = try decoder.container(keyedBy: CodingKeys.self)
         globalMutationScore = try container.decode(Int.self, forKey: .globalMutationScore)
         totalAppliedMutationOperators = try container.decode(Int.self, forKey: .totalAppliedMutationOperators)
         numberOfKilledMutants = try container.decode(Int.self, forKey: .numberOfKilledMutants)
+        numberOfIgnoredMutants = try container.decodeIfPresent(Int.self, forKey: .numberOfIgnoredMutants) ?? 0
         projectCodeCoverage = try container.decodeIfPresent(Int.self, forKey: .projectCodeCoverage)
         fileReports = try container.decode([FileReport].self, forKey: .fileReports)
         timeElapsed = try container.decode(String.self, forKey: .timeElapsed)

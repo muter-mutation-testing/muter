@@ -28,7 +28,8 @@ final class LoadMuterTestPlanTests: MuterTestCase {
         state.runOptions = .make(testPlanURL: URL(fileURLWithPath: "/path/to/test-plan"))
         fileManager.fileContentsToReturn = MuterTestPlan.make(
             mutatedProjectPath: "/path/to/muted",
-            projectCoverage: 23
+            projectCoverage: 23,
+            ignoredMutants: [ignoredMutant]
         ).toData
 
         let result = try await sut.run(with: state)
@@ -38,7 +39,24 @@ final class LoadMuterTestPlanTests: MuterTestCase {
                 .tempDirectoryUrlCreated(URL(fileURLWithPath: "/path/to/muted")),
                 .projectCoverage(.init(percent: 23)),
                 .mutationMappingsDiscovered([]),
+                .ignoredMutantsDiscovered([ignoredMutant]),
             ]
         )
     }
+
+    func test_loadsATestPlanWithoutIgnoredMutants() async throws {
+        state.runOptions = .make(testPlanURL: URL(fileURLWithPath: "/path/to/test-plan"))
+        fileManager.fileContentsToReturn = Data(
+            #"{"mutatedProjectPath":"/path/to/muted","projectCoverage":23,"mappings":[]}"#.utf8
+        )
+
+        let result = try await sut.run(with: state)
+
+        XCTAssertEqual(result.last, .ignoredMutantsDiscovered([]))
+    }
+
+    private let ignoredMutant = IgnoredMutant(
+        point: .make(mutationOperatorId: .ror, filePath: "/path/to/muted/file.swift", position: 3),
+        snapshot: .make(before: "==", after: "!=")
+    )
 }

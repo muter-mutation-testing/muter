@@ -35,6 +35,8 @@ class MuterVisitor: SyntaxAnyVisitor {
     var sourceCodePreparationChange: MutationSourceCodePreparationChange = .null
 
     private(set) var schemataMappings: SchemataMutationMapping
+    /// The mutants that `muter:disable` comments turned off.
+    private(set) var ignoredMutants: [IgnoredMutant] = []
 
     private lazy var disableDirectives = DisableDirectives(
         source: sourceCodeInfo.code,
@@ -207,6 +209,16 @@ class MuterVisitor: SyntaxAnyVisitor {
         // Operators that report the end of a multi-line node give its start line, so that a
         // `muter:disable next-line` comment above the node applies to it.
         guard !isDisabled(onLine: startLine ?? position.line) else {
+            ignoredMutants.append(
+                IgnoredMutant(
+                    point: MutationPoint(
+                        mutationOperatorId: mutationOperatorId,
+                        filePath: sourceCodeInfo.path,
+                        position: position
+                    ),
+                    snapshot: snapshot
+                )
+            )
             return
         }
 
