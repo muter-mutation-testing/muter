@@ -132,6 +132,26 @@ final class DisableDirectivesTests: MuterTestCase {
 
     // MARK: Discovery
 
+    func test_visitorKeepsTheMutantsThatTheCommentsTurnOff() throws {
+        let source = try sourceCode("""
+        func f(_ a: Int) -> Bool {
+            // muter:disable next-line
+            let b = a == 1
+            return a != 2
+        }
+        """)
+        let visitor = MutationOperator.Id.ror.visitor(.init(), .init(path: "/path/to/file", code: source), [])
+
+        visitor.walk(source)
+
+        XCTAssertEqual(
+            visitor.ignoredMutants.map { "\($0.point.mutationOperatorId.rawValue)@\($0.point.position.line)" },
+            ["RelationalOperatorReplacement@3"]
+        )
+        XCTAssertEqual(visitor.ignoredMutants.first?.snapshot.before, "==")
+        XCTAssertEqual(visitor.schemataMappings.mutationSchemata.map(\.position.line), [4])
+    }
+
     func test_discoveryIgnoresTheMutantsThatTheCommentsTurnOff() throws {
         let source = try sourceCode("""
         import Foundation

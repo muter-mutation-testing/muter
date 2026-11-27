@@ -38,7 +38,7 @@ final class PlainTextReporter: Reporter {
             report.totalAppliedMutationOperators
         ) mutants introduced into your code, your test suite killed \(
             report.numberOfKilledMutants
-        ).
+        ).\(ignoredMutantsMessage(from: report))
         \(mutationScoreMessage)
         \(projectCoverageMessage)
 
@@ -67,6 +67,12 @@ final class PlainTextReporter: Reporter {
 
         \(generateTestFailuresCLITable(from: report.operatorReports).description)
         """
+    }
+
+    private func ignoredMutantsMessage(from report: MuterTestReport) -> String {
+        report.numberOfIgnoredMutants > 0
+            ? "\n\(report.numberOfIgnoredMutants) mutants were ignored because of muter:disable comments."
+            : ""
     }
 
     private func coverageMessage(from report: MuterTestReport) -> String {

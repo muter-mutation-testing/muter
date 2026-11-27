@@ -14,6 +14,7 @@ protocol AnyMutationTestState: AnyObject {
     var sourceFileCandidates: [FilePath] { get }
     var mutationPoints: [MutationPoint] { get }
     var mutationMapping: [SchemataMutationMapping] { get }
+    var ignoredMutants: [IgnoredMutant] { get }
     var sourceCodeByFilePath: [FilePath: SourceFileSyntax] { get }
     var filesToMutate: [String] { get }
     var swapFilePathsByOriginalPath: [FilePath: FilePath] { get }
@@ -36,6 +37,7 @@ final class MutationTestState: AnyMutationTestState {
     var sourceFileCandidates: [FilePath] = []
     var mutationPoints: [MutationPoint] = []
     var mutationMapping: [SchemataMutationMapping] = []
+    var ignoredMutants: [IgnoredMutant] = []
     var sourceCodeByFilePath: [FilePath: SourceFileSyntax] = [:]
     var swapFilePathsByOriginalPath: [FilePath: FilePath] = [:]
     var mutationTestOutcome: MutationTestOutcome = .init()
@@ -60,6 +62,7 @@ extension MutationTestState {
         case sourceFileCandidatesDiscovered([FilePath])
         case mutationPointsDiscovered([MutationPoint])
         case mutationMappingsDiscovered([SchemataMutationMapping])
+        case ignoredMutantsDiscovered([IgnoredMutant])
         case sourceCodeParsed([FilePath: SourceFileSyntax])
         case swapFilePathGenerated([FilePath: FilePath])
         case mutationTestOutcomeGenerated(MutationTestOutcome)
@@ -88,6 +91,8 @@ extension MutationTestState {
                 self.mutationPoints = mutationPoints
             case let .mutationMappingsDiscovered(mutationMapping):
                 self.mutationMapping = mutationMapping
+            case let .ignoredMutantsDiscovered(ignoredMutants):
+                self.ignoredMutants = ignoredMutants
             case let .sourceCodeParsed(sourceCodeByFilePath):
                 self.sourceCodeByFilePath = sourceCodeByFilePath
             case let .swapFilePathGenerated(swapFilePathsByOriginalPath):

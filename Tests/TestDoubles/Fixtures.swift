@@ -278,12 +278,14 @@ extension MuterTestPlan {
     static func make(
         mutatedProjectPath: String = "",
         projectCoverage: Int = 0,
-        mappings: [SchemataMutationMapping] = []
+        mappings: [SchemataMutationMapping] = [],
+        ignoredMutants: [IgnoredMutant] = []
     ) -> MuterTestPlan {
         MuterTestPlan(
             mutatedProjectPath: mutatedProjectPath,
             projectCoverage: projectCoverage,
-            mappings: mappings
+            mappings: mappings,
+            ignoredMutants: ignoredMutants
         )
     }
 

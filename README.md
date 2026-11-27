@@ -348,6 +348,8 @@ The operator names are:
 
 A comment without a known operator name applies to all operators.
 
+The reports show the turned-off mutants as `ignored (muter:disable)`. Muter does not test them, and they do not count in the mutation score.
+
 ## Mutant Schemata
 
 Muter uses a technique called mutant schemata. This builds a copy of your code with all known mutations inserted at once, but they are disabled by flags. Then your tests are run repeatedly, activating a different mutant each time via environment variables. This is a huge win performance, but comes with a caveat:

@@ -135,6 +135,14 @@ extension Node where Context: HTML.BodyContext {
                 .span(.class("strong"), "\(testReport.fileReports.count)"),
                 " files."
             ),
+            .if(
+                testReport.numberOfIgnoredMutants > 0,
+                .p(
+                    "🙈 ",
+                    .span(.class("strong"), "\(testReport.numberOfIgnoredMutants)"),
+                    " mutants were ignored because of muter:disable comments."
+                )
+            ),
             .p("⏰ Muter took \(testReport.timeElapsed) to run."),
             .if(
                 !newVersion.isEmpty,
@@ -347,7 +355,8 @@ private extension TestSuiteOutcome {
             icon = testFailed
         case .buildError:
             icon = testBuildError
-        case .noCoverage:
+        case .noCoverage,
+             .ignored:
             icon = skipped
         case .timeout:
             icon = testTimeout

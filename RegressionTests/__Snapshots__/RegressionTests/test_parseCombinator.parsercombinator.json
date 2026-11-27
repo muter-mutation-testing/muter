@@ -224,6 +224,7 @@
     }
   ],
   "globalMutationScore" : 100,
+  "numberOfIgnoredMutants" : 0,
   "numberOfKilledMutants" : 14,
   "operatorReports" : [
     {

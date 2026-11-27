@@ -41,8 +41,18 @@ struct PerformMutationTesting: MutationStep {
             try await performMutationTesting(using: state)
         }
 
+        let ignoredMutations = state.ignoredMutants.map {
+            MutationTestOutcome.Mutation(
+                testSuiteOutcome: .ignored,
+                mutationPoint: $0.point,
+                mutationSnapshot: $0.snapshot,
+                originalProjectDirectoryUrl: state.projectDirectoryURL,
+                mutatedProjectDirectoryURL: state.mutatedProjectDirectoryURL
+            )
+        }
+
         let mutationTestOutcome = MutationTestOutcome(
-            mutations: mutationOutcome,
+            mutations: mutationOutcome + ignoredMutations,
             coverage: state.projectCoverage,
             testDuration: testDuration,
             newVersion: state.newVersion
@@ -228,7 +238,7 @@ private extension PerformMutationTesting {
         switch outcome {
         case .passed, .failed, .runtimeError:
             return FailedTests.count(in: testLog)
-        case .buildError, .timeout, .noCoverage:
+        case .buildError, .timeout, .noCoverage, .ignored:
             return nil
         }
     }

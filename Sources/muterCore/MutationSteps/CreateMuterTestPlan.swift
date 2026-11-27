@@ -10,7 +10,8 @@ struct CreateMuterTestPlan: MutationStep {
         let testPlan = MuterTestPlan(
             mutatedProjectPath: state.mutatedProjectDirectoryURL.path,
             projectCoverage: state.projectCoverage.percent,
-            mappings: state.mutationMapping
+            mappings: state.mutationMapping,
+            ignoredMutants: state.ignoredMutants
         )
 
         let jsonData = try JSONEncoder().encode(testPlan)

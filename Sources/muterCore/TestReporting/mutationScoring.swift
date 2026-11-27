@@ -1,11 +1,12 @@
-/// The percentage of killed mutants, rounded to the nearest whole number. Build errors do not count.
+/// The percentage of killed mutants, rounded to the nearest whole number. Build errors and ignored
+/// mutants do not count.
 func mutationScore(from testResults: [TestSuiteOutcome]) -> Int {
     guard !testResults.isEmpty else {
         return -1
     }
 
     let numberOfKilledMutants = Double(testResults.count(where: \.isKilled))
-    let totalResults = Double(testResults.count { $0 != .buildError })
+    let totalResults = Double(testResults.count { $0 != .buildError && $0 != .ignored })
 
     guard totalResults > 0 else {
         return 0

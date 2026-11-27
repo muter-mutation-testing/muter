@@ -76,6 +76,35 @@ final class PerformMutationTestingTests: MuterTestCase {
         )
     }
 
+    func test_ignoredMutantsAreInTheOutcomeWithoutATestRun() async throws {
+        let ignoredMutant = IgnoredMutant(
+            point: .make(mutationOperatorId: .swapTernary, filePath: "/project_mutated/file.swift", position: 4),
+            snapshot: .make(before: "a ? b : c", after: "a ? c : b")
+        )
+        state.mutationMapping = []
+        state.ignoredMutants = [ignoredMutant]
+        ioDelegate.testSuiteOutcomes = [.passed]
+
+        let result = try await sut.run(with: state)
+
+        XCTAssertEqual(ioDelegate.methodCalls, ["benchmarkTests(using:savingResultsIntoFileNamed:)"])
+        XCTAssertEqual(
+            result, [
+                .mutationTestOutcomeGenerated(
+                    MutationTestOutcome(mutations: [
+                        MutationTestOutcome.Mutation.make(
+                            testSuiteOutcome: .ignored,
+                            point: ignoredMutant.point,
+                            snapshot: ignoredMutant.snapshot,
+                            originalProjectDirectoryUrl: state.projectDirectoryURL,
+                            mutatedProjectDirectoryURL: state.mutatedProjectDirectoryURL
+                        ),
+                    ])
+                ),
+            ]
+        )
+    }
+
     func test_createLogFile() async throws {
         ioDelegate.testSuiteOutcomes = [.passed, .failed, .failed]
 

@@ -27,6 +27,21 @@ final class CreateMuterTestPlanTests: MuterTestCase {
         XCTAssertEqual(writeFile.pathPassed, "/path/to/project/muter-mappings.json")
     }
 
+    func test_testPlanHasTheIgnoredMutants() async throws {
+        let state = makeState()
+        let ignoredMutant = IgnoredMutant(
+            point: .make(mutationOperatorId: .ror, filePath: "/path/to/file", position: 2),
+            snapshot: .make(before: "==", after: "!=")
+        )
+        state.ignoredMutants = [ignoredMutant]
+
+        _ = try await sut.run(with: state)
+
+        let json = try XCTUnwrap(writeFile.contentPassed)
+        let testPlan = try JSONDecoder().decode(MuterTestPlan.self, from: Data(json.utf8))
+        XCTAssertEqual(testPlan.ignoredMutants, [ignoredMutant])
+    }
+
     private func makeState() -> MutationTestState {
         let state = MutationTestState()
         state.mutatedProjectDirectoryURL = URL(fileURLWithPath: "/path/to/project_mutated")
