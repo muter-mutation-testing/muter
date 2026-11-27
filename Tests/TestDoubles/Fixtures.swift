@@ -160,12 +160,14 @@ extension Coverage {
     static func make(
         percent: Int = 0,
         filesWithoutCoverage: [FilePath] = [],
-        functionsCoverage: FunctionsCoverage = .null
+        functionsCoverage: FunctionsCoverage = .null,
+        indexStorePath: String? = nil
     ) -> Coverage {
         Coverage(
             percent: percent,
             filesWithoutCoverage: filesWithoutCoverage,
-            functionsCoverage: functionsCoverage
+            functionsCoverage: functionsCoverage,
+            indexStorePath: indexStorePath
         )
     }
 }

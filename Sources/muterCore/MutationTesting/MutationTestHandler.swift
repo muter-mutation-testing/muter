@@ -63,6 +63,7 @@ private extension [MutationStep] {
         CopyProjectToTempDirectory(),
         DiscoverProjectCoverage(),
         DiscoverSourceFiles(),
+        LoadSymbolIndex(),
         DiscoverMutationPoints(),
         CreateMuterTestPlan(),
         GenerateSwapFilePaths(),
@@ -89,6 +90,7 @@ private extension [MutationStep] {
         CopyProjectToTempDirectory(),
         DiscoverProjectCoverage(),
         DiscoverSourceFiles(),
+        LoadSymbolIndex(),
         DiscoverMutationPoints(),
         ApplySchemata(),
         CreateMuterTestPlan(),
@@ -110,7 +112,8 @@ private extension [MutationStep] {
         }
 
         if options.skipCoverage {
-            copy.removeAll { $0 is DiscoverProjectCoverage }
+            // The index store comes from the coverage build.
+            copy.removeAll { $0 is DiscoverProjectCoverage || $0 is LoadSymbolIndex }
         }
 
         if options.skipUpdateCheck {

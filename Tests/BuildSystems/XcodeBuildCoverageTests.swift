@@ -22,7 +22,7 @@ final class XcodeBuildCoverageTests: MuterTestCase {
 
         XCTAssertEqual(process.executableURL?.path, "/path/to/xcodebuild")
         // A project keeps its own build location: no -derivedDataPath is added.
-        XCTAssertEqual(process.arguments, ["-project", "App.xcodeproj", "-enableCodeCoverage", "YES"])
+        XCTAssertEqual(process.arguments, ["-project", "App.xcodeproj", "-enableCodeCoverage", "YES", "COMPILER_INDEX_STORE_ENABLE=YES"])
     }
 
     func test_project_buildDirectoryComesFromShowBuildSettings() {
@@ -30,6 +30,31 @@ final class XcodeBuildCoverageTests: MuterTestCase {
 
         XCTAssertEqual(sut.buildDirectory(muterConfiguration), "/custom/build")
         XCTAssertEqual(process.arguments, ["-project", "App.xcodeproj", "-showBuildSettings"])
+    }
+
+    func test_indexStore_isInTheDerivedDataFolder() {
+        // A project: the build directory is `<DerivedData>/<Project-hash>/Build`.
+        XCTAssertEqual(
+            sut.indexStorePath(muterConfiguration, buildDirectory: "/DerivedData/App-hash/Build"),
+            "/DerivedData/App-hash/Index.noindex/DataStore"
+        )
+        // A Swift package: the build directory is the derived data folder.
+        XCTAssertEqual(
+            sut.indexStorePath(packageConfiguration, buildDirectory: "/custom/DerivedData"),
+            "/custom/DerivedData/Index.noindex/DataStore"
+        )
+    }
+
+    func test_whenTheTestCommandSetsTheIndexStore_thenMuterKeepsIt() {
+        let configuration = MuterConfiguration(
+            executable: "/path/to/xcodebuild",
+            arguments: ["-project", "App.xcodeproj", "COMPILER_INDEX_STORE_ENABLE=NO"]
+        )
+
+        XCTAssertEqual(
+            configuration.enableCoverageArguments,
+            ["-project", "App.xcodeproj", "COMPILER_INDEX_STORE_ENABLE=NO", "-enableCodeCoverage", "YES"]
+        )
     }
 
     func test_buildDir_isOnlyTheValue() {
@@ -48,7 +73,7 @@ final class XcodeBuildCoverageTests: MuterTestCase {
 
         XCTAssertEqual(
             process.arguments,
-            ["-scheme", "IOSCore", "test", "-derivedDataPath", "DerivedData", "-enableCodeCoverage", "YES"]
+            ["-scheme", "IOSCore", "test", "-derivedDataPath", "DerivedData", "-enableCodeCoverage", "YES", "COMPILER_INDEX_STORE_ENABLE=YES"]
         )
     }
 
@@ -71,7 +96,7 @@ final class XcodeBuildCoverageTests: MuterTestCase {
 
         XCTAssertEqual(
             process.arguments,
-            ["-scheme", "IOSCore", "-derivedDataPath", "/custom/DerivedData", "test", "-enableCodeCoverage", "YES"]
+            ["-scheme", "IOSCore", "-derivedDataPath", "/custom/DerivedData", "test", "-enableCodeCoverage", "YES", "COMPILER_INDEX_STORE_ENABLE=YES"]
         )
         XCTAssertEqual(sut.buildDirectory(configuration), "/custom/DerivedData")
     }

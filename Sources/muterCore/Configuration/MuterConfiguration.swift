@@ -149,12 +149,28 @@ extension MuterConfiguration {
             // Muter chooses the build folder itself. Projects and workspaces keep their own build
             // location (for example SYMROOT in an .xcconfig), which -derivedDataPath would not override.
             let arguments = testsSwiftPackageWithXcodebuild ? argumentsWithDerivedDataPath : arguments
-            return arguments + ["-enableCodeCoverage", "YES"]
+            return arguments + ["-enableCodeCoverage", "YES"] + indexStoreArguments
         case .swift:
-            return arguments + ["--enable-code-coverage"]
+            return arguments + ["--enable-code-coverage"] + indexStoreArguments
 
         case .unknown:
             return arguments
+        }
+    }
+
+    /// Asks the coverage build to also write an index store, which tells Muter the types in the
+    /// code. `xcodebuild` writes none by default. A setting that the user gives in the test
+    /// command wins.
+    private var indexStoreArguments: [String] {
+        switch buildSystem {
+        case .xcodebuild:
+            let isSet = testCommandArguments.contains { $0.hasPrefix("COMPILER_INDEX_STORE_ENABLE=") }
+            return isSet ? [] : ["COMPILER_INDEX_STORE_ENABLE=YES"]
+        case .swift:
+            let isSet = testCommandArguments.contains { $0 == "--enable-index-store" || $0 == "--disable-index-store" }
+            return isSet ? [] : ["--enable-index-store"]
+        case .unknown:
+            return []
         }
     }
 

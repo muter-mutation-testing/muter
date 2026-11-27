@@ -87,7 +87,7 @@ final class MutationTestHandlerTests: MuterTestCase {
     func test_allSteps() {
         sut = MutationTestHandler(options: .make())
 
-        XCTAssertEqual(sut.steps.count, 12)
+        XCTAssertEqual(sut.steps.count, 13)
 
         XCTAssertTypeEqual(sut.steps[safe: 0], UpdateCheck.self)
         XCTAssertTypeEqual(sut.steps[safe: 1], LoadConfiguration.self)
@@ -96,17 +96,20 @@ final class MutationTestHandlerTests: MuterTestCase {
         XCTAssertTypeEqual(sut.steps[safe: 4], CopyProjectToTempDirectory.self)
         XCTAssertTypeEqual(sut.steps[safe: 5], DiscoverProjectCoverage.self)
         XCTAssertTypeEqual(sut.steps[safe: 6], DiscoverSourceFiles.self)
-        XCTAssertTypeEqual(sut.steps[safe: 7], DiscoverMutationPoints.self)
-        XCTAssertTypeEqual(sut.steps[safe: 8], GenerateSwapFilePaths.self)
-        XCTAssertTypeEqual(sut.steps[safe: 9], ApplySchemata.self)
-        XCTAssertTypeEqual(sut.steps[safe: 10], BuildForTesting.self)
-        XCTAssertTypeEqual(sut.steps[safe: 11], PerformMutationTesting.self)
+        XCTAssertTypeEqual(sut.steps[safe: 7], LoadSymbolIndex.self)
+        XCTAssertTypeEqual(sut.steps[safe: 8], DiscoverMutationPoints.self)
+        XCTAssertTypeEqual(sut.steps[safe: 9], GenerateSwapFilePaths.self)
+        XCTAssertTypeEqual(sut.steps[safe: 10], ApplySchemata.self)
+        XCTAssertTypeEqual(sut.steps[safe: 11], BuildForTesting.self)
+        XCTAssertTypeEqual(sut.steps[safe: 12], PerformMutationTesting.self)
     }
 
     func test_steps_whenSkipsCoverage() {
         sut = MutationTestHandler(options: .make(skipCoverage: true))
 
         assertStepsDoesNotContain(sut.steps, DiscoverProjectCoverage.self)
+        // The index store comes from the coverage build.
+        assertStepsDoesNotContain(sut.steps, LoadSymbolIndex.self)
     }
 
     func test_steps_whenSkipUpdateCheck() {
@@ -140,7 +143,7 @@ final class MutationTestHandlerTests: MuterTestCase {
             )
         )
 
-        XCTAssertEqual(sut.steps.count, 10)
+        XCTAssertEqual(sut.steps.count, 11)
         XCTAssertTypeEqual(sut.steps[safe: 0], UpdateCheck.self)
         XCTAssertTypeEqual(sut.steps[safe: 1], LoadConfiguration.self)
         XCTAssertTypeEqual(sut.steps[safe: 2], CreateMutatedProjectDirectoryURL.self)
@@ -148,9 +151,10 @@ final class MutationTestHandlerTests: MuterTestCase {
         XCTAssertTypeEqual(sut.steps[safe: 4], CopyProjectToTempDirectory.self)
         XCTAssertTypeEqual(sut.steps[safe: 5], DiscoverProjectCoverage.self)
         XCTAssertTypeEqual(sut.steps[safe: 6], DiscoverSourceFiles.self)
-        XCTAssertTypeEqual(sut.steps[safe: 7], DiscoverMutationPoints.self)
-        XCTAssertTypeEqual(sut.steps[safe: 8], ApplySchemata.self)
-        XCTAssertTypeEqual(sut.steps[safe: 9], CreateMuterTestPlan.self)
+        XCTAssertTypeEqual(sut.steps[safe: 7], LoadSymbolIndex.self)
+        XCTAssertTypeEqual(sut.steps[safe: 8], DiscoverMutationPoints.self)
+        XCTAssertTypeEqual(sut.steps[safe: 9], ApplySchemata.self)
+        XCTAssertTypeEqual(sut.steps[safe: 10], CreateMuterTestPlan.self)
     }
 
     private func assertStepsDoesNotContain(

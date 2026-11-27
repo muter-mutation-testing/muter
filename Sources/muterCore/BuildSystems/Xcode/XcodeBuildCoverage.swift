@@ -20,12 +20,14 @@ final class XcodeBuildCoverage: BuildSystemCoverage {
         )
 
         let percent = extractCoverage(from: report)
-        let functionsCoverage = functionsCoverage(configuration)
+        let buildDirectory = buildDirectory(configuration)
+        let functionsCoverage = functionsCoverage(configuration, buildDirectory: buildDirectory)
 
         let projectCoverage = Coverage(
             percent: percent,
             filesWithoutCoverage: untested,
-            functionsCoverage: functionsCoverage
+            functionsCoverage: functionsCoverage,
+            indexStorePath: buildDirectory.map { indexStorePath(configuration, buildDirectory: $0) }
         )
 
         return .success(projectCoverage)
@@ -48,6 +50,17 @@ final class XcodeBuildCoverage: BuildSystemCoverage {
         )
         .flatMap(Self.buildDir(inBuildSettings:))
         .flatMap { URL(fileURLWithPath: $0).deletingLastPathComponent().path }
+    }
+
+    /// Xcode writes the index store next to the build products of the derived data folder:
+    /// `<DerivedData>/<Project-hash>/Index.noindex/DataStore`. `buildDirectory` is that folder for a
+    /// Swift package, and its `Build` subfolder for a project or a workspace.
+    func indexStorePath(_ configuration: MuterConfiguration, buildDirectory: String) -> String {
+        let buildDirectory = URL(fileURLWithPath: buildDirectory)
+        let derivedData = configuration.testsSwiftPackageWithXcodebuild
+            ? buildDirectory
+            : buildDirectory.deletingLastPathComponent()
+        return derivedData.appendingPathComponent("Index.noindex/DataStore").path
     }
 
     /// The value of `BUILD_DIR` in `-showBuildSettings` output (`    BUILD_DIR = /path/Build/Products`).

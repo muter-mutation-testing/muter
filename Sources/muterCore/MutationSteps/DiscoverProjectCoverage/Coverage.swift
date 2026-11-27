@@ -4,15 +4,20 @@ final class Coverage {
     let percent: Int
     let filesWithoutCoverage: [FilePath]
     let functionsCoverage: FunctionsCoverage
+    /// The index store that the coverage build wrote, or `nil` when the build system has none.
+    /// The folder can be missing, for example when the project sets its own build location.
+    let indexStorePath: String?
 
     init(
         percent: Int = 0,
         filesWithoutCoverage: [FilePath] = [],
-        functionsCoverage: FunctionsCoverage = .null
+        functionsCoverage: FunctionsCoverage = .null,
+        indexStorePath: String? = nil
     ) {
         self.percent = percent
         self.filesWithoutCoverage = filesWithoutCoverage
         self.functionsCoverage = functionsCoverage
+        self.indexStorePath = indexStorePath
     }
 
     func regionsForFile(_ filePath: FilePath) -> [Region] {
@@ -26,6 +31,7 @@ extension Coverage: Equatable {
             lhs.percent == rhs.percent
                 && lhs.filesWithoutCoverage == rhs.filesWithoutCoverage
                 && lhs.functionsCoverage == rhs.functionsCoverage
+                && lhs.indexStorePath == rhs.indexStorePath
         )
             || lhs === rhs
     }

@@ -12,6 +12,9 @@ protocol AnyMutationTestState: AnyObject {
     var projectXCTestRun: XCTestRun { get }
     var projectCoverage: Coverage { get }
     var sourceFileCandidates: [FilePath] { get }
+    /// The symbols of the unmutated code, from the index store of the coverage build. `nil` when
+    /// there is no index store, for example with `--skip-coverage`.
+    var symbolIndex: SymbolIndex? { get }
     var mutationPoints: [MutationPoint] { get }
     var mutationMapping: [SchemataMutationMapping] { get }
     var ignoredMutants: [IgnoredMutant] { get }
@@ -35,6 +38,7 @@ final class MutationTestState: AnyMutationTestState {
     var projectXCTestRun: XCTestRun = .init()
     var projectCoverage: Coverage = .null
     var sourceFileCandidates: [FilePath] = []
+    var symbolIndex: SymbolIndex?
     var mutationPoints: [MutationPoint] = []
     var mutationMapping: [SchemataMutationMapping] = []
     var ignoredMutants: [IgnoredMutant] = []
@@ -60,6 +64,7 @@ extension MutationTestState {
         case projectXCTestRun(XCTestRun)
         case projectCoverage(Coverage)
         case sourceFileCandidatesDiscovered([FilePath])
+        case symbolIndexLoaded(SymbolIndex)
         case mutationPointsDiscovered([MutationPoint])
         case mutationMappingsDiscovered([SchemataMutationMapping])
         case ignoredMutantsDiscovered([IgnoredMutant])
@@ -87,6 +92,8 @@ extension MutationTestState {
                 self.projectCoverage = projectCoverage
             case let .sourceFileCandidatesDiscovered(sourceFileCandidates):
                 self.sourceFileCandidates = sourceFileCandidates
+            case let .symbolIndexLoaded(symbolIndex):
+                self.symbolIndex = symbolIndex
             case let .mutationPointsDiscovered(mutationPoints):
                 self.mutationPoints = mutationPoints
             case let .mutationMappingsDiscovered(mutationMapping):

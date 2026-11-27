@@ -384,6 +384,12 @@ Muter finds the platform in your test command:
 
 Muter evaluates only conditions that it knows for sure: `os(...)`, `targetEnvironment(simulator)`, and `canImport` of `Foundation`, `UIKit`, `AppKit` and `Darwin` (and of `Glibc` on Apple platforms). It mutates the code in a block with any other condition, such as a custom flag (`DEBUG`), `swift(>=5.9)` or `canImport` of a package. It also mutates all blocks when it cannot tell the platform, for example with a destination that has a `variant` (Mac Catalyst, Designed for iPad), a watchOS destination or a test command other than `swift` and `xcodebuild`, such as a script.
 
+### Type information
+
+The build that measures coverage also writes an index store, in which the compiler records the type of each symbol. Muter adds `--enable-index-store` to a `swift` test command, and `COMPILER_INDEX_STORE_ENABLE=YES` to an `xcodebuild` test command. If your test command already sets one of these, Muter keeps your setting.
+
+Muter reads the index of the files that it can mutate, before it discovers the mutants. It needs the `libIndexStore` library of the Swift toolchain. Without an index, for example with `--skip-coverage`, Muter mutates as before. Set `MUTER_DEBUG_COVERAGE` in the environment to see where Muter finds the index and how much it reads.
+
 ## Mutant Schemata
 
 Muter uses a technique called mutant schemata. This builds a copy of your code with all known mutations inserted at once, but they are disabled by flags. Then your tests are run repeatedly, activating a different mutant each time via environment variables. This is a huge win performance, but comes with a caveat:

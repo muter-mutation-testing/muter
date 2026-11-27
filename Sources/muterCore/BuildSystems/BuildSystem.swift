@@ -49,7 +49,11 @@ extension BuildSystemCoverage {
     }
 
     func functionsCoverage(_ configuration: MuterConfiguration) -> FunctionsCoverage {
-        guard let buildDirectory = buildDirectory(configuration) else {
+        functionsCoverage(configuration, buildDirectory: buildDirectory(configuration))
+    }
+
+    func functionsCoverage(_ configuration: MuterConfiguration, buildDirectory: String?) -> FunctionsCoverage {
+        guard let buildDirectory else {
             CoverageDiagnostics.warn("The build directory was not found.")
             return .null
         }

@@ -55,7 +55,7 @@ final class IndexStoreTests: XCTestCase {
         try Self.fixture.write(to: sourceFile, atomically: true, encoding: .utf8)
 
         let store = directory.appendingPathComponent("Store")
-        try compile(sourceFile, indexStore: store)
+        try IndexStoreFixture.compile([sourceFile], into: directory, indexStore: store, toolchain: toolchain)
         index = try SymbolIndex(
             occurrences: IndexStore(path: store.path, library: library).occurrences(inFilesUnder: directory.path)
         )
@@ -134,27 +134,6 @@ final class IndexStoreTests: XCTestCase {
     }
 
     // MARK: - Helpers
-
-    private func compile(_ file: URL, indexStore: URL) throws {
-        let process = Foundation.Process()
-        #if os(macOS)
-        process.executableURL = URL(fileURLWithPath: "/usr/bin/xcrun")
-        process.arguments = ["swiftc"]
-        #else
-        process.executableURL = toolchain.tool("swiftc")
-        process.arguments = []
-        #endif
-        process.arguments! += [
-            "-parse-as-library", "-module-name", "Fixture",
-            "-c", file.path, "-o", directory.appendingPathComponent("Fixture.o").path,
-            "-index-store-path", indexStore.path, "-index-ignore-system-modules",
-        ]
-        process.standardOutput = FileHandle.nullDevice
-        process.standardError = FileHandle.nullDevice
-        try process.run()
-        process.waitUntilExit()
-        XCTAssertEqual(process.terminationStatus, 0, "swiftc could not compile the fixture")
-    }
 
     /// The line and UTF-8 column, from 1, of `token` on the fixture line that contains `marker`.
     private func position(of token: String, onLineWith marker: String) throws -> (line: Int, column: Int) {
