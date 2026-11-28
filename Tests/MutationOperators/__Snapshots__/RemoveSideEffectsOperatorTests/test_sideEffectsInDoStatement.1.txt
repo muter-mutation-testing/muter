@@ -34,7 +34,12 @@ static func validate(_ type: ParsableArguments.Type, parent: InputKey?)
   }
 }
 private enum __SwiftMutator {
-  static let activeMutant = ProcessInfo.processInfo.environment["MUTER_ACTIVE_MUTANT"].flatMap {
-    Int($0)
-  }
+  #if compiler(>=6.2)
+    nonisolated static let activeMutant = ProcessInfo.processInfo.environment["MUTER_ACTIVE_MUTANT"]
+      .flatMap { Int($0) }
+  #else
+    static let activeMutant = ProcessInfo.processInfo.environment["MUTER_ACTIVE_MUTANT"].flatMap {
+      Int($0)
+    }
+  #endif
 }

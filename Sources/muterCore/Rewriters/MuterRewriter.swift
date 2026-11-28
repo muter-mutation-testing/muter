@@ -15,6 +15,15 @@ final class MuterRewriter: SyntaxRewriter {
     /// line of the file moves and every recorded mutant position stays valid. A `static let` is
     /// initialised once, lazily and thread-safely, and unlike a top-level global it is safe in
     /// `main.swift`, where a global would not be initialised until execution reached it.
+    ///
+    /// The cache is `nonisolated`. In a module built with `-default-isolation MainActor`, the enum
+    /// is isolated to the main actor too, and a switch in nonisolated code could not read it, so the
+    /// mutated project did not build. `Int?` is `Sendable`, so `nonisolated` is allowed here.
+    ///
+    /// `#if compiler(>=6.2)` keeps `nonisolated` away from older compilers, which may reject it on a
+    /// stored property outside an actor. Default isolation starts with Swift 6.2, so older compilers
+    /// do not need it. The compiler that builds the project makes the choice, so the language mode
+    /// of the project does not matter.
     override func visit(_ node: SourceFileSyntax) -> SourceFileSyntax {
         let rewritten = super.visit(node)
         guard rewritten.description.contains("\(Self.environmentCacheName).activeMutant ==") else {
@@ -24,7 +33,11 @@ final class MuterRewriter: SyntaxRewriter {
         let cache = Parser.parse(source: """
 
         fileprivate enum \(Self.environmentCacheName) {
+            #if compiler(>=6.2)
+            nonisolated static let activeMutant = ProcessInfo.processInfo.environment["\(activeMutantKey)"].flatMap { Int($0) }
+            #else
             static let activeMutant = ProcessInfo.processInfo.environment["\(activeMutantKey)"].flatMap { Int($0) }
+            #endif
         }
 
         """).statements
