@@ -263,7 +263,7 @@ Muter defaults to `run` when you don't specify any subcommands
 --files-to-mutate       Only mutate a given list of source code files (Supports glob expressions like Sources/**/*.swift)
 --skip-coverage         Skips the step in which Muter runs your project to filter out files without coverage.
 -o, --output <output>   Output file for the report to be saved.
---operators <operators> The list of mutant operators to be used: RelationalOperatorReplacement, RemoveSideEffects, ChangeLogicalConnector, SwapTernary, SwapBooleanLiteral, SwapRangeOperator
+--operators <operators> The list of mutant operators to be used: RelationalOperatorReplacement, RemoveSideEffects, ChangeLogicalConnector, SwapTernary, SwapBooleanLiteral, SwapRangeOperator, ArithmeticOperatorReplacement
 --skip-update-check     Skips the step in which Muter checks for newer versions.
 -c, --configuration     The path to the muter configuration file.
 ```
@@ -368,6 +368,7 @@ The operator names are:
 - `SwapTernary`
 - `SwapBooleanLiteral`
 - `SwapRangeOperator`
+- `ArithmeticOperatorReplacement`
 
 A comment without a known operator name applies to all operators.
 
@@ -389,6 +390,8 @@ Muter evaluates only conditions that it knows for sure: `os(...)`, `targetEnviro
 The build that measures coverage also writes an index store, in which the compiler records the type of each symbol. Muter adds `--enable-index-store` to a `swift` test command, and `COMPILER_INDEX_STORE_ENABLE=YES` to an `xcodebuild` test command. If your test command already sets one of these, Muter keeps your setting.
 
 Muter reads the index of the files that it can mutate, before it discovers the mutants. It needs the `libIndexStore` library of the Swift toolchain. Without an index, for example with `--skip-coverage`, Muter mutates as before. Xcode writes the index into the derived data folder of the project. Muter finds that folder from `OBJROOT`, so it finds no index when a project moves its intermediate files out of derived data. Set `MUTER_DEBUG_COVERAGE` in the environment to see where Muter finds the index and how much it reads.
+
+The `ArithmeticOperatorReplacement` operator uses the index. It changes `+`, `-`, `*` and `/` only where the index shows the arithmetic of a number type, so that every mutant still compiles. Without an index, it changes nothing. See the [mutation operators](Docs/mutation_operators.md#arithmetic-operator-replacement) for the rules.
 
 ## Mutant Schemata
 

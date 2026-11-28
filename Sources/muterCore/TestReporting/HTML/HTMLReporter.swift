@@ -339,6 +339,7 @@ private extension MutationOperator.Id {
         case .swapTernary: "Swap Ternary"
         case .swapBooleanLiteral: "Swap Boolean Literal"
         case .swapRangeOperator: "Swap Range Operator"
+        case .aor: "Arithmetic Operator Replacement"
         }
     }
 }

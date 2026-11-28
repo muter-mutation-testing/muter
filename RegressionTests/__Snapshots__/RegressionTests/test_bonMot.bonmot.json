@@ -316,6 +316,36 @@
       "appliedOperators" : [
         {
           "mutationPoint" : {
+            "mutationOperatorId" : "ArithmeticOperatorReplacement",
+            "position" : {
+              "column" : 30,
+              "line" : 27
+            }
+          },
+          "mutationSnapshot" : {
+            "after" : "\/",
+            "before" : "*",
+            "description" : "changed * to \/"
+          },
+          "testSuiteOutcome" : "killed"
+        },
+        {
+          "mutationPoint" : {
+            "mutationOperatorId" : "ArithmeticOperatorReplacement",
+            "position" : {
+              "column" : 47,
+              "line" : 27
+            }
+          },
+          "mutationSnapshot" : {
+            "after" : "*",
+            "before" : "\/",
+            "description" : "changed \/ to *"
+          },
+          "testSuiteOutcome" : "killed"
+        },
+        {
+          "mutationPoint" : {
             "mutationOperatorId" : "RelationalOperatorReplacement",
             "position" : {
               "column" : 21,
@@ -331,10 +361,55 @@
         }
       ],
       "fileName" : "Tracking.swift",
-      "mutationScore" : 0
+      "mutationScore" : 67
     },
     {
       "appliedOperators" : [
+        {
+          "mutationPoint" : {
+            "mutationOperatorId" : "ArithmeticOperatorReplacement",
+            "position" : {
+              "column" : 43,
+              "line" : 194
+            }
+          },
+          "mutationSnapshot" : {
+            "after" : "+",
+            "before" : "-",
+            "description" : "changed - to +"
+          },
+          "testSuiteOutcome" : "killed"
+        },
+        {
+          "mutationPoint" : {
+            "mutationOperatorId" : "ArithmeticOperatorReplacement",
+            "position" : {
+              "column" : 45,
+              "line" : 208
+            }
+          },
+          "mutationSnapshot" : {
+            "after" : "+",
+            "before" : "-",
+            "description" : "changed - to +"
+          },
+          "testSuiteOutcome" : "killed"
+        },
+        {
+          "mutationPoint" : {
+            "mutationOperatorId" : "ArithmeticOperatorReplacement",
+            "position" : {
+              "column" : 45,
+              "line" : 210
+            }
+          },
+          "mutationSnapshot" : {
+            "after" : "+",
+            "before" : "-",
+            "description" : "changed - to +"
+          },
+          "testSuiteOutcome" : "killed"
+        },
         {
           "mutationPoint" : {
             "mutationOperatorId" : "RemoveSideEffects",
@@ -442,10 +517,40 @@
         }
       ],
       "fileName" : "TextAlignmentConstraint.swift",
-      "mutationScore" : 43
+      "mutationScore" : 60
     },
     {
       "appliedOperators" : [
+        {
+          "mutationPoint" : {
+            "mutationOperatorId" : "ArithmeticOperatorReplacement",
+            "position" : {
+              "column" : 107,
+              "line" : 292
+            }
+          },
+          "mutationSnapshot" : {
+            "after" : "-",
+            "before" : "+",
+            "description" : "changed + to -"
+          },
+          "testSuiteOutcome" : "killed"
+        },
+        {
+          "mutationPoint" : {
+            "mutationOperatorId" : "ArithmeticOperatorReplacement",
+            "position" : {
+              "column" : 46,
+              "line" : 293
+            }
+          },
+          "mutationSnapshot" : {
+            "after" : "+",
+            "before" : "-",
+            "description" : "changed - to +"
+          },
+          "testSuiteOutcome" : "killed"
+        },
         {
           "mutationPoint" : {
             "mutationOperatorId" : "ChangeLogicalConnector",
@@ -763,7 +868,7 @@
         }
       ],
       "fileName" : "XMLBuilder.swift",
-      "mutationScore" : 81
+      "mutationScore" : 83
     },
     {
       "appliedOperators" : [
@@ -787,9 +892,9 @@
       "mutationScore" : 0
     }
   ],
-  "globalMutationScore" : 66,
+  "globalMutationScore" : 70,
   "numberOfIgnoredMutants" : 0,
-  "numberOfKilledMutants" : 31,
+  "numberOfKilledMutants" : 38,
   "operatorReports" : [
     {
       "mutationOperator" : "RelationalOperatorReplacement",
@@ -815,8 +920,13 @@
       "mutationOperator" : "SwapBooleanLiteral",
       "numberOfKilledMutants" : 3,
       "numberOfMutants" : 6
+    },
+    {
+      "mutationOperator" : "ArithmeticOperatorReplacement",
+      "numberOfKilledMutants" : 7,
+      "numberOfMutants" : 7
     }
   ],
   "projectCodeCoverage" : 78,
-  "totalAppliedMutationOperators" : 47
+  "totalAppliedMutationOperators" : 54
 }

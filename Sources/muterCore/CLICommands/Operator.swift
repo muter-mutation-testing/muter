@@ -215,6 +215,48 @@ private extension MutationOperator.Id {
                 """.onCodeBlock
             )
             """
+        case .aor:
+            return """
+
+            \("Arithmetic Operator Replacement".bold)
+
+            The \("arithmetic operator replacement".italic) operator will change arithmetic operators in your code based on this table:
+
+            +-------------------+------------------+
+            | Original Operator | Changed Operator |
+            +-------------------+------------------+
+            |\("    +   and  +=    ".onCodeEscape)|\("   -   and  -=    ".onCodeEscape)|
+            |\("    -   and  -=    ".onCodeEscape)|\("   +   and  +=    ".onCodeEscape)|
+            |\("    *   and  *=    ".onCodeEscape)|\("   /   and  /=    ".onCodeEscape)|
+            |\("    /   and  /=    ".onCodeEscape)|\("   *   and  *=    ".onCodeEscape)|
+            +-------------------+------------------+
+
+            The purpose of this operator is to find calculations that the tests do not check.
+            It uses the type information of the index store, so it changes an operator only when it is the arithmetic of a number type, such as \("Int".asTypeDeclaration) or \("Double".asTypeDeclaration), and the type also has the new operator.
+            It leaves alone \("String".asTypeDeclaration) concatenation, operators of other types, and code that Muter has no index for.
+            For an integer type, one operand must be a value that is known only at run time, such as a parameter or a property, because the compiler rejects an overflow or a division by zero that it can compute at build time.
+
+            \("Mutating a calculation".bold)
+
+            \(
+                """
+                \("func".asKeyword) total(price: \("Int".asTypeDeclaration), shipping: \("Int".asTypeDeclaration)) -> \("Int".asTypeDeclaration) {
+                    price + shipping
+                }
+                """.onCodeBlock
+            )
+
+            becomes
+
+            \(
+                """
+                \("func".asKeyword) total(price: \("Int".asTypeDeclaration), shipping: \("Int".asTypeDeclaration)) -> \("Int".asTypeDeclaration) {
+                    price - shipping
+                }
+                """.onCodeBlock
+            )
+
+            """
         case .swapRangeOperator:
             return """
 

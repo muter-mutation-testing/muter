@@ -80,4 +80,31 @@ final class LoadSymbolIndexTests: XCTestCase {
         XCTAssertEqual(index.referencedSymbol(inFile: candidate, line: 1, column: 25)?.name, "+(_:_:)")
         XCTAssertNil(index.definedSymbol(inFile: other.path, line: 1, column: 6))
     }
+
+    /// Only the arithmetic operators need a signature, so only their names go to `swift-demangle`.
+    func test_demanglesTheArithmeticOperators() async throws {
+        let toolchain = try XCTUnwrap(SwiftToolchain.current(), "No Swift toolchain")
+        guard IndexStoreLibrary(toolchain: toolchain) != nil else {
+            throw XCTSkip("The toolchain at \(toolchain.usrDirectory.path) has no libIndexStore.")
+        }
+
+        let file = directory.appendingPathComponent("Sample.swift")
+        try "func sample(_ a: Int, _ b: Int) -> Bool { a + b > max(a, b) }\n"
+            .write(to: file, atomically: true, encoding: .utf8)
+        let store = directory.appendingPathComponent("Store")
+        try IndexStoreFixture.compile([file], into: directory, indexStore: store, toolchain: toolchain)
+
+        var demangled: [String] = []
+        let changes = try await LoadSymbolIndex(demangle: { usrs in
+            demangled = usrs
+            return LoadSymbolIndex.toolchainDemangle(usrs)
+        }).run(with: state(indexStorePath: store.path, sourceFiles: [file.path]))
+
+        guard case let .symbolIndexLoaded(index) = try XCTUnwrap(changes.first) else {
+            return XCTFail("Expected a symbol index, got \(changes)")
+        }
+        XCTAssertEqual(demangled.count, 1, "Only +, not > or max: \(demangled)")
+        let plus = try XCTUnwrap(index.referencedSymbol(inFile: file.path, line: 1, column: 45))
+        XCTAssertEqual(index.signature(of: plus), "static Swift.Int.+ infix(Swift.Int, Swift.Int) -> Swift.Int")
+    }
 }
