@@ -16,8 +16,9 @@ final class MutantEnvironmentCacheTests: MuterTestCase {
         }
         """)
 
-        // Only the cache at the end of the file reads the live environment.
-        XCTAssertEqual(rewritten.components(separatedBy: "ProcessInfo.processInfo.environment[").count - 1, 1, rewritten)
+        // Only the cache at the end of the file reads the live environment. It has one read for
+        // each branch of its `#if compiler`, and a build compiles only one of them.
+        XCTAssertEqual(rewritten.components(separatedBy: "ProcessInfo.processInfo.environment[").count - 1, 2, rewritten)
         XCTAssertTrue(rewritten.contains("__SwiftMutator.activeMutant == 1 "), rewritten)
     }
 
@@ -61,6 +62,24 @@ final class MutantEnvironmentCacheTests: MuterTestCase {
             "-default-isolation needs Swift 6.2 or later"
         )
         XCTAssertEqual(errors, "", rewritten)
+    }
+
+    // An older compiler may reject `nonisolated` on a stored property outside an actor, and it has
+    // no default isolation. It gets the cache without `nonisolated`.
+    func test_onlyACompilerWithDefaultIsolationGetsANonisolatedCache() throws {
+        let rewritten = try rewrite("""
+        func check(_ value: Int) -> Bool {
+            return value > 1
+        }
+        """)
+
+        let cache = try XCTUnwrap(rewritten.range(of: "enum __SwiftMutator").map { String(rewritten[$0.lowerBound...]) })
+        let branches = cache.components(separatedBy: "#else")
+        XCTAssertEqual(branches.count, 2, cache)
+        XCTAssertTrue(branches[0].contains("#if compiler(>=6.2)"), cache)
+        XCTAssertTrue(branches[0].contains("nonisolated static let activeMutant"), cache)
+        XCTAssertFalse(branches[1].contains("nonisolated"), cache)
+        XCTAssertTrue(branches[1].contains("static let activeMutant"), cache)
     }
 
     /// Type-checks `source` with the active toolchain's compiler and returns what it printed.

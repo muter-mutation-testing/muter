@@ -12,6 +12,12 @@ func someCode(_ a: Bool, _ b: Bool) -> Bool {
   }
 }
 private enum __SwiftMutator {
-  nonisolated static let activeMutant = ProcessInfo.processInfo.environment["MUTER_ACTIVE_MUTANT"]
-    .flatMap { Int($0) }
+  #if compiler(>=6.2)
+    nonisolated static let activeMutant = ProcessInfo.processInfo.environment["MUTER_ACTIVE_MUTANT"]
+      .flatMap { Int($0) }
+  #else
+    static let activeMutant = ProcessInfo.processInfo.environment["MUTER_ACTIVE_MUTANT"].flatMap {
+      Int($0)
+    }
+  #endif
 }
