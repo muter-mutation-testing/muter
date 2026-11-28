@@ -26,4 +26,17 @@ final class TestingTimeoutExecutorTests: MuterTestCase {
 
         await fulfillment(of: [expect], timeout: 5)
     }
+
+    // The limit was cut to whole seconds before it became nanoseconds, so a limit under
+    // a second timed out at once.
+    func test_aFractionalTimeLimitKeepsItsFraction() async throws {
+        let outcome: String = try await sut.withTimeLimit(0.9) {
+            try await Task.sleep(nanoseconds: 100_000_000)
+            return "finished"
+        } timeoutHandler: {
+            "timed out"
+        }
+
+        XCTAssertEqual(outcome, "finished")
+    }
 }
