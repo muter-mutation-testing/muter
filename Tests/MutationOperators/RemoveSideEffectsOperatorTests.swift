@@ -229,4 +229,86 @@ final class RemoveSideEffectsOperatorTests: MuterTestCase {
 
         XCTAssertFalse(removed.contains("log(label)"), "\(removed)")
     }
+
+    /// Each mutant's statement list, keyed by the statement it removes.
+    private func remainingStatementsByRemoved(in code: String) throws -> [String: String] {
+        let source = try sourceCode(code)
+        let visitor = RemoveSideEffectsOperator.Visitor(
+            sourceCodeInfo: SourceCodeInfo(path: "/path/to/file", code: source)
+        )
+
+        visitor.walk(source)
+
+        return Dictionary(
+            visitor.schemataMappings.mutationSchemata.map { ($0.snapshot.before, $0.mutatedCode) },
+            uniquingKeysWith: { first, _ in first }
+        )
+    }
+
+    // Statements were matched by their text, so removing one of two identical statements removed
+    // both, and the block's two mutants were the same mutant.
+    func test_removesOnlyItsOwnStatement_whenTheBlockRepeatsIt() throws {
+        let source = try sourceCode("""
+        func refresh(_ event: Event) {
+            reload()
+            log(event)
+            reload()
+        }
+        """)
+        let visitor = RemoveSideEffectsOperator.Visitor(
+            sourceCodeInfo: SourceCodeInfo(path: "/path/to/file", code: source)
+        )
+
+        visitor.walk(source)
+
+        let remaining = visitor.schemataMappings.mutationSchemata.map { $0.mutatedCode.trimmed.inlined }
+        XCTAssertEqual(remaining.sorted(), ["log(event) reload()", "reload() log(event)", "reload() reload()"])
+    }
+
+    // Removing a statement also removed the line break before it, so a statement after it on the
+    // same line, after a `;`, joined the line above. `prepare()notify()` does not compile, and one
+    // mutant that does not compile fails the build of all of them.
+    func test_keepsTheNextStatementOnItsOwnLine_whenTheRemovedOneSharedIt() throws {
+        let remaining = try remainingStatementsByRemoved(in: """
+        func refresh() {
+            prepare()
+            reload(); notify()
+        }
+        """)
+
+        XCTAssertEqual(remaining["reload();"], "\n    prepare()\n    notify()")
+    }
+
+    // After a `//` comment, the joined statement became part of the comment.
+    func test_keepsTheNextStatementOutOfAComment_whenTheRemovedOneSharedItsLine() throws {
+        let remaining = try remainingStatementsByRemoved(in: """
+        func refresh() {
+            prepare() // note
+            reload(); notify()
+        }
+        """)
+
+        XCTAssertEqual(remaining["reload();"], "\n    prepare() // note\n    notify()")
+    }
+
+    func test_keepsTheNextStatementOnItsOwnLine_withCRLFLineEndings() throws {
+        let remaining = try remainingStatementsByRemoved(
+            in: ["func refresh() {", "    prepare()", "    reload(); notify()", "}"].joined(separator: "\r\n")
+        )
+
+        XCTAssertEqual(remaining["reload();"], "\r\n    prepare()\r\n    notify()")
+    }
+
+    // Only the statement right after the removed one moves.
+    func test_movesOnlyTheNextStatement_whenALineHoldsThree() throws {
+        let remaining = try remainingStatementsByRemoved(in: """
+        func refresh() {
+            prepare()
+            load(); reload(); notify()
+        }
+        """)
+
+        XCTAssertEqual(remaining["load();"], "\n    prepare()\n    reload(); notify()")
+        XCTAssertEqual(remaining["reload();"], "\n    prepare()\n    load(); notify()")
+    }
 }
