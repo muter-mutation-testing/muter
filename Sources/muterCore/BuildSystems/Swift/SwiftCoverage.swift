@@ -26,9 +26,16 @@ final class SwiftCoverage: BuildSystemCoverage {
             Coverage(
                 percent: projectCoverage.percent,
                 filesWithoutCoverage: projectCoverage.filesWithoutCoverage,
-                functionsCoverage: functionsCoverage
+                functionsCoverage: functionsCoverage,
+                indexStorePath: Self.indexStorePath(binaryPath: binaryPath)
             )
         )
+    }
+
+    /// SwiftPM writes the index store into the folder of its build products, with both build
+    /// engines: `.build/<triple>/debug/index/store` and `.build/out/Products/Debug/index/store`.
+    static func indexStorePath(binaryPath: String) -> String {
+        URL(fileURLWithPath: binaryPath).appendingPathComponent("index/store").path
     }
 
     func buildDirectory(_ configuration: MuterConfiguration) -> String? {

@@ -3,7 +3,7 @@ import Foundation
 /// The occurrences of an index store, ready to look up by source position. Muter uses it to learn
 /// the types around a mutation point: which function an operator calls, what a function returns,
 /// and which protocols a type conforms to.
-struct SymbolIndex {
+struct SymbolIndex: Equatable {
     private struct Position: Hashable {
         let filePath: String
         let line: Int
@@ -15,7 +15,11 @@ struct SymbolIndex {
     /// extension counts for the extended type.
     private let protocolsByType: [String: Set<String>]
 
+    /// The number of occurrences in the index.
+    let count: Int
+
     init(occurrences: [IndexOccurrence]) {
+        count = occurrences.count
         // Few files, many occurrences: each path resolves once.
         var normalizedPaths: [String: String] = [:]
         occurrencesByPosition = Dictionary(grouping: occurrences) { occurrence in

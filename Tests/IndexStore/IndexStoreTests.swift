@@ -1,4 +1,6 @@
 @testable import muterCore
+import SwiftParser
+import SwiftSyntax
 import XCTest
 
 /// These tests compile a small Swift file with an index store, then read the store with the
@@ -55,7 +57,7 @@ final class IndexStoreTests: XCTestCase {
         try Self.fixture.write(to: sourceFile, atomically: true, encoding: .utf8)
 
         let store = directory.appendingPathComponent("Store")
-        try compile(sourceFile, indexStore: store)
+        try IndexStoreFixture.compile([sourceFile], into: directory, indexStore: store, toolchain: toolchain)
         index = try SymbolIndex(
             occurrences: IndexStore(path: store.path, library: library).occurrences(inFilesUnder: directory.path)
         )
@@ -66,6 +68,26 @@ final class IndexStoreTests: XCTestCase {
             try? FileManager.default.removeItem(at: directory)
         }
         try super.tearDownWithError()
+    }
+
+    // MARK: - Discovery
+
+    /// A visitor walks the prepared code, which has extra lines at the top. It looks up a token at
+    /// its position in the file on disk, which is where the compiler recorded it.
+    func test_visitorFindsTheSymbolOfAnOperatorInPreparedCode() throws {
+        let prepared = Parser.parse(source: "import Foundation\n" + Self.fixture)
+        let visitor = ROROperator.Visitor(
+            sourceCodeInfo: SourceCodeInfo(path: sourceFile.path, code: prepared),
+            regionsWithoutCoverage: []
+        )
+        visitor.sourceCodePreparationChange = MutationSourceCodePreparationChange(newLines: 1)
+        let greaterThan = try XCTUnwrap(prepared.tokens(viewMode: .sourceAccurate).first { $0.text == ">" })
+
+        XCTAssertNil(visitor.referencedSymbol(at: greaterThan), "No index, no symbol")
+
+        visitor.symbolIndex = index
+        let symbol = try XCTUnwrap(visitor.referencedSymbol(at: greaterThan))
+        XCTAssertEqual(demangled(symbol), "static Swift.Int.> infix(Swift.Int, Swift.Int) -> Swift.Bool")
     }
 
     // MARK: - Lookups
@@ -134,27 +156,6 @@ final class IndexStoreTests: XCTestCase {
     }
 
     // MARK: - Helpers
-
-    private func compile(_ file: URL, indexStore: URL) throws {
-        let process = Foundation.Process()
-        #if os(macOS)
-        process.executableURL = URL(fileURLWithPath: "/usr/bin/xcrun")
-        process.arguments = ["swiftc"]
-        #else
-        process.executableURL = toolchain.tool("swiftc")
-        process.arguments = []
-        #endif
-        process.arguments! += [
-            "-parse-as-library", "-module-name", "Fixture",
-            "-c", file.path, "-o", directory.appendingPathComponent("Fixture.o").path,
-            "-index-store-path", indexStore.path, "-index-ignore-system-modules",
-        ]
-        process.standardOutput = FileHandle.nullDevice
-        process.standardError = FileHandle.nullDevice
-        try process.run()
-        process.waitUntilExit()
-        XCTAssertEqual(process.terminationStatus, 0, "swiftc could not compile the fixture")
-    }
 
     /// The line and UTF-8 column, from 1, of `token` on the fixture line that contains `marker`.
     private func position(of token: String, onLineWith marker: String) throws -> (line: Int, column: Int) {

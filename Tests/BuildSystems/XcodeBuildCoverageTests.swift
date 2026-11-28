@@ -22,7 +22,7 @@ final class XcodeBuildCoverageTests: MuterTestCase {
 
         XCTAssertEqual(process.executableURL?.path, "/path/to/xcodebuild")
         // A project keeps its own build location: no -derivedDataPath is added.
-        XCTAssertEqual(process.arguments, ["-project", "App.xcodeproj", "-enableCodeCoverage", "YES"])
+        XCTAssertEqual(process.arguments, ["-project", "App.xcodeproj", "-enableCodeCoverage", "YES", "COMPILER_INDEX_STORE_ENABLE=YES"])
     }
 
     func test_project_buildDirectoryComesFromShowBuildSettings() {
@@ -30,6 +30,49 @@ final class XcodeBuildCoverageTests: MuterTestCase {
 
         XCTAssertEqual(sut.buildDirectory(muterConfiguration), "/custom/build")
         XCTAssertEqual(process.arguments, ["-project", "App.xcodeproj", "-showBuildSettings"])
+    }
+
+    /// The index store is in the derived data folder, also when the project moves its build
+    /// products out of it with `SYMROOT`.
+    func test_indexStore_isInTheDerivedDataFolderOfObjRoot() {
+        let settings = """
+            BUILD_DIR = /custom/products
+            OBJROOT = /DerivedData/App-hash/Build/Intermediates.noindex
+        """
+
+        XCTAssertEqual(
+            sut.indexStorePath(muterConfiguration, buildSettings: settings),
+            "/DerivedData/App-hash/Index.noindex/DataStore"
+        )
+    }
+
+    func test_indexStore_isUnknownWhenTheProjectMovesObjRoot() {
+        XCTAssertNil(sut.indexStorePath(muterConfiguration, buildSettings: "    OBJROOT = /custom/objects\n"))
+        XCTAssertNil(sut.indexStorePath(muterConfiguration, buildSettings: nil))
+    }
+
+    func test_swiftPackage_indexStoreIsInTheDerivedDataPath() {
+        let configuration = MuterConfiguration(
+            executable: "/path/to/xcodebuild",
+            arguments: ["-scheme", "IOSCore", "-derivedDataPath", "/custom/DerivedData", "test"]
+        )
+
+        XCTAssertEqual(
+            sut.indexStorePath(configuration, buildSettings: nil),
+            "/custom/DerivedData/Index.noindex/DataStore"
+        )
+    }
+
+    func test_whenTheTestCommandSetsTheIndexStore_thenMuterKeepsIt() {
+        let configuration = MuterConfiguration(
+            executable: "/path/to/xcodebuild",
+            arguments: ["-project", "App.xcodeproj", "COMPILER_INDEX_STORE_ENABLE=NO"]
+        )
+
+        XCTAssertEqual(
+            configuration.enableCoverageArguments,
+            ["-project", "App.xcodeproj", "COMPILER_INDEX_STORE_ENABLE=NO", "-enableCodeCoverage", "YES"]
+        )
     }
 
     func test_buildDir_isOnlyTheValue() {
@@ -48,7 +91,7 @@ final class XcodeBuildCoverageTests: MuterTestCase {
 
         XCTAssertEqual(
             process.arguments,
-            ["-scheme", "IOSCore", "test", "-derivedDataPath", "DerivedData", "-enableCodeCoverage", "YES"]
+            ["-scheme", "IOSCore", "test", "-derivedDataPath", "DerivedData", "-enableCodeCoverage", "YES", "COMPILER_INDEX_STORE_ENABLE=YES"]
         )
     }
 
@@ -71,7 +114,7 @@ final class XcodeBuildCoverageTests: MuterTestCase {
 
         XCTAssertEqual(
             process.arguments,
-            ["-scheme", "IOSCore", "-derivedDataPath", "/custom/DerivedData", "test", "-enableCodeCoverage", "YES"]
+            ["-scheme", "IOSCore", "-derivedDataPath", "/custom/DerivedData", "test", "-enableCodeCoverage", "YES", "COMPILER_INDEX_STORE_ENABLE=YES"]
         )
         XCTAssertEqual(sut.buildDirectory(configuration), "/custom/DerivedData")
     }

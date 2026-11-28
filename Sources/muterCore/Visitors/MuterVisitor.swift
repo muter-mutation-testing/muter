@@ -34,6 +34,10 @@ class MuterVisitor: SyntaxAnyVisitor {
 
     var sourceCodePreparationChange: MutationSourceCodePreparationChange = .null
 
+    /// The symbols of the unmutated project, from the index store of the coverage build. `nil` when
+    /// Muter has no index: then an operator mutates without type information.
+    var symbolIndex: SymbolIndex?
+
     /// The platform that the tests build for, when Muter can tell it from the test command.
     private lazy var targetPlatform: TargetPlatform? = configuration.flatMap(TargetPlatform.init(configuration:))
 
@@ -142,6 +146,22 @@ class MuterVisitor: SyntaxAnyVisitor {
 
         return mutationPosition(
             for: sourceLocation
+        )
+    }
+
+    /// The symbol that `token` refers to, such as the function that an operator calls, from the
+    /// index store. The index records positions in the file on disk, so the lines that source code
+    /// preparation adds are taken off.
+    func referencedSymbol(at token: TokenSyntax) -> IndexSymbol? {
+        guard let symbolIndex else {
+            return nil
+        }
+
+        let location = token.startLocation(converter: sourceCodeInfo.locationConverter)
+        return symbolIndex.referencedSymbol(
+            inFile: sourceCodeInfo.path,
+            line: location.line - sourceCodePreparationChange.newLines,
+            column: location.column
         )
     }
 

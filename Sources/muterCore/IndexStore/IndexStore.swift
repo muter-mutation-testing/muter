@@ -95,13 +95,31 @@ final class IndexStore {
     /// Every occurrence in the Swift files under `directory`. A record that several units share is
     /// read once.
     func occurrences(inFilesUnder directory: String) -> [IndexOccurrence] {
-        let prefixes = Set([directory, URL(fileURLWithPath: directory).resolvingSymlinksInPath().path])
+        let prefixes = Set([directory, Self.resolved(directory)])
             .map { $0.hasSuffix("/") ? $0 : $0 + "/" }
 
+        return occurrences(inFilesWhere: { filePath in
+            filePath.hasSuffix(".swift") && prefixes.contains(where: filePath.hasPrefix)
+        })
+    }
+
+    /// Every occurrence in these files. Paths match after symbolic links resolve, because the
+    /// compiler records the path that it was given.
+    func occurrences(inFiles filePaths: [String]) -> [IndexOccurrence] {
+        let wanted = Set(filePaths.map(Self.resolved))
+        var resolvedPaths: [String: String] = [:]
+
+        return occurrences(inFilesWhere: { filePath in
+            let resolved = resolvedPaths[filePath] ?? Self.resolved(filePath)
+            resolvedPaths[filePath] = resolved
+            return wanted.contains(resolved)
+        })
+    }
+
+    private func occurrences(inFilesWhere isIncluded: (String) -> Bool) -> [IndexOccurrence] {
         var records: [String: String] = [:] // record name: source file path
         for unit in unitNames() {
-            for (record, filePath) in recordDependencies(ofUnit: unit)
-                where filePath.hasSuffix(".swift") && prefixes.contains(where: filePath.hasPrefix) {
+            for (record, filePath) in recordDependencies(ofUnit: unit) where isIncluded(filePath) {
                 records[record] = filePath
             }
         }
@@ -109,6 +127,10 @@ final class IndexStore {
         return records.sorted { $0.key < $1.key }.flatMap { record, filePath in
             occurrences(inRecord: record, filePath: filePath)
         }
+    }
+
+    private static func resolved(_ path: String) -> String {
+        URL(fileURLWithPath: path).resolvingSymlinksInPath().path
     }
 
     private func unitNames() -> [String] {

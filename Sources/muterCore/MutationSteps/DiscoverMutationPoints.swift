@@ -19,7 +19,8 @@ struct DiscoverMutationPoints: MutationStep {
             forOperators: state.mutationOperatorList,
             inFilesAt: state.sourceFileCandidates,
             configuration: state.muterConfiguration,
-            coverage: state.projectCoverage
+            coverage: state.projectCoverage,
+            symbolIndex: state.symbolIndex
         )
 
         guard discovered.mappings.count >= 1 else {
@@ -54,7 +55,8 @@ private extension DiscoverMutationPoints {
         forOperators operators: MutationOperatorList,
         inFilesAt filePaths: [String],
         configuration: MuterConfiguration,
-        coverage: Coverage
+        coverage: Coverage,
+        symbolIndex: SymbolIndex?
     ) -> DiscoveredFiles {
         // Process files in parallel batches for better performance on large codebases
         // Uses autoreleasepool per file to prevent memory accumulation
@@ -90,7 +92,8 @@ private extension DiscoverMutationPoints {
                             forOperators: operators,
                             inFile: sourceCode,
                             configuration: configuration,
-                            regionsWithoutCoverage: coverage.regionsForFile(path)
+                            regionsWithoutCoverage: coverage.regionsForFile(path),
+                            symbolIndex: symbolIndex
                         )
 
                         lock.lock()
@@ -111,7 +114,8 @@ private extension DiscoverMutationPoints {
         forOperators operators: MutationOperatorList,
         inFile sourceCode: PreparedSourceCode,
         configuration: MuterConfiguration,
-        regionsWithoutCoverage: [Region]
+        regionsWithoutCoverage: [Region],
+        symbolIndex: SymbolIndex?
     ) -> (mappings: [SchemataMutationMapping], ignoredMutants: [IgnoredMutant]) {
         let source = sourceCode.source.code
         var ignoredMutants: [IgnoredMutant] = []
@@ -124,6 +128,7 @@ private extension DiscoverMutationPoints {
             )
 
             visitor.sourceCodePreparationChange = sourceCode.changes
+            visitor.symbolIndex = symbolIndex
 
             visitor.walk(source)
 

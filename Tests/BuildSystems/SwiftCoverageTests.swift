@@ -23,8 +23,22 @@ final class SwiftCoverageTests: MuterTestCase {
         XCTAssertEqual(
             process.arguments, [
                 "--enable-code-coverage",
+                "--enable-index-store",
             ]
         )
+    }
+
+    func test_indexStore_isInTheBinaryFolder() {
+        XCTAssertEqual(
+            SwiftCoverage.indexStorePath(binaryPath: "/project/.build/out/Products/Debug"),
+            "/project/.build/out/Products/Debug/index/store"
+        )
+    }
+
+    func test_whenTheTestCommandSetsTheIndexStore_thenMuterKeepsIt() {
+        let configuration = MuterConfiguration(executable: "/path/to/swift", arguments: ["test", "--disable-index-store"])
+
+        XCTAssertEqual(configuration.enableCoverageArguments, ["test", "--disable-index-store", "--enable-code-coverage"])
     }
 
     func test_whenCoverageCommandSucceeds_thenFindBinaryPath() {
@@ -131,7 +145,8 @@ final class SwiftCoverageTests: MuterTestCase {
                     "Extensions/ProgressExtensions.swift",
                     "MutationTesting/MutationTestingAbortReason.swift",
                     "Muter.swift",
-                ]
+                ],
+                indexStorePath: "/path/to/binary/index/store"
             )
         )
     }
@@ -161,7 +176,8 @@ final class SwiftCoverageTests: MuterTestCase {
                     "Muter.swift",
                     "TestReporting/PlainText/PlainTextReporter.swift",
                     "TestReporting/Reporter.swift",
-                ]
+                ],
+                indexStorePath: "/path/to/binary/index/store"
             )
         )
     }
