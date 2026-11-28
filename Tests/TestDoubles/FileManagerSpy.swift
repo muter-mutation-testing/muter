@@ -36,6 +36,7 @@ class FileManagerSpy: Spy, FileSystemManager {
     var errorToThrow: Error?
     var subpathsToReturn: [String]?
     var fileExistsToReturn: [Bool] = []
+    var createFileToReturn = true
     var contentsAtPathSortedToReturn: [String] = []
 
     var currentDirectoryPath: String {
@@ -72,7 +73,7 @@ class FileManagerSpy: Spy, FileSystemManager {
         paths.append(path)
         contents = data
 
-        return true
+        return createFileToReturn
     }
 
     func copyItem(
