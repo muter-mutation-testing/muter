@@ -10,7 +10,8 @@ class TokenAwareVisitor: MuterVisitor {
         // mutant would wrap declarations in an `if` at the top level, which does not compile.
         guard node.isInsideABody,
               canMutateToken(`operator`),
-              let oppositeOperator = oppositeOperator(for: `operator`.tokenKind)
+              let oppositeOperator = oppositeOperator(for: `operator`.tokenKind),
+              canMutate(node, to: oppositeOperator)
         else {
             return .visitChildren
         }
@@ -39,6 +40,12 @@ class TokenAwareVisitor: MuterVisitor {
         node.isInsideCompilerDirective
             ? .skipChildren
             : .visitChildren
+    }
+
+    /// Whether to add the mutant that changes the operator of `node` to `replacement`. An operator
+    /// that needs more than the token to decide, such as the types of the operands, overrides it.
+    func canMutate(_ node: BinaryOperatorExprSyntax, to replacement: String) -> Bool {
+        true
     }
 
     private func oppositeOperator(for tokenKind: TokenKind) -> String? {

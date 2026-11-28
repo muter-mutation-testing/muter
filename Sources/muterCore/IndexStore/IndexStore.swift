@@ -21,11 +21,15 @@ struct IndexSymbolKind: RawRepresentable, Hashable {
     static let `protocol` = IndexSymbolKind(rawValue: 8)
     static let `extension` = IndexSymbolKind(rawValue: 9)
     static let function = IndexSymbolKind(rawValue: 12)
+    static let variable = IndexSymbolKind(rawValue: 13)
     static let instanceMethod = IndexSymbolKind(rawValue: 16)
     static let classMethod = IndexSymbolKind(rawValue: 17)
     static let staticMethod = IndexSymbolKind(rawValue: 18)
     static let instanceProperty = IndexSymbolKind(rawValue: 19)
+    static let classProperty = IndexSymbolKind(rawValue: 20)
+    static let staticProperty = IndexSymbolKind(rawValue: 21)
     static let constructor = IndexSymbolKind(rawValue: 22)
+    static let parameter = IndexSymbolKind(rawValue: 25)
 
     var isFunction: Bool {
         [.function, .instanceMethod, .classMethod, .staticMethod, .constructor].contains(self)

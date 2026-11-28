@@ -14,12 +14,19 @@ struct SymbolIndex: Equatable {
     /// The protocols that each type conforms to in the indexed code, by USR. A conformance in an
     /// extension counts for the extended type.
     private let protocolsByType: [String: Set<String>]
+    /// The USRs that the indexed code defines. A system symbol, such as `Int.max`, is not among them.
+    private let definedUSRs: Set<String>
+    /// The signatures with types of some symbols, by USR, such as
+    /// `static Swift.Int.+ infix(Swift.Int, Swift.Int) -> Swift.Int`.
+    private let signaturesByUSR: [String: String]
 
     /// The number of occurrences in the index.
     let count: Int
 
-    init(occurrences: [IndexOccurrence]) {
+    init(occurrences: [IndexOccurrence], signatures: [String: String] = [:]) {
         count = occurrences.count
+        signaturesByUSR = signatures
+        definedUSRs = Set(occurrences.filter { $0.roles.contains(.definition) }.map(\.symbol.usr))
         // Few files, many occurrences: each path resolves once.
         var normalizedPaths: [String: String] = [:]
         occurrencesByPosition = Dictionary(grouping: occurrences) { occurrence in
@@ -69,6 +76,22 @@ struct SymbolIndex: Equatable {
         occurrences(inFile: filePath, line: line, column: column)
             .first { $0.roles.contains(.definition) && !$0.roles.contains(.implicit) }?
             .symbol
+    }
+
+    /// Whether the indexed code defines the symbol, as opposed to a module that it imports.
+    func defines(_ symbol: IndexSymbol) -> Bool {
+        definedUSRs.contains(symbol.usr)
+    }
+
+    /// The signature with types of the symbol, when Muter demangled it while it loaded the index.
+    func signature(of symbol: IndexSymbol) -> String? {
+        signaturesByUSR[symbol.usr]
+    }
+
+    /// The USRs of the symbols that the indexed code references with one of these names, such as
+    /// `+(_:_:)`.
+    static func referencedUSRs(in occurrences: [IndexOccurrence], named names: Set<String>) -> [String] {
+        Array(Set(occurrences.filter { $0.roles.contains(.reference) && names.contains($0.symbol.name) }.map(\.symbol.usr)))
     }
 
     /// Whether the indexed code makes the type conform to the protocol. Conformances of system

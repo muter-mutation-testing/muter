@@ -16,6 +16,7 @@ enum MutationOperator {
         case swapTernary = "SwapTernary"
         case swapBooleanLiteral = "SwapBooleanLiteral"
         case swapRangeOperator = "SwapRangeOperator"
+        case aor = "ArithmeticOperatorReplacement"
 
         var visitor: VisitorInitializer {
             switch self {
@@ -31,6 +32,8 @@ enum MutationOperator {
                 return SwapBooleanLiteralOperator.Visitor.init
             case .swapRangeOperator:
                 return SwapRangeOperator.Visitor.init
+            case .aor:
+                return ArithmeticOperatorReplacement.Visitor.init
             }
         }
 
